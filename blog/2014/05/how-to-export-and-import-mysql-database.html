@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>How to export and import MySQL database</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../css/asciidoctor.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link href="../../../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../../../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../archive.html">Archive</a></li>
+            <li><a href="../../../about.html">About</a></li>
+            <li><a href="../../../tags">Tags</a></li>
+            <li><a href="../../../feed.xml">Subscribe</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">	
+	<div class="page-header">
+		<h1>How to export and import MySQL database</h1>
+	</div>
+
+	<p><em>30 May 2014</em></p>
+
+	<p>You can export the MySQL database with schema table definitions and data separated. Here is a simple bash shell script that will export an database.<br />
+<br />
+<span style="font-family: &quot;Courier New&quot;,Courier,monospace;"># file: </span><span style="font-family: &quot;Courier New&quot;,Courier,monospace;">database-export.sh</span><br />
+<span style="font-family: &quot;Courier New&quot;,Courier,monospace;">DB_NAME=mydb</span><br />
+<span style="font-family: &quot;Courier New&quot;,Courier,monospace;">DB_SCHEMA_FILE=mydb.sql</span><br />
+<span style="font-family: &quot;Courier New&quot;,Courier,monospace;">DB_DATA_FILE=mydb-data.sql</span><br />
+<span style="font-family: &quot;Courier New&quot;,Courier,monospace;">DB_USERNAME=root</span><br />
+<span style="font-family: &quot;Courier New&quot;,Courier,monospace;">DB_PASSWORD=secret</span><br />
+<span style="font-family: &quot;Courier New&quot;,Courier,monospace;"><span style="font-family: &quot;Courier New&quot;,Courier,monospace;"><br /># export schema only from mysql</span>&nbsp;</span><br />
+<span style="font-family: &quot;Courier New&quot;,Courier,monospace;">echo "`date` Exporting database $DB_NAME schema to $DB_SCHEMA_FILE"<br />mysqldump --no-data --routines -u $DB_USERNAME -p$DB_PASSWORD $DB_NAME &gt; $DB_SCHEMA_FILE<br /><br /># export data only from mysql<br />echo "`date` Exporting database $DB_NAME data to $DB_DATA_FILE"<br />mysqldump --single-transaction --quick --no-autocommit --no-create-info --extended-insert=false -u $DB_USERNAME -p$DB_PASSWORD $DB_NAME &gt; $DB_DATA_FILE</span><br />
+<span style="font-family: &quot;Courier New&quot;,Courier,monospace;"><br />echo "`date` Done."</span><br />
+<br />
+The schema export with "--routines" will export stored proc as well. When exporitng data you have to be little more careful. The "--single-transaction" will ensure your data is good. The "--no-autocommit" can really speed up your import later on certain OS.<br />
+<br />
+Now to import these files back, you can create an empty database and then run the following.<br />
+<br />
+<span style="font-family: &quot;Courier New&quot;,Courier,monospace;"># file: </span><span style="font-family: &quot;Courier New&quot;,Courier,monospace;">database-import.sh </span><br />
+<span style="font-family: &quot;Courier New&quot;,Courier,monospace;"># import schema and data into mysql</span><br />
+<span style="font-family: &quot;Courier New&quot;,Courier,monospace;">echo "`date` Importing Schema $DB_SCHEMA_FILE into $DB_NAME"</span><br />
+<span style="font-family: &quot;Courier New&quot;,Courier,monospace;">mysql -f -u $DB_USERNAME -p$DB_PASSWORD $DB_NAME &lt; $DB_SCHEMA_FILE<br />echo "`date` Importing DATA $DB_DATA_FILE into $DB_NAME"<br />mysql -f -u $DB_USERNAME -p$DB_PASSWORD $DB_NAME &lt; $DB_DATA_FILE<br /><br />echo "`date` Done."</span><br />
+<br />
+The import with "-f" option will allow you to continue even if you already have duplicated data in the tables; it will simply ignore and continue.<br />
+<br />
+These two combo commands will allow you to quicly backup and restore a MySQL database.<br />
+<br />
+Enjoy.<br />
+<br />
+PS: I have come to learn that "mysqldump" with procedures will insert an extra line like "<span style="font-family: &quot;Courier New&quot;,Courier,monospace;">DEFINER 'user'@'hostname'</span>", and it may create problem if you use different users to export/import or even run the application! Unfortunately there is no exclude from the "mysqldump" tool. So you have to manually strip that off if that's creating a problem for you.<br />
+<br />
+<span style="font-family: &quot;Courier New&quot;,Courier,monospace;">mysqldump --no-data --routines -u $DB_USERNAME -p$DB_PASSWORD $DB_NAME | perl -pi -e 's/DEFINER="\w+"@"\w+" //g' &gt; $DB_SCHEMA_FILE</span><span style="font-family: &quot;Courier New&quot;,Courier,monospace;"></span><br />
+<br />
+You can vote the issue here: <a href="http://bugs.mysql.com/bug.php?id=24680">http://bugs.mysql.com/bug.php?id=24680</a> 
+</p>
+
+	<hr />
+	
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.3</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../../../js/jquery-1.11.1.min.js"></script>
+    <script src="../../../js/bootstrap.min.js"></script>
+    <script src="../../../js/prettify.js"></script>
+    
+  </body>
+</html>

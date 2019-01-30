@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8"/>
-    <title>Zemian's Blog</title>
+    <title>About</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -29,7 +29,7 @@
   </head>
   <body onload="prettyPrint()">
     <div id="wrap">
-	
+
 	<!-- Fixed navbar -->
     <div class="navbar navbar-default navbar-fixed-top" role="navigation">
       <div class="container">
@@ -53,77 +53,79 @@
         </div><!--/.nav-collapse -->
       </div>
     </div>
-    <div class="container">
-  			<a href="blog/2018/08/python-string-successor-method.html"><h1>Python string successor method</h1></a>
-  			<p>24 August 2018</p>
-  			<p><div class="listingblock">
+    <div class="container">	
+	<div class="page-header">
+		<h1>About</h1>
+	</div>
+
+	<p><em>25 January 2019</em></p>
+
+	<p><div class="sect1">
+<h2 id="_about_zemians_blog">About Zemian&#8217;s Blog</h2>
+<div class="sectionbody">
+<div class="imageblock" style="float: left">
 <div class="content">
-<pre># A simple implementation of Ruby's String#next() successor method in Python
-# See https://ruby-doc.org/core-2.4.1/String.html#method-i-next
-def next(id_template, id_chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"):
-	first_ch = id_chars[0]
-	last_ch = id_chars[-1]
-	new_id = list(id_template)
-
-	idx = len(new_id) - 1
-	while idx &gt;= 0:
-		ch = new_id[idx]
-		if ch == last_ch:
-			new_id[idx] = first_ch
-		else:
-			next_idx = id_chars.index(ch) + 1
-			new_id[idx] = id_chars[next_idx]
-			break
-		idx -= 1
-
-	return ''.join(new_id)
-
-# Tests
-import unittest
-class StringNextTest(unittest.TestCase):
-	def test_next(self):
-		self.assertEqual(next("0"), "1");
-		self.assertEqual(next("9"), "A");
-		self.assertEqual(next("A"), "B");
-		self.assertEqual(next("Y"), "Z");
-		self.assertEqual(next("Z"), "0");
-
-		self.assertEqual(next("AAA"), "AAB");
-		self.assertEqual(next("AAB"), "AAC");
-		self.assertEqual(next("AAC"), "AAD");
-		self.assertEqual(next("ZZ0"), "ZZ1");
-		self.assertEqual(next("ZZ1"), "ZZ2");
-		self.assertEqual(next("ZZ2"), "ZZ3");
-		self.assertEqual(next("ZZY"), "ZZZ");
-		self.assertEqual(next("ZZZ"), "000");
-		self.assertEqual(next("ZZZZZZ"), "000000");
-		self.assertEqual(next("ZZZZZZZZZ"), "000000000");
-
-		self.assertEqual(next("ABC999GHI"), "ABC999GHJ");
-		self.assertEqual(next("ABC999GZZ"), "ABC999H00");
-
-	def samples(self):
-		id = "ZZX"
-		print(id)
-		for i in range(10):
-			id = next(id)
-			print(id)
-
-		id = "FF9"
-		print(id)
-		for i in range(10):
-			id = next(id, "0123456789ABCDEF")
-			print(id)
-
-if __name__ == '__main__':
-	#StringNextTest().samples()
-	unittest.main()</pre>
+<img src="/img/zemian.jpg" alt="zemian" width="300" height="300">
+</div>
+</div>
+<div class="paragraph">
+<p>Hi, My name is Zemian Deng, and this is my programming blog.</p>
+</div>
+<div class="paragraph">
+<p>I use Java as my primary programming language, but I also enjoy using other languages such as Python, Perl and Bash. I have worked with few Databases such as Oracle, MySQL and PostgreSQL. I like to be pragmatic when it comes to software design. I think simple code makes less buggy software. I use this blog as my personal journal to record tips and notes on what I have learned.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+This is a personal weblog. The opinions expressed here represent my own and not those of my employer. All data and information provided on this site is for informational purposes only. I make no representations as to accuracy, completeness, currectness, suitability, or validity of any information on this site and will not be liable for any errors, omissions, or delays in this information or any losses, injuries, or damages arising from its display or use. All information is provided on an as-is basis.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_social_contacts">Social Contacts</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://www.linkedin.com/in/zemian-deng-profile">LinkedIn</a></p>
+</li>
+<li>
+<p><a href="https://twitter.com/zemiandeng">Twitter</a></p>
+</li>
+<li>
+<p><a href="https://dzone.com/users/saltnlight5">Java DZone</a></p>
+</li>
+<li>
+<p><a href="https://github.com/zemian/">GitHub</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_old_blogs">Old Blogs</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p><a href="http://saltnlight5.blogspot.com/">Blogger</a> - Inactive!</p>
+</li>
+<li>
+<p><a href="http://www.jroller.com/thebugslayer/">jroller</a> - Inactive!</p>
+</li>
+</ul>
+</div>
 </div>
 </div></p>
-	
+
 	<hr />
-	
-	<p>Older posts are available in the <a href="archive.html">archive</a>.</p>
 
 		</div>
 		<div id="push"></div>

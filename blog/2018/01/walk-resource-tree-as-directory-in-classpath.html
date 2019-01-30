@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Walk resource tree as directory in classpath</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../css/asciidoctor.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link href="../../../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../../../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../archive.html">Archive</a></li>
+            <li><a href="../../../about.html">About</a></li>
+            <li><a href="../../../tags">Tags</a></li>
+            <li><a href="../../../feed.xml">Subscribe</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">	
+	<div class="page-header">
+		<h1>Walk resource tree as directory in classpath</h1>
+	</div>
+
+	<p><em>27 January 2018</em></p>
+
+	<p><div class="paragraph">
+<p>The two most frequent type of classpath URL we get when get it through <code>ClassLoader#getResource(resourceName)</code> is either <code>file</code> or <code>jar</code> entries. If we want to walk a resources that are stored in a directory, then we need to parse these differently. For <code>file</code>, it&#8217;s easy to do since we have <code>java.io.File</code>. As for <code>jar</code>, we would use <code>JarFile</code>. Here is a implementation.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>public static void walkClasspathResDir(ClassLoader cl, String resDir, ConsumerEx&lt;FileStream&gt; fileConsumer) {
+        // NOTE: JarEntry.isDirectory() used below requires input to ends with slash.
+        if (!resDir.endsWith("/")) {
+            resDir = resDir + "/";
+        }
+
+        URL url = cl.getResource(resDir);
+        if (url == null) {
+            throw new AppException("Resource directory " + resDir + " not found in classpath.");
+        } else if ("file".equals(url.getProtocol())) {
+            File dir = new File(url.getPath());
+            if (!dir.isDirectory()) {
+                throw new AppException("Resource is not a directory: " + resDir);
+            }
+            walkFileDir(dir, fileConsumer);
+        } else if ("jar".equals(url.getProtocol())) {
+            try {
+                JarURLConnection conn = (JarURLConnection) url.openConnection();
+                if (!(conn.getJarEntry().isDirectory())) {
+                    throw new AppException("Resource is not a directory: " + resDir);
+                }
+                walkJarEntryDir(conn.getJarFile(), resDir, fileConsumer);
+            } catch (Exception e) {
+                throw new AppException("Unable to read resource: " + url, e);
+            }
+        } else {
+            throw new AppException("Unsupported protocol " + url.getProtocol() + " for checking resource directory.");
+        }
+    }
+
+    public static void walkFileDir(File dir, ConsumerEx&lt;FileStream&gt; fileConsumer) {
+        try {
+            Files.walkFileTree(dir.toPath(), new SimpleFileVisitor&lt;Path&gt;() {
+                @Override
+                public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                    try (FileInputStream stream = new FileInputStream(file.toFile())) {
+                        try {
+                            String shortPath = file.toFile().getPath().substring(dir.getPath().length());
+                            // Always convert path separator to Unix
+                            shortPath = FilenameUtils.separatorsToUnix(shortPath);
+                            // Remove leading '/' if there is any
+                            if (shortPath.startsWith("/")) {
+                                shortPath = shortPath.substring(1);
+                            }
+                            fileConsumer.accept(new FileStream(shortPath, stream));
+                        } catch (Exception e) {
+                            throw new AppException("Failed to process file: " + file, e);
+                        }
+                    }
+                    return FileVisitResult.CONTINUE;
+                }
+            });
+        } catch (IOException e) {
+            throw new AppException("Failed to walk directory: " + dir, e);
+        }
+    }
+
+    public static void walkJarEntryDir(JarFile jarFile, String entryName, ConsumerEx&lt;FileStream&gt; fileConsumer) {
+        try {
+            Enumeration&lt;JarEntry&gt; entries = jarFile.entries();
+            while (entries.hasMoreElements()) {
+                JarEntry jarEntry = entries.nextElement();
+                if (jarEntry.getName().startsWith(entryName)) {
+                    if (!jarEntry.isDirectory()) {
+                        try (InputStream stream = jarFile.getInputStream(jarEntry)) {
+                            try {
+                                String shortPath = jarEntry.getName().substring(entryName.length());
+                                fileConsumer.accept(new FileStream(shortPath, stream));
+                            } catch (Exception e) {
+                                throw new AppException("Failed to process jar entry: " + jarEntry.getName(), e);
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (IOException e) {
+            throw new AppException("Failed to walk jar directory entry: " + entryName, e);
+        }
+    }</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Here the <code>FileStream</code> is just a POJO that holds a resource path name and the stream that points to it. One tricky part to above code is noted in comment:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>// NOTE: JarEntry.isDirectory() used below requires input to ends with slash.</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now, here is how we can use it:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>        ClassLoader cl = Thread.currentThread().getContextClassLoader();
+        walkClasspathResDir(cl, "toolbox/templates/javaapp", (fileStream) -&gt; {
+            System.out.println(fileStream.getPath() + " " + fileStream.getStream());
+        });
+        System.out.println();</pre>
+</div>
+</div></p>
+
+	<hr />
+	
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.3</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../../../js/jquery-1.11.1.min.js"></script>
+    <script src="../../../js/bootstrap.min.js"></script>
+    <script src="../../../js/prettify.js"></script>
+    
+  </body>
+</html>

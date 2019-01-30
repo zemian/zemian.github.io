@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Script Console Tool for any WAR application</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../css/asciidoctor.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link href="../../../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../../../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../archive.html">Archive</a></li>
+            <li><a href="../../../about.html">About</a></li>
+            <li><a href="../../../tags">Tags</a></li>
+            <li><a href="../../../feed.xml">Subscribe</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">	
+	<div class="page-header">
+		<h1>Script Console Tool for any WAR application</h1>
+	</div>
+
+	<p><em>21 July 2012</em></p>
+
+	<p><p>In the latest release of <a href="https://bitbucket.org/timemachine/scheduler">TimeMachine scheduler project</a>, I've added a Groovy scripting console to the web app and allow user to script the scheduler. This feature is actually very useful for any servlet application as well. Imagine that if you have a script/shell console for your web application that allow you to dynamically inspect any variables or data?
+
+<p>With the same idea, I've written a very basic JSP file <code>script-console.jsp</code> that provides a great ad hoc tool. For simplicity sake, I put everything into single file. All you need is just add this one file into your java webapp root directory, and you'll have an instant scripting console shell! (Yes, I am aware having code in JSP is bad, but having everything in one page is convenient, specially if you plan to just use this as one time inspection.)
+
+<p>The JSP will automatically detect all the scripting engine available in your JVM (1.6+) and let you choose any one to use. In the text area you can enter any script codes. All the JSP implicit variables are available for you to use as well. JVM 1.6 or higher will have at least JavaScript engine available, so you can use it immediately.
+
+<p>Be aware that this is a huge security risk since the script console not only expose your application, it also expose your entire JVM! It must be use with care, and if possible, it needs to be added as protected resources in your web application.
+
+<p>
+<script src="https://gist.github.com/2937862.js"> </script>
+</p>
+
+	<hr />
+	
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.3</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../../../js/jquery-1.11.1.min.js"></script>
+    <script src="../../../js/bootstrap.min.js"></script>
+    <script src="../../../js/prettify.js"></script>
+    
+  </body>
+</html>

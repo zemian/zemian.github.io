@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Setup MySQL DataSource on WLS</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../css/asciidoctor.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link href="../../../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../../../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../archive.html">Archive</a></li>
+            <li><a href="../../../about.html">About</a></li>
+            <li><a href="../../../tags">Tags</a></li>
+            <li><a href="../../../feed.xml">Subscribe</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">	
+	<div class="page-header">
+		<h1>Setup MySQL DataSource on WLS</h1>
+	</div>
+
+	<p><em>04 October 2015</em></p>
+
+	<p>Here is a WLST script to setup MySQL DataSource in WebLogic server after you have created a domain. The script will also assign this DataSource to one or more servers you pass in at the end of arguments.<br />
+<br />
+<span style="font-family: Courier New, Courier, monospace;"># Update an existing domain to setup a DataSource and assign it to servers</span><br />
+<span style="font-family: Courier New, Courier, monospace;"># Example</span><br />
+<span style="font-family: Courier New, Courier, monospace;"># &nbsp; wlst.cmd setupDataSource.py C:\data\wls11g_domains\dev MYTESTDB jdbc/MYTESTDB com.mysql.jdbc.Driver jdbc:mysql://localhost/mytestdb test test123 AdminServer</span><br />
+<br />
+<span style="font-family: Courier New, Courier, monospace;">import os, sys, os.path</span><br />
+<span style="font-family: Courier New, Courier, monospace;">(domain_home, ds_name, jndi_name, driver_name, url, user, password) = sys.argv[1:8]</span><br />
+<span style="font-family: Courier New, Courier, monospace;">servers = sys.argv[8:]</span><br />
+<span style="font-family: Courier New, Courier, monospace;"><br /></span>
+<span style="font-family: Courier New, Courier, monospace;">domain_home = os.path.abspath(domain_home)</span><br />
+<span style="font-family: Courier New, Courier, monospace;"><br /></span>
+<span style="font-family: Courier New, Courier, monospace;">readDomain(domain_home)</span><br />
+<span style="font-family: Courier New, Courier, monospace;"><br /></span>
+<span style="font-family: Courier New, Courier, monospace;">print("Setting up WLS DataSource: %s" % ds_name)</span><br />
+<span style="font-family: Courier New, Courier, monospace;">create(ds_name, 'JDBCSystemResource')</span><br />
+<span style="font-family: Courier New, Courier, monospace;">cd('/JDBCSystemResource/%s/JdbcResource/%s' %(ds_name, ds_name))</span><br />
+<span style="font-family: Courier New, Courier, monospace;">create('myJdbcDriverParams','JDBCDriverParams')</span><br />
+<span style="font-family: Courier New, Courier, monospace;">cd('JDBCDriverParams/NO_NAME_0')</span><br />
+<span style="font-family: Courier New, Courier, monospace;">set('DriverName',driver_name)</span><br />
+<span style="font-family: Courier New, Courier, monospace;">set('URL', url)</span><br />
+<span style="font-family: Courier New, Courier, monospace;">set('PasswordEncrypted', password)</span><br />
+<span style="font-family: Courier New, Courier, monospace;">set('UseXADataSourceInterface', 'false')</span><br />
+<span style="font-family: Courier New, Courier, monospace;">create('myProps','Properties')</span><br />
+<span style="font-family: Courier New, Courier, monospace;">cd('Properties/NO_NAME_0')</span><br />
+<span style="font-family: Courier New, Courier, monospace;">create('user', 'Property')</span><br />
+<span style="font-family: Courier New, Courier, monospace;">create('characterEncoding', 'Property')</span><br />
+<span style="font-family: Courier New, Courier, monospace;">create('connectionCollation', 'Property')</span><br />
+<span style="font-family: Courier New, Courier, monospace;">create('useUnicode', 'Property')</span><br />
+<span style="font-family: Courier New, Courier, monospace;">cd('Property/user')</span><br />
+<span style="font-family: Courier New, Courier, monospace;">cmo.setValue(user)</span><br />
+<span style="font-family: Courier New, Courier, monospace;">cd('../characterEncoding')</span><br />
+<span style="font-family: Courier New, Courier, monospace;">cmo.setValue('utf-8')</span><br />
+<span style="font-family: Courier New, Courier, monospace;">cd('../connectionCollation')</span><br />
+<span style="font-family: Courier New, Courier, monospace;">cmo.setValue('utf8_general_ci')</span><br />
+<span style="font-family: Courier New, Courier, monospace;">cd('../useUnicode')</span><br />
+<span style="font-family: Courier New, Courier, monospace;">cmo.setValue('true')</span><br />
+<span style="font-family: Courier New, Courier, monospace;"><br /></span>
+<span style="font-family: Courier New, Courier, monospace;">cd('/JDBCSystemResource/%s/JdbcResource/%s' %(ds_name, ds_name))</span><br />
+<span style="font-family: Courier New, Courier, monospace;">create('myJdbcDataSourceParams','JDBCDataSourceParams')</span><br />
+<span style="font-family: Courier New, Courier, monospace;">cd('JDBCDataSourceParams/NO_NAME_0')</span><br />
+<span style="font-family: Courier New, Courier, monospace;">set('JNDIName', java.lang.String(jndi_name))</span><br />
+<span style="font-family: Courier New, Courier, monospace;"><br /></span>
+<span style="font-family: Courier New, Courier, monospace;">cd('/')</span><br />
+<span style="font-family: Courier New, Courier, monospace;">for server in servers:</span><br />
+<span style="font-family: Courier New, Courier, monospace;"><span class="Apple-tab-span" style="white-space: pre;"> </span>print("Assigning DS to server: %s" % server)</span><br />
+<span style="font-family: Courier New, Courier, monospace;"><span class="Apple-tab-span" style="white-space: pre;"> </span>assign('JDBCSystemResource', ds_name, 'Target', server)</span><br />
+<span style="font-family: Courier New, Courier, monospace;"><br /></span>
+<span style="font-family: Courier New, Courier, monospace;">updateDomain()</span><br />
+<span style="font-family: Courier New, Courier, monospace;">exit()</span><br />
+<div>
+<br /></div>
+</p>
+
+	<hr />
+	
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.3</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../../../js/jquery-1.11.1.min.js"></script>
+    <script src="../../../js/bootstrap.min.js"></script>
+    <script src="../../../js/prettify.js"></script>
+    
+  </body>
+</html>

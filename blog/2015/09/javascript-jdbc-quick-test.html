@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>JavaScript Jdbc Quick Test</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../css/asciidoctor.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link href="../../../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../../../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../archive.html">Archive</a></li>
+            <li><a href="../../../about.html">About</a></li>
+            <li><a href="../../../tags">Tags</a></li>
+            <li><a href="../../../feed.xml">Subscribe</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">	
+	<div class="page-header">
+		<h1>JavaScript Jdbc Quick Test</h1>
+	</div>
+
+	<p><em>09 September 2015</em></p>
+
+	<p><span style="font-family: Courier New, Courier, monospace;">importPackage(java.sql)</span><br />
+<span style="font-family: Courier New, Courier, monospace;">url = "jdbc:mysql://localhost/test";</span><br />
+<span style="font-family: Courier New, Courier, monospace;">username = "test";</span><br />
+<span style="font-family: Courier New, Courier, monospace;">password = "test123";</span><br />
+<span style="font-family: Courier New, Courier, monospace;"><br /></span>
+<span style="font-family: Courier New, Courier, monospace;">// Util for nice print of result</span><br />
+<span style="font-family: Courier New, Courier, monospace;">function printResultSet(rs) {</span><br />
+<span style="font-family: Courier New, Courier, monospace;"><span class="Apple-tab-span" style="white-space: pre;"> </span>colCount = rs.getMetaData().getColumnCount();</span><br />
+<span style="font-family: Courier New, Courier, monospace;"><span class="Apple-tab-span" style="white-space: pre;"> </span>while (rs.next()) {</span><br />
+<span style="font-family: Courier New, Courier, monospace;"><span class="Apple-tab-span" style="white-space: pre;">  </span>for (i=1; i &lt;= colCount; i++) {</span><br />
+<span style="font-family: Courier New, Courier, monospace;"><span class="Apple-tab-span" style="white-space: pre;">   </span>printf("%s\t", rs.getObject(i));</span><br />
+<span style="font-family: Courier New, Courier, monospace;"><span class="Apple-tab-span" style="white-space: pre;">  </span>}</span><br />
+<span style="font-family: Courier New, Courier, monospace;"><span class="Apple-tab-span" style="white-space: pre;">  </span>println();</span><br />
+<span style="font-family: Courier New, Courier, monospace;"><span class="Apple-tab-span" style="white-space: pre;"> </span>}</span><br />
+<span style="font-family: Courier New, Courier, monospace;">}</span><br />
+<span style="font-family: Courier New, Courier, monospace;"><br /></span>
+<span style="font-family: Courier New, Courier, monospace;">// Get a DB conn</span><br />
+<span style="font-family: Courier New, Courier, monospace;">sql = "SELECT * FROM ztest_issues";</span><br />
+<span style="font-family: Courier New, Courier, monospace;">conn = DriverManager.getConnection(url, username, password);</span><br />
+<span style="font-family: Courier New, Courier, monospace;"><br /></span>
+<span style="font-family: Courier New, Courier, monospace;">// Example of simple query</span><br />
+<span style="font-family: Courier New, Courier, monospace;">st = conn.createStatement();</span><br />
+<span style="font-family: Courier New, Courier, monospace;">rs = st.executeQuery(sql);</span><br />
+<span style="font-family: Courier New, Courier, monospace;">while (rs.next()) {</span><br />
+<span style="font-family: Courier New, Courier, monospace;"><span class="Apple-tab-span" style="white-space: pre;"> </span>for (i=1; i &lt;= 4; i++) {</span><br />
+<span style="font-family: Courier New, Courier, monospace;"><span class="Apple-tab-span" style="white-space: pre;">  </span>printf("%s\t", rs.getObject(i));</span><br />
+<span style="font-family: Courier New, Courier, monospace;"><span class="Apple-tab-span" style="white-space: pre;"> </span>}</span><br />
+<span style="font-family: Courier New, Courier, monospace;"><span class="Apple-tab-span" style="white-space: pre;"> </span>println();</span><br />
+<span style="font-family: Courier New, Courier, monospace;">}</span><br />
+<span style="font-family: Courier New, Courier, monospace;">st.close();</span><br />
+<span style="font-family: Courier New, Courier, monospace;"><br /></span>
+<span style="font-family: Courier New, Courier, monospace;">// Example of prepared statment with binding params</span><br />
+<span style="font-family: Courier New, Courier, monospace;">sql = "SELECT * FROM ztest_issues WHERE title=?";</span><br />
+<span style="font-family: Courier New, Courier, monospace;">st = conn.prepareStatement(sql);</span><br />
+<span style="font-family: Courier New, Courier, monospace;">st.setObject(1, "test");</span><br />
+<span style="font-family: Courier New, Courier, monospace;">rs = st.executeQuery();</span><br />
+<span style="font-family: Courier New, Courier, monospace;">printResultSet(rs);</span><br />
+<span style="font-family: Courier New, Courier, monospace;">st.close();</span><br />
+<span style="font-family: Courier New, Courier, monospace;"><br /></span>
+<span style="font-family: Courier New, Courier, monospace;">// Close DB conn</span><br />
+<span style="font-family: Courier New, Courier, monospace;">conn.close();</span>
+</p>
+
+	<hr />
+	
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.3</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../../../js/jquery-1.11.1.min.js"></script>
+    <script src="../../../js/bootstrap.min.js"></script>
+    <script src="../../../js/prettify.js"></script>
+    
+  </body>
+</html>

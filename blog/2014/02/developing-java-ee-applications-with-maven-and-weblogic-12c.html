@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Developing Java EE applications with Maven and WebLogic 12c</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../css/asciidoctor.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link href="../../../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../../../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../archive.html">Archive</a></li>
+            <li><a href="../../../about.html">About</a></li>
+            <li><a href="../../../tags">Tags</a></li>
+            <li><a href="../../../feed.xml">Subscribe</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">	
+	<div class="page-header">
+		<h1>Developing Java EE applications with Maven and WebLogic 12c</h1>
+	</div>
+
+	<p><em>21 February 2014</em></p>
+
+	<p>The WebLogic Server 12c has very nice support for Maven now. The doc for this is kinda hidden though, so here is a direct link <a href="http://docs.oracle.com/middleware/1212/core/MAVEN">http://docs.oracle.com/middleware/1212/core/MAVEN</a><br />
+<br />
+To summarize the doc, Oracle did not provide a public Maven repository manager hosting for their server artifacts. However they do now provide a tool for you to create and populate your own. You can setup either your local repository (if you are working mostly on your own in a single computer), or you may deploy them into your own internal Maven repository manager such as Archiva or Nexus.<br />
+<br />
+Here I would show how the local repository is done. First step is use a maven plugin provided by WLS to populate the repository. I am using a MacOSX for this demo and my WLS is installed in&nbsp;<span style="font-family: 'Courier New', Courier, monospace;">$HOME/apps/wls12120.</span>&nbsp;If you are on Windows, you may install it under <span style="font-family: 'Courier New', Courier, monospace;">C:/apps/wls12120.</span><br />
+<br />
+<div>
+<div>
+<span style="font-family: Courier New, Courier, monospace;">$ cd $HOME/apps/wls12120/oracle_common/plugins/maven/com/oracle/maven/oracle-maven-sync/12.1.2/</span></div>
+<div>
+<span style="font-family: Courier New, Courier, monospace;"><br /></span></div>
+<div>
+<span style="font-family: Courier New, Courier, monospace;">$ mvn install:install-file -DpomFile=oracle-maven-sync.12.1.2.pom -Dfile=oracle-maven-sync.12.1.2.jar</span></div>
+<div>
+<span style="font-family: Courier New, Courier, monospace;"><br /></span></div>
+<div>
+<span style="font-family: Courier New, Courier, monospace;">$ mvn com.oracle.maven:oracle-maven-sync:push -Doracle-maven-sync.oracleHome=$HOME/</span><span style="font-family: 'Courier New', Courier, monospace;">apps</span><span style="font-family: Courier New, Courier, monospace;">/</span><span style="font-family: 'Courier New', Courier, monospace;">wls12120</span><span style="font-family: Courier New, Courier, monospace;">&nbsp;-Doracle-maven-sync.testingOnly=false</span></div>
+</div>
+<div>
+<span style="font-family: Courier New, Courier, monospace;"><br /></span></div>
+<div>
+The artifacts are placed under your local <span style="font-family: Courier New, Courier, monospace;">$HOME/.m2/repository/com/oracle.&nbsp;</span>Now you may use Maven to build Java EE application with these WebLogic artifact as dependencies. Not only these are available, the push also populated some additional maven plugins that helps development more easy. For example, you can generate a template project using their archetype plugin.</div>
+<div>
+<br /></div>
+<div>
+<div>
+<span style="font-family: Courier New, Courier, monospace;">$ cd $HOME</span></div>
+<div>
+<span style="font-family: Courier New, Courier, monospace;">$ mvn archetype:generate \</span></div>
+<div>
+<span style="font-family: Courier New, Courier, monospace;">&nbsp; &nbsp; -DarchetypeGroupId=com.oracle.weblogic.archetype \</span></div>
+<div>
+<span style="font-family: Courier New, Courier, monospace;">&nbsp; &nbsp; -DarchetypeArtifactId=basic-webapp \</span></div>
+<div>
+<span style="font-family: Courier New, Courier, monospace;">&nbsp; &nbsp; -DarchetypeVersion=12.1.2-0-0 \</span></div>
+<div>
+<span style="font-family: Courier New, Courier, monospace;">&nbsp; &nbsp; -DgroupId=org.mycompany \</span></div>
+<div>
+<span style="font-family: Courier New, Courier, monospace;">&nbsp; &nbsp; -DartifactId=my-basic-webapp-project \</span></div>
+<div>
+<span style="font-family: Courier New, Courier, monospace;">&nbsp; &nbsp; -Dversion=1.0-SNAPSHOT</span></div>
+</div>
+<div>
+<span style="font-family: Courier New, Courier, monospace;"><br /></span></div>
+<div>
+Type 'Y' to confirm to finish. Notice that pom.xml it generated; it is using the&nbsp;<span style="font-family: Courier New, Courier, monospace;">"javax:javaee-web-api:6.0:provided"</span>&nbsp;dependency. This is working because we setup the repository earlier. Now you may build it.&nbsp;</div>
+<div>
+<div>
+<div>
+<br /></div>
+<span style="font-family: 'Courier New', Courier, monospace;">$ cd&nbsp;</span><span style="font-family: 'Courier New', Courier, monospace;">my-basic-webapp-project</span></div>
+<div>
+<span style="font-family: 'Courier New', Courier, monospace;">$ mvn package</span></div>
+</div>
+<div>
+<br /></div>
+<div>
+After this build you should have the war file under the <span style="font-family: Courier New, Courier, monospace;">target</span> directory.<span style="font-family: 'Courier New', Courier, monospace;">&nbsp;</span>You may manually copy and deploy this into your WebLogic server domain. Or you may continue to configure the maven pom to do this all with maven. Here is how I do it. Edit the&nbsp;<span style="font-family: 'Courier New', Courier, monospace;">my-basic-webapp-project/pom.xml&nbsp;</span>file and replace the <span style="font-family: Courier New, Courier, monospace;">weblogic-maven-plugin</span> plugin like this:</div>
+<div>
+<br /></div>
+<div>
+&nbsp; &nbsp; &nbsp; <span style="font-family: Courier New, Courier, monospace; font-size: x-small;">&lt;plugin&gt;</span></div>
+<div>
+<span style="font-family: Courier New, Courier, monospace; font-size: x-small;">&nbsp; &nbsp; &nbsp; &nbsp; &lt;groupId&gt;com.oracle.weblogic&lt;/groupId&gt;&nbsp;</span></div>
+<div>
+<span style="font-family: Courier New, Courier, monospace; font-size: x-small;">&nbsp; &nbsp; &nbsp; &nbsp; &lt;artifactId&gt;weblogic-maven-plugin&lt;/artifactId&gt;&nbsp;</span></div>
+<div>
+<span style="font-family: Courier New, Courier, monospace; font-size: x-small;">&nbsp; &nbsp; &nbsp; &nbsp; &lt;version&gt;12.1.2-0-0&lt;/version&gt;&nbsp;</span></div>
+<div>
+<span style="font-family: Courier New, Courier, monospace; font-size: x-small;">&nbsp; &nbsp; &nbsp; &nbsp; &lt;configuration&gt;&nbsp;</span></div>
+<div>
+<span style="font-family: Courier New, Courier, monospace; font-size: x-small;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;middlewareHome&gt;${oracleMiddlewareHome}&lt;/middlewareHome&gt;</span></div>
+<div>
+<span style="font-family: Courier New, Courier, monospace; font-size: x-small;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;adminurl&gt;${oracleServerUrl}&lt;/adminurl&gt;</span></div>
+<div>
+<span style="font-family: Courier New, Courier, monospace; font-size: x-small;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;user&gt;${oracleUsername}&lt;/user&gt;&nbsp;</span></div>
+<div>
+<span style="font-family: Courier New, Courier, monospace; font-size: x-small;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;password&gt;${oraclePassword}&lt;/password&gt;</span></div>
+<div>
+<span style="font-family: Courier New, Courier, monospace; font-size: x-small;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;source&gt;${project.build.directory}/${project.build.finalName}.${project.packaging}&lt;/source&gt;</span></div>
+<div>
+<span style="font-family: Courier New, Courier, monospace; font-size: x-small;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;targets&gt;${oracleServerName}&lt;/targets&gt;</span></div>
+<div>
+<span style="font-family: Courier New, Courier, monospace; font-size: x-small;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;verbose&gt;true&lt;/verbose&gt;&nbsp;</span></div>
+<div>
+<span style="font-family: Courier New, Courier, monospace; font-size: x-small;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;name&gt;${project.build.finalName}&lt;/name&gt;</span></div>
+<div>
+<span style="font-family: Courier New, Courier, monospace; font-size: x-small;">&nbsp; &nbsp; &nbsp; &nbsp; &lt;/configuration&gt;</span></div>
+<div>
+<span style="font-family: Courier New, Courier, monospace;"><span style="font-size: x-small;">&nbsp; &nbsp; &nbsp; &lt;/plugin&gt; </span>&nbsp;</span></div>
+<div>
+<span style="font-family: Courier New, Courier, monospace;"><br /></span></div>
+<div>
+With this change, you may deploy the webapp into WebLogic server (well, assuming you already started your "mydomain" with "myserver" server running locally. See my previous blog for instructions)</div>
+<div>
+<br /></div>
+<div>
+<div>
+<span style="font-family: 'Courier New', Courier, monospace;">$ cd&nbsp;</span><span style="font-family: 'Courier New', Courier, monospace;">my-basic-webapp-project</span></div>
+<div>
+<span style="font-family: 'Courier New', Courier, monospace;">$</span><span style="font-family: Courier New, Courier, monospace;">&nbsp;mvn weblogic:deploy -DoracleMiddlewareHome=$HOME/apps/wls12120 -DoracleServerName=myserver -DoracleUsername=admin -DoraclePassword=admin123</span></div>
+<div>
+<span style="font-family: Courier New, Courier, monospace;"><br /></span></div>
+<div>
+After the "BUILD SUCCESS" message, you may visit the&nbsp;http://localhost:7001/basicWebapp URL.</div>
+<div>
+<br /></div>
+<div>
+Revisit the WLS doc again and you will find that they also provide other project templates (Maven calls these archetypes) for building EJB, MDB, or WebService projects. These should help you get your EE projects started quickly.&nbsp;</div>
+<div>
+<br /></div>
+</div>
+</p>
+
+	<hr />
+	
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.3</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../../../js/jquery-1.11.1.min.js"></script>
+    <script src="../../../js/bootstrap.min.js"></script>
+    <script src="../../../js/prettify.js"></script>
+    
+  </body>
+</html>

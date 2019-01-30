@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Install Windows JDK Without Admin Rights</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../css/asciidoctor.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link href="../../../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../../../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../archive.html">Archive</a></li>
+            <li><a href="../../../about.html">About</a></li>
+            <li><a href="../../../tags">Tags</a></li>
+            <li><a href="../../../feed.xml">Subscribe</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">	
+	<div class="page-header">
+		<h1>Install Windows JDK Without Admin Rights</h1>
+	</div>
+
+	<p><em>23 March 2018</em></p>
+
+	<p><div class="sect1">
+<h2 id="_installing_jdk_7">Installing JDK 7</h2>
+<div class="sectionbody">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Download <a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">Oracle Java SE JDK 7</a>
+In this example, we will use <code>jdk-7u80-windows-x64.exe</code></p>
+</li>
+<li>
+<p>Extract <code>jdk-7u80-windows-x64.exe</code> using 7-zip tool. Right click the file then select
+context menu 7-zip &gt; Extract to <code>jdk-7u80-windows-x64</code></p>
+</li>
+<li>
+<p>Go to the directory <code>jdk-7u80-windows-x64/.rsrc/1033/JAVA_CAB10</code></p>
+<div class="ulist">
+<ul>
+<li>
+<p>Step 1: Extract the file <code>111</code> using 7-zip again, which will result a <code>tools.zip</code> file</p>
+<div class="literalblock">
+<div class="content">
+<pre>Right click the file then select context menu 7-zip &gt; Extract here</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Step 2: Extract tools.zip using 7-zip tool again</p>
+<div class="literalblock">
+<div class="content">
+<pre>Right click the file then select context menu 7-zip &gt; Extract to `tools`</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Step 3: Open <code>cmd.exe</code> and cd into <code>tools</code> directory above, then run the following:</p>
+<div class="listingblock">
+<div class="content">
+<pre>for /r %i in (*.pack) do bin\unpack200 -r -v %i %~pi%~ni.jar</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Or if you use Cygwin Bash, you can run this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>find . -name '*.pack' -type f -exec sh -c 'bin/unpack200 -r -v $0 ${0/.pack/.jar}' {} \;</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Step 4: Copy <code>tools</code> folder and rename it to <code>%USERPROFILE%/apps/jdk-7u80</code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Optionally, if you want the JDK source code, following these instruction:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Step 1:  Go to the directory Go to the directory <code>jdk-7u80-windows-x64/.rsrc/1033/JAVA_CAB9</code></p>
+</li>
+<li>
+<p>Step 2:  Extract the file <code>110</code>, which contains <code>src.zip</code></p>
+</li>
+<li>
+<p>Step 3: Copy <code>src.zip</code> into <code>%USERPROFILE%/apps/jdk-7u80</code></p>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Refs:
+<a href="http://stackoverflow.com/questions/10891405/installing-jdk-without-administrator-privileges" class="bare">http://stackoverflow.com/questions/10891405/installing-jdk-without-administrator-privileges</a></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_installing_jdk_8">Installing JDK 8</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The JDK8 update 102 or higher has different file structure!</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Use 7-zip to unpack <code>jdk-8u131-windows-x64.exe</code></p>
+</li>
+<li>
+<p><code>cd .rsrc/1033/JAVA_CAB10</code></p>
+</li>
+<li>
+<p>Use 7-zip to unpack <code>111</code> file and extract <code>tools.zip</code></p>
+</li>
+<li>
+<p>Use same instructions as above to unpack <code>tools.zip</code></p>
+</li>
+</ol>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+Java source <code>src.zip</code> is within the file <code>110</code> located inside
+<code>.rsrc/1033/JAVA_CAB9</code>.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_installing_jdk_9">Installing JDK 9</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Staring JDK9, the <a href="http://jdk.java.net/9">OpenJDK</a> provides binary tar ball (zipped) executable JDK package that can unpack in Windows in any directory. But if you still want Oracle Java SE JDK, then you still use above instruction to get around installing without admin rights.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_refs">Refs</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><a href="https://stackoverflow.com/questions/10891405/installing-jdk-without-administrator-privileges" class="bare">https://stackoverflow.com/questions/10891405/installing-jdk-without-administrator-privileges</a></p>
+</div>
+</div>
+</div></p>
+
+	<hr />
+	
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.3</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../../../js/jquery-1.11.1.min.js"></script>
+    <script src="../../../js/bootstrap.min.js"></script>
+    <script src="../../../js/prettify.js"></script>
+    
+  </body>
+</html>

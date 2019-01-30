@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>A simple way to setup Java application with external configuration file</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../css/asciidoctor.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link href="../../../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../../../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../archive.html">Archive</a></li>
+            <li><a href="../../../about.html">About</a></li>
+            <li><a href="../../../tags">Tags</a></li>
+            <li><a href="../../../feed.xml">Subscribe</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">	
+	<div class="page-header">
+		<h1>A simple way to setup Java application with external configuration file</h1>
+	</div>
+
+	<p><em>27 October 2012</em></p>
+
+	<p>Many Java applications would deploy and run it with some kind of external configuration files. It's very typical that you would want a set of config files per environments such as DEV, QA and PROD. There many options in tackling this problem, especially in a Java app, but keeping it simple and easy to maintain would take some disciplines.<br />
+Here I would layout a simple way you may use to depploy a typical Java application. The concept is simple and you can easily apply to a standalone, web, or even a JEE application.<br />
+<h2>
+Use a env System Properties per environment</h2>
+Java allows you to invoke any program with extra System Properties added. When launching an Java application, you should set an <code>env</code> property. For example:<br />
+<pre><code>bash&gt; java -Denv=prod myapp.Main
+</code></pre>
+This property would give your <code>Main</code> application to identify which environment you are running against with. You should be reading it like this inside your code:<br />
+<pre><code>String env = System.getProperty("env", "dev");
+</code></pre>
+This way you always would have an environment to work with. Even if user doesn't supply one, it will default to use <code>dev</code> env.<br />
+Another useful System Property to set is <code>app.home</code>. You want to set this value in relative to where your application is deployed, so you may reference any files (eg: data) easily. To do this, you can use a script wrapper to automatically calculate the path. See section below for an example.
+
+<br />
+<h2>
+Use a config dir prefix in CLASSPATH</h2>
+In stead of passing a explicit config file to your application as argument, another flexible way to load configuration file is to add an extra <code>config</code>
+folder into your CLASSPATH. For example, you can easily create a startup wrapper script <code>myapp.sh</code> like this:<br />
+
+
+<pre><code>#/usr/bin/env bash
+APP_HOME=$(cd "`dirname $0`/.." &amp;&amp; pwd)
+java $JAVA_OPTS -Dapp.home=$APP_HOME -cp "$APP_HOME/config:$APP_HOME/lib/*" myapp.Main "$@"
+</code></pre>
+From this, you can setup the application packaging layout this way:<br />
+
+
+<pre><code>myapp
+    +- bin
+        +- myapp.sh
+    +- config
+        +- dev.properties
+        +- qa.properties
+        +- prod.properties
+    +- data
+        +- myrecords.data
+    +- lib
+        +- myapp-1.0.0.jar
+        +- slf4j-1.7.1.jar
+</code></pre>
+You would typically invoke the application like this:
+<br />
+<pre><code>
+bash&gt; JAVA_OPTS='-Denv=prod' myapp/bin/myapp.sh
+</code></pre>
+<br />
+
+
+The above will give you a good foundation to load a single config properties file per <code>env</code>. For example, you can read your properites file like this somewhere in your code.<br />
+
+
+<pre><code>
+// Get appHome and data dir.
+String appHome = System.getProperty("app.home");
+String dataDir = appHome + "/data";
+
+// Get env value to load config parameters
+String env = System.getProperty("env", "dev");
+String config = env + ".properites";
+Properties configProps = new Properties();
+InputStream inStream = null;
+try {
+    inStream = getClass().getClassLoader().getResourceAsStream(config);
+    configProps.load(inStream);
+} finally {
+    if (inStream != null)
+        inStream.close();
+}
+// Now load any config parameters from configProps map.
+</code></pre>
+Now you would have the <code>configProps</code> object at your disposal to read any configuration keys and values set per an environment.<br />
+
+
+NOTE: If you want a more flexible Java wrapper script, see my old post on <a href="http://saltnlight5.blogspot.com/2012/08/a-better-java-shell-script-wrapper.html">run-java</a> wrapper.<br />
+
+
+<h2>
+Do not abuse CLASSPATH</h2>
+Now, just because you have setup <code>config</code> as part of your CLASSPATH entry, I have to caution you not to abuse it. What I mean is do not go wild on 
+loading all your application resources in that folder! If you have that many resources that user MUST edit and configure, then you should re-think
+about your application design! Simple interface, or configuration in this case, is always a win. Do not bother users with complexity just because 
+your application can support gazillion ways of configuration combination. If you can keep it as one config file, it would make users very happy.<br />
+
+
+Also, this doesn't mean you have to put the entire world inside one of <code>prod.properites</code> either. In the real world, an application is likely going to have only 
+handful of user tunable parameters, and many other resources are less frequent used. I would recommand put the most frequently used parameters in these
+config properties only. For all other (for example most of the Spring context files in an application do not belong to a typical users config level, they are more developer level config files. In another word, changing these files would have catastrophic effect to your application!) You should put these inside as part of your <code>myapp.jar</code>.<br />
+ 
+
+You might ask, 'Oh, but what happen if I must want to override one of 
+the resource in the jar?'. But in that very unusual case, you would still have an option to override! You have the <code>config</code> as prefix in CLASSPATH, remember? Even when you nested resources inside a package inside the 
+jar, you would still able to overwrite by simply create same directory structure inside <code>config</code>. You probably only do this for emmergency and less frequent use anyway.<br />
+
+
+<h2>
+Feedback</h2>
+So what are some clever ways you have seen or done with your application configuration? I hope to hear from you and share.<br />
+</p>
+
+	<hr />
+	
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.3</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../../../js/jquery-1.11.1.min.js"></script>
+    <script src="../../../js/bootstrap.min.js"></script>
+    <script src="../../../js/prettify.js"></script>
+    
+  </body>
+</html>

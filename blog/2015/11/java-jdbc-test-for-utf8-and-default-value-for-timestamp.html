@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Java Jdbc Test for UTF8 and Default Value for TIMESTAMP</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../css/asciidoctor.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link href="../../../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../../../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../archive.html">Archive</a></li>
+            <li><a href="../../../about.html">About</a></li>
+            <li><a href="../../../tags">Tags</a></li>
+            <li><a href="../../../feed.xml">Subscribe</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">	
+	<div class="page-header">
+		<h1>Java Jdbc Test for UTF8 and Default Value for TIMESTAMP</h1>
+	</div>
+
+	<p><em>02 November 2015</em></p>
+
+	<p><span style="font-family: inherit;">Just a quick MySQL test on how to use UTF8 encoding with JDBC connection string. Also a test on how to set TIMESTAMP default values.</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><br /></span>
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">package zemian.jdbc;</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><br /></span>
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">import org.junit.Test;</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><br /></span>
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">import java.sql.*;</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">import java.util.*;</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">import java.util.Date;</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><br /></span>
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">/**</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><br /></span>
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp;-- drop table ztest_issues;</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp;CREATE TABLE ztest_issues(</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp;id INT NOT NULL AUTO_INCREMENT PRIMARY KEY</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp;, title VARCHAR(64) NOT NULL</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp;, summary TEXT NULL</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp;, priority INT NOT NULL DEFAULT 5</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp;, cdate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp;);</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><br /></span>
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp;INSERT INTO ztest_issues(title) VALUES('test');</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp;INSERT INTO ztest_issues(title, summary) VALUES('test2', 'Just a test');</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp;INSERT INTO ztest_issues(title, summary, priority) VALUES('test2', 'Just a test', 1);</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp;INSERT INTO ztest_issues(title, summary, priority, cdate) VALUES('test2', 'Just a test', 1, '2010-12-31 08:00:00');</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><br /></span>
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp;--INSERT INTO ztest_issues(title, summary) VALUES('locale test1', LOAD_FILE('C:/data/tmp/test.xml'));</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp;--INSERT INTO ztest_issues(title, summary) VALUES('locale test2', LOAD_FILE('C:/data/tmp/test2.xml'));</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp;--INSERT INTO ztest_issues(title, summary) VALUES('locale test3', LOAD_FILE('C:/data/tmp/test3.xml'));</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><br /></span>
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp;SELECT * FROM ztest_issues;</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><br /></span>
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp;NOTE:</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp;CURRENT_TIMESTAMP is version specific and is now allowed for DATETIME columns as of version 5.6 http://dev.mysql.com/doc/refman/5.6/en/timestamp-initialization.html</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><br /></span>
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp;For 5.6 &lt;, use TIMESTAMP for cdate field instead.</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><br /></span>
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp;cdate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp;cdate DATETIME NULL</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><br /></span>
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp;NOTE2:</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp;cdate DATETIME NOT NULL DEFAULT 0</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><br /></span>
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp;If you were to use default to ZERO, then you would need this properties in conn string. Else you will fail to get ZERO date value into Java.</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><br /></span>
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp;You need to tell the JDBC driver to convert them to NULL. This is done by passing a connection property name zeroDateTimeBehavior with the value convertToNull</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><br /></span>
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp;For more details see the manual: http://dev.mysql.com/doc/refman/4.1/en/connector-j-installing-upgrading.html</span><br />
+<br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp;*/</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">public class ZtestIssuesJdbcTest {</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">// &nbsp; &nbsp;String url = "jdbc:mysql://localhost/test";</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">// &nbsp; &nbsp;String url = "jdbc:mysql://localhost/test?zeroDateTimeBehavior=convertToNull";</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp; String url = "jdbc:mysql://localhost/test?useUnicode=true&amp;characterEncoding=UTF-8&amp;connectionCollation=utf8_general_ci&amp;</span><span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">zeroDateTimeBehavior=convertToNull</span><span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">";</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp; String username = "test";</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp; String password = "test123";</span><br />
+<br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp; @Test</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp; public void testShowTableLocale() throws Exception {</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp; &nbsp; &nbsp; try (Connection conn = DriverManager.getConnection(url, username, password)) {</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; String sql = "SHOW VARIABLES LIKE 'char%'";</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; System.out.println("Sql:" + sql);</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Statement sm = conn.createStatement();</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ResultSet rs = sm.executeQuery(sql);</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; while (rs.next()) {</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; System.out.printf("%s\t%s\n", rs.getObject(1), rs.getObject(2));</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><br /></span>
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; sql = "SHOW CREATE TABLE ztest_issues";</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; System.out.println("Sql:" + sql);</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; sm = conn.createStatement();</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; rs = sm.executeQuery(sql);</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; while (rs.next()) {</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; System.out.printf("%s\t%s\n", rs.getObject(1), rs.getObject(2));</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp; &nbsp; &nbsp; }</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp; }</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><br /></span>
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp; @Test</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp; public void testQuery() throws Exception {</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp; &nbsp; &nbsp; try (Connection conn = DriverManager.getConnection(url, username, password)) {</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; String sql = "SELECT id, cdate, title, summary FROM ztest_issues";</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; System.out.println("Sql:" + sql);</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Statement sm = conn.createStatement();</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ResultSet rs = sm.executeQuery(sql);</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; while (rs.next()) {</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; System.out.printf("%d\t%s\t%s\t%s\n", rs.getObject(1), rs.getObject(2), rs.getObject(3), rs.getObject(4));</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp; &nbsp; &nbsp; }</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp; }</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><br /></span>
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp;&nbsp;@Test</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp; public void testInsert() throws Exception {</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp; &nbsp; &nbsp; try (Connection conn = DriverManager.getConnection(url, username, password)) {</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; String sql = "INSERT INTO ztest_issues(title, summary, cdate) VALUES(?, ?, ?)";</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; System.out.println("Sql: " + sql);</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; PreparedStatement ps = conn.prepareStatement(sql);</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><br /></span>
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; String testId = "" + System.currentTimeMillis();</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><br /></span>
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ps.setObject(1, "English Locale " + testId);</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ps.setObject(2, "Just a test");</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ps.setObject(3, new Date());</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; int result = ps.executeUpdate();</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; System.out.println("Insert Result: " + result);</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><br /></span>
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ps.setObject(1, "Chinese Locale " + testId);</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ps.setObject(2, "&#21482;&#26159;&#19968;&#20491;&#28204;&#35430;");</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ps.setObject(3, new Date());</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; result = ps.executeUpdate();</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; System.out.println("Insert Result: " + result);</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><br /></span>
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ps.setObject(1, "Spanish Locale " + testId);</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ps.setObject(2, "Sólo una prueba");</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ps.setObject(3, new Date());</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; result = ps.executeUpdate();</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; System.out.println("Insert Result: " + result);</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp; &nbsp; &nbsp; }</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp; }</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">}</span><br />
+<div>
+<br /></div>
+</p>
+
+	<hr />
+	
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.3</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../../../js/jquery-1.11.1.min.js"></script>
+    <script src="../../../js/bootstrap.min.js"></script>
+    <script src="../../../js/prettify.js"></script>
+    
+  </body>
+</html>

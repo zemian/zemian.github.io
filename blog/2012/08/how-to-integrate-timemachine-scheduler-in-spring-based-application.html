@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>How to integrate TimeMachine Scheduler in Spring based application</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../css/asciidoctor.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link href="../../../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../../../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../archive.html">Archive</a></li>
+            <li><a href="../../../about.html">About</a></li>
+            <li><a href="../../../tags">Tags</a></li>
+            <li><a href="../../../feed.xml">Subscribe</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">	
+	<div class="page-header">
+		<h1>How to integrate TimeMachine Scheduler in Spring based application</h1>
+	</div>
+
+	<p><em>17 August 2012</em></p>
+
+	<p><p>One of the goals for <a href="https://bitbucket.org/timemachine/scheduler">TimeMachine Scheduler</a> is to make use of POJO as friendly as possible so that we can integrate into any IoC container easily. I've prepared a demo that will show you how to integrate TimeMachine with <a href="http://www.springsource.org/">Spring</a> based application. </p>
+
+<p>We will mainly focus on the Spring xml config part in this article, so if you don't feel like checking out the  <a href="https://bitbucket.org/timemachine/scheduler-demo/src/fab518eb64ce/scheduler-spring">demo project source code</a> in details, then simply grab the binary package of the  <a href="https://bitbucket.org/timemachine/scheduler-demo/downloads">timemachine-spring-demo.zip</a> and follow along.</p>
+
+<h1>Introducing a tiny Spring Server</h1>
+
+<p>If you don't already have a Spring project going, then take a look at my little Spring server. It can bootstrap any spring configuration xml file and then sits and wait for a <code>CTRL+C</code> to end. Unzip the demo and try it out like this.</p>
+
+<pre><code>$ cd timemachine-spring-demo
+$ bin/run-spring config/hello-spring.xml
+</code></pre>
+
+<p>You should see a "Hello World!" message printed. Hit <code>CTRL+C</code> to end it. The xml just declares a simple <code>HelloService</code> bean like this.</p>
+
+<pre><code>&lt;beans xmlns="http://www.springframework.org/schema/beans"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"&gt;
+
+    &lt;bean id="helloService" class="timemachine.spring.HelloService" init-method="run"&gt;
+        &lt;property name="name" value="World"&gt;&lt;/property&gt;
+    &lt;/bean&gt;
+
+&lt;/beans&gt;
+</code></pre>
+
+<p>That's your typical Spring declaration file. With this tiny Spring server, you can quickly experiment any POJOs wired up in any way you wish and put them in action.</p>
+
+<h1>Setting up TimeMachine Scheduler beans</h1>
+
+<p>In Java code, you can easily create an instance of the TimeMachine scheduler as follow:</p>
+
+<pre><code>SchedulerFactory schedulerFactory = new SchedulerFactory("config/scheduler.properties");
+Scheduler scheduler = schedulerFactory.createScheduler();
+scheduler.start();
+// Then we would also need to call scheduler.destroy() before we exit the Java program. (eg: in shutdownHook)
+</code></pre>
+
+<p>You can easily translate that into Spring xml config like in <code>config/timemachine-pojo-spring.xml</code>:</p>
+
+<pre><code>&lt;beans xmlns="http://www.springframework.org/schema/beans"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"&gt;
+
+    &lt;bean id="schedulerFactory" class="timemachine.scheduler.SchedulerFactory"&gt;
+        &lt;constructor-arg value="config/scheduler.properties"&gt;&lt;/constructor-arg&gt;
+    &lt;/bean&gt;
+    &lt;bean id="scheduler" class="timemachine.scheduler.Scheduler" 
+        factory-bean="schedulerFactory" factory-method="createScheduler"
+        init-method="start" destroy-method="destroy"&gt;
+    &lt;/bean&gt;
+
+&lt;/beans&gt;
+</code></pre>
+
+<p>The benefit of using Spring xml is that your scheduler lifecycles would be automatically taken care of without setting any shutdown hook. Running above should give you a plain scheduler started, and pressing <code>CTRL+C</code> should shutdown gracefully. </p>
+
+<h1>Going further with a custom SchedulerFactoryBean</h1>
+
+<p>Now above is not much excitement using Spring since you would still configure the scheduler through <code>config/scheduler.properties</code>. You certainly can load jobs and add custom services there. But if we are going to use Spring, we might as well take full advantage of it to create the Job Definition and Schedule inside the xml config! To do this, I created a simple <code>timemachine.scheduler.spring.SchedulerFactoryBean</code> in my demo project, and you can try it out like this:</p>
+
+<pre><code>&lt;beans xmlns="http://www.springframework.org/schema/beans"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"&gt;
+
+    &lt;bean id="scheduler" class="timemachine.scheduler.spring.SchedulerFactoryBean"&gt;
+        &lt;property name="configPropsUrl" value="config/scheduler.properties"&gt;&lt;/property&gt;
+        &lt;property name="autoStart" value="true"&gt;&lt;/property&gt;
+        &lt;property name="autoAddJobDef" value="true"&gt;&lt;/property&gt;
+    &lt;/bean&gt;
+    &lt;bean id="jobDef01" class="timemachine.scheduler.JobDef"&gt;
+        &lt;property name="jobTaskClassName" value="timemachine.scheduler.jobtask.ScriptingJobTask"&gt;&lt;/property&gt;
+        &lt;property name="props"&gt;
+            &lt;map&gt;
+                &lt;entry key="scriptEngineName" value="Groovy"&gt;&lt;/entry&gt;
+                &lt;entry key="scriptText" value="println('Hello World.')"&gt;&lt;/entry&gt;
+            &lt;/map&gt;
+        &lt;/property&gt;
+        &lt;property name="schedules"&gt;
+            &lt;list&gt;              
+                &lt;bean class="timemachine.scheduler.schedule.CronSchedule"&gt;
+                    &lt;property name="expression" value="0/3 * * * * ?"&gt;&lt;/property&gt;
+                &lt;/bean&gt;
+            &lt;/list&gt;
+        &lt;/property&gt;
+    &lt;/bean&gt;
+
+&lt;/beans&gt;
+</code></pre>
+
+<p>Above will create not only the scheduler but also auto manage the lifecycles for you without you explicitly declare it. The factory bean will also auto detect any JobDef and Schedule bean types and add them into the scheduler instance. This would make your scheduler config all in the Spring xml, and it's well integrated.</p>
+
+<p>There is also another similar sample in <code>config/timemachine-spring.xml</code> you may try. It will invoke an external groovy script instead of inline text.</p>
+
+<h1>Going extra mile on exposing TimeMachine Scheduler through JMX</h1>
+
+<p>The TimeMachine doesn't support any JMX instrumentation, however when running with the Spring, you can easily expose any Java interface to the local MBean Server Platform using Spring's MBeanExporter. For example in <code>config/timemachine-jmx-spring.xml</code> you will see:</p>
+
+<pre><code>&lt;beans xmlns="http://www.springframework.org/schema/beans"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"&gt;
+
+    &lt;bean id="scheduler" class="timemachine.scheduler.spring.SchedulerFactoryBean"&gt;
+        &lt;property name="configPropsUrl" value="config/scheduler.properties"/&gt;
+    &lt;/bean&gt; 
+    &lt;bean id="exporter" class="org.springframework.jmx.export.MBeanExporter"&gt;
+        &lt;property name="assembler"&gt;
+            &lt;bean class="org.springframework.jmx.export.assembler.InterfaceBasedMBeanInfoAssembler"&gt;
+                &lt;property name="managedInterfaces"&gt;
+                    &lt;list&gt;
+                        &lt;value&gt;timemachine.scheduler.Scheduler&lt;/value&gt;
+                    &lt;/list&gt;
+                &lt;/property&gt;
+            &lt;/bean&gt;
+        &lt;/property&gt;
+        &lt;property name="beans"&gt;
+            &lt;map&gt;
+                &lt;entry key="timemachine.scheduler:name=Scheduler" value-ref="scheduler"/&gt;
+            &lt;/map&gt;
+        &lt;/property&gt;
+    &lt;/bean&gt;
+
+&lt;/beans&gt;
+</code></pre>
+
+<p>Above will start an empty scheduler, and expose the <code>timemachine.scheduler.Scheduler</code> interface to the JMX local server. You may use <code>$JAVA_HOME/bin/jconsole</code> to connect and will see all the methods automatically exposed. There few methods that contains custom java objects that exporter will not able to convert properly, but at least you will get all the lifecycles and some simple getters that available to you.</p>
+</p>
+
+	<hr />
+	
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.3</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../../../js/jquery-1.11.1.min.js"></script>
+    <script src="../../../js/bootstrap.min.js"></script>
+    <script src="../../../js/prettify.js"></script>
+    
+  </body>
+</html>

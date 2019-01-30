@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>How to find text entries in mulitple jar files</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../css/asciidoctor.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link href="../../../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../../../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../archive.html">Archive</a></li>
+            <li><a href="../../../about.html">About</a></li>
+            <li><a href="../../../tags">Tags</a></li>
+            <li><a href="../../../feed.xml">Subscribe</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">	
+	<div class="page-header">
+		<h1>How to find text entries in mulitple jar files</h1>
+	</div>
+
+	<p><em>22 July 2015</em></p>
+
+	<p>Similar to <a href="http://saltnlight5.blogspot.com/2012/07/how-to-print-text-file-content-inside.html">printjar </a>utility, here is a <b>findjar </b>util that can comes in handy to verify whether a class exists or not among a pile of jar files.<br />
+<br />
+JavaScript (run with jrunscript command)<br />
+<span style="font-family: &quot;Courier New&quot;,Courier,monospace;">pattern = arguments[arguments.length -1];<br />for (i=0; i &lt; arguments.length - 1; i++) {<br />&nbsp;&nbsp;&nbsp; path = arguments[i];<br />&nbsp;&nbsp;&nbsp; jar = new java.util.jar.JarFile(path)<br />&nbsp;&nbsp;&nbsp; entries = jar.entries();<br />&nbsp;&nbsp;&nbsp; while(entries.hasMoreElements()) {<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; jarEntry = entries.nextElement();<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; if (jarEntry.toString().search(pattern) != -1) {<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; println(jarEntry + " : " + path);<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }<br />&nbsp;&nbsp;&nbsp; }<br />&nbsp;&nbsp;&nbsp; jar.close();<br />}</span><br />
+<br />
+Jython<br />
+<span style="font-family: &quot;Courier New&quot;,Courier,monospace;">import sys, glob, re<br />from java.util.jar import JarFile<br />pattern = sys.argv[-1]<br />for name in sys.argv[1: -2]:<br />&nbsp;&nbsp;&nbsp; for path in glob.glob(name):<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; jar = JarFile(path)<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; for e in jar.entries():<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; if re.search(pattern, str(e)):<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; print "%s %s" % (str(e), path)<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; jar.close()</span><br />
+<br />
+Java version (The search argument input is at position one in this example)<br />
+<span style="font-family: &quot;Courier New&quot;,Courier,monospace;">import java.io.File;<br />import java.util.Enumeration;<br />import java.util.jar.JarEntry;<br />import java.util.jar.JarFile;<br /><br />public class findjar {<br />&nbsp;&nbsp;&nbsp; public static void main(String[] args) throws Exception {<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; String searchText = args[0];<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; if (searchText.contains("."))<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; searchText = searchText.replaceAll("\\.", "/");<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; String dir = args[1];<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; System.out.println("Searching " + searchText + " in " + dir);<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; search(searchText, new File(dir));<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; System.out.println("Done.");<br />&nbsp;&nbsp;&nbsp; }<br /><br />&nbsp;&nbsp;&nbsp; private static void search(String searchText, File dir) throws Exception {<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; File[] files = dir.listFiles();<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; for (File file : files) {<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; if (file.isFile() &amp;&amp; file.getName().endsWith(".jar")) {<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; JarFile jarFile = new JarFile(file);<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; Enumeration&lt;JarEntry&gt; entries = jarFile.entries();<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; while(entries.hasMoreElements()) {<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; JarEntry e = entries.nextElement();<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; String name = e.getName();<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; if (name.indexOf(searchText) &gt;= 0) {<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; System.out.println("Found: " + name + " in " + jarFile.getName());<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; jarFile.close();<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; } else if (file.isDirectory()){<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; search(searchText, file);<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }<br />&nbsp;&nbsp;&nbsp; }<br />}</span>
+</p>
+
+	<hr />
+	
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.3</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../../../js/jquery-1.11.1.min.js"></script>
+    <script src="../../../js/bootstrap.min.js"></script>
+    <script src="../../../js/prettify.js"></script>
+    
+  </body>
+</html>

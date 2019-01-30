@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>How to zip up a release from a hg repository</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../css/asciidoctor.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link href="../../../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../../../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../archive.html">Archive</a></li>
+            <li><a href="../../../about.html">About</a></li>
+            <li><a href="../../../tags">Tags</a></li>
+            <li><a href="../../../feed.xml">Subscribe</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">	
+	<div class="page-header">
+		<h1>How to zip up a release from a hg repository</h1>
+	</div>
+
+	<p><em>17 June 2013</em></p>
+
+	<p>
+<div id="header">
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="_how_to_zip_up_a_release_from_a_hg_repository">How to zip up a release from a hg repository</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Did you know <code>hg archive</code> command can quickly zip up your project by given a revision or release
+name? This is very handy to package up a distribution and share with other who is refusing to use
+the same client.</p>
+</div>
+<div class="paragraph">
+<p>I wrote a simple bash script to do this with couple extras. It will create a zip file with a nice
+basename so it&#8217;s easy for unzipping. It also auto generate and append the given revision or tag
+name into the RELEASE.txt file, so you know what&#8217;s been released.</p>
+</div>
+<div class="paragraph">
+<p>Just add the following file into any root of your <code>hg</code> based project&#8217;s <code>bin</code> directory and it&#8217;s
+ready to use.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+
+This script will not tag your repository. It assumed you already have tagged. It simply
+will package up a release into a nice little zip file.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="title">bin/zip-release.sh</div>
+<div class="content monospaced">
+<pre>#!/usr/bin/env bash
+#
+# Package a release or snapshot from Hg repository for distribution.
+# :Author: Zemian Deng
+# :Date: 2013/02/01
+#
+# Usage example:
+#   # release a specific tag
+#   cd /path/to/project
+#   bin/zip-release.sh 1.0.1
+#
+#   # release a snapshot
+#   bin/zip-release.sh
+#
+
+# Command line arguments and options
+# Assume this script is in bin, which one directory up.
+APP_HOME=`cd $(dirname $0)/.. &amp;&amp; pwd`
+if [[ `command -v realpath` != "" ]]; then
+	# resolve symbolic link if possible.
+    APP_HOME=`realpath $APP_HOME`
+fi
+HG_REVISION=`hg id -i`
+REL_VERSION=$1
+if [[ "$REL_VERSION" == "" ]]; then
+    REL_VERSION=$HG_REVISION
+fi
+REL_NAME="`basename $APP_HOME`-$REL_VERSION"
+REL_DIR=$APP_HOME/target/$REL_NAME
+REL_ZIPFILE=$REL_DIR/../$REL_NAME.zip
+
+# Generate the zip package
+printf "Generating $REL_NAME in directory=`pwd`\n"
+mkdir -p $REL_DIR
+hg archive -r $REL_VERSION $REL_ZIPFILE
+
+# Auto append revision id to release file.
+if [[ -e $APP_HOME/RELEASE.txt ]]; then
+	cp $APP_HOME/RELEASE.txt $REL_DIR/RELEASE.txt
+fi
+printf "$REL_NAME revsion=$HG_REVISION date=`date`\n" &gt;&gt; $REL_DIR/RELEASE.txt
+zip -u $REL_ZIPFILE $REL_DIR/RELEASE.txt
+
+# Clean up the tmp rel dir.
+rm -r $REL_DIR
+
+printf "$REL_ZIPFILE created.\n"</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2013-06-18 19:18:48 EDT
+</div>
+</div>
+</p>
+
+	<hr />
+	
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.3</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../../../js/jquery-1.11.1.min.js"></script>
+    <script src="../../../js/bootstrap.min.js"></script>
+    <script src="../../../js/prettify.js"></script>
+    
+  </body>
+</html>

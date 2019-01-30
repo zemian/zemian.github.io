@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Kickstart TimeMachine Scheduler with a quick Groovy script</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../css/asciidoctor.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link href="../../../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../../../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../archive.html">Archive</a></li>
+            <li><a href="../../../about.html">About</a></li>
+            <li><a href="../../../tags">Tags</a></li>
+            <li><a href="../../../feed.xml">Subscribe</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">	
+	<div class="page-header">
+		<h1>Kickstart TimeMachine Scheduler with a quick Groovy script</h1>
+	</div>
+
+	<p><em>09 July 2012</em></p>
+
+	<p>If you have <a href="http://groovy.codehaus.org/">Groovy </a>installed, you can kick start a <a href="https://bitbucket.org/timemachine/scheduler">TimeMachine Scheduler</a> job without any setup! Try this out:<br />
+<br />
+<br />
+<span style="background-color: white; font-family: 'Courier New', Courier, monospace;">// Create a repeating schedule job that runs every 3 seconds.</span><br />
+<span style="font-family: 'Courier New', Courier, monospace;">@Grab('org.slf4j:slf4j-simple:1.6.6')</span><br />
+<span style="font-family: 'Courier New', Courier, monospace;">@Grab('org.bitbucket.timemachine:timemachine-scheduler:1.2.2')</span><br />
+<span style="font-family: 'Courier New', Courier, monospace;">import timemachine.scheduler.*</span><br />
+<span style="font-family: 'Courier New', Courier, monospace;">scheduler = new SchedulerFactory().createScheduler()</span><br />
+<span style="font-family: 'Courier New', Courier, monospace;">scheduler.init()</span><br />
+<span style="font-family: 'Courier New', Courier, monospace;">jobDef = JobDefs.groovyJobDef('''</span><br />
+<span style="font-family: 'Courier New', Courier, monospace;">&nbsp; &nbsp; println("Hello World.")</span><br />
+<span style="font-family: 'Courier New', Courier, monospace;">''')</span><br />
+<span style="font-family: 'Courier New', Courier, monospace;">jobDef.addSchedule(Schedules.secondly(3))</span><br />
+<span style="font-family: 'Courier New', Courier, monospace;">scheduler.schedule(jobDef)</span><br />
+<span style="font-family: 'Courier New', Courier, monospace;">scheduler.start()</span><br />
+<span style="font-family: 'Courier New', Courier, monospace;">addShutdownHook{ scheduler.destroy() }</span><br />
+<br />
+<br />
+</p>
+
+	<hr />
+	
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.3</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../../../js/jquery-1.11.1.min.js"></script>
+    <script src="../../../js/bootstrap.min.js"></script>
+    <script src="../../../js/prettify.js"></script>
+    
+  </body>
+</html>

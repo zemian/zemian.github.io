@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>A simple Groovy issue tracker using file system</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../css/asciidoctor.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link href="../../../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../../../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../archive.html">Archive</a></li>
+            <li><a href="../../../about.html">About</a></li>
+            <li><a href="../../../tags">Tags</a></li>
+            <li><a href="../../../feed.xml">Subscribe</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">	
+	<div class="page-header">
+		<h1>A simple Groovy issue tracker using file system</h1>
+	</div>
+
+	<p><em>18 December 2012</em></p>
+
+	<p>It will be a chaos not to track bugs and feature requests when you developing software. Having a simple issue tracker would make managing the project much more successful. Now I like simple stuff, and I think for small project, having this tracker right inside the source control (especially with DSVC like Mercurial/Git etc) repository is not only doable, but very convenient as well. You don't have to go crazy with all the fancy features, but just enough to track issues are fine. I would like to propose this layout for you.
+
+<p>Let's say you have a project that looks like this
+<pre>
+project
+ +- src/main/java/Hello.java
+ +- issues/issue-001.md
+ +- pom.xml
+</pre>
+
+<p>All I need is a simple directory <code>issues</code> to get going. Now I have a place to track my issue! First issue <code>issue-000.md</code> should be what your project is about. For example:
+<pre>/id=issue-001
+/createdon=2012-12-16 18:07:08
+/type=bug
+/status=new
+/resolution=
+/from=Zemian
+/to=
+/found=
+/fixed=
+/subject=A simple Java Hello program
+
+# Updated on 2012-12-16 18:07:08
+
+We want to create a Maven based Hello world program. It should print "Hello World."
+</pre>
+
+<p>I choose <code>.md</code> as file extension for intending to write comments in Markdown format. Since it's a text file, you do what you want. To be more structured, I have added some headers metadata for issue tracking. Let's define some here. I would propose to use these and formatting:
+
+<pre><code>
+ /id=issue-&lt;NUM&gt;
+ /createdon=&lt;TIMESTAMP&gt;
+ /type=feature|bug|question
+ /status=new|reviewing|working|onhold|testing|resolved
+ /resolution=fixed|rejected|duplicated
+ /from=&lt;REPORTER_FROM_NAME&gt;
+ /to=&lt;ASSIGNEE_TO_NAME&gt;
+ /found=&lt;VERSION_FOUND&gt;
+ /fixed=&lt;VERSION_FIXED&gt;
+</code></pre>
+
+<p>That should cover most of the bug and feature development issues. It's not cool to write software without a history of changes, including these issues created. So let's use a source control. I highly recommend you to use Mercurial <code>hg</code>. You can create and initialize a new repository like this.
+
+<pre>
+bash> cd project
+bash> hg init
+bash> hg add
+bash> hg commit -m "My hello world project"
+</pre>
+
+<p>Now your project is created and we have a place to track your issues. Now it's simple text file, so use your favorite text editor and edit away. However, creating new issue with those header tags is boring. It will be nice to have a script that manage it a little. I have a Groovy script <code>issue.groovy</code> (see at the end of this article) that let you run reports and create new issues. You can add this script into your <code>project/issues</code> directory and you can instantly creating new issue and querying reports! Here is an example output on my PC:
+
+<pre>
+bash> cd project
+bash> groovy scripts/issue.groovy
+
+Searching for issues with /status!=resolved
+Issue: /id=issue-001 /status=new /subject=A simple Java Hello program
+1 issues found.
+
+bash> groovy scripts/issue.groovy --new /type=feature /subject='Add a unit test.'
+
+project/issues/issue-002.md created.
+/id=issue-002
+/createdon=2012-12-16 19:10:00
+/type=feature
+/status=new
+/resolution=
+/from=Zemian
+/to=
+/found=
+/fixed=
+/subject=Add a unit test.
+
+bash> groovy scripts/issue.groovy
+
+Searching for issues with /status!=resolved
+Issue: /id=issue-000 /status=new /subject=A simple Java Hello program
+Issue: /id=issue-002 /status=new /subject=Add a unit test.
+2 issues found.
+
+bash> groovy scripts/issue.groovy --details /id=002
+
+Searching for issues with /id=002
+Issue: /id=issue-002
+  /createdon=2012-12-16 19:10:00 /found= /from=Zemian /resolution= /status=new /type=feature
+  /subject=Add a unit test.
+1 issues found.
+
+bash> groovy scripts/issue.groovy --update /id=001 /status=resolved /resolution=fixed 'I fixed this thang.'
+Updating issue /id=issue-001
+Updating /status=resolved
+Updating /resolution=fixed
+
+Update issue-001 completed.
+</pre>
+
+<p>The script give you some quick and consistent way to create/update/search issues. But they are just plain text files! You can just as well fire up your favorite text editor and change any any thing you want. Save and even commit it into your source repository. All will not lost. 
+
+<p>I hope this issue tracking script can get your next project started quickly. Let me know what you do you think!
+
+<p>Enjoy!
+<p>Zemian
+
+<p>And here is my <code>issue.groovy</code> script.
+<p>
+<script src="https://bitbucket.org/saltnlight5/sandbox/src/3271cecf4af6b8ee21416839d8939dc64d355e53/scripts/issue.groovy?embed=t">
+</script>
+
+<hr/>
+
+<p>Oh, and of course I eat my own *dog food. Here are few issues that I started to track the <code>issue.grooy</code> itself.
+
+<ul>
+  <li>v1.0.0 (2012/12/19)</li>
+  <ul>
+    <li><a href="https://bitbucket.org/saltnlight5/sandbox/src/tip/scripts/issue-001.md">issue-001</a></li>
+  </ul>
+  
+  <li>v1.0.1 (2012/12/20)</li>
+  <ul>
+    <li><a href="https://bitbucket.org/saltnlight5/sandbox/src/tip/scripts/issue-002.md">issue-002</a></li>
+    <li><a href="https://bitbucket.org/saltnlight5/sandbox/src/tip/scripts/issue-003.md">issue-003</a></li>
+  </ul>
+</ul>
+</p>
+
+	<hr />
+	
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.3</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../../../js/jquery-1.11.1.min.js"></script>
+    <script src="../../../js/bootstrap.min.js"></script>
+    <script src="../../../js/prettify.js"></script>
+    
+  </body>
+</html>

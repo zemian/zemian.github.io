@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>How to parse Python command arguments and options</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../css/asciidoctor.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link href="../../../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../../../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../archive.html">Archive</a></li>
+            <li><a href="../../../about.html">About</a></li>
+            <li><a href="../../../tags">Tags</a></li>
+            <li><a href="../../../feed.xml">Subscribe</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">	
+	<div class="page-header">
+		<h1>How to parse Python command arguments and options</h1>
+	</div>
+
+	<p><em>23 July 2015</em></p>
+
+	<p>https://docs.python.org/3/howto/argparse.html<br />
+<br />
+The python doc for <a href="https://docs.python.org/3.4/library/argparse.html">argparse </a>module didn't provide enough examples on the usage. I also think the module and parser itself is TOO flexible, in that the add_argument function accept too many parameters and it's confusing to use.<br />
+<br />
+In most cases, you would define structure of your program's input with two parts: Your program actual arguments and optional parameters. Then you would invoke the parser and use the result as a dict (Namespace) like object.<br />
+<br />
+Here are few examples that demonstrate how to use it in few common cases.<br />
+<br />
+Example0: Handle raw arguments<br />
+<pre></pre>
+<pre>import sys
+args = sys.argv[1:]
+</pre>
+<pre></pre>
+<pre>for name in args:</pre>
+<pre>  print(name)</pre>
+<div>
+<br /></div>
+Example1: Handle 2 arguments and a boolean option
+<br />
+<br />
+<pre>import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument('hostname', default='localhost')
+parser.add_argument('port', default=12345, type=int)
+parser.add_argument('-d', default=False, action='store_true')
+args = parser.parse_args()
+
+if args.d:
+ print("Processing host %s on port %d" % (args.hostname, args.port))
+</pre>
+<br />
+Example2:&nbsp;Handle 1 argument with many options
+<br />
+<br />
+<pre>import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument('url')
+parser.add_argument('-u', '--user', help='user', default='demo')
+parser.add_argument('-p', '--password', help='user password', default='demo123')
+parser.add_argument('-l', '--limit', help='max limit value', default=1000, type=int)
+parser.add_argument('--payload', help='text file payload', default='payload.xml')
+args = parser.parse_args()
+
+print("Processing url %s" % args.url)
+
+user, password = args.user, args.password
+print("Got option user=%s" % user)
+
+with open(args.payload) as fh:
+  payload = fh.read()
+
+if args.limit &gt; 100:
+  print("Limit has exceed 100")
+
+</pre>
+<br />
+Example3:&nbsp;Handle one or more arguments with a boolean option
+<br />
+<br />
+<pre>import argparse, fileinput
+parser = argparse.ArgumentParser()
+parser.add_argument('files', metavar='FILE', nargs='+')
+parser.add_argument('-d', default=False, action='store_true')
+args = parser.parse_args()
+
+for line in fileinput.input(args.files):
+  if args.d:
+    print("Processing line: %s" % line, end='')
+</pre>
+<br />
+To display the default values in the helppage, do this with the parser<br />
+<br />
+<pre>parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+</pre>
+<br />
+<br />
+<br />
+<br />
+</p>
+
+	<hr />
+	
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.3</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../../../js/jquery-1.11.1.min.js"></script>
+    <script src="../../../js/bootstrap.min.js"></script>
+    <script src="../../../js/prettify.js"></script>
+    
+  </body>
+</html>
