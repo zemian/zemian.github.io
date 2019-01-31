@@ -2,16 +2,16 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>JBake</title>
-    <link>https://zemian.github.io</link>
-    <atom:link href="https://zemian.github.io/feed.xml" rel="self" type="application/rss+xml" />
+    <link>http://localhost:8820</link>
+    <atom:link href="http://localhost:8820/feed.xml" rel="self" type="application/rss+xml" />
     <description>JBake Bootstrap Template</description>
     <language>en-gb</language>
-    <pubDate>Tue, 29 Jan 2019 22:27:49 -0500</pubDate>
-    <lastBuildDate>Tue, 29 Jan 2019 22:27:49 -0500</lastBuildDate>
+    <pubDate>Wed, 30 Jan 2019 19:09:58 -0500</pubDate>
+    <lastBuildDate>Wed, 30 Jan 2019 19:09:58 -0500</lastBuildDate>
 
     <item>
       <title>Python string successor method</title>
-      <link>https://zemian.github.io/blog/2018/08/python-string-successor-method.html</link>
+      <link>http://localhost:8820/blog/2018/08/python-string-successor-method.html</link>
       <pubDate>Fri, 24 Aug 2018 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2018/08/python-string-successor-method.html</guid>
       	<description>
@@ -83,7 +83,7 @@ if __name__ == &apos;__main__&apos;:
     </item>
     <item>
       <title>SQLite3 Data Types and Test Table</title>
-      <link>https://zemian.github.io/blog/2018/08/sqlite3-data-types-and-test-table-.html</link>
+      <link>http://localhost:8820/blog/2018/08/sqlite3-data-types-and-test-table-.html</link>
       <pubDate>Tue, 21 Aug 2018 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2018/08/sqlite3-data-types-and-test-table-.html</guid>
       	<description>
@@ -175,7 +175,7 @@ select * from test order by cat, ts desc;
     </item>
     <item>
       <title>PostgreSQL Data Types and Test Table</title>
-      <link>https://zemian.github.io/blog/2018/08/postgresql-data-types-and-test-table-.html</link>
+      <link>http://localhost:8820/blog/2018/08/postgresql-data-types-and-test-table-.html</link>
       <pubDate>Mon, 20 Aug 2018 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2018/08/postgresql-data-types-and-test-table-.html</guid>
       	<description>
@@ -249,7 +249,7 @@ select * from test order by cat, ts desc;&lt;/pre&gt;
     </item>
     <item>
       <title>Sybase Data Types and Test Table</title>
-      <link>https://zemian.github.io/blog/2018/08/sybase-data-types-and-test-table-.html</link>
+      <link>http://localhost:8820/blog/2018/08/sybase-data-types-and-test-table-.html</link>
       <pubDate>Sun, 19 Aug 2018 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2018/08/sybase-data-types-and-test-table-.html</guid>
       	<description>
@@ -321,7 +321,7 @@ select * from test order by cat, ts desc;&lt;/pre&gt;
     </item>
     <item>
       <title>Oracle DB Data Types and Test Table</title>
-      <link>https://zemian.github.io/blog/2018/08/oracle-db-data-types-and-test-table-.html</link>
+      <link>http://localhost:8820/blog/2018/08/oracle-db-data-types-and-test-table-.html</link>
       <pubDate>Sat, 18 Aug 2018 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2018/08/oracle-db-data-types-and-test-table-.html</guid>
       	<description>
@@ -395,7 +395,7 @@ select * from test order by cat, ts desc;&lt;/pre&gt;
     </item>
     <item>
       <title>MySQL Data Types and Test Table</title>
-      <link>https://zemian.github.io/blog/2018/08/mysql-data-types-and-test-table-.html</link>
+      <link>http://localhost:8820/blog/2018/08/mysql-data-types-and-test-table-.html</link>
       <pubDate>Fri, 17 Aug 2018 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2018/08/mysql-data-types-and-test-table-.html</guid>
       	<description>
@@ -468,7 +468,7 @@ select * from test order by cat, ts desc;&lt;/pre&gt;
     </item>
     <item>
       <title>A simple Java command line options parser</title>
-      <link>https://zemian.github.io/blog/2018/08/a-simple-java-command-line-options-parser.html</link>
+      <link>http://localhost:8820/blog/2018/08/a-simple-java-command-line-options-parser.html</link>
       <pubDate>Mon, 13 Aug 2018 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2018/08/a-simple-java-command-line-options-parser.html</guid>
       	<description>
@@ -679,7 +679,7 @@ public class CmdOpts {
     </item>
     <item>
       <title>Examples of Postgres Functions and Triggers</title>
-      <link>https://zemian.github.io/blog/2018/08/examples-of-postgres-functions-and-triggers.html</link>
+      <link>http://localhost:8820/blog/2018/08/examples-of-postgres-functions-and-triggers.html</link>
       <pubDate>Thu, 9 Aug 2018 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2018/08/examples-of-postgres-functions-and-triggers.html</guid>
       	<description>
@@ -759,7 +759,7 @@ select * from log;&lt;/pre&gt;
     </item>
     <item>
       <title>A plain and simple Jdbc service for Java8</title>
-      <link>https://zemian.github.io/blog/2018/07/a-plain-and-simple-jdbc-service-for-java8.html</link>
+      <link>http://localhost:8820/blog/2018/07/a-plain-and-simple-jdbc-service-for-java8.html</link>
       <pubDate>Sat, 28 Jul 2018 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2018/07/a-plain-and-simple-jdbc-service-for-java8.html</guid>
       	<description>
@@ -1095,7 +1095,7 @@ public class Jdbc {
     </item>
     <item>
       <title>Adding new cacert entry into AdoptOpenJDK</title>
-      <link>https://zemian.github.io/blog/2018/07/adding-new-cacert-entry-into-adoptopenjdk.html</link>
+      <link>http://localhost:8820/blog/2018/07/adding-new-cacert-entry-into-adoptopenjdk.html</link>
       <pubDate>Mon, 23 Jul 2018 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2018/07/adding-new-cacert-entry-into-adoptopenjdk.html</guid>
       	<description>
@@ -1153,7 +1153,7 @@ keytool -keystore cacerts -storepasswd changeit -list&lt;/pre&gt;
     </item>
     <item>
       <title>Run Tomcat with webapp-runner.jar</title>
-      <link>https://zemian.github.io/blog/2018/06/run-tomcat-with-webapp-runner-jar.html</link>
+      <link>http://localhost:8820/blog/2018/06/run-tomcat-with-webapp-runner-jar.html</link>
       <pubDate>Thu, 21 Jun 2018 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2018/06/run-tomcat-with-webapp-runner-jar.html</guid>
       	<description>
@@ -1180,7 +1180,7 @@ keytool -keystore cacerts -storepasswd changeit -list&lt;/pre&gt;
     </item>
     <item>
       <title>Installing Python on Windows Without Admin Rights</title>
-      <link>https://zemian.github.io/blog/2018/06/installing-python-on-windows-without-admin-rights.html</link>
+      <link>http://localhost:8820/blog/2018/06/installing-python-on-windows-without-admin-rights.html</link>
       <pubDate>Wed, 6 Jun 2018 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2018/06/installing-python-on-windows-without-admin-rights.html</guid>
       	<description>
@@ -1222,7 +1222,7 @@ Starting Python 3.5 the official downloads site already has &quot;Windows x86-64
     </item>
     <item>
       <title>Python argparse with multiple occurance of an option</title>
-      <link>https://zemian.github.io/blog/2018/06/python-argparse-with-multiple-occurance-of-an-option.html</link>
+      <link>http://localhost:8820/blog/2018/06/python-argparse-with-multiple-occurance-of-an-option.html</link>
       <pubDate>Wed, 6 Jun 2018 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2018/06/python-argparse-with-multiple-occurance-of-an-option.html</guid>
       	<description>
@@ -1253,7 +1253,7 @@ Env options: {&apos;k1&apos;: &apos;1&apos;, &apos;k2&apos;: &apos;foo&apos;}&lt
     </item>
     <item>
       <title>How to setup .ssh folder permissions</title>
-      <link>https://zemian.github.io/blog/2018/05/how-to-setup--ssh-folder-permissions.html</link>
+      <link>http://localhost:8820/blog/2018/05/how-to-setup--ssh-folder-permissions.html</link>
       <pubDate>Thu, 24 May 2018 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2018/05/how-to-setup--ssh-folder-permissions.html</guid>
       	<description>
@@ -1278,7 +1278,7 @@ chmod 755 ~                     # (drwxr-xr-x)&lt;/pre&gt;
     </item>
     <item>
       <title>Create multiple VMs using Vagrant</title>
-      <link>https://zemian.github.io/blog/2018/05/create-multiple-vms-using-vagrant.html</link>
+      <link>http://localhost:8820/blog/2018/05/create-multiple-vms-using-vagrant.html</link>
       <pubDate>Sat, 19 May 2018 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2018/05/create-multiple-vms-using-vagrant.html</guid>
       	<description>
@@ -1445,7 +1445,7 @@ end&lt;/pre&gt;
     </item>
     <item>
       <title>Starting SublimeText on Cygwin</title>
-      <link>https://zemian.github.io/blog/2018/04/starting-sublimetext-on-cygwin.html</link>
+      <link>http://localhost:8820/blog/2018/04/starting-sublimetext-on-cygwin.html</link>
       <pubDate>Mon, 9 Apr 2018 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2018/04/starting-sublimetext-on-cygwin.html</guid>
       	<description>
@@ -1466,7 +1466,7 @@ alias e=subl&lt;/pre&gt;
     </item>
     <item>
       <title>Java versions</title>
-      <link>https://zemian.github.io/blog/2018/03/java-versions.html</link>
+      <link>http://localhost:8820/blog/2018/03/java-versions.html</link>
       <pubDate>Mon, 26 Mar 2018 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2018/03/java-versions.html</guid>
       	<description>
@@ -1506,7 +1506,7 @@ major version: 54 = Java 10&lt;/pre&gt;
     </item>
     <item>
       <title>Switching Different JDK in Cygwin</title>
-      <link>https://zemian.github.io/blog/2018/03/switching-different-jdk-in-cygwin.html</link>
+      <link>http://localhost:8820/blog/2018/03/switching-different-jdk-in-cygwin.html</link>
       <pubDate>Sat, 24 Mar 2018 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2018/03/switching-different-jdk-in-cygwin.html</guid>
       	<description>
@@ -1588,7 +1588,7 @@ Java HotSpot(TM) 64-Bit Server VM (build 25.161-b12, mixed mode)&lt;/pre&gt;
     </item>
     <item>
       <title>Compare Multiple JDK Versions Startup Time</title>
-      <link>https://zemian.github.io/blog/2018/03/compare-multiple-jdk-versions-startup-time.html</link>
+      <link>http://localhost:8820/blog/2018/03/compare-multiple-jdk-versions-startup-time.html</link>
       <pubDate>Sat, 24 Mar 2018 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2018/03/compare-multiple-jdk-versions-startup-time.html</guid>
       	<description>
@@ -1654,7 +1654,7 @@ jdk-10               avg start-time 0.323s&lt;/pre&gt;
     </item>
     <item>
       <title>Oracle Java SE JDK vs OpenJDK</title>
-      <link>https://zemian.github.io/blog/2018/03/oracle-java-se-jdk-vs-openjdk.html</link>
+      <link>http://localhost:8820/blog/2018/03/oracle-java-se-jdk-vs-openjdk.html</link>
       <pubDate>Sat, 24 Mar 2018 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2018/03/oracle-java-se-jdk-vs-openjdk.html</guid>
       	<description>
@@ -1693,7 +1693,7 @@ installer format. Users usually require local Admin Rights to install it.&lt;/p&
     </item>
     <item>
       <title>Install Windows JDK Without Admin Rights</title>
-      <link>https://zemian.github.io/blog/2018/03/install-windows-jdk-without-admin-rights.html</link>
+      <link>http://localhost:8820/blog/2018/03/install-windows-jdk-without-admin-rights.html</link>
       <pubDate>Fri, 23 Mar 2018 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2018/03/install-windows-jdk-without-admin-rights.html</guid>
       	<description>
@@ -1833,7 +1833,7 @@ Java source &lt;code&gt;src.zip&lt;/code&gt; is within the file &lt;code&gt;110&
     </item>
     <item>
       <title>Parsing Arguments and Options With Python Script</title>
-      <link>https://zemian.github.io/blog/2018/03/parsing-arguments-and-options-with-python-script.html</link>
+      <link>http://localhost:8820/blog/2018/03/parsing-arguments-and-options-with-python-script.html</link>
       <pubDate>Thu, 22 Mar 2018 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2018/03/parsing-arguments-and-options-with-python-script.html</guid>
       	<description>
@@ -1858,7 +1858,7 @@ if args.file:
     </item>
     <item>
       <title>Print Python Runtime Information</title>
-      <link>https://zemian.github.io/blog/2018/03/print-python-runtime-information.html</link>
+      <link>http://localhost:8820/blog/2018/03/print-python-runtime-information.html</link>
       <pubDate>Thu, 22 Mar 2018 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2018/03/print-python-runtime-information.html</guid>
       	<description>
@@ -1876,7 +1876,7 @@ print(f&quot;Lib={paths}&quot;)&lt;/pre&gt;
     </item>
     <item>
       <title>Init and Start PostgreSQL in Cygwin</title>
-      <link>https://zemian.github.io/blog/2018/03/init-and-start-postgresql-in-cygwin.html</link>
+      <link>http://localhost:8820/blog/2018/03/init-and-start-postgresql-in-cygwin.html</link>
       <pubDate>Thu, 22 Mar 2018 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2018/03/init-and-start-postgresql-in-cygwin.html</guid>
       	<description>
@@ -1992,7 +1992,7 @@ you started quickly but not very secure.&lt;/p&gt;
     </item>
     <item>
       <title>How To Create Windows Context Menu Without Admin Rights</title>
-      <link>https://zemian.github.io/blog/2018/03/how-to-create-windows-context-menu-without-admin-rights.html</link>
+      <link>http://localhost:8820/blog/2018/03/how-to-create-windows-context-menu-without-admin-rights.html</link>
       <pubDate>Fri, 16 Mar 2018 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2018/03/how-to-create-windows-context-menu-without-admin-rights.html</guid>
       	<description>
@@ -2014,7 +2014,7 @@ you started quickly but not very secure.&lt;/p&gt;
     </item>
     <item>
       <title>Java Http Proxy with User and Password</title>
-      <link>https://zemian.github.io/blog/2018/03/java-http-proxy-with-user-and-password.html</link>
+      <link>http://localhost:8820/blog/2018/03/java-http-proxy-with-user-and-password.html</link>
       <pubDate>Fri, 16 Mar 2018 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2018/03/java-http-proxy-with-user-and-password.html</guid>
       	<description>
@@ -2072,7 +2072,7 @@ sun.net.www.protocol.http.HttpURLConnection.level = ALL&lt;/pre&gt;
     </item>
     <item>
       <title>Java Logging Properties</title>
-      <link>https://zemian.github.io/blog/2018/03/java-logging-properties.html</link>
+      <link>http://localhost:8820/blog/2018/03/java-logging-properties.html</link>
       <pubDate>Fri, 16 Mar 2018 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2018/03/java-logging-properties.html</guid>
       	<description>
@@ -2095,7 +2095,7 @@ myapp.Hello.level = ALL&lt;/pre&gt;
     </item>
     <item>
       <title>Getting Project File Stats with Python</title>
-      <link>https://zemian.github.io/blog/2018/03/getting-project-file-stats-with-python.html</link>
+      <link>http://localhost:8820/blog/2018/03/getting-project-file-stats-with-python.html</link>
       <pubDate>Wed, 14 Mar 2018 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2018/03/getting-project-file-stats-with-python.html</guid>
       	<description>
@@ -2138,7 +2138,7 @@ for file_type in top_type_counts:
     </item>
     <item>
       <title>How to find Linux Standard Base release info</title>
-      <link>https://zemian.github.io/blog/2018/03/how-to-find-linux-standard-base-release-info.html</link>
+      <link>http://localhost:8820/blog/2018/03/how-to-find-linux-standard-base-release-info.html</link>
       <pubDate>Sun, 11 Mar 2018 00:00:00 -0500</pubDate>
       <guid isPermaLink="false">blog/2018/03/how-to-find-linux-standard-base-release-info.html</guid>
       	<description>
@@ -2156,7 +2156,7 @@ for file_type in top_type_counts:
     </item>
     <item>
       <title>Linux SublimeText title says &quot;Unregistered&quot; despite you have paid license</title>
-      <link>https://zemian.github.io/blog/2018/03/linux-sublimetext-title-says-unregistered-despite-you-have-paid-license.html</link>
+      <link>http://localhost:8820/blog/2018/03/linux-sublimetext-title-says-unregistered-despite-you-have-paid-license.html</link>
       <pubDate>Sun, 11 Mar 2018 00:00:00 -0500</pubDate>
       <guid isPermaLink="false">blog/2018/03/linux-sublimetext-title-says-unregistered-despite-you-have-paid-license.html</guid>
       	<description>
@@ -2171,7 +2171,7 @@ for file_type in top_type_counts:
     </item>
     <item>
       <title>Compling Apache HTTPD Web Server on MacOSX</title>
-      <link>https://zemian.github.io/blog/2018/03/compling-apache-httpd-web-server-on-macosx.html</link>
+      <link>http://localhost:8820/blog/2018/03/compling-apache-httpd-web-server-on-macosx.html</link>
       <pubDate>Wed, 7 Mar 2018 00:00:00 -0500</pubDate>
       <guid isPermaLink="false">blog/2018/03/compling-apache-httpd-web-server-on-macosx.html</guid>
       	<description>
@@ -2248,7 +2248,7 @@ sudo make install
     </item>
     <item>
       <title>Compling Apache HTTPD Web Server on Cygwin</title>
-      <link>https://zemian.github.io/blog/2018/03/compling-apache-httpd-web-server-on-cygwin.html</link>
+      <link>http://localhost:8820/blog/2018/03/compling-apache-httpd-web-server-on-cygwin.html</link>
       <pubDate>Wed, 7 Mar 2018 00:00:00 -0500</pubDate>
       <guid isPermaLink="false">blog/2018/03/compling-apache-httpd-web-server-on-cygwin.html</guid>
       	<description>
@@ -2394,7 +2394,7 @@ downloaded. Here you can use system installed &lt;code&gt;apr&lt;/code&gt; if yo
     </item>
     <item>
       <title>Compling Apache HTTPD Web Server on Linux (Ubuntu)</title>
-      <link>https://zemian.github.io/blog/2018/03/compling-apache-httpd-web-server-on-linux-ubuntu.html</link>
+      <link>http://localhost:8820/blog/2018/03/compling-apache-httpd-web-server-on-linux-ubuntu.html</link>
       <pubDate>Wed, 7 Mar 2018 00:00:00 -0500</pubDate>
       <guid isPermaLink="false">blog/2018/03/compling-apache-httpd-web-server-on-linux-ubuntu.html</guid>
       	<description>
@@ -2424,7 +2424,7 @@ sudo /usr/local/apache2/bin/apachectl -k start&lt;/pre&gt;
     </item>
     <item>
       <title>Reduce recent project list size in IntelliJ</title>
-      <link>https://zemian.github.io/blog/2018/03/reduce-recent-project-list-size-in-intellij.html</link>
+      <link>http://localhost:8820/blog/2018/03/reduce-recent-project-list-size-in-intellij.html</link>
       <pubDate>Wed, 7 Mar 2018 00:00:00 -0500</pubDate>
       <guid isPermaLink="false">blog/2018/03/reduce-recent-project-list-size-in-intellij.html</guid>
       	<description>
@@ -2448,7 +2448,7 @@ sudo /usr/local/apache2/bin/apachectl -k start&lt;/pre&gt;
     </item>
     <item>
       <title>Package manager for MacOSX</title>
-      <link>https://zemian.github.io/blog/2018/03/package-manager-for-macosx.html</link>
+      <link>http://localhost:8820/blog/2018/03/package-manager-for-macosx.html</link>
       <pubDate>Mon, 5 Mar 2018 00:00:00 -0500</pubDate>
       <guid isPermaLink="false">blog/2018/03/package-manager-for-macosx.html</guid>
       	<description>
@@ -2471,7 +2471,7 @@ $ /usr/bin/ruby -e &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew
     </item>
     <item>
       <title>Installing C compiler on MacOSX</title>
-      <link>https://zemian.github.io/blog/2018/03/installing-c-compiler-on-macosx.html</link>
+      <link>http://localhost:8820/blog/2018/03/installing-c-compiler-on-macosx.html</link>
       <pubDate>Mon, 5 Mar 2018 00:00:00 -0500</pubDate>
       <guid isPermaLink="false">blog/2018/03/installing-c-compiler-on-macosx.html</guid>
       	<description>
@@ -2485,7 +2485,7 @@ xcode-select --install&lt;/pre&gt;
     </item>
     <item>
       <title>How to setup Httpd Reverse Proxy To Tomcat</title>
-      <link>https://zemian.github.io/blog/2018/03/how-to-setup-httpd-reverse-proxy-to-tomcat.html</link>
+      <link>http://localhost:8820/blog/2018/03/how-to-setup-httpd-reverse-proxy-to-tomcat.html</link>
       <pubDate>Mon, 5 Mar 2018 00:00:00 -0500</pubDate>
       <guid isPermaLink="false">blog/2018/03/how-to-setup-httpd-reverse-proxy-to-tomcat.html</guid>
       	<description>
@@ -2602,7 +2602,7 @@ ProxyPassReverse &quot;/jspwebapp2&quot; &quot;http://localhost/jspwebapp2&quot;
     </item>
     <item>
       <title>Fetching Data From PostgreSQL Using Python psycopg2</title>
-      <link>https://zemian.github.io/blog/2018/03/fetching-data-from-postgresql-using-python-psycopg2.html</link>
+      <link>http://localhost:8820/blog/2018/03/fetching-data-from-postgresql-using-python-psycopg2.html</link>
       <pubDate>Sun, 4 Mar 2018 00:00:00 -0500</pubDate>
       <guid isPermaLink="false">blog/2018/03/fetching-data-from-postgresql-using-python-psycopg2.html</guid>
       	<description>
@@ -2625,7 +2625,7 @@ conn.close()&lt;/pre&gt;
     </item>
     <item>
       <title>Minimal HTTPD config file</title>
-      <link>https://zemian.github.io/blog/2018/03/minimal-httpd-config-file.html</link>
+      <link>http://localhost:8820/blog/2018/03/minimal-httpd-config-file.html</link>
       <pubDate>Sun, 4 Mar 2018 00:00:00 -0500</pubDate>
       <guid isPermaLink="false">blog/2018/03/minimal-httpd-config-file.html</guid>
       	<description>
@@ -2685,7 +2685,7 @@ ScriptAlias /cgi-bin/ &quot;cgi-bin/&quot;
     </item>
     <item>
       <title>Git clone failed with SSL certificate problem</title>
-      <link>https://zemian.github.io/blog/2018/03/git-clone-failed-with-ssl-certificate-problem.html</link>
+      <link>http://localhost:8820/blog/2018/03/git-clone-failed-with-ssl-certificate-problem.html</link>
       <pubDate>Sat, 3 Mar 2018 00:00:00 -0500</pubDate>
       <guid isPermaLink="false">blog/2018/03/git-clone-failed-with-ssl-certificate-problem.html</guid>
       	<description>
@@ -2712,7 +2712,7 @@ fatal: unable to access &apos;https://github.com/notepad-plus-plus/notepad-plus-
     </item>
     <item>
       <title>How to find httpd config file location</title>
-      <link>https://zemian.github.io/blog/2018/02/how-to-find-httpd-config-file-location.html</link>
+      <link>http://localhost:8820/blog/2018/02/how-to-find-httpd-config-file-location.html</link>
       <pubDate>Wed, 28 Feb 2018 00:00:00 -0500</pubDate>
       <guid isPermaLink="false">blog/2018/02/how-to-find-httpd-config-file-location.html</guid>
       	<description>
@@ -2730,7 +2730,7 @@ Included configuration files:
     </item>
     <item>
       <title>How to setup httpd form authentication and user session login/logout</title>
-      <link>https://zemian.github.io/blog/2018/02/how-to-setup-httpd-form-authentication-and-user-session-loginlogout.html</link>
+      <link>http://localhost:8820/blog/2018/02/how-to-setup-httpd-form-authentication-and-user-session-loginlogout.html</link>
       <pubDate>Tue, 27 Feb 2018 00:00:00 -0500</pubDate>
       <guid isPermaLink="false">blog/2018/02/how-to-setup-httpd-form-authentication-and-user-session-loginlogout.html</guid>
       	<description>
@@ -2861,7 +2861,7 @@ You need &lt;code&gt;httpd-tool&lt;/code&gt; package from Cygwin to find &lt;cod
     </item>
     <item>
       <title>Getting started with Apache HTTPD Web Server on Windows</title>
-      <link>https://zemian.github.io/blog/2018/02/getting-started-with-apache-httpd-web-server-on-windows.html</link>
+      <link>http://localhost:8820/blog/2018/02/getting-started-with-apache-httpd-web-server-on-windows.html</link>
       <pubDate>Tue, 27 Feb 2018 00:00:00 -0500</pubDate>
       <guid isPermaLink="false">blog/2018/02/getting-started-with-apache-httpd-web-server-on-windows.html</guid>
       	<description>
@@ -3057,7 +3057,7 @@ cgi.test()&lt;/pre&gt;
     </item>
     <item>
       <title>Customizing httpd conf with special request header and filter</title>
-      <link>https://zemian.github.io/blog/2018/02/customizing-httpd-conf-with-special-request-header-and-filter.html</link>
+      <link>http://localhost:8820/blog/2018/02/customizing-httpd-conf-with-special-request-header-and-filter.html</link>
       <pubDate>Mon, 26 Feb 2018 00:00:00 -0500</pubDate>
       <guid isPermaLink="false">blog/2018/02/customizing-httpd-conf-with-special-request-header-and-filter.html</guid>
       	<description>
@@ -3177,7 +3177,7 @@ with open(log, &apos;a&apos;) as file:
     </item>
     <item>
       <title>How to turn off IntelliJ autoformat on a block of code</title>
-      <link>https://zemian.github.io/blog/2018/02/how-to-turn-off-intellij-autoformat-on-a-block-of-code.html</link>
+      <link>http://localhost:8820/blog/2018/02/how-to-turn-off-intellij-autoformat-on-a-block-of-code.html</link>
       <pubDate>Fri, 23 Feb 2018 00:00:00 -0500</pubDate>
       <guid isPermaLink="false">blog/2018/02/how-to-turn-off-intellij-autoformat-on-a-block-of-code.html</guid>
       	<description>
@@ -3191,7 +3191,7 @@ with open(log, &apos;a&apos;) as file:
     </item>
     <item>
       <title>Starting postgres server on Cygwin</title>
-      <link>https://zemian.github.io/blog/2018/02/starting-postgres-server-on-cygwin.html</link>
+      <link>http://localhost:8820/blog/2018/02/starting-postgres-server-on-cygwin.html</link>
       <pubDate>Tue, 20 Feb 2018 00:00:00 -0500</pubDate>
       <guid isPermaLink="false">blog/2018/02/starting-postgres-server-on-cygwin.html</guid>
       	<description>
@@ -3293,7 +3293,7 @@ you started quickly but not very secure.&lt;/p&gt;
     </item>
     <item>
       <title>IntelliJ highlight &quot;out.println&quot; in JSP as red error</title>
-      <link>https://zemian.github.io/blog/2018/02/intellij-highlight-out-println-in-jsp-as-red-error.html</link>
+      <link>http://localhost:8820/blog/2018/02/intellij-highlight-out-println-in-jsp-as-red-error.html</link>
       <pubDate>Sat, 17 Feb 2018 00:00:00 -0500</pubDate>
       <guid isPermaLink="false">blog/2018/02/intellij-highlight-out-println-in-jsp-as-red-error.html</guid>
       	<description>
@@ -3329,7 +3329,7 @@ you started quickly but not very secure.&lt;/p&gt;
     </item>
     <item>
       <title>IntelliJ displays Server&apos;s Certificate is not trusted pop-up</title>
-      <link>https://zemian.github.io/blog/2018/02/intellij-displays-servers-certificate-is-not-trusted-pop-up.html</link>
+      <link>http://localhost:8820/blog/2018/02/intellij-displays-servers-certificate-is-not-trusted-pop-up.html</link>
       <pubDate>Sun, 11 Feb 2018 00:00:00 -0500</pubDate>
       <guid isPermaLink="false">blog/2018/02/intellij-displays-servers-certificate-is-not-trusted-pop-up.html</guid>
       	<description>
@@ -3346,7 +3346,7 @@ you started quickly but not very secure.&lt;/p&gt;
     </item>
     <item>
       <title>Walk resource tree as directory in classpath</title>
-      <link>https://zemian.github.io/blog/2018/01/walk-resource-tree-as-directory-in-classpath.html</link>
+      <link>http://localhost:8820/blog/2018/01/walk-resource-tree-as-directory-in-classpath.html</link>
       <pubDate>Sat, 27 Jan 2018 00:00:00 -0500</pubDate>
       <guid isPermaLink="false">blog/2018/01/walk-resource-tree-as-directory-in-classpath.html</guid>
       	<description>
@@ -3460,7 +3460,7 @@ you started quickly but not very secure.&lt;/p&gt;
     </item>
     <item>
       <title>Using Java8 LocalDateTime with FreeMarker</title>
-      <link>https://zemian.github.io/blog/2018/01/using-java8-localdatetime-with-freemarker.html</link>
+      <link>http://localhost:8820/blog/2018/01/using-java8-localdatetime-with-freemarker.html</link>
       <pubDate>Sat, 27 Jan 2018 00:00:00 -0500</pubDate>
       <guid isPermaLink="false">blog/2018/01/using-java8-localdatetime-with-freemarker.html</guid>
       	<description>
@@ -3496,7 +3496,7 @@ Or use custom date formatter: ${todayDate.format(&apos;yyyy-MM-dd HH:mm&apos;)}&
     </item>
     <item>
       <title>How to fix IntelliJ OutOfMemoryError</title>
-      <link>https://zemian.github.io/blog/2018/01/how-to-fix-intellij-outofmemoryerror.html</link>
+      <link>http://localhost:8820/blog/2018/01/how-to-fix-intellij-outofmemoryerror.html</link>
       <pubDate>Fri, 19 Jan 2018 00:00:00 -0500</pubDate>
       <guid isPermaLink="false">blog/2018/01/how-to-fix-intellij-outofmemoryerror.html</guid>
       	<description>
@@ -3525,7 +3525,7 @@ Or use custom date formatter: ${todayDate.format(&apos;yyyy-MM-dd HH:mm&apos;)}&
     </item>
     <item>
       <title>How to run nginx and setup reverse proxy to Tomcat</title>
-      <link>https://zemian.github.io/blog/2017/08/how-to-run-nginx-and-setup-reverse-proxy-to-tomcat.html</link>
+      <link>http://localhost:8820/blog/2017/08/how-to-run-nginx-and-setup-reverse-proxy-to-tomcat.html</link>
       <pubDate>Fri, 4 Aug 2017 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2017/08/how-to-run-nginx-and-setup-reverse-proxy-to-tomcat.html</guid>
       	<description>
@@ -3597,7 +3597,7 @@ openssl req -x509 -nodes -newkey rsa:2048 -keyout cert.key -out cert.crt
     </item>
     <item>
       <title>Creating PostgreSQL db users to match Linux users</title>
-      <link>https://zemian.github.io/blog/2017/07/creating-postgresql-db-users-to-match-linux-users.html</link>
+      <link>http://localhost:8820/blog/2017/07/creating-postgresql-db-users-to-match-linux-users.html</link>
       <pubDate>Fri, 7 Jul 2017 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2017/07/creating-postgresql-db-users-to-match-linux-users.html</guid>
       	<description>
@@ -3665,7 +3665,7 @@ zemian=# SELECT * FROM test;
     </item>
     <item>
       <title>Git Branch name with &apos;slash&apos;</title>
-      <link>https://zemian.github.io/blog/2016/10/git-branch-name-with-slash.html</link>
+      <link>http://localhost:8820/blog/2016/10/git-branch-name-with-slash.html</link>
       <pubDate>Sun, 9 Oct 2016 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2016/10/git-branch-name-with-slash.html</guid>
       	<description>
@@ -3698,7 +3698,7 @@ git branch foo2/bar2/cool2&lt;/pre&gt;
     </item>
     <item>
       <title>My Quick Git Reference</title>
-      <link>https://zemian.github.io/blog/2016/10/my-quick-git-reference.html</link>
+      <link>http://localhost:8820/blog/2016/10/my-quick-git-reference.html</link>
       <pubDate>Tue, 4 Oct 2016 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2016/10/my-quick-git-reference.html</guid>
       	<description>
@@ -3771,7 +3771,7 @@ git stash list     # List all stashes&lt;/pre&gt;
     </item>
     <item>
       <title>How to install cx_Oracle module on Linux</title>
-      <link>https://zemian.github.io/blog/2016/07/how-to-install-cx_oracle-module-on-linux.html</link>
+      <link>http://localhost:8820/blog/2016/07/how-to-install-cx_oracle-module-on-linux.html</link>
       <pubDate>Sat, 23 Jul 2016 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2016/07/how-to-install-cx_oracle-module-on-linux.html</guid>
       	<description>
@@ -3876,7 +3876,7 @@ sqlplus mydbuser@(DESCRIPTION=(ADDRESS=(HOST=myhost)(PORT=1521)(PROTOCOL=TCP))(C
     </item>
     <item>
       <title>Simple http server with CGI scripts enabled</title>
-      <link>https://zemian.github.io/blog/2016/07/simple-http-server-with-cgi-scripts-enabled.html</link>
+      <link>http://localhost:8820/blog/2016/07/simple-http-server-with-cgi-scripts-enabled.html</link>
       <pubDate>Thu, 14 Jul 2016 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2016/07/simple-http-server-with-cgi-scripts-enabled.html</guid>
       	<description>
@@ -3925,7 +3925,7 @@ for more details.
     </item>
     <item>
       <title>How to install posgresql-server with yum on Linux</title>
-      <link>https://zemian.github.io/blog/2016/07/how-to-install-posgresql-server-with-yum-on-linux.html</link>
+      <link>http://localhost:8820/blog/2016/07/how-to-install-posgresql-server-with-yum-on-linux.html</link>
       <pubDate>Fri, 8 Jul 2016 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2016/07/how-to-install-posgresql-server-with-yum-on-linux.html</guid>
       	<description>
@@ -3958,7 +3958,7 @@ bash&gt; exit
     </item>
     <item>
       <title>How to switch Linux account user without the target user&apos;s password</title>
-      <link>https://zemian.github.io/blog/2016/07/how-to-switch-linux-account-user-without-the-target-users-password.html</link>
+      <link>http://localhost:8820/blog/2016/07/how-to-switch-linux-account-user-without-the-target-users-password.html</link>
       <pubDate>Thu, 7 Jul 2016 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2016/07/how-to-switch-linux-account-user-without-the-target-users-password.html</guid>
       	<description>
@@ -3985,7 +3985,7 @@ trick should get you switch into that target user account.&lt;/p&gt;
     </item>
     <item>
       <title>Migrating Django 1.6 to 1.9</title>
-      <link>https://zemian.github.io/blog/2016/07/migrating-django-1-6-to-1-9.html</link>
+      <link>http://localhost:8820/blog/2016/07/migrating-django-1-6-to-1-9.html</link>
       <pubDate>Wed, 6 Jul 2016 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2016/07/migrating-django-1-6-to-1-9.html</guid>
       	<description>
@@ -4006,7 +4006,7 @@ trick should get you switch into that target user account.&lt;/p&gt;
     </item>
     <item>
       <title>Login to remote host without password</title>
-      <link>https://zemian.github.io/blog/2016/07/login-to-remote-host-without-password.html</link>
+      <link>http://localhost:8820/blog/2016/07/login-to-remote-host-without-password.html</link>
       <pubDate>Wed, 6 Jul 2016 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2016/07/login-to-remote-host-without-password.html</guid>
       	<description>
@@ -4061,7 +4061,7 @@ xxxyyyzzz zemian@myhost
     </item>
     <item>
       <title>How to import SSL cert into WLS DemoTrust.jks keystore file</title>
-      <link>https://zemian.github.io/blog/2016/07/how-to-import-ssl-cert-into-wls-demotrust-jks-keystore-file.html</link>
+      <link>http://localhost:8820/blog/2016/07/how-to-import-ssl-cert-into-wls-demotrust-jks-keystore-file.html</link>
       <pubDate>Tue, 5 Jul 2016 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2016/07/how-to-import-ssl-cert-into-wls-demotrust-jks-keystore-file.html</guid>
       	<description>
@@ -4112,7 +4112,7 @@ Type name of file to save (eg: &lt;code&gt;mycert.pem&lt;/code&gt;) and then cli
     </item>
     <item>
       <title>Inspect Oracle Database Schema and Tables with Kotlin</title>
-      <link>https://zemian.github.io/blog/2016/07/inspect-oracle-database-schema-and-tables-with-kotlin.html</link>
+      <link>http://localhost:8820/blog/2016/07/inspect-oracle-database-schema-and-tables-with-kotlin.html</link>
       <pubDate>Tue, 5 Jul 2016 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2016/07/inspect-oracle-database-schema-and-tables-with-kotlin.html</guid>
       	<description>
@@ -4167,7 +4167,7 @@ conn.close()&lt;/pre&gt;
     </item>
     <item>
       <title>Some of my old projects</title>
-      <link>https://zemian.github.io/blog/2016/06/some-of-my-old-projects.html</link>
+      <link>http://localhost:8820/blog/2016/06/some-of-my-old-projects.html</link>
       <pubDate>Thu, 30 Jun 2016 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2016/06/some-of-my-old-projects.html</guid>
       	<description>
@@ -4240,7 +4240,7 @@ conn.close()&lt;/pre&gt;
     </item>
     <item>
       <title>How to install venv and pip with a python 3.4 distribution</title>
-      <link>https://zemian.github.io/blog/2016/06/how-to-install-venv-and-pip-with-a-python-3-4-distribution.html</link>
+      <link>http://localhost:8820/blog/2016/06/how-to-install-venv-and-pip-with-a-python-3-4-distribution.html</link>
       <pubDate>Mon, 27 Jun 2016 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2016/06/how-to-install-venv-and-pip-with-a-python-3-4-distribution.html</guid>
       	<description>
@@ -4264,7 +4264,7 @@ Now the problem is solved. I believe this problem is gone if you upgrade to Pyth
     </item>
     <item>
       <title>Getting started with PostgreSQL database</title>
-      <link>https://zemian.github.io/blog/2016/06/getting-started-with-postgresql-database.html</link>
+      <link>http://localhost:8820/blog/2016/06/getting-started-with-postgresql-database.html</link>
       <pubDate>Sun, 26 Jun 2016 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2016/06/getting-started-with-postgresql-database.html</guid>
       	<description>
@@ -4327,7 +4327,7 @@ These examples should be enough to get you setup a database for app development.
     </item>
     <item>
       <title>How to fix &apos;add a non-nullable field ... without a default&apos; error</title>
-      <link>https://zemian.github.io/blog/2016/06/how-to-fix-add-a-non-nullable-field-----without-a-default-error.html</link>
+      <link>http://localhost:8820/blog/2016/06/how-to-fix-add-a-non-nullable-field-----without-a-default-error.html</link>
       <pubDate>Sun, 26 Jun 2016 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2016/06/how-to-fix-add-a-non-nullable-field-----without-a-default-error.html</guid>
       	<description>
@@ -4348,7 +4348,7 @@ Solution: if this is brand new table you are creating, manually remove the previ
     </item>
     <item>
       <title>Untrack file without deleting it with a hg repository</title>
-      <link>https://zemian.github.io/blog/2016/06/untrack-file-without-deleting-it-with-a-hg-repository.html</link>
+      <link>http://localhost:8820/blog/2016/06/untrack-file-without-deleting-it-with-a-hg-repository.html</link>
       <pubDate>Sun, 26 Jun 2016 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2016/06/untrack-file-without-deleting-it-with-a-hg-repository.html</guid>
       	<description>
@@ -4369,7 +4369,7 @@ Later I learned that I shouln&apos;t track one of IDEA&apos;s workspace file, so
     </item>
     <item>
       <title>Example of MySQL stored procedure to INSERT from a SELECT cursor values</title>
-      <link>https://zemian.github.io/blog/2016/06/example-of-mysql-stored-procedure-to-insert-from-a-select-cursor-values.html</link>
+      <link>http://localhost:8820/blog/2016/06/example-of-mysql-stored-procedure-to-insert-from-a-select-cursor-values.html</link>
       <pubDate>Sun, 26 Jun 2016 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2016/06/example-of-mysql-stored-procedure-to-insert-from-a-select-cursor-values.html</guid>
       	<description>
@@ -4408,7 +4408,7 @@ Later I learned that I shouln&apos;t track one of IDEA&apos;s workspace file, so
     </item>
     <item>
       <title>Installing a local downloaded .rpm file</title>
-      <link>https://zemian.github.io/blog/2016/06/installing-a-local-downloaded--rpm-file.html</link>
+      <link>http://localhost:8820/blog/2016/06/installing-a-local-downloaded--rpm-file.html</link>
       <pubDate>Sun, 26 Jun 2016 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2016/06/installing-a-local-downloaded--rpm-file.html</guid>
       	<description>
@@ -4426,7 +4426,7 @@ Later I learned that I shouln&apos;t track one of IDEA&apos;s workspace file, so
     </item>
     <item>
       <title>How to install Zoom conference on Ubuntu 14.04 LTS</title>
-      <link>https://zemian.github.io/blog/2016/06/how-to-install-zoom-conference-on-ubuntu-14-04-lts.html</link>
+      <link>http://localhost:8820/blog/2016/06/how-to-install-zoom-conference-on-ubuntu-14-04-lts.html</link>
       <pubDate>Fri, 17 Jun 2016 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2016/06/how-to-install-zoom-conference-on-ubuntu-14-04-lts.html</guid>
       	<description>
@@ -4452,7 +4452,7 @@ NOTE: If you have errors running steps above, it&apos;s very likely you have upg
     </item>
     <item>
       <title>How to manually test a DataSource connection in WebLogic</title>
-      <link>https://zemian.github.io/blog/2016/06/how-to-manually-test-a-datasource-connection-in-weblogic.html</link>
+      <link>http://localhost:8820/blog/2016/06/how-to-manually-test-a-datasource-connection-in-weblogic.html</link>
       <pubDate>Thu, 16 Jun 2016 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2016/06/how-to-manually-test-a-datasource-connection-in-weblogic.html</guid>
       	<description>
@@ -4483,7 +4483,7 @@ NOTE: If you have errors running steps above, it&apos;s very likely you have upg
     </item>
     <item>
       <title>How to setup a Java web application using Gradle</title>
-      <link>https://zemian.github.io/blog/2016/06/how-to-setup-a-java-web-application-using-gradle.html</link>
+      <link>http://localhost:8820/blog/2016/06/how-to-setup-a-java-web-application-using-gradle.html</link>
       <pubDate>Tue, 14 Jun 2016 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2016/06/how-to-setup-a-java-web-application-using-gradle.html</guid>
       	<description>
@@ -4631,7 +4631,7 @@ To run web app, type command:&amp;nbsp;&lt;span style=&quot;font-family: &amp;qu
     </item>
     <item>
       <title>How to setup hg repository on a remote server</title>
-      <link>https://zemian.github.io/blog/2016/06/how-to-setup-hg-repository-on-a-remote-server.html</link>
+      <link>http://localhost:8820/blog/2016/06/how-to-setup-hg-repository-on-a-remote-server.html</link>
       <pubDate>Tue, 14 Jun 2016 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2016/06/how-to-setup-hg-repository-on-a-remote-server.html</guid>
       	<description>
@@ -4661,7 +4661,7 @@ NOTE 3: If you want to use abolute path for &quot;default&quot; path instead, th
     </item>
     <item>
       <title>Java Jdbc Test for UTF8 and Default Value for TIMESTAMP</title>
-      <link>https://zemian.github.io/blog/2015/11/java-jdbc-test-for-utf8-and-default-value-for-timestamp.html</link>
+      <link>http://localhost:8820/blog/2015/11/java-jdbc-test-for-utf8-and-default-value-for-timestamp.html</link>
       <pubDate>Mon, 2 Nov 2015 00:00:00 -0500</pubDate>
       <guid isPermaLink="false">blog/2015/11/java-jdbc-test-for-utf8-and-default-value-for-timestamp.html</guid>
       	<description>
@@ -4792,7 +4792,7 @@ NOTE 3: If you want to use abolute path for &quot;default&quot; path instead, th
     </item>
     <item>
       <title>ConEmu - a Terminal Windows or Tab Manager</title>
-      <link>https://zemian.github.io/blog/2015/11/conemu---a-terminal-windows-or-tab-manager.html</link>
+      <link>http://localhost:8820/blog/2015/11/conemu---a-terminal-windows-or-tab-manager.html</link>
       <pubDate>Sun, 1 Nov 2015 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2015/11/conemu---a-terminal-windows-or-tab-manager.html</guid>
       	<description>
@@ -4806,7 +4806,7 @@ NOTE 3: If you want to use abolute path for &quot;default&quot; path instead, th
     </item>
     <item>
       <title>How to view Unix man pages with browser</title>
-      <link>https://zemian.github.io/blog/2015/10/how-to-view-unix-man-pages-with-browser.html</link>
+      <link>http://localhost:8820/blog/2015/10/how-to-view-unix-man-pages-with-browser.html</link>
       <pubDate>Sat, 24 Oct 2015 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2015/10/how-to-view-unix-man-pages-with-browser.html</guid>
       	<description>
@@ -4824,7 +4824,7 @@ And you will see something like this:&lt;br /&gt;
     </item>
     <item>
       <title>How to setup a new Trac issue tracking system</title>
-      <link>https://zemian.github.io/blog/2015/10/how-to-setup-a-new-trac-issue-tracking-system.html</link>
+      <link>http://localhost:8820/blog/2015/10/how-to-setup-a-new-trac-issue-tracking-system.html</link>
       <pubDate>Wed, 21 Oct 2015 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2015/10/how-to-setup-a-new-trac-issue-tracking-system.html</guid>
       	<description>
@@ -4865,7 +4865,7 @@ bash&amp;gt; # this connection string:&amp;nbsp;&lt;/pre&gt;
     </item>
     <item>
       <title>mysqlclient gives &quot;Library not loaded: libmysqlclient.18.dylib&quot; error</title>
-      <link>https://zemian.github.io/blog/2015/10/mysqlclient-gives-library-not-loaded-libmysqlclient-18-dylib-error.html</link>
+      <link>http://localhost:8820/blog/2015/10/mysqlclient-gives-library-not-loaded-libmysqlclient-18-dylib-error.html</link>
       <pubDate>Fri, 16 Oct 2015 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2015/10/mysqlclient-gives-library-not-loaded-libmysqlclient-18-dylib-error.html</guid>
       	<description>
@@ -4929,7 +4929,7 @@ To install mysqlclient on Ubuntu 14, you might need to first install the mysql_c
     </item>
     <item>
       <title>How to specify SAME target table for update in FROM clause</title>
-      <link>https://zemian.github.io/blog/2015/10/how-to-specify-same-target-table-for-update-in-from-clause.html</link>
+      <link>http://localhost:8820/blog/2015/10/how-to-specify-same-target-table-for-update-in-from-clause.html</link>
       <pubDate>Sun, 11 Oct 2015 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2015/10/how-to-specify-same-target-table-for-update-in-from-clause.html</guid>
       	<description>
@@ -4963,7 +4963,7 @@ Noticed that in MySQL, you must name your sub query result such as&amp;nbsp;&lt;
     </item>
     <item>
       <title>Setup Python on Mac</title>
-      <link>https://zemian.github.io/blog/2015/10/setup-python-on-mac.html</link>
+      <link>http://localhost:8820/blog/2015/10/setup-python-on-mac.html</link>
       <pubDate>Sat, 10 Oct 2015 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2015/10/setup-python-on-mac.html</guid>
       	<description>
@@ -5018,7 +5018,7 @@ The MacOS comes with latest Python 2.7, but no Python3. You can download the lat
     </item>
     <item>
       <title>MacBook Air is not displaying scroll bar on Finder</title>
-      <link>https://zemian.github.io/blog/2015/10/macbook-air-is-not-displaying-scroll-bar-on-finder.html</link>
+      <link>http://localhost:8820/blog/2015/10/macbook-air-is-not-displaying-scroll-bar-on-finder.html</link>
       <pubDate>Sat, 10 Oct 2015 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2015/10/macbook-air-is-not-displaying-scroll-bar-on-finder.html</guid>
       	<description>
@@ -5029,7 +5029,7 @@ The MacOS comes with latest Python 2.7, but no Python3. You can download the lat
     </item>
     <item>
       <title>Checking MySQL database connection with mysql-connector-python</title>
-      <link>https://zemian.github.io/blog/2015/10/checking-mysql-database-connection-with-mysql-connector-python.html</link>
+      <link>http://localhost:8820/blog/2015/10/checking-mysql-database-connection-with-mysql-connector-python.html</link>
       <pubDate>Fri, 9 Oct 2015 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2015/10/checking-mysql-database-connection-with-mysql-connector-python.html</guid>
       	<description>
@@ -5051,7 +5051,7 @@ Now you may test the database connection with this Python code&lt;br /&gt;
     </item>
     <item>
       <title>Setup MySQL DataSource on WLS</title>
-      <link>https://zemian.github.io/blog/2015/10/setup-mysql-datasource-on-wls.html</link>
+      <link>http://localhost:8820/blog/2015/10/setup-mysql-datasource-on-wls.html</link>
       <pubDate>Sun, 4 Oct 2015 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2015/10/setup-mysql-datasource-on-wls.html</guid>
       	<description>
@@ -5112,7 +5112,7 @@ Now you may test the database connection with this Python code&lt;br /&gt;
     </item>
     <item>
       <title>Creating new WebLogic domain using WLST script</title>
-      <link>https://zemian.github.io/blog/2015/10/creating-new-weblogic-domain-using-wlst-script.html</link>
+      <link>http://localhost:8820/blog/2015/10/creating-new-weblogic-domain-using-wlst-script.html</link>
       <pubDate>Fri, 2 Oct 2015 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2015/10/creating-new-weblogic-domain-using-wlst-script.html</guid>
       	<description>
@@ -5160,7 +5160,7 @@ Now you may test the database connection with this Python code&lt;br /&gt;
     </item>
     <item>
       <title>Create simple WLS domain using WLST and built-in template jar</title>
-      <link>https://zemian.github.io/blog/2015/09/create-simple-wls-domain-using-wlst-and-built-in-template-jar.html</link>
+      <link>http://localhost:8820/blog/2015/09/create-simple-wls-domain-using-wlst-and-built-in-template-jar.html</link>
       <pubDate>Fri, 25 Sep 2015 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2015/09/create-simple-wls-domain-using-wlst-and-built-in-template-jar.html</guid>
       	<description>
@@ -5217,7 +5217,7 @@ You can easily &lt;a href=&quot;http://saltnlight5.blogspot.com/2014/01/getting-
     </item>
     <item>
       <title>JavaScript Jdbc Quick Test</title>
-      <link>https://zemian.github.io/blog/2015/09/javascript-jdbc-quick-test.html</link>
+      <link>http://localhost:8820/blog/2015/09/javascript-jdbc-quick-test.html</link>
       <pubDate>Wed, 9 Sep 2015 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2015/09/javascript-jdbc-quick-test.html</guid>
       	<description>
@@ -5267,7 +5267,7 @@ You can easily &lt;a href=&quot;http://saltnlight5.blogspot.com/2014/01/getting-
     </item>
     <item>
       <title>Be aware of the count=0 when using Python&apos;s re.sub() to find and replace text</title>
-      <link>https://zemian.github.io/blog/2015/08/be-aware-of-the-count%3D0-when-using-pythons-re-sub-to-find-and-replace-text.html</link>
+      <link>http://localhost:8820/blog/2015/08/be-aware-of-the-count%3D0-when-using-pythons-re-sub-to-find-and-replace-text.html</link>
       <pubDate>Sun, 23 Aug 2015 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2015/08/be-aware-of-the-count%3D0-when-using-pythons-re-sub-to-find-and-replace-text.html</guid>
       	<description>
@@ -5303,7 +5303,7 @@ So here is an example of flexible dynamic typing of optional parameters can bite
     </item>
     <item>
       <title>View and terminate Oracle Database user sessions</title>
-      <link>https://zemian.github.io/blog/2015/08/view-and-terminate-oracle-database-user-sessions.html</link>
+      <link>http://localhost:8820/blog/2015/08/view-and-terminate-oracle-database-user-sessions.html</link>
       <pubDate>Fri, 21 Aug 2015 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2015/08/view-and-terminate-oracle-database-user-sessions.html</guid>
       	<description>
@@ -5323,7 +5323,7 @@ Generate SQL to terminate sessions:&lt;br /&gt;
     </item>
     <item>
       <title>How to import a Oracle database dump file</title>
-      <link>https://zemian.github.io/blog/2015/08/how-to-import-a-oracle-database-dump-file.html</link>
+      <link>http://localhost:8820/blog/2015/08/how-to-import-a-oracle-database-dump-file.html</link>
       <pubDate>Tue, 18 Aug 2015 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2015/08/how-to-import-a-oracle-database-dump-file.html</guid>
       	<description>
@@ -5373,7 +5373,7 @@ References:&lt;br /&gt;
     </item>
     <item>
       <title>Selectively checkout large project from SVN repository</title>
-      <link>https://zemian.github.io/blog/2015/08/selectively-checkout-large-project-from-svn-repository.html</link>
+      <link>http://localhost:8820/blog/2015/08/selectively-checkout-large-project-from-svn-repository.html</link>
       <pubDate>Sun, 16 Aug 2015 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2015/08/selectively-checkout-large-project-from-svn-repository.html</guid>
       	<description>
@@ -5399,7 +5399,7 @@ svn update&amp;nbsp;--depth infinity lib/special/jars&lt;/pre&gt;
     </item>
     <item>
       <title>How to check Oracle Database tablespace</title>
-      <link>https://zemian.github.io/blog/2015/08/how-to-check-oracle-database-tablespace.html</link>
+      <link>http://localhost:8820/blog/2015/08/how-to-check-oracle-database-tablespace.html</link>
       <pubDate>Fri, 14 Aug 2015 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2015/08/how-to-check-oracle-database-tablespace.html</guid>
       	<description>
@@ -5476,7 +5476,7 @@ Here are some references on how Oracle manages user, schema and tablespace.&lt;b
     </item>
     <item>
       <title>How to run Kotlin script file</title>
-      <link>https://zemian.github.io/blog/2015/08/how-to-run-kotlin-script-file.html</link>
+      <link>http://localhost:8820/blog/2015/08/how-to-run-kotlin-script-file.html</link>
       <pubDate>Mon, 3 Aug 2015 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2015/08/how-to-run-kotlin-script-file.html</guid>
       	<description>
@@ -5516,7 +5516,7 @@ See&amp;nbsp;http://kotlinlang.org/docs/tutorials/command-line.html&lt;br /&gt;
     </item>
     <item>
       <title>Python cat program</title>
-      <link>https://zemian.github.io/blog/2015/07/python-cat-program.html</link>
+      <link>http://localhost:8820/blog/2015/07/python-cat-program.html</link>
       <pubDate>Fri, 24 Jul 2015 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2015/07/python-cat-program.html</guid>
       	<description>
@@ -5545,7 +5545,7 @@ Note that argparse not only just parse for options, but actual argument list as 
     </item>
     <item>
       <title>How to parse Python command arguments and options</title>
-      <link>https://zemian.github.io/blog/2015/07/how-to-parse-python-command-arguments-and-options.html</link>
+      <link>http://localhost:8820/blog/2015/07/how-to-parse-python-command-arguments-and-options.html</link>
       <pubDate>Thu, 23 Jul 2015 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2015/07/how-to-parse-python-command-arguments-and-options.html</guid>
       	<description>
@@ -5633,7 +5633,7 @@ To display the default values in the helppage, do this with the parser&lt;br /&g
     </item>
     <item>
       <title>How to find text entries in mulitple jar files</title>
-      <link>https://zemian.github.io/blog/2015/07/how-to-find-text-entries-in-mulitple-jar-files.html</link>
+      <link>http://localhost:8820/blog/2015/07/how-to-find-text-entries-in-mulitple-jar-files.html</link>
       <pubDate>Wed, 22 Jul 2015 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2015/07/how-to-find-text-entries-in-mulitple-jar-files.html</guid>
       	<description>
@@ -5652,7 +5652,7 @@ Java version (The search argument input is at position one in this example)&lt;b
     </item>
     <item>
       <title>How to manage SQL statements more effectively with Java</title>
-      <link>https://zemian.github.io/blog/2015/07/how-to-manage-sql-statements-more-effectively-with-java.html</link>
+      <link>http://localhost:8820/blog/2015/07/how-to-manage-sql-statements-more-effectively-with-java.html</link>
       <pubDate>Wed, 22 Jul 2015 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2015/07/how-to-manage-sql-statements-more-effectively-with-java.html</guid>
       	<description>
@@ -5735,7 +5735,7 @@ Both of these are built-in from your JDK!&lt;br /&gt;
     </item>
     <item>
       <title>Python one-liner</title>
-      <link>https://zemian.github.io/blog/2015/07/python-one-liner.html</link>
+      <link>http://localhost:8820/blog/2015/07/python-one-liner.html</link>
       <pubDate>Sun, 19 Jul 2015 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2015/07/python-one-liner.html</guid>
       	<description>
@@ -5761,7 +5761,7 @@ Both of these are built-in from your JDK!&lt;br /&gt;
     </item>
     <item>
       <title>Python processing each line from stdin or files</title>
-      <link>https://zemian.github.io/blog/2015/07/python-processing-each-line-from-stdin-or-files.html</link>
+      <link>http://localhost:8820/blog/2015/07/python-processing-each-line-from-stdin-or-files.html</link>
       <pubDate>Sat, 11 Jul 2015 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2015/07/python-processing-each-line-from-stdin-or-files.html</guid>
       	<description>
@@ -5776,7 +5776,7 @@ Both of these are built-in from your JDK!&lt;br /&gt;
     </item>
     <item>
       <title>python fancy cut command</title>
-      <link>https://zemian.github.io/blog/2015/07/python-fancy-cut-command.html</link>
+      <link>http://localhost:8820/blog/2015/07/python-fancy-cut-command.html</link>
       <pubDate>Thu, 9 Jul 2015 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2015/07/python-fancy-cut-command.html</guid>
       	<description>
@@ -5800,7 +5800,7 @@ for line in fileinput.input(files):&lt;br /&gt;
     </item>
     <item>
       <title>Useful subversion commands</title>
-      <link>https://zemian.github.io/blog/2015/07/useful-subversion-commands.html</link>
+      <link>http://localhost:8820/blog/2015/07/useful-subversion-commands.html</link>
       <pubDate>Thu, 2 Jul 2015 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2015/07/useful-subversion-commands.html</guid>
       	<description>
@@ -5822,7 +5822,7 @@ alias svnupreset=&apos;svnup&amp;nbsp;&amp;amp;&amp;amp; svnrevertall &amp;amp;&
     </item>
     <item>
       <title>How to replace all with pre-processing on a captured group with Java</title>
-      <link>https://zemian.github.io/blog/2015/06/how-to-replace-all-with-pre-processing-on-a-captured-group-with-java.html</link>
+      <link>http://localhost:8820/blog/2015/06/how-to-replace-all-with-pre-processing-on-a-captured-group-with-java.html</link>
       <pubDate>Fri, 12 Jun 2015 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2015/06/how-to-replace-all-with-pre-processing-on-a-captured-group-with-java.html</guid>
       	<description>
@@ -5842,7 +5842,7 @@ This extra requirement would lead us to dig deeper into Java RegEx package. Here
     </item>
     <item>
       <title>Example of plain Jdbc Support Class</title>
-      <link>https://zemian.github.io/blog/2015/06/example-of-plain-jdbc-support-class.html</link>
+      <link>http://localhost:8820/blog/2015/06/example-of-plain-jdbc-support-class.html</link>
       <pubDate>Fri, 5 Jun 2015 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2015/06/example-of-plain-jdbc-support-class.html</guid>
       	<description>
@@ -5860,7 +5860,7 @@ To use it, one may do something like this:&lt;br /&gt;
     </item>
     <item>
       <title>How to setup Intellij IDE war exploded artifact with multiple CDI dependent projects</title>
-      <link>https://zemian.github.io/blog/2015/05/how-to-setup-intellij-ide-war-exploded-artifact-with-multiple-cdi-dependent-projects.html</link>
+      <link>http://localhost:8820/blog/2015/05/how-to-setup-intellij-ide-war-exploded-artifact-with-multiple-cdi-dependent-projects.html</link>
       <pubDate>Fri, 29 May 2015 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2015/05/how-to-setup-intellij-ide-war-exploded-artifact-with-multiple-cdi-dependent-projects.html</guid>
       	<description>
@@ -5904,7 +5904,7 @@ I wish there is a easier way to do across all Modules for this, but at least thi
     </item>
     <item>
       <title>How to package skinny war with plain maven-war-plugin</title>
-      <link>https://zemian.github.io/blog/2015/05/how-to-package-skinny-war-with-plain-maven-war-plugin.html</link>
+      <link>http://localhost:8820/blog/2015/05/how-to-package-skinny-war-with-plain-maven-war-plugin.html</link>
       <pubDate>Fri, 22 May 2015 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2015/05/how-to-package-skinny-war-with-plain-maven-war-plugin.html</guid>
       	<description>
@@ -5924,7 +5924,7 @@ The plugin would accept a REGEX expression for exclusion as well, but getting it
     </item>
     <item>
       <title>Getting version string from a Maven based web application</title>
-      <link>https://zemian.github.io/blog/2015/05/getting-version-string-from-a-maven-based-web-application.html</link>
+      <link>http://localhost:8820/blog/2015/05/getting-version-string-from-a-maven-based-web-application.html</link>
       <pubDate>Wed, 20 May 2015 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2015/05/getting-version-string-from-a-maven-based-web-application.html</guid>
       	<description>
@@ -5945,7 +5945,7 @@ This will tell maven to jar up your classes along with the pom.properties in a s
     </item>
     <item>
       <title>NetBeans projects dependencies</title>
-      <link>https://zemian.github.io/blog/2015/05/netbeans-projects-dependencies.html</link>
+      <link>http://localhost:8820/blog/2015/05/netbeans-projects-dependencies.html</link>
       <pubDate>Wed, 13 May 2015 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2015/05/netbeans-projects-dependencies.html</guid>
       	<description>
@@ -5963,7 +5963,7 @@ It&apos;s worth to note that both Eclipse and Intellij have this feature and it&
     </item>
     <item>
       <title>How to create multiple workspaces with NetBeans</title>
-      <link>https://zemian.github.io/blog/2015/04/how-to-create-multiple-workspaces-with-netbeans.html</link>
+      <link>http://localhost:8820/blog/2015/04/how-to-create-multiple-workspaces-with-netbeans.html</link>
       <pubDate>Thu, 23 Apr 2015 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2015/04/how-to-create-multiple-workspaces-with-netbeans.html</guid>
       	<description>
@@ -5987,7 +5987,7 @@ Ref: &lt;a href=&quot;http://wiki.netbeans.org/FaqAlternateUserdir&quot;&gt;http
     </item>
     <item>
       <title>EE JSP and Servlet 3: Crafting Your Own MVC Pattern</title>
-      <link>https://zemian.github.io/blog/2015/03/ee-jsp-and-servlet-3-crafting-your-own-mvc-pattern.html</link>
+      <link>http://localhost:8820/blog/2015/03/ee-jsp-and-servlet-3-crafting-your-own-mvc-pattern.html</link>
       <pubDate>Fri, 13 Mar 2015 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2015/03/ee-jsp-and-servlet-3-crafting-your-own-mvc-pattern.html</guid>
       	<description>
@@ -6006,7 +6006,7 @@ these data and generate the desired HTML output. These are done so we may separa
     </item>
     <item>
       <title>EE CDI: Better Backend Service Management through Automatic Service Injection</title>
-      <link>https://zemian.github.io/blog/2015/02/ee-cdi-better-backend-service-management-through-automatic-service-injection.html</link>
+      <link>http://localhost:8820/blog/2015/02/ee-cdi-better-backend-service-management-through-automatic-service-injection.html</link>
       <pubDate>Mon, 9 Feb 2015 00:00:00 -0500</pubDate>
       <guid isPermaLink="false">blog/2015/02/ee-cdi-better-backend-service-management-through-automatic-service-injection.html</guid>
       	<description>
@@ -6058,7 +6058,7 @@ With CDI available, you will quickly appreciate the power and simplicity of the 
     </item>
     <item>
       <title>EE JSP: Generating Dynamic Content with JSTL Tag Libraries</title>
-      <link>https://zemian.github.io/blog/2015/02/ee-jsp-generating-dynamic-content-with-jstl-tag-libraries.html</link>
+      <link>http://localhost:8820/blog/2015/02/ee-jsp-generating-dynamic-content-with-jstl-tag-libraries.html</link>
       <pubDate>Fri, 6 Feb 2015 00:00:00 -0500</pubDate>
       <guid isPermaLink="false">blog/2015/02/ee-jsp-generating-dynamic-content-with-jstl-tag-libraries.html</guid>
       	<description>
@@ -6076,7 +6076,7 @@ GLASSFISH NOTE: When deploying above example in GlassFish 3/4, you will run into
     </item>
     <item>
       <title>EE JSP: Generating Dynamic Content with Custom Tag Libraries</title>
-      <link>https://zemian.github.io/blog/2015/02/ee-jsp-generating-dynamic-content-with-custom-tag-libraries.html</link>
+      <link>http://localhost:8820/blog/2015/02/ee-jsp-generating-dynamic-content-with-custom-tag-libraries.html</link>
       <pubDate>Mon, 2 Feb 2015 00:00:00 -0500</pubDate>
       <guid isPermaLink="false">blog/2015/02/ee-jsp-generating-dynamic-content-with-custom-tag-libraries.html</guid>
       	<description>
@@ -6106,7 +6106,7 @@ JSP tags provide a powerful way to construct your View layer in the web applicat
     </item>
     <item>
       <title>EE JSP: The Reversed Jacket of Servlet</title>
-      <link>https://zemian.github.io/blog/2015/01/ee-jsp-the-reversed-jacket-of-servlet.html</link>
+      <link>http://localhost:8820/blog/2015/01/ee-jsp-the-reversed-jacket-of-servlet.html</link>
       <pubDate>Sun, 25 Jan 2015 00:00:00 -0500</pubDate>
       <guid isPermaLink="false">blog/2015/01/ee-jsp-the-reversed-jacket-of-servlet.html</guid>
       	<description>
@@ -6155,7 +6155,7 @@ You can find above code in my &lt;a href=&quot;https://github.com/saltnlight5/ja
     </item>
     <item>
       <title>EE Servlet 3: Developing User Login with Session and Filter</title>
-      <link>https://zemian.github.io/blog/2015/01/ee-servlet-3-developing-user-login-with-session-and-filter.html</link>
+      <link>http://localhost:8820/blog/2015/01/ee-servlet-3-developing-user-login-with-session-and-filter.html</link>
       <pubDate>Fri, 16 Jan 2015 00:00:00 -0500</pubDate>
       <guid isPermaLink="false">blog/2015/01/ee-servlet-3-developing-user-login-with-session-and-filter.html</guid>
       	<description>
@@ -6190,7 +6190,7 @@ If you are to run my &lt;a href=&quot;https://github.com/saltnlight5/java-ee6-ex
     </item>
     <item>
       <title>EE Servlet 3: How to Setup Backend Services in a Web Application</title>
-      <link>https://zemian.github.io/blog/2015/01/ee-servlet-3-how-to-setup-backend-services-in-a-web-application.html</link>
+      <link>http://localhost:8820/blog/2015/01/ee-servlet-3-how-to-setup-backend-services-in-a-web-application.html</link>
       <pubDate>Fri, 9 Jan 2015 00:00:00 -0500</pubDate>
       <guid isPermaLink="false">blog/2015/01/ee-servlet-3-how-to-setup-backend-services-in-a-web-application.html</guid>
       	<description>
@@ -6222,7 +6222,7 @@ NOTE: Try to use&amp;nbsp;&lt;span style=&quot;font-family: &apos;Courier New&ap
     </item>
     <item>
       <title>EE Servlet 3: Simple Form Processing</title>
-      <link>https://zemian.github.io/blog/2015/01/ee-servlet-3-simple-form-processing.html</link>
+      <link>http://localhost:8820/blog/2015/01/ee-servlet-3-simple-form-processing.html</link>
       <pubDate>Tue, 6 Jan 2015 00:00:00 -0500</pubDate>
       <guid isPermaLink="false">blog/2015/01/ee-servlet-3-simple-form-processing.html</guid>
       	<description>
@@ -6247,7 +6247,7 @@ For my example purpose I am trying to focus on EE API alone, so I will stay away
     </item>
     <item>
       <title>EE Serlvet 3: Generating HTML output in Servlet</title>
-      <link>https://zemian.github.io/blog/2015/01/ee-serlvet-3-generating-html-output-in-servlet.html</link>
+      <link>http://localhost:8820/blog/2015/01/ee-serlvet-3-generating-html-output-in-servlet.html</link>
       <pubDate>Thu, 1 Jan 2015 00:00:00 -0500</pubDate>
       <guid isPermaLink="false">blog/2015/01/ee-serlvet-3-generating-html-output-in-servlet.html</guid>
       	<description>
@@ -6275,7 +6275,7 @@ You can get these code at &lt;a href=&quot;https://github.com/saltnlight5/java-e
     </item>
     <item>
       <title>EE Servlet 3: Getting started with web application module and a landing page</title>
-      <link>https://zemian.github.io/blog/2014/12/ee-servlet-3-getting-started-with-web-application-module-and-a-landing-page.html</link>
+      <link>http://localhost:8820/blog/2014/12/ee-servlet-3-getting-started-with-web-application-module-and-a-landing-page.html</link>
       <pubDate>Sat, 27 Dec 2014 00:00:00 -0500</pubDate>
       <guid isPermaLink="false">blog/2014/12/ee-servlet-3-getting-started-with-web-application-module-and-a-landing-page.html</guid>
       	<description>
@@ -6319,7 +6319,7 @@ Another alternate solution instead of overrite welcome-file is simply add a &quo
     </item>
     <item>
       <title>Developing Java EE applications with Maven, NetBeans and Glassfish</title>
-      <link>https://zemian.github.io/blog/2014/12/developing-java-ee-applications-with-maven%2C-netbeans-and-glassfish.html</link>
+      <link>http://localhost:8820/blog/2014/12/developing-java-ee-applications-with-maven%2C-netbeans-and-glassfish.html</link>
       <pubDate>Sun, 21 Dec 2014 00:00:00 -0500</pubDate>
       <guid isPermaLink="false">blog/2014/12/developing-java-ee-applications-with-maven%2C-netbeans-and-glassfish.html</guid>
       	<description>
@@ -6353,7 +6353,7 @@ References:&lt;br /&gt;
     </item>
     <item>
       <title>Writing your own logging service?</title>
-      <link>https://zemian.github.io/blog/2014/12/writing-your-own-logging-service%3F.html</link>
+      <link>http://localhost:8820/blog/2014/12/writing-your-own-logging-service%3F.html</link>
       <pubDate>Sat, 13 Dec 2014 00:00:00 -0500</pubDate>
       <guid isPermaLink="false">blog/2014/12/writing-your-own-logging-service%3F.html</guid>
       	<description>
@@ -6391,7 +6391,7 @@ Here are some general rules about using logger in your application that I recomm
     </item>
     <item>
       <title>Getting started with Glassfish Server and Setting up SLF4J logging</title>
-      <link>https://zemian.github.io/blog/2014/12/getting-started-with-glassfish-server-and-setting-up-slf4j-logging.html</link>
+      <link>http://localhost:8820/blog/2014/12/getting-started-with-glassfish-server-and-setting-up-slf4j-logging.html</link>
       <pubDate>Wed, 10 Dec 2014 00:00:00 -0500</pubDate>
       <guid isPermaLink="false">blog/2014/12/getting-started-with-glassfish-server-and-setting-up-slf4j-logging.html</guid>
       	<description>
@@ -6447,7 +6447,7 @@ Web applications is http://localhost:8080
     </item>
     <item>
       <title>How to secure a web application by the app server container</title>
-      <link>https://zemian.github.io/blog/2014/12/how-to-secure-a-web-application-by-the-app-server-container.html</link>
+      <link>http://localhost:8820/blog/2014/12/how-to-secure-a-web-application-by-the-app-server-container.html</link>
       <pubDate>Mon, 1 Dec 2014 00:00:00 -0500</pubDate>
       <guid isPermaLink="false">blog/2014/12/how-to-secure-a-web-application-by-the-app-server-container.html</guid>
       	<description>
@@ -6474,7 +6474,7 @@ You can find out more security info at &lt;a href=&quot;https://docs.oracle.com/
     </item>
     <item>
       <title>How to use SSH tunneling to get to your restricted servers</title>
-      <link>https://zemian.github.io/blog/2014/11/how-to-use-ssh-tunneling-to-get-to-your-restricted-servers.html</link>
+      <link>http://localhost:8820/blog/2014/11/how-to-use-ssh-tunneling-to-get-to-your-restricted-servers.html</link>
       <pubDate>Sat, 1 Nov 2014 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2014/11/how-to-use-ssh-tunneling-to-get-to-your-restricted-servers.html</guid>
       	<description>
@@ -6501,7 +6501,7 @@ This is a cool technique to get around a secured environment.&lt;br /&gt;
     </item>
     <item>
       <title>How to setup custom SSLSocketFactory&apos;s TrustManager per each URL connection</title>
-      <link>https://zemian.github.io/blog/2014/10/how-to-setup-custom-sslsocketfactorys-trustmanager-per-each-url-connection.html</link>
+      <link>http://localhost:8820/blog/2014/10/how-to-setup-custom-sslsocketfactorys-trustmanager-per-each-url-connection.html</link>
       <pubDate>Tue, 28 Oct 2014 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2014/10/how-to-setup-custom-sslsocketfactorys-trustmanager-per-each-url-connection.html</guid>
       	<description>
@@ -6618,7 +6618,7 @@ To complete this article, I will provide a simple working example that demonstra
     </item>
     <item>
       <title>How Servlet and JSP create sessions</title>
-      <link>https://zemian.github.io/blog/2014/10/how-servlet-and-jsp-create-sessions.html</link>
+      <link>http://localhost:8820/blog/2014/10/how-servlet-and-jsp-create-sessions.html</link>
       <pubDate>Sun, 26 Oct 2014 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2014/10/how-servlet-and-jsp-create-sessions.html</guid>
       	<description>
@@ -6641,7 +6641,7 @@ Only with this you will able to actually prevent creation of unnecessary Session
     </item>
     <item>
       <title>Poking around your REST application with a scriptable endpoint</title>
-      <link>https://zemian.github.io/blog/2014/10/poking-around-your-rest-application-with-a-scriptable-endpoint.html</link>
+      <link>http://localhost:8820/blog/2014/10/poking-around-your-rest-application-with-a-scriptable-endpoint.html</link>
       <pubDate>Fri, 17 Oct 2014 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2014/10/poking-around-your-rest-application-with-a-scriptable-endpoint.html</guid>
       	<description>
@@ -6664,7 +6664,7 @@ UPDATES (12/8/2014) &lt;br /&gt;
     </item>
     <item>
       <title>Book Review: Apache Camel Developer&apos;s Cookbook</title>
-      <link>https://zemian.github.io/blog/2014/09/book-review-apache-camel-developers-cookbook.html</link>
+      <link>http://localhost:8820/blog/2014/09/book-review-apache-camel-developers-cookbook.html</link>
       <pubDate>Sat, 13 Sep 2014 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2014/09/book-review-apache-camel-developers-cookbook.html</guid>
       	<description>
@@ -7041,7 +7041,7 @@ would recommend you to check out this book.&lt;/div&gt;
     </item>
     <item>
       <title>Django with Python 3 and MySQL database</title>
-      <link>https://zemian.github.io/blog/2014/09/django-with-python-3-and-mysql-database.html</link>
+      <link>http://localhost:8820/blog/2014/09/django-with-python-3-and-mysql-database.html</link>
       <pubDate>Thu, 4 Sep 2014 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2014/09/django-with-python-3-and-mysql-database.html</guid>
       	<description>
@@ -7071,7 +7071,7 @@ The django 1.8 documentation now recommends using &apos;mysqlclient&apos; packag
     </item>
     <item>
       <title>Deploying applications or libraries to WebLogic Server using command line</title>
-      <link>https://zemian.github.io/blog/2014/08/deploying-applications-or-libraries-to-weblogic-server-using-command-line.html</link>
+      <link>http://localhost:8820/blog/2014/08/deploying-applications-or-libraries-to-weblogic-server-using-command-line.html</link>
       <pubDate>Wed, 20 Aug 2014 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2014/08/deploying-applications-or-libraries-to-weblogic-server-using-command-line.html</guid>
       	<description>
@@ -7095,7 +7095,7 @@ For undeploy the command line options are same for library or app but with match
     </item>
     <item>
       <title>WebLogic shared library deployment</title>
-      <link>https://zemian.github.io/blog/2014/08/weblogic-shared-library-deployment.html</link>
+      <link>http://localhost:8820/blog/2014/08/weblogic-shared-library-deployment.html</link>
       <pubDate>Tue, 19 Aug 2014 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2014/08/weblogic-shared-library-deployment.html</guid>
       	<description>
@@ -7125,7 +7125,7 @@ NOTE: Ensure you select at least one, and the same Target servers where you depl
     </item>
     <item>
       <title>Getting django started on Windows 7 with python 3 and MySQL 5.6</title>
-      <link>https://zemian.github.io/blog/2014/06/getting-django-started-on-windows-7-with-python-3-and-mysql-5-6.html</link>
+      <link>http://localhost:8820/blog/2014/06/getting-django-started-on-windows-7-with-python-3-and-mysql-5-6.html</link>
       <pubDate>Wed, 18 Jun 2014 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2014/06/getting-django-started-on-windows-7-with-python-3-and-mysql-5-6.html</guid>
       	<description>
@@ -7179,7 +7179,7 @@ References:&lt;br /&gt;
     </item>
     <item>
       <title>Getting Django setup on Windows</title>
-      <link>https://zemian.github.io/blog/2014/06/getting-django-setup-on-windows.html</link>
+      <link>http://localhost:8820/blog/2014/06/getting-django-setup-on-windows.html</link>
       <pubDate>Wed, 18 Jun 2014 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2014/06/getting-django-setup-on-windows.html</guid>
       	<description>
@@ -7204,7 +7204,7 @@ What&apos;s next?&lt;br /&gt;
     </item>
     <item>
       <title>How to initialize a new MySQL installation and create new database</title>
-      <link>https://zemian.github.io/blog/2014/06/how-to-initialize-a-new-mysql-installation-and-create-new-database.html</link>
+      <link>http://localhost:8820/blog/2014/06/how-to-initialize-a-new-mysql-installation-and-create-new-database.html</link>
       <pubDate>Wed, 11 Jun 2014 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2014/06/how-to-initialize-a-new-mysql-installation-and-create-new-database.html</guid>
       	<description>
@@ -7245,7 +7245,7 @@ Here are more notes to replace/upgrade existing mysql server and install to init
     </item>
     <item>
       <title>Using crontab to startup service</title>
-      <link>https://zemian.github.io/blog/2014/06/using-crontab-to-startup-service.html</link>
+      <link>http://localhost:8820/blog/2014/06/using-crontab-to-startup-service.html</link>
       <pubDate>Sun, 8 Jun 2014 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2014/06/using-crontab-to-startup-service.html</guid>
       	<description>
@@ -7261,7 +7261,7 @@ The disadvantage of this vs the rc.d scripts are you do not have control on when
     </item>
     <item>
       <title>A simple cron wrapper script with logging</title>
-      <link>https://zemian.github.io/blog/2014/06/a-simple-cron-wrapper-script-with-logging.html</link>
+      <link>http://localhost:8820/blog/2014/06/a-simple-cron-wrapper-script-with-logging.html</link>
       <pubDate>Wed, 4 Jun 2014 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2014/06/a-simple-cron-wrapper-script-with-logging.html</guid>
       	<description>
@@ -7286,7 +7286,7 @@ Now in the crontab file, you may run the job script like this:&lt;br /&gt;
     </item>
     <item>
       <title>A simple MySQL daily backup script</title>
-      <link>https://zemian.github.io/blog/2014/06/a-simple-mysql-daily-backup-script.html</link>
+      <link>http://localhost:8820/blog/2014/06/a-simple-mysql-daily-backup-script.html</link>
       <pubDate>Tue, 3 Jun 2014 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2014/06/a-simple-mysql-daily-backup-script.html</guid>
       	<description>
@@ -7309,7 +7309,7 @@ This is not the most robust way of backing up your DB, but it&apos;s a simple so
     </item>
     <item>
       <title>How to export and import MySQL database</title>
-      <link>https://zemian.github.io/blog/2014/05/how-to-export-and-import-mysql-database.html</link>
+      <link>http://localhost:8820/blog/2014/05/how-to-export-and-import-mysql-database.html</link>
       <pubDate>Fri, 30 May 2014 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2014/05/how-to-export-and-import-mysql-database.html</guid>
       	<description>
@@ -7350,7 +7350,7 @@ You can vote the issue here: &lt;a href=&quot;http://bugs.mysql.com/bug.php?id=2
     </item>
     <item>
       <title>How to enable MySQL query monitoring</title>
-      <link>https://zemian.github.io/blog/2014/04/how-to-enable-mysql-query-monitoring.html</link>
+      <link>http://localhost:8820/blog/2014/04/how-to-enable-mysql-query-monitoring.html</link>
       <pubDate>Wed, 16 Apr 2014 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2014/04/how-to-enable-mysql-query-monitoring.html</guid>
       	<description>
@@ -7365,7 +7365,7 @@ You also need to restart the database server after these changes.
     </item>
     <item>
       <title>Be careful with Java Path.endsWith(String) usage</title>
-      <link>https://zemian.github.io/blog/2014/04/be-careful-with-java-path-endswithstring-usage.html</link>
+      <link>http://localhost:8820/blog/2014/04/be-careful-with-java-path-endswithstring-usage.html</link>
       <pubDate>Tue, 15 Apr 2014 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2014/04/be-careful-with-java-path-endswithstring-usage.html</guid>
       	<description>
@@ -7384,7 +7384,7 @@ With out the &quot;&lt;b&gt;&lt;span style=&quot;font-family: Courier New, Couri
     </item>
     <item>
       <title>How to disable MySQL case sensitive with table names in queries</title>
-      <link>https://zemian.github.io/blog/2014/04/how-to-disable-mysql-case-sensitive-with-table-names-in-queries.html</link>
+      <link>http://localhost:8820/blog/2014/04/how-to-disable-mysql-case-sensitive-with-table-names-in-queries.html</link>
       <pubDate>Sun, 13 Apr 2014 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2014/04/how-to-disable-mysql-case-sensitive-with-table-names-in-queries.html</guid>
       	<description>
@@ -7398,7 +7398,7 @@ At the end of the file, add this line:&lt;br /&gt;
     </item>
     <item>
       <title>How to setup remote debug with WebLogic Server and Eclipse</title>
-      <link>https://zemian.github.io/blog/2014/04/how-to-setup-remote-debug-with-weblogic-server-and-eclipse.html</link>
+      <link>http://localhost:8820/blog/2014/04/how-to-setup-remote-debug-with-weblogic-server-and-eclipse.html</link>
       <pubDate>Mon, 7 Apr 2014 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2014/04/how-to-setup-remote-debug-with-weblogic-server-and-eclipse.html</guid>
       	<description>
@@ -7438,7 +7438,7 @@ Now you can start managed server like this to change the port in a Bash shell by
     </item>
     <item>
       <title>Try Java8 online!</title>
-      <link>https://zemian.github.io/blog/2014/04/try-java8-online%21.html</link>
+      <link>http://localhost:8820/blog/2014/04/try-java8-online%21.html</link>
       <pubDate>Sun, 6 Apr 2014 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2014/04/try-java8-online%21.html</guid>
       	<description>
@@ -7449,7 +7449,7 @@ Now you can start managed server like this to change the port in a Bash shell by
     </item>
     <item>
       <title>Creating your own loop structure in Java 8 lambda</title>
-      <link>https://zemian.github.io/blog/2014/04/creating-your-own-loop-structure-in-java-8-lambda.html</link>
+      <link>http://localhost:8820/blog/2014/04/creating-your-own-loop-structure-in-java-8-lambda.html</link>
       <pubDate>Fri, 4 Apr 2014 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2014/04/creating-your-own-loop-structure-in-java-8-lambda.html</guid>
       	<description>
@@ -7472,7 +7472,7 @@ Hum....&lt;br /&gt;
     </item>
     <item>
       <title>How to reset WebLogic admin server password</title>
-      <link>https://zemian.github.io/blog/2014/04/how-to-reset-weblogic-admin-server-password.html</link>
+      <link>http://localhost:8820/blog/2014/04/how-to-reset-weblogic-admin-server-password.html</link>
       <pubDate>Wed, 2 Apr 2014 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2014/04/how-to-reset-weblogic-admin-server-password.html</guid>
       	<description>
@@ -7488,7 +7488,7 @@ mv security/DefaultAuthenticatorInit.ldift security/DefaultAuthenticatorInit.ldi
     </item>
     <item>
       <title>How to process stream and read text file in Java 8</title>
-      <link>https://zemian.github.io/blog/2014/03/how-to-process-stream-and-read-text-file-in-java-8.html</link>
+      <link>http://localhost:8820/blog/2014/03/how-to-process-stream-and-read-text-file-in-java-8.html</link>
       <pubDate>Mon, 31 Mar 2014 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2014/03/how-to-process-stream-and-read-text-file-in-java-8.html</guid>
       	<description>
@@ -7500,7 +7500,7 @@ mv security/DefaultAuthenticatorInit.ldift security/DefaultAuthenticatorInit.ldi
     </item>
     <item>
       <title>How to create WebLogic Persistent JDBCStore</title>
-      <link>https://zemian.github.io/blog/2014/03/how-to-create-weblogic-persistent-jdbcstore.html</link>
+      <link>http://localhost:8820/blog/2014/03/how-to-create-weblogic-persistent-jdbcstore.html</link>
       <pubDate>Wed, 26 Mar 2014 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2014/03/how-to-create-weblogic-persistent-jdbcstore.html</guid>
       	<description>
@@ -7517,7 +7517,7 @@ Exmaple of JDBCStore using that Non-XA DataSource: &lt;br /&gt;
     </item>
     <item>
       <title>How to use NodeManager to control WebLogic Servers</title>
-      <link>https://zemian.github.io/blog/2014/03/how-to-use-nodemanager-to-control-weblogic-servers.html</link>
+      <link>http://localhost:8820/blog/2014/03/how-to-use-nodemanager-to-control-weblogic-servers.html</link>
       <pubDate>Fri, 21 Mar 2014 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2014/03/how-to-use-nodemanager-to-control-weblogic-servers.html</guid>
       	<description>
@@ -7550,7 +7550,7 @@ TIPS3: If you want to explore Windows version of NodeManager, you may want to st
     </item>
     <item>
       <title>Java 8 is out!</title>
-      <link>https://zemian.github.io/blog/2014/03/java-8-is-out%21.html</link>
+      <link>http://localhost:8820/blog/2014/03/java-8-is-out%21.html</link>
       <pubDate>Wed, 19 Mar 2014 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2014/03/java-8-is-out%21.html</guid>
       	<description>
@@ -7571,7 +7571,7 @@ You can learn more from here: http://docs.oracle.com/javase/tutorial/java/javaOO
     </item>
     <item>
       <title>How to workaround WebLogic terminalio not found error</title>
-      <link>https://zemian.github.io/blog/2014/03/how-to-workaround-weblogic-terminalio-not-found-error.html</link>
+      <link>http://localhost:8820/blog/2014/03/how-to-workaround-weblogic-terminalio-not-found-error.html</link>
       <pubDate>Tue, 18 Mar 2014 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2014/03/how-to-workaround-weblogic-terminalio-not-found-error.html</guid>
       	<description>
@@ -7588,7 +7588,7 @@ Ref: https://community.oracle.com/thread/934173
     </item>
     <item>
       <title>How to monitor multiple JVM&apos;s on a server with VisualVM</title>
-      <link>https://zemian.github.io/blog/2014/03/how-to-monitor-multiple-jvms-on-a-server-with-visualvm.html</link>
+      <link>http://localhost:8820/blog/2014/03/how-to-monitor-multiple-jvms-on-a-server-with-visualvm.html</link>
       <pubDate>Sat, 15 Mar 2014 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2014/03/how-to-monitor-multiple-jvms-on-a-server-with-visualvm.html</guid>
       	<description>
@@ -7612,7 +7612,7 @@ Here is an example of how it looks like:&lt;br /&gt;
     </item>
     <item>
       <title>How to start multiple WebLogic managed servers</title>
-      <link>https://zemian.github.io/blog/2014/03/how-to-start-multiple-weblogic-managed-servers.html</link>
+      <link>http://localhost:8820/blog/2014/03/how-to-start-multiple-weblogic-managed-servers.html</link>
       <pubDate>Tue, 11 Mar 2014 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2014/03/how-to-start-multiple-weblogic-managed-servers.html</guid>
       	<description>
@@ -7637,7 +7637,7 @@ Now you have one managed server started along with your admin server. After this
     </item>
     <item>
       <title>How to create MySQL DataSource in WebLogic Server</title>
-      <link>https://zemian.github.io/blog/2014/03/how-to-create-mysql-datasource-in-weblogic-server.html</link>
+      <link>http://localhost:8820/blog/2014/03/how-to-create-mysql-datasource-in-weblogic-server.html</link>
       <pubDate>Sat, 8 Mar 2014 00:00:00 -0500</pubDate>
       <guid isPermaLink="false">blog/2014/03/how-to-create-mysql-datasource-in-weblogic-server.html</guid>
       	<description>
@@ -7660,7 +7660,7 @@ TIPS: If you do not pick a server Target in step 8, then your applicatoin will N
     </item>
     <item>
       <title>Quick project sharing with hg over ssh</title>
-      <link>https://zemian.github.io/blog/2014/03/quick-project-sharing-with-hg-over-ssh.html</link>
+      <link>http://localhost:8820/blog/2014/03/quick-project-sharing-with-hg-over-ssh.html</link>
       <pubDate>Tue, 4 Mar 2014 00:00:00 -0500</pubDate>
       <guid isPermaLink="false">blog/2014/03/quick-project-sharing-with-hg-over-ssh.html</guid>
       	<description>
@@ -7683,7 +7683,7 @@ TIPS: If you do not place your &quot;repo/myproject&quot; directory under your $
     </item>
     <item>
       <title>WebLogic Classloader Analysis Tool</title>
-      <link>https://zemian.github.io/blog/2014/03/weblogic-classloader-analysis-tool.html</link>
+      <link>http://localhost:8820/blog/2014/03/weblogic-classloader-analysis-tool.html</link>
       <pubDate>Mon, 3 Mar 2014 00:00:00 -0500</pubDate>
       <guid isPermaLink="false">blog/2014/03/weblogic-classloader-analysis-tool.html</guid>
       	<description>
@@ -7705,7 +7705,7 @@ You may read more about this tool and related material here: &lt;a href=&quot;ht
     </item>
     <item>
       <title>Generating a war file from a plain IntelliJ web project</title>
-      <link>https://zemian.github.io/blog/2014/02/generating-a-war-file-from-a-plain-intellij-web-project.html</link>
+      <link>http://localhost:8820/blog/2014/02/generating-a-war-file-from-a-plain-intellij-web-project.html</link>
       <pubDate>Tue, 25 Feb 2014 00:00:00 -0500</pubDate>
       <guid isPermaLink="false">blog/2014/02/generating-a-war-file-from-a-plain-intellij-web-project.html</guid>
       	<description>
@@ -7725,7 +7725,7 @@ Note that IntelliJ also allows you to setup &quot;Web Application: Exploded&quot
     </item>
     <item>
       <title>Developing Java EE applications with Maven and WebLogic 12c</title>
-      <link>https://zemian.github.io/blog/2014/02/developing-java-ee-applications-with-maven-and-weblogic-12c.html</link>
+      <link>http://localhost:8820/blog/2014/02/developing-java-ee-applications-with-maven-and-weblogic-12c.html</link>
       <pubDate>Fri, 21 Feb 2014 00:00:00 -0500</pubDate>
       <guid isPermaLink="false">blog/2014/02/developing-java-ee-applications-with-maven-and-weblogic-12c.html</guid>
       	<description>
@@ -7846,7 +7846,7 @@ Revisit the WLS doc again and you will find that they also provide other project
     </item>
     <item>
       <title>Using Intellij IDEA 12 for WebLogic Server 12c</title>
-      <link>https://zemian.github.io/blog/2014/02/using-intellij-idea-12-for-weblogic-server-12c.html</link>
+      <link>http://localhost:8820/blog/2014/02/using-intellij-idea-12-for-weblogic-server-12c.html</link>
       <pubDate>Sat, 1 Feb 2014 00:00:00 -0500</pubDate>
       <guid isPermaLink="false">blog/2014/02/using-intellij-idea-12-for-weblogic-server-12c.html</guid>
       	<description>
@@ -7862,7 +7862,7 @@ I have learned this from reading the IntelliJ forum. Also note that the latest I
     </item>
     <item>
       <title>Getting started with Intellij IDEA and WebLogic Server</title>
-      <link>https://zemian.github.io/blog/2014/01/getting-started-with-intellij-idea-and-weblogic-server.html</link>
+      <link>http://localhost:8820/blog/2014/01/getting-started-with-intellij-idea-and-weblogic-server.html</link>
       <pubDate>Fri, 31 Jan 2014 00:00:00 -0500</pubDate>
       <guid isPermaLink="false">blog/2014/01/getting-started-with-intellij-idea-and-weblogic-server.html</guid>
       	<description>
@@ -7906,7 +7906,7 @@ NOTE: As noted in previous blog, if you do not set MW_HOME as system variable, t
     </item>
     <item>
       <title>Getting started with WebLogic Server</title>
-      <link>https://zemian.github.io/blog/2014/01/getting-started-with-weblogic-server.html</link>
+      <link>http://localhost:8820/blog/2014/01/getting-started-with-weblogic-server.html</link>
       <pubDate>Thu, 30 Jan 2014 00:00:00 -0500</pubDate>
       <guid isPermaLink="false">blog/2014/01/getting-started-with-weblogic-server.html</guid>
       	<description>
@@ -7939,7 +7939,7 @@ TIPS5: The default admin server listening port is 7001. To change this, use: &lt
     </item>
     <item>
       <title>Exploring Spring Controller with Spring Form Tag</title>
-      <link>https://zemian.github.io/blog/2013/10/exploring-spring-controller-with-spring-form-tag.html</link>
+      <link>http://localhost:8820/blog/2013/10/exploring-spring-controller-with-spring-form-tag.html</link>
       <pubDate>Tue, 29 Oct 2013 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2013/10/exploring-spring-controller-with-spring-form-tag.html</guid>
       	<description>
@@ -8043,7 +8043,7 @@ public class CommentController {
     </item>
     <item>
       <title>Exploring Spring Controller with JSTL view</title>
-      <link>https://zemian.github.io/blog/2013/10/exploring-spring-controller-with-jstl-view.html</link>
+      <link>http://localhost:8820/blog/2013/10/exploring-spring-controller-with-jstl-view.html</link>
       <pubDate>Wed, 16 Oct 2013 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2013/10/exploring-spring-controller-with-jstl-view.html</guid>
       	<description>
@@ -8447,7 +8447,7 @@ public class CommentController {
     </item>
     <item>
       <title>Getting started with Spring JDBC in a web application</title>
-      <link>https://zemian.github.io/blog/2013/10/getting-started-with-spring-jdbc-in-a-web-application.html</link>
+      <link>http://localhost:8820/blog/2013/10/getting-started-with-spring-jdbc-in-a-web-application.html</link>
       <pubDate>Wed, 9 Oct 2013 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2013/10/getting-started-with-spring-jdbc-in-a-web-application.html</guid>
       	<description>
@@ -8722,7 +8722,7 @@ public class PingController {
     </item>
     <item>
       <title>Getting started with annotation based Spring MVC web application</title>
-      <link>https://zemian.github.io/blog/2013/10/getting-started-with-annotation-based-spring-mvc-web-application.html</link>
+      <link>http://localhost:8820/blog/2013/10/getting-started-with-annotation-based-spring-mvc-web-application.html</link>
       <pubDate>Fri, 4 Oct 2013 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2013/10/getting-started-with-annotation-based-spring-mvc-web-application.html</guid>
       	<description>
@@ -8850,7 +8850,7 @@ public class IndexController {
     </item>
     <item>
       <title>The Apache Camel 2.12.0 has been released!</title>
-      <link>https://zemian.github.io/blog/2013/09/the-apache-camel-2-12-0-has-been-released%21.html</link>
+      <link>http://localhost:8820/blog/2013/09/the-apache-camel-2-12-0-has-been-released%21.html</link>
       <pubDate>Tue, 10 Sep 2013 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2013/09/the-apache-camel-2-12-0-has-been-released%21.html</guid>
       	<description>
@@ -8878,7 +8878,7 @@ public class IndexController {
     </item>
     <item>
       <title>Exploring Apache Camel Core - Seda Component</title>
-      <link>https://zemian.github.io/blog/2013/09/exploring-apache-camel-core---seda-component.html</link>
+      <link>http://localhost:8820/blog/2013/09/exploring-apache-camel-core---seda-component.html</link>
       <pubDate>Sun, 8 Sep 2013 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2013/09/exploring-apache-camel-core---seda-component.html</guid>
       	<description>
@@ -9002,7 +9002,7 @@ and see it for yourself.&lt;/p&gt;
     </item>
     <item>
       <title>Exploring Apache Camel Core - Direct Component</title>
-      <link>https://zemian.github.io/blog/2013/09/exploring-apache-camel-core---direct-component.html</link>
+      <link>http://localhost:8820/blog/2013/09/exploring-apache-camel-core---direct-component.html</link>
       <pubDate>Sat, 7 Sep 2013 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2013/09/exploring-apache-camel-core---direct-component.html</guid>
       	<description>
@@ -9100,7 +9100,7 @@ and see it for yourself.&lt;/p&gt;
     </item>
     <item>
       <title>Exploring Apache Camel Core - File Component</title>
-      <link>https://zemian.github.io/blog/2013/09/exploring-apache-camel-core---file-component.html</link>
+      <link>http://localhost:8820/blog/2013/09/exploring-apache-camel-core---file-component.html</link>
       <pubDate>Wed, 4 Sep 2013 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2013/09/exploring-apache-camel-core---file-component.html</guid>
       	<description>
@@ -9321,7 +9321,7 @@ and see it for yourself.&lt;/p&gt;
     </item>
     <item>
       <title>Exploring Apache Camel Core - DataSet Component</title>
-      <link>https://zemian.github.io/blog/2013/09/exploring-apache-camel-core---dataset-component.html</link>
+      <link>http://localhost:8820/blog/2013/09/exploring-apache-camel-core---dataset-component.html</link>
       <pubDate>Tue, 3 Sep 2013 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2013/09/exploring-apache-camel-core---dataset-component.html</guid>
       	<description>
@@ -9439,7 +9439,7 @@ and see it for yourself.&lt;/p&gt;
     </item>
     <item>
       <title>Exploring Apache Camel Core - Log Component</title>
-      <link>https://zemian.github.io/blog/2013/09/exploring-apache-camel-core---log-component.html</link>
+      <link>http://localhost:8820/blog/2013/09/exploring-apache-camel-core---log-component.html</link>
       <pubDate>Mon, 2 Sep 2013 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2013/09/exploring-apache-camel-core---log-component.html</guid>
       	<description>
@@ -9583,7 +9583,7 @@ and see it for yourself.&lt;/p&gt;
     </item>
     <item>
       <title>Exploring Apache Camel Core - Timer Component</title>
-      <link>https://zemian.github.io/blog/2013/09/exploring-apache-camel-core---timer-component.html</link>
+      <link>http://localhost:8820/blog/2013/09/exploring-apache-camel-core---timer-component.html</link>
       <pubDate>Sun, 1 Sep 2013 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2013/09/exploring-apache-camel-core---timer-component.html</guid>
       	<description>
@@ -9640,7 +9640,7 @@ and see it for yourself.&lt;/p&gt;
     </item>
     <item>
       <title>Running Maven war packaging project without pom config</title>
-      <link>https://zemian.github.io/blog/2013/08/running-maven-war-packaging-project-without-pom-config.html</link>
+      <link>http://localhost:8820/blog/2013/08/running-maven-war-packaging-project-without-pom-config.html</link>
       <pubDate>Tue, 27 Aug 2013 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2013/08/running-maven-war-packaging-project-without-pom-config.html</guid>
       	<description>
@@ -9680,7 +9680,7 @@ and see it for yourself.&lt;/p&gt;
     </item>
     <item>
       <title>How to create web-app with Quartz Scheduler and logging</title>
-      <link>https://zemian.github.io/blog/2013/08/how-to-create-web-app-with-quartz-scheduler-and-logging.html</link>
+      <link>http://localhost:8820/blog/2013/08/how-to-create-web-app-with-quartz-scheduler-and-logging.html</link>
       <pubDate>Sun, 25 Aug 2013 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2013/08/how-to-create-web-app-with-quartz-scheduler-and-logging.html</guid>
       	<description>
@@ -9862,7 +9862,7 @@ own Servlet like this:&lt;/p&gt;
     </item>
     <item>
       <title>MySchedule-3.2.1.0 is out!</title>
-      <link>https://zemian.github.io/blog/2013/08/myschedule-3-2-1-0-is-out%21.html</link>
+      <link>http://localhost:8820/blog/2013/08/myschedule-3-2-1-0-is-out%21.html</link>
       <pubDate>Fri, 23 Aug 2013 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2013/08/myschedule-3-2-1-0-is-out%21.html</guid>
       	<description>
@@ -9889,7 +9889,7 @@ own Servlet like this:&lt;/p&gt;
     </item>
     <item>
       <title>Getting started with Apache Camel using Java</title>
-      <link>https://zemian.github.io/blog/2013/08/getting-started-with-apache-camel-using-java.html</link>
+      <link>http://localhost:8820/blog/2013/08/getting-started-with-apache-camel-using-java.html</link>
       <pubDate>Tue, 20 Aug 2013 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2013/08/getting-started-with-apache-camel-using-java.html</guid>
       	<description>
@@ -10267,7 +10267,7 @@ components out of it&amp;#8217;s core jar.&lt;/p&gt;
     </item>
     <item>
       <title>How to configure SLF4J with different logger implementations</title>
-      <link>https://zemian.github.io/blog/2013/08/how-to-configure-slf4j-with-different-logger-implementations.html</link>
+      <link>http://localhost:8820/blog/2013/08/how-to-configure-slf4j-with-different-logger-implementations.html</link>
       <pubDate>Sun, 18 Aug 2013 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2013/08/how-to-configure-slf4j-with-different-logger-implementations.html</guid>
       	<description>
@@ -10494,7 +10494,7 @@ References&lt;/h2&gt;
     </item>
     <item>
       <title>How to convert asciidoc text to html using Groovy</title>
-      <link>https://zemian.github.io/blog/2013/08/how-to-convert-asciidoc-text-to-html-using-groovy.html</link>
+      <link>http://localhost:8820/blog/2013/08/how-to-convert-asciidoc-text-to-html-using-groovy.html</link>
       <pubDate>Sat, 17 Aug 2013 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2013/08/how-to-convert-asciidoc-text-to-html-using-groovy.html</guid>
       	<description>
@@ -10531,7 +10531,7 @@ println(output);&lt;/pre&gt;
     </item>
     <item>
       <title>How to manage Maven third party jars</title>
-      <link>https://zemian.github.io/blog/2013/06/how-to-manage-maven-third-party-jars.html</link>
+      <link>http://localhost:8820/blog/2013/06/how-to-manage-maven-third-party-jars.html</link>
       <pubDate>Sun, 23 Jun 2013 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2013/06/how-to-manage-maven-third-party-jars.html</guid>
       	<description>
@@ -10640,7 +10640,7 @@ Last updated 2013-06-18 19:14:37 EDT
     </item>
     <item>
       <title>How to zip up a release from a hg repository</title>
-      <link>https://zemian.github.io/blog/2013/06/how-to-zip-up-a-release-from-a-hg-repository.html</link>
+      <link>http://localhost:8820/blog/2013/06/how-to-zip-up-a-release-from-a-hg-repository.html</link>
       <pubDate>Mon, 17 Jun 2013 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2013/06/how-to-zip-up-a-release-from-a-hg-repository.html</guid>
       	<description>
@@ -10746,7 +10746,7 @@ Last updated 2013-06-18 19:18:48 EDT
     </item>
     <item>
       <title>How to install awestruct on Cygwin</title>
-      <link>https://zemian.github.io/blog/2013/06/how-to-install-awestruct-on-cygwin.html</link>
+      <link>http://localhost:8820/blog/2013/06/how-to-install-awestruct-on-cygwin.html</link>
       <pubDate>Fri, 14 Jun 2013 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2013/06/how-to-install-awestruct-on-cygwin.html</guid>
       	<description>
@@ -10824,7 +10824,7 @@ Last updated 2013-06-15 21:51:49 EDT
     </item>
     <item>
       <title>Taming the JMX on WebLogic Server</title>
-      <link>https://zemian.github.io/blog/2013/06/taming-the-jmx-on-weblogic-server.html</link>
+      <link>http://localhost:8820/blog/2013/06/taming-the-jmx-on-weblogic-server.html</link>
       <pubDate>Tue, 11 Jun 2013 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2013/06/taming-the-jmx-on-weblogic-server.html</guid>
       	<description>
@@ -11019,7 +11019,7 @@ Last updated 2013-06-12 23:52:42 EDT
     </item>
     <item>
       <title>MySchedule 3.2.0.0 FINAL is released</title>
-      <link>https://zemian.github.io/blog/2013/06/myschedule-3-2-0-0-final-is-released.html</link>
+      <link>http://localhost:8820/blog/2013/06/myschedule-3-2-0-0-final-is-released.html</link>
       <pubDate>Fri, 7 Jun 2013 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2013/06/myschedule-3-2-0-0-final-is-released.html</guid>
       	<description>
@@ -11044,7 +11044,7 @@ Last updated 2013-06-12 23:52:42 EDT
     </item>
     <item>
       <title>Choosing Technology Stack to build a common platform</title>
-      <link>https://zemian.github.io/blog/2013/05/choosing-technology-stack-to-build-a-common-platform.html</link>
+      <link>http://localhost:8820/blog/2013/05/choosing-technology-stack-to-build-a-common-platform.html</link>
       <pubDate>Wed, 29 May 2013 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2013/05/choosing-technology-stack-to-build-a-common-platform.html</guid>
       	<description>
@@ -11120,7 +11120,7 @@ Last updated 2013-06-12 23:52:42 EDT
     </item>
     <item>
       <title>Carry your sword and dagger programmers!</title>
-      <link>https://zemian.github.io/blog/2013/05/carry-your-sword-and-dagger-programmers%21.html</link>
+      <link>http://localhost:8820/blog/2013/05/carry-your-sword-and-dagger-programmers%21.html</link>
       <pubDate>Fri, 3 May 2013 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2013/05/carry-your-sword-and-dagger-programmers%21.html</guid>
       	<description>
@@ -11139,7 +11139,7 @@ the heavy job (large project, and enterprise system) done in more manageable way
     </item>
     <item>
       <title>How to bring pseudo code to life</title>
-      <link>https://zemian.github.io/blog/2013/05/how-to-bring-pseudo-code-to-life.html</link>
+      <link>http://localhost:8820/blog/2013/05/how-to-bring-pseudo-code-to-life.html</link>
       <pubDate>Wed, 1 May 2013 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2013/05/how-to-bring-pseudo-code-to-life.html</guid>
       	<description>
@@ -11290,7 +11290,7 @@ public class PseudoCodeToLife {
     </item>
     <item>
       <title>First snapshot of myschedule-3.0.0 is available</title>
-      <link>https://zemian.github.io/blog/2013/03/first-snapshot-of-myschedule-3-0-0-is-available.html</link>
+      <link>http://localhost:8820/blog/2013/03/first-snapshot-of-myschedule-3-0-0-is-available.html</link>
       <pubDate>Wed, 27 Mar 2013 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2013/03/first-snapshot-of-myschedule-3-0-0-is-available.html</guid>
       	<description>
@@ -11328,7 +11328,7 @@ Simply copy the myschedule-3.*/war/myschedule.war file into your Servlet contain
     </item>
     <item>
       <title>Hg shortcuts for bash .profile</title>
-      <link>https://zemian.github.io/blog/2013/02/hg-shortcuts-for-bash--profile.html</link>
+      <link>http://localhost:8820/blog/2013/02/hg-shortcuts-for-bash--profile.html</link>
       <pubDate>Thu, 28 Feb 2013 00:00:00 -0500</pubDate>
       <guid isPermaLink="false">blog/2013/02/hg-shortcuts-for-bash--profile.html</guid>
       	<description>
@@ -11361,7 +11361,7 @@ One worth special mentioning is that default &quot;hg log -v&quot; shows files w
     </item>
     <item>
       <title>Few notes about Java clone() method</title>
-      <link>https://zemian.github.io/blog/2013/02/few-notes-about-java-clone-method.html</link>
+      <link>http://localhost:8820/blog/2013/02/few-notes-about-java-clone-method.html</link>
       <pubDate>Wed, 20 Feb 2013 00:00:00 -0500</pubDate>
       <guid isPermaLink="false">blog/2013/02/few-notes-about-java-clone-method.html</guid>
       	<description>
@@ -11452,7 +11452,7 @@ public class CloneTest {
     </item>
     <item>
       <title>Learn how to grep by context will give you better result</title>
-      <link>https://zemian.github.io/blog/2013/02/learn-how-to-grep-by-context-will-give-you-better-result.html</link>
+      <link>http://localhost:8820/blog/2013/02/learn-how-to-grep-by-context-will-give-you-better-result.html</link>
       <pubDate>Sun, 3 Feb 2013 00:00:00 -0500</pubDate>
       <guid isPermaLink="false">blog/2013/02/learn-how-to-grep-by-context-will-give-you-better-result.html</guid>
       	<description>
@@ -11476,7 +11476,7 @@ bash&gt; jstack 12345 | grep --color &apos;State: BLOCKED&apos; -B 1
     </item>
     <item>
       <title>Fast shell utilities to report Maven&apos;s unit tests results</title>
-      <link>https://zemian.github.io/blog/2013/01/fast-shell-utilities-to-report-mavens-unit-tests-results.html</link>
+      <link>http://localhost:8820/blog/2013/01/fast-shell-utilities-to-report-mavens-unit-tests-results.html</link>
       <pubDate>Mon, 28 Jan 2013 00:00:00 -0500</pubDate>
       <guid isPermaLink="false">blog/2013/01/fast-shell-utilities-to-report-mavens-unit-tests-results.html</guid>
       	<description>
@@ -11526,7 +11526,7 @@ ruby -e &apos;ARGV.each{ |n| File.open(n) {|f| 4.times{ puts f.readline}} }&apos
     </item>
     <item>
       <title>Apache Tapestry 5 makes Java web development easy</title>
-      <link>https://zemian.github.io/blog/2013/01/apache-tapestry-5-makes-java-web-development-easy.html</link>
+      <link>http://localhost:8820/blog/2013/01/apache-tapestry-5-makes-java-web-development-easy.html</link>
       <pubDate>Fri, 11 Jan 2013 00:00:00 -0500</pubDate>
       <guid isPermaLink="false">blog/2013/01/apache-tapestry-5-makes-java-web-development-easy.html</guid>
       	<description>
@@ -11540,7 +11540,7 @@ ruby -e &apos;ARGV.each{ |n| File.open(n) {|f| 4.times{ puts f.readline}} }&apos
     </item>
     <item>
       <title>Java implementation of String#next() successor</title>
-      <link>https://zemian.github.io/blog/2012/12/java-implementation-of-string%23next-successor.html</link>
+      <link>http://localhost:8820/blog/2012/12/java-implementation-of-string%23next-successor.html</link>
       <pubDate>Mon, 31 Dec 2012 00:00:00 -0500</pubDate>
       <guid isPermaLink="false">blog/2012/12/java-implementation-of-string%23next-successor.html</guid>
       	<description>
@@ -11585,7 +11585,7 @@ bash&amp;gt; groovy -e &apos;println(&quot;Z&quot;.next())&apos;
     </item>
     <item>
       <title>Reading https url from a self-signed cert</title>
-      <link>https://zemian.github.io/blog/2012/12/reading-https-url-from-a-self-signed-cert.html</link>
+      <link>http://localhost:8820/blog/2012/12/reading-https-url-from-a-self-signed-cert.html</link>
       <pubDate>Wed, 26 Dec 2012 00:00:00 -0500</pubDate>
       <guid isPermaLink="false">blog/2012/12/reading-https-url-from-a-self-signed-cert.html</guid>
       	<description>
@@ -11632,7 +11632,7 @@ And Voila! We read the URL context without the pesky exception. This &lt;code&gt
     </item>
     <item>
       <title>A strange case of Java generic and inheritage parameter passing</title>
-      <link>https://zemian.github.io/blog/2012/12/a-strange-case-of-java-generic-and-inheritage-parameter-passing.html</link>
+      <link>http://localhost:8820/blog/2012/12/a-strange-case-of-java-generic-and-inheritage-parameter-passing.html</link>
       <pubDate>Thu, 20 Dec 2012 00:00:00 -0500</pubDate>
       <guid isPermaLink="false">blog/2012/12/a-strange-case-of-java-generic-and-inheritage-parameter-passing.html</guid>
       	<description>
@@ -11701,7 +11701,7 @@ public class FooProcessor {
     </item>
     <item>
       <title>A simple Groovy issue tracker using file system</title>
-      <link>https://zemian.github.io/blog/2012/12/a-simple-groovy-issue-tracker-using-file-system.html</link>
+      <link>http://localhost:8820/blog/2012/12/a-simple-groovy-issue-tracker-using-file-system.html</link>
       <pubDate>Tue, 18 Dec 2012 00:00:00 -0500</pubDate>
       <guid isPermaLink="false">blog/2012/12/a-simple-groovy-issue-tracker-using-file-system.html</guid>
       	<description>
@@ -11835,7 +11835,7 @@ Update issue-001 completed.
     </item>
     <item>
       <title>Getting started with Quartz Scheduler on MySQL database</title>
-      <link>https://zemian.github.io/blog/2012/12/getting-started-with-quartz-scheduler-on-mysql-database.html</link>
+      <link>http://localhost:8820/blog/2012/12/getting-started-with-quartz-scheduler-on-mysql-database.html</link>
       <pubDate>Fri, 14 Dec 2012 00:00:00 -0500</pubDate>
       <guid isPermaLink="false">blog/2012/12/getting-started-with-quartz-scheduler-on-mysql-database.html</guid>
       	<description>
@@ -11998,7 +11998,7 @@ org.quartz.threadPool.threadCount = 5
     </item>
     <item>
       <title>Cygwin tips: open anything with cygstart</title>
-      <link>https://zemian.github.io/blog/2012/12/cygwin-tips-open-anything-with-cygstart.html</link>
+      <link>http://localhost:8820/blog/2012/12/cygwin-tips-open-anything-with-cygstart.html</link>
       <pubDate>Thu, 13 Dec 2012 00:00:00 -0500</pubDate>
       <guid isPermaLink="false">blog/2012/12/cygwin-tips-open-anything-with-cygstart.html</guid>
       	<description>
@@ -12028,7 +12028,7 @@ bash&gt; open /cygdrive/c/my.docx
     </item>
     <item>
       <title>A command to remove all Windows mapped drives</title>
-      <link>https://zemian.github.io/blog/2012/12/a-command-to-remove-all-windows-mapped-drives.html</link>
+      <link>http://localhost:8820/blog/2012/12/a-command-to-remove-all-windows-mapped-drives.html</link>
       <pubDate>Wed, 12 Dec 2012 00:00:00 -0500</pubDate>
       <guid isPermaLink="false">blog/2012/12/a-command-to-remove-all-windows-mapped-drives.html</guid>
       	<description>
@@ -12050,7 +12050,7 @@ bash&gt; open /cygdrive/c/my.docx
     </item>
     <item>
       <title>Intellij IDEA is pretty awesome!</title>
-      <link>https://zemian.github.io/blog/2012/12/intellij-idea-is-pretty-awesome%21.html</link>
+      <link>http://localhost:8820/blog/2012/12/intellij-idea-is-pretty-awesome%21.html</link>
       <pubDate>Tue, 11 Dec 2012 00:00:00 -0500</pubDate>
       <guid isPermaLink="false">blog/2012/12/intellij-idea-is-pretty-awesome%21.html</guid>
       	<description>
@@ -12100,7 +12100,7 @@ Here are few things that I usually change from out of the default installed sett
     </item>
     <item>
       <title>A very light Groovy based web application project template</title>
-      <link>https://zemian.github.io/blog/2012/11/a-very-light-groovy-based-web-application-project-template.html</link>
+      <link>http://localhost:8820/blog/2012/11/a-very-light-groovy-based-web-application-project-template.html</link>
       <pubDate>Wed, 28 Nov 2012 00:00:00 -0500</pubDate>
       <guid isPermaLink="false">blog/2012/11/a-very-light-groovy-based-web-application-project-template.html</guid>
       	<description>
@@ -12215,7 +12215,7 @@ bash&amp;gt; cp target/maven-webapp-groovy.war $APP_SERVER_HOME/autodeploy
     </item>
     <item>
       <title>Use cygpath with -p option for your Java CLASSPATH conversion</title>
-      <link>https://zemian.github.io/blog/2012/11/use-cygpath-with--p-option-for-your-java-classpath-conversion.html</link>
+      <link>http://localhost:8820/blog/2012/11/use-cygpath-with--p-option-for-your-java-classpath-conversion.html</link>
       <pubDate>Thu, 15 Nov 2012 00:00:00 -0500</pubDate>
       <guid isPermaLink="false">blog/2012/11/use-cygpath-with--p-option-for-your-java-classpath-conversion.html</guid>
       	<description>
@@ -12247,7 +12247,7 @@ java -cp &quot;$CP&quot; &quot;$@&quot;
     </item>
     <item>
       <title>What does UTF-8 with BOM mean?</title>
-      <link>https://zemian.github.io/blog/2012/11/what-does-utf-8-with-bom-mean%3F.html</link>
+      <link>http://localhost:8820/blog/2012/11/what-does-utf-8-with-bom-mean%3F.html</link>
       <pubDate>Fri, 2 Nov 2012 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2012/11/what-does-utf-8-with-bom-mean%3F.html</guid>
       	<description>
@@ -12285,7 +12285,7 @@ Ref:&amp;nbsp;&lt;/div&gt;
     </item>
     <item>
       <title>A simple way to setup Java application with external configuration file</title>
-      <link>https://zemian.github.io/blog/2012/10/a-simple-way-to-setup-java-application-with-external-configuration-file.html</link>
+      <link>http://localhost:8820/blog/2012/10/a-simple-way-to-setup-java-application-with-external-configuration-file.html</link>
       <pubDate>Sat, 27 Oct 2012 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2012/10/a-simple-way-to-setup-java-application-with-external-configuration-file.html</guid>
       	<description>
@@ -12391,7 +12391,7 @@ So what are some clever ways you have seen or done with your application configu
     </item>
     <item>
       <title>Simple Variable Substitution in Java String</title>
-      <link>https://zemian.github.io/blog/2012/10/simple-variable-substitution-in-java-string.html</link>
+      <link>http://localhost:8820/blog/2012/10/simple-variable-substitution-in-java-string.html</link>
       <pubDate>Wed, 24 Oct 2012 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2012/10/simple-variable-substitution-in-java-string.html</guid>
       	<description>
@@ -12457,7 +12457,7 @@ assert result == [
     </item>
     <item>
       <title>Exploring different scheduling types with Quartz 2</title>
-      <link>https://zemian.github.io/blog/2012/10/exploring-different-scheduling-types-with-quartz-2.html</link>
+      <link>http://localhost:8820/blog/2012/10/exploring-different-scheduling-types-with-quartz-2.html</link>
       <pubDate>Mon, 22 Oct 2012 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2012/10/exploring-different-scheduling-types-with-quartz-2.html</guid>
       	<description>
@@ -12593,7 +12593,7 @@ dates.each{ println it }
     </item>
     <item>
       <title>A very lean war file for MySchedule</title>
-      <link>https://zemian.github.io/blog/2012/10/a-very-lean-war-file-for-myschedule.html</link>
+      <link>http://localhost:8820/blog/2012/10/a-very-lean-war-file-for-myschedule.html</link>
       <pubDate>Mon, 22 Oct 2012 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2012/10/a-very-lean-war-file-for-myschedule.html</guid>
       	<description>
@@ -12615,7 +12615,7 @@ dates.each{ println it }
     </item>
     <item>
       <title>Running maven commands with multi modules project</title>
-      <link>https://zemian.github.io/blog/2012/10/running-maven-commands-with-multi-modules-project.html</link>
+      <link>http://localhost:8820/blog/2012/10/running-maven-commands-with-multi-modules-project.html</link>
       <pubDate>Sun, 14 Oct 2012 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2012/10/running-maven-commands-with-multi-modules-project.html</guid>
       	<description>
@@ -12643,7 +12643,7 @@ bash&amp;gt; mvn -pl timemachine-hibernate -am clean test-compile
     </item>
     <item>
       <title>What&apos;s up with the JUnit and Hamcrest dependencies?</title>
-      <link>https://zemian.github.io/blog/2012/10/whats-up-with-the-junit-and-hamcrest-dependencies%3F.html</link>
+      <link>http://localhost:8820/blog/2012/10/whats-up-with-the-junit-and-hamcrest-dependencies%3F.html</link>
       <pubDate>Sat, 6 Oct 2012 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2012/10/whats-up-with-the-junit-and-hamcrest-dependencies%3F.html</guid>
       	<description>
@@ -12717,7 +12717,7 @@ bash&amp;gt; mvn -pl timemachine-hibernate -am clean test-compile
     </item>
     <item>
       <title>High Level Design Diagrams for TimeMachine Scheduler</title>
-      <link>https://zemian.github.io/blog/2012/09/high-level-design-diagrams-for-timemachine-scheduler.html</link>
+      <link>http://localhost:8820/blog/2012/09/high-level-design-diagrams-for-timemachine-scheduler.html</link>
       <pubDate>Sat, 29 Sep 2012 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2012/09/high-level-design-diagrams-for-timemachine-scheduler.html</guid>
       	<description>
@@ -12780,7 +12780,7 @@ bash&amp;gt; mvn -pl timemachine-hibernate -am clean test-compile
     </item>
     <item>
       <title>Enhancing Spring Test Framework with beforeClass and afterClass setup</title>
-      <link>https://zemian.github.io/blog/2012/09/enhancing-spring-test-framework-with-beforeclass-and-afterclass-setup.html</link>
+      <link>http://localhost:8820/blog/2012/09/enhancing-spring-test-framework-with-beforeclass-and-afterclass-setup.html</link>
       <pubDate>Fri, 28 Sep 2012 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2012/09/enhancing-spring-test-framework-with-beforeclass-and-afterclass-setup.html</guid>
       	<description>
@@ -13119,7 +13119,7 @@ public class SpringInstanceTestClassRunner extends SpringJUnit4ClassRunner {
     </item>
     <item>
       <title>TimeMachine Scheduler 1.2.2 Release</title>
-      <link>https://zemian.github.io/blog/2012/09/timemachine-scheduler-1-2-2-release.html</link>
+      <link>http://localhost:8820/blog/2012/09/timemachine-scheduler-1-2-2-release.html</link>
       <pubDate>Tue, 25 Sep 2012 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2012/09/timemachine-scheduler-1-2-2-release.html</guid>
       	<description>
@@ -13135,7 +13135,7 @@ You may download the latest here: &lt;a href=&quot;https://bitbucket.org/timemac
     </item>
     <item>
       <title>Where did Git go?</title>
-      <link>https://zemian.github.io/blog/2012/09/where-did-git-go%3F.html</link>
+      <link>http://localhost:8820/blog/2012/09/where-did-git-go%3F.html</link>
       <pubDate>Tue, 18 Sep 2012 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2012/09/where-did-git-go%3F.html</guid>
       	<description>
@@ -13152,7 +13152,7 @@ ln -s /usr/local/git/bin/git /usr/local/bin/git
     </item>
     <item>
       <title>Building message based application using Camel</title>
-      <link>https://zemian.github.io/blog/2012/09/building-message-based-application-using-camel.html</link>
+      <link>http://localhost:8820/blog/2012/09/building-message-based-application-using-camel.html</link>
       <pubDate>Fri, 14 Sep 2012 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2012/09/building-message-based-application-using-camel.html</guid>
       	<description>
@@ -13713,7 +13713,7 @@ pieces togther. Once you get into this habit of thiking, then you can use Camel 
     </item>
     <item>
       <title>Boost your Groovy with NailGun</title>
-      <link>https://zemian.github.io/blog/2012/09/boost-your-groovy-with-nailgun.html</link>
+      <link>http://localhost:8820/blog/2012/09/boost-your-groovy-with-nailgun.html</link>
       <pubDate>Thu, 13 Sep 2012 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2012/09/boost-your-groovy-with-nailgun.html</guid>
       	<description>
@@ -13769,7 +13769,7 @@ be instantaneously.&lt;/p&gt;
     </item>
     <item>
       <title>Improving java.util.Properties</title>
-      <link>https://zemian.github.io/blog/2012/09/improving-java-util-properties.html</link>
+      <link>http://localhost:8820/blog/2012/09/improving-java-util-properties.html</link>
       <pubDate>Fri, 7 Sep 2012 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2012/09/improving-java-util-properties.html</guid>
       	<description>
@@ -13842,7 +13842,7 @@ developer friendly.&lt;/p&gt;
     </item>
     <item>
       <title>How to write better POJO Services</title>
-      <link>https://zemian.github.io/blog/2012/09/how-to-write-better-pojo-services.html</link>
+      <link>http://localhost:8820/blog/2012/09/how-to-write-better-pojo-services.html</link>
       <pubDate>Sat, 1 Sep 2012 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2012/09/how-to-write-better-pojo-services.html</guid>
       	<description>
@@ -14283,7 +14283,7 @@ running together. And that&apos;s how user can extend the scheduler functionalit
     </item>
     <item>
       <title>How to manage Quartz remotely</title>
-      <link>https://zemian.github.io/blog/2012/08/how-to-manage-quartz-remotely.html</link>
+      <link>http://localhost:8820/blog/2012/08/how-to-manage-quartz-remotely.html</link>
       <pubDate>Mon, 27 Aug 2012 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2012/08/how-to-manage-quartz-remotely.html</guid>
       	<description>
@@ -14339,7 +14339,7 @@ if your RMI server port is down!&lt;/p&gt;
     </item>
     <item>
       <title>Taming those Java editors on MacOSX</title>
-      <link>https://zemian.github.io/blog/2012/08/taming-those-java-editors-on-macosx.html</link>
+      <link>http://localhost:8820/blog/2012/08/taming-those-java-editors-on-macosx.html</link>
       <pubDate>Sun, 26 Aug 2012 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2012/08/taming-those-java-editors-on-macosx.html</guid>
       	<description>
@@ -14430,7 +14430,7 @@ Options:
     </item>
     <item>
       <title>myschedule-2.4.4 is out!</title>
-      <link>https://zemian.github.io/blog/2012/08/myschedule-2-4-4-is-out%21.html</link>
+      <link>http://localhost:8820/blog/2012/08/myschedule-2-4-4-is-out%21.html</link>
       <pubDate>Mon, 20 Aug 2012 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2012/08/myschedule-2-4-4-is-out%21.html</guid>
       	<description>
@@ -14444,7 +14444,7 @@ Options:
     </item>
     <item>
       <title>Getting started with Apache Camel using Groovy</title>
-      <link>https://zemian.github.io/blog/2012/08/getting-started-with-apache-camel-using-groovy.html</link>
+      <link>http://localhost:8820/blog/2012/08/getting-started-with-apache-camel-using-groovy.html</link>
       <pubDate>Sat, 18 Aug 2012 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2012/08/getting-started-with-apache-camel-using-groovy.html</guid>
       	<description>
@@ -14621,7 +14621,7 @@ synchronized(this){ this.wait() }
     </item>
     <item>
       <title>How to integrate TimeMachine Scheduler in Spring based application</title>
-      <link>https://zemian.github.io/blog/2012/08/how-to-integrate-timemachine-scheduler-in-spring-based-application.html</link>
+      <link>http://localhost:8820/blog/2012/08/how-to-integrate-timemachine-scheduler-in-spring-based-application.html</link>
       <pubDate>Fri, 17 Aug 2012 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2012/08/how-to-integrate-timemachine-scheduler-in-spring-based-application.html</guid>
       	<description>
@@ -14759,7 +14759,7 @@ scheduler.start();
     </item>
     <item>
       <title>How to make an executable WAR file</title>
-      <link>https://zemian.github.io/blog/2012/08/how-to-make-an-executable-war-file.html</link>
+      <link>http://localhost:8820/blog/2012/08/how-to-make-an-executable-war-file.html</link>
       <pubDate>Tue, 14 Aug 2012 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2012/08/how-to-make-an-executable-war-file.html</guid>
       	<description>
@@ -14801,7 +14801,7 @@ function n() { F=&quot;$HOME/notes/$(date &quot;+%Y%m%d-%H%M%S&quot;).markdown&q
     </item>
     <item>
       <title>Checking DB Connection using Java</title>
-      <link>https://zemian.github.io/blog/2012/08/checking-db-connection-using-java.html</link>
+      <link>http://localhost:8820/blog/2012/08/checking-db-connection-using-java.html</link>
       <pubDate>Sat, 11 Aug 2012 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2012/08/checking-db-connection-using-java.html</guid>
       	<description>
@@ -14840,7 +14840,7 @@ public class DbConn {
     </item>
     <item>
       <title>How to generate Redmine WAR application to run with Java</title>
-      <link>https://zemian.github.io/blog/2012/08/how-to-generate-redmine-war-application-to-run-with-java.html</link>
+      <link>http://localhost:8820/blog/2012/08/how-to-generate-redmine-war-application-to-run-with-java.html</link>
       <pubDate>Mon, 6 Aug 2012 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2012/08/how-to-generate-redmine-war-application-to-run-with-java.html</guid>
       	<description>
@@ -14887,7 +14887,7 @@ $ $JRUBY_HOME/bin/warble
     </item>
     <item>
       <title>TimeMachine jars size and dependencies</title>
-      <link>https://zemian.github.io/blog/2012/08/timemachine-jars-size-and-dependencies.html</link>
+      <link>http://localhost:8820/blog/2012/08/timemachine-jars-size-and-dependencies.html</link>
       <pubDate>Fri, 3 Aug 2012 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2012/08/timemachine-jars-size-and-dependencies.html</guid>
       	<description>
@@ -14940,7 +14940,7 @@ $ $JRUBY_HOME/bin/warble
     </item>
     <item>
       <title>A better java shell script wrapper</title>
-      <link>https://zemian.github.io/blog/2012/08/a-better-java-shell-script-wrapper.html</link>
+      <link>http://localhost:8820/blog/2012/08/a-better-java-shell-script-wrapper.html</link>
       <pubDate>Wed, 1 Aug 2012 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2012/08/a-better-java-shell-script-wrapper.html</guid>
       	<description>
@@ -15001,7 +15001,7 @@ $DIR/run-java -Dscheduler.home=&quot;$SCHEDULER_HOME&quot; timemachine.scheduler
     </item>
     <item>
       <title>How to print text file content inside a jar file</title>
-      <link>https://zemian.github.io/blog/2012/07/how-to-print-text-file-content-inside-a-jar-file.html</link>
+      <link>http://localhost:8820/blog/2012/07/how-to-print-text-file-content-inside-a-jar-file.html</link>
       <pubDate>Mon, 30 Jul 2012 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2012/07/how-to-print-text-file-content-inside-a-jar-file.html</guid>
       	<description>
@@ -15056,7 +15056,7 @@ Kotlin&lt;br /&gt;
     </item>
     <item>
       <title>Getting jboss-cli.sh to work on MacOSX</title>
-      <link>https://zemian.github.io/blog/2012/07/getting-jboss-cli-sh-to-work-on-macosx.html</link>
+      <link>http://localhost:8820/blog/2012/07/getting-jboss-cli-sh-to-work-on-macosx.html</link>
       <pubDate>Sat, 28 Jul 2012 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2012/07/getting-jboss-cli-sh-to-work-on-macosx.html</guid>
       	<description>
@@ -15141,7 +15141,7 @@ And on separate terminal, run the CLI:&lt;/div&gt;
     </item>
     <item>
       <title>Using TimeMachine Scheduler on JBossAS 7</title>
-      <link>https://zemian.github.io/blog/2012/07/using-timemachine-scheduler-on-jbossas-7.html</link>
+      <link>http://localhost:8820/blog/2012/07/using-timemachine-scheduler-on-jbossas-7.html</link>
       <pubDate>Mon, 23 Jul 2012 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2012/07/using-timemachine-scheduler-on-jbossas-7.html</guid>
       	<description>
@@ -15152,7 +15152,7 @@ And on separate terminal, run the CLI:&lt;/div&gt;
     </item>
     <item>
       <title>Script Console Tool for any WAR application</title>
-      <link>https://zemian.github.io/blog/2012/07/script-console-tool-for-any-war-application.html</link>
+      <link>http://localhost:8820/blog/2012/07/script-console-tool-for-any-war-application.html</link>
       <pubDate>Sat, 21 Jul 2012 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2012/07/script-console-tool-for-any-war-application.html</guid>
       	<description>
@@ -15171,7 +15171,7 @@ And on separate terminal, run the CLI:&lt;/div&gt;
     </item>
     <item>
       <title>TimeMachine Scheduler 1.2.0 release is out!</title>
-      <link>https://zemian.github.io/blog/2012/07/timemachine-scheduler-1-2-0-release-is-out%21.html</link>
+      <link>http://localhost:8820/blog/2012/07/timemachine-scheduler-1-2-0-release-is-out%21.html</link>
       <pubDate>Sun, 15 Jul 2012 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2012/07/timemachine-scheduler-1-2-0-release-is-out%21.html</guid>
       	<description>
@@ -15209,7 +15209,7 @@ There are few more options you may configure with this service, and you can read
     </item>
     <item>
       <title>CTRL+C not working on Cygwin 1.7.15-1</title>
-      <link>https://zemian.github.io/blog/2012/07/ctrl%2Bc-not-working-on-cygwin-1-7-15-1.html</link>
+      <link>http://localhost:8820/blog/2012/07/ctrl%2Bc-not-working-on-cygwin-1-7-15-1.html</link>
       <pubDate>Thu, 12 Jul 2012 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2012/07/ctrl%2Bc-not-working-on-cygwin-1-7-15-1.html</guid>
       	<description>
@@ -15240,7 +15240,7 @@ Ref: &lt;a href=&quot;http://old.nabble.com/CTRL%2BC-is-not-working-with-java-on
     </item>
     <item>
       <title>Quick way to benchmark Java code</title>
-      <link>https://zemian.github.io/blog/2012/07/quick-way-to-benchmark-java-code.html</link>
+      <link>http://localhost:8820/blog/2012/07/quick-way-to-benchmark-java-code.html</link>
       <pubDate>Wed, 11 Jul 2012 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2012/07/quick-way-to-benchmark-java-code.html</guid>
       	<description>
@@ -15270,7 +15270,7 @@ I ran above and get the following on my machine:&lt;br /&gt;
     </item>
     <item>
       <title>Creating Oracle Stored Procedure using Java</title>
-      <link>https://zemian.github.io/blog/2012/07/creating-oracle-stored-procedure-using-java.html</link>
+      <link>http://localhost:8820/blog/2012/07/creating-oracle-stored-procedure-using-java.html</link>
       <pubDate>Wed, 11 Jul 2012 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2012/07/creating-oracle-stored-procedure-using-java.html</guid>
       	<description>
@@ -15301,7 +15301,7 @@ sql&gt; /
     </item>
     <item>
       <title>Minimal Java webapp with Maven</title>
-      <link>https://zemian.github.io/blog/2012/07/minimal-java-webapp-with-maven.html</link>
+      <link>http://localhost:8820/blog/2012/07/minimal-java-webapp-with-maven.html</link>
       <pubDate>Tue, 10 Jul 2012 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2012/07/minimal-java-webapp-with-maven.html</guid>
       	<description>
@@ -15318,7 +15318,7 @@ You should able to visit http://localhost:8080/webapp after that. Editing any JS
     </item>
     <item>
       <title>Kickstart TimeMachine Scheduler with a quick Groovy script</title>
-      <link>https://zemian.github.io/blog/2012/07/kickstart-timemachine-scheduler-with-a-quick-groovy-script.html</link>
+      <link>http://localhost:8820/blog/2012/07/kickstart-timemachine-scheduler-with-a-quick-groovy-script.html</link>
       <pubDate>Mon, 9 Jul 2012 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2012/07/kickstart-timemachine-scheduler-with-a-quick-groovy-script.html</guid>
       	<description>
@@ -15345,7 +15345,7 @@ You should able to visit http://localhost:8080/webapp after that. Editing any JS
     </item>
     <item>
       <title>Getting JDK6 src.zip for new iMac</title>
-      <link>https://zemian.github.io/blog/2012/07/getting-jdk6-src-zip-for-new-imac.html</link>
+      <link>http://localhost:8820/blog/2012/07/getting-jdk6-src-zip-for-new-imac.html</link>
       <pubDate>Tue, 3 Jul 2012 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2012/07/getting-jdk6-src-zip-for-new-imac.html</guid>
       	<description>
@@ -15365,7 +15365,7 @@ PS: If you install the JDK7 from Oracle for MacOSX, it does come with the src.zi
     </item>
     <item>
       <title>TimeMachine Scheduler Tour: Part7</title>
-      <link>https://zemian.github.io/blog/2012/06/timemachine-scheduler-tour-part7.html</link>
+      <link>http://localhost:8820/blog/2012/06/timemachine-scheduler-tour-part7.html</link>
       <pubDate>Sun, 24 Jun 2012 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2012/06/timemachine-scheduler-tour-part7.html</guid>
       	<description>
@@ -15474,7 +15474,7 @@ End of part 7.&amp;nbsp;&lt;span style=&quot;background-color: white;&quot;&gt;Y
     </item>
     <item>
       <title>TimeMachine Scheduler Tour: Part6</title>
-      <link>https://zemian.github.io/blog/2012/06/timemachine-scheduler-tour-part6.html</link>
+      <link>http://localhost:8820/blog/2012/06/timemachine-scheduler-tour-part6.html</link>
       <pubDate>Fri, 22 Jun 2012 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2012/06/timemachine-scheduler-tour-part6.html</guid>
       	<description>
@@ -15542,7 +15542,7 @@ End of part 6.&amp;nbsp;&lt;span style=&quot;background-color: white;&quot;&gt;Y
     </item>
     <item>
       <title>TimeMachine Scheduler Tour: Part5</title>
-      <link>https://zemian.github.io/blog/2012/06/timemachine-scheduler-tour-part5.html</link>
+      <link>http://localhost:8820/blog/2012/06/timemachine-scheduler-tour-part5.html</link>
       <pubDate>Wed, 20 Jun 2012 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2012/06/timemachine-scheduler-tour-part5.html</guid>
       	<description>
@@ -15678,7 +15678,7 @@ End of part 5.&amp;nbsp;&lt;span style=&quot;background-color: white;&quot;&gt;Y
     </item>
     <item>
       <title>TimeMachine Scheduler Tour: Part4</title>
-      <link>https://zemian.github.io/blog/2012/06/timemachine-scheduler-tour-part4.html</link>
+      <link>http://localhost:8820/blog/2012/06/timemachine-scheduler-tour-part4.html</link>
       <pubDate>Sun, 17 Jun 2012 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2012/06/timemachine-scheduler-tour-part4.html</guid>
       	<description>
@@ -15899,7 +15899,7 @@ End of part 4.&amp;nbsp;&lt;span style=&quot;background-color: white;&quot;&gt;Y
     </item>
     <item>
       <title>TimeMachine Scheduler Tour: Part3</title>
-      <link>https://zemian.github.io/blog/2012/06/timemachine-scheduler-tour-part3.html</link>
+      <link>http://localhost:8820/blog/2012/06/timemachine-scheduler-tour-part3.html</link>
       <pubDate>Wed, 13 Jun 2012 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2012/06/timemachine-scheduler-tour-part3.html</guid>
       	<description>
@@ -15973,7 +15973,7 @@ End of part 3.&amp;nbsp;&lt;span style=&quot;background-color: white;&quot;&gt;Y
     </item>
     <item>
       <title>The HibernateDataStore preview is available</title>
-      <link>https://zemian.github.io/blog/2012/06/the-hibernatedatastore-preview-is-available.html</link>
+      <link>http://localhost:8820/blog/2012/06/the-hibernatedatastore-preview-is-available.html</link>
       <pubDate>Mon, 11 Jun 2012 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2012/06/the-hibernatedatastore-preview-is-available.html</guid>
       	<description>
@@ -15990,7 +15990,7 @@ So give it a try and let me know what you think so far!
     </item>
     <item>
       <title>TimeMachine Scheduler Tour: Part2</title>
-      <link>https://zemian.github.io/blog/2012/06/timemachine-scheduler-tour-part2.html</link>
+      <link>http://localhost:8820/blog/2012/06/timemachine-scheduler-tour-part2.html</link>
       <pubDate>Sun, 10 Jun 2012 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2012/06/timemachine-scheduler-tour-part2.html</guid>
       	<description>
@@ -16227,7 +16227,7 @@ End of part 2.&amp;nbsp;&lt;span style=&quot;background-color: white;&quot;&gt;Y
     </item>
     <item>
       <title>TimeMachine Scheduler Tour: Part1</title>
-      <link>https://zemian.github.io/blog/2012/06/timemachine-scheduler-tour-part1.html</link>
+      <link>http://localhost:8820/blog/2012/06/timemachine-scheduler-tour-part1.html</link>
       <pubDate>Wed, 6 Jun 2012 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2012/06/timemachine-scheduler-tour-part1.html</guid>
       	<description>
@@ -16334,7 +16334,7 @@ End of part 1.&amp;nbsp;&lt;span style=&quot;background-color: white;&quot;&gt;Y
     </item>
     <item>
       <title>Intro to TimeMachine Scheduler 1.0.0</title>
-      <link>https://zemian.github.io/blog/2012/05/intro-to-timemachine-scheduler-1-0-0.html</link>
+      <link>http://localhost:8820/blog/2012/05/intro-to-timemachine-scheduler-1-0-0.html</link>
       <pubDate>Mon, 28 May 2012 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2012/05/intro-to-timemachine-scheduler-1-0-0.html</guid>
       	<description>
@@ -16354,7 +16354,7 @@ Zemian Deng
     </item>
     <item>
       <title>Changing Oracle XE apex webapp port</title>
-      <link>https://zemian.github.io/blog/2012/05/changing-oracle-xe-apex-webapp-port.html</link>
+      <link>http://localhost:8820/blog/2012/05/changing-oracle-xe-apex-webapp-port.html</link>
       <pubDate>Fri, 11 May 2012 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2012/05/changing-oracle-xe-apex-webapp-port.html</guid>
       	<description>
@@ -16382,7 +16382,7 @@ Also, if you ever deleted the HR sample database on the XE installation, you can
     </item>
     <item>
       <title>TimeMachine Scheduler Demo</title>
-      <link>https://zemian.github.io/blog/2012/04/timemachine-scheduler-demo.html</link>
+      <link>http://localhost:8820/blog/2012/04/timemachine-scheduler-demo.html</link>
       <pubDate>Sat, 28 Apr 2012 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2012/04/timemachine-scheduler-demo.html</guid>
       	<description>
@@ -16394,7 +16394,7 @@ You can poke around the scheduler using Groovy scripting on this quick demo. The
     </item>
     <item>
       <title>Tryout TimeMachine Scheduler</title>
-      <link>https://zemian.github.io/blog/2012/04/tryout-timemachine-scheduler.html</link>
+      <link>http://localhost:8820/blog/2012/04/tryout-timemachine-scheduler.html</link>
       <pubDate>Wed, 25 Apr 2012 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2012/04/tryout-timemachine-scheduler.html</guid>
       	<description>
@@ -16413,7 +16413,7 @@ Give the project a try and let me know what you think!&lt;/div&gt;
     </item>
     <item>
       <title>Inspecting your Oracle database</title>
-      <link>https://zemian.github.io/blog/2012/04/inspecting-your-oracle-database.html</link>
+      <link>http://localhost:8820/blog/2012/04/inspecting-your-oracle-database.html</link>
       <pubDate>Wed, 11 Apr 2012 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2012/04/inspecting-your-oracle-database.html</guid>
       	<description>
@@ -16458,7 +16458,7 @@ select * from dba_locks where lock_type in (&apos;Transaction&apos;, &apos;DML&a
     </item>
     <item>
       <title>How to get JAXB (xjc) to work on Maven</title>
-      <link>https://zemian.github.io/blog/2012/03/how-to-get-jaxb-xjc-to-work-on-maven.html</link>
+      <link>http://localhost:8820/blog/2012/03/how-to-get-jaxb-xjc-to-work-on-maven.html</link>
       <pubDate>Sun, 11 Mar 2012 00:00:00 -0500</pubDate>
       <guid isPermaLink="false">blog/2012/03/how-to-get-jaxb-xjc-to-work-on-maven.html</guid>
       	<description>
@@ -16470,7 +16470,7 @@ select * from dba_locks where lock_type in (&apos;Transaction&apos;, &apos;DML&a
     </item>
     <item>
       <title>First snapshot of TimeMachine scheduler is ready</title>
-      <link>https://zemian.github.io/blog/2012/03/first-snapshot-of-timemachine-scheduler-is-ready.html</link>
+      <link>http://localhost:8820/blog/2012/03/first-snapshot-of-timemachine-scheduler-is-ready.html</link>
       <pubDate>Fri, 9 Mar 2012 00:00:00 -0500</pubDate>
       <guid isPermaLink="false">blog/2012/03/first-snapshot-of-timemachine-scheduler-is-ready.html</guid>
       	<description>
@@ -16480,7 +16480,7 @@ select * from dba_locks where lock_type in (&apos;Transaction&apos;, &apos;DML&a
     </item>
     <item>
       <title>TimeMachine Scheduler</title>
-      <link>https://zemian.github.io/blog/2012/02/timemachine-scheduler.html</link>
+      <link>http://localhost:8820/blog/2012/02/timemachine-scheduler.html</link>
       <pubDate>Tue, 28 Feb 2012 00:00:00 -0500</pubDate>
       <guid isPermaLink="false">blog/2012/02/timemachine-scheduler.html</guid>
       	<description>
@@ -16490,7 +16490,7 @@ select * from dba_locks where lock_type in (&apos;Transaction&apos;, &apos;DML&a
     </item>
     <item>
       <title>MySchedule-2.4.0 release</title>
-      <link>https://zemian.github.io/blog/2012/02/myschedule-2-4-0-release.html</link>
+      <link>http://localhost:8820/blog/2012/02/myschedule-2-4-0-release.html</link>
       <pubDate>Mon, 27 Feb 2012 00:00:00 -0500</pubDate>
       <guid isPermaLink="false">blog/2012/02/myschedule-2-4-0-release.html</guid>
       	<description>
@@ -16510,7 +16510,7 @@ select * from dba_locks where lock_type in (&apos;Transaction&apos;, &apos;DML&a
     </item>
     <item>
       <title>Working on Quartz Queue Job Feature</title>
-      <link>https://zemian.github.io/blog/2012/02/working-on-quartz-queue-job-feature.html</link>
+      <link>http://localhost:8820/blog/2012/02/working-on-quartz-queue-job-feature.html</link>
       <pubDate>Fri, 17 Feb 2012 00:00:00 -0500</pubDate>
       <guid isPermaLink="false">blog/2012/02/working-on-quartz-queue-job-feature.html</guid>
       	<description>
@@ -16526,7 +16526,7 @@ More of these to come in the future, so stay tuned.
     </item>
     <item>
       <title>How to build Ruby on Cygwin and setup Heroku</title>
-      <link>https://zemian.github.io/blog/2011/11/how-to-build-ruby-on-cygwin-and-setup-heroku.html</link>
+      <link>http://localhost:8820/blog/2011/11/how-to-build-ruby-on-cygwin-and-setup-heroku.html</link>
       <pubDate>Sat, 19 Nov 2011 00:00:00 -0500</pubDate>
       <guid isPermaLink="false">blog/2011/11/how-to-build-ruby-on-cygwin-and-setup-heroku.html</guid>
       	<description>
@@ -16583,7 +16583,7 @@ NOTE: FYI, all the user built applications are usually install into&lt;span styl
     </item>
     <item>
       <title>MySchedule-2.3.0 release is out</title>
-      <link>https://zemian.github.io/blog/2011/11/myschedule-2-3-0-release-is-out.html</link>
+      <link>http://localhost:8820/blog/2011/11/myschedule-2-3-0-release-is-out.html</link>
       <pubDate>Sun, 6 Nov 2011 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2011/11/myschedule-2-3-0-release-is-out.html</guid>
       	<description>
@@ -16607,7 +16607,7 @@ NOTE: FYI, all the user built applications are usually install into&lt;span styl
     </item>
     <item>
       <title>Quartz Extra!</title>
-      <link>https://zemian.github.io/blog/2011/10/quartz-extra%21.html</link>
+      <link>http://localhost:8820/blog/2011/10/quartz-extra%21.html</link>
       <pubDate>Mon, 17 Oct 2011 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2011/10/quartz-extra%21.html</guid>
       	<description>
@@ -16619,7 +16619,7 @@ Besides some small update to the web UI for quartz management, this release come
     </item>
     <item>
       <title>myschedule-2.1.2 (for Quartz-2.1.0) and myschedule-1.5.2(for Quartz-1.8.5) releases</title>
-      <link>https://zemian.github.io/blog/2011/09/myschedule-2-1-2-for-quartz-2-1-0-and-myschedule-1-5-2for-quartz-1-8-5-releases.html</link>
+      <link>http://localhost:8820/blog/2011/09/myschedule-2-1-2-for-quartz-2-1-0-and-myschedule-1-5-2for-quartz-1-8-5-releases.html</link>
       <pubDate>Sat, 24 Sep 2011 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2011/09/myschedule-2-1-2-for-quartz-2-1-0-and-myschedule-1-5-2for-quartz-1-8-5-releases.html</guid>
       	<description>
@@ -16631,7 +16631,7 @@ I have fixed few bugs and improved the UI slightly. Both of these releases shoul
     </item>
     <item>
       <title>Quartz 2.1.0 has been released!</title>
-      <link>https://zemian.github.io/blog/2011/09/quartz-2-1-0-has-been-released%21.html</link>
+      <link>http://localhost:8820/blog/2011/09/quartz-2-1-0-has-been-released%21.html</link>
       <pubDate>Sat, 24 Sep 2011 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2011/09/quartz-2-1-0-has-been-released%21.html</guid>
       	<description>
@@ -16645,7 +16645,7 @@ Another feature worthy of note in this release is the &quot;batch&quot; mode is 
     </item>
     <item>
       <title>Some of my googlecode projects</title>
-      <link>https://zemian.github.io/blog/2011/09/some-of-my-googlecode-projects.html</link>
+      <link>http://localhost:8820/blog/2011/09/some-of-my-googlecode-projects.html</link>
       <pubDate>Sat, 24 Sep 2011 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2011/09/some-of-my-googlecode-projects.html</guid>
       	<description>
@@ -16666,7 +16666,7 @@ All these are publicly and freely available (Apache License 2.0) if you find it 
     </item>
     <item>
       <title>MySchedule-2.0.0 released</title>
-      <link>https://zemian.github.io/blog/2011/07/myschedule-2-0-0-released.html</link>
+      <link>http://localhost:8820/blog/2011/07/myschedule-2-0-0-released.html</link>
       <pubDate>Sat, 23 Jul 2011 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2011/07/myschedule-2-0-0-released.html</guid>
       	<description>
@@ -16678,7 +16678,7 @@ Try it out here: &lt;a href=&quot;http://code.google.com/p/myschedule/downloads/
     </item>
     <item>
       <title>Becoming a Quartz commiter</title>
-      <link>https://zemian.github.io/blog/2011/07/becoming-a-quartz-commiter.html</link>
+      <link>http://localhost:8820/blog/2011/07/becoming-a-quartz-commiter.html</link>
       <pubDate>Fri, 22 Jul 2011 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2011/07/becoming-a-quartz-commiter.html</guid>
       	<description>
@@ -16688,7 +16688,7 @@ Try it out here: &lt;a href=&quot;http://code.google.com/p/myschedule/downloads/
     </item>
     <item>
       <title>MySchedule-1.3.3 release</title>
-      <link>https://zemian.github.io/blog/2011/07/myschedule-1-3-3-release.html</link>
+      <link>http://localhost:8820/blog/2011/07/myschedule-1-3-3-release.html</link>
       <pubDate>Fri, 1 Jul 2011 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2011/07/myschedule-1-3-3-release.html</guid>
       	<description>
@@ -16702,7 +16702,7 @@ So if you need Quartz or want any scheduling jobs, you should check it out. http
     </item>
     <item>
       <title>MySchedule-1.0.0 ready to use</title>
-      <link>https://zemian.github.io/blog/2011/06/myschedule-1-0-0-ready-to-use.html</link>
+      <link>http://localhost:8820/blog/2011/06/myschedule-1-0-0-ready-to-use.html</link>
       <pubDate>Sat, 4 Jun 2011 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2011/06/myschedule-1-0-0-ready-to-use.html</guid>
       	<description>
@@ -16720,7 +16720,7 @@ Enjoy! &lt;/span&gt;
     </item>
     <item>
       <title>jQuery doesn&apos;t suport ajax over the file protocol</title>
-      <link>https://zemian.github.io/blog/2011/05/jquery-doesnt-suport-ajax-over-the-file-protocol.html</link>
+      <link>http://localhost:8820/blog/2011/05/jquery-doesnt-suport-ajax-over-the-file-protocol.html</link>
       <pubDate>Sun, 29 May 2011 00:00:00 -0400</pubDate>
       <guid isPermaLink="false">blog/2011/05/jquery-doesnt-suport-ajax-over-the-file-protocol.html</guid>
       	<description>
