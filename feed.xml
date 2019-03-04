@@ -6,8 +6,8 @@
     <atom:link href="https://zemian.github.io/feed.xml" rel="self" type="application/rss+xml" />
     <description>JBake Bootstrap Template</description>
     <language>en-gb</language>
-    <pubDate>Sun, 3 Mar 2019 20:02:43 -0500</pubDate>
-    <lastBuildDate>Sun, 3 Mar 2019 20:02:43 -0500</lastBuildDate>
+    <pubDate>Sun, 3 Mar 2019 20:27:25 -0500</pubDate>
+    <lastBuildDate>Sun, 3 Mar 2019 20:27:25 -0500</lastBuildDate>
 
     <item>
       <title>Using Spring Boot Cli</title>
@@ -70,6 +70,36 @@ open http://localhost:8080&lt;/pre&gt;
 &lt;/div&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
 &lt;p&gt;You can learn more from my starter project: &lt;a href=&quot;https://github.com/zemian/spring-boot-starter&quot; class=&quot;bare&quot;&gt;https://github.com/zemian/spring-boot-starter&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+	</description>
+    </item>
+    <item>
+      <title>Getting Started with jbake</title>
+      <link>https://zemian.github.io/blog/2019/01/Getting+Started+with+jbake.html</link>
+      <pubDate>Tue, 15 Jan 2019 00:00:00 -0500</pubDate>
+      <guid isPermaLink="false">blog/2019/01/Getting+Started+with+jbake.html</guid>
+      	<description>
+	&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I started using &lt;a href=&quot;https://jbake.org/&quot; class=&quot;bare&quot;&gt;https://jbake.org/&lt;/a&gt; for &lt;a href=&quot;https://zemian.github.io/&quot;&gt;my blog site&lt;/a&gt; here at GitHub page. It&amp;#8217;s a Java based static site generator that has decent options. For Java developers, it&amp;#8217;s easy to learn and use. I can customize the site with Freemarker (and other templates as well).&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;So far I am pretty happy with this.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;_getting_started&quot;&gt;Getting Started&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre&gt;mkdir hello-site
+cd hello-site
+jbake -i
+jbake -b -s&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The &lt;code&gt;-b&lt;/code&gt; option is for baking (generating) the content, and the &lt;code&gt;-s&lt;/code&gt; is to run a server for testing it. The default output of the site will be in &lt;code&gt;output&lt;/code&gt; folder. You can change it as &lt;code&gt;jbake -b -s . my-site-output&lt;/code&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
 &lt;/div&gt;
 	</description>
     </item>
