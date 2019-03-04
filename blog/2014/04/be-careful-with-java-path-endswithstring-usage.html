@@ -58,7 +58,9 @@
 		<h1>Be careful with Java Path.endsWith(String) usage</h1>
 	</div>
 
-	<p><em>15 April 2014</em></p>
+	<p><em>15 April 2014</em>, tags: 
+	    <a href="../../../tags/java.html">java</a> 
+	</p>
 
 	<p>If you need to compare the <span style="font-family: Courier New, Courier, monospace;">java.io.file.Path</span> object, be aware that&nbsp;<span style="font-family: Courier New, Courier, monospace;">Path.endsWith(String)</span> will ONLY match another sub-element of Path object in your original path, not the path name string portion! If you want to match the string name portion, you would need to call the <span style="font-family: Courier New, Courier, monospace;">Path.toString()</span> first. For example<br />
 <br />

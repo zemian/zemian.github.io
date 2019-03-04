@@ -58,7 +58,11 @@
 		<h1>Walk resource tree as directory in classpath</h1>
 	</div>
 
-	<p><em>27 January 2018</em></p>
+	<p><em>27 January 2018</em>, tags: 
+	    <a href="../../../tags/java.html">java</a> 
+
+	    <a href="../../../tags/classpath.html">classpath</a> 
+	</p>
 
 	<p><div class="paragraph">
 <p>The two most frequent type of classpath URL we get when get it through <code>ClassLoader#getResource(resourceName)</code> is either <code>file</code> or <code>jar</code> entries. If we want to walk a resources that are stored in a directory, then we need to parse these differently. For <code>file</code>, it&#8217;s easy to do since we have <code>java.io.File</code>. As for <code>jar</code>, we would use <code>JarFile</code>. Here is a implementation.</p>

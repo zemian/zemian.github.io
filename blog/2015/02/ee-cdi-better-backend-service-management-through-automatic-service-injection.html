@@ -58,7 +58,9 @@
 		<h1>EE CDI: Better Backend Service Management through Automatic Service Injection</h1>
 	</div>
 
-	<p><em>09 February 2015</em></p>
+	<p><em>09 February 2015</em>, tags: 
+	    <a href="../../../tags/cdi.html">cdi</a> 
+	</p>
 
 	<p>In one of my <a href="http://saltnlight5.blogspot.com/2015/01/ee-servlet-3-how-to-setup-backend.html">previous post</a>, I have introduced the <span style="font-family: &quot;Courier New&quot;,Courier,monospace;">Application </span>class that holds backend services, and we are exposing the services to Servlet by a singleton instance lookup pattern. This usage is very common and the <span style="font-family: &quot;Courier New&quot;,Courier,monospace;">Application </span>class is been used as a global space holder in your application. Starting with EE 6, there is a new spec API introduced called CDI (context dependency injection) that can replace this kind of direct service lookup in your application. The CDI is a Java objects container (services in our case), or sometimes
  called "beans container" that automatically manged the objects life 

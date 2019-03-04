@@ -58,7 +58,11 @@
 		<h1>How to setup custom SSLSocketFactory&apos;s TrustManager per each URL connection</h1>
 	</div>
 
-	<p><em>28 October 2014</em></p>
+	<p><em>28 October 2014</em>, tags: 
+	    <a href="../../../tags/ssh.html">ssh</a> 
+
+	    <a href="../../../tags/java.html">java</a> 
+	</p>
 
 	<p>We can see from javadoc that <span style="font-family: Courier New, Courier, monospace;">javax.net.ssl.HttpsURLConnection</span> provided a static method to override with <span style="font-family: Courier New, Courier, monospace;">setDefaultSSLSocketFory()</span> method. This allow you to supply a custom <span style="font-family: Courier New, Courier, monospace;">javax.net.ssl.TrustManager </span>that may verify your own &nbsp;CA certs handshake and validation etc. But this will override the default for all "https" URLs per your JVM!<br />
 <br />
