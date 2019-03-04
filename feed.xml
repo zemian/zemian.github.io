@@ -6,9 +6,70 @@
     <atom:link href="https://zemian.github.io/feed.xml" rel="self" type="application/rss+xml" />
     <description>JBake Bootstrap Template</description>
     <language>en-gb</language>
-    <pubDate>Sat, 2 Mar 2019 17:20:51 -0500</pubDate>
-    <lastBuildDate>Sat, 2 Mar 2019 17:20:51 -0500</lastBuildDate>
+    <pubDate>Sun, 3 Mar 2019 19:33:42 -0500</pubDate>
+    <lastBuildDate>Sun, 3 Mar 2019 19:33:42 -0500</lastBuildDate>
 
+    <item>
+      <title>Using Spring Boot Cli</title>
+      <link>https://zemian.github.io/blog/2019/03/using-spring-boot-cli.html</link>
+      <pubDate>Sun, 3 Mar 2019 00:00:00 -0500</pubDate>
+      <guid isPermaLink="false">blog/2019/03/using-spring-boot-cli.html</guid>
+      	<description>
+	&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The easiest way to get started with Spring is to setup SpringBoot
+with their CLI tool. You can bootstrap a web application with a
+single Groovy script!&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Download the CLI from &lt;a href=&quot;https://docs.spring.io/spring-boot/docs/current/reference/html/getting-started-installing-spring-boot.html#getting-started-installing-the-cli&quot; class=&quot;bare&quot;&gt;https://docs.spring.io/spring-boot/docs/current/reference/html/getting-started-installing-spring-boot.html#getting-started-installing-the-cli&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Now unzip and setup PATH to use the &lt;code&gt;spring&lt;/code&gt; command.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre&gt;unzip spring-boot-cli-2.0.5.RELEASE-bin.zip
+export PATH=`pwd`/spring-2.0.5.RELEASE/bin:$PATH&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Create a simple groovy app script&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre&gt;// file: app.groovy
+@RestController
+class HelloApp {
+    @RequestMapping(&quot;/&quot;)
+    String home() {
+        return &quot;Hello World!&quot;
+    }
+}&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Now run it and test it with a browser:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre&gt;spring run app.groovy
+open http://localhost:8080&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Or you can create a full SpringBoot project with Maven build:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre&gt;# Or create a new project
+spring init -d=web -x --package-name zemian.springbootstarter.hello hello-spring-boot
+cd hello-spring-boot
+./mvnw spring-boot:run
+open http://localhost:8080&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+	</description>
+    </item>
     <item>
       <title>Python string successor method</title>
       <link>https://zemian.github.io/blog/2018/08/python-string-successor-method.html</link>
