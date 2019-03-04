@@ -6,8 +6,8 @@
     <atom:link href="https://zemian.github.io/feed.xml" rel="self" type="application/rss+xml" />
     <description>JBake Bootstrap Template</description>
     <language>en-gb</language>
-    <pubDate>Mon, 4 Mar 2019 11:50:10 -0500</pubDate>
-    <lastBuildDate>Mon, 4 Mar 2019 11:50:10 -0500</lastBuildDate>
+    <pubDate>Mon, 4 Mar 2019 13:07:36 -0500</pubDate>
+    <lastBuildDate>Mon, 4 Mar 2019 13:07:36 -0500</lastBuildDate>
 
     <item>
       <title>Using Spring Boot Cli</title>
@@ -70,6 +70,17 @@ open http://localhost:8080&lt;/pre&gt;
 &lt;/div&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
 &lt;p&gt;You can learn more from my starter project: &lt;a href=&quot;https://github.com/zemian/spring-boot-starter&quot; class=&quot;bare&quot;&gt;https://github.com/zemian/spring-boot-starter&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+	</description>
+    </item>
+    <item>
+      <title>Setup Quartz DB With Liquibase</title>
+      <link>https://zemian.github.io/blog/2019/02/setup-quartz-db-with-liquibase.html</link>
+      <pubDate>Fri, 15 Feb 2019 00:00:00 -0500</pubDate>
+      <guid isPermaLink="false">blog/2019/02/setup-quartz-db-with-liquibase.html</guid>
+      	<description>
+	&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;There is a &lt;a href=&quot;http://www.liquibase.org/&quot;&gt;Liquibase&lt;/a&gt; init file now in Quartz that you may use to setup your database. I have added instructions on how to run this &lt;a href=&quot;https://github.com/quartz-scheduler/quartz/wiki/How-to-Setup-Databases#using-liquibase-tool&quot;&gt;on Quartz WIKI here&lt;/a&gt;.&lt;/p&gt;
 &lt;/div&gt;
 	</description>
     </item>
