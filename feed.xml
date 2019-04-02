@@ -6,9 +6,26 @@
     <atom:link href="https://zemian.github.io/feed.xml" rel="self" type="application/rss+xml" />
     <description>JBake Bootstrap Template</description>
     <language>en-gb</language>
-    <pubDate>Sat, 9 Mar 2019 08:33:30 -0500</pubDate>
-    <lastBuildDate>Sat, 9 Mar 2019 08:33:30 -0500</lastBuildDate>
+    <pubDate>Mon, 1 Apr 2019 22:38:30 -0400</pubDate>
+    <lastBuildDate>Mon, 1 Apr 2019 22:38:30 -0400</lastBuildDate>
 
+    <item>
+      <title>New Quartz 2.3.1 Released</title>
+      <link>https://zemian.github.io/blog/2019/04/new-quartz-2.3.1-released.html</link>
+      <pubDate>Mon, 1 Apr 2019 00:00:00 -0400</pubDate>
+      <guid isPermaLink="false">blog/2019/04/new-quartz-2.3.1-released.html</guid>
+      	<description>
+	&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Quartz project has little development activities for quite some time now. I finally able to put in some time and help get many bugs fixed up. After more than two years since Quartz last release (April 2017), I am happy to annouce the &lt;a href=&quot;https://search.maven.org/artifact/org.quartz-scheduler/quartz/2.3.1/jar&quot;&gt;quartz-2.3.1&lt;/a&gt; is finally out!&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This release is a minor release that &lt;a href=&quot;https://github.com/quartz-scheduler/quartz/releases/tag/quartz-2.3.1&quot;&gt;fixed many bugs&lt;/a&gt; on the 2.3 series that uses JDK 7. We also cleaned up the &lt;a href=&quot;http://www.quartz-scheduler.org/documentation/&quot;&gt;documentation&lt;/a&gt; that generated from &lt;code&gt;asciidoc&lt;/code&gt; and placed it along with the source repository.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Our &lt;a href=&quot;https://github.com/quartz-scheduler/quartz&quot;&gt;master branch&lt;/a&gt; now target the next &lt;a href=&quot;https://github.com/quartz-scheduler/quartz/milestone/6&quot;&gt;quartz 2.4.0 milestone&lt;/a&gt;, which will support the JDK 8 build.&lt;/p&gt;
+&lt;/div&gt;
+	</description>
+    </item>
     <item>
       <title>Using Spring Boot Cli</title>
       <link>https://zemian.github.io/blog/2019/03/using-spring-boot-cli.html</link>
@@ -1610,45 +1627,6 @@ major version: 54 = Java 10&lt;/pre&gt;
 	</description>
     </item>
     <item>
-      <title>Oracle Java SE JDK vs OpenJDK</title>
-      <link>https://zemian.github.io/blog/2018/03/oracle-java-se-jdk-vs-openjdk.html</link>
-      <pubDate>Sat, 24 Mar 2018 00:00:00 -0400</pubDate>
-      <guid isPermaLink="false">blog/2018/03/oracle-java-se-jdk-vs-openjdk.html</guid>
-      	<description>
-	&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;In general:&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;ulist&quot;&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;JRE - Java Runtime Environment. It comes with the Java (&lt;code&gt;java&lt;/code&gt;)
-executable for running Java application. This is typical for end users
-who use it to run compiled Java applications (in jar file distribution),
-and not doing any development. JRE is smaller to download than JDK.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;JDK - Java Development Kit. It comes with Java compiler (&lt;code&gt;javac&lt;/code&gt;) and
-many other development tools; and it also include the JRE as well. This
-is for Java development and running Java applications together. As a
-developer, you usually want to get this as single package.&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Oracle sponsors and drives the official open source &lt;a href=&quot;http://jdk.java.net/&quot;&gt;OpenJDK&lt;/a&gt;
-project, where new Java edition are develope. It provides binary releases that
-developers may download for various OS envs. (Note starting JDK9, you may download
-binary package that simply untar/unzip into a directory without need of installer!)&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Oracle also provides commercial version of the
-&lt;a href=&quot;http://www.oracle.com/technetwork/java/javase/downloads/index.html&quot;&gt;Java SE JDK&lt;/a&gt;.
-These JDK packages has different licenses for usage, and are built with different
-installer format. Users usually require local Admin Rights to install it.&lt;/p&gt;
-&lt;/div&gt;
-	</description>
-    </item>
-    <item>
       <title>Switching Different JDK in Cygwin</title>
       <link>https://zemian.github.io/blog/2018/03/switching-different-jdk-in-cygwin.html</link>
       <pubDate>Sat, 24 Mar 2018 00:00:00 -0400</pubDate>
@@ -1793,6 +1771,45 @@ jdk-8u161            avg start-time 0.178s
 jdk-9.0.4            avg start-time 0.359s
 jdk-10               avg start-time 0.323s&lt;/pre&gt;
 &lt;/div&gt;
+&lt;/div&gt;
+	</description>
+    </item>
+    <item>
+      <title>Oracle Java SE JDK vs OpenJDK</title>
+      <link>https://zemian.github.io/blog/2018/03/oracle-java-se-jdk-vs-openjdk.html</link>
+      <pubDate>Sat, 24 Mar 2018 00:00:00 -0400</pubDate>
+      <guid isPermaLink="false">blog/2018/03/oracle-java-se-jdk-vs-openjdk.html</guid>
+      	<description>
+	&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;In general:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;JRE - Java Runtime Environment. It comes with the Java (&lt;code&gt;java&lt;/code&gt;)
+executable for running Java application. This is typical for end users
+who use it to run compiled Java applications (in jar file distribution),
+and not doing any development. JRE is smaller to download than JDK.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;JDK - Java Development Kit. It comes with Java compiler (&lt;code&gt;javac&lt;/code&gt;) and
+many other development tools; and it also include the JRE as well. This
+is for Java development and running Java applications together. As a
+developer, you usually want to get this as single package.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Oracle sponsors and drives the official open source &lt;a href=&quot;http://jdk.java.net/&quot;&gt;OpenJDK&lt;/a&gt;
+project, where new Java edition are develope. It provides binary releases that
+developers may download for various OS envs. (Note starting JDK9, you may download
+binary package that simply untar/unzip into a directory without need of installer!)&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Oracle also provides commercial version of the
+&lt;a href=&quot;http://www.oracle.com/technetwork/java/javase/downloads/index.html&quot;&gt;Java SE JDK&lt;/a&gt;.
+These JDK packages has different licenses for usage, and are built with different
+installer format. Users usually require local Admin Rights to install it.&lt;/p&gt;
 &lt;/div&gt;
 	</description>
     </item>
@@ -2242,21 +2259,6 @@ for file_type in top_type_counts:
 	</description>
     </item>
     <item>
-      <title>Linux SublimeText title says &quot;Unregistered&quot; despite you have paid license</title>
-      <link>https://zemian.github.io/blog/2018/03/linux-sublimetext-title-says-unregistered-despite-you-have-paid-license.html</link>
-      <pubDate>Sun, 11 Mar 2018 00:00:00 -0500</pubDate>
-      <guid isPermaLink="false">blog/2018/03/linux-sublimetext-title-says-unregistered-despite-you-have-paid-license.html</guid>
-      	<description>
-	&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Solution: Edit the &quot;Name&quot; line in &lt;code&gt;~/.local/share/applications/sublime_text.desktop&lt;/code&gt; file.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;See
-&lt;a href=&quot;https://askubuntu.com/questions/678133/sublime-text-3-says-unregistered-in-menu-title-bar&quot; class=&quot;bare&quot;&gt;https://askubuntu.com/questions/678133/sublime-text-3-says-unregistered-in-menu-title-bar&lt;/a&gt;&lt;/p&gt;
-&lt;/div&gt;
-	</description>
-    </item>
-    <item>
       <title>How to find Linux Standard Base release info</title>
       <link>https://zemian.github.io/blog/2018/03/how-to-find-linux-standard-base-release-info.html</link>
       <pubDate>Sun, 11 Mar 2018 00:00:00 -0500</pubDate>
@@ -2271,6 +2273,21 @@ for file_type in top_type_counts:
 	Release:	16.04
 	Codename:	xenial&lt;/pre&gt;
 &lt;/div&gt;
+&lt;/div&gt;
+	</description>
+    </item>
+    <item>
+      <title>Linux SublimeText title says &quot;Unregistered&quot; despite you have paid license</title>
+      <link>https://zemian.github.io/blog/2018/03/linux-sublimetext-title-says-unregistered-despite-you-have-paid-license.html</link>
+      <pubDate>Sun, 11 Mar 2018 00:00:00 -0500</pubDate>
+      <guid isPermaLink="false">blog/2018/03/linux-sublimetext-title-says-unregistered-despite-you-have-paid-license.html</guid>
+      	<description>
+	&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Solution: Edit the &quot;Name&quot; line in &lt;code&gt;~/.local/share/applications/sublime_text.desktop&lt;/code&gt; file.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;See
+&lt;a href=&quot;https://askubuntu.com/questions/678133/sublime-text-3-says-unregistered-in-menu-title-bar&quot; class=&quot;bare&quot;&gt;https://askubuntu.com/questions/678133/sublime-text-3-says-unregistered-in-menu-title-bar&lt;/a&gt;&lt;/p&gt;
 &lt;/div&gt;
 	</description>
     </item>
@@ -2348,30 +2365,6 @@ sudo make install
 
 # When completed successful, the HTTPD server will be in /usr/local/apache2&lt;/pre&gt;
 &lt;/div&gt;
-&lt;/div&gt;
-	</description>
-    </item>
-    <item>
-      <title>Reduce recent project list size in IntelliJ</title>
-      <link>https://zemian.github.io/blog/2018/03/reduce-recent-project-list-size-in-intellij.html</link>
-      <pubDate>Wed, 7 Mar 2018 00:00:00 -0500</pubDate>
-      <guid isPermaLink="false">blog/2018/03/reduce-recent-project-list-size-in-intellij.html</guid>
-      	<description>
-	&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;When opening a project from IntelliJ IDE, it will give you a list of menu that contains your recent projects. This list however has default of 50 items max, and sometimes I find it stretched the menu popup too long and covered some of IDE the status line (which I need to verify the project path to be open). It&amp;#8217;s a pity that there is obvious normal IDE Settings to change this, but today I found a post that shows how you can do it this:&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;olist arabic&quot;&gt;
-&lt;ol class=&quot;arabic&quot;&gt;
-&lt;li&gt;
-&lt;p&gt;Go to menu: &lt;code&gt;Help&amp;#8594;Find Action&amp;#8594;Registry&lt;/code&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;In the diablog table, find the &quot;ide.max.recent.projects&quot; key entry and change the value to your liking (eg: &lt;code&gt;10&lt;/code&gt;)&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ol&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Ref: &lt;a href=&quot;https://intellij-support.jetbrains.com/hc/en-us/community/posts/207089089-SOLVED-Where-do-I-set-the-maximum-number-of-recent-projects-to-be-shown-in-the-File-Open-Recent-list-&quot; class=&quot;bare&quot;&gt;https://intellij-support.jetbrains.com/hc/en-us/community/posts/207089089-SOLVED-Where-do-I-set-the-maximum-number-of-recent-projects-to-be-shown-in-the-File-Open-Recent-list-&lt;/a&gt;&lt;/p&gt;
 &lt;/div&gt;
 	</description>
     </item>
@@ -2552,6 +2545,30 @@ sudo /usr/local/apache2/bin/apachectl -k start&lt;/pre&gt;
 	</description>
     </item>
     <item>
+      <title>Reduce recent project list size in IntelliJ</title>
+      <link>https://zemian.github.io/blog/2018/03/reduce-recent-project-list-size-in-intellij.html</link>
+      <pubDate>Wed, 7 Mar 2018 00:00:00 -0500</pubDate>
+      <guid isPermaLink="false">blog/2018/03/reduce-recent-project-list-size-in-intellij.html</guid>
+      	<description>
+	&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;When opening a project from IntelliJ IDE, it will give you a list of menu that contains your recent projects. This list however has default of 50 items max, and sometimes I find it stretched the menu popup too long and covered some of IDE the status line (which I need to verify the project path to be open). It&amp;#8217;s a pity that there is obvious normal IDE Settings to change this, but today I found a post that shows how you can do it this:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;olist arabic&quot;&gt;
+&lt;ol class=&quot;arabic&quot;&gt;
+&lt;li&gt;
+&lt;p&gt;Go to menu: &lt;code&gt;Help&amp;#8594;Find Action&amp;#8594;Registry&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;In the diablog table, find the &quot;ide.max.recent.projects&quot; key entry and change the value to your liking (eg: &lt;code&gt;10&lt;/code&gt;)&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Ref: &lt;a href=&quot;https://intellij-support.jetbrains.com/hc/en-us/community/posts/207089089-SOLVED-Where-do-I-set-the-maximum-number-of-recent-projects-to-be-shown-in-the-File-Open-Recent-list-&quot; class=&quot;bare&quot;&gt;https://intellij-support.jetbrains.com/hc/en-us/community/posts/207089089-SOLVED-Where-do-I-set-the-maximum-number-of-recent-projects-to-be-shown-in-the-File-Open-Recent-list-&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+	</description>
+    </item>
+    <item>
       <title>Package manager for MacOSX</title>
       <link>https://zemian.github.io/blog/2018/03/package-manager-for-macosx.html</link>
       <pubDate>Mon, 5 Mar 2018 00:00:00 -0500</pubDate>
@@ -2570,6 +2587,20 @@ $ /usr/bin/ruby -e &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew
 #
 # Uninstall
 $ /usr/bin/ruby -e &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/uninstall)&quot;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+	</description>
+    </item>
+    <item>
+      <title>Installing C compiler on MacOSX</title>
+      <link>https://zemian.github.io/blog/2018/03/installing-c-compiler-on-macosx.html</link>
+      <pubDate>Mon, 5 Mar 2018 00:00:00 -0500</pubDate>
+      <guid isPermaLink="false">blog/2018/03/installing-c-compiler-on-macosx.html</guid>
+      	<description>
+	&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre&gt;# Install xcode - it contains C compiler and many other developer tools for MacOSX system
+xcode-select --install&lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 	</description>
@@ -2687,20 +2718,6 @@ ProxyPassReverse &quot;/jspwebapp2&quot; &quot;http://localhost/jspwebapp2&quot;
 	SessionCookieName session path=/
 	SessionMaxAge 1
 &amp;lt;/Location&amp;gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-	</description>
-    </item>
-    <item>
-      <title>Installing C compiler on MacOSX</title>
-      <link>https://zemian.github.io/blog/2018/03/installing-c-compiler-on-macosx.html</link>
-      <pubDate>Mon, 5 Mar 2018 00:00:00 -0500</pubDate>
-      <guid isPermaLink="false">blog/2018/03/installing-c-compiler-on-macosx.html</guid>
-      	<description>
-	&lt;div class=&quot;listingblock&quot;&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;pre&gt;# Install xcode - it contains C compiler and many other developer tools for MacOSX system
-xcode-select --install&lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 	</description>
@@ -2829,6 +2846,137 @@ Included configuration files:
     (498) /private/etc/apache2/extra/httpd-mpm.conf
     (504) /private/etc/apache2/extra/httpd-autoindex.conf
     (544) /private/etc/apache2/other/php7.conf&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+	</description>
+    </item>
+    <item>
+      <title>How to setup httpd form authentication and user session login/logout</title>
+      <link>https://zemian.github.io/blog/2018/02/how-to-setup-httpd-form-authentication-and-user-session-loginlogout.html</link>
+      <pubDate>Tue, 27 Feb 2018 00:00:00 -0500</pubDate>
+      <guid isPermaLink="false">blog/2018/02/how-to-setup-httpd-form-authentication-and-user-session-loginlogout.html</guid>
+      	<description>
+	&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;_configuration_setup_for_httpd_conf&quot;&gt;Configuration setup for &lt;code&gt;httpd.conf&lt;/code&gt;&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;literalblock&quot;&gt;
+&lt;div class=&quot;title&quot;&gt;Enable modules&lt;/div&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre&gt;LoadModule auth_form_module modules/mod_auth_form.so
+LoadModule auth_digest_module modules/mod_auth_digest.so
+LoadModule session_module modules/mod_session.so
+LoadModule session_cookie_module modules/mod_session_cookie.so&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;admonitionblock note&quot;&gt;
+&lt;table&gt;
+&lt;tr&gt;
+&lt;td class=&quot;icon&quot;&gt;
+&lt;div class=&quot;title&quot;&gt;Note&lt;/div&gt;
+&lt;/td&gt;
+&lt;td class=&quot;content&quot;&gt;
+This configuration is only for tutorial purpose and not secured by default! Using Cookies session store is NOT secured! It&amp;#8217;s recommend you use &lt;code&gt;mod_session_crypto&lt;/code&gt; to further secure data, or use server side session data store.
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;div class=&quot;literalblock&quot;&gt;
+&lt;div class=&quot;title&quot;&gt;Setup users&lt;/div&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre&gt;# First user and new file
+htpasswd -c /etc/httpd/passwd/passwords test
+# Update/add more user
+htpasswd /etc/httpd/passwd/passwords zemian&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;admonitionblock note&quot;&gt;
+&lt;table&gt;
+&lt;tr&gt;
+&lt;td class=&quot;icon&quot;&gt;
+&lt;div class=&quot;title&quot;&gt;Note&lt;/div&gt;
+&lt;/td&gt;
+&lt;td class=&quot;content&quot;&gt;
+You need &lt;code&gt;httpd-tool&lt;/code&gt; package from Cygwin to find &lt;code&gt;htpasswd&lt;/code&gt; command.
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;title&quot;&gt;Example of Digest login&lt;/div&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre&gt;# Digest Login
+&amp;lt;Location &quot;/secured&quot;&amp;gt;
+	AuthType Basic
+	AuthName &quot;Restricted Files&quot;
+	AuthBasicProvider file
+	AuthUserFile &quot;/etc/httpd/passwd/passwords&quot;
+	Require valid-user
+&amp;lt;/Location&amp;gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;title&quot;&gt;Example of form login&lt;/div&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre&gt;# Form Login/logout process
+&amp;lt;LocationMatch &quot;(/secured|/cgi-bin/secured)&quot;&amp;gt;
+	Require valid-user
+	AuthName &quot;SecuredArea&quot;
+	AuthFormProvider file
+	AuthUserFile &quot;/etc/httpd/passwd/passwords&quot;
+    AuthType form
+	AuthFormLoginRequiredLocation &quot;/login.html&quot;
+
+	Session On
+	SessionCookieName session path=/
+	SessionMaxAge 30
+	SessionEnv On
+	SessionHeader X-Replace-Session
+&amp;lt;/LocationMatch&amp;gt;
+&amp;lt;Location &quot;/login&quot;&amp;gt;
+	SetHandler form-login-handler
+	AuthName &quot;SecuredArea&quot;
+	AuthFormProvider file
+	AuthUserFile &quot;/etc/httpd/passwd/passwords&quot;
+    AuthType form
+	AuthFormLoginRequiredLocation &quot;/login.html&quot;
+    AuthFormLoginSuccessLocation &quot;/secured/index.html&quot;
+
+	Session On
+	SessionCookieName session path=/
+&amp;lt;/Location&amp;gt;
+&amp;lt;Location &quot;/logout&quot;&amp;gt;
+	SetHandler form-logout-handler
+	AuthName &quot;SecuredArea&quot;
+	AuthFormLogoutLocation &quot;http://localhost/logout.html&quot;
+
+	Session On
+	SessionCookieName session path=/
+	SessionMaxAge 1
+&amp;lt;/Location&amp;gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;literalblock&quot;&gt;
+&lt;div class=&quot;title&quot;&gt;Login page &lt;code&gt;htdocs/login.html&lt;/code&gt;&lt;/div&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre&gt;&amp;lt;form method=&quot;POST&quot; action=&quot;/login&quot;&amp;gt;
+  Username: &amp;lt;input type=&quot;text&quot; name=&quot;httpd_username&quot; value=&quot;&quot; /&amp;gt;
+  Password: &amp;lt;input type=&quot;password&quot; name=&quot;httpd_password&quot; value=&quot;&quot; /&amp;gt;
+  &amp;lt;input type=&quot;submit&quot; name=&quot;login&quot; value=&quot;Login&quot; /&amp;gt;
+&amp;lt;/form&amp;gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;literalblock&quot;&gt;
+&lt;div class=&quot;title&quot;&gt;Logout page &lt;code&gt;htdocs/logout.html&lt;/code&gt;&lt;/div&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre&gt;&amp;lt;p&amp;gt;You have been logged out.&amp;lt;/p&amp;gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;literalblock&quot;&gt;
+&lt;div class=&quot;title&quot;&gt;Secured page &lt;code&gt;htdocs/secured/index.html&lt;/code&gt;&lt;/div&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre&gt;&amp;lt;p&amp;gt;This is secured area&amp;lt;/p&amp;gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 	</description>
@@ -3023,137 +3171,6 @@ the conf file.
 import cgi
 cgi.test()&lt;/pre&gt;
 &lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-	</description>
-    </item>
-    <item>
-      <title>How to setup httpd form authentication and user session login/logout</title>
-      <link>https://zemian.github.io/blog/2018/02/how-to-setup-httpd-form-authentication-and-user-session-loginlogout.html</link>
-      <pubDate>Tue, 27 Feb 2018 00:00:00 -0500</pubDate>
-      <guid isPermaLink="false">blog/2018/02/how-to-setup-httpd-form-authentication-and-user-session-loginlogout.html</guid>
-      	<description>
-	&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;_configuration_setup_for_httpd_conf&quot;&gt;Configuration setup for &lt;code&gt;httpd.conf&lt;/code&gt;&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;literalblock&quot;&gt;
-&lt;div class=&quot;title&quot;&gt;Enable modules&lt;/div&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;pre&gt;LoadModule auth_form_module modules/mod_auth_form.so
-LoadModule auth_digest_module modules/mod_auth_digest.so
-LoadModule session_module modules/mod_session.so
-LoadModule session_cookie_module modules/mod_session_cookie.so&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;admonitionblock note&quot;&gt;
-&lt;table&gt;
-&lt;tr&gt;
-&lt;td class=&quot;icon&quot;&gt;
-&lt;div class=&quot;title&quot;&gt;Note&lt;/div&gt;
-&lt;/td&gt;
-&lt;td class=&quot;content&quot;&gt;
-This configuration is only for tutorial purpose and not secured by default! Using Cookies session store is NOT secured! It&amp;#8217;s recommend you use &lt;code&gt;mod_session_crypto&lt;/code&gt; to further secure data, or use server side session data store.
-&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/table&gt;
-&lt;/div&gt;
-&lt;div class=&quot;literalblock&quot;&gt;
-&lt;div class=&quot;title&quot;&gt;Setup users&lt;/div&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;pre&gt;# First user and new file
-htpasswd -c /etc/httpd/passwd/passwords test
-# Update/add more user
-htpasswd /etc/httpd/passwd/passwords zemian&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;admonitionblock note&quot;&gt;
-&lt;table&gt;
-&lt;tr&gt;
-&lt;td class=&quot;icon&quot;&gt;
-&lt;div class=&quot;title&quot;&gt;Note&lt;/div&gt;
-&lt;/td&gt;
-&lt;td class=&quot;content&quot;&gt;
-You need &lt;code&gt;httpd-tool&lt;/code&gt; package from Cygwin to find &lt;code&gt;htpasswd&lt;/code&gt; command.
-&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/table&gt;
-&lt;/div&gt;
-&lt;div class=&quot;listingblock&quot;&gt;
-&lt;div class=&quot;title&quot;&gt;Example of Digest login&lt;/div&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;pre&gt;# Digest Login
-&amp;lt;Location &quot;/secured&quot;&amp;gt;
-	AuthType Basic
-	AuthName &quot;Restricted Files&quot;
-	AuthBasicProvider file
-	AuthUserFile &quot;/etc/httpd/passwd/passwords&quot;
-	Require valid-user
-&amp;lt;/Location&amp;gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;listingblock&quot;&gt;
-&lt;div class=&quot;title&quot;&gt;Example of form login&lt;/div&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;pre&gt;# Form Login/logout process
-&amp;lt;LocationMatch &quot;(/secured|/cgi-bin/secured)&quot;&amp;gt;
-	Require valid-user
-	AuthName &quot;SecuredArea&quot;
-	AuthFormProvider file
-	AuthUserFile &quot;/etc/httpd/passwd/passwords&quot;
-    AuthType form
-	AuthFormLoginRequiredLocation &quot;/login.html&quot;
-
-	Session On
-	SessionCookieName session path=/
-	SessionMaxAge 30
-	SessionEnv On
-	SessionHeader X-Replace-Session
-&amp;lt;/LocationMatch&amp;gt;
-&amp;lt;Location &quot;/login&quot;&amp;gt;
-	SetHandler form-login-handler
-	AuthName &quot;SecuredArea&quot;
-	AuthFormProvider file
-	AuthUserFile &quot;/etc/httpd/passwd/passwords&quot;
-    AuthType form
-	AuthFormLoginRequiredLocation &quot;/login.html&quot;
-    AuthFormLoginSuccessLocation &quot;/secured/index.html&quot;
-
-	Session On
-	SessionCookieName session path=/
-&amp;lt;/Location&amp;gt;
-&amp;lt;Location &quot;/logout&quot;&amp;gt;
-	SetHandler form-logout-handler
-	AuthName &quot;SecuredArea&quot;
-	AuthFormLogoutLocation &quot;http://localhost/logout.html&quot;
-
-	Session On
-	SessionCookieName session path=/
-	SessionMaxAge 1
-&amp;lt;/Location&amp;gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;literalblock&quot;&gt;
-&lt;div class=&quot;title&quot;&gt;Login page &lt;code&gt;htdocs/login.html&lt;/code&gt;&lt;/div&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;pre&gt;&amp;lt;form method=&quot;POST&quot; action=&quot;/login&quot;&amp;gt;
-  Username: &amp;lt;input type=&quot;text&quot; name=&quot;httpd_username&quot; value=&quot;&quot; /&amp;gt;
-  Password: &amp;lt;input type=&quot;password&quot; name=&quot;httpd_password&quot; value=&quot;&quot; /&amp;gt;
-  &amp;lt;input type=&quot;submit&quot; name=&quot;login&quot; value=&quot;Login&quot; /&amp;gt;
-&amp;lt;/form&amp;gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;literalblock&quot;&gt;
-&lt;div class=&quot;title&quot;&gt;Logout page &lt;code&gt;htdocs/logout.html&lt;/code&gt;&lt;/div&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;pre&gt;&amp;lt;p&amp;gt;You have been logged out.&amp;lt;/p&amp;gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;literalblock&quot;&gt;
-&lt;div class=&quot;title&quot;&gt;Secured page &lt;code&gt;htdocs/secured/index.html&lt;/code&gt;&lt;/div&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;pre&gt;&amp;lt;p&amp;gt;This is secured area&amp;lt;/p&amp;gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -4089,6 +4106,27 @@ trick should get you switch into that target user account.&lt;/p&gt;
 	</description>
     </item>
     <item>
+      <title>Migrating Django 1.6 to 1.9</title>
+      <link>https://zemian.github.io/blog/2016/07/migrating-django-1-6-to-1-9.html</link>
+      <pubDate>Wed, 6 Jul 2016 00:00:00 -0400</pubDate>
+      <guid isPermaLink="false">blog/2016/07/migrating-django-1-6-to-1-9.html</guid>
+      	<description>
+	&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Couple years ago, I wrote a simple Events and Signin management app using django 1.6. It was fun to write and it worked really well. Just recently I have to write another quick simple CRM webapp and I decided to use Django again, but they current release is 1.9 now and I quickly found few differences.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;The &lt;code&gt;INSTALLED_APPS&lt;/code&gt; now takes &lt;code&gt;AppCofig&lt;/code&gt; instead of package name. And there is a new &lt;code&gt;apps.py&lt;/code&gt; file for it.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;There is now &lt;code&gt;makemigration&lt;/code&gt; and &lt;code&gt;migrate&lt;/code&gt; command to create database table.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+	</description>
+    </item>
+    <item>
       <title>Login to remote host without password</title>
       <link>https://zemian.github.io/blog/2016/07/login-to-remote-host-without-password.html</link>
       <pubDate>Wed, 6 Jul 2016 00:00:00 -0400</pubDate>
@@ -4144,24 +4182,54 @@ xxxyyyzzz zemian@myhost
 	</description>
     </item>
     <item>
-      <title>Migrating Django 1.6 to 1.9</title>
-      <link>https://zemian.github.io/blog/2016/07/migrating-django-1-6-to-1-9.html</link>
-      <pubDate>Wed, 6 Jul 2016 00:00:00 -0400</pubDate>
-      <guid isPermaLink="false">blog/2016/07/migrating-django-1-6-to-1-9.html</guid>
+      <title>How to import SSL cert into WLS DemoTrust.jks keystore file</title>
+      <link>https://zemian.github.io/blog/2016/07/how-to-import-ssl-cert-into-wls-demotrust-jks-keystore-file.html</link>
+      <pubDate>Tue, 5 Jul 2016 00:00:00 -0400</pubDate>
+      <guid isPermaLink="false">blog/2016/07/how-to-import-ssl-cert-into-wls-demotrust-jks-keystore-file.html</guid>
       	<description>
 	&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Couple years ago, I wrote a simple Events and Signin management app using django 1.6. It was fun to write and it worked really well. Just recently I have to write another quick simple CRM webapp and I decided to use Django again, but they current release is 1.9 now and I quickly found few differences.&lt;/p&gt;
+In WLS, you can import your own SSL cert into its trust keystore file to invoke &quot;https&quot; contents. Here is how you do that with the default WLS &lt;code&gt;DemoTrust.jks&lt;/code&gt; file.&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bash&amp;gt; cd $WL_HOME/server/lib
+bash&amp;gt; keytool -keystore DemoTrust.jks -storepass DemoTrustKeyStorePassPhrase -list
+bash&amp;gt; keytool -keystore DemoTrust.jks -storepass DemoTrustKeyStorePassPhrase -importcert -alias mycert -file mycert.pem
+
+# Or to delete the entry
+bash&amp;gt; keytool -keystore DemoTrust.jks -storepass DemoTrustKeyStorePassPhrase -delete -alias mycert&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
-&lt;div class=&quot;ulist&quot;&gt;
-&lt;ul&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+The file &lt;code&gt;mycert.pem&lt;/code&gt; can be obtained by any modern browser when you visit the &quot;https&quot; site. For example using Firefox, you can follow these steps to export the cert file:&lt;/div&gt;
+&lt;div class=&quot;olist arabic&quot;&gt;
+&lt;ol class=&quot;arabic&quot;&gt;
 &lt;li&gt;
-&lt;p&gt;The &lt;code&gt;INSTALLED_APPS&lt;/code&gt; now takes &lt;code&gt;AppCofig&lt;/code&gt; instead of package name. And there is a new &lt;code&gt;apps.py&lt;/code&gt; file for it.&lt;/p&gt;
+Click on the &lt;b&gt;Lock&lt;/b&gt; icon next to the URL in the broswer&lt;br /&gt;
+
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;There is now &lt;code&gt;makemigration&lt;/code&gt; and &lt;code&gt;migrate&lt;/code&gt; command to create database table.&lt;/p&gt;
+Click &lt;b&gt;More Information&lt;/b&gt; button, then go to the &quot;Security Tab&quot;&lt;br /&gt;
+
 &lt;/li&gt;
-&lt;/ul&gt;
+&lt;li&gt;
+Click &lt;b&gt;View Certificate&lt;/b&gt; button, then go to the &lt;b&gt;Details&lt;/b&gt; tab&lt;br /&gt;
+
+&lt;/li&gt;
+&lt;li&gt;
+Click &lt;b&gt;Export &amp;#8203;&lt;/b&gt; button&lt;br /&gt;
+
+&lt;/li&gt;
+&lt;li&gt;
+On the bottom right corner dropdown, select &lt;b&gt;X.509 Cerificate with chain (PEM)&lt;/b&gt;&lt;br /&gt;
+
+&lt;/li&gt;
+&lt;li&gt;
+Type name of file to save (eg: &lt;code&gt;mycert.pem&lt;/code&gt;) and then click &lt;b&gt;Save&lt;/b&gt; button&lt;br /&gt;
+
+&lt;/li&gt;
+&lt;/ol&gt;
 &lt;/div&gt;
+
 	</description>
     </item>
     <item>
@@ -4217,57 +4285,6 @@ stmt.close()
 conn.close()&lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-	</description>
-    </item>
-    <item>
-      <title>How to import SSL cert into WLS DemoTrust.jks keystore file</title>
-      <link>https://zemian.github.io/blog/2016/07/how-to-import-ssl-cert-into-wls-demotrust-jks-keystore-file.html</link>
-      <pubDate>Tue, 5 Jul 2016 00:00:00 -0400</pubDate>
-      <guid isPermaLink="false">blog/2016/07/how-to-import-ssl-cert-into-wls-demotrust-jks-keystore-file.html</guid>
-      	<description>
-	&lt;div class=&quot;paragraph&quot;&gt;
-In WLS, you can import your own SSL cert into its trust keystore file to invoke &quot;https&quot; contents. Here is how you do that with the default WLS &lt;code&gt;DemoTrust.jks&lt;/code&gt; file.&lt;/div&gt;
-&lt;div class=&quot;listingblock&quot;&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bash&amp;gt; cd $WL_HOME/server/lib
-bash&amp;gt; keytool -keystore DemoTrust.jks -storepass DemoTrustKeyStorePassPhrase -list
-bash&amp;gt; keytool -keystore DemoTrust.jks -storepass DemoTrustKeyStorePassPhrase -importcert -alias mycert -file mycert.pem
-
-# Or to delete the entry
-bash&amp;gt; keytool -keystore DemoTrust.jks -storepass DemoTrustKeyStorePassPhrase -delete -alias mycert&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-The file &lt;code&gt;mycert.pem&lt;/code&gt; can be obtained by any modern browser when you visit the &quot;https&quot; site. For example using Firefox, you can follow these steps to export the cert file:&lt;/div&gt;
-&lt;div class=&quot;olist arabic&quot;&gt;
-&lt;ol class=&quot;arabic&quot;&gt;
-&lt;li&gt;
-Click on the &lt;b&gt;Lock&lt;/b&gt; icon next to the URL in the broswer&lt;br /&gt;
-
-&lt;/li&gt;
-&lt;li&gt;
-Click &lt;b&gt;More Information&lt;/b&gt; button, then go to the &quot;Security Tab&quot;&lt;br /&gt;
-
-&lt;/li&gt;
-&lt;li&gt;
-Click &lt;b&gt;View Certificate&lt;/b&gt; button, then go to the &lt;b&gt;Details&lt;/b&gt; tab&lt;br /&gt;
-
-&lt;/li&gt;
-&lt;li&gt;
-Click &lt;b&gt;Export &amp;#8203;&lt;/b&gt; button&lt;br /&gt;
-
-&lt;/li&gt;
-&lt;li&gt;
-On the bottom right corner dropdown, select &lt;b&gt;X.509 Cerificate with chain (PEM)&lt;/b&gt;&lt;br /&gt;
-
-&lt;/li&gt;
-&lt;li&gt;
-Type name of file to save (eg: &lt;code&gt;mycert.pem&lt;/code&gt;) and then click &lt;b&gt;Save&lt;/b&gt; button&lt;br /&gt;
-
-&lt;/li&gt;
-&lt;/ol&gt;
-&lt;/div&gt;
-
 	</description>
     </item>
     <item>
@@ -4452,24 +4469,6 @@ Solution: if this is brand new table you are creating, manually remove the previ
 	</description>
     </item>
     <item>
-      <title>Installing a local downloaded .rpm file</title>
-      <link>https://zemian.github.io/blog/2016/06/installing-a-local-downloaded--rpm-file.html</link>
-      <pubDate>Sun, 26 Jun 2016 00:00:00 -0400</pubDate>
-      <guid isPermaLink="false">blog/2016/06/installing-a-local-downloaded--rpm-file.html</guid>
-      	<description>
-	&lt;span style=&quot;font-family: inherit;&quot;&gt;&lt;span style=&quot;font-family: &amp;quot;courier new&amp;quot; , &amp;quot;courier&amp;quot; , monospace;&quot;&gt;&lt;span style=&quot;font-size: small;&quot;&gt;&lt;span style=&quot;font-family: inherit;&quot;&gt;To install:&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&quot;font-family: &amp;quot;courier new&amp;quot; , &amp;quot;courier&amp;quot; , monospace;&quot;&gt; &lt;/span&gt;&lt;/span&gt;&lt;br /&gt;
-&lt;span style=&quot;font-family: &amp;quot;Courier New&amp;quot;,Courier,monospace;&quot;&gt;&lt;span style=&quot;font-family: &amp;quot;courier new&amp;quot; , &amp;quot;courier&amp;quot; , monospace;&quot;&gt;bash&amp;gt; sudo yum install &amp;lt;package_name.rpm&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;
-&lt;span style=&quot;font-family: inherit;&quot;&gt;&lt;br /&gt;&lt;/span&gt;
-&lt;span style=&quot;font-family: inherit;&quot;&gt;&lt;span style=&quot;font-family: &amp;quot;courier new&amp;quot; , &amp;quot;courier&amp;quot; , monospace;&quot;&gt;If you have problem installing it due to gpg &lt;span style=&quot;font-family: &amp;quot;courier new&amp;quot; , &amp;quot;courier&amp;quot; , monospace;&quot;&gt;che&lt;span style=&quot;font-family: &amp;quot;courier new&amp;quot; , &amp;quot;courier&amp;quot; , monospace;&quot;&gt;ck failure and you know it&apos;s a go&lt;span style=&quot;font-family: &amp;quot;courier new&amp;quot; , &amp;quot;courier&amp;quot; , monospace;&quot;&gt;od RPM&lt;span style=&quot;font-family: &amp;quot;courier new&amp;quot; , &amp;quot;courier&amp;quot; , monospace;&quot;&gt;, then &lt;span style=&quot;font-family: &amp;quot;courier new&amp;quot; , &amp;quot;courier&amp;quot; , monospace;&quot;&gt;try &lt;span style=&quot;font-family: &amp;quot;courier new&amp;quot; , &amp;quot;courier&amp;quot; , monospace;&quot;&gt;w&lt;span style=&quot;font-family: &amp;quot;courier new&amp;quot; , &amp;quot;courier&amp;quot; , monospace;&quot;&gt;ith this.&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt; &lt;/span&gt;&lt;/span&gt;&lt;br /&gt;
-&lt;span style=&quot;font-family: &amp;quot;Courier New&amp;quot;,Courier,monospace;&quot;&gt;&lt;span style=&quot;font-family: &amp;quot;courier new&amp;quot; , &amp;quot;courier&amp;quot; , monospace;&quot;&gt;bash&amp;gt; sudo yum --nogpgcheck localinstall &amp;lt;package_name.rpm&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;
-&lt;span style=&quot;font-family: inherit;&quot;&gt;&lt;br /&gt;&lt;/span&gt;
-&lt;span style=&quot;font-family: inherit;&quot;&gt;&lt;span style=&quot;font-family: &amp;quot;courier new&amp;quot; , &amp;quot;courier&amp;quot; , monospace;&quot;&gt;&lt;span style=&quot;font-size: small;&quot;&gt;&lt;span style=&quot;font-family: inherit;&quot;&gt;To verify what&apos;s in the rpm:&lt;/span&gt;&lt;/span&gt; &lt;/span&gt;&lt;/span&gt;&lt;br /&gt;
-&lt;span style=&quot;font-family: &amp;quot;Courier New&amp;quot;,Courier,monospace;&quot;&gt;&lt;span style=&quot;font-family: &amp;quot;courier new&amp;quot; , &amp;quot;courier&amp;quot; , monospace;&quot;&gt;bash&amp;gt; rpm -qlp &amp;lt;package_name.rpm&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;
-&lt;br /&gt;
-
-	</description>
-    </item>
-    <item>
       <title>Untrack file without deleting it with a hg repository</title>
       <link>https://zemian.github.io/blog/2016/06/untrack-file-without-deleting-it-with-a-hg-repository.html</link>
       <pubDate>Sun, 26 Jun 2016 00:00:00 -0400</pubDate>
@@ -4526,6 +4525,24 @@ Later I learned that I shouln&apos;t track one of IDEA&apos;s workspace file, so
 &lt;span style=&quot;font-family: &amp;quot;courier new&amp;quot; , &amp;quot;courier&amp;quot; , monospace;&quot;&gt;CALL proc_hotfix1();&lt;/span&gt;&lt;br /&gt;
 &lt;span style=&quot;font-family: &amp;quot;courier new&amp;quot; , &amp;quot;courier&amp;quot; , monospace;&quot;&gt;SELECT COUNT(*) FROM hotfix1;&lt;/span&gt;&lt;br /&gt;
 &lt;span style=&quot;font-family: &amp;quot;courier new&amp;quot; , &amp;quot;courier&amp;quot; , monospace;&quot;&gt;SELECT * FROM hotfix1;&lt;/span&gt;
+
+	</description>
+    </item>
+    <item>
+      <title>Installing a local downloaded .rpm file</title>
+      <link>https://zemian.github.io/blog/2016/06/installing-a-local-downloaded--rpm-file.html</link>
+      <pubDate>Sun, 26 Jun 2016 00:00:00 -0400</pubDate>
+      <guid isPermaLink="false">blog/2016/06/installing-a-local-downloaded--rpm-file.html</guid>
+      	<description>
+	&lt;span style=&quot;font-family: inherit;&quot;&gt;&lt;span style=&quot;font-family: &amp;quot;courier new&amp;quot; , &amp;quot;courier&amp;quot; , monospace;&quot;&gt;&lt;span style=&quot;font-size: small;&quot;&gt;&lt;span style=&quot;font-family: inherit;&quot;&gt;To install:&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&quot;font-family: &amp;quot;courier new&amp;quot; , &amp;quot;courier&amp;quot; , monospace;&quot;&gt; &lt;/span&gt;&lt;/span&gt;&lt;br /&gt;
+&lt;span style=&quot;font-family: &amp;quot;Courier New&amp;quot;,Courier,monospace;&quot;&gt;&lt;span style=&quot;font-family: &amp;quot;courier new&amp;quot; , &amp;quot;courier&amp;quot; , monospace;&quot;&gt;bash&amp;gt; sudo yum install &amp;lt;package_name.rpm&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;
+&lt;span style=&quot;font-family: inherit;&quot;&gt;&lt;br /&gt;&lt;/span&gt;
+&lt;span style=&quot;font-family: inherit;&quot;&gt;&lt;span style=&quot;font-family: &amp;quot;courier new&amp;quot; , &amp;quot;courier&amp;quot; , monospace;&quot;&gt;If you have problem installing it due to gpg &lt;span style=&quot;font-family: &amp;quot;courier new&amp;quot; , &amp;quot;courier&amp;quot; , monospace;&quot;&gt;che&lt;span style=&quot;font-family: &amp;quot;courier new&amp;quot; , &amp;quot;courier&amp;quot; , monospace;&quot;&gt;ck failure and you know it&apos;s a go&lt;span style=&quot;font-family: &amp;quot;courier new&amp;quot; , &amp;quot;courier&amp;quot; , monospace;&quot;&gt;od RPM&lt;span style=&quot;font-family: &amp;quot;courier new&amp;quot; , &amp;quot;courier&amp;quot; , monospace;&quot;&gt;, then &lt;span style=&quot;font-family: &amp;quot;courier new&amp;quot; , &amp;quot;courier&amp;quot; , monospace;&quot;&gt;try &lt;span style=&quot;font-family: &amp;quot;courier new&amp;quot; , &amp;quot;courier&amp;quot; , monospace;&quot;&gt;w&lt;span style=&quot;font-family: &amp;quot;courier new&amp;quot; , &amp;quot;courier&amp;quot; , monospace;&quot;&gt;ith this.&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt; &lt;/span&gt;&lt;/span&gt;&lt;br /&gt;
+&lt;span style=&quot;font-family: &amp;quot;Courier New&amp;quot;,Courier,monospace;&quot;&gt;&lt;span style=&quot;font-family: &amp;quot;courier new&amp;quot; , &amp;quot;courier&amp;quot; , monospace;&quot;&gt;bash&amp;gt; sudo yum --nogpgcheck localinstall &amp;lt;package_name.rpm&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;
+&lt;span style=&quot;font-family: inherit;&quot;&gt;&lt;br /&gt;&lt;/span&gt;
+&lt;span style=&quot;font-family: inherit;&quot;&gt;&lt;span style=&quot;font-family: &amp;quot;courier new&amp;quot; , &amp;quot;courier&amp;quot; , monospace;&quot;&gt;&lt;span style=&quot;font-size: small;&quot;&gt;&lt;span style=&quot;font-family: inherit;&quot;&gt;To verify what&apos;s in the rpm:&lt;/span&gt;&lt;/span&gt; &lt;/span&gt;&lt;/span&gt;&lt;br /&gt;
+&lt;span style=&quot;font-family: &amp;quot;Courier New&amp;quot;,Courier,monospace;&quot;&gt;&lt;span style=&quot;font-family: &amp;quot;courier new&amp;quot; , &amp;quot;courier&amp;quot; , monospace;&quot;&gt;bash&amp;gt; rpm -qlp &amp;lt;package_name.rpm&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;
+&lt;br /&gt;
 
 	</description>
     </item>
@@ -5067,17 +5084,6 @@ Noticed that in MySQL, you must name your sub query result such as&amp;nbsp;&lt;
 	</description>
     </item>
     <item>
-      <title>MacBook Air is not displaying scroll bar on Finder</title>
-      <link>https://zemian.github.io/blog/2015/10/macbook-air-is-not-displaying-scroll-bar-on-finder.html</link>
-      <pubDate>Sat, 10 Oct 2015 00:00:00 -0400</pubDate>
-      <guid isPermaLink="false">blog/2015/10/macbook-air-is-not-displaying-scroll-bar-on-finder.html</guid>
-      	<description>
-	&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;For odd reason that I don&amp;#8217;t see scrollbar shows up on Finder in MacBook Air when I have a long list of files. Can&amp;#8217;t scroll down with my trackpad, but I can do it with &lt;code&gt;Fn + Down Arrow&lt;/code&gt; key though. To fix this, I have to go into System Preference, General and set &quot;Show scroll bar&quot; to &quot;Always&quot;.&lt;/p&gt;
-&lt;/div&gt;
-	</description>
-    </item>
-    <item>
       <title>Setup Python on Mac</title>
       <link>https://zemian.github.io/blog/2015/10/setup-python-on-mac.html</link>
       <pubDate>Sat, 10 Oct 2015 00:00:00 -0400</pubDate>
@@ -5130,6 +5136,17 @@ The MacOS comes with latest Python 2.7, but no Python3. You can download the lat
 &lt;br /&gt;
 &lt;br /&gt;
 
+	</description>
+    </item>
+    <item>
+      <title>MacBook Air is not displaying scroll bar on Finder</title>
+      <link>https://zemian.github.io/blog/2015/10/macbook-air-is-not-displaying-scroll-bar-on-finder.html</link>
+      <pubDate>Sat, 10 Oct 2015 00:00:00 -0400</pubDate>
+      <guid isPermaLink="false">blog/2015/10/macbook-air-is-not-displaying-scroll-bar-on-finder.html</guid>
+      	<description>
+	&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;For odd reason that I don&amp;#8217;t see scrollbar shows up on Finder in MacBook Air when I have a long list of files. Can&amp;#8217;t scroll down with my trackpad, but I can do it with &lt;code&gt;Fn + Down Arrow&lt;/code&gt; key though. To fix this, I have to go into System Preference, General and set &quot;Show scroll bar&quot; to &quot;Always&quot;.&lt;/p&gt;
+&lt;/div&gt;
 	</description>
     </item>
     <item>
