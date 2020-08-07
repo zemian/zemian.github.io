@@ -1,0 +1,17 @@
+{
+  "name": "zemian.github.io",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "dev": "vuepress dev blog"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zemian/zemian.github.io.git"
+  },
+  "author": "Zemian Deng",
+  "dependencies": {
+    "@vuepress/theme-blog": "^2.3.0",
+    "vuepress": "^1.5.3"
+  }
+}
