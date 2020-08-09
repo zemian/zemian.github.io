@@ -6,9 +6,25 @@
     <atom:link href="https://zemian.github.io/feed.xml" rel="self" type="application/rss+xml" />
     <description>JBake Bootstrap Template</description>
     <language>en-gb</language>
-    <pubDate>Sun, 9 Aug 2020 12:44:07 -0400</pubDate>
-    <lastBuildDate>Sun, 9 Aug 2020 12:44:07 -0400</lastBuildDate>
+    <pubDate>Sun, 9 Aug 2020 16:14:33 -0400</pubDate>
+    <lastBuildDate>Sun, 9 Aug 2020 16:14:33 -0400</lastBuildDate>
 
+    <item>
+      <title>Oracle JET 9 Released</title>
+      <link>https://zemian.github.io/blog/2020/08/ojet9-release.html</link>
+      <pubDate>Sun, 9 Aug 2020 00:00:00 -0400</pubDate>
+      <guid isPermaLink="false">blog/2020/08/ojet9-release.html</guid>
+      	<description>
+	&lt;p&gt;The Oracle JET 9 has been release short while ago. This release is a major release compare to version 8. The most noticable thing is their new &lt;code&gt;redwood&lt;/code&gt; theme is the default when you generate a new project now. The old &lt;code&gt;alta&lt;/code&gt; theme is still there, but you need to opt in&lt;br /&gt;
+to get it. Their &lt;a href=&quot;https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html&quot;&gt;cookbook&lt;/a&gt; has been updated to use this &amp;quot;Redwood&amp;quot; themme. So check it out!&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://www.oracle.com/webfolder/technetwork/jet/index.html?_ojCoreRouter=releasenotes&quot;&gt;Release notes&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://docs.oracle.com/en/middleware/developer-tools/jet/9/reference-api/index.html&quot;&gt;API Doc&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://docs.oracle.com/en/middleware/developer-tools/jet/9/develop/index.html&quot;&gt;Developer Guide&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+	</description>
+    </item>
     <item>
       <title>Back To GitHub</title>
       <link>https://zemian.github.io/blog/2020/08/move-back-to-github.html</link>
