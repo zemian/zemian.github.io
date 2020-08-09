@@ -2,16 +2,16 @@ This repository contains code that generate https://zemian.github.io/ site
 
 This project is a Static Site Generator powered by [jbake](https://jbake.org/)
 
-### How to write a new post
+## Setup 
 
-```
-cd zemian.github.io-site
-# Add new file into `content/blog`
+Run `brew install jbake`
 
-bin/jbake.sh -b -s ./ site
-```
+Note: The site is generated using version `2.6.4`
 
-Preview it on http://localhost:8820
+## How to write a new post
+
+1. Run `jbake -b -s ./ site`
+2. Open http://localhost:8820
 
 ### The `site` folder
 
