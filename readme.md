@@ -10,7 +10,16 @@ Run `brew install jbake` to install the generator.
 
 ## How to write a new post
 
-Write a new file under `jbake/content/blog` then preview it first:
+Write a new file under `jbake/content/blog` with minimal of these metadata:
+
+```
+title=Blog Title
+date=2020-01-01
+type=post
+status=published
+tags=blog
+~~~~~~
+```
 
 1. Run `jbake -b -s jbake`
 2. Open http://localhost:8820
