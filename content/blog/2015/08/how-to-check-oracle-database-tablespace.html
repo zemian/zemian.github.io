@@ -1,0 +1,74 @@
+title=How to check Oracle Database tablespace
+date=2015-08-14
+type=post
+tags=oracle
+status=published
+~~~~~~
+<div>
+When creating a new users in Oracle database (new schema), you need to verify the existing tablespace availability. This query will show you what's there and how much space are free to use.</div>
+<div>
+<br /></div>
+<div>
+<div>
+<span style="font-family: Courier New, Courier, monospace;">SELECT df.tablespace_name "Tablespace",</span></div>
+<div>
+<span style="font-family: Courier New, Courier, monospace;">&nbsp; totalusedspace "Used MB",</span></div>
+<div>
+<span style="font-family: Courier New, Courier, monospace;">&nbsp; (df.totalspace - tu.totalusedspace) "Free MB",</span></div>
+<div>
+<span style="font-family: Courier New, Courier, monospace;">&nbsp; df.totalspace "Total MB",</span></div>
+<div>
+<span style="font-family: Courier New, Courier, monospace;">&nbsp; ROUND(100 * ( (df.totalspace - tu.totalusedspace)/ df.totalspace)) "% Free"</span></div>
+<div>
+<span style="font-family: Courier New, Courier, monospace;">FROM</span></div>
+<div>
+<span style="font-family: Courier New, Courier, monospace;">&nbsp; (SELECT tablespace_name,</span></div>
+<div>
+<span style="font-family: Courier New, Courier, monospace;">&nbsp; &nbsp; ROUND(SUM(bytes) / 1048576) TotalSpace</span></div>
+<div>
+<span style="font-family: Courier New, Courier, monospace;">&nbsp; FROM dba_data_files</span></div>
+<div>
+<span style="font-family: Courier New, Courier, monospace;">&nbsp; GROUP BY tablespace_name</span></div>
+<div>
+<span style="font-family: Courier New, Courier, monospace;">&nbsp; ) df,</span></div>
+<div>
+<span style="font-family: Courier New, Courier, monospace;">&nbsp; (SELECT ROUND(SUM(bytes)/(1024*1024)) totalusedspace,</span></div>
+<div>
+<span style="font-family: Courier New, Courier, monospace;">&nbsp; &nbsp; tablespace_name</span></div>
+<div>
+<span style="font-family: Courier New, Courier, monospace;">&nbsp; FROM dba_segments</span></div>
+<div>
+<span style="font-family: Courier New, Courier, monospace;">&nbsp; GROUP BY tablespace_name</span></div>
+<div>
+<span style="font-family: Courier New, Courier, monospace;">&nbsp; ) tu</span></div>
+<div>
+<span style="font-family: Courier New, Courier, monospace;">WHERE df.tablespace_name = tu.tablespace_name;</span></div>
+</div>
+<div>
+<br /></div>
+<div>
+Also, this query will show where the tablespace file are located:</div>
+<div>
+<br /></div>
+<div>
+<div>
+<span style="font-family: Courier New, Courier, monospace;">SELECT &nbsp;FILE_NAME, BLOCKS, TABLESPACE_NAME</span></div>
+<div>
+<span style="font-family: Courier New, Courier, monospace;">&nbsp; &nbsp;FROM DBA_DATA_FILES;</span></div>
+</div>
+<div>
+<br /></div>
+<div>
+Here are some references on how Oracle manages user, schema and tablespace.<br />
+<br /></div>
+<div>
+<a href="https://community.oracle.com/message/1832920">https://community.oracle.com/message/1832920</a></div>
+<div>
+<a href="http://docs.oracle.com/cd/B28359_01/server.111/b28310/tspaces014.htm#ADMIN11412">http://docs.oracle.com/cd/B28359_01/server.111/b28310/tspaces014.htm#ADMIN11412</a><br />
+<a href="http://docs.oracle.com/cd/B28359_01/server.111/b28286/statements_8003.htm">http://docs.oracle.com/cd/B28359_01/server.111/b28286/statements_8003.htm</a><br />
+<a href="http://stackoverflow.com/questions/880230/difference-between-a-user-and-a-schema-in-oracle">http://stackoverflow.com/questions/880230/difference-between-a-user-and-a-schema-in-oracle</a><br />
+<a href="https://asktom.oracle.com/pls/asktom/f?p=100:11:0::::P11_QUESTION_ID:6162110256950">https://asktom.oracle.com/pls/asktom/f?p=100:11:0::::P11_QUESTION_ID:6162110256950</a></div>
+<div>
+<br /></div>
+<div>
+<br /></div>

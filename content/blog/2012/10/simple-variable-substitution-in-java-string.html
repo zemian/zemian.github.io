@@ -1,0 +1,63 @@
+title=Simple Variable Substitution in Java String
+date=2012-10-24
+type=post
+tags=java
+status=published
+~~~~~~
+<p>When I wrote about how to improve the Java Properties class using <a href="http://saltnlight5.blogspot.com/2012/09/improving-javautilproperties.html">Props</a>, I've shown
+a feature where you can use variable substition such as <code>mypath=${user.home}</code> in your config file. The implementation underneath it uses the Apache Common Lang library with <code>org.apache.commons.lang.text.StrSubstitutor</code>. There is nothing wrong with this, but I was curious how bad would it be to remove such dependency, so the <code>Props</code> can be more standalone.</p>
+
+<p>Here is a quick implementation in Groovy, but you should able to translate to Java easily.</p>
+
+<pre><code>// String variable substitutions
+def parseVariableNames(String text) {
+    def names = []
+    def pos = 0, max = text.length()
+    while (pos &lt; max) {
+        pos = text.indexOf('${', pos)
+        if (pos == -1)
+            break
+        def end = text.indexOf('}', pos + 2)
+        if (end == -1)
+            break
+        def name = text.substring(pos + 2, end)
+        names.add(name)
+        pos = end + 1
+    }
+    return names
+}
+def replaceVariable(String key, String value, String text) {
+    //println "DEBUG: Replacing '${key}'' with '${value}'"
+    result = text.replaceAll('\\$\\{' + key + '}', value)
+    return result
+}
+</code></pre>
+
+<p>Probably not the most efficient thing, but it should work. Let's have some tests.</p>
+
+<pre><code>// Test
+def map = ["name": "Zemian", "id": "1001"]
+def inputs  = [
+    'Hello ${name}',
+    'My id is ${id}',
+    '${name} is a good programmer.',
+    '${name}\'s id is ${id}.'
+]
+
+result = inputs.collect{ line -&gt;
+    def names = parseVariableNames(line)
+    names.each{ key -&gt;
+        line = replaceVariable(key, map.get(key), line) 
+    }
+    line
+}
+assert result == [
+    'Hello Zemian',
+    'My id is 1001',
+    'Zemian is a good programmer.',
+    'Zemian\'s id is 1001.'
+]
+</code></pre>
+
+<p>The output should print nothing, as it passed the test. What do you think?</p>
+       

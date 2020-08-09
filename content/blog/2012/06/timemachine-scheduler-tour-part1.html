@@ -1,0 +1,104 @@
+title=TimeMachine Scheduler Tour: Part1
+date=2012-06-06
+type=post
+tags=timemachine
+status=published
+~~~~~~
+This is part 1 of 7 in a series of articles that will give you a tour of the&nbsp;<a href="https://bitbucket.org/timemachine/scheduler/wiki/Home">TimeMachine Scheduler</a>&nbsp;project. These articles will introduce you to the scheduler, how to load jobs and schedules, and explore some of its advanced features. For the most current and accurate instructions, please visit the ReferenceManual from the project site.
+<br />
+<br />
+<br />
+<h2>
+
+
+
+
+
+ What is TimeMachine Scheduler</h2>
+TimeMachine is a Java scheduler that can scale and run high volume of jobs with many different types of schedules, such as repeating on fixed interval or based on CRON expressions. The scheduler may control the job executions with thread pools, and it can persist job data into different storage. Users may use the built-in scheduler server with easy configuration file, or developers may use it as a library to extend the scheduler and write custom jobs, schedules, or user services.<br />
+<br />
+<br />
+<h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Getting started</h2>
+<span style="background-color: white;">First step is to download the latest scheduler distribution and uznip it into your system. Then fire up the scheduler with some sample jobs.</span><br />
+<br />
+We will be printing commands and its output running on a MacOSX terminal. If you have a Microsoft Windows, then running a Cygwin terminal would also work. Or if you are Linux user then you just use a Terminal.<br />
+<br />
+(NOTE: If you don't feel like downloading software, you may try our <a href="http://tmschedulerdemo-zdeng.rhcloud.com/scheduler-demo/job-list">online demo</a>. You may edit the scheduler configuration directly in a web form, and it will restart the scheduler immediately upon Save.)<br />
+<br />
+If you have downloaded the zip file under an "apps" directory in your HOME folder, then follow these steps to get a scheduler instance running:<br />
+<br />
+<span style="font-size: x-small;"><span style="font-family: 'Courier New',Courier,monospace;">$ cd $HOME/apps</span><br style="font-family: &quot;Courier New&quot;,Courier,monospace;" /><span style="font-family: 'Courier New',Courier,monospace;">$ unzip&nbsp;</span><span style="font-family: 'Courier New',Courier,monospace;">timemachine-scheduler-1.1.1.zip</span><br style="font-family: &quot;Courier New&quot;,Courier,monospace;" /><span style="font-family: 'Courier New',Courier,monospace;">$ cd&nbsp;</span>
+<span style="font-family: 'Courier New',Courier,monospace;">timemachine-scheduler-</span>
+<span style="font-family: 'Courier New',Courier,monospace;">1.1.1</span><br style="font-family: &quot;Courier New&quot;,Courier,monospace;" /><span style="font-family: 'Courier New',Courier,monospace;">$ bin/scheduler.sh config/scheduler.properties</span></span><br />
+<br />
+You should see some log output on the terminal console screen like this<br />
+<br />
+<span style="color: #e06666; font-family: 'Courier New',Courier,monospace;"></span><br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;"></span><br />
+<br />
+<br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">22:57:08 main INFO| TimeScheduler system services initialized: [</span><br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">&nbsp; scheduler: SchedulerData[id=1, name=TimeMachineScheduler],</span><br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">&nbsp; schedulerNode: SchedulerNode[nodeId=1, name=ZEMIANs-iMac.local, ip=192.168.1.130],</span><br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">&nbsp; configProps: config/scheduler.properties,</span><br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">&nbsp; dataStore: MemoryDataStore[name=386981384],</span><br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">&nbsp; scheduleRunner: PollingScheduleRunner[name=1186906970],</span><br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">&nbsp; classLoader: SimpleClassLoaderService[name=1363910379],</span><br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">&nbsp; jobTaskFactory: SimpleJobTaskFactory[name=621450213],</span><br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">&nbsp; jobTaskPoolNameResolver: SimpleJobTaskPoolNameResolver[name=1945442111],</span><br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">&nbsp; jobTaskThreadPool: DynamicThreadPool[name=jobTaskThreadPool.DEFAULT],</span><br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">]</span><br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">22:57:08 main INFO| Scheduler[id=1, nodeId=1, nodeIp=192.168.1.130] initialized. Version=1.1.1.062720122255</span><br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">22:57:08 main INFO| Scheduler[id=1, nodeId=1, nodeIp=192.168.1.130] started.</span><br />
+<br />
+<br />
+<br />
+<br />
+You may hit CTRL+C to exit the scheduler. <span style="background-color: white;">The above&nbsp;</span><span style="background-color: white; font-size: x-small;"><span style="font-family: 'Courier New',Courier,monospace;">config/scheduler.properties</span></span><span style="background-color: white;"> configuration file would not do much other than load an empty scheduler. To see more in action, try the&nbsp;</span><span style="background-color: white; font-family: 'Courier New',Courier,monospace; font-size: x-small;">config/crontab.properties&nbsp;</span><span style="background-color: white;">config instead. It should look something like this:</span><br />
+<br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;"></span><br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">timemachine.scheduler.userservice.crontabService.class = timemachine.scheduler.userservice.CrontabService</span><br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">CrontabService.01 = 0 0 * * * ? &nbsp; &nbsp; &nbsp; &nbsp;| sh -c echo "Hourly task begins."</span><br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">CrontabService.02 = 0/5 * * * * ? &nbsp; &nbsp; &nbsp;| sh -c echo "Heart beat."</span><br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">CrontabService.03 = 0 0/5 * * * ? &nbsp; &nbsp; &nbsp;| sh -c echo "Five minutes job."</span><br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">CrontabService.04 = 0 0 12 * JAN,JUN ? | sh -c echo "We should clean up every 6 months."</span><br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">CrontabService.05 = 0 0 8 ? * 1-5 &nbsp; &nbsp; &nbsp;| sh -c echo "Every workday at 8AM."</span><br />
+<br />
+<br />
+The above configuration will make the scheduler to work similar to the Unix crontab service. It let you input a <a href="http://tmschedulersite-zdeng.rhcloud.com/scheduler-site/timemachine-scheduler/target/site-deploy/timemachine-scheduler/apidocs/index.html">CRON expression</a>, and then follow by a OS executable command to be run. Go ahead, try to replace the "echo" command in the config file with any other commands that you know of (ping for example), and then restart the scheduler. Our default log settings should display all the external command's output as it execute.<br />
+<br />
+There are few more configuration entries that you may add to customize the scheduler. Here are few we will examine closely. For example:<br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;"><br />timemachine.scheduler.schedulerName = TimeMachineScheduler<br />timemachine.scheduler.nodeName =&nbsp;</span><span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">ZEMIANs-iMac.local</span><span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;"><br />timemachine.scheduler.dataStore.class = timemachine.scheduler.service.MemoryDataStore<br />timemachine.scheduler.jobTaskThreadPool.DEFAULT.class = timemachine.scheduler.service.DynamicThreadPool<br />timemachine.scheduler.jobTaskThreadPool.DEFAULT.minSize = 0<br />timemachine.scheduler.jobTaskThreadPool.DEFAULT.maxSize = 4<br />timemachine.scheduler.jobTaskThreadPool.DEFAULT.threadNamePrefix = ${timemachine.scheduler.schedulerName}-JobTask-Thread-</span><br />
+<br />
+You are free to change the scheduler name. Both the <span style="font-family: 'Courier New',Courier,monospace;">schedulerName</span> and <span style="font-family: 'Courier New',Courier,monospace;">nodeName</span> together will form a unique name for this instance of scheduler. These are printed as you start the scheduler so you can verify and identify them.<br />
+<br />
+We allow you to switch to different datastore, and we are using a in-memory store in this case. We also &nbsp;provide a <span style="font-family: 'Courier New',Courier,monospace;">HibernateDataStore</span> that you may use to persist the data into a database of your choice. We will cover this later in the tour, but for now we will focus on the simple in-memory store. <br />
+<br />
+One benefit of using our scheduler over a typical Unix cron is that you may control the thread pool to execute your jobs. You see the last few lines of configuration that defined a dynamic thread pool (it will not create the threads if your scheduler is idle without jobs to run.) You may change the min and max pool size, and you may even change the thread name. You may see the thread name in any JDK management tool such as jvisualvm.<br />
+<br />
+Notice one feature of our scheduler configuration, it allow you to substitude an existing value with <span style="font-family: 'Courier New',Courier,monospace;">${key}</span><span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;"> </span>format! We use this to set our thread name that reuse the value you already set as <span style="font-family: 'Courier New',Courier,monospace;">schedulerName</span>.<br />
+<br />
+<br />
+End of part 1.&nbsp;<span style="background-color: white;">You may continue&nbsp;</span><a href="http://saltnlight5.blogspot.com/2012/06/timemachine-scheduler-tour-part2.html" style="background-color: white;">next tour</a><span style="background-color: white;">.</span>

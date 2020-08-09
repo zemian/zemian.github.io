@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Zemian's Blog - Adding new cacert entry into AdoptOpenJDK</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../css/asciidoctor.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link href="../../../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../../../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../about.html">About</a></li>
+            <li><a href="../../../archive.html">Archive</a></li>
+            <li><a href="../../..//tags">Tags</a></li>
+            <li><a href="../../../feed.xml">Subscribe</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">	
+	<div class="page-header">
+		<h1>Adding new cacert entry into AdoptOpenJDK</h1>
+	</div>
+
+	<p><em>23 July 2018</em>, tags: 
+	    <a href="../../../tags/cacert.html">cacert</a> 
+
+	    <a href="../../../tags/keytool.html">keytool</a> 
+
+	    <a href="../../../tags/openjdk.html">openjdk</a> 
+	</p>
+
+	<p><div class="paragraph">
+<p>I downloaded latest Tomcat source and it failed to get the dependencies.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>  cd src/github/tomcat
+  ant download-test-compile
+        [get] Error getting https://repo.maven.apache.org/maven2/junit/junit/4.12/junit-4.12.jar to C:\Users\zemian\tomcat-build-libs\download-2000731528.tmp
+
+BUILD FAILED
+C:\Users\zemian\src\github\tomcat\build.xml:2705: The following error occurred while executing this line:
+C:\Users\zemian\src\github\tomcat\build.xml:3051: javax.net.ssl.SSLException: java.lang.RuntimeException: Unexpected error: java.security.InvalidAlgorithmParameterException: the trustAnchors parameter must be non-empty
+        at sun.security.ssl.Alerts.getSSLException(Alerts.java:208)</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>It turns out this error is caused by the OpenJDK 8 that I am using. The one I got is from <a href="https://adoptopenjdk.net/" class="bare">https://adoptopenjdk.net/</a>, and the $JAVA_HOME/jre/lib/security/cacert file has no entries for trusted CA certs!</p>
+</div>
+<div class="paragraph">
+<p>So I found few solutions:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Find a copy of OracleJDK and copy their <code>cacerts</code> over.</p>
+</li>
+<li>
+<p>If you are on Linux, you can try installing cacerts using tools the OS provided. (eg: Ubuntu can be done like here: <a href="https://stackoverflow.com/questions/6784463/error-trustanchors-parameter-must-be-non-empty" class="bare">https://stackoverflow.com/questions/6784463/error-trustanchors-parameter-must-be-non-empty</a>)</p>
+</li>
+<li>
+<p>Upgrade OpenJDK to 10</p>
+</li>
+<li>
+<p>Or the quick way, go to the site that gives you problem, export their cert using the browser, and then import into to the <code>cacerts</code> file.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>So for me, I went to <a href="https://repo.maven.apache.org/" class="bare">https://repo.maven.apache.org/</a> and exported <code>repomavenapacheorg.crt</code>, and then I ran the following:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>cd $JAVA_HOME/jre/lib/security
+keytool -keystore cacerts -storepasswd changeit -importcert -file 'Downloads/repomavenapacheorg.crt' -trustcacerts
+keytool -keystore cacerts -storepasswd changeit -list</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This fixed my problem.</p>
+</div></p>
+
+	<hr />
+
+<div id="disqus_thread"></div>
+	
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://zemian-github-io.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">&copy; 2011 - 2019 Zemian Deng All Rights Reserved | Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.4</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../../../js/jquery-1.11.1.min.js"></script>
+    <script src="../../../js/bootstrap.min.js"></script>
+    <script src="../../../js/prettify.js"></script>
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-135626598-1');
+    </script>
+
+  </body>
+</html>

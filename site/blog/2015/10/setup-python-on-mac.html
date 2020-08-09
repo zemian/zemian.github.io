@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Zemian's Blog - Setup Python on Mac</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../css/asciidoctor.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link href="../../../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../../../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../about.html">About</a></li>
+            <li><a href="../../../archive.html">Archive</a></li>
+            <li><a href="../../..//tags">Tags</a></li>
+            <li><a href="../../../feed.xml">Subscribe</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">	
+	<div class="page-header">
+		<h1>Setup Python on Mac</h1>
+	</div>
+
+	<p><em>10 October 2015</em>, tags: 
+	    <a href="../../../tags/python.html">python</a> 
+
+	    <a href="../../../tags/mac.html">mac</a> 
+	</p>
+
+	<p><h2>
+Setup Python 2</h2>
+<div>
+The default MacOS should already come with latest Python 2.7. It will be pre-installed along with some <span style="font-family: Courier New, Courier, monospace;">pyobjc</span> packages as well.</div>
+<div>
+<br /></div>
+<div>
+If you like to play around with python and external packages, it's best not to touch the original Python install from the System. Unfortunately, this Python 2.7 does not come with pip nor virtualenv packages to help setup separate environment! So it's okay to install these two into the system first. The easiest to setup is simply download <span style="font-family: Courier New, Courier, monospace;">get-pip.py</span> from&nbsp;https://bootstrap.pypa.io/get-pip.py, then run</div>
+<div>
+<br /></div>
+<div>
+<span style="font-family: Courier New, Courier, monospace;">bash&gt; sudo python get-pip.py</span><br />
+<span style="font-family: Courier New, Courier, monospace;"><br /></span></div>
+<span style="font-family: inherit; font-size: small; font-weight: normal;">With this, you may now able install virtualenv</span>
+<br />
+<span style="font-family: inherit; font-size: small; font-weight: normal;"><br /></span>
+<br />
+<div>
+<span style="font-family: Courier New, Courier, monospace;">bash&gt; sudo /usr/local/bin/pip install virtualenv</span><br />
+<span style="font-family: Courier New, Courier, monospace;"><br /></span></div>
+<div>
+<span style="font-size: small;"><span style="font-weight: normal;">Now you can setup Python2 virtual env on a&nbsp;separate directory.</span></span>
+<br />
+<span style="font-size: small;"><span style="font-weight: normal;"><br /></span></span></div>
+<div>
+<span style="font-family: Courier New, Courier, monospace;">bash&gt; python -m virtualenv mypy</span></div>
+<div>
+<span style="font-family: Courier New, Courier, monospace;">bash&gt; source mypy/bin/activate</span></div>
+<div>
+<span style="font-family: Courier New, Courier, monospace;">(mypy) bash&gt;&nbsp;python -c 'import sys; print sys.path'</span></div>
+<div>
+<br /></div>
+<div>
+You should able to verify the output above that you are indeed using your own setup of an isolated &nbsp;Python2 env, and it even has your own pip installed list, so you won't mess up the built-in System version of python!</div>
+<div>
+<span style="font-size: small;"><span style="font-weight: normal;"><br /></span></span></div>
+<h2>
+Setup Python 3</h2>
+The MacOS comes with latest Python 2.7, but no Python3. You can download the latest Python3 from python.org site and install it. It will give you a new '<span style="font-family: Courier New, Courier, monospace;">python3</span>' command so not to conflict with your existing Python. (NOTE: It's best not to remove or override the default Python2.7 that comes with the system!) But if you want to use '<span style="font-family: Courier New, Courier, monospace;">python</span>' command for Python3 for dev, then I suggest you create a new virtual environment of your own. The Python3 install should come with a '<span style="font-family: Courier New, Courier, monospace;">pyvenv</span>' command. For Example<br />
+<br />
+<span style="font-family: Courier New, Courier, monospace;">bash&gt; pyvenv mypy3</span><br />
+<span style="font-family: Courier New, Courier, monospace;">bash&gt; source mypy3/bin/activate</span><br />
+<span style="font-family: Courier New, Courier, monospace;">(mypy3) bash&gt;&nbsp;python -c 'import sys; print(sys.path)'</span><br />
+<br />
+<br />
+<br />
+</p>
+
+	<hr />
+
+<div id="disqus_thread"></div>
+	
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://zemian-github-io.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">&copy; 2011 - 2019 Zemian Deng All Rights Reserved | Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.4</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../../../js/jquery-1.11.1.min.js"></script>
+    <script src="../../../js/bootstrap.min.js"></script>
+    <script src="../../../js/prettify.js"></script>
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-135626598-1');
+    </script>
+
+  </body>
+</html>

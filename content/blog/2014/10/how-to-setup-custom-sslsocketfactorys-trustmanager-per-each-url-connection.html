@@ -1,0 +1,114 @@
+title=How to setup custom SSLSocketFactory's TrustManager per each URL connection
+date=2014-10-28
+type=post
+tags=ssh, java
+status=published
+~~~~~~
+We can see from javadoc that <span style="font-family: Courier New, Courier, monospace;">javax.net.ssl.HttpsURLConnection</span> provided a static method to override with <span style="font-family: Courier New, Courier, monospace;">setDefaultSSLSocketFory()</span> method. This allow you to supply a custom <span style="font-family: Courier New, Courier, monospace;">javax.net.ssl.TrustManager </span>that may verify your own &nbsp;CA certs handshake and validation etc. But this will override the default for all "https" URLs per your JVM!<br />
+<br />
+So how can we override just a single https URL? Looking at&nbsp;<span style="font-family: 'Courier New', Courier, monospace;">javax.net.ssl.HttpsURLConnection&nbsp;</span>again we see instance method for <span style="font-family: Courier New, Courier, monospace;">setSSLSocketFactory()</span>, but we can't instantiate&nbsp;<span style="font-family: 'Courier New', Courier, monospace;">HttpsURLConnection&nbsp;</span>object directly! It took me some digging to realized that the <span style="font-family: Courier New, Courier, monospace;">java.net.URL</span> is actually an factory class for its implementation! One can get an instance like this using <span style="font-family: Courier New, Courier, monospace;">new URL("https://localhost").openConnection()</span><br />
+<span style="font-family: Courier New, Courier, monospace;"><br /></span>
+To complete this article, I will provide a simple working example that demonstrate this.<br />
+<br />
+<div class="p1">
+<span style="font-family: Courier New, Courier, monospace;">package zemian;</span></div>
+<div class="p1">
+<span style="font-family: Courier New, Courier, monospace;"><br /></span></div>
+<div class="p1">
+<span style="font-family: Courier New, Courier, monospace;">import java.io.BufferedReader;</span></div>
+<div class="p1">
+<span style="font-family: Courier New, Courier, monospace;">import java.io.InputStream;</span></div>
+<div class="p1">
+<span style="font-family: Courier New, Courier, monospace;">import java.io.InputStreamReader;</span></div>
+<div class="p1">
+<span style="font-family: Courier New, Courier, monospace;">import java.net.URL;</span></div>
+<div class="p1">
+<span style="font-family: Courier New, Courier, monospace;">import java.net.URLConnection;</span></div>
+<div class="p1">
+<span style="font-family: Courier New, Courier, monospace;">import java.security.SecureRandom;</span></div>
+<div class="p1">
+<span style="font-family: Courier New, Courier, monospace;">import java.security.cert.X509Certificate;</span></div>
+<div class="p1">
+<span style="font-family: Courier New, Courier, monospace;"><br /></span></div>
+<div class="p1">
+<span style="font-family: Courier New, Courier, monospace;">import javax.net.ssl.HttpsURLConnection;</span></div>
+<div class="p1">
+<span style="font-family: Courier New, Courier, monospace;">import javax.net.ssl.SSLContext;</span></div>
+<div class="p1">
+<span style="font-family: Courier New, Courier, monospace;">import javax.net.ssl.SSLSocketFactory;</span></div>
+<div class="p1">
+<span style="font-family: Courier New, Courier, monospace;">import javax.net.ssl.TrustManager;</span></div>
+<div class="p1">
+<span style="font-family: Courier New, Courier, monospace;">import javax.net.ssl.X509TrustManager;</span></div>
+<div class="p1">
+<span style="font-family: Courier New, Courier, monospace;"><br /></span></div>
+<div class="p1">
+<span style="font-family: Courier New, Courier, monospace;">public class WGetText {</span></div>
+<div class="p1">
+<span style="font-family: Courier New, Courier, monospace;">&nbsp; &nbsp; public static void main(String[] args) throws Exception {</span></div>
+<div class="p1">
+<span style="font-family: Courier New, Courier, monospace;">&nbsp; &nbsp; &nbsp; &nbsp; String urlString = System.getProperty("url", "https://google.com");</span></div>
+<div class="p1">
+<span style="font-family: Courier New, Courier, monospace;">&nbsp; &nbsp; &nbsp; &nbsp; URL url = new URL(urlString);</span></div>
+<div class="p1">
+<span style="font-family: Courier New, Courier, monospace;">&nbsp; &nbsp; &nbsp; &nbsp; URLConnection urlConnection = url.openConnection();</span></div>
+<div class="p1">
+<span style="font-family: Courier New, Courier, monospace;">&nbsp; &nbsp; &nbsp; &nbsp; HttpsURLConnection httpsUrlConnection = (HttpsURLConnection)&nbsp;</span><span style="font-family: 'Courier New', Courier, monospace;">urlConnection</span><span style="font-family: Courier New, Courier, monospace;">;</span></div>
+<div class="p1">
+<span style="font-family: Courier New, Courier, monospace;">&nbsp; &nbsp; &nbsp; &nbsp; SSLSocketFactory sslSocketFactory = createTrustAllSslSocketFactory();</span></div>
+<div class="p1">
+<span style="font-family: Courier New, Courier, monospace;">&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;</span><span style="font-family: 'Courier New', Courier, monospace;">httpsUrlConnection</span><span style="font-family: Courier New, Courier, monospace;">.setSSLSocketFactory(sslSocketFactory);</span></div>
+<div class="p1">
+<span style="font-family: Courier New, Courier, monospace;">&nbsp; &nbsp; &nbsp; &nbsp; try (InputStream inputStream =&nbsp;</span><span style="font-family: 'Courier New', Courier, monospace;">httpsUrlConnection</span><span style="font-family: Courier New, Courier, monospace;">.getInputStream()) {</span></div>
+<div class="p1">
+<span style="font-family: Courier New, Courier, monospace;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));</span></div>
+<div class="p1">
+<span style="font-family: Courier New, Courier, monospace;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; String line = null;</span></div>
+<div class="p1">
+<span style="font-family: Courier New, Courier, monospace;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; while ((line = reader.readLine()) != null) {</span></div>
+<div class="p1">
+<span style="font-family: Courier New, Courier, monospace;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; System.out.println(line);</span></div>
+<div class="p1">
+<span style="font-family: Courier New, Courier, monospace;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }</span></div>
+<div class="p1">
+<span style="font-family: Courier New, Courier, monospace;">&nbsp; &nbsp; &nbsp; &nbsp; }</span></div>
+<div class="p1">
+<span style="font-family: Courier New, Courier, monospace;">&nbsp; &nbsp; }</span></div>
+<div class="p1">
+<span style="font-family: Courier New, Courier, monospace;"><br /></span></div>
+<div class="p1">
+<span style="font-family: Courier New, Courier, monospace;">&nbsp; &nbsp; private static SSLSocketFactory&nbsp;</span><span style="font-family: 'Courier New', Courier, monospace;">createTrustAllSslSocketFactory</span><span style="font-family: Courier New, Courier, monospace;">() throws Exception {</span></div>
+<div class="p1">
+<span style="font-family: Courier New, Courier, monospace;">&nbsp; &nbsp; &nbsp; &nbsp; TrustManager[] byPassTrustManagers = new TrustManager[] { new X509TrustManager() {</span></div>
+<div class="p1">
+<span style="font-family: Courier New, Courier, monospace;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; public X509Certificate[] getAcceptedIssuers() {</span></div>
+<div class="p1">
+<span style="font-family: Courier New, Courier, monospace;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return new X509Certificate[0];</span></div>
+<div class="p1">
+<span style="font-family: Courier New, Courier, monospace;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }</span></div>
+<div class="p1">
+<span style="font-family: Courier New, Courier, monospace;"><br /></span></div>
+<div class="p1">
+<span style="font-family: Courier New, Courier, monospace;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; public void checkClientTrusted(X509Certificate[] chain, String authType) {</span></div>
+<div class="p1">
+<span style="font-family: Courier New, Courier, monospace;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }</span></div>
+<div class="p1">
+<span style="font-family: Courier New, Courier, monospace;"><br /></span></div>
+<div class="p1">
+<span style="font-family: Courier New, Courier, monospace;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; public void checkServerTrusted(X509Certificate[] chain, String authType) {</span></div>
+<div class="p1">
+<span style="font-family: Courier New, Courier, monospace;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }</span></div>
+<div class="p1">
+<span style="font-family: Courier New, Courier, monospace;">&nbsp; &nbsp; &nbsp; &nbsp; } };</span></div>
+<div class="p1">
+<span style="font-family: Courier New, Courier, monospace;">&nbsp; &nbsp; &nbsp; &nbsp; SSLContext sslContext = SSLContext.getInstance("TLS");</span></div>
+<div class="p1">
+<span style="font-family: Courier New, Courier, monospace;">&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;</span><span style="font-family: 'Courier New', Courier, monospace;">sslContext</span><span style="font-family: Courier New, Courier, monospace;">.init(null,&nbsp;</span><span style="font-family: 'Courier New', Courier, monospace;">byPassTrustManagers</span><span style="font-family: Courier New, Courier, monospace;">, new SecureRandom());</span></div>
+<div class="p1">
+<span style="font-family: Courier New, Courier, monospace;">&nbsp; &nbsp; &nbsp; &nbsp; return&nbsp;</span><span style="font-family: 'Courier New', Courier, monospace;">sslContext</span><span style="font-family: Courier New, Courier, monospace;">.getSocketFactory();</span></div>
+<div class="p1">
+<span style="font-family: Courier New, Courier, monospace;">&nbsp; &nbsp; }</span></div>
+<div class="p1">
+<span style="font-family: Courier New, Courier, monospace;">}</span></div>
+<div>
+<br /></div>

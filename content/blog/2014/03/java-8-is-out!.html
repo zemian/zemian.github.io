@@ -1,0 +1,18 @@
+title=Java 8 is out!
+date=2014-03-19
+type=post
+tags=java
+status=published
+~~~~~~
+You can watch webcast on March 25 here: http://eventreg.oracle.com/profile/web/index.cfm?PKWebId=0x637279c68<br />
+<br />
+but you may download it now!<br />
+http://www.oracle.com/technetwork/java/javase/downloads/index.html<br />
+<br />
+How exicting!<br />
+<br />
+A simple Java8 test <br />
+---<br />
+<span style="font-size: x-small;"><span style="font-family: &quot;Courier New&quot;,Courier,monospace;">import org.junit.Test;<br /><br />public class LamdaTest {<br />&nbsp;&nbsp;&nbsp; @Test<br />&nbsp;&nbsp;&nbsp; public void lamdaExpression() {<br />//&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; Runnable r = new Runnable() {<br />//&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; public void run() {<br />//&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; System.out.println("test");&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <br />//&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <br />//&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; };<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; //new Thread(r).start();<br /><br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; //new Thread(() -&gt; System.out.println("test")).start();<br /><br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; //Runnable r = () -&gt; System.out.println("test");<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; Runnable r = () -&gt; {<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; System.out.println("test1"); <br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; System.out.println("test2"); <br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; System.out.println("test3"); <br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; };<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; System.out.println("result=" + r);<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; new Thread(r).start();<br />&nbsp;&nbsp;&nbsp; }<br />}</span></span><br />
+<br />
+You can learn more from here: http://docs.oracle.com/javase/tutorial/java/javaOO/lambdaexpressions.html 

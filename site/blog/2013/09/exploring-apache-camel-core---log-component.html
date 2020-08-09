@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Zemian's Blog - Exploring Apache Camel Core - Log Component</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../css/asciidoctor.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link href="../../../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../../../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../about.html">About</a></li>
+            <li><a href="../../../archive.html">Archive</a></li>
+            <li><a href="../../..//tags">Tags</a></li>
+            <li><a href="../../../feed.xml">Subscribe</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">	
+	<div class="page-header">
+		<h1>Exploring Apache Camel Core - Log Component</h1>
+	</div>
+
+	<p><em>02 September 2013</em>, tags: 
+	    <a href="../../../tags/camel.html">camel</a> 
+	</p>
+
+	<p><div class="paragraph">
+<p>There are many ways to log and inspect the messages as it pass through your
+Camel <code>Route</code>. The <code>camel-core</code> comes with a <code>log</code> component that let
+you inspect the message. So instead of write a separate
+<code>Processor</code> just to log a line as got processed, try using this:</p>
+</div>
+<div class="listingblock">
+
+<div class="content monospaced">
+<pre>from("timer://timer1?period=1s")
+.to("log:demo")</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>By default, the <code>log</code> component will record your message body content
+through your logger name, <code>demo</code> in above case, at INFO level. Since you can give any
+name, you can control the logging LEVEL anyway you like through a Camel
+<a href="http://saltnlight5.blogspot.com/2013/08/how-to-configure-slf4j-with-different.html">SLF4J logger implementation</a>.</p>
+</div>
+<div class="paragraph">
+<p>To log the message in DEBUG level, try this</p>
+</div>
+<div class="listingblock">
+
+<div class="content monospaced">
+<pre>from("timer://timer1?period=1s")
+.to("log:demo?level=DEBUG")</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now if you use <code>log4j</code> as logger implementation, then ensure to add a
+logger config like this.</p>
+</div>
+<div class="listingblock">
+
+<div class="content monospaced">
+<pre>log4j.logger.demo = DEBUG
+log4j.logger.org.apache.camel = INFO</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The Camel message may have Properties and Headers as well, so to display
+these, you may add <code>showAll=true</code>.</p>
+</div>
+<div class="paragraph">
+<p>When you process messages that have large body text, it might be more
+practical to just dislay certain number of characters. To do this, add
+<code>maxChars=256</code> to URL.</p>
+</div>
+<div class="sect1">
+<h2 id="_how_to_measure_camel_messages_throughput_rate">How to measure Camel messages throughput rate</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>One of the hidden gem of the <code>log</code> componet is its ability to log messages
+throughput! You may specific group of messages to be logged, and once it
+reached that count, it will print the msgs/sec rate output. To enable
+this, just add <code>groupSize</code> option to URL.</p>
+</div>
+<div class="paragraph">
+<p>To demo this, I will create a <code>SampleGenerator</code> bean processor
+that would flood the <code>Route</code> with sample messages. I will use the Camel
+context registry to bind the bean, and then reference it in the <code>Route</code>. Here
+is the demo code.</p>
+</div>
+<div class="listingblock">
+
+<div class="content monospaced">
+<pre>package camelcoredemo;
+
+import org.slf4j.*;
+import org.apache.camel.*;
+import org.apache.camel.builder.*;
+import org.apache.camel.main.Main;
+
+public class LogDemoCamel extends Main {
+    static Logger LOG = LoggerFactory.getLogger(LogDemoCamel.class);
+    public static void main(String[] args) throws Exception {
+        LogDemoCamel main = new LogDemoCamel();
+        main.enableHangupSupport();
+        main.addRouteBuilder(createRouteBuilder());
+        main.bind("sampleGenerator", new SampleGenerator());
+        main.run(args);
+    }
+    static RouteBuilder createRouteBuilder() {
+        return new RouteBuilder() {
+            public void configure() {
+                from("bean:sampleGenerator")
+                .to("log://demo?groupSize=100");
+            }
+        };
+    }
+    static class SampleGenerator implements Processor{
+        int count = 0;
+        public void process(Exchange msg) throws Exception {
+            if (count &gt;= 500){
+                LOG.info("Max count has reached. Do nothing.");
+                Thread.sleep(Long.MAX_VALUE);
+                return;
+            }
+
+            // Let's generate sample message.
+            count++;
+            LOG.trace("Generating sample msg #{}", count);
+            msg.getOut().setBody("Sample msg");
+        }
+    }
+}</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now you should able to compile and run this demo.</p>
+</div>
+<div class="listingblock">
+
+<div class="content monospaced">
+<pre>mvn compile exec:java -Dexec.mainClass=camelcoredemo.LogDemoCamel</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>When running this demo, you will notice the rate will be displayed on console
+and how fast you can pump message to <code>Route</code> and to process it. This is a
+very useful feature to help you measure and have a quick view on your <code>Route</code>'s
+capability.</p>
+</div>
+<div class="paragraph">
+<p>There are more options availabe from <a href="http://camel.apache.org/log.html">Log</a> component
+that you may explore.
+<a href="http://saltnlight5.blogspot.com/2013/08/getting-started-with-apache-camel-using.html">Try it out with a Route</a>
+and see it for yourself.</p>
+</div>
+
+</div>
+</div>
+
+
+</p>
+
+	<hr />
+
+<div id="disqus_thread"></div>
+	
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://zemian-github-io.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">&copy; 2011 - 2019 Zemian Deng All Rights Reserved | Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.4</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../../../js/jquery-1.11.1.min.js"></script>
+    <script src="../../../js/bootstrap.min.js"></script>
+    <script src="../../../js/prettify.js"></script>
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-135626598-1');
+    </script>
+
+  </body>
+</html>

@@ -1,0 +1,29 @@
+title=Use cygpath with -p option for your Java CLASSPATH conversion
+date=2012-11-15
+type=post
+tags=cygwin
+status=published
+~~~~~~
+I just noticed that Cygwin's <code>cygpath</code> command supports <code>-p</code> option. This is a real gem when writing Java wrapper script that needs to covert CLASSPATH values. A simple script can demonstrate the purpose.
+
+<p>
+<pre><code>
+#!/usr/bin/env bash
+# Author: Zemian Deng, Date: 2012-11-16_06:30:00
+#
+# run.sh - A simple Java wrapper script for Cygwin and Unix/Linux shell. We assume 
+# this script is located in a subdiretory inside the application home directory.
+# Example:
+#   app/bin/run.sh
+#   app/config/log4j.properties
+#   app/lib/log4j.jar
+# Usage:
+#   bash> run.sh app.Hello
+#
+DIR=$(cd "$(dirname $0)/.." && pwd)
+CP=${CP:="$DIR/config:$DIR/lib/*"}
+if [[ "$OS" == Windows* ]]; then
+ CP=$(cygpath -mp $CP)
+fi
+java -cp "$CP" "$@"
+</code></pre>

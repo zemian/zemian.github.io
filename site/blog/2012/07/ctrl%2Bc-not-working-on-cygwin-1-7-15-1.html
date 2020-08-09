@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Zemian's Blog - CTRL+C not working on Cygwin 1.7.15-1</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../css/asciidoctor.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link href="../../../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../../../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../about.html">About</a></li>
+            <li><a href="../../../archive.html">Archive</a></li>
+            <li><a href="../../..//tags">Tags</a></li>
+            <li><a href="../../../feed.xml">Subscribe</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">	
+	<div class="page-header">
+		<h1>CTRL+C not working on Cygwin 1.7.15-1</h1>
+	</div>
+
+	<p><em>12 July 2012</em>, tags: 
+	    <a href="../../../tags/cygwin.html">cygwin</a> 
+	</p>
+
+	<p>When I installed new package in my Cygwin recently, it also automatically upgraded to latest Cygwin 1.7.15-1 DLL. After this, pressing CTRL+C no longer work<br />
+on a running Java process the cygwin shell. I found the reason why this happens, and here is the email I sent to cygwin mailing list:<br />
+<blockquote class="tr_bq">
+<span style="font-size: x-small;"><span style="background-color: white;">Okay, I finally found out what's going on.</span></span><br />
+<br />
+<span style="font-size: x-small;"><span style="background-color: white;">I used to have an old cygwin installed (not even sure what version) that only has "C:\Cygwin\Cygwin.bat" to start an terminal. This batch file open a terminal that I can run java.exe, and I used to hit CTRL+C to end it (not only that, it will also invoke the Java's shutdown hook.)</span></span><br />
+<br />
+<span style="font-size: x-small;"><span style="background-color: white;">After I upgraded to cygwin 1.7.15-1 (it will auto upgrade when we run setup.exe!). The above behavior no longer works!</span></span><br />
+<br />
+<span style="font-size: x-small;"><span style="background-color: white;">It turns out the new cygwin 1.7.15-1 automatically comes with Mintty terminal now, and will default to create a Shortcut to this on desktop. Well I still have a shortcut to "C:\Cygwin\Cygwin.bat". What I discover is that Java will no longer work with terminal that opens with "C:\Cygwin\Cygwin.bat"! But it DOES work with the Mintty terminal!</span></span><br />
+<br />
+<span style="font-size: x-small;"><span style="background-color: white;">It's all great for me, because I kind of like Mintty terminal. It's kindda funny because for years I would love to use Mintty, but only to stop because CTRL+C wont' work there. Now we have reverse!</span></span><br />
+<br />
+<span style="font-size: x-small;"><span style="background-color: white;">However, I have to point out also that although I can hit CTRL+C in mintty to kill a java.exe process, but it DOES NOT invoke the Java's shutdown hook process! Which is shame, because now I can't test my shutdown procedure code.</span></span><br />
+<br />
+<span style="font-size: x-small;"><span style="background-color: white;">I hope cygwin team can look at this further and provide a good solution, even for the Java folks like myself. I can only cope with Windows because of cygwin exists, so kudo to all the cygwin team and their hard work!</span></span><br />
+<br />
+<span style="font-size: x-small;"><span style="background-color: white;">Hope also this post will help other Java developers out there.</span></span><br />
+<br />
+<span style="font-size: x-small;"><span style="background-color: white;">Cheers,</span></span><br />
+<span style="font-size: x-small;"><span style="background-color: white;">Zemian </span></span></blockquote>
+Ref: <a href="http://old.nabble.com/CTRL%2BC-is-not-working-with-java-on-latest-cygwin-1.7.15-tt34147441.html">http://old.nabble.com/CTRL%2BC-is-not-working-with-java-on-latest-cygwin-1.7.15-tt34147441.html</a>
+</p>
+
+	<hr />
+
+<div id="disqus_thread"></div>
+	
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://zemian-github-io.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">&copy; 2011 - 2019 Zemian Deng All Rights Reserved | Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.4</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../../../js/jquery-1.11.1.min.js"></script>
+    <script src="../../../js/bootstrap.min.js"></script>
+    <script src="../../../js/prettify.js"></script>
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-135626598-1');
+    </script>
+
+  </body>
+</html>

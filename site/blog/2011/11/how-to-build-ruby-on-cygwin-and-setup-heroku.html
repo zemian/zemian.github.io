@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Zemian's Blog - How to build Ruby on Cygwin and setup Heroku</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../css/asciidoctor.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link href="../../../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../../../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../about.html">About</a></li>
+            <li><a href="../../../archive.html">Archive</a></li>
+            <li><a href="../../..//tags">Tags</a></li>
+            <li><a href="../../../feed.xml">Subscribe</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">	
+	<div class="page-header">
+		<h1>How to build Ruby on Cygwin and setup Heroku</h1>
+	</div>
+
+	<p><em>19 November 2011</em>, tags: 
+	    <a href="../../../tags/ruby.html">ruby</a> 
+
+	    <a href="../../../tags/cygwin.html">cygwin</a> 
+	</p>
+
+	<p>I like to use ruby that comes with Cygwin instead of the RubyInstaller for Windows, because the path it handles are more consistenly in Linux form. But the current Cygwin only comes with ruby-1.8.7, so to use ruby-1.9.3, I have to built it on Cygwin on my own. And when building ruby from source on Cygwin, you would also have to install gem on your own as well. Turns out there are few issues that you have to fix too. Here are the steps I got it working:<br />
+<br />
+0. Ensure you have the typical Cygwin/Linux build tools (gcc, make, autoconf, libiconv, openssl and etc.)<br />
+<br />
+1. Download source for the following:<br />
+&nbsp; a) LibYAML 0.1.4 from http://pyyaml.org/wiki/LibYAML<br />
+&nbsp; b) ruby-1.9.3-p0 source from http://ruby-lang.org <br />
+&nbsp; c) rubygems-1.8.11 from http://rubygems.org <br />
+<b></b><br />
+<br />
+2. Unzip/tar them all in /tmp<br />
+<div style="font-family: &quot;Courier New&quot;,Courier,monospace;">
+&nbsp; a) $ cd /tmp/yaml-0.1.4&nbsp;</div>
+<div style="font-family: &quot;Courier New&quot;,Courier,monospace;">
+&nbsp;&nbsp;&nbsp;&nbsp; $ ./configure &amp;&amp; make &amp;&amp; make install</div>
+<div style="font-family: &quot;Courier New&quot;,Courier,monospace;">
+<br />
+&nbsp; b) $ cd /tmp/ruby-1.9.3-p0/ext/openssl<br />
+&nbsp;&nbsp;&nbsp;&nbsp; $ ruby extconf.rb
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp; $ make &amp;&amp; make install<br />
+<div style="font-family: &quot;Courier New&quot;,Courier,monospace;">
+<br /></div>
+</div>
+<div style="font-family: &quot;Courier New&quot;,Courier,monospace;">
+&nbsp; c) $ cd /tmp/ruby-1.9.3-p0</div>
+<div style="font-family: &quot;Courier New&quot;,Courier,monospace;">
+&nbsp; &nbsp;&nbsp; $ export CPPFLAGS=-I/usr/local/include</div>
+<div style="font-family: &quot;Courier New&quot;,Courier,monospace;">
+&nbsp; &nbsp;&nbsp; $ export LDFLAGS=-L/usr/local/lib&nbsp; &nbsp;&nbsp; </div>
+<div style="font-family: &quot;Courier New&quot;,Courier,monospace;">
+&nbsp;&nbsp;&nbsp;&nbsp; $ ./configure &amp;&amp; make &amp;&amp; make install</div>
+<div style="font-family: &quot;Courier New&quot;,Courier,monospace;">
+<br />
+<div style="font-family: &quot;Courier New&quot;,Courier,monospace;">
+<div style="font-family: &quot;Courier New&quot;,Courier,monospace;">
+<div style="font-family: &quot;Courier New&quot;,Courier,monospace;">
+&nbsp; e) $ cd /tmp/rubygems-1.8.11</div>
+&nbsp;&nbsp;&nbsp;&nbsp; $ ruby setup.rb</div>
+</div>
+</div>
+<br />
+With these completed, you may now install Heroku client tool as ruby gem:<br />
+<div style="font-family: &quot;Courier New&quot;,Courier,monospace;">
+&nbsp; c) $ gem install heroku</div>
+You would also need Git to successful push and deploy application to Heroku, but you can get Cygwin 'git' package if you haven't already done so. <br />
+<br />
+NOTE: FYI, all the user built applications are usually install into<span style="font-family: 'Courier New', Courier, monospace;"> /usr/local</span> directory, while those system (comes with cygwin packages) are in <span style="font-family: 'Courier New', Courier, monospace;">/usr</span>.
+</p>
+
+	<hr />
+
+<div id="disqus_thread"></div>
+	
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://zemian-github-io.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">&copy; 2011 - 2019 Zemian Deng All Rights Reserved | Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.4</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../../../js/jquery-1.11.1.min.js"></script>
+    <script src="../../../js/bootstrap.min.js"></script>
+    <script src="../../../js/prettify.js"></script>
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-135626598-1');
+    </script>
+
+  </body>
+</html>

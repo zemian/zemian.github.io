@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Zemian's Blog - A strange case of Java generic and inheritage parameter passing</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../css/asciidoctor.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link href="../../../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../../../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../about.html">About</a></li>
+            <li><a href="../../../archive.html">Archive</a></li>
+            <li><a href="../../..//tags">Tags</a></li>
+            <li><a href="../../../feed.xml">Subscribe</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">	
+	<div class="page-header">
+		<h1>A strange case of Java generic and inheritage parameter passing</h1>
+	</div>
+
+	<p><em>20 December 2012</em>, tags: 
+	    <a href="../../../tags/java.html">java</a> 
+	</p>
+
+	<p><p>I came a cross some strange Java code and I would like to share it here. Take a look few of classes I have here:</p>
+
+<pre><code>// file: AFoo.java
+package atest.deng;
+public abstract class AFoo&lt;T&gt; {
+}
+
+// file: Foo.java
+package atest.deng;
+public class Foo extends AFoo&lt;String&gt; {
+}
+
+// file: FooProcessor.java
+package atest.deng;
+public class FooProcessor&lt;T&gt; {
+    public void process(Class&lt;AFoo&lt;?&gt;&gt; cls) {
+        System.out.println(cls);
+    }
+}
+
+// file: FooMain.java
+package atest.deng;
+public class FooMain {
+    public static void main(String[] args) {
+        new FooProcessor().process(Foo.class);
+    }
+}
+
+bash&gt; mvn compile
+bash&gt; [INFO] BUILD SUCCESS
+</code></pre>
+
+<p>I tried this with JDK6 + Maven and it compiles without problem. But try to remove the <code>&lt;T&gt;</code> part from <code>FooProcessor</code> and it will fail to compile!</p>
+
+<pre><code>// file: FooProcessor.java
+package atest.deng;
+public class FooProcessor {
+    public void process(Class&lt;AFoo&lt;?&gt;&gt; cls) {
+        System.out.println(cls);
+    }
+}
+
+bash&gt; mvn clean compile
+bash&gt; [ERROR] java-demo\src\main\java test\deng\FooMain.java:[4,26] process(java.lang.Class&lt;atest.deng.AFoo&lt;?&gt;&gt;) in atest.deng.FooProcessor cannot be applied to (java.lang.Class&lt;atest.deng.Foo&gt;)
+</code></pre>
+
+<p>Without the <code>&lt;T&gt;</code> the code won't compile, and yet we are not even using it in this case. How and why <code>&lt;T&gt;</code> affects the method parameters invocation?</p>
+
+<p><p>Now, we can improve the <code>FooProcessor</code> in this way so that the presence of <code>&lt;T&gt;</code> doesn't have any affect.</p>
+
+<pre><code>package atest.deng;
+public class FooProcessor {
+    public void process(Class&lt;? extends AFoo&lt;?&gt;&gt; cls) {
+        System.out.println(cls);
+    }
+}
+</code></pre>
+
+<p>That's a more proper way to write the generic parameter anyway. But despite a better solution, the puzzle is that the original code compiled under the compiler, but only with the <code>&lt;T&gt;</code> presented, and yet it's not used. Wouldn't you consider this as a Java compiler bug?</p>
+
+</p>
+
+	<hr />
+
+<div id="disqus_thread"></div>
+	
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://zemian-github-io.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">&copy; 2011 - 2019 Zemian Deng All Rights Reserved | Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.4</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../../../js/jquery-1.11.1.min.js"></script>
+    <script src="../../../js/bootstrap.min.js"></script>
+    <script src="../../../js/prettify.js"></script>
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-135626598-1');
+    </script>
+
+  </body>
+</html>

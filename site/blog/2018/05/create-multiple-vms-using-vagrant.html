@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Zemian's Blog - Create multiple VMs using Vagrant</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../css/asciidoctor.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link href="../../../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../../../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../about.html">About</a></li>
+            <li><a href="../../../archive.html">Archive</a></li>
+            <li><a href="../../..//tags">Tags</a></li>
+            <li><a href="../../../feed.xml">Subscribe</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">	
+	<div class="page-header">
+		<h1>Create multiple VMs using Vagrant</h1>
+	</div>
+
+	<p><em>19 May 2018</em>, tags: 
+	    <a href="../../../tags/vagrant.html">vagrant</a> 
+
+	    <a href="../../../tags/virtualbox.html">virtualbox</a> 
+
+	    <a href="../../../tags/vm.html">vm</a> 
+
+	    <a href="../../../tags/ubuntu.html">ubuntu</a> 
+	</p>
+
+	<p><div class="paragraph">
+<p>Vagrant is a great tool to automate and setup VMs. Here is a config file that can setup multiple VMs in your own PC to simulate a controller(admin), db, and app servers farm env. I will setup so that it&#8217;s ready to install Ansible in a the control server, and ensure all other servers is accessible by a private virtual IP with default python executable.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Install VirtualBox and Vagrant in your development PC. (These two requires elevated admin rights!)</p>
+</li>
+<li>
+<p>Now as normal user open a terminal and run the following:</p>
+<div class="literalblock">
+<div class="content">
+<pre>$ mkdir vm-serversfarm
+$ vagrant init ubuntu/xenial64</pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Now edit <code>Vagrantfile</code> with the following:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre># This file is to setup Ubuntu VM servers
+Vagrant.configure("2") do |config|
+  vm_box = "ubuntu/xenial64"
+  config.vm.define "admin" do |admin|
+    admin.vm.box = vm_box
+    admin.vm.hostname = 'ubuntu-xenial-admin'
+    admin.vm.network "private_network", ip: "192.168.56.200"
+    admin.vm.provision "shell", privileged: false,
+      inline: &lt;&lt;-SCRIPT_DOC
+        ssh-keygen -f ~vagrant/.ssh/id_rsa -t rsa -N ''
+        cp -v ~vagrant/.ssh/id_rsa.pub /vagrant/admin_id_rsa.pub
+      SCRIPT_DOC
+    admin.vm.provision "shell",
+      inline: &lt;&lt;-SCRIPT_DOC
+        apt-get update
+        apt-get install -y ansible
+      SCRIPT_DOC
+  end
+
+  config.vm.define "db1" do |db1|
+    db1.vm.box = vm_box
+    db1.vm.hostname = 'ubuntu-xenial-db1'
+    db1.vm.network "private_network", ip: "192.168.56.211"
+    db1.vm.provision "shell", inline: "cat /vagrant/admin_id_rsa.pub &gt;&gt; ~vagrant/.ssh/authorized_keys"
+    db1.vm.provision "shell",
+      inline: &lt;&lt;-SCRIPT_DOC
+        #apt-get update
+        apt-get install -y python
+        apt-get install -y postgresql
+      SCRIPT_DOC
+  end
+
+  config.vm.define "app1" do |app1|
+    app1.vm.box = vm_box
+    app1.vm.hostname = 'ubuntu-xenial-app1'
+    app1.vm.network "private_network", ip: "192.168.56.221"
+    app1.vm.provision "shell", inline: "cat /vagrant/admin_id_rsa.pub &gt;&gt; ~vagrant/.ssh/authorized_keys"
+    app1.vm.provision "shell",
+      inline: &lt;&lt;-SCRIPT_DOC
+        #apt-get update
+        apt-get install -y python
+      SCRIPT_DOC
+  end
+
+  config.vm.define "app2" do |app2|
+    app2.vm.box = vm_box
+    app2.vm.hostname = 'ubuntu-xenial-app2'
+    app2.vm.network "private_network", ip: "192.168.56.222"
+    app2.vm.provision "shell", inline: "cat /vagrant/admin_id_rsa.pub &gt;&gt; ~vagrant/.ssh/authorized_keys"
+    app2.vm.provision "shell",
+      inline: &lt;&lt;-SCRIPT_DOC
+        #apt-get update
+        apt-get install -y python
+      SCRIPT_DOC
+  end
+end</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now you can bring them up by running just this command:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>$ vagrant up</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>When all is done, you may ssh into any box by their name like this</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>$ vagrant ssh admin
+$ # Or any of other boxes: db1, app1, app2</pre>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_using_centos_vms">Using CentOS VMs</h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre># This file is to setup CentOS VM servers
+Vagrant.configure("2") do |config|
+  vm_box = "generic/centos7"
+
+  # Server app1 is the admin server. We will also host the DB server here.
+  config.vm.define "app1" do |app1|
+    app1.vm.box = vm_box
+    app1.vm.hostname = 'app1'
+    app1.vm.network "private_network", ip: "192.168.56.201"
+    app1.vm.synced_folder ".", "/vagrant_data"
+    app1.vm.provision "shell", inline: &lt;&lt;-SCRIPT_DOC
+      yum install -y python-virtualenv python36 ansible postgresql
+    SCRIPT_DOC
+    app1.vm.provision "shell", privileged: false, inline: &lt;&lt;-SCRIPT_DOC
+      ssh-keygen -f ~vagrant/.ssh/id_rsa -t rsa -N ''
+      cp -v ~vagrant/.ssh/id_rsa.pub /vagrant_data/app1_id_rsa.pub
+    SCRIPT_DOC
+  end
+
+  # Server app2 is a application workhorse server
+  config.vm.define "app2" do |app2|
+    app2.vm.box = vm_box
+    app2.vm.hostname = 'app2'
+    app2.vm.network "private_network", ip: "192.168.56.202"
+    app2.vm.synced_folder ".", "/vagrant_data"
+    app2.vm.provision "shell", inline: &lt;&lt;-SCRIPT_DOC
+      yum install -y python36
+    SCRIPT_DOC
+    app2.vm.provision "shell", privileged: false, inline: &lt;&lt;-SCRIPT_DOC
+      cat /vagrant_data/app1_id_rsa.pub &gt;&gt; ~vagrant/.ssh/authorized_keys
+      chmod 600 ~vagrant/.ssh/authorized_keys
+      chmod 700 ~vagrant/.ssh
+    SCRIPT_DOC
+  end
+
+  # Server app3 is a application workhorse server
+  config.vm.define "app3" do |app3|
+    app3.vm.box = vm_box
+    app3.vm.hostname = 'app3'
+    app3.vm.network "private_network", ip: "192.168.56.203"
+    app3.vm.synced_folder ".", "/vagrant_data"
+    app3.vm.provision "shell", inline: &lt;&lt;-SCRIPT_DOC
+      yum install -y python36
+    SCRIPT_DOC
+    app3.vm.provision "shell", privileged: false, inline: &lt;&lt;-SCRIPT_DOC
+      cat /vagrant_data/app1_id_rsa.pub &gt;&gt; ~vagrant/.ssh/authorized_keys
+      chmod 600 ~vagrant/.ssh/authorized_keys
+      chmod 700 ~vagrant/.ssh
+    SCRIPT_DOC
+  end
+end</pre>
+</div>
+</div>
+</div>
+</div></p>
+
+	<hr />
+
+<div id="disqus_thread"></div>
+	
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://zemian-github-io.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">&copy; 2011 - 2019 Zemian Deng All Rights Reserved | Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.4</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../../../js/jquery-1.11.1.min.js"></script>
+    <script src="../../../js/bootstrap.min.js"></script>
+    <script src="../../../js/prettify.js"></script>
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-135626598-1');
+    </script>
+
+  </body>
+</html>

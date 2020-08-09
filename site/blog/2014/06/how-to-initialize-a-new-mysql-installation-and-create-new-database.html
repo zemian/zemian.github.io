@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Zemian's Blog - How to initialize a new MySQL installation and create new database</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../css/asciidoctor.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link href="../../../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../../../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../about.html">About</a></li>
+            <li><a href="../../../archive.html">Archive</a></li>
+            <li><a href="../../..//tags">Tags</a></li>
+            <li><a href="../../../feed.xml">Subscribe</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">	
+	<div class="page-header">
+		<h1>How to initialize a new MySQL installation and create new database</h1>
+	</div>
+
+	<p><em>11 June 2014</em>, tags: 
+	    <a href="../../../tags/mysql.html">mysql</a> 
+	</p>
+
+	<p><pre class="bki-pre">&nbsp;</pre>
+<div class="bki-pre">
+For a freshly installed MySQL server, you would need to initialize the system tables and data directory like this:</div>
+<pre class="bki-pre">&nbsp;</pre>
+<pre class="bki-pre"><span style="font-family: &quot;Courier New&quot;,Courier,monospace;">cd mysql-&lt;version&gt; </span></pre>
+<pre class="bki-pre"><span style="font-family: &quot;Courier New&quot;,Courier,monospace;">scripts/mysql_install_db --basedir=. --datadir=data
+bin/mysqld_safe --defaults-file=my.cnf &amp;</span></pre>
+<pre class="bki-pre">&nbsp;</pre>
+<div class="bki-pre">
+Before MySQL 5.6, this will setup a "root" with empty password that you can immediately login. For MySQL 5.7 however, it creates a random password for "root" user now. The password is generated under $HOME/.mysql_secret. You need to login and run "SET PASSWORD = PASSWORD('secret')" to change it.</div>
+<div class="bki-pre">
+<br /></div>
+<div class="bki-pre">
+After above, you may login using "root" and start creating your own database and users. For example:</div>
+<div class="bki-pre">
+<br /></div>
+<div class="bki-pre">
+<span style="font-family: &quot;Courier New&quot;,Courier,monospace;">&nbsp;&nbsp;&nbsp; CREATE DATABASE mydb;<br />&nbsp;&nbsp;&nbsp; GRANT ALL PRIVILEGES ON mydb.* TO 'myuser'@'%' IDENTIFIED BY 'secret';<br />&nbsp;&nbsp;&nbsp; GRANT ALL PRIVILEGES ON mydb.* TO 'myuser'@'localhost' IDENTIFIED BY 'secret';</span></div>
+<div class="bki-pre">
+<br />
+UPDATE 2015-01-26 <br />
+Here are more notes to replace/upgrade existing mysql server and install to init.d to auto start by OS.<br />
+<span style="font-family: &quot;Courier New&quot;,Courier,monospace;"><br />= Install and Setup new MySQL into an exiting Linux.<br /><br />== To remove/dislable old existing mysqld init.d (one usually defualt installed under /usr/mysql)<br />sudo /sbin/chkconfig --del mysqld<br /><br />== Install new mysql server (5.6.16)<br />&nbsp;&nbsp;&nbsp; * Ensure mysql user exists and installation files are owned by this user<br /># Setup and initial the new mysql server </span><br />
+<span style="font-family: &quot;Courier New&quot;,Courier,monospace;">groupadd mysql<br />useradd -r -g mysql mysql </span><br />
+<span style="font-family: &quot;Courier New&quot;,Courier,monospace;">cd /apps/mysql<br />sudo chown -R mysql:mysql .<br />sudo scripts/mysql_install_db --basedir=/apps/mysql --datadir=/apps/mysql/data --user=mysql</span><br />
+<span style="font-family: &quot;Courier New&quot;,Courier,monospace;"><br /></span>
+<span style="font-family: &quot;Courier New&quot;,Courier,monospace;"># Optional: Manually start the server and see if it works<br /># sudo bin/mysqld_safe --defaults-file=/apps/mysql/my.cnf --user=mysql<br /># sudo bin/mysqladmin shutdown -u root</span><br />
+<span style="font-family: &quot;Courier New&quot;,Courier,monospace;"><br /># Install the init.d script to start server upon system reboot </span><br />
+<span style="font-family: &quot;Courier New&quot;,Courier,monospace;">sudo ln -s support-file/mysql.server /etc/init.d/mysql.server<br />sudo vim support-file/mysql.server<br />&nbsp;&nbsp;&nbsp; * Ensure these vars are set correctly in your env<br />basedir=/apps/mysql<br />datadir=/apps/mysql/data<br />cnffile=/apps/mysql/my.cnf<br />user=mysql<br />&nbsp;&nbsp;&nbsp; * modify the mysqld_safe command line to add (ENSURE --user option comes last!)<br />&nbsp;&nbsp;&nbsp; --defaults-file=$cnffile --user=$user<br />&nbsp;&nbsp;&nbsp; <br />sudo /sbin/chkconfig --add mysql.server<br />sudo /sbin/service mysql.server start<br />&nbsp;&nbsp;&nbsp; <br />== Change MySQL root password<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;sudo bin/mysqladmin password 'new_password'</span> <br />
+<span style="font-family: &quot;Courier New&quot;,Courier,monospace;"><br /></span>
+<span style="font-family: inherit;">Ref:</span><br />
+<span style="font-family: inherit;"><a href="https://dev.mysql.com/doc/refman/5.6/en/binary-installation.html">https://dev.mysql.com/doc/refman/5.6/en/binary-installation.html</a></span></div>
+</p>
+
+	<hr />
+
+<div id="disqus_thread"></div>
+	
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://zemian-github-io.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">&copy; 2011 - 2019 Zemian Deng All Rights Reserved | Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.4</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../../../js/jquery-1.11.1.min.js"></script>
+    <script src="../../../js/bootstrap.min.js"></script>
+    <script src="../../../js/prettify.js"></script>
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-135626598-1');
+    </script>
+
+  </body>
+</html>

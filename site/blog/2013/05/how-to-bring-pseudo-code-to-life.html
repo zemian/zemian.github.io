@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Zemian's Blog - How to bring pseudo code to life</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../css/asciidoctor.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link href="../../../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../../../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../about.html">About</a></li>
+            <li><a href="../../../archive.html">Archive</a></li>
+            <li><a href="../../..//tags">Tags</a></li>
+            <li><a href="../../../feed.xml">Subscribe</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">	
+	<div class="page-header">
+		<h1>How to bring pseudo code to life</h1>
+	</div>
+
+	<p><em>01 May 2013</em>	</p>
+
+	<p><p>When designing a piece of software, I like to start with some pseudo code first, then work my way out. I tend to try mapping out the normal workflow (one that runs without any corner cases) with high level of actions as series of steps. Then the detailed implementation of the code can be filled in at later time.</p>
+
+<p>Now with Java, you can easily do this with pseudo code, bring it to life, and still make it very maintainable. Try this out.</p>
+
+<pre><code>package deng.javademo;
+
+/**
+ * @author Zemian Deng
+ */
+public class PseudoCodeToLife {
+    public static void main(String[] args) {
+        CreditCardProcessor creditCardProcessor = new CreditCardProcessor()
+                .step(webServiceRequest())
+                .step(validateCardNumber())
+                .step(validateSecurityCode())
+                .step(checkAvailableCredit())
+                .step(chargeCard())
+                .step(webServiceResponse());
+
+        creditCardProcessor.run();
+    }
+}
+</code></pre>
+
+<p>Now that's as high level as you can get, but it still let me fill in the implementation without losing the overall requirement flow. To implement such workflow, we need a contract that allow processor to move data from one step to another, and yet it needs to perform some action along the way. How about an interface like this.</p>
+
+<pre><code>package deng.javademo;
+
+/**
+ * @author Zemian Deng
+ */
+public interface StepAction {
+    public void onAction(Exchange exchange);
+}
+</code></pre>
+
+<p>Next is how to wire steps together. For now we can just do it inside <code>CreditCardProcessor</code>, but you can easily abstract that into a re-usable base class.</p>
+
+<pre><code>package deng.javademo;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * @author Zemian Deng
+ */
+public class CreditCardProcessor {
+    List&lt;StepAction&gt; steps = new ArrayList&lt;StepAction&gt;();
+
+    public CreditCardProcessor step(StepAction stepAction) {
+        steps.add(stepAction);
+        return this;
+    }
+
+    public void run() {
+        Exchange exchange = new Exchange();
+        for (StepAction step : steps) {
+            step.onAction(exchange);
+        }
+    }
+}
+</code></pre>
+
+<p>Pretty straight forward. Here I used an <code>Exchange</code> as message, passing between each steps to allow the workflow to exchange data. You can wrap just about any real payload and/or add a Map of header properties.</p>
+
+<p>Now what we are missing is just filling in each step of actions. Since we have an explicit step name when defining the workflow, we can just generate these method and fill in the actions per step required. I will add them all inside the <code>PseudoCodeToLife</code> and reprint it here.</p>
+
+<pre><code>package deng.javademo;
+
+/**
+ * @author Zemian Deng
+ */
+public class PseudoCodeToLife {
+    public static void main(String[] args) {
+        CreditCardProcessor creditCardProcessor = new CreditCardProcessor()
+                .step(webServiceRequest())
+                .step(validateCardNumber())
+                .step(validateSecurityCode())
+                .step(checkAvailableCredit())
+                .step(chargeCard())
+                .step(webServiceResponse());
+
+        creditCardProcessor.run();
+    }
+
+    private static StepAction webServiceRequest() {
+        return new StepAction() {
+            @Override
+            public void onAction(Exchange exchange) {
+                System.out.println("webServiceRequest step.");
+            }
+        };
+    }
+
+    private static StepAction validateCardNumber() {
+        return new StepAction() {
+            @Override
+            public void onAction(Exchange exchange) {
+                System.out.println("validateCardNumber step.");
+            }
+        };
+    }
+
+    private static StepAction validateSecurityCode() {
+        return new StepAction() {
+            @Override
+            public void onAction(Exchange exchange) {
+                System.out.println("validateSecurityCode step.");
+            }
+        };
+    }
+
+    private static StepAction checkAvailableCredit() {
+        return new StepAction() {
+            @Override
+            public void onAction(Exchange exchange) {
+                System.out.println("checkAvailableCredit step.");
+            }
+        };
+    }
+
+    private static StepAction chargeCard() {
+        return new StepAction() {
+            @Override
+            public void onAction(Exchange exchange) {
+                System.out.println("chargeCard step.");
+            }
+        };
+    }
+
+    private static StepAction webServiceResponse() {
+        return new StepAction() {
+            @Override
+            public void onAction(Exchange exchange) {
+                System.out.println("webServiceResponse step.");
+            }
+        };
+    }
+}
+</code></pre>
+
+<p>That's all to this. What do you think? I think it's a simple way to tackle business problems. Simple software make less bugs and easier to maintain.</p>
+</p>
+
+	<hr />
+
+<div id="disqus_thread"></div>
+	
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://zemian-github-io.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">&copy; 2011 - 2019 Zemian Deng All Rights Reserved | Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.4</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../../../js/jquery-1.11.1.min.js"></script>
+    <script src="../../../js/bootstrap.min.js"></script>
+    <script src="../../../js/prettify.js"></script>
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-135626598-1');
+    </script>
+
+  </body>
+</html>

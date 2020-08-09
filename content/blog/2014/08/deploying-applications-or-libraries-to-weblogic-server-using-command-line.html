@@ -1,0 +1,21 @@
+title=Deploying applications or libraries to WebLogic Server using command line
+date=2014-08-20
+type=post
+tags=weblogic
+status=published
+~~~~~~
+Here is how you can automate deployment for WebLogic server using command line.<br />
+<br />
+First source the env settings from the server:<br />
+<span style="font-family: &quot;Courier New&quot;,Courier,monospace;">$ source $ML_HOME/server/bin/setWLSEnv.sh</span><br />
+<br />
+Deploy Library:<br />
+<span style="font-family: &quot;Courier New&quot;,Courier,monospace;">$ java weblogic.Deployer -nostage -deploy -library \<br />-adminurl localhost:7001 \<br />-username weblogic -password my_secret \<br />-targets myserver \<br />my_shared_lib.war </span><br />
+<br />
+Deploy Application:<br />
+<span style="font-family: &quot;Courier New&quot;,Courier,monospace;">$ java weblogic.Deployer -nostage -deploy \<br />-adminurl localhost:7001 \<br />-username weblogic -password my_secret \<br />-targets myserver \<br />-name myapp.war myapp.war</span><br />
+<br />
+For development, you likely want to use the "-nostage" meaning to deploy the app or library directly from the file system. This means any changes to that file location and a reload from WLS will take effect immediately. <br />
+<br />
+For undeploy the command line options are same for library or app but with matching name.<br />
+<span style="font-family: &quot;Courier New&quot;,Courier,monospace;">$ java weblogic.Deployer -undeploy \<br />-adminurl localhost:7001 \<br />-username weblogic -password my_secret \<br />-targets myserver \<br />-name myapp_or_lib.war</span>

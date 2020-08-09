@@ -1,0 +1,14 @@
+title=How to workaround WebLogic terminalio not found error
+date=2014-03-18
+type=post
+tags=weblogic
+status=published
+~~~~~~
+In some PC environments, you may have encounter error like following when trying to create and start a WebLogic Server domain admin server <br />
+<br />
+<span style="font-family: &quot;Courier New&quot;,Courier,monospace;">&lt;Mar 10, 2014 9:40:58 AM EDT&gt; &lt;Error&gt; &lt;Security&gt; &lt;BEA-090783&gt; &lt;<b>Server is Running in Development Mode and Native Library(terminalio) to read the password securely from commandline is not found.</b>&gt;</span><span style="font-family: &quot;Courier New&quot;,Courier,monospace;">&lt;Mar 10, 2014 9:40:58 AM EDT&gt; &lt;Notice&gt; &lt;WebLogicServer&gt; &lt;BEA-000388&gt; &lt;JVM called WLS shutdown hook. The server will force shutdown now&gt;</span><br />
+<span style="font-family: &quot;Courier New&quot;,Courier,monospace;">&lt;Mar 10, 2014 9:40:58 AM EDT&gt; &lt;Notice&gt; &lt;WebLogicServer&gt; &lt;BEA-000365&gt; &lt;Server state changed to FORCE_SHUTTING_DOWN&gt;</span><br />
+<br />
+After this unfriendly message, your process will just exit and won't start at all! One quick fix for this is to try add this sys props <span style="font-family: &quot;Courier New&quot;,Courier,monospace;">-Dweblogic.management.allowPasswordEcho=true</span> This will force the password prompt to echo out on console though, but at least it will start your server. And once the domain is created, you may restart it again without prompting password.<br />
+<br />
+Ref: https://community.oracle.com/thread/934173

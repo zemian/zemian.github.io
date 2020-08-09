@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Zemian's Blog - Intellij IDEA is pretty awesome!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../css/asciidoctor.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link href="../../../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../../../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../about.html">About</a></li>
+            <li><a href="../../../archive.html">Archive</a></li>
+            <li><a href="../../..//tags">Tags</a></li>
+            <li><a href="../../../feed.xml">Subscribe</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">	
+	<div class="page-header">
+		<h1>Intellij IDEA is pretty awesome!</h1>
+	</div>
+
+	<p><em>11 December 2012</em>, tags: 
+	    <a href="../../../tags/intellij.html">intellij</a> 
+	</p>
+
+	<p>Did you know IntelliJ IDEA has a free Community Edition you may <a href="http://www.jetbrains.com/idea/download/index.html">download</a>? I've been test driving it, and I will post few things I learned so far.
+
+Here are few things that I usually change from out of the default installed settings.
+
+<ol>
+<li>File > Settings > Editor => Uncheck "Allow placement of caret after end of line" -- This is the most annoying thing for me in IDE. It's just not for me.</li>
+
+<li>File > Settings > Editor > Appearance => Check "Show line numbers" -- I tend to relate errors and navigate content better with line number displayed.</li>
+
+<li>File > Settings > Appearance > Theme => Select "Darcula" -- This is latest version 12.0 feature. Dark screen is pretty eye pleasing compare to WHITE.</li>
+
+<li>File > Settings > Compiler => Check "Make project automatically" -- Another new 12.0 feature that would perform incremental compile.</li>
+</ol>
+
+<p>Now the IDE is ready for me to work on any Java projects. If you work with Maven, then you will be happy to know that IDEA supports it out of box. You can get an existing project started with following steps:
+
+<ol>
+<li>File > Import Project => Browse to your project pom.xml. Even if you have multi Maven modules, you only need to pick the top level pom.xml and it will generate the multi IDEA modules for you automatically. Then click "Ok" button.
+</li>
+
+<li>In "Import project from external model" select "Maven", and then "Next".</li>
+
+<li>You can accept all default settings on this prompt, and simply go "Next"</li>
+
+<li>Check all maven project to import</li>
+
+<li>Next screen is selecting a SDK for this project (meaning pick a JDK) to use. If this is your first time setup, then create a new one by click on the Grean plus icon, then browse to your JAVA_HOME directory and click OK. Click "Next" to go next step.
+</li>
+
+<li>Simply click "Next" to accept default project name. Then you are at last prompt. Simply click "Finish" button and you should have your project ready to go.
+</li>
+</ol>
+
+<p>It might seems like a lot of steps to import a project, but IDEA is really nice. After your project has completely imported and compiled, you should able open any of your Java class (use CTRL+N) that has <code>main</code> method or any JUnit classes. Right click the content editor and select "Run ..." to execute it (or CTRL+SHIFT+F10 to run any single unit test method).
+
+<p>I have tried a decent size Java projects (few thousand source files) and it handles it very gracefully. The UI such as Menu items, Control buttons and tool bars are very user friendly and intuitive to use. Also, right click on most places should give you a "Context" menu with related options. Like any IDE, it supports the CTRL+Space that auto complete code as you type. There is the ALT+ENTER would suggest hints on how to fix things when you got an error with red squiggle line. Pressing CTRL+B will jump into methods or variable declarations.
+
+<p>Another tips I have for you is the IDEA uses many icon symbols to represent many things. These give you quick visual status on files, progress and states of your Classes etc. It's helpful to see what they mean using this <a href="http://www.jetbrains.com/idea/webhelp/symbols.html">http://www.jetbrains.com/idea/webhelp/symbols.html</a>
+
+<p>So overall, I think IntelliJ IDEA is pretty good and awesome in many way.
+ 
+</p>
+
+	<hr />
+
+<div id="disqus_thread"></div>
+	
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://zemian-github-io.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">&copy; 2011 - 2019 Zemian Deng All Rights Reserved | Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.4</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../../../js/jquery-1.11.1.min.js"></script>
+    <script src="../../../js/bootstrap.min.js"></script>
+    <script src="../../../js/prettify.js"></script>
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-135626598-1');
+    </script>
+
+  </body>
+</html>

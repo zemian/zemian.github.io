@@ -1,0 +1,23 @@
+title=How to install Zoom conference on Ubuntu 14.04 LTS
+date=2016-06-17
+type=post
+tags=linux
+status=published
+~~~~~~
+1. Download latest <span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">zoom_2.0.52458.0531_amd64.deb</span> package from https://zoom.us/download<br />
+<br />
+2. Run <span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp;</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">bash&gt; sudo dpkg -i zoom_2.0.52458.0531_amd64.deb</span><br />
+<br />
+3. Even though the package installed complete, you will see error messages if you have a 64-bit OS because Zoom has other dependencies that's not met. And the above command will setup the apt-get to auto fetch the failed dependencies if you simply run the following next:<br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">bash&gt; sudo apt-get -f install</span><br />
+<br />
+That's it! Your zoom should be ready to go! Try to start Zoom by press Super + A, then type in "Zoom". <br />
+<br />
+Extra: To Verify Installation, you may run:<br />
+<span style="font-family: &quot;Courier New&quot;,Courier,monospace;">bash&gt; dpkg -l |grep zoom</span><br />
+<br />
+UPDATE:<br />
+The exact same steps can be used to install the Skype <span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">skype-ubuntu-precise_4.3.0.37-1_i386.deb</span> on Ubuntu.<br />
+<br />
+NOTE: If you have errors running steps above, it's very likely you have upgraded your kernel or added extra repositories into apt-get that's causing all the package dependencies conflict. Try to revert back to original Ubuntu 14.04 install state and these steps should get you running!

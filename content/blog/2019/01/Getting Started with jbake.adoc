@@ -1,0 +1,21 @@
+title=Getting Started with jbake
+date=2019-01-15
+type=post
+tags=blog, jbake
+status=published
+~~~~~~
+
+I started using https://jbake.org/ for https://zemian.github.io/[my blog site] here at GitHub page. It's a Java based static site generator that has decent options. For Java developers, it's easy to learn and use. I can customize the site with Freemarker (and other templates as well).
+
+So far I am pretty happy with this.
+
+== Getting Started
+
+----
+mkdir hello-site
+cd hello-site
+jbake -i
+jbake -b -s
+----
+
+The `-b` option is for baking (generating) the content, and the `-s` is to run a server for testing it. The default output of the site will be in `output` folder. You can change it as `jbake -b -s . my-site-output`

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Zemian's Blog - Getting started with WebLogic Server</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../css/asciidoctor.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link href="../../../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../../../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../about.html">About</a></li>
+            <li><a href="../../../archive.html">Archive</a></li>
+            <li><a href="../../..//tags">Tags</a></li>
+            <li><a href="../../../feed.xml">Subscribe</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">	
+	<div class="page-header">
+		<h1>Getting started with WebLogic Server</h1>
+	</div>
+
+	<p><em>30 January 2014</em>, tags: 
+	    <a href="../../../tags/weblogic.html">weblogic</a> 
+	</p>
+
+	<p><br />
+Here are some quick tips on how to get started with WebLogic Server on Windows OS:<br />
+<br />
+<span style="font-family: &quot;Courier New&quot;,Courier,monospace;">1. Download wls1212.zip from http://www.oracle.com/technetwork/middleware/weblogic/downloads/index.html<br />2. Unzip it under C:\apps\wls12120<br />3. set MW_HOME=C:\apps\wls12120<br />4. set JAVA_HOME=C:\apps\jdk1.7.0_51<br />5. cd C:\apps\wls12120<br />6. configure.cmd<br />7. mkdir user_projects\domains\mydomain<br />8. cd </span><span style="font-family: &quot;Courier New&quot;,Courier,monospace;"><span style="font-family: &quot;Courier New&quot;,Courier,monospace;">user_projects\domains\mydomain</span></span><br />
+<span style="font-family: &quot;Courier New&quot;,Courier,monospace;">9. %JAVA_HOME%\bin\java </span><span style="font-family: &quot;Courier New&quot;,Courier,monospace;"><span style="font-family: &quot;Courier New&quot;,Courier,monospace;">-Xmx1024m -XX:MaxPermSize=256m </span>weblogic.Server</span><br />
+<br />
+By default, the last step should create a domain with all the nessary files in your current working directory. It will also prompt you to create a config.xml (enter 'y' to continue) and then prompting for a username and password to manage the server. Optionally you may also setup username/password part by using additional sys props like this:<br />
+<span style="font-family: &quot;Courier New&quot;,Courier,monospace;">-Dweblogic.management.username=weblogic -Dweblogic.management.password=Welcome1 </span><br />
+<br />
+Use <span style="font-family: &quot;Courier New&quot;,Courier,monospace;">CTRL+C</span> to stop the server. The next time you start, you can just invoke <span style="font-family: &quot;Courier New&quot;,Courier,monospace;">"mydomain\bin\startWebLogic.cmd"</span><br />
+<br />
+TIPS1: If you omit <span style="font-family: &quot;Courier New&quot;,Courier,monospace;"><span style="font-family: &quot;Courier New&quot;,Courier,monospace;">-Xmx1024m -XX:MaxPermSize=256m </span></span>you will likely can start the server but as soon as you activate the /console webapp, you will run into out of memory issue.<br />
+<br />
+TIPS2: If you have access, try to add Windows Environment variables for MW_HOME and JAVA_HOME into your system. If not, then you can easily add it into <span style="font-family: &quot;Courier New&quot;,Courier,monospace;">"mydomain\bin\setDomainEnv.cmd"</span> as well (it's generated so you can edit all you like.) Without these two variables, you will likely get a class not found error.<br />
+<br />
+TIPS3: The default server name created by this initial setup is called <b>myserver</b>. If you like to name it something else, then add sys props such as this: <span style="font-family: &quot;Courier New&quot;,Courier,monospace;">-Dweblogic.Name=<b>admin-server</b>&nbsp;</span><br />
+<br />
+TIPS4: To change the domain name from <b>mydomain </b>to something else, use: <span style="font-family: &quot;Courier New&quot;,Courier,monospace;">-Dweblogic.Domain=<b>dev-domain</b></span><br />
+<br />
+TIPS5: The default admin server listening port is 7001. To change this, use: <span style="font-family: &quot;Courier New&quot;,Courier,monospace;">-Dweblogic.ListenPort=<b>7002</b></span> <br />
+<br />
+<br />
+<br />
+<span style="font-family: &quot;Courier New&quot;,Courier,monospace;"></span>
+</p>
+
+	<hr />
+
+<div id="disqus_thread"></div>
+	
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://zemian-github-io.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">&copy; 2011 - 2019 Zemian Deng All Rights Reserved | Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.4</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../../../js/jquery-1.11.1.min.js"></script>
+    <script src="../../../js/bootstrap.min.js"></script>
+    <script src="../../../js/prettify.js"></script>
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-135626598-1');
+    </script>
+
+  </body>
+</html>

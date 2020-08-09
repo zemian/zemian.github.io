@@ -1,0 +1,37 @@
+title=How to run Kotlin script file
+date=2015-08-03
+type=post
+tags=kotlin
+status=published
+~~~~~~
+The script name MUST have ".kts" extension! If not, you will get a unfriendly error message.<br />
+<br />
+kotlinc -script hello.kts<br />
+Hello World<br />
+<br />
+vs<br />
+<br />
+kotlinc -script hello.kt<br />
+EXCEPTION: java.lang.RuntimeException: Failed to evaluate script: java.lang.NullPointerException<br />
+&nbsp; &nbsp; &nbsp; &nbsp; at org.jetbrains.kotlin.cli.jvm.compiler.KotlinToJVMBytecodeCompiler.compileScript(KotlinToJVMBytecodeCompiler.java:290)<br />
+&nbsp; &nbsp; &nbsp; &nbsp; at org.jetbrains.kotlin.cli.jvm.compiler.KotlinToJVMBytecodeCompiler.compileAndExecuteScript(KotlinToJVMBytecodeCompiler.java:243)<br />
+&nbsp; &nbsp; &nbsp; &nbsp; at org.jetbrains.kotlin.cli.jvm.K2JVMCompiler.doExecute(K2JVMCompiler.java:186)<br />
+&nbsp; &nbsp; &nbsp; &nbsp; at org.jetbrains.kotlin.cli.jvm.K2JVMCompiler.doExecute(K2JVMCompiler.java:53)<br />
+&nbsp; &nbsp; &nbsp; &nbsp; at org.jetbrains.kotlin.cli.common.CLICompiler.exec(CLICompiler.java:148)<br />
+&nbsp; &nbsp; &nbsp; &nbsp; at org.jetbrains.kotlin.cli.common.CLICompiler.exec(CLICompiler.java:128)<br />
+&nbsp; &nbsp; &nbsp; &nbsp; at org.jetbrains.kotlin.cli.common.CLICompiler.exec(CLICompiler.java:52)<br />
+&nbsp; &nbsp; &nbsp; &nbsp; at org.jetbrains.kotlin.cli.common.CLICompiler.doMainNoExit(CLICompiler.java:197)<br />
+&nbsp; &nbsp; &nbsp; &nbsp; at org.jetbrains.kotlin.cli.common.CLICompiler.doMain(CLICompiler.java:188)<br />
+&nbsp; &nbsp; &nbsp; &nbsp; at org.jetbrains.kotlin.cli.jvm.K2JVMCompiler.main(K2JVMCompiler.java:57)<br />
+&nbsp; &nbsp; &nbsp; &nbsp; at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)<br />
+&nbsp; &nbsp; &nbsp; &nbsp; at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)<br />
+&nbsp; &nbsp; &nbsp; &nbsp; at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)<br />
+&nbsp; &nbsp; &nbsp; &nbsp; at java.lang.reflect.Method.invoke(Method.java:606)<br />
+&nbsp; &nbsp; &nbsp; &nbsp; at org.jetbrains.kotlin.preloading.Preloader.main(Preloader.java:83)<br />
+Caused by: java.lang.NullPointerException<br />
+&nbsp; &nbsp; &nbsp; &nbsp; at org.jetbrains.kotlin.resolve.ScriptNameUtil.classNameForScript(ScriptNameUtil.java:33)<br />
+&nbsp; &nbsp; &nbsp; &nbsp; at org.jetbrains.kotlin.cli.jvm.compiler.KotlinToJVMBytecodeCompiler.compileScript(KotlinToJVMBytecodeCompiler.java:286)<br />
+&nbsp; &nbsp; &nbsp; &nbsp; ... 14 more<br />
+<br />
+See&nbsp;http://kotlinlang.org/docs/tutorials/command-line.html<br />
+<br />

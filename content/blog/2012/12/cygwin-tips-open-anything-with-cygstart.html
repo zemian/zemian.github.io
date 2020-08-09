@@ -1,0 +1,27 @@
+title=Cygwin tips: open anything with cygstart
+date=2012-12-13
+type=post
+tags=cygwin
+status=published
+~~~~~~
+Cygwin has this cool command called <code>cygstart</code>, and I usually alias it as <code>open</code>.
+ 
+<pre>
+alias open='cygstart'
+</pre>
+ 
+Here are few things I use often:
+<pre>
+ 
+# bring up Windows Explore with folder open
+bash> open /cygdrive/c/temp
+bash> open "$USERPROFILE"
+ 
+# bring up browser on a url
+bash> open http://google.com
+ 
+# bring up any windows program by file extension
+bash> open /cygdrive/c/my.docx
+</pre>
+ 
+<p>Because I use a Cygwin terminal shell a lot, I have many alias shortcuts to many different directories. The <code>open .</code> allows me to jump to any directory and starts the Windows Explore with that directory expanded quickly. You can see more options with <code>open --help</code>.

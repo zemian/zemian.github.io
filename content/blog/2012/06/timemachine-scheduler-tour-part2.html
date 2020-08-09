@@ -1,0 +1,234 @@
+title=TimeMachine Scheduler Tour: Part2
+date=2012-06-10
+type=post
+tags=timemachine
+status=published
+~~~~~~
+<span style="background-color: white;">This is part 2 of 7 in a series of articles that will give you a tour of the&nbsp;</span><a href="https://bitbucket.org/timemachine/scheduler/wiki/Home" style="background-color: white;">TimeMachine Scheduler</a><span style="background-color: white;">&nbsp;project. These articles will introduce you to the scheduler, how to load jobs and schedules, and explore some of its advanced features. For the most current and accurate instructions, please visit the ReferenceManual from the project site.</span><br />
+<br />
+<br />
+<br />
+<h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Scripting the Scheduler with Groovy</h2>
+<div>
+Scripting language is a great way to extend an application, and with Java 6 or higher it has ScriptingEngine API baked right in. There are many solid JVM based scripting engines available out there today. For example Groovy, Ruby or Jython are just few popular open source ones. The TimeMachine Scheduler&nbsp;embraced&nbsp;the easy and flexibility of scripting. I will be covering some of these features in this tour.</div>
+<div>
+<br /></div>
+<div>
+Starting JVM 6 or higher, it already comes with JavaScript engine implementation, and there is no external dependency with this. So TimeMachine has default to use "JavaScript" as scripting engine. You may add any other script engine jars in to the "lib" directory and specify the <span style="font-family: 'Courier New',Courier,monospace;">scriptEngineName</span> parameter to change it.<br />
+<br />
+We have found the&nbsp;<a href="http://groovy.codehaus.org/">Groovy</a> scripting engine to be very productive, and its syntax are very similar to Java language itself, but yet very concise and expressive. So we decided to make TimeMachine distribution zip file pre-packaged the Groovy jars for user convenient. (Note that Groovy is only an optional dependency for TimeMachine scheduler itself, and we have properly set our maven pom.xml as such.)<br />
+<br />
+All the demo code in this tour will use Groovy. You are free to choose other engine if you want to explore it further.<br />
+<br />
+<br /></div>
+<h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+The ScriptingService</h2>
+<div>
+You may initialize the scheduler along with a script file and let it execute and prepare jobs or anything you would need before the scheduler is started. You will start by create a <span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">config/scheduler.properties</span> file like this:</div>
+<div>
+<div>
+<br /></div>
+<div>
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">timemachine.scheduler.userservice.scriptingService.class = timemachine.scheduler.userservice.ScriptingService</span></div>
+<div>
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">ScriptingService.scriptEngineName = Groovy</span></div>
+<div>
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">ScriptingService.initScript = config/myscript.groovy</span></div>
+</div>
+<div>
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;"><br /></span></div>
+<div>
+<div>
+In your&nbsp;<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">config/myscript.groovy&nbsp;</span>file, you may try this:<br />
+<br /></div>
+<div>
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">logger.info("Hello World!")</span></div>
+<div>
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">logger.info("I have access to " + scheduler)</span></div>
+</div>
+<div>
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;"><br /></span></div>
+<div>
+Now you can fire off the scheduler:<br />
+<br /></div>
+<div>
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">$ bin/scheduler.sh config/scheduler.properties</span></div>
+<div>
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;"><br /></span></div>
+<div>
+You should see the scheduler started with the hello world message printed on log output.<br />
+<br />
+<br /></div>
+<div>
+<h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+The Scheduler API</h2>
+From above&nbsp; you can see that we give you two variables to play with in the script. The <span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">logger</span> is simple one, and you probably don't do anything more than logging info message. The more interesting one is the <span style="font-size: x-small;"><span style="font-family: 'Courier New',Courier,monospace;">scheduler&nbsp;</span></span>variable. This variable would have full access to the scheduler; it &nbsp;is an instance of &nbsp;<a href="http://tmschedulersite-zdeng.rhcloud.com/scheduler-site/timemachine-scheduler/target/site-deploy/timemachine-scheduler/apidocs/timemachine/scheduler/Scheduler.html">timemachine.scheduler.Scheduler</a> class. Let's use this variable to create a cron job in the following Groovy <span style="font-family: &quot;Courier New&quot;,Courier,monospace;">initScript</span>:<br />
+<br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">import timemachine.scheduler.*</span><br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">import timemachine.scheduler.schedule.*</span><br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">import timemachine.scheduler.jobtask.*</span></div>
+<div>
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;"><br /></span></div>
+<div>
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">jobDef = new JobDef()</span></div>
+<div>
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">jobDef.setJobTaskClass(LoggerJobTask.class)</span><br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;"><br /></span><br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">schedule =&nbsp;</span><span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">new CronSchedule()</span><br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">schedule</span><span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">.setExpression("* * * * * ?")</span>
+</div>
+<div>
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">jobDef.addSchedule(</span><span style="font-family: 'Courier New',Courier,monospace;"><span style="font-size: x-small;">schedule)</span></span></div>
+<div>
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;"><br /></span><br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">scheduler.schedule(jobDef)</span><br />
+<br />
+The scheduler API is pretty self&nbsp;explanatory, but let me be more&nbsp;explicit&nbsp;to help along. We imported all the packages and classes that we need first, then we created a job definition object. We told it what task to do and how often to do it. We created 3 schedules/jobs that will run the task. We finally scheduled and stored this job definition to the scheduler. These jobs will run according to the schedule (every second) as soon as your scheduler starts. You may verify through the output log.<br />
+<br />
+For convenience sake, we also provide factory classes that can make above program even shorter.<br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;"><br /></span><br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">import timemachine.scheduler.*</span><br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">jobDef = JobDefs.loggerJobDef()</span><br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">jobDef.add(Schedules.cron(</span><span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">"* * * * * ?"))</span><br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">scheduler.schedule(jobDef)</span>
+<br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;"><br /></span><br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;"><br /></span><br />
+<h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+Schedule Types</h2>
+<div>
+Besides the <span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">CronSchedule</span>, we also have <span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">RepeatSchedule </span>and <span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">DateListSchedule </span><span style="background-color: white;">schedule types. We have created a nice factory methods in <span style="font-family: 'Courier New',Courier,monospace;">Schedules</span> that return one of these schedule. For example, we may create a minutely repeat schedule and an explicit date list schedules in the </span><span style="font-family: &quot;Courier New&quot;,Courier,monospace;">initScript </span><span style="background-color: white;">like this:&nbsp;</span></div>
+<div>
+<br /></div>
+<div>
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">import timemachine.scheduler.*</span><br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">jobDef = JobDefs.osCommandJobDef("cmd.exe /c echo 'Hello World.'")</span><br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">jobDef.addSchedule(Schedules.minutely(5))</span><br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">jobDef.addSchedule(Schedules.datelist(*[Schedules.datetime("01/01/2013 08:00:00"),&nbsp;</span><span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">Schedules.datetime("01/01/2014 08:00:00")</span><span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">]))</span></div>
+<div>
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">scheduler.schedule(jobDef)</span><br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;"><br /></span><br />
+<span style="font-family: inherit;">In above, we have scheduled one job definition with two schedules to run. First one runs every 5 mins, and the second one runs twice on an explicit given dates.</span><br />
+<span style="font-family: inherit;"><br /></span><br />
+<span style="font-family: inherit;">Note: The asterisk in front of left bracket is needed due to Groovy syntax on passing an list object into Java's wildcard variable argument.</span><br />
+<br />
+<br />
+<h2>
+
+
+
+
+
+
+JobTask Types</h2>
+<div>
+Besides the <span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">LoggerJobTask </span>and <span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">OsCommandJobTask</span>&nbsp;built-in JobTask you have seen above, we also have a powerful <span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">ScriptingJobTask&nbsp;</span>that let you build a job task in Groovy code! This means you may add a new job without even compiling Java code! Here is an example of Groovy <span style="font-family: &quot;Courier New&quot;,Courier,monospace;">initScript </span>script that will create a new "scripting" job.</div>
+<div>
+<div>
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;"><br class="Apple-interchange-newline" />import timemachine.scheduler.*</span><br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">jobDef = JobDefs.groovyJobDef('''</span><br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">file= new File("/tmp/counter.data")</span><br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">if (!file.exists())</span><br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">&nbsp;&nbsp;</span><span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">num = 1</span><br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">else</span><br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">&nbsp;&nbsp;</span>
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">num</span>&nbsp; =&nbsp;<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">file.text.toInteger() + 1</span><br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">logger.info("Incrementing counter $num in $file")</span><br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">file.write(num)</span><br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">''')</span><br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">jobDef.addSchedule(Schedules.secondly(1)) // run every second.</span></div>
+<div>
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">scheduler.schedule(jobDef)</span></div>
+</div>
+<div>
+<br /></div>
+<div>
+In above example, we created a job that runs every second. The job task will increment a counter in a file and re-save it every time the job runs.<br />
+<br />
+<br /></div>
+<div>
+<h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+Pretty Groovy ...</h2>
+</div>
+<div>
+There you go. Above is your first custom job in TimeMachine Scheduler! The Groovy language is very similar to Java in syntax, yet minus all the noises, so it's very productive. Groovy also access and integrate with existing <a href="http://docs.oracle.com/javase/6/docs/api/">Java API</a> seamlessly, so you may access and control the scheduler with easy.&nbsp;</div>
+<div>
+<br /></div>
+<div>
+Interested? Go and <a href="https://bitbucket.org/timemachine/scheduler/downloads">download </a>the scheduler today and give it a try!<br />
+<br />
+<br />
+End of part 2.&nbsp;<span style="background-color: white;">You may continue</span><span style="background-color: white;">&nbsp;</span><a href="http://saltnlight5.blogspot.com/2012/06/timemachine-scheduler-tour-part3.html" style="background-color: white;">next tour</a>, or&nbsp;<span style="background-color: white;">see</span><span style="background-color: white;">&nbsp;</span><a href="http://saltnlight5.blogspot.com/2012/06/timemachine-scheduler-tour-part1.html" style="background-color: white;">previous tour</a><span style="background-color: white;">.</span></div>
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;"><br /></span></div>
+</div>

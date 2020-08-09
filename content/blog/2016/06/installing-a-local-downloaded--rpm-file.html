@@ -1,0 +1,15 @@
+title=Installing a local downloaded .rpm file
+date=2016-06-26
+type=post
+tags=linux
+status=published
+~~~~~~
+<span style="font-family: inherit;"><span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><span style="font-size: small;"><span style="font-family: inherit;">To install:</span></span></span><span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"> </span></span><br />
+<span style="font-family: &quot;Courier New&quot;,Courier,monospace;"><span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">bash&gt; sudo yum install &lt;package_name.rpm&gt;</span></span><br />
+<span style="font-family: inherit;"><br /></span>
+<span style="font-family: inherit;"><span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">If you have problem installing it due to gpg <span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">che<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">ck failure and you know it's a go<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">od RPM<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">, then <span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">try <span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">w<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">ith this.</span></span></span></span></span></span></span> </span></span><br />
+<span style="font-family: &quot;Courier New&quot;,Courier,monospace;"><span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">bash&gt; sudo yum --nogpgcheck localinstall &lt;package_name.rpm&gt;</span></span><br />
+<span style="font-family: inherit;"><br /></span>
+<span style="font-family: inherit;"><span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><span style="font-size: small;"><span style="font-family: inherit;">To verify what's in the rpm:</span></span> </span></span><br />
+<span style="font-family: &quot;Courier New&quot;,Courier,monospace;"><span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">bash&gt; rpm -qlp &lt;package_name.rpm&gt;</span></span><br />
+<br />

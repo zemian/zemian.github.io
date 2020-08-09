@@ -1,0 +1,224 @@
+title=How to configure SLF4J with different logger implementations
+date=2013-08-18
+type=post
+tags=slf4j, logging
+status=published
+~~~~~~
+<div class="paragraph">
+There are many good benefits in using <code>slf4j</code> library as your Java
+application logging API layer. Here I will show few examples on how
+to use and configure it with different loggers.</div>
+<div class="paragraph">
+You can think of <code>slf4j</code> as an Java interface, and then you would
+need an implementation (ONLY ONE) at runtime to provide the actual
+logging details, such as writing to STDOUT or to a file etc. Each
+logging implementation (or called binding) would obviously have their
+own way of configuring the log output, but your application will remain
+agnostic and always use the same <code>org.slf4j.Logger</code> API. Lets see how
+this works in practice.</div>
+<div class="sect1">
+<h2 id="_using_code_slf4j_code_with_simple_logger">
+Using <code>slf4j</code> with Simple logger</h2>
+<div class="sectionbody">
+<div class="paragraph">
+Create a Maven based project and this in your <code>pom.xml</code>.</div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre class="highlight"><code class="xml language-xml">    &lt;dependency&gt;
+        &lt;groupId&gt;org.slf4j&lt;/groupId&gt;
+        &lt;artifactId&gt;slf4j-api&lt;/artifactId&gt;
+        &lt;version&gt;1.7.5&lt;/version&gt;
+    &lt;/dependency&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+Now you may use <code>Logger</code> in your Java code like this.</div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre class="highlight"><code class="java language-java">package deng;
+import org.slf4j.*;
+public class Hello {
+    static Logger LOGGER = LoggerFactory.getLogger(Hello.class);
+    public static void main(String[] args) {
+        for (int i = 0; i &lt; 10; i++)
+            if (i % 2 == 0)
+                LOGGER.info("Hello {}", i);
+            else
+                LOGGER.debug("I am on index {}", i);
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+The above will get your program compiled, but when you run it, you will see these output.</div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre>bash&gt; java deng.Hello
+SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.</pre>
+</div>
+</div>
+<div class="paragraph">
+What its saying is that at runtime, you are missing the logging "implementation" (or the
+logger binding), so <code>slf4j</code> simply use a "NOP" implmentation, which does nothing. In order
+to see the output properly, you may try use an <b>simple</b> implementation that does not require
+any configuration at all! Just go back to your <code>pom.xml</code> and add the following:</div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre class="highlight"><code class="xml language-xml">    &lt;dependency&gt;
+        &lt;groupId&gt;org.slf4j&lt;/groupId&gt;
+        &lt;artifactId&gt;slf4j-simple&lt;/artifactId&gt;
+        &lt;version&gt;1.7.5&lt;/version&gt;
+    &lt;/dependency&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+Now you see logging output on STDOUT with INFO level. This simple logger will default
+show any INFO level message or higher. In order to see DEBUG messages, you would
+need to pass in this System Property <code>-Dorg.slf4j.simpleLogger.defaultLogLevel=DEBUG</code>
+at your Java startup.</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_using_code_slf4j_code_with_log4j_logger">
+Using <code>slf4j</code> with Log4j logger</h2>
+<div class="sectionbody">
+<div class="paragraph">
+Now we can experiment and swap different logger implementations, but your application code
+can remain the same. All we need is to replace <code>slf4j-simple</code> with another popular logger
+implementation, such as the Log4j.</div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre class="highlight"><code class="xml language-xml">    &lt;dependency&gt;
+        &lt;groupId&gt;org.slf4j&lt;/groupId&gt;
+        &lt;artifactId&gt;slf4j-log4j12&lt;/artifactId&gt;
+        &lt;version&gt;1.7.5&lt;/version&gt;
+    &lt;/dependency&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+Again, we must configure logging per implementation that we picked.
+In this case, we need an <code>src/main/resources/log4j.properties</code> file.</div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre class="highlight"><code>    log4j.rootLogger=DEBUG, STDOUT
+    log4j.logger.deng=INFO
+    log4j.appender.STDOUT=org.apache.log4j.ConsoleAppender
+    log4j.appender.STDOUT.layout=org.apache.log4j.PatternLayout
+    log4j.appender.STDOUT.layout.ConversionPattern=%5p [%t] (%F:%L) - %m%n</code></pre>
+</div>
+</div>
+<div class="paragraph">
+Re-run your program, and you should see similar output.</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_using_code_slf4j_code_with_jdk_logger">
+Using <code>slf4j</code> with JDK logger</h2>
+<div class="sectionbody">
+<div class="paragraph">
+The JDK actually comes with a logger package, and you can replace <code>pom.xml</code>
+with this logger implementation.</div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre class="highlight"><code class="xml language-xml">    &lt;dependency&gt;
+        &lt;groupId&gt;org.slf4j&lt;/groupId&gt;
+        &lt;artifactId&gt;slf4j-jdk14&lt;/artifactId&gt;
+        &lt;version&gt;1.7.5&lt;/version&gt;
+    &lt;/dependency&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+Now the configuration for JDK logging is a bit difficult to work with. Not only need a
+config file, such as <code>src/main/resources/logging.properties</code>, but you would also need
+to add a System properties <code>-Djava.util.logging.config.file=logging.properties</code>
+in order to have it pick it up. Here is an example to get you started:</div>
+<div class="listingblock">
+<div class="title">
+<span style="font-family: &quot;Courier New&quot;,Courier,monospace;"><br /></span></div>
+<div class="content monospaced">
+<pre class="highlight"><code>.level=INFO</code></pre>
+<pre class="highlight"><code>handlers=java.util.logging.ConsoleHandler
+java.util.logging.ConsoleHandler.level=FINEST
+deng.level=FINEST</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_using_code_slf4j_code_with_logback_logger">
+Using <code>slf4j</code> with Logback logger</h2>
+<div class="sectionbody">
+<div class="paragraph">
+The logback logger implementation is a super dupa quality implementation. If you intend
+to write serious code that go into production, you may want to evaluate this option. Again
+modify your <code>pom.xml</code> to replace with this:</div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre class="highlight"><code class="xml language-xml">    &lt;dependency&gt;
+        &lt;groupId&gt;ch.qos.logback&lt;/groupId&gt;
+        &lt;artifactId&gt;logback-classic&lt;/artifactId&gt;
+        &lt;version&gt;1.0.13&lt;/version&gt;
+    &lt;/dependency&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+Here is a sample of configuration <code>src/main/resources/logback.xml</code> to get things started.</div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre>&lt;configuration&gt;
+  &lt;appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender"&gt;
+    &lt;encoder&gt;
+      &lt;pattern&gt;%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n&lt;/pattern&gt;
+    &lt;/encoder&gt;
+  &lt;/appender&gt;
+
+  &lt;logger name="deng" level="DEBUG"/&gt;
+
+  &lt;root level="INFO"&gt;
+    &lt;appender-ref ref="STDOUT" /&gt;
+  &lt;/root&gt;
+&lt;/configuration&gt;</pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_writing_your_own_library_with_code_slf4j_code_logger">
+Writing your own library with <code>slf4j</code> logger</h2>
+<div class="sectionbody">
+<div class="paragraph">
+If you are providing an Java library for large end users consumption, its good idea to
+set your project to depend on <code>slf4j-api</code> only, and then let your user choose any
+logger implementation at their development or runtime environment. As end users, they
+may quickly select one of option above and take advatage of their own favorite logging
+implementation features.</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_references">
+References</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<a href="http://slf4j.org/">http://slf4j.org/</a><br />
+
+</li>
+<li>
+<a href="http://logging.apache.org/log4j/1.2/">http://logging.apache.org/log4j/1.2/</a><br />
+
+</li>
+<li>
+<a href="http://docs.oracle.com/javase/7/docs/technotes/guides/logging/">http://docs.oracle.com/javase/7/docs/technotes/guides/logging/</a><br />
+
+</li>
+<li>
+<a href="http://logback.qos.ch/">http://logback.qos.ch/</a><br />
+
+</li>
+</ul>
+</div>
+</div>
+</div>

@@ -1,0 +1,13 @@
+title=Using Intellij IDEA 12 for WebLogic Server 12c
+date=2014-02-01
+type=post
+tags=intellij, weblogic
+status=published
+~~~~~~
+If you want to explore the latest EE features, you would need WebLogic Server 12c. However if you still have the IDEA 12 Ultimate edition, you will quickly find that it only supports up to WebLogic 
+Server 11g (10.x)! However you can still make your IDEA 12 U to work with WLS 12c, and all you need is an extra "registry.xml" file under WLS home directory (eg: C:/apps/wls12120/registry.xml). This file will allow the IDEA to pickup and recognize your latest WLS 12c installation.<br />
+<br />
+<span style="font-size: x-small;"><span style="font-family: &quot;Courier New&quot;,Courier,monospace;">&lt;?xml version="1.0" encoding="UTF-8"?&gt;<br />&lt;bea-product-information&gt;<br />&nbsp; &lt;host home="C:\apps\wls12120" name="${env.HOST}"&gt;<br />&nbsp;&nbsp;&nbsp; &lt;product format="1.0" name="WebLogic Platform"&gt;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;release level="12.0"<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ServicePackLevel="6" PatchLevel="0"<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Status="installed" BeaProgramGroup="BEA WebLogic Platform 12.0" StartMenu=""<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; InstallTime="@INSTALL_TIME@"<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; InstallDir="</span></span><span style="font-size: x-small;"><span style="font-family: &quot;Courier New&quot;,Courier,monospace;"><span style="font-size: x-small;"><span style="font-family: &quot;Courier New&quot;,Courier,monospace;">C:\apps\wls12120</span></span>\wlserver"<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; JavaHome="C:\apps\jdk7" JavaVersion="1.7.0" JavaVendor="@JAVA_VENDOR@"&gt;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;component name="WebLogic Server" version="12.1.2.0"&gt;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;component name="Server"/&gt;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;component name="Server Examples"/&gt;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/component&gt;<br />&nbsp;&nbsp;&nbsp;&nbsp; &lt;/release&gt;<br />&nbsp;&nbsp;&nbsp; &lt;/product&gt;<br />&nbsp;&lt;/host&gt;<br />&lt;/bea-product-information&gt;</span></span><br />
+<br />
+I have learned this from reading the IntelliJ forum. Also note that the latest IDEA 13 will support WebLogic Server 12c out of the box now.<br />
+&nbsp; 

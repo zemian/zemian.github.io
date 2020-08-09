@@ -1,0 +1,16 @@
+title=Be careful with Java Path.endsWith(String) usage
+date=2014-04-15
+type=post
+tags=java
+status=published
+~~~~~~
+If you need to compare the <span style="font-family: Courier New, Courier, monospace;">java.io.file.Path</span> object, be aware that&nbsp;<span style="font-family: Courier New, Courier, monospace;">Path.endsWith(String)</span> will ONLY match another sub-element of Path object in your original path, not the path name string portion! If you want to match the string name portion, you would need to call the <span style="font-family: Courier New, Courier, monospace;">Path.toString()</span> first. For example<br />
+<br />
+<span style="font-family: Courier New, Courier, monospace; font-size: x-small;"><span class="Apple-tab-span" style="white-space: pre;">  </span>// Match all jar files.</span><br />
+<span style="font-family: Courier New, Courier, monospace; font-size: x-small;"><span class="Apple-tab-span" style="white-space: pre;">  </span>Files.walk(dir).forEach(path -&gt; {</span><br />
+<span style="font-family: Courier New, Courier, monospace; font-size: x-small;"><span class="Apple-tab-span" style="white-space: pre;">   </span>if (path.<b>toString().</b>endsWith(".jar"))</span><br />
+<span style="font-family: Courier New, Courier, monospace; font-size: x-small;"><span class="Apple-tab-span" style="white-space: pre;">    </span>System.out.println(path);</span><br />
+<span style="font-family: Courier New, Courier, monospace; font-size: x-small;"><span class="Apple-tab-span" style="white-space: pre;">  </span>});</span><br />
+<br />
+With out the "<b><span style="font-family: Courier New, Courier, monospace;">toString()</span></b>" you will spend many fruitless hours wonder why your program didn't work.<br />
+<br />

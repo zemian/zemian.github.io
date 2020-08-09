@@ -1,0 +1,53 @@
+title=Boost your Groovy with NailGun
+date=2012-09-13
+type=post
+tags=groovy
+status=published
+~~~~~~
+
+<p>Are you working on a large Hibernate project that takes long time to load up all the <code>hbm.xml</code> files when creating the 
+<code>Session</code> object? This is fine during deployment and runtime because it only loads it once. However, often time we also 
+need to the same <code>Session</code> object to do some ad-hoc <code>HQL</code> queries to debug or validate data. Loading and re-loading
+large mapping files in a <code>Session</code> to just execute single query is very painful.</p>
+
+<p>Now, I like to poke around Java things with <code>Groovy</code>, and it's a great tool to peek at your data as ad-hoc queries as well. 
+You can easily do this with their <code>groovyConsole</code> GUI tool and add <code>--classpath</code> option to include your project classes. This
+will bring up a tiny Editor, and you can script to load your hibernate <code>Session</code> there. Once the first run is loaded (the 
+hibenrate <code>Session</code> created), then second run is almost in an instant.</p>
+
+<p>Running the little <code>groovyConsole</code> had wet my appetite, and I was hungry for a better text editor, but yet I don't really
+want a full blow IDE for scripting. I like do my scripting in a plain editor. Now if you have an editor such as <a href="http://sublimetext.com">Sublime Text 2</a> (ST2) that has a "build" feature to execute a external command, then you will enjoy scripting much more. With
+ST2, I can have it call <code>groovy.bat</code> from inside the editor on the script that I am editing. However, there is another problem: the external command will restart a new JVM process on each run! Now I am back to square one.</p>
+
+<p>To solve this problem, and still have my cake (editor), I recalled an awesome tool called <a href="http://www.martiansoftware.com/nailgun/index.html">NailGun</a>. This works perfectly with Groovy and my problem. I can start a server like this</p>
+
+<pre><code>java -cp "groovy-all-2.0.1.jar:nailgun-0.7.1.jar" -server com.martiansoftware.nailgun.NGServer
+</code></pre>
+
+<p>And then in my ST2 editor, I can run an external command like this as the NailGun client:</p>
+
+<pre><code>/path/to/nailgun-0.7.1/ng groovy.ui.GroovyMain test.groovy
+</code></pre>
+
+<p>Nail gun client sends the script file content to the server and prints the result. Again, after first run, the second run should
+be instantaneously.</p>
+
+<p>There, I scratched my itch.</p>
+
+<h1>Details on how to setup Sublime Text 2 to run NailGun client</h1>
+
+<p><ol>
+<li>Go to menu: "Preference > Browse Packages"</li>
+<li>Open the Groovy folder</li>
+<li>Save a file named "GroovyNailGunClient.sublime-build" with the following:
+<pre>
+   {
+     "cmd": ["/path/to/nailgun-0.7.1/ng", "groovy.ui.GroovyMain", "$file"],
+     "file_regex": "^(...<em>?):([0-9]</em>):?([0-9]*)",
+     "selector": "source.groovy"
+   }
+</pre>
+  </li>
+  <li>Select menu "Tool > Build System > GroovyNailGunClient"</li>
+  <li>Press <code>CTRL+B</code> to run any groovy file in your editor.</li>
+  </ol></p>                     

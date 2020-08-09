@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Zemian's Blog - How to print text file content inside a jar file</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../css/asciidoctor.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link href="../../../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../../../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../about.html">About</a></li>
+            <li><a href="../../../archive.html">Archive</a></li>
+            <li><a href="../../..//tags">Tags</a></li>
+            <li><a href="../../../feed.xml">Subscribe</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">	
+	<div class="page-header">
+		<h1>How to print text file content inside a jar file</h1>
+	</div>
+
+	<p><em>30 July 2012</em>, tags: 
+	    <a href="../../../tags/java.html">java</a> 
+	</p>
+
+	<p>Have you ever wonder what's the exact version of your <code>ojdbc6.jar</code> that you have? All the jar files will contain a <code>META-INF/MANIFEST.MF</code> file, and chances are the version will be in it! You may try using <code>$JAVA_HOME/bin/jar -xvf</code> to extract the jar and then view the text file. But afterward you would have to clean up the extracted file so not to liter.
+
+<br />
+However, if you got Groovy, you can print any text file inside a jar without above mess.
+<br />
+<pre>file = new File(args[0])
+name = args.size() &gt; 1 ? args[1] : "META-INF/MANIFEST.MF"
+jar = new java.util.jar.JarFile(file)
+entry = jar.getEntry(name)
+istream = jar.getInputStream(entry)
+println(istream.text)
+istream.close()
+</pre>
+<br />
+You may use this script like this:
+<br />
+<pre>$ groovy printjar.groovy /path/to/objdbc6.jar
+
+# Or give an explicit entry name
+$ groovy printjar.groovy $JBOSS_HOME/jboss-modules.jar 'META-INF/maven/org.jboss.modules/jboss-modules/pom.properties'</pre>
+<pre>&nbsp;</pre>
+UPDATES:<br />
+Here are different implementations of similar program in differnet JVM based languages.<br />
+<br />
+Java<br />
+<span style="font-family: &quot;Courier New&quot;,Courier,monospace;">import java.io.BufferedReader;<br />import java.io.InputStream;<br />import java.io.InputStreamReader;<br />import java.util.Enumeration;<br />import java.util.jar.JarEntry;<br />import java.util.jar.JarFile;<br /><br />/**<br />&nbsp;* Print text based resource file inside a jar file. (eg: META-INF/MANIFEST.MF)<br />&nbsp;* <br />&nbsp;* @author Zemian Deng<br />&nbsp;*/<br />public class printjar {<br />&nbsp;&nbsp;&nbsp; public static void main(String[] args) throws Exception {<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; // Search given name in a jar<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; JarFile jarFile = new JarFile(args[0]);<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; final String searchName = (args.length &gt;= 2) ? args[1]<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; : "META-INF/MANIFEST.MF";<br /><br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; Enumeration&lt;JarEntry&gt; entries = jarFile.entries();<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; while (entries.hasMoreElements()) {<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; JarEntry entry = entries.nextElement();<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; if (entry.getName().contains(searchName)) {<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; // Print the JarEntry<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; InputStream instream = jarFile.getInputStream(entry);<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; try {<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; BufferedReader reader = new BufferedReader(<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; new InputStreamReader(instream));<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; String line = null;<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; while ((line = reader.readLine()) != null) {<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; System.out.println(line);<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; } finally {<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; if (instream != null)<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; instream.close();<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }<br />&nbsp;&nbsp;&nbsp; }<br />}</span><br />
+<br />
+JavaScript (Run it with jrunscript command)<br />
+<span style="font-family: &quot;Courier New&quot;,Courier,monospace;">jar = new java.util.jar.JarFile(arguments[0])<br />pattern = arguments[arguments.length -1];<br />entries = jar.entries();<br />while(entries.hasMoreElements()) {<br />&nbsp;&nbsp;&nbsp; jarEntry = entries.nextElement();<br />&nbsp;&nbsp;&nbsp; if (jarEntry.toString().search(pattern) != -1) {<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; istream = jar.getInputStream(jarEntry);<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; cat(istream);<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; istream.close();<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; break;<br />&nbsp;&nbsp;&nbsp; }<br />}<br />jar.close();</span><br />
+<br />
+Kotlin<br />
+<span style="font-family: Courier New, Courier, monospace;">import java.io.BufferedReader</span><br />
+<span style="font-family: Courier New, Courier, monospace;">import java.io.InputStreamReader</span><br />
+<span style="font-family: Courier New, Courier, monospace;">import java.util.jar.JarFile</span><br />
+<span style="font-family: Courier New, Courier, monospace;">val jarFile = JarFile(args[0])</span><br />
+<span style="font-family: Courier New, Courier, monospace;">val searchName = if (args.size() &gt;= 2) args[1] else "META-INF/MANIFEST.MF"</span><br />
+<span style="font-family: Courier New, Courier, monospace;">for (entry in jarFile.entries()) {</span><br />
+<span style="font-family: Courier New, Courier, monospace;"><span class="Apple-tab-span" style="white-space: pre;"> </span>if (entry.getName().contains(searchName)) {</span><br />
+<span style="font-family: Courier New, Courier, monospace;"><span class="Apple-tab-span" style="white-space: pre;">  </span>jarFile.getInputStream(entry).use { it -&gt;</span><br />
+<span style="font-family: Courier New, Courier, monospace;"><span class="Apple-tab-span" style="white-space: pre;">   </span>val reader = BufferedReader(InputStreamReader(it))</span><br />
+<span style="font-family: Courier New, Courier, monospace;"><span class="Apple-tab-span" style="white-space: pre;">   </span>for (line in reader.lineSequence())</span><br />
+<span style="font-family: Courier New, Courier, monospace;"><span class="Apple-tab-span" style="white-space: pre;">    </span>println(line)</span><br />
+<span style="font-family: Courier New, Courier, monospace;"><span class="Apple-tab-span" style="white-space: pre;">  </span>}</span><br />
+<span style="font-family: Courier New, Courier, monospace;"><span class="Apple-tab-span" style="white-space: pre;"> </span>}</span><br />
+<span style="font-family: Courier New, Courier, monospace;">}</span><br />
+<br />
+</p>
+
+	<hr />
+
+<div id="disqus_thread"></div>
+	
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://zemian-github-io.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">&copy; 2011 - 2019 Zemian Deng All Rights Reserved | Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.4</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../../../js/jquery-1.11.1.min.js"></script>
+    <script src="../../../js/bootstrap.min.js"></script>
+    <script src="../../../js/prettify.js"></script>
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-135626598-1');
+    </script>
+
+  </body>
+</html>

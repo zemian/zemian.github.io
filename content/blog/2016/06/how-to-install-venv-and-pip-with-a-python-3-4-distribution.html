@@ -1,0 +1,21 @@
+title=How to install venv and pip with a python 3.4 distribution
+date=2016-06-27
+type=post
+tags=python
+status=published
+~~~~~~
+If you are unfortunate enough to have stuck with a Python 3.4 distribution and you want to setup a virtual env, then likely you will get the ensurepip module not found error:<br />
+<br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">bash&gt; python3.4 -m venv mypy<br />Error: Command '['/home/zedeng/py-dev/mypy/bin/python3.4', '-Im', 'ensurepip', '--upgrade', '--default-pip']' returned non-zero exit status 1</span><br />
+<br />
+I found someone posted a nice solution [1] to this. So first remove the dir first.<br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">bash&gt; rm -r mypy</span><br />
+<br />
+Now do it again like this:<br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">bash&gt; python</span><span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">3.4</span> -m venv mypy --without-pip<br />bash&gt; . mypy/bin/activate<br />&nbsp;</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">mypy&gt; wget https://bootstrap.pypa.io/get-pip.py<br />mypy&gt; python get-pip.py </span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">mypy&gt; pip list&nbsp;</span><br />
+<br />
+Now the problem is solved. I believe this problem is gone if you upgrade to Python 3.5<br />
+<br />
+[1] http://www.thefourtheye.in/2014/12/Python-venv-problem-with-ensurepip-in-Ubuntu.html 

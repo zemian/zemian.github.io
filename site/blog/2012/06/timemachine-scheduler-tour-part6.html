@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Zemian's Blog - TimeMachine Scheduler Tour: Part6</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../css/asciidoctor.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link href="../../../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../../../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../about.html">About</a></li>
+            <li><a href="../../../archive.html">Archive</a></li>
+            <li><a href="../../..//tags">Tags</a></li>
+            <li><a href="../../../feed.xml">Subscribe</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">	
+	<div class="page-header">
+		<h1>TimeMachine Scheduler Tour: Part6</h1>
+	</div>
+
+	<p><em>22 June 2012</em>, tags: 
+	    <a href="../../../tags/timemachine.html">timemachine</a> 
+	</p>
+
+	<p><br />
+<span style="background-color: white;">This is part 6 of 7 in a series of articles that will give you a tour of the&nbsp;</span><a href="https://bitbucket.org/timemachine/scheduler/wiki/Home" style="background-color: white;">TimeMachine Scheduler</a><span style="background-color: white;">&nbsp;project. These articles will introduce you to the scheduler, how to load jobs and schedules, and explore some of its advanced features. For the most current and accurate instructions, please visit the ReferenceManual from the project site.</span><br />
+<br />
+<br />
+<h2>
+
+
+
+
+
+
+Configuring Multiple ThreadPools</h2>
+By now you know how to write your own JobTask and even write your own Schedule implementation in TimeMachine Scheduler. We will switch back to configuration for a bit to talk about how to control the job execution.<br />
+<br />
+By default the scheduler will have two thread pools. The first one is reserved for system services, and default to only 1 fixed thread pool (used by PoolingScheduleRunner). The second thread pool is default to 4 dynamic threads exclusively for running JobTask only. Here is how the default config looks like for these pools:<br />
+<br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;"># System service thread pool (you only need one pool!)</span><br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">timemachine.scheduler.systemThreadPool.class = timemachine.scheduler.service.FixedSizeThreadPool</span><br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">timemachine.scheduler.systemThreadPool.maxSize = 1</span><br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">timemachine.scheduler.systemThreadPool.threadNamePrefix = ${timemachine.scheduler.schedulerName}-System-Thread-</span><br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;"><br /></span><br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;"># Default jobTask thread pool (you may define more than one pool!)</span><br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">timemachine.scheduler.jobTaskThreadPool.DEFAULT.class = timemachine.scheduler.service.DynamicThreadPool</span><br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">timemachine.scheduler.jobTaskThreadPool.DEFAULT.minSize = 0</span><br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">timemachine.scheduler.jobTaskThreadPool.DEFAULT.maxSize = 4</span><br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">timemachine.scheduler.jobTaskThreadPool.DEFAULT.timeToLive = 300000</span><br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">timemachine.scheduler.jobTaskThreadPool.DEFAULT.useShutdownNow = false</span><br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">timemachine.scheduler.jobTaskThreadPool.DEFAULT.maxShutdownWaitTime = 1000</span><br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">timemachine.scheduler.jobTaskThreadPool.DEFAULT.threadNamePrefix = ${timemachine.scheduler.schedulerName}-JobTask-Thread-</span><br />
+<br />
+As you use the scheduler for more jobs, you might run into situation where you want to create multiple thread pools to run certain specific JobTask's. In this case, you want to configure certain jobs that would only run in a isolated threads pool. The TimeMachine Scheduler has this feature that you create multiple thread pools, and it allow you to match to job task's name. When you do this, you would also need to create a JobTaskPoolNameResolver that would resolve JobTask's name match to one of the thread pool you configured. Here is an example of scheduler configuration file that exercise this:<br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;"></span><br />
+<br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;"># Extra job tasks thread pool</span><br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">timemachine.scheduler.jobTaskThreadPool.MYPOOL2.class = timemachine.scheduler.service.DynamicThreadPool</span><br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">timemachine.scheduler.jobTaskThreadPool.MYPOOL2.maxSize = 4</span><br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">timemachine.scheduler.jobTaskThreadPool.MYPOOL2.threadNamePrefix = MYPOOL2-Thread-</span><br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;"><br /></span><br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;"># Extra job tasks thread pool</span><br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">timemachine.scheduler.jobTaskThreadPool.MYPOOL3.class = timemachine.scheduler.service.DynamicThreadPool</span><br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">timemachine.scheduler.jobTaskThreadPool.MYPOOL3.maxSize = 4</span><br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">timemachine.scheduler.jobTaskThreadPool.MYPOOL3.threadNamePrefix = MYPOOL3-Thread-</span><br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;"><br /></span><br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;"># Resolving multiple jobTask thread pools</span><br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">timemachine.scheduler.jobTaskPoolNameResolver.poolName.MYPOOL2.matchToJobNameRexp = MyJobType2.*</span><br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">timemachine.scheduler.jobTaskPoolNameResolver.poolName.MYPOOL3.matchToJobNameRexp = MyJobType3.*</span><br />
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;"><br /></span><br />
+<div>
+<span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;"><br /></span></div>
+The name to pool matching is done using the Java regular expression. The example above setup two set of job task names match to each of their pool instance. Any job names starting with <span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">MyJobType2 </span>will be executed by MYPOOL2, while any starting with <span style="font-family: 'Courier New',Courier,monospace; font-size: x-small;">MyJobType3 </span>will be executed by MYPOOL3. And finally if any JobTask name that doesn't match will use the DEFAULT pool.<br />
+<br />
+Note that JobTask's name is only optional (only ID is required and it's auto generated), so to use this features, you want to ensure to set the JobTask's name that match your configured pool, or else they all default back to single DEFAULT pool.<br />
+<div>
+<br /></div>
+<div>
+<br />
+End of part 6.&nbsp;<span style="background-color: white;">You may continue</span><span style="background-color: white;">&nbsp;</span><a href="http://saltnlight5.blogspot.com/2012/06/timemachine-scheduler-tour-part7.html" style="background-color: white;">next tour</a>, or&nbsp;<span style="background-color: white;">see&nbsp;</span><a href="http://saltnlight5.blogspot.com/2012/06/timemachine-scheduler-tour-part5.html" style="background-color: white;">previous tour</a><span style="background-color: white;">.</span></div>
+<br />
+<br />
+</p>
+
+	<hr />
+
+<div id="disqus_thread"></div>
+	
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://zemian-github-io.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">&copy; 2011 - 2019 Zemian Deng All Rights Reserved | Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.4</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../../../js/jquery-1.11.1.min.js"></script>
+    <script src="../../../js/bootstrap.min.js"></script>
+    <script src="../../../js/prettify.js"></script>
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-135626598-1');
+    </script>
+
+  </body>
+</html>

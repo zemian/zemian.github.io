@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Zemian's Blog - Getting started with PostgreSQL database</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../css/asciidoctor.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link href="../../../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../../../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../about.html">About</a></li>
+            <li><a href="../../../archive.html">Archive</a></li>
+            <li><a href="../../..//tags">Tags</a></li>
+            <li><a href="../../../feed.xml">Subscribe</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">	
+	<div class="page-header">
+		<h1>Getting started with PostgreSQL database</h1>
+	</div>
+
+	<p><em>26 June 2016</em>, tags: 
+	    <a href="../../../tags/postgres.html">postgres</a> 
+	</p>
+
+	<p>I have been learning and using PostgreSQL recently for a Django app, and I have to say it's really GOOD! I have used quite a bit of MySQL and Oracle DB in my workplace, so I didn't find good reason to learn PostgreSQL in the past. Now I finally get a chance to start another new project with Django, so I decided to give it a try, and I wasn't disappointed. I will write up a brief getting started guide here for those impatient to get things moving.<br />
+<br />
+Installing. If you are running on a Mac, the easiest way to try it out is just get the http://postgresapp.com, you just start the App, and your DB is running! No config needed!<br />
+<br />
+After you have the database installed and running, you can either connect to the default "postgres" public database by (<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">psql</span> command), or create your own database. To create your own database, you run this command:<br />
+<br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">bash&gt; PATH=/Applications/Postgres.app/Contents/Versions/latest/bin:$PATH</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">bash&gt; createdb mydb</span><br />
+<br />
+Now you can connect to the new database<br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><br /></span>
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">bash&gt; psql -d mydb</span><br />
+<br />
+Once you connected to database, you may run SQL to create/insert/select a table:<br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">mydb-# create table test(id serial, name varchar(200));</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">mydb-# insert into test(name) values('Hello');</span><br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">mydb-# select * from test; </span><br />
+<br />
+To inspect your&nbsp; table columns:<br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">mydb-# \d test;</span><br />
+<br />
+To see all tables available:<br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">mydb-# \dt;</span><br />
+<br />
+To see all database available:<br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">mydb-# \l;</span><br />
+<br />
+To switch to another database:<br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">mydb-# \c mydb2;</span><br />
+<br />
+To see more help (check out \d options! it's super flexible and useful.):<br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">mydb-# \<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">?;</span></span><br />
+<br />
+To quit the psql shell:<br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">mydb-# \<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">q</span>;</span><br />
+<br />
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"></span><br />
+To create a database user and set up password, you can do it on bash shell as well:<br />
+<div style="background-color: white; color: black;">
+<span style="font-size: small;"><span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">bash&gt; echo "CREATE ROLE mydbuser1 WITH CREATEDB LOGIN PASSWORD 'Welcome1'" | psql</span></span></div>
+<div style="background-color: white; color: black;">
+<span style="font-size: small;"><span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">bash&gt; echo "GRANT ALL PRIVILEGES ON DATABASE <span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">m<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">ydb</span></span> TO </span></span><span style="font-size: small;"><span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><span style="font-size: small;"><span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">mydbuser1</span></span>" | psql</span></span></div>
+<div style="background-color: white; color: black;">
+<br /></div>
+<br />
+Now you may relogin again with the user. It should prompt you for password.<br />
+<div style="background-color: white; color: black;">
+<span style="font-size: small;"><span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">bash&gt; psql -U mydbuser1 -W</span></span></div>
+<pre style="background-color: white; color: black; font-family: 'Menlo'; font-size: 9.0pt;">&nbsp;</pre>
+Once you connected to your database again, you may check your user privileges:<br />
+<div style="background-color: white; color: black;">
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace; font-size: small;">mydb-# \dp;</span></span></div>
+<br />
+These examples should be enough to get you setup a database for app development. The rest are just normal SQL access to database. The PostgresSQL documentation is excellent reference for all that you need: https://www.postgresql.org/docs/9.5/static/index.html
+</p>
+
+	<hr />
+
+<div id="disqus_thread"></div>
+	
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://zemian-github-io.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">&copy; 2011 - 2019 Zemian Deng All Rights Reserved | Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.4</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../../../js/jquery-1.11.1.min.js"></script>
+    <script src="../../../js/bootstrap.min.js"></script>
+    <script src="../../../js/prettify.js"></script>
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-135626598-1');
+    </script>
+
+  </body>
+</html>

@@ -1,0 +1,12 @@
+title=Python processing each line from stdin or files
+date=2015-07-11
+type=post
+tags=python
+status=published
+~~~~~~
+<span style="font-family: Courier New, Courier, monospace;">import fileinput,re</span><br />
+<span style="font-family: Courier New, Courier, monospace;">for line in fileinput.input():</span><br />
+<span style="font-family: Courier New, Courier, monospace;"><span class="Apple-tab-span" style="white-space: pre;"> </span>line=line.rstrip()</span><br />
+<span style="font-family: Courier New, Courier, monospace;"><span class="Apple-tab-span" style="white-space: pre;"> </span>line=line.replace('\\', '/')</span><br />
+<span style="font-family: Courier New, Courier, monospace;"><span class="Apple-tab-span" style="white-space: pre;"> </span>a,b,*_=re.split('\s+', line)</span><br />
+<span style="font-family: Courier New, Courier, monospace;"><span class="Apple-tab-span" style="white-space: pre;"> </span>print(b)</span>

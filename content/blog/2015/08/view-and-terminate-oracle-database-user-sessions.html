@@ -1,0 +1,17 @@
+title=View and terminate Oracle Database user sessions
+date=2015-08-21
+type=post
+tags=oracle
+status=published
+~~~~~~
+Verify sessions:<br />
+<span style="font-family: Courier New, Courier, monospace;">SELECT USERNAME FROM V$SESSION;</span><br />
+<span style="font-family: Courier New, Courier, monospace;"><br /></span>
+<span style="font-family: Courier New, Courier, monospace;">SELECT USERNAME, SID, SERIAL#, STATUS</span><br />
+<span style="font-family: Courier New, Courier, monospace;">&nbsp; FROM V$SESSION</span><br />
+<span style="font-family: Courier New, Courier, monospace;">&nbsp; WHERE USERNAME like 'SCOTT%';</span><br />
+<br />
+Generate SQL to terminate sessions:<br />
+<span style="font-family: Courier New, Courier, monospace;">SELECT 'ALTER SYSTEM KILL SESSION ''' || SID || ',' || SERIAL# || ''';'</span><br />
+<span style="font-family: Courier New, Courier, monospace;">&nbsp; FROM V$SESSION</span><br />
+<span style="font-family: Courier New, Courier, monospace;">&nbsp; WHERE USERNAME like 'SCOTT%';</span>

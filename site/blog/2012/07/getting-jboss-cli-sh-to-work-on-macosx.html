@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Zemian's Blog - Getting jboss-cli.sh to work on MacOSX</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../css/asciidoctor.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link href="../../../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../../../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../about.html">About</a></li>
+            <li><a href="../../../archive.html">Archive</a></li>
+            <li><a href="../../..//tags">Tags</a></li>
+            <li><a href="../../../feed.xml">Subscribe</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">	
+	<div class="page-header">
+		<h1>Getting jboss-cli.sh to work on MacOSX</h1>
+	</div>
+
+	<p><em>28 July 2012</em>, tags: 
+	    <a href="../../../tags/jboss.html">jboss</a> 
+	</p>
+
+	<p>If you use MacOSX and JBossAS, then you might have encountered this problem when using the jboss-client.sh tool:<br />
+<br />
+<br />
+<div>
+<span style="font-family: 'Courier New', Courier, monospace; font-size: xx-small;">$ bin/jboss-cli.sh&nbsp;</span></div>
+<div>
+<span style="font-family: 'Courier New', Courier, monospace; font-size: xx-small;">You are disconnected at the moment. Type 'connect' to connect to the server or 'help' for the list of supported commands.</span></div>
+<div>
+<span style="font-family: 'Courier New', Courier, monospace; font-size: xx-small;">[disconnected /] connect</span></div>
+<span style="background-color: white; font-family: 'Courier New', Courier, monospace; font-size: xx-small;">The controller is not available at localhost:9999</span><br />
+<div>
+<br /></div>
+<div>
+Or you will get this:</div>
+<div>
+<br /></div>
+<div>
+<span style="font-family: 'Courier New', Courier, monospace; font-size: xx-small;">$ bin/jboss-cli.sh --connect</span><br />
+<span style="font-family: 'Courier New', Courier, monospace; font-size: xx-small;">org.jboss.as.cli.CliInitializationException: Failed to connect to the controller</span><br />
+<span style="font-family: 'Courier New', Courier, monospace; font-size: xx-small;"><span class="Apple-tab-span" style="white-space: pre;"> </span>at org.jboss.as.cli.impl.CliLauncher.initCommandContext(CliLauncher.java:229)</span><br />
+<span style="font-family: 'Courier New', Courier, monospace; font-size: xx-small;"><span class="Apple-tab-span" style="white-space: pre;"> </span>at org.jboss.as.cli.impl.CliLauncher.main(CliLauncher.java:207)</span><br />
+<span style="font-family: 'Courier New', Courier, monospace; font-size: xx-small;"><span class="Apple-tab-span" style="white-space: pre;"> </span>at org.jboss.as.cli.CommandLineMain.main(CommandLineMain.java:34)</span><br />
+<span style="font-family: 'Courier New', Courier, monospace; font-size: xx-small;"><span class="Apple-tab-span" style="white-space: pre;"> </span>at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)</span><br />
+<span style="font-family: 'Courier New', Courier, monospace; font-size: xx-small;"><span class="Apple-tab-span" style="white-space: pre;"> </span>at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)</span><br />
+<span style="font-family: 'Courier New', Courier, monospace; font-size: xx-small;"><span class="Apple-tab-span" style="white-space: pre;"> </span>at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)</span><br />
+<span style="font-family: 'Courier New', Courier, monospace; font-size: xx-small;"><span class="Apple-tab-span" style="white-space: pre;"> </span>at java.lang.reflect.Method.invoke(Method.java:601)</span><br />
+<span style="font-family: 'Courier New', Courier, monospace; font-size: xx-small;"><span class="Apple-tab-span" style="white-space: pre;"> </span>at org.jboss.modules.Module.run(Module.java:260)</span><br />
+<span style="font-family: 'Courier New', Courier, monospace; font-size: xx-small;"><span class="Apple-tab-span" style="white-space: pre;"> </span>at org.jboss.modules.Main.main(Main.java:291)</span><br />
+<span style="font-family: 'Courier New', Courier, monospace; font-size: xx-small;">Caused by: org.jboss.as.cli.CommandLineException: The controller is not available at localhost:9999</span><br />
+<span style="font-family: 'Courier New', Courier, monospace; font-size: xx-small;"><span class="Apple-tab-span" style="white-space: pre;"> </span>at org.jboss.as.cli.impl.CommandContextImpl.connectController(CommandContextImpl.java:639)</span><br />
+<span style="font-family: 'Courier New', Courier, monospace; font-size: xx-small;"><span class="Apple-tab-span" style="white-space: pre;"> </span>at org.jboss.as.cli.impl.CommandContextImpl.connectController(CommandContextImpl.java:613)</span><br />
+<span style="font-family: 'Courier New', Courier, monospace; font-size: xx-small;"><span class="Apple-tab-span" style="white-space: pre;"> </span>at org.jboss.as.cli.impl.CliLauncher.initCommandContext(CliLauncher.java:227)</span><br />
+<span style="font-family: 'Courier New', Courier, monospace; font-size: xx-small;"><span class="Apple-tab-span" style="white-space: pre;"> </span>... 8 more</span></div>
+<div>
+<br /></div>
+<div>
+It turns out this is bug on the JDK 1.7 that only appears on MacOSX JDK7! To be exact, I have the following:&nbsp;<span style="background-color: white; color: #555555; font-family: 'Lucida Sans', 'Lucida Sans Unicode', 'Lucida Grande', Verdana, Arial, Helvetica, sans-serif; font-size: 11.818181991577148px; text-align: left;">MacOSX 10.7.4 with JDK 1.7.0_05 and JBossAS 7.1.1.Final.</span></div>
+<div>
+<span style="background-color: white; color: #555555; font-family: 'Lucida Sans', 'Lucida Sans Unicode', 'Lucida Grande', Verdana, Arial, Helvetica, sans-serif; font-size: 11.818181991577148px; text-align: left;"><br /></span></div>
+<div>
+This problem has already been discovered by these posts:</div>
+<div>
+<a href="http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=7159361">http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=7159361</a></div>
+<div>
+<a href="https://community.jboss.org/message/750861#750861">https://community.jboss.org/message/750861#750861</a></div>
+<div>
+<br /></div>
+<div>
+Except after ready through all, and I can't still get it to work because no one listed a clear steps by steps solution. So I re-summarize it again. You need to use that bug's report workaround solution on both the server and client!</div>
+<div>
+<br /></div>
+<div>
+<div style="border-collapse: collapse; border-spacing: 0px; border: 0px; color: #555555; font-family: 'Lucida Sans', 'Lucida Sans Unicode', 'Lucida Grande', Verdana, Arial, Helvetica, sans-serif; font-size: 11.818181991577148px; list-style: none; outline: 0px; padding: 0px; text-align: left;">
+Start the server:&nbsp;</div>
+<div style="border-collapse: collapse; border-spacing: 0px; border: 0px; color: #555555; font-family: 'Lucida Sans', 'Lucida Sans Unicode', 'Lucida Grande', Verdana, Arial, Helvetica, sans-serif; font-size: 11.818181991577148px; height: 8pt; list-style: none; min-height: 8pt; outline: 0px; padding: 0px; text-align: left;">
+<br /></div>
+<pre class="jive-pre" style="background-image: none; background-repeat: repeat repeat; border-collapse: collapse; border-color: rgb(238, 238, 238) rgb(238, 238, 238) rgb(238, 238, 238) rgb(204, 204, 204); border-spacing: 0px; border-style: solid; border-width: 1px 1px 1px 2px; color: #333333; font-family: 'Droid Sans Mono', monospace !important; font-size: 11.818181991577148px; list-style: none; margin: 10px 20px; outline: 0px; overflow: auto; padding: 10px; text-align: left; width: auto;"><code class="jive-code" style="background-color: transparent; border-collapse: collapse; border-spacing: 0px; border: 0px; font-family: 'Droid Sans Mono', monospace !important; font-size: 1em; list-style: none; margin: 0px; outline: 0px; padding: 0px;">$ bin/standalone.sh -Djava.nio.channels.spi.SelectorProvider=sun.nio.ch.KQueueSelectorProvider 
+... 
+18:37:22,555 INFO&nbsp; [org.jboss.as] (Controller Boot Thread) JBAS015874: JBoss AS 7.1.1.Final "Brontes" started in 1686ms - Started 133 of 208 services (74 services are passive or on-demand)
+</code></pre>
+<div style="border-collapse: collapse; border-spacing: 0px; border: 0px; color: #555555; font-family: 'Lucida Sans', 'Lucida Sans Unicode', 'Lucida Grande', Verdana, Arial, Helvetica, sans-serif; font-size: 11.818181991577148px; height: 8pt; list-style: none; min-height: 8pt; outline: 0px; padding: 0px; text-align: left;">
+<br /></div>
+<div style="border-collapse: collapse; border-spacing: 0px; border: 0px; color: #555555; font-family: 'Lucida Sans', 'Lucida Sans Unicode', 'Lucida Grande', Verdana, Arial, Helvetica, sans-serif; font-size: 11.818181991577148px; list-style: none; outline: 0px; padding: 0px; text-align: left;">
+And on separate terminal, run the CLI:</div>
+<div style="border-collapse: collapse; border-spacing: 0px; border: 0px; color: #555555; font-family: 'Lucida Sans', 'Lucida Sans Unicode', 'Lucida Grande', Verdana, Arial, Helvetica, sans-serif; font-size: 11.818181991577148px; height: 8pt; list-style: none; min-height: 8pt; outline: 0px; padding: 0px; text-align: left;">
+<br /></div>
+<pre class="jive-pre" style="background-image: none; background-repeat: repeat repeat; border-collapse: collapse; border-color: rgb(238, 238, 238) rgb(238, 238, 238) rgb(238, 238, 238) rgb(204, 204, 204); border-spacing: 0px; border-style: solid; border-width: 1px 1px 1px 2px; color: #333333; font-family: 'Droid Sans Mono', monospace !important; font-size: 11.818181991577148px; list-style: none; margin: 10px 20px; outline: 0px; overflow: auto; padding: 10px; text-align: left; width: auto;"><code class="jive-code" style="background-color: transparent; border-collapse: collapse; border-spacing: 0px; border: 0px; font-family: 'Droid Sans Mono', monospace !important; font-size: 1em; list-style: none; margin: 0px; outline: 0px; padding: 0px;">$JAVA_OPTS="-Djava.nio.channels.spi.SelectorProvider=sun.nio.ch.KQueueSelectorProvider" bin/jboss-cli.sh --connect 
+[standalone@localhost:9999 /] 
+</code></pre>
+<div style="border-collapse: collapse; border-spacing: 0px; border: 0px; color: #555555; font-family: 'Lucida Sans', 'Lucida Sans Unicode', 'Lucida Grande', Verdana, Arial, Helvetica, sans-serif; font-size: 11.818181991577148px; height: 8pt; list-style: none; min-height: 8pt; outline: 0px; padding: 0px; text-align: left;">
+<br /></div>
+<div style="border-collapse: collapse; border-spacing: 0px; border: 0px; color: #555555; font-family: 'Lucida Sans', 'Lucida Sans Unicode', 'Lucida Grande', Verdana, Arial, Helvetica, sans-serif; font-size: 11.818181991577148px; list-style: none; outline: 0px; padding: 0px; text-align: left;">
+<span style="color: black; font-family: Times; font-size: small; text-align: -webkit-auto;">There, now we may continue to explore the cool JBossAS on the fancy OS.</span></div>
+<div style="border-collapse: collapse; border-spacing: 0px; border: 0px; color: #555555; font-family: 'Lucida Sans', 'Lucida Sans Unicode', 'Lucida Grande', Verdana, Arial, Helvetica, sans-serif; font-size: 11.818181991577148px; list-style: none; outline: 0px; padding: 0px; text-align: left;">
+<span style="color: black; font-family: Times; font-size: small; text-align: -webkit-auto;"><br /></span></div>
+</div>
+</p>
+
+	<hr />
+
+<div id="disqus_thread"></div>
+	
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://zemian-github-io.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">&copy; 2011 - 2019 Zemian Deng All Rights Reserved | Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.4</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../../../js/jquery-1.11.1.min.js"></script>
+    <script src="../../../js/bootstrap.min.js"></script>
+    <script src="../../../js/prettify.js"></script>
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-135626598-1');
+    </script>
+
+  </body>
+</html>

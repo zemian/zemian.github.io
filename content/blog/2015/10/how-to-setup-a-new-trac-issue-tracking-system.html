@@ -1,0 +1,38 @@
+title=How to setup a new Trac issue tracking system
+date=2015-10-21
+type=post
+tags=python, issue-tracker
+status=published
+~~~~~~
+Here is how I setup a local instance of Trac (a python based issue tracking web application) on my Mac.
+
+<br />
+<br />
+Prerequisite: MySQL 5.6 and Python 2.7 (Python3 will not work with Trac yet!)<br />
+<br />
+Step1: Setup a Trac database and a user<br />
+<br />
+<pre>sql&gt; CREATE DATABASE trac DEFAULT CHARACTER SET utf8 COLLATE utf8_bin;
+sql&gt; CREATE USER 'dev'@'localhost' IDENTIFIED BY 'dev123';
+sql&gt; GRANT ALL ON trac.* TO 'dev'@'localhost';
+</pre>
+<pre></pre>
+<pre><span style="font-family: -webkit-standard; white-space: normal;">Step2: Install MySQL adaptor for Python and Trac</span></pre>
+<pre><span style="font-family: -webkit-standard; white-space: normal;">
+</span></pre>
+<pre>bash&gt; pip install Genshi trac mysqlclient
+</pre>
+<pre><span style="font-family: -webkit-standard; white-space: normal;">Step3: Setup a Track instance</span></pre>
+<pre><span style="font-family: -webkit-standard; white-space: normal;">
+</span></pre>
+<pre>bash&gt; trac-admin /Users/zemian/dev/mytrac intent</pre>
+<pre>bash&gt; # Above will prompt you to enter a backend string. Use
+bash&gt; # this connection string:&nbsp;</pre>
+<pre>bash&gt; #   mysql://dev:dev123@localhost:3306/trac</pre>
+<pre></pre>
+<pre><span style="font-family: -webkit-standard; white-space: normal;">Step3: Create a Trac admin user</span></pre>
+<pre>bash&gt; htpasswd -c /Users/zemian/dev/mytrac/.htpasswd admin</pre>
+<pre></pre>
+<pre><span style="font-family: -webkit-standard; white-space: normal;">Step4: Run Track</span></pre>
+<pre>bash&gt; tracd -p 8000 --basic-auth="mytrac,/Users/zemian/dev/mytrac/.htpasswd,mytrac" /Users/zemian/dev/metric
+</pre>

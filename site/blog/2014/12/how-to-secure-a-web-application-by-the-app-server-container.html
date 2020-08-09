@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Zemian's Blog - How to secure a web application by the app server container</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../css/asciidoctor.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link href="../../../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../../../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../about.html">About</a></li>
+            <li><a href="../../../archive.html">Archive</a></li>
+            <li><a href="../../..//tags">Tags</a></li>
+            <li><a href="../../../feed.xml">Subscribe</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">	
+	<div class="page-header">
+		<h1>How to secure a web application by the app server container</h1>
+	</div>
+
+	<p><em>01 December 2014</em>, tags: 
+	    <a href="../../../tags/security.html">security</a> 
+	</p>
+
+	<p>There are many benefits to allow a container in managing users, groups and authentication policies. You may configure your WAR application to take advantage of this by adding the following in the <span style="font-family: &quot;Courier New&quot;,Courier,monospace;">WEB-INF/web.xml</span> file<br />
+<br />
+<span style="font-family: &quot;Courier New&quot;,Courier,monospace;">&nbsp;&nbsp; &lt;security-constraint&gt;<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;web-resource-collection&gt;<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;web-resource-name&gt;webuser&lt;/web-resource-name&gt;<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;url-pattern&gt;/*&lt;/url-pattern&gt;</span><br />
+<span style="font-family: &quot;Courier New&quot;,Courier,monospace;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;/web-resource-collection&gt;<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;auth-constraint&gt;<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;role-name&gt;webuser&lt;/role-name&gt; <br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;/auth-constraint&gt;<br />&nbsp;&nbsp;&nbsp; &lt;/security-constraint&gt;<br />&nbsp;&nbsp;&nbsp; &lt;login-config&gt;<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;auth-method&gt;BASIC&lt;/auth-method&gt;<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;realm-name&gt;default&lt;/realm-name&gt;<br />&nbsp;&nbsp;&nbsp; &lt;/login-config&gt;<br />&nbsp;&nbsp;&nbsp; &lt;security-role&gt;<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;role-name&gt;webuser&lt;/role-name&gt;<br />&nbsp;&nbsp;&nbsp; &lt;/security-role&gt;</span><br />
+<br />
+Above will secure the entire application and allow only users with "webuser" role to access it. The name "webuser" can be any name you want.<br />
+<br />
+Each app server will manage users differently. In the case of WLS, it lets you create "user" and "user group", and then you can map the defined role above to the group. To do this, add the following to the&nbsp; <span style="font-family: &quot;Courier New&quot;,Courier,monospace;">WEB-INF/weblogic.xml</span> file.<br />
+<br />
+<span style="font-family: &quot;Courier New&quot;,Courier,monospace;">&lt;weblogic-web-app <br />&nbsp;&nbsp;&nbsp; xmlns="http://xmlns.oracle.com/weblogic/weblogic-web-app" <br />&nbsp;&nbsp;&nbsp; xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" <br />&nbsp;&nbsp;&nbsp; xsi:schemaLocation="http://xmlns.oracle.com/weblogic/weblogic-web-app <br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; http://xmlns.oracle.com/weblogic/weblogic-web-app/1.2/weblogic-web-app.xsd"&gt;</span><br />
+<span style="font-family: &quot;Courier New&quot;,Courier,monospace;">&nbsp;&nbsp;&nbsp; &lt;security-role-assignment&gt;<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;role-name&gt;webuser&lt;/role-name&gt;<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;principal-name&gt;webusergroup&lt;/principal-name&gt;<br />&nbsp;&nbsp;&nbsp; &lt;/security-role-assignment&gt;<br />&lt;/weblogic-web-app&gt;</span><br />
+<br />
+Here we tell WLS that we map the "webuser" role defined in web.xml to use the "webusergroup", a WLS user group.<br />
+<br />
+To create&nbsp; user or user group in WLS, you may use the WLS Admin console web application. Go to the Security Realm and select the default "myrealm", and then select User or Group tab. Go ahead and add a user with password under a new group named "webusergroup". After this you can deploy your app, and it would prompt you for user and password whenever you try to access its URL.<br />
+<br />
+You can find out more security info at <a href="https://docs.oracle.com/cd/E23943_01/web.1111/e13711/thin_client.htm#SCPRG171">https://docs.oracle.com/cd/E23943_01/web.1111/e13711/thin_client.htm#SCPRG171</a>. <br />
+<br />
+</p>
+
+	<hr />
+
+<div id="disqus_thread"></div>
+	
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://zemian-github-io.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">&copy; 2011 - 2019 Zemian Deng All Rights Reserved | Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.4</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../../../js/jquery-1.11.1.min.js"></script>
+    <script src="../../../js/bootstrap.min.js"></script>
+    <script src="../../../js/prettify.js"></script>
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-135626598-1');
+    </script>
+
+  </body>
+</html>
