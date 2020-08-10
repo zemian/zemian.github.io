@@ -40,7 +40,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -48,7 +48,6 @@
             <li><a href="../../../about.html">About</a></li>
             <li><a href="../../../archive.html">Archive</a></li>
             <li><a href="../../..//tags">Tags</a></li>
-            <li><a href="../../../feed.xml">Subscribe</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -63,41 +62,28 @@
 	</p>
 
 	<p><p>Today, I learned that you can open multiple Eclipse instances in MacOSX like this</p>
-
 <pre><code>$ open -n -a Eclipse
 </code></pre>
-
-<p>This comes pretty handy if you want a separate workspace per large project that has dozen or so modules (try importing the Camel or SpringFramework 
+<p>This comes pretty handy if you want a separate workspace per large project that has dozen or so modules (try importing the Camel or SpringFramework<br />
 project source and you will see what I mean!)</p>
-
 <p>The <code>-a</code> is for name of an application to open, and <code>-n</code> means to open with new instance.</p>
-
 <h1>Finding a programmer friendly text editor on MacOSX</h1>
-
-<p>Despite I use Eclipse for most of my large Java projects, I still often find myself the need of a plain text editor. I use plain text editor for most
+<p>Despite I use Eclipse for most of my large Java projects, I still often find myself the need of a plain text editor. I use plain text editor for most<br />
 of my scripting programming. I also use it for notes taking, text file browsing, or even writing Blog post in markdown format!</p>
-
-<p>I guess for most programmers, choosing an Editor is a very personally thing. So I am not here to convert anybody. However, for those who never heard of 
-<a href="http://www.jedit.org">jEdit</a>, you ought to give it a try. It's open source, full features, programmers friendly text editor that works 
-across many of OS systems consistenly. It works because it's Java based! If you use one of decent computer now a day, the performance 
+<p>I guess for most programmers, choosing an Editor is a very personally thing. So I am not here to convert anybody. However, for those who never heard of<br />
+<a href="http://www.jedit.org">jEdit</a>, you ought to give it a try. It's open source, full features, programmers friendly text editor that works<br />
+across many of OS systems consistenly. It works because it's Java based! If you use one of decent computer now a day, the performance<br />
 is excellent as well.</p>
-
-<p>However, for some strange reason, the jedit installer on MacOSX doesn't comes with a normal java command line script wrapper. The only thing 
-I can see is the actual binary under <code>/Applications/jEdit.app/Contents/MacOS/jedit</code>. We can certainly run this as full jedit command, but then 
+<p>However, for some strange reason, the jedit installer on MacOSX doesn't comes with a normal java command line script wrapper. The only thing<br />
+I can see is the actual binary under <code>/Applications/jEdit.app/Contents/MacOS/jedit</code>. We can certainly run this as full jedit command, but then<br />
 it always liter the console with strange GUI warnings. So a better way to run it is actually to use the <code>open</code> command.</p>
-
 <pre><code>$ open -a jedit $HOME/.bash_profile
 </code></pre>
-
 <p>Or you can add this in your <code>.bash_profile</code> file:</p>
-
-<pre><code>function jedit(){ open -a jedit "$@" ; }
+<pre><code>function jedit(){ open -a jedit &quot;$@&quot; ; }
 </code></pre>
-
 <p>Now you can use <code>jedit</code> command on the terminal.</p>
-
 <h2>Some of my favorite features of jEdit</h2>
-
 <ul>
 <li>It's open source and has very active community of users.</li>
 <li>It works across MacOSX, Windows and Linux Desktop.</li>
@@ -108,23 +94,17 @@ it always liter the console with strange GUI warnings. So a better way to run it
 <li>Supports Macro recording and scripting.</li>
 <li>Support plugin extension and there are many external plugins available (eg: XML formater, Diff viewer, SFTP client/editing, etc).</li>
 </ul>
-
 <h1>Openning other stuff on MacOSX</h1>
-
-<p>The little <code>open</code> command can open not just application, but it can also open directories or files by extension associations. For
+<p>The little <code>open</code> command can open not just application, but it can also open directories or files by extension associations. For<br />
 example, to configure any <code>.properties</code> files to be open by jEdit, try the the following.</p>
-
 <ol>
 <li>Use Finder to browse and find one of properties</li>
-<li>Right click, "Open With" > "Other..."</li>
-<li>Choose "jEdit" under Applications folder.</li>
-<li>Enable "Always Open With", then click Open button.</li>
+<li>Right click, &quot;Open With&quot; &gt; &quot;Other...&quot;</li>
+<li>Choose &quot;jEdit&quot; under Applications folder.</li>
+<li>Enable &quot;Always Open With&quot;, then click Open button.</li>
 </ol>
-
 <p>This change should affect your Terminal <code>open</code> command as well, and if you run <code>open my.properties</code>, your jEdit should pop up.</p>
-
 <p>You can find more options by running it without any options, and it will print you full help page.</p>
-
 <pre><code>Usage: open [-e] [-t] [-f] [-W] [-R] [-n] [-g] [-h] [-b &lt;bundle identifier&gt;] [-a &lt;application&gt;] [filenames] [--args arguments]
 Help: Open opens files from a shell.
       By default, opens each file using the default application for that file.  

@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Zemian's Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/asciidoctor.css" rel="stylesheet">
+    <link href="../css/base.css" rel="stylesheet">
+    <link href="../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../about.html">About</a></li>
+            <li><a href="../archive.html">Archive</a></li>
+            <li><a href="..//tags">Tags</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">
+  			<a href="blog/2018/05/how-to-setup-ssh-folder-permissions.html"><h1>How to setup .ssh folder permissions</h1></a>
+  			<p>24 May 2018, tags: 
+			    <a href="../tags/ssh.html">ssh</a> 
+
+			    <a href="../tags/linux.html">linux</a> 
+  			</p>
+  			<p><div class="sect1">
+<h2 id="_how_to_setup_ssh_folder_permissions">How to setup .ssh folder permissions</h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre>chmod 700 ~/.ssh                # (drwx------)
+chmod 600 ~/.ssh/authorized_key # (-rw-------)
+chmod 600 ~/.ssh/id_rsa         # (-rw-------)
+chmod 644 ~/.ssh/id_rsa.pub     # (-rw-r--r--)
+chmod 755 ~                     # (drwxr-xr-x)</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>ref: <a href="https://superuser.com/questions/215504/permissions-on-private-key-in-ssh-folder" class="bare">https://superuser.com/questions/215504/permissions-on-private-key-in-ssh-folder</a></p>
+</div>
+</div>
+</div></p>
+  			<a href="blog/2018/05/create-multiple-vms-using-vagrant.html"><h1>Create multiple VMs using Vagrant</h1></a>
+  			<p>19 May 2018, tags: 
+			    <a href="../tags/vagrant.html">vagrant</a> 
+
+			    <a href="../tags/virtualbox.html">virtualbox</a> 
+
+			    <a href="../tags/vm.html">vm</a> 
+
+			    <a href="../tags/ubuntu.html">ubuntu</a> 
+  			</p>
+  			<p><div class="paragraph">
+<p>Vagrant is a great tool to automate and setup VMs. Here is a config file that can setup multiple VMs in your own PC to simulate a controller(admin), db, and app servers farm env. I will setup so that it&#8217;s ready to install Ansible in a the control server, and ensure all other servers is accessible by a private virtual IP with default python executable.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Install VirtualBox and Vagrant in your development PC. (These two requires elevated admin rights!)</p>
+</li>
+<li>
+<p>Now as normal user open a terminal and run the following:</p>
+<div class="literalblock">
+<div class="content">
+<pre>$ mkdir vm-serversfarm
+$ vagrant init ubuntu/xenial64</pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Now edit <code>Vagrantfile</code> with the following:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre># This file is to setup Ubuntu VM servers
+Vagrant.configure("2") do |config|
+  vm_box = "ubuntu/xenial64"
+  config.vm.define "admin" do |admin|
+    admin.vm.box = vm_box
+    admin.vm.hostname = 'ubuntu-xenial-admin'
+    admin.vm.network "private_network", ip: "192.168.56.200"
+    admin.vm.provision "shell", privileged: false,
+      inline: &lt;&lt;-SCRIPT_DOC
+        ssh-keygen -f ~vagrant/.ssh/id_rsa -t rsa -N ''
+        cp -v ~vagrant/.ssh/id_rsa.pub /vagrant/admin_id_rsa.pub
+      SCRIPT_DOC
+    admin.vm.provision "shell",
+      inline: &lt;&lt;-SCRIPT_DOC
+        apt-get update
+        apt-get install -y ansible
+      SCRIPT_DOC
+  end
+
+  config.vm.define "db1" do |db1|
+    db1.vm.box = vm_box
+    db1.vm.hostname = 'ubuntu-xenial-db1'
+    db1.vm.network "private_network", ip: "192.168.56.211"
+    db1.vm.provision "shell", inline: "cat /vagrant/admin_id_rsa.pub &gt;&gt; ~vagrant/.ssh/authorized_keys"
+    db1.vm.provision "shell",
+      inline: &lt;&lt;-SCRIPT_DOC
+        #apt-get update
+        apt-get install -y python
+        apt-get install -y postgresql
+      SCRIPT_DOC
+  end
+
+  config.vm.define "app1" do |app1|
+    app1.vm.box = vm_box
+    app1.vm.hostname = 'ubuntu-xenial-app1'
+    app1.vm.network "private_network", ip: "192.168.56.221"
+    app1.vm.provision "shell", inline: "cat /vagrant/admin_id_rsa.pub &gt;&gt; ~vagrant/.ssh/authorized_keys"
+    app1.vm.provision "shell",
+      inline: &lt;&lt;-SCRIPT_DOC
+        #apt-get update
+        apt-get install -y python
+      SCRIPT_DOC
+  end
+
+  config.vm.define "app2" do |app2|
+    app2.vm.box = vm_box
+    app2.vm.hostname = 'ubuntu-xenial-app2'
+    app2.vm.network "private_network", ip: "192.168.56.222"
+    app2.vm.provision "shell", inline: "cat /vagrant/admin_id_rsa.pub &gt;&gt; ~vagrant/.ssh/authorized_keys"
+    app2.vm.provision "shell",
+      inline: &lt;&lt;-SCRIPT_DOC
+        #apt-get update
+        apt-get install -y python
+      SCRIPT_DOC
+  end
+end</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now you can bring them up by running just this command:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>$ vagrant up</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>When all is done, you may ssh into any box by their name like this</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>$ vagrant ssh admin
+$ # Or any of other boxes: db1, app1, app2</pre>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_using_centos_vms">Using CentOS VMs</h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre># This file is to setup CentOS VM servers
+Vagrant.configure("2") do |config|
+  vm_box = "generic/centos7"
+
+  # Server app1 is the admin server. We will also host the DB server here.
+  config.vm.define "app1" do |app1|
+    app1.vm.box = vm_box
+    app1.vm.hostname = 'app1'
+    app1.vm.network "private_network", ip: "192.168.56.201"
+    app1.vm.synced_folder ".", "/vagrant_data"
+    app1.vm.provision "shell", inline: &lt;&lt;-SCRIPT_DOC
+      yum install -y python-virtualenv python36 ansible postgresql
+    SCRIPT_DOC
+    app1.vm.provision "shell", privileged: false, inline: &lt;&lt;-SCRIPT_DOC
+      ssh-keygen -f ~vagrant/.ssh/id_rsa -t rsa -N ''
+      cp -v ~vagrant/.ssh/id_rsa.pub /vagrant_data/app1_id_rsa.pub
+    SCRIPT_DOC
+  end
+
+  # Server app2 is a application workhorse server
+  config.vm.define "app2" do |app2|
+    app2.vm.box = vm_box
+    app2.vm.hostname = 'app2'
+    app2.vm.network "private_network", ip: "192.168.56.202"
+    app2.vm.synced_folder ".", "/vagrant_data"
+    app2.vm.provision "shell", inline: &lt;&lt;-SCRIPT_DOC
+      yum install -y python36
+    SCRIPT_DOC
+    app2.vm.provision "shell", privileged: false, inline: &lt;&lt;-SCRIPT_DOC
+      cat /vagrant_data/app1_id_rsa.pub &gt;&gt; ~vagrant/.ssh/authorized_keys
+      chmod 600 ~vagrant/.ssh/authorized_keys
+      chmod 700 ~vagrant/.ssh
+    SCRIPT_DOC
+  end
+
+  # Server app3 is a application workhorse server
+  config.vm.define "app3" do |app3|
+    app3.vm.box = vm_box
+    app3.vm.hostname = 'app3'
+    app3.vm.network "private_network", ip: "192.168.56.203"
+    app3.vm.synced_folder ".", "/vagrant_data"
+    app3.vm.provision "shell", inline: &lt;&lt;-SCRIPT_DOC
+      yum install -y python36
+    SCRIPT_DOC
+    app3.vm.provision "shell", privileged: false, inline: &lt;&lt;-SCRIPT_DOC
+      cat /vagrant_data/app1_id_rsa.pub &gt;&gt; ~vagrant/.ssh/authorized_keys
+      chmod 600 ~vagrant/.ssh/authorized_keys
+      chmod 700 ~vagrant/.ssh
+    SCRIPT_DOC
+  end
+end</pre>
+</div>
+</div>
+</div>
+</div></p>
+  			<a href="blog/2018/04/starting-sublimetext-on-cygwin.html"><h1>Starting SublimeText on Cygwin</h1></a>
+  			<p>09 April 2018, tags: 
+			    <a href="../tags/sublimetext-cygwin.html">sublimetext-cygwin</a> 
+  			</p>
+  			<p><div class="paragraph">
+<p>I edit files a lot from command line Cygwin, and I usually use an alias <code>e</code> to my favorite editor. For SublimeText, I found it more useful to start a new windows on files I pass in like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>function subl() { "/C/Users/zemian/apps/Sublime-Text-Build-3143-x64/subl.exe" --new-window $(cygpath -am "$@") ; }
+alias e=subl</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now in terminal, I can edit any files by simply running this:
+  $ e ~/.bashrc</p>
+</div></p>
+  			<a href="blog/2018/03/java-versions.html"><h1>Java versions</h1></a>
+  			<p>26 March 2018, tags: 
+			    <a href="../tags/javap-version.html">javap-version</a> 
+  			</p>
+  			<p><div class="paragraph">
+<p>How to check Java version from compiled classes</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>javap -cp target/classes -verbose com.zemian.hellojava.App | grep 'major version'
+major version: 49</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You may use this forumla to get the JDK version: <code>&lt;class_file_major_ver&gt; - 44 = JDK version</code>. So this means above class is targeted for JDK 5 (1.5).</p>
+</div>
+<div class="paragraph">
+<p>Here are more examples of different class format versions matching to JDK versions.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>major version: 45.3 = Java 1.1
+major version: 46 = Java 1.2
+major version: 47 = Java 1.3
+major version: 48 = Java 1.4
+major version: 49 = Java 1.5
+major version: 50 = Java 1.6
+major version: 51 = Java 1.7
+major version: 52 = Java 1.8
+major version: 53 = Java 9
+major version: 54 = Java 10</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Ref: <a href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html" class="bare">https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html</a></p>
+</div></p>
+  			<a href="blog/2018/03/switching-different-jdk-in-cygwin.html"><h1>Switching Different JDK in Cygwin</h1></a>
+  			<p>24 March 2018, tags: 
+			    <a href="../tags/cygwin-jdk.html">cygwin-jdk</a> 
+  			</p>
+  			<p><div class="paragraph">
+<p>I love to use bash shell terminal. It&#8217;s a much more powerful terminal to do everyday tasks. Even in Windows, I can get most of what I need using Cygwin. Unfortunately Java executable are native to OS only, and for Windows, it would still work under Cygwin, but all the file system paths are still native. Java can understand the mixed-path though, and it has made somewhat easier than the Windows native backward slash path like typing. This means we can define <code>JAVA_HOME</code> variable using mixed path mode. In Cygwin, I define my <code>.bashrc</code> like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>export JAVA_HOME=C:/Users/zemian/apps/jdk-8u161
+PATH=$HOME/apps/jdk-8u161/bin:$PATH</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>I sometimes work with different version of JDK for various application testing. In this case, I need a way to quicly switch JDK version in my shell env. To make it easier, I have installed all of my JDK in a <code>$HOME/apps</code> directory, and created symbolic links to each JDKs like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>cd $HOME/apps
+ls -ld jdk*
+
+drwx------+ 1 zemian staff 0 Mar 24 16:58 jdk-8u161
+drwx------+ 1 zemian staff 0 Mar 24 10:57 jdk-9.0.4
+drwx------+ 1 zemian staff 0 Mar 24 10:48 jdk-10
+
+lrwxrwxrwx  1 zemian staff 9 Mar 24 16:55 jdk8 -&gt; jdk-8u161
+lrwxrwxrwx  1 zemian staff 9 Mar 24 11:02 jdk9 -&gt; jdk-9.0.4
+lrwxrwxrwx  1 zemian staff 6 Mar 24 11:00 jdk10 -&gt; jdk-10</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now that each JDK has a nice consistent version number in path, then I create a shell function like this to switch between them:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre># Switching Multiple JDK
+switchjava() {
+	JDK="jdk$1"
+	if [[ ! -d $APPS_DIR/$JDK ]]; then
+		echo "ERROR: JDK path not found: $APPS_DIR/$JDK"
+		return
+	fi
+	export JAVA_HOME=`cygpath -wm $APPS_DIR/$JDK`
+	export PATH=$APPS_DIR/$JDK/bin:$PATH
+
+	# Verifying java
+	echo "Switched JAVA_HOME to $JAVA_HOME"
+	echo "Java Path:"
+	which java
+	echo "Java Version:"
+	java -version
+}</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To put it in use, it looks like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>$ switchjava 9
+Switched JAVA_HOME to C:/Users/zemian/apps/jdk-9.0.4
+Java Path:
+/home/zemian/apps/jdk9/bin/java
+Java Version:
+openjdk version "9.0.4"
+OpenJDK Runtime Environment (build 9.0.4+11)
+OpenJDK 64-Bit Server VM (build 9.0.4+11, mixed mode)
+
+$ switchjava 8
+Switched JAVA_HOME to C:/Users/zemian/apps/jdk-8u161
+Java Path:
+/home/zemian/apps/jdk8/bin/java
+Java Version:
+java version "1.8.0_161"
+Java(TM) SE Runtime Environment (build 1.8.0_161-b12)
+Java HotSpot(TM) 64-Bit Server VM (build 25.161-b12, mixed mode)</pre>
+</div>
+</div></p>
+  			<a href="blog/2018/03/compare-multiple-jdk-versions-startup-time.html"><h1>Compare Multiple JDK Versions Startup Time</h1></a>
+  			<p>24 March 2018, tags: 
+			    <a href="../tags/jdk-startup-time.html">jdk-startup-time</a> 
+
+			    <a href="../tags/python.html">python</a> 
+  			</p>
+  			<p><div class="listingblock">
+<div class="title"><code>jdk-startup-time-test.py</code></div>
+<div class="content">
+<pre>#!/usr/bin/env python3
+# Author: Zemian Deng 2018-03-24
+#
+# This script will test multiple JDK versions of startup time in your system
+# We assume all JDK are installed in $HOME/apps directory with
+# names matching in 'jdk_versions' list.
+# Also we asusme you compiled `hello.java` with lowest JDK
+# you have in the same directory as this script. This is
+# used for testing the JVM loading time.
+#
+# NOTE: Running the script using Cygwin is a LOT slower than
+# running it natively in cmd.exe shell! This is because
+# time for Cygwin to start Java is very slow!
+#
+
+import time, subprocess, os
+home_dir = os.path.expanduser('~')
+app_dir = home_dir + '/apps'
+jdk_versions = [
+'jdk-6u29',
+'jdk-7u80',
+'jdk-8u161',
+'jdk-9.0.4',
+'jdk-10']
+def test_jdk_startup(jdk):
+	runs = []
+	java_cmd = app_dir + '/' + jdk + '/bin/java'
+	#print(f"Testing {java_cmd}")
+	for _ in range(10):
+		t1 = time.time()
+		subprocess.check_output([java_cmd, 'hello'])
+		t2 = time.time()
+		runs.append(t2 - t1)
+	return sum(runs) / len(runs)
+
+# Now test it
+for jdk in jdk_versions:
+	t = test_jdk_startup(jdk)
+	print(f"{jdk:20} avg start-time {t:.3}s")</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Here is a sample of output:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>python3 jdk-startup-time-test.py
+
+jdk-6u29             avg start-time 0.301s
+jdk-7u80             avg start-time 0.122s
+jdk-8u161            avg start-time 0.178s
+jdk-9.0.4            avg start-time 0.359s
+jdk-10               avg start-time 0.323s</pre>
+</div>
+</div></p>
+  			<a href="blog/2018/03/oracle-java-se-jdk-vs-openjdk.html"><h1>Oracle Java SE JDK vs OpenJDK</h1></a>
+  			<p>24 March 2018, tags: 
+			    <a href="../tags/openjdk.html">openjdk</a> 
+  			</p>
+  			<p><div class="paragraph">
+<p>In general:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>JRE - Java Runtime Environment. It comes with the Java (<code>java</code>)
+executable for running Java application. This is typical for end users
+who use it to run compiled Java applications (in jar file distribution),
+and not doing any development. JRE is smaller to download than JDK.</p>
+</li>
+<li>
+<p>JDK - Java Development Kit. It comes with Java compiler (<code>javac</code>) and
+many other development tools; and it also include the JRE as well. This
+is for Java development and running Java applications together. As a
+developer, you usually want to get this as single package.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Oracle sponsors and drives the official open source <a href="http://jdk.java.net/">OpenJDK</a>
+project, where new Java edition are develope. It provides binary releases that
+developers may download for various OS envs. (Note starting JDK9, you may download
+binary package that simply untar/unzip into a directory without need of installer!)</p>
+</div>
+<div class="paragraph">
+<p>Oracle also provides commercial version of the
+<a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">Java SE JDK</a>.
+These JDK packages has different licenses for usage, and are built with different
+installer format. Users usually require local Admin Rights to install it.</p>
+</div></p>
+  			<a href="blog/2018/03/install-windows-jdk-without-admin-rights.html"><h1>Install Windows JDK Without Admin Rights</h1></a>
+  			<p>23 March 2018, tags: 
+			    <a href="../tags/jdk.html">jdk</a> 
+  			</p>
+  			<p><div class="sect1">
+<h2 id="_installing_jdk_7">Installing JDK 7</h2>
+<div class="sectionbody">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Download <a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">Oracle Java SE JDK 7</a>
+In this example, we will use <code>jdk-7u80-windows-x64.exe</code></p>
+</li>
+<li>
+<p>Extract <code>jdk-7u80-windows-x64.exe</code> using 7-zip tool. Right click the file then select
+context menu 7-zip &gt; Extract to <code>jdk-7u80-windows-x64</code></p>
+</li>
+<li>
+<p>Go to the directory <code>jdk-7u80-windows-x64/.rsrc/1033/JAVA_CAB10</code></p>
+<div class="ulist">
+<ul>
+<li>
+<p>Step 1: Extract the file <code>111</code> using 7-zip again, which will result a <code>tools.zip</code> file</p>
+<div class="literalblock">
+<div class="content">
+<pre>Right click the file then select context menu 7-zip &gt; Extract here</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Step 2: Extract tools.zip using 7-zip tool again</p>
+<div class="literalblock">
+<div class="content">
+<pre>Right click the file then select context menu 7-zip &gt; Extract to `tools`</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Step 3: Open <code>cmd.exe</code> and cd into <code>tools</code> directory above, then run the following:</p>
+<div class="listingblock">
+<div class="content">
+<pre>for /r %i in (*.pack) do bin\unpack200 -r -v %i %~pi%~ni.jar</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Or if you use Cygwin Bash, you can run this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>find . -name '*.pack' -type f -exec sh -c 'bin/unpack200 -r -v $0 ${0/.pack/.jar}' {} \;</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Step 4: Copy <code>tools</code> folder and rename it to <code>%USERPROFILE%/apps/jdk-7u80</code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Optionally, if you want the JDK source code, following these instruction:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Step 1:  Go to the directory Go to the directory <code>jdk-7u80-windows-x64/.rsrc/1033/JAVA_CAB9</code></p>
+</li>
+<li>
+<p>Step 2:  Extract the file <code>110</code>, which contains <code>src.zip</code></p>
+</li>
+<li>
+<p>Step 3: Copy <code>src.zip</code> into <code>%USERPROFILE%/apps/jdk-7u80</code></p>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Refs:
+<a href="http://stackoverflow.com/questions/10891405/installing-jdk-without-administrator-privileges" class="bare">http://stackoverflow.com/questions/10891405/installing-jdk-without-administrator-privileges</a></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_installing_jdk_8">Installing JDK 8</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The JDK8 update 102 or higher has different file structure!</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Use 7-zip to unpack <code>jdk-8u131-windows-x64.exe</code></p>
+</li>
+<li>
+<p><code>cd .rsrc/1033/JAVA_CAB10</code></p>
+</li>
+<li>
+<p>Use 7-zip to unpack <code>111</code> file and extract <code>tools.zip</code></p>
+</li>
+<li>
+<p>Use same instructions as above to unpack <code>tools.zip</code></p>
+</li>
+</ol>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+Java source <code>src.zip</code> is within the file <code>110</code> located inside
+<code>.rsrc/1033/JAVA_CAB9</code>.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_installing_jdk_9">Installing JDK 9</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Staring JDK9, the <a href="http://jdk.java.net/9">OpenJDK</a> provides binary tar ball (zipped) executable JDK package that can unpack in Windows in any directory. But if you still want Oracle Java SE JDK, then you still use above instruction to get around installing without admin rights.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_refs">Refs</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><a href="https://stackoverflow.com/questions/10891405/installing-jdk-without-administrator-privileges" class="bare">https://stackoverflow.com/questions/10891405/installing-jdk-without-administrator-privileges</a></p>
+</div>
+</div>
+</div></p>
+  			<a href="blog/2018/03/parsing-arguments-and-options-with-python-script.html"><h1>Parsing Arguments and Options With Python Script</h1></a>
+  			<p>22 March 2018, tags: 
+			    <a href="../tags/python-argparse.html">python-argparse</a> 
+  			</p>
+  			<p><div class="listingblock">
+<div class="content">
+<pre>import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument('--file')
+parser.add_argument('--debug', action='store_true')
+args = parser.parse_args()
+
+if args.debug:
+	print(f"Options: {args}")
+
+if args.file:
+	with open(args.file) as fh:
+		for line in fh:
+			print(line, end='')</pre>
+</div>
+</div></p>
+  			<a href="blog/2018/03/print-python-runtime-information.html"><h1>Print Python Runtime Information</h1></a>
+  			<p>22 March 2018, tags: 
+			    <a href="../tags/python.html">python</a> 
+  			</p>
+  			<p><div class="listingblock">
+<div class="content">
+<pre># Print python runtime information
+import os, sys
+print(f"CWD={os.getcwd()}")
+print(f"Python={sys.version}")
+paths = '\n'.join(sys.path)
+print(f"Lib={paths}")</pre>
+</div>
+</div></p>
+
+	<hr />
+
+	<ul class="pager">
+		<li class="previous"><a href="https://zemian.github.io/3">Previous</a></li>
+		<li>Page: 4/29</li>
+		<li class="next"><a href="https://zemian.github.io/5">Next</a></li>
+	</ul>
+
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">&copy; 2011 - 2019 Zemian Deng All Rights Reserved | Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.5</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../js/jquery-1.11.1.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/prettify.js"></script>
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-135626598-1');
+    </script>
+
+  </body>
+</html>

@@ -40,7 +40,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -48,7 +48,6 @@
             <li><a href="../../../about.html">About</a></li>
             <li><a href="../../../archive.html">Archive</a></li>
             <li><a href="../../..//tags">Tags</a></li>
-            <li><a href="../../../feed.xml">Subscribe</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -62,17 +61,15 @@
 	    <a href="../../../tags/oracle.html">oracle</a> 
 	</p>
 
-	<p>Verify sessions:<br />
-<span style="font-family: Courier New, Courier, monospace;">SELECT USERNAME FROM V$SESSION;</span><br />
-<span style="font-family: Courier New, Courier, monospace;"><br /></span>
-<span style="font-family: Courier New, Courier, monospace;">SELECT USERNAME, SID, SERIAL#, STATUS</span><br />
-<span style="font-family: Courier New, Courier, monospace;">&nbsp; FROM V$SESSION</span><br />
-<span style="font-family: Courier New, Courier, monospace;">&nbsp; WHERE USERNAME like 'SCOTT%';</span><br />
-<br />
-Generate SQL to terminate sessions:<br />
-<span style="font-family: Courier New, Courier, monospace;">SELECT 'ALTER SYSTEM KILL SESSION ''' || SID || ',' || SERIAL# || ''';'</span><br />
-<span style="font-family: Courier New, Courier, monospace;">&nbsp; FROM V$SESSION</span><br />
-<span style="font-family: Courier New, Courier, monospace;">&nbsp; WHERE USERNAME like 'SCOTT%';</span>
+	<p><p>Verify sessions:<br />
+SELECT USERNAME FROM V$SESSION;</p>
+<p>SELECT USERNAME, SID, SERIAL#, STATUS<br />
+FROM V$SESSION<br />
+WHERE USERNAME like 'SCOTT%';</p>
+<p>Generate SQL to terminate sessions:<br />
+SELECT 'ALTER SYSTEM KILL SESSION ''' || SID || ',' || SERIAL# || ''';'<br />
+FROM V$SESSION<br />
+WHERE USERNAME like 'SCOTT%';</p>
 </p>
 
 	<hr />

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Zemian's Blog - TimeMachine Scheduler 1.2.0 release is out!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../css/asciidoctor.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link href="../../../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../../../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../about.html">About</a></li>
+            <li><a href="../../../archive.html">Archive</a></li>
+            <li><a href="../../..//tags">Tags</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">	
+	<div class="page-header">
+		<h1>TimeMachine Scheduler 1.2.0 release is out!</h1>
+	</div>
+
+	<p><em>15 July 2012</em>, tags: 
+	    <a href="../../../tags/timemachine.html">timemachine</a> 
+	</p>
+
+	<p><p>I just released the <a href="https://bitbucket.org/timemachine/scheduler/downloads">timemachine-scheudler-1.2.0</a>, and it now comes with both stand-alone server (zip) and web application (war) distribution packages.</p>
+<p>In this <a href="https://bitbucket.org/timemachine/scheduler/wiki/ReleaseNotes">release</a>, I fixed few major bugs and made many small clean ups and minor fixes. I also added few new features. I will briefly introduce them to you here.</p>
+<h2></h2>
+<p>Groovy 2.0</p>
+<p>I have upgraded the optional script engine dependency to latest groovy 2.0.0 within our scheduler distribution. The groovy-2.0.0 has modularized their jar distribution, and our scheduler only requires minimal of jsr-223 module, so our overall package size should be smaller.</p>
+<h2></h2>
+<p>TimeMachine-Web</p>
+<p>I have added a web application that can provide a fully running scheduler. This web app provides UI screens that let you manage and view jobs/schedules, and it can even edit the scheduler configuration online.</p>
+<p>You can see more info on <a href="https://bitbucket.org/timemachine/scheduler/wiki/WebConsole">WebConsole</a> doc, or try it out with our <a href="http://demos-tmscheduler.rhcloud.com/timemachine-web">demo</a>.</p>
+<h2></h2>
+<p>Schedule Priority</p>
+<p>You may now set a priority value 1-9 on any Schedule, and the default is 5. These are used if you have schedules that has same nextRun time, and having the lower priority value will get to run first.</p>
+<h2></h2>
+<p>Event and Job Histories</p>
+<p>In this release, I also provided a EventHistoryService that can record all major scheduler events such as when scheduler init, start, stop or destroyed. Also when scheduling data are added or deleted. And all the job run events are also recorded. To support this, we added a new built-in data model: EventHistory. You may retrieve and store these with our DataStore service if you desire. As convenience, we have added a History screen on our web application that display all the events happening in the scheduler.</p>
+<p>This feature is disabled by default, but to enable it is easy. You simply add the following value in the scheduler configuration file:<br />
+timemachine.scheduler.eventHistory.class = timemachine.scheduler.service.EventHistoryService</p>
+<p>There are few more options you may configure with this service, and you can read more it on the scheduler <a href="https://bitbucket.org/timemachine/scheduler/wiki/ReferenceManual">reference doc</a>.</p>
+</p>
+
+	<hr />
+
+<div id="disqus_thread"></div>
+	
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://zemian-github-io.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">&copy; 2011 - 2019 Zemian Deng All Rights Reserved | Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.5</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../../../js/jquery-1.11.1.min.js"></script>
+    <script src="../../../js/bootstrap.min.js"></script>
+    <script src="../../../js/prettify.js"></script>
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-135626598-1');
+    </script>
+
+  </body>
+</html>

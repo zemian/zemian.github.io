@@ -40,7 +40,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -48,7 +48,6 @@
             <li><a href="../../../about.html">About</a></li>
             <li><a href="../../../archive.html">Archive</a></li>
             <li><a href="../../..//tags">Tags</a></li>
-            <li><a href="../../../feed.xml">Subscribe</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -62,20 +61,36 @@
 	    <a href="../../../tags/weblogic.html">weblogic</a> 
 	</p>
 
-	<p>One cool thing about using an application server is that it allows you to create DataSource outside of your application and it can manage it along with connections pool and transaction manager etc. With WebLogic Server, it comes with quite a few built in JDBC drivers such as Oracle Database and MySQL etc ready for your use. Here I will show you how to create a MySQL DataSource.<br />
-<br />
-1. Login into http://localhost:7001/console<br />
-2. On the left menu click Services &gt; Data Sources<br />
-3. On the right, click "New" button<br />
-4. Enter Name: <b>mysql_ds</b> ; You may optionally give it an JNDI Name: <b>jdbc/mysql_ds</b>; And then select Database Type: <b>MySQL</b><br />
-5. Click "Next" button and then accept default with another two "Next" buttons.<br />
-6. Now enter Database Name: <b>test</b>; Host Name: <b>localhost</b>; Database User Name: <b>root</b>; and then the password.<b><br /></b>7. Click "Next" and you may optionally test your connection here.<br />
-8. Click "Next" and you <b>MUST </b>select an sever as target! <br />
-9. Click "Finish"<b><br /></b><br />
-<b><br /></b>
-Now you have a DataSource ready to be used by your application on this server. You may access this by either JNDI lookup<b>, </b>or JPA configuration with entity manager injection.<b></b><br />
-<b><br /></b>
-TIPS: If you do not pick a server Target in step 8, then your applicatoin will NOT able to access this Data Source! So ensure you have done this step as it's the easy step to miss.
+	<p><p>One cool thing about using an application server is that it allows you to create DataSource outside of your application and it can manage it along with connections pool and transaction manager etc. With WebLogic Server, it comes with quite a few built in JDBC drivers such as Oracle Database and MySQL etc ready for your use. Here I will show you how to create a MySQL DataSource.</p>
+<ol>
+<li>
+<p>Login into <a href="http://localhost:7001/console">http://localhost:7001/console</a></p>
+</li>
+<li>
+<p>On the left menu click Services &gt; Data Sources</p>
+</li>
+<li>
+<p>On the right, click &quot;New&quot; button</p>
+</li>
+<li>
+<p>Enter Name: mysql_ds ; You may optionally give it an JNDI Name: jdbc/mysql_ds; And then select Database Type: MySQL</p>
+</li>
+<li>
+<p>Click &quot;Next&quot; button and then accept default with another two &quot;Next&quot; buttons.</p>
+</li>
+<li>
+<p>Now enter Database Name: test; Host Name: localhost; Database User Name: root; and then the password.</p>
+</li>
+<li>Click &quot;Next&quot; and you may optionally test your connection here.</li>
+<li>
+<p>Click &quot;Next&quot; and you MUST select an sever as target!</p>
+</li>
+<li>
+<p>Click &quot;Finish&quot;</p>
+</li>
+</ol>
+<p>Now you have a DataSource ready to be used by your application on this server. You may access this by either JNDI lookup, or JPA configuration with entity manager injection.</p>
+<p>TIPS: If you do not pick a server Target in step 8, then your applicatoin will NOT able to access this Data Source! So ensure you have done this step as it's the easy step to miss.</p>
 </p>
 
 	<hr />

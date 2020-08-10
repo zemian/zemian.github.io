@@ -40,7 +40,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -48,7 +48,6 @@
             <li><a href="../../../about.html">About</a></li>
             <li><a href="../../../archive.html">Archive</a></li>
             <li><a href="../../..//tags">Tags</a></li>
-            <li><a href="../../../feed.xml">Subscribe</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -64,14 +63,22 @@
 	    <a href="../../../tags/java.html">java</a> 
 	</p>
 
-	<p>Below are the shortest steps I know that would get you the smallest Java web application ready in Maven.<br />
-<br />
-<span style="font-size: x-small;"><span style="font-family: 'Courier New', Courier, monospace;">&nbsp;&nbsp;&nbsp; $ mkdir -p webapp/src/main/webapp/WEB-INF/classes</span><br style="font-family: &quot;Courier New&quot;,Courier,monospace;" /><span style="font-family: 'Courier New', Courier, monospace;">&nbsp;&nbsp;&nbsp; $ echo '&lt;web-app&gt;&lt;/web-app&gt;' &gt; webapp/src/main/webapp/WEB-INF/web.xml</span><br style="font-family: &quot;Courier New&quot;,Courier,monospace;" /><span style="font-family: 'Courier New', Courier, monospace;">&nbsp;&nbsp;&nbsp; $ echo '&lt;html&gt;Hello World.&lt;/html&gt;' &gt; webapp/src/main/webapp/index.jsp</span><br style="font-family: &quot;Courier New&quot;,Courier,monospace;" /><span style="font-family: 'Courier New', Courier, monospace;">&nbsp;&nbsp;&nbsp; $ echo '&lt;project&gt;</span><br style="font-family: &quot;Courier New&quot;,Courier,monospace;" /><span style="font-family: 'Courier New', Courier, monospace;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;</span><br style="font-family: &quot;Courier New&quot;,Courier,monospace;" /><span style="font-family: 'Courier New', Courier, monospace;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;groupId&gt;atest&lt;/groupId&gt;</span><br style="font-family: &quot;Courier New&quot;,Courier,monospace;" /><span style="font-family: 'Courier New', Courier, monospace;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;artifactId&gt;webapp&lt;/artifactId&gt;</span><br style="font-family: &quot;Courier New&quot;,Courier,monospace;" /><span style="font-family: 'Courier New', Courier, monospace;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;</span><br style="font-family: &quot;Courier New&quot;,Courier,monospace;" /><span style="font-family: 'Courier New', Courier, monospace;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;packaging&gt;war&lt;/packaging&gt;</span><br style="font-family: &quot;Courier New&quot;,Courier,monospace;" /><span style="font-family: 'Courier New', Courier, monospace;">&nbsp;&nbsp;&nbsp; &lt;/project&gt;' &gt; webapp/pom.xml</span><br style="font-family: &quot;Courier New&quot;,Courier,monospace;" /><span style="font-family: 'Courier New', Courier, monospace;">&nbsp;&nbsp;&nbsp; $ cd webapp</span><br style="font-family: &quot;Courier New&quot;,Courier,monospace;" /><span style="font-family: 'Courier New', Courier, monospace;">&nbsp;&nbsp;&nbsp; $ mvn org.apache.tomcat.maven:tomcat7-maven-plugin:2.0-beta-1:run</span></span><br />
-<br />
-You should able to visit http://localhost:8080/webapp after that. Editing any JSP files should auto refresh by the server, and you don't need to restart it. This is a fast way to prototype and test out your ideas.<br />
-<br />
-(Yes, I am aware that maven has the archetype for webapp, but it above do give you the bare minimal and you see each lines what go into your project.) <br />
-<br />
+	<p><p>Below are the shortest steps I know that would get you the smallest Java web application ready in Maven.</p>
+<pre><code>$ mkdir -p webapp/src/main/webapp/WEB-INF/classes
+$ echo '&lt;web-app&gt;&lt;/web-app&gt;' &gt; webapp/src/main/webapp/WEB-INF/web.xml
+$ echo '&lt;html&gt;Hello World.&lt;/html&gt;' &gt; webapp/src/main/webapp/index.jsp
+$ echo '&lt;project&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;groupId&gt;atest&lt;/groupId&gt;
+    &lt;artifactId&gt;webapp&lt;/artifactId&gt;
+    &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+    &lt;packaging&gt;war&lt;/packaging&gt;
+&lt;/project&gt;' &gt; webapp/pom.xml
+$ cd webapp
+$ mvn org.apache.tomcat.maven:tomcat7-maven-plugin:2.0-beta-1:run
+</code></pre>
+<p>You should able to visit <a href="http://localhost:8080/webapp">http://localhost:8080/webapp</a> after that. Editing any JSP files should auto refresh by the server, and you don't need to restart it. This is a fast way to prototype and test out your ideas.</p>
+<p>(Yes, I am aware that maven has the archetype for webapp, but it above do give you the bare minimal and you see each lines what go into your project.)</p>
 </p>
 
 	<hr />

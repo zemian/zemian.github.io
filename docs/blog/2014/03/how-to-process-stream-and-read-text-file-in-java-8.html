@@ -40,7 +40,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -48,7 +48,6 @@
             <li><a href="../../../about.html">About</a></li>
             <li><a href="../../../archive.html">Archive</a></li>
             <li><a href="../../..//tags">Tags</a></li>
-            <li><a href="../../../feed.xml">Subscribe</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -62,9 +61,38 @@
 	    <a href="../../../tags/java.html">java</a> 
 	</p>
 
-	<p>I have converted one of my old utility class using latest Java8. I use this often to print content of manifest file to check any mysterious jar file for version etc. Just run "java ztools.PrintJar /path/to/my.jar" to see output. In the new code, you will see how I use the Java 8 stream processing to filter what I need from an Enumeration list, and then get the optional result if there is any. And then the BufferedReader now comes with "lines()" method that also do streaming. It's pretty cool to see Java 8 in actions!<br />
-<br />
-<span style="font-size: xx-small;"><span style="font-family: &quot;Courier New&quot;,Courier,monospace;">package ztools;<br /><br />import java.io.BufferedReader;<br />import java.io.InputStream;<br />import java.io.InputStreamReader;<br />import java.util.Optional;<br />import java.util.jar.JarEntry;<br />import java.util.jar.JarFile;<br /><br />/**<br />&nbsp;* Print text based resource file inside a jar file. (eg: META-INF/MANIFEST.MF)<br />&nbsp;* @author Zemian Deng<br />&nbsp;*/<br />public class PrintJar {<br />&nbsp;&nbsp;&nbsp; public static void main(String[] args) throws Exception {<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Search given name in a jar<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; JarFile jarFile = new JarFile(args[0]);<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; final String searchName = (args.length &gt;= 2) ? args[1] : "META-INF/MANIFEST.MF";<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Optional&lt;JarEntry&gt; searchResult = jarFile<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; .stream()<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; .filter(e -&gt; e.getName().equals(searchName))<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; .findFirst();<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (!searchResult.isPresent())<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; throw new RuntimeException(searchName + " not found!");<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Print the JarEntry<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; JarEntry entry = searchResult.get();<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; try (InputStream instream = jarFile.getInputStream(entry)) {<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; BufferedReader reader = new BufferedReader(new InputStreamReader(instream));<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; reader.lines().forEach(line -&gt; System.out.println(line));<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br />&nbsp;&nbsp;&nbsp; }<br />}</span></span>
+	<p><p>I have converted one of my old utility class using latest Java8. I use this often to print content of manifest file to check any mysterious jar file for version etc. Just run &quot;java ztools.PrintJar /path/to/my.jar&quot; to see output. In the new code, you will see how I use the Java 8 stream processing to filter what I need from an Enumeration list, and then get the optional result if there is any. And then the BufferedReader now comes with &quot;lines()&quot; method that also do streaming. It's pretty cool to see Java 8 in actions!</p>
+<p>package ztools;</p>
+<p>import java.io.BufferedReader;<br />
+import java.io.InputStream;<br />
+import java.io.InputStreamReader;<br />
+import java.util.Optional;<br />
+import java.util.jar.JarEntry;<br />
+import java.util.jar.JarFile;</p>
+<p>/**<br />
+* Print text based resource file inside a jar file. (eg: META-INF/MANIFEST.MF)<br />
+* @author Zemian Deng<br />
+*/<br />
+public class PrintJar {<br />
+public static void main(String[] args) throws Exception {<br />
+// Search given name in a jar<br />
+JarFile jarFile = new JarFile(args[0]);<br />
+final String searchName = (args.length &gt;= 2) ? args[1] : &quot;META-INF/MANIFEST.MF&quot;;<br />
+Optional<JarEntry> searchResult = jarFile<br />
+.stream()<br />
+.filter(e -&gt; e.getName().equals(searchName))<br />
+.findFirst();<br />
+if (!searchResult.isPresent())<br />
+throw new RuntimeException(searchName + &quot; not found!&quot;);</p>
+<pre><code>    // Print the JarEntry
+    JarEntry entry = searchResult.get();
+    try (InputStream instream = jarFile.getInputStream(entry)) {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(instream));
+        reader.lines().forEach(line -&gt; System.out.println(line));
+    }
+}
+</code></pre>
+<p>}</p>
 </p>
 
 	<hr />

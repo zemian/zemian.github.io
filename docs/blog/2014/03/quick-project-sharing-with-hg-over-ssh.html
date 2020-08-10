@@ -40,7 +40,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -48,7 +48,6 @@
             <li><a href="../../../about.html">About</a></li>
             <li><a href="../../../archive.html">Archive</a></li>
             <li><a href="../../..//tags">Tags</a></li>
-            <li><a href="../../../feed.xml">Subscribe</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -62,20 +61,26 @@
 	    <a href="../../../tags/hg.html">hg</a> 
 	</p>
 
-	<p>Mercurial is an awesome source control system! If you got a project in your PC and would like to share with your team. An easy and practical way is to put it in a common server (eg: linux) with ssh enabled.<br />
-<br />
-1. Copy your existing project source into your server $HOME/repo/myproject<br />
-2. ssh into your server and cd into $HOME/repo/myproject<br />
-3. Run <span style="font-family: &quot;Courier New&quot;,Courier,monospace;"># hg init &amp;&amp; hg commit -m 'Init added'</span><br />
-5. Exit your server and get your project in your PC terminal and run:<br />
-&nbsp;&nbsp;&nbsp; <span style="font-family: &quot;Courier New&quot;,Courier,monospace;"># hg clone ssh://user_id@myserver/repo/myproject</span><br />
-<br />
-That's it. You don't even need a web server to host it! Just tell all your teammates to do the last step on their own PC terminal. Now eveyone can make changes to your project then commit and push or pull!<br />
-<br />
-TIPS: If you do not place your "repo/myproject" directory under your $HOME, then you would need the double slashes when cloning! For example:<br />
-&nbsp;&nbsp;&nbsp; <span style="font-family: &quot;Courier New&quot;,Courier,monospace;"># hg clone ssh://user_id@myserver<b>//</b>usr/local/repo/myproject</span><br />
-<br />
-<br />
+	<p><p>Mercurial is an awesome source control system! If you got a project in your PC and would like to share with your team. An easy and practical way is to put it in a common server (eg: linux) with ssh enabled.</p>
+<ol>
+<li>
+<p>Copy your existing project source into your server $HOME/repo/myproject</p>
+</li>
+<li>
+<p>ssh into your server and cd into $HOME/repo/myproject</p>
+</li>
+<li>
+<p>Run # hg init &amp;&amp; hg commit -m 'Init added'</p>
+</li>
+<li>
+<p>Exit your server and get your project in your PC terminal and run:</p>
+<h1>hg clone <a href="ssh://user_id@myserver/repo/myproject">ssh://user_id@myserver/repo/myproject</a></h1>
+</li>
+</ol>
+<p>That's it. You don't even need a web server to host it! Just tell all your teammates to do the last step on their own PC terminal. Now eveyone can make changes to your project then commit and push or pull!</p>
+<p>TIPS: If you do not place your &quot;repo/myproject&quot; directory under your $HOME, then you would need the double slashes when cloning! For example:</p>
+<pre><code># hg clone ssh://user_id@myserver//usr/local/repo/myproject
+</code></pre>
 </p>
 
 	<hr />

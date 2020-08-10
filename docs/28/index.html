@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Zemian's Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/asciidoctor.css" rel="stylesheet">
+    <link href="../css/base.css" rel="stylesheet">
+    <link href="../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../about.html">About</a></li>
+            <li><a href="../archive.html">Archive</a></li>
+            <li><a href="..//tags">Tags</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">
+  			<a href="blog/2012/02/working-on-quartz-queue-job-feature.html"><h1>Working on Quartz Queue Job Feature</h1></a>
+  			<p>17 February 2012, tags: 
+			    <a href="../tags/quartz.html">quartz</a> 
+  			</p>
+  			<p><p>My job at Bank of New York Mellon has been keeping me fairly busy lately. It's hard to juggle with Church, a family, a full time job, and time for open source projects. But it seems God has blessed me with not many skills nor hobbies other than programming, which I enjoy the most. So I tend to endup writing more code on weekend when the kids are asleep!</p>
+<p>I haven't able to put much time into <a href="http://code.google.com/p/myschedule">MySchedule</a>other than fixed couple of urgent issues recently. If you are using this app, you should get the latest download now.</p>
+<p>However, I did spent time helping out on <a href="http://quartz-scheduler.org/">Quartz</a>development on their next major feature: <a href="http://svn.terracotta.org/fisheye/browse/Quartz/branches/quartz-2.2-prototype">Queue Jobs</a>. I got most of the initial ground work done. I need to think more about how the concurrent issues with database row locking etc. This feature would allow you to add jobs into a queue structure that the quartz system will process without a trigger (meaning they are process immediatly.) These queue jobs would have a priority value that sorted by the queue as they are processed. We hope this feature would give some users to use the Quartz system to process jobs more effectively.</p>
+<p>More of these to come in the future, so stay tuned.</p>
+</p>
+  			<a href="blog/2011/11/how-to-build-ruby-on-cygwin-and-setup-heroku.html"><h1>How to build Ruby on Cygwin and setup Heroku</h1></a>
+  			<p>19 November 2011, tags: 
+			    <a href="../tags/ruby.html">ruby</a> 
+
+			    <a href="../tags/cygwin.html">cygwin</a> 
+  			</p>
+  			<p><p>I like to use ruby that comes with Cygwin instead of the RubyInstaller for Windows, because the path it handles are more consistenly in Linux form. But the current Cygwin only comes with ruby-1.8.7, so to use ruby-1.9.3, I have to built it on Cygwin on my own. And when building ruby from source on Cygwin, you would also have to install gem on your own as well. Turns out there are few issues that you have to fix too. Here are the steps I got it working:</p>
+<ol>
+<li>
+<p>Ensure you have the typical Cygwin/Linux build tools (gcc, make, autoconf, libiconv, openssl and etc.)</p>
+</li>
+<li>
+<p>Download source for the following:</p>
+</li>
+</ol>
+<p>a) LibYAML 0.1.4 from <a href="http://pyyaml.org/wiki/LibYAML">http://pyyaml.org/wiki/LibYAML</a></p>
+<p>b) ruby-1.9.3-p0 source from <a href="http://ruby-lang.org">http://ruby-lang.org</a></p>
+<p>c) rubygems-1.8.11 from <a href="http://rubygems.org">http://rubygems.org</a></p>
+<ol>
+<li>Unzip/tar them all in /tmp</li>
+</ol>
+<p>a) $ cd /tmp/yaml-0.1.4</p>
+<pre><code> $ ./configure &amp;&amp; make &amp;&amp; make install
+</code></pre>
+<p>b) $ cd /tmp/ruby-1.9.3-p0/ext/openssl</p>
+<pre><code> $ ruby extconf.rb
+
+ $ make &amp;&amp; make install
+</code></pre>
+<p>c) $ cd /tmp/ruby-1.9.3-p0</p>
+<pre><code> $ export CPPFLAGS=-I/usr/local/include
+
+ $ export LDFLAGS=-L/usr/local/lib     
+
+ $ ./configure &amp;&amp; make &amp;&amp; make install
+</code></pre>
+<p>e) $ cd /tmp/rubygems-1.8.11</p>
+<pre><code> $ ruby setup.rb
+</code></pre>
+<p>With these completed, you may now install Heroku client tool as ruby gem:</p>
+<p>c) $ gem install heroku</p>
+<p>You would also need Git to successful push and deploy application to Heroku, but you can get Cygwin 'git' package if you haven't already done so.</p>
+<p>NOTE: FYI, all the user built applications are usually install into /usr/local directory, while those system (comes with cygwin packages) are in /usr.</p>
+</p>
+  			<a href="blog/2011/11/myschedule-2-3-0-release.html"><h1>MySchedule-2.3.0 release is out</h1></a>
+  			<p>06 November 2011, tags: 
+			    <a href="../tags/myschedule.html">myschedule</a> 
+
+			    <a href="../tags/quartz.html">quartz</a> 
+  			</p>
+  			<p><p>MySchedule is a web application that let you manage and run Quartz in a servlet container. You can get Quartz running and start exploring by simply dropping the war file into a web server such as Tomcat.</p>
+<p>Here is a short list of what's in this release:<br />
+* Use myschedule-2.3.0 to manage Quartz-2.x<br />
+* Use myschedule-1.6.0 to manage Quartz-1.8.x<br />
+* Removed all unnecessary dependencies, and making the war file tiny (~ 3MB)<br />
+* Support any Java ScriptEngine, and many examples are provided for you to script and manage the scheduler.<br />
+* There is an independent quartz-extra jar that you may use outside of webapp, and it has been backported consistently to 1.x version as well.<br />
+* Documentation is available on the project site.</p>
+<p>Try it out and let me know what you think.</p>
+<p><a href="http://code.google.com/p/myschedule">http://code.google.com/p/myschedule</a></p>
+<p>Enjoy!</p>
+</p>
+  			<a href="blog/2011/10/quartz-extra.html"><h1>Quartz Extra!</h1></a>
+  			<p>17 October 2011, tags: 
+			    <a href="../tags/quartz.html">quartz</a> 
+  			</p>
+  			<p><p>Looking for some extra goodies for Quartz Scheduler? Check out <a href="http://code.google.com/p/myschedule/downloads/list">myschedule-2.2.0 release</a>!</p>
+<p>Besides some small update to the web UI for quartz management, this release comes with a standalone quartz-extra jar you may download. See what it can do in <a href="http://code.google.com/p/myschedule/wiki/QuartzExtraUserGuide">QuartzExtraUserGuide</a>.</p>
+</p>
+  			<a href="blog/2011/09/myschedule-2-1-2-for-quartz-2-1-0-and-myschedule-1-5-2for-quartz-1-8-5-releases.html"><h1>myschedule-2.1.2 (for Quartz-2.1.0) and myschedule-1.5.2(for Quartz-1.8.5) releases</h1></a>
+  			<p>24 September 2011, tags: 
+			    <a href="../tags/myschedule.html">myschedule</a> 
+
+			    <a href="../tags/quartz.html">quartz</a> 
+  			</p>
+  			<p><p>Both myschedule-2.1.2 (for Quartz-2.1.0) and myschedule-1.5.2(for Quartz-1.8.5) releases are available for download here: <a href="http://code.google.com/p/myschedule/downloads/list">http://code.google.com/p/myschedule/downloads/list</a></p>
+<p>I have fixed few bugs and improved the UI slightly. Both of these releases should now deployable on Tomcat6, Tomcat7, and JBossAS servers!</p>
+</p>
+  			<a href="blog/2011/09/quartz-2-1-0-has-been-released.html"><h1>Quartz 2.1.0 has been released!</h1></a>
+  			<p>24 September 2011, tags: 
+			    <a href="../tags/quartz.html">quartz</a> 
+  			</p>
+  			<p><p><a href="http://quartz-scheduler.org/downloads/catalog">Quartz 2.1.0</a> has been released!</p>
+<p>In this release, I have helped fixed some bugs, and added a new built-in trigger type: DailyTimeIntervalTrigger. This new trigger will allow you to specify a interval time in either seconds, minutes, or hours interval on each day (Like fire every 72 mins starting at 7am everyday). And the daily start time will be reset each day regardless what time it ended in that day! You may even limit daily ending time too. And you may limit the days to run on certain weekdays only as well. You may see many examples on how this trigger is used here: <a href="http://svn.terracotta.org/fisheye/browse/Quartz/trunk/quartz/src/test/java/org/quartz/DailyTimeIntervalScheduleBuilderTest.java?r=HEAD">http://svn.terracotta.org/fisheye/browse/Quartz/trunk/quartz/src/test/java/org/quartz/DailyTimeIntervalScheduleBuilderTest.java?r=HEAD</a></p>
+<p>Another feature worthy of note in this release is the &quot;batch&quot; mode is finally working! You may turn this on by using &quot;org.quartz.scheduler.batchTriggerAcquisitionMaxCount&quot; and &quot;org.quartz.scheduler.batchTriggerAcquisitionFireAheadTimeWindow&quot; in your quartz.properties file. See config doc here: <a href="http://quartz-scheduler.org/documentation/quartz-2.1.x/configuration/ConfigMain">http://quartz-scheduler.org/documentation/quartz-2.1.x/configuration/ConfigMain</a></p>
+</p>
+  			<a href="blog/2011/09/some-of-my-googlecode-projects.html"><h1>Some of my googlecode projects</h1></a>
+  			<p>24 September 2011  			</p>
+  			<p><p>I have created number of googlecode projects in attempt to try out new codes and ideas in the past. I now have links to all of them in my consolidated playground area <a href="http://code.google.com/p/zemiandeng/">http://code.google.com/p/zemiandeng/</a></p>
+<p>I also kept few Java project templates (Maven based) in there: <a href="http://code.google.com/p/zemiandeng/source/browse/">http://code.google.com/p/zemiandeng/source/browse/</a> These can get you started a project fairly quickly. See the README.txt in each for more details. I have added:</p>
+<ul>
+<li>
+<p>java-project-template</p>
+</li>
+<li>
+<p>servlet-project-template</p>
+</li>
+<li>
+<p>springmvc-project-template</p>
+</li>
+</ul>
+<p>There is also the &quot;java-tool&quot; with misc command line programs that I have collected over the years.</p>
+<p>I also have stored a more reasonable preferences with Eclipse workspace, and few more custom Cygwin/Bash scripts setup.</p>
+<p>All these are publicly and freely available (Apache License 2.0) if you find it useful. Enjoy!</p>
+</p>
+  			<a href="blog/2011/07/myschedule-2-0-0-release.html"><h1>MySchedule-2.0.0 released</h1></a>
+  			<p>23 July 2011, tags: 
+			    <a href="../tags/myschedule.html">myschedule</a> 
+
+			    <a href="../tags/quartz.html">quartz</a> 
+  			</p>
+  			<p><p>The lastest myschedule-2.x release supports the latest Quartz 2.0 API. The Quartz 2.0 is not backward compatible to Quartz 1.8.x, so the MySchedule has matained the myschedule-1.x for the older one.</p>
+<p>Try it out here: <a href="http://code.google.com/p/myschedule/downloads/list">http://code.google.com/p/myschedule/downloads/list</a> !</p>
+</p>
+  			<a href="blog/2011/07/becoming-a-quartz-commiter.html"><h1>Becoming a Quartz commiter</h1></a>
+  			<p>22 July 2011, tags: 
+			    <a href="../tags/quartz.html">quartz</a> 
+  			</p>
+  			<p><p>I started my <a href="http://svn.terracotta.org/fisheye/changelog/Quartz/?cs=1575">first commit</a> to the Quartz's svn repository yesterday. I hope to contribute some effort in helping the project. I think the <a href="http://quartz-scheduler.org/">Quartz</a>is an exellent open source project to work with and it's already been use by many users. The project offer many opportunities in dealing with real world situations. The quartz project has a scheduler layer, cron expression implementation, job persistence storage layer (using JDBC), and many framework components such as plugins and listeners. Many users have integrated Quartz in various environments such in standalone JavaSE, Spring, Servlet container (Tomcat eg), or application server (JBoss eg). In helping this community, I also get a chance to expose to these programming models. It will be great experience to have.</p>
+</p>
+  			<a href="blog/2011/07/myschedule-1-3-3-release.html"><h1>MySchedule-1.3.3 release</h1></a>
+  			<p>01 July 2011, tags: 
+			    <a href="../tags/myschedule.html">myschedule</a> 
+
+			    <a href="../tags/quartz.html">quartz</a> 
+  			</p>
+  			<p><p>The Quartz Scheduler project is great to create any fancy and heavy duty scheduling tasks in Java project. One area it's missing is that the quartz library is very much targeted for developer, and there is not many user front end to allow end user to immediately exploring the scheduler system. This is the reason I created myschedule project. It's free, open source (Apache License 2.0) dashboard manager for Quartz. It's conveniently packaged as war file and you may deploy into any Servlet 2.5+ Web Container server to run it.</p>
+<p>The myschedule-1.3.3 release let you manage multiple quartz schedulers on a single webapp, and you may create and delete the config right in the webapp. The myschedule will quickly let a end user to load and run jobs without doing any programming. But myschedule also comes with a Scripting tool that let power uses to schedule any jobs using Groovy programming language. The myschedule's job listing page and management of the UI has also greatly been improved since the first release.</p>
+<p>So if you need Quartz or want any scheduling jobs, you should check it out. <a href="http://code.google.com/p/myschedule/downloads/list">http://code.google.com/p/myschedule/downloads/list</a></p>
+</p>
+
+	<hr />
+
+	<ul class="pager">
+		<li class="previous"><a href="https://zemian.github.io/27">Previous</a></li>
+		<li>Page: 28/29</li>
+		<li class="next"><a href="https://zemian.github.io/29">Next</a></li>
+	</ul>
+
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">&copy; 2011 - 2019 Zemian Deng All Rights Reserved | Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.5</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../js/jquery-1.11.1.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/prettify.js"></script>
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-135626598-1');
+    </script>
+
+  </body>
+</html>

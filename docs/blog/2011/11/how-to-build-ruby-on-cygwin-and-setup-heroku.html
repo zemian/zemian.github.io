@@ -40,7 +40,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -48,7 +48,6 @@
             <li><a href="../../../about.html">About</a></li>
             <li><a href="../../../archive.html">Archive</a></li>
             <li><a href="../../..//tags">Tags</a></li>
-            <li><a href="../../../feed.xml">Subscribe</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -64,54 +63,43 @@
 	    <a href="../../../tags/cygwin.html">cygwin</a> 
 	</p>
 
-	<p>I like to use ruby that comes with Cygwin instead of the RubyInstaller for Windows, because the path it handles are more consistenly in Linux form. But the current Cygwin only comes with ruby-1.8.7, so to use ruby-1.9.3, I have to built it on Cygwin on my own. And when building ruby from source on Cygwin, you would also have to install gem on your own as well. Turns out there are few issues that you have to fix too. Here are the steps I got it working:<br />
-<br />
-0. Ensure you have the typical Cygwin/Linux build tools (gcc, make, autoconf, libiconv, openssl and etc.)<br />
-<br />
-1. Download source for the following:<br />
-&nbsp; a) LibYAML 0.1.4 from http://pyyaml.org/wiki/LibYAML<br />
-&nbsp; b) ruby-1.9.3-p0 source from http://ruby-lang.org <br />
-&nbsp; c) rubygems-1.8.11 from http://rubygems.org <br />
-<b></b><br />
-<br />
-2. Unzip/tar them all in /tmp<br />
-<div style="font-family: &quot;Courier New&quot;,Courier,monospace;">
-&nbsp; a) $ cd /tmp/yaml-0.1.4&nbsp;</div>
-<div style="font-family: &quot;Courier New&quot;,Courier,monospace;">
-&nbsp;&nbsp;&nbsp;&nbsp; $ ./configure &amp;&amp; make &amp;&amp; make install</div>
-<div style="font-family: &quot;Courier New&quot;,Courier,monospace;">
-<br />
-&nbsp; b) $ cd /tmp/ruby-1.9.3-p0/ext/openssl<br />
-&nbsp;&nbsp;&nbsp;&nbsp; $ ruby extconf.rb
-<br />
-&nbsp;&nbsp;&nbsp;&nbsp; $ make &amp;&amp; make install<br />
-<div style="font-family: &quot;Courier New&quot;,Courier,monospace;">
-<br /></div>
-</div>
-<div style="font-family: &quot;Courier New&quot;,Courier,monospace;">
-&nbsp; c) $ cd /tmp/ruby-1.9.3-p0</div>
-<div style="font-family: &quot;Courier New&quot;,Courier,monospace;">
-&nbsp; &nbsp;&nbsp; $ export CPPFLAGS=-I/usr/local/include</div>
-<div style="font-family: &quot;Courier New&quot;,Courier,monospace;">
-&nbsp; &nbsp;&nbsp; $ export LDFLAGS=-L/usr/local/lib&nbsp; &nbsp;&nbsp; </div>
-<div style="font-family: &quot;Courier New&quot;,Courier,monospace;">
-&nbsp;&nbsp;&nbsp;&nbsp; $ ./configure &amp;&amp; make &amp;&amp; make install</div>
-<div style="font-family: &quot;Courier New&quot;,Courier,monospace;">
-<br />
-<div style="font-family: &quot;Courier New&quot;,Courier,monospace;">
-<div style="font-family: &quot;Courier New&quot;,Courier,monospace;">
-<div style="font-family: &quot;Courier New&quot;,Courier,monospace;">
-&nbsp; e) $ cd /tmp/rubygems-1.8.11</div>
-&nbsp;&nbsp;&nbsp;&nbsp; $ ruby setup.rb</div>
-</div>
-</div>
-<br />
-With these completed, you may now install Heroku client tool as ruby gem:<br />
-<div style="font-family: &quot;Courier New&quot;,Courier,monospace;">
-&nbsp; c) $ gem install heroku</div>
-You would also need Git to successful push and deploy application to Heroku, but you can get Cygwin 'git' package if you haven't already done so. <br />
-<br />
-NOTE: FYI, all the user built applications are usually install into<span style="font-family: 'Courier New', Courier, monospace;"> /usr/local</span> directory, while those system (comes with cygwin packages) are in <span style="font-family: 'Courier New', Courier, monospace;">/usr</span>.
+	<p><p>I like to use ruby that comes with Cygwin instead of the RubyInstaller for Windows, because the path it handles are more consistenly in Linux form. But the current Cygwin only comes with ruby-1.8.7, so to use ruby-1.9.3, I have to built it on Cygwin on my own. And when building ruby from source on Cygwin, you would also have to install gem on your own as well. Turns out there are few issues that you have to fix too. Here are the steps I got it working:</p>
+<ol>
+<li>
+<p>Ensure you have the typical Cygwin/Linux build tools (gcc, make, autoconf, libiconv, openssl and etc.)</p>
+</li>
+<li>
+<p>Download source for the following:</p>
+</li>
+</ol>
+<p>a) LibYAML 0.1.4 from <a href="http://pyyaml.org/wiki/LibYAML">http://pyyaml.org/wiki/LibYAML</a></p>
+<p>b) ruby-1.9.3-p0 source from <a href="http://ruby-lang.org">http://ruby-lang.org</a></p>
+<p>c) rubygems-1.8.11 from <a href="http://rubygems.org">http://rubygems.org</a></p>
+<ol>
+<li>Unzip/tar them all in /tmp</li>
+</ol>
+<p>a) $ cd /tmp/yaml-0.1.4</p>
+<pre><code> $ ./configure &amp;&amp; make &amp;&amp; make install
+</code></pre>
+<p>b) $ cd /tmp/ruby-1.9.3-p0/ext/openssl</p>
+<pre><code> $ ruby extconf.rb
+
+ $ make &amp;&amp; make install
+</code></pre>
+<p>c) $ cd /tmp/ruby-1.9.3-p0</p>
+<pre><code> $ export CPPFLAGS=-I/usr/local/include
+
+ $ export LDFLAGS=-L/usr/local/lib     
+
+ $ ./configure &amp;&amp; make &amp;&amp; make install
+</code></pre>
+<p>e) $ cd /tmp/rubygems-1.8.11</p>
+<pre><code> $ ruby setup.rb
+</code></pre>
+<p>With these completed, you may now install Heroku client tool as ruby gem:</p>
+<p>c) $ gem install heroku</p>
+<p>You would also need Git to successful push and deploy application to Heroku, but you can get Cygwin 'git' package if you haven't already done so.</p>
+<p>NOTE: FYI, all the user built applications are usually install into /usr/local directory, while those system (comes with cygwin packages) are in /usr.</p>
 </p>
 
 	<hr />

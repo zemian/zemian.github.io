@@ -40,7 +40,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -48,7 +48,6 @@
             <li><a href="../../../about.html">About</a></li>
             <li><a href="../../../archive.html">Archive</a></li>
             <li><a href="../../..//tags">Tags</a></li>
-            <li><a href="../../../feed.xml">Subscribe</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -62,36 +61,34 @@
 	    <a href="../../../tags/mysql.html">mysql</a> 
 	</p>
 
-	<p><span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">DELIMITER //</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">DROP PROCEDURE IF EXISTS proc_hotfix1 //</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">CREATE PROCEDURE proc_hotfix1()</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">BEGIN</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; DECLARE flag INT DEFAULT 0;</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; DECLARE CID VARCHAR(64);</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; DECLARE LOGIN VARCHAR(1000);</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; DECLARE cur1 CURSOR FOR&nbsp;</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp; SELECT CID, LOGIN FROM MYUSER WHERE LOGIN LIKE 'bad.guy%';</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><br /></span>
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; OPEN cur1;</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; REPEAT</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp; FETCH cur1 INTO CID, LOGIN;</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp; INSERT INTO hotfix1(id,f1) VALUES (CID, LOGIN);</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; UNTIL flag</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; END REPEAT;</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; CLOSE cur1;</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">END //</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><br /></span>
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">DELIMITER ;</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">DROP TABLE IF EXISTS hotfix1;</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">CREATE TABLE hotfix1(</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; id VARCHAR(64) KEY</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; ,f1 VARCHAR(1000)</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; ,f2 VARCHAR(1000)</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; ,f3 VARCHAR(1000)</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">);</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">CALL proc_hotfix1();</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">SELECT COUNT(*) FROM hotfix1;</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">SELECT * FROM hotfix1;</span>
+	<p><p>DELIMITER //<br />
+DROP PROCEDURE IF EXISTS proc_hotfix1 //<br />
+CREATE PROCEDURE proc_hotfix1()<br />
+BEGIN<br />
+DECLARE flag INT DEFAULT 0;<br />
+DECLARE CID VARCHAR(64);<br />
+DECLARE LOGIN VARCHAR(1000);<br />
+DECLARE cur1 CURSOR FOR<br />
+SELECT CID, LOGIN FROM MYUSER WHERE LOGIN LIKE 'bad.guy%';</p>
+<p>OPEN cur1;<br />
+REPEAT<br />
+FETCH cur1 INTO CID, LOGIN;<br />
+INSERT INTO hotfix1(id,f1) VALUES (CID, LOGIN);<br />
+UNTIL flag<br />
+END REPEAT;<br />
+CLOSE cur1;<br />
+END //</p>
+<p>DELIMITER ;<br />
+DROP TABLE IF EXISTS hotfix1;<br />
+CREATE TABLE hotfix1(<br />
+id VARCHAR(64) KEY<br />
+,f1 VARCHAR(1000)<br />
+,f2 VARCHAR(1000)<br />
+,f3 VARCHAR(1000)<br />
+);<br />
+CALL proc_hotfix1();<br />
+SELECT COUNT(*) FROM hotfix1;<br />
+SELECT * FROM hotfix1;</p>
 </p>
 
 	<hr />

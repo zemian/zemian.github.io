@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Zemian's Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/asciidoctor.css" rel="stylesheet">
+    <link href="../css/base.css" rel="stylesheet">
+    <link href="../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../about.html">About</a></li>
+            <li><a href="../archive.html">Archive</a></li>
+            <li><a href="..//tags">Tags</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">
+  			<a href="blog/2012/12/a-simple-groovy-issue-tracker-using-file-system.html"><h1>A simple Groovy issue tracker using file system</h1></a>
+  			<p>18 December 2012, tags: 
+			    <a href="../tags/groovy.html">groovy</a> 
+  			</p>
+  			<p><p>It will be a chaos not to track bugs and feature requests when you developing software. Having a simple issue tracker would make managing the project much more successful. Now I like simple stuff, and I think for small project, having this tracker right inside the source control (especially with DSVC like Mercurial/Git etc) repository is not only doable, but very convenient as well. You don't have to go crazy with all the fancy features, but just enough to track issues are fine. I would like to propose this layout for you.</p>
+<p>Let's say you have a project that looks like this</p>
+<pre><code>project
+ +- src/main/java/Hello.java
+ +- issues/issue-001.md
+ +- pom.xml
+</code></pre>
+<p>All I need is a simple directory <code>issues</code> to get going. Now I have a place to track my issue! First issue <code>issue-000.md</code> should be what your project is about. For example:</p>
+<pre><code>/id=issue-001
+/createdon=2012-12-16 18:07:08
+/type=bug
+/status=new
+/resolution=
+/from=Zemian
+/to=
+/found=
+/fixed=
+/subject=A simple Java Hello program
+
+# Updated on 2012-12-16 18:07:08
+
+We want to create a Maven based Hello world program. It should print &quot;Hello World.&quot;
+</code></pre>
+<p>I choose <code>.md</code> as file extension for intending to write comments in Markdown format. Since it's a text file, you do what you want. To be more structured, I have added some headers metadata for issue tracking. Let's define some here. I would propose to use these and formatting:</p>
+<pre><code> /id=issue-&lt;NUM&gt;
+ /createdon=&lt;TIMESTAMP&gt;
+ /type=feature|bug|question
+ /status=new|reviewing|working|onhold|testing|resolved
+ /resolution=fixed|rejected|duplicated
+ /from=&lt;REPORTER_FROM_NAME&gt;
+ /to=&lt;ASSIGNEE_TO_NAME&gt;
+ /found=&lt;VERSION_FOUND&gt;
+ /fixed=&lt;VERSION_FIXED&gt;
+</code></pre>
+<p>That should cover most of the bug and feature development issues. It's not cool to write software without a history of changes, including these issues created. So let's use a source control. I highly recommend you to use Mercurial <code>hg</code>. You can create and initialize a new repository like this.</p>
+<pre><code>bash&gt; cd project
+bash&gt; hg init
+bash&gt; hg add
+bash&gt; hg commit -m &quot;My hello world project&quot;
+</code></pre>
+<p>Now your project is created and we have a place to track your issues. Now it's simple text file, so use your favorite text editor and edit away. However, creating new issue with those header tags is boring. It will be nice to have a script that manage it a little. I have a Groovy script <code>issue.groovy</code> (see at the end of this article) that let you run reports and create new issues. You can add this script into your <code>project/issues</code> directory and you can instantly creating new issue and querying reports! Here is an example output on my PC:</p>
+<pre><code>bash&gt; cd project
+bash&gt; groovy scripts/issue.groovy
+
+Searching for issues with /status!=resolved
+Issue: /id=issue-001 /status=new /subject=A simple Java Hello program
+1 issues found.
+
+bash&gt; groovy scripts/issue.groovy --new /type=feature /subject='Add a unit test.'
+
+project/issues/issue-002.md created.
+/id=issue-002
+/createdon=2012-12-16 19:10:00
+/type=feature
+/status=new
+/resolution=
+/from=Zemian
+/to=
+/found=
+/fixed=
+/subject=Add a unit test.
+
+bash&gt; groovy scripts/issue.groovy
+
+Searching for issues with /status!=resolved
+Issue: /id=issue-000 /status=new /subject=A simple Java Hello program
+Issue: /id=issue-002 /status=new /subject=Add a unit test.
+2 issues found.
+
+bash&gt; groovy scripts/issue.groovy --details /id=002
+
+Searching for issues with /id=002
+Issue: /id=issue-002
+  /createdon=2012-12-16 19:10:00 /found= /from=Zemian /resolution= /status=new /type=feature
+  /subject=Add a unit test.
+1 issues found.
+
+bash&gt; groovy scripts/issue.groovy --update /id=001 /status=resolved /resolution=fixed 'I fixed this thang.'
+Updating issue /id=issue-001
+Updating /status=resolved
+Updating /resolution=fixed
+
+Update issue-001 completed.
+</code></pre>
+<p>The script give you some quick and consistent way to create/update/search issues. But they are just plain text files! You can just as well fire up your favorite text editor and change any any thing you want. Save and even commit it into your source repository. All will not lost.</p>
+<p>I hope this issue tracking script can get your next project started quickly. Let me know what you do you think!</p>
+<p>Enjoy!</p>
+<p>Zemian</p>
+<p>And here is my <code>issue.groovy</code> script.</p>
+<hr />
+<p>Oh, and of course I eat my own *dog food. Here are few issues that I started to track the <code>issue.grooy</code> itself.</p>
+<ul>
+<li>
+<p>v1.0.0 (2012/12/19)</p>
+</li>
+<li>
+<p><a href="https://bitbucket.org/saltnlight5/sandbox/src/tip/scripts/issue-001.md">issue-001</a></p>
+</li>
+<li>
+<p>v1.0.1 (2012/12/20)</p>
+</li>
+<li>
+<p><a href="https://bitbucket.org/saltnlight5/sandbox/src/tip/scripts/issue-002.md">issue-002</a></p>
+</li>
+<li><a href="https://bitbucket.org/saltnlight5/sandbox/src/tip/scripts/issue-003.md">issue-003</a></li>
+</ul>
+</p>
+  			<a href="blog/2012/12/getting-started-with-quartz-scheduler-on-mysql-database.html"><h1>Getting started with Quartz Scheduler on MySQL database</h1></a>
+  			<p>14 December 2012, tags: 
+			    <a href="../tags/quartz.html">quartz</a> 
+  			</p>
+  			<p><p>Here are some simple steps to get you fully started with Quartz Scheduler on MySQL database using Groovy. The script below will allow you to quickly experiment different Quartz configuration settings using an external file.</p>
+<p>First step is to setup the database with tables. Assuming you already have installed MySQL and have access to create database and tables.</p>
+<pre><code>bash&gt; mysql -u root -p
+
+sql&gt; create database quartz2;
+sql&gt; create user 'quartz2'@'localhost' identified by 'quartz2123';
+sql&gt; grant all privileges on quartz2.* to 'quartz2'@'localhost';
+sql&gt; exit;
+
+bash&gt; mysql -u root -p quartz2 &lt; /path/to/quartz-dist/docs/dbTables/tables_mysql.sql
+</code></pre>
+<p>The <code>tables_mysql.sql</code> can be found from Quartz distribution download, or directly from their source <a href="http://svn.terracotta.org/svn/quartz/tags/quartz-2.1.6/docs/dbTables">here</a>.</p>
+<p>Once the database is up, you need to write some code to start up the Quartz Scheduler. Here is a simply Groovy script <code>quartzServer.groovy</code> that will run as a tiny scheduler server.</p>
+<pre><code>// Run Quartz Scheduler as a server
+// Author: Author: Zemian Deng, Date: 2012-12-15_16:46:09
+@GrabConfig(systemClassLoader=true)
+@Grab('mysql:mysql-connector-java:5.1.22')
+@Grab('org.slf4j:slf4j-simple:1.7.1')
+@Grab('org.quartz-scheduler:quartz:2.1.6')
+import org.quartz.*
+import org.quartz.impl.*
+import org.quartz.jobs.*
+
+config = args.length &gt; 0 ? args[0] : &quot;quartz.properties&quot;
+scheduler = new StdSchedulerFactory(config).getScheduler()
+scheduler.start()
+
+// Register shutdown
+addShutdownHook {
+  scheduler.shutdown()
+}
+
+// Quartz has its own thread, so now put this script thread to sleep until
+// user hit CTRL+C
+while (!scheduler.isShutdown()) {
+ Thread.sleep(Long.MAX_VALUE)
+}
+</code></pre>
+<p>And now you just need a config file <code>quartz-mysql.properties</code> that looks like this:</p>
+<pre><code># Main Quartz configuration
+org.quartz.scheduler.skipUpdateCheck = true
+org.quartz.scheduler.instanceName = DatabaseScheduler
+org.quartz.scheduler.instanceId = NON_CLUSTERED
+org.quartz.scheduler.jobFactory.class = org.quartz.simpl.SimpleJobFactory
+org.quartz.jobStore.class = org.quartz.impl.jdbcjobstore.JobStoreTX
+org.quartz.jobStore.driverDelegateClass = org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+org.quartz.jobStore.dataSource = quartzDataSource
+org.quartz.jobStore.tablePrefix = QRTZ_
+org.quartz.threadPool.class = org.quartz.simpl.SimpleThreadPool
+org.quartz.threadPool.threadCount = 5
+
+# JobStore: JDBC jobStoreTX
+org.quartz.dataSource.quartzDataSource.driver = com.mysql.jdbc.Driver
+org.quartz.dataSource.quartzDataSource.URL = jdbc:mysql://localhost:3306/quartz2
+org.quartz.dataSource.quartzDataSource.user = quartz2
+org.quartz.dataSource.quartzDataSource.password = quartz2123
+org.quartz.dataSource.quartzDataSource.maxConnections = 8
+</code></pre>
+<p>You can run the Groovy script as usual</p>
+<pre><code>bash&gt; groovy quartzServer.groovy quartz-mysql.properties
+Dec 15, 2012 6:20:26 PM com.mchange.v2.log.MLog 
+INFO: MLog clients using java 1.4+ standard logging.
+Dec 15, 2012 6:20:27 PM com.mchange.v2.c3p0.C3P0Registry banner
+INFO: Initializing c3p0-0.9.1.1 [built 15-March-2007 01:32:31; debug? true; trace:10]
+[main] INFO org.quartz.impl.StdSchedulerFactory - Using default implementation for ThreadExecutor
+[main] INFO org.quartz.core.SchedulerSignalerImpl - Initialized Scheduler Signaller of type: class org.quartz.core.SchedulerSignalerImpl
+[main] INFO org.quartz.core.QuartzScheduler - Quartz Scheduler v.2.1.6 created.
+[main] INFO org.quartz.core.QuartzScheduler - JobFactory set to: org.quartz.simpl.SimpleJobFactory@1a40247
+[main] INFO org.quartz.impl.jdbcjobstore.JobStoreTX - Using thread monitor-based data access locking (synchronization).
+[main] INFO org.quartz.impl.jdbcjobstore.JobStoreTX - JobStoreTX initialized.
+[main] INFO org.quartz.core.QuartzScheduler - Scheduler meta-data: Quartz Scheduler (v2.1.6) 'DatabaseScheduler' with instanceId 'NON_CLUSTERED'
+  Scheduler class: 'org.quartz.core.QuartzScheduler' - running locally.
+  NOT STARTED.
+  Currently in standby mode.
+  Number of jobs executed: 0
+  Using thread pool 'org.quartz.simpl.SimpleThreadPool' - with 5 threads.
+  Using job-store 'org.quartz.impl.jdbcjobstore.JobStoreTX' - which supports persistence. and is not clustered.
+
+[main] INFO org.quartz.impl.StdSchedulerFactory - Quartz scheduler 'DatabaseScheduler' initialized from the specified file : 'quartz-mysql.properties' from the class resource path.
+[main] INFO org.quartz.impl.StdSchedulerFactory - Quartz scheduler version: 2.1.6
+Dec 15, 2012 6:20:27 PM com.mchange.v2.c3p0.impl.AbstractPoolBackedDataSource getPoolManager
+INFO: Initializing c3p0 pool... com.mchange.v2.c3p0.ComboPooledDataSource [ acquireIncrement -&gt; 3, acquireRetryAttempts
+-&gt; 30, acquireRetryDelay -&gt; 1000, autoCommitOnClose -&gt; false, automaticTestTable -&gt; null, breakAfterAcquireFailure -&gt; false, checkoutTimeout -&gt; 0, connectionCustomizerClassName -&gt; null, connectionTesterClassName -&gt; com.mchange.v2.c3p0.impl.DefaultConnectionTester, dataSourceName -&gt; 1hge16k8r18mveoq1iqtotg|1486306, debugUnreturnedConnectionStackTraces -&gt; fals
+e, description -&gt; null, driverClass -&gt; com.mysql.jdbc.Driver, factoryClassLocation -&gt; null, forceIgnoreUnresolvedTransactions -&gt; false, identityToken -&gt; 1hge16k8r18mveoq1iqtotg|1486306, idleConnectionTestPeriod -&gt; 0, initialPoolSize -&gt; 3, jdbcUrl -&gt; jdbc:mysql://localhost:3306/quartz2, lastAcquisitionFailureDefaultUser -&gt; null, maxAdministrativeTaskTime -&gt; 0
+, maxConnectionAge -&gt; 0, maxIdleTime -&gt; 0, maxIdleTimeExcessConnections -&gt; 0, maxPoolSize -&gt; 8, maxStatements -&gt; 0, maxStatementsPerConnection -&gt; 120, minPoolSize -&gt; 1, numHelperThreads -&gt; 3, numThreadsAwaitingCheckoutDefaultUser -&gt; 0, pref
+erredTestQuery -&gt; null, properties -&gt; {user=******, password=******}, propertyCycle -&gt; 0, testConnectionOnCheckin -&gt; false, testConnectionOnCheckout -&gt; false, unreturnedConnectionTimeout -&gt; 0, usesTraditionalReflectiveProxies -&gt; false ]
+[main] INFO org.quartz.impl.jdbcjobstore.JobStoreTX - Freed 0 triggers from 'acquired' / 'blocked' state.[main] INFO org.quartz.impl.jdbcjobstore.JobStoreTX - Recovering 0 jobs that were in-progress at the time of the last shut-down.
+[main] INFO org.quartz.impl.jdbcjobstore.JobStoreTX - Recovery complete.
+[main] INFO org.quartz.impl.jdbcjobstore.JobStoreTX - Removed 0 'complete' triggers.
+[main] INFO org.quartz.impl.jdbcjobstore.JobStoreTX - Removed 0 stale fired job entries.
+[main] INFO org.quartz.core.QuartzScheduler - Scheduler DatabaseScheduler_$_NON_CLUSTERED started.
+
+
+... CTRL+C
+[Thread-6] INFO org.quartz.core.QuartzScheduler - Scheduler DatabaseScheduler_$_NON_CLUSTERED shutting down.
+[Thread-6] INFO org.quartz.core.QuartzScheduler - Scheduler DatabaseScheduler_$_NON_CLUSTERED paused.
+[Thread-6] INFO org.quartz.core.QuartzScheduler - Scheduler DatabaseScheduler_$_NON_CLUSTERED shutdown complete.
+</code></pre>
+<p>That's a full run of above setup. Go ahead and play with different config. Read <a href="http://quartz-scheduler.org/documentation/quartz-2.1.x/configuration/">http://quartz-scheduler.org/documentation/quartz-2.1.x/configuration</a> for more details.</p>
+<hr />
+<p>Here I will post couple more easy config that will get you started in a commonly used config set.</p>
+<p>A MySQL cluster enabled configuration. With this, you can start one or more shell terminal and run different instance of <code>quartzServer.groovy</code> with the same config. All the quartz scheduler instances should cluster themselve and distribute your jobs evenly.</p>
+<pre><code># Main Quartz configuration
+org.quartz.scheduler.skipUpdateCheck = true
+org.quartz.scheduler.instanceName = DatabaseClusteredScheduler
+org.quartz.scheduler.instanceId = AUTO
+org.quartz.scheduler.jobFactory.class = org.quartz.simpl.SimpleJobFactory
+org.quartz.jobStore.class = org.quartz.impl.jdbcjobstore.JobStoreTX
+org.quartz.jobStore.driverDelegateClass = org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+org.quartz.jobStore.dataSource = quartzDataSource
+org.quartz.jobStore.tablePrefix = QRTZ_
+org.quartz.jobStore.isClustered = true
+org.quartz.threadPool.class = org.quartz.simpl.SimpleThreadPool
+org.quartz.threadPool.threadCount = 5
+
+# JobStore: JDBC jobStoreTX
+org.quartz.dataSource.quartzDataSource.driver = com.mysql.jdbc.Driver
+org.quartz.dataSource.quartzDataSource.URL = jdbc:mysql://localhost:3306/quartz2
+org.quartz.dataSource.quartzDataSource.user = quartz2
+org.quartz.dataSource.quartzDataSource.password = quartz2123
+org.quartz.dataSource.quartzDataSource.maxConnections = 8
+</code></pre>
+<p>Here is another config set for a simple in-memory scheduler.</p>
+<pre><code># Main Quartz configuration
+org.quartz.scheduler.skipUpdateCheck = true
+org.quartz.scheduler.instanceName = InMemoryScheduler
+org.quartz.scheduler.jobFactory.class = org.quartz.simpl.SimpleJobFactory
+org.quartz.threadPool.class = org.quartz.simpl.SimpleThreadPool
+org.quartz.threadPool.threadCount = 5
+</code></pre>
+<p>Now, if you need more fancy UI management of Quartz, give <a href="http://code.google.com/p/myschedule">MySchedule</a> a try.</p>
+<p>Happy scheduling!</p>
+</p>
+  			<a href="blog/2012/12/cygwin-tips-open-anything-with-cygstart.html"><h1>Cygwin tips: open anything with cygstart</h1></a>
+  			<p>13 December 2012, tags: 
+			    <a href="../tags/cygwin.html">cygwin</a> 
+  			</p>
+  			<p><p>Cygwin has this cool command called <code>cygstart</code>, and I usually alias it as <code>open</code>.</p>
+<pre><code>alias open='cygstart'
+</code></pre>
+<p>Here are few things I use often:</p>
+<pre><code># bring up Windows Explore with folder open
+bash&gt; open /cygdrive/c/temp
+bash&gt; open &quot;$USERPROFILE&quot;
+ 
+# bring up browser on a url
+bash&gt; open http://google.com
+ 
+# bring up any windows program by file extension
+bash&gt; open /cygdrive/c/my.docx
+</code></pre>
+<p>Because I use a Cygwin terminal shell a lot, I have many alias shortcuts to many different directories. The <code>open .</code> allows me to jump to any directory and starts the Windows Explore with that directory expanded quickly. You can see more options with <code>open --help</code>.</p>
+</p>
+  			<a href="blog/2012/12/a-command-to-remove-all-windows-mapped-drives.html"><h1>A command to remove all Windows mapped drives</h1></a>
+  			<p>12 December 2012, tags: 
+			    <a href="../tags/cmd.html">cmd</a> 
+  			</p>
+  			<p><div class="paragraph">
+<p>If you work in a Corp env and having a Laptop, you will likely go home with it still running and it must has all the network drives still mapped. And then later when you are at home and try to use your Laptop, you will see considerable delay. The Windows Explore and many Windows application that access File Browser dialog will try relentlessly in reconnecting those drives without sucess. This also affect your Cygwin shell too.</p>
+</div>
+<div class="paragraph">
+<p>Here is a DOS command to remove them all.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>C:&gt; net use * /delete /y</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If you are in Cygwin bash, then you must quote the <code>'*'</code>.</p>
+</div></p>
+  			<a href="blog/2012/12/intellij-idea-is-pretty-awesome.html"><h1>Intellij IDEA is pretty awesome!</h1></a>
+  			<p>11 December 2012, tags: 
+			    <a href="../tags/intellij.html">intellij</a> 
+  			</p>
+  			<p><p>Did you know IntelliJ IDEA has a free Community Edition you may <a href="http://www.jetbrains.com/idea/download/index.html">download</a>? I've been test driving it, and I will post few things I learned so far.</p>
+<p>Here are few things that I usually change from out of the default installed settings.</p>
+<ol>
+<li>File &gt; Settings &gt; Editor =&gt; Uncheck &quot;Allow placement of caret after end of line&quot; -- This is the most annoying thing for me in IDE. It's just not for me.</li>
+<li>File &gt; Settings &gt; Editor &gt; Appearance =&gt; Check &quot;Show line numbers&quot; -- I tend to relate errors and navigate content better with line number displayed.</li>
+<li>File &gt; Settings &gt; Appearance &gt; Theme =&gt; Select &quot;Darcula&quot; -- This is latest version 12.0 feature. Dark screen is pretty eye pleasing compare to WHITE.</li>
+<li>File &gt; Settings &gt; Compiler =&gt; Check &quot;Make project automatically&quot; -- Another new 12.0 feature that would perform incremental compile.</li>
+</ol>
+<p>Now the IDE is ready for me to work on any Java projects. If you work with Maven, then you will be happy to know that IDEA supports it out of box. You can get an existing project started with following steps:</p>
+<ol>
+<li>
+<p>File &gt; Import Project =&gt; Browse to your project pom.xml. Even if you have multi Maven modules, you only need to pick the top level pom.xml and it will generate the multi IDEA modules for you automatically. Then click &quot;Ok&quot; button.</p>
+</li>
+<li>
+<p>In &quot;Import project from external model&quot; select &quot;Maven&quot;, and then &quot;Next&quot;.</p>
+</li>
+<li>You can accept all default settings on this prompt, and simply go &quot;Next&quot;</li>
+<li>Check all maven project to import</li>
+<li>Next screen is selecting a SDK for this project (meaning pick a JDK) to use. If this is your first time setup, then create a new one by click on the Grean plus icon, then browse to your JAVA_HOME directory and click OK. Click &quot;Next&quot; to go next step.</li>
+<li>
+<p>Simply click &quot;Next&quot; to accept default project name. Then you are at last prompt. Simply click &quot;Finish&quot; button and you should have your project ready to go.</p>
+</li>
+</ol>
+<p>It might seems like a lot of steps to import a project, but IDEA is really nice. After your project has completely imported and compiled, you should able open any of your Java class (use CTRL+N) that has <code>main</code> method or any JUnit classes. Right click the content editor and select &quot;Run ...&quot; to execute it (or CTRL+SHIFT+F10 to run any single unit test method).</p>
+<p>I have tried a decent size Java projects (few thousand source files) and it handles it very gracefully. The UI such as Menu items, Control buttons and tool bars are very user friendly and intuitive to use. Also, right click on most places should give you a &quot;Context&quot; menu with related options. Like any IDE, it supports the CTRL+Space that auto complete code as you type. There is the ALT+ENTER would suggest hints on how to fix things when you got an error with red squiggle line. Pressing CTRL+B will jump into methods or variable declarations.</p>
+<p>Another tips I have for you is the IDEA uses many icon symbols to represent many things. These give you quick visual status on files, progress and states of your Classes etc. It's helpful to see what they mean using this <a href="http://www.jetbrains.com/idea/webhelp/symbols.html">http://www.jetbrains.com/idea/webhelp/symbols.html</a></p>
+<p>So overall, I think IntelliJ IDEA is pretty good and awesome in many way.</p>
+</p>
+  			<a href="blog/2012/11/a-very-light-groovy-based-web-application-project-template.html"><h1>A very light Groovy based web application project template</h1></a>
+  			<p>28 November 2012, tags: 
+			    <a href="../tags/groovy.html">groovy</a> 
+  			</p>
+  			<p><p>You might have heard of the project Grails is a Groovy version of Ruby on Rails like framework that let you create web application much more easier with<br />
+Dynamic scripting. Despite all that power Grails provided, it is not &quot;light&quot; if you look under the hood. I am not saying Grails is bad or anything. Grails is actually pretty cool to write web application with. However I found myself often want something even lighter and yet still want to prototype with Groovy. So here I will show you a <a href="https://bitbucket.org/saltnlight5/sandbox/downloads/maven-webapp-groovy.zip">maven-groovy-webapp</a> project template that I use to get start any web application development. It's very simple, light, and yet very Groovy.</p>
+<h1>How to get started</h1>
+<p>Unzip <code>maven-webapp-groovy.zip</code> above and you should see these few files:</p>
+<pre><code>bash&gt; cd maven-webapp-groovy
+bash&gt; find .
+bash&gt; ./pom.xml
+bash&gt; ./README.txt
+bash&gt; ./src
+bash&gt; ./src/main
+bash&gt; ./src/main/java
+bash&gt; ./src/main/java/deng
+bash&gt; ./src/main/java/deng/GroovyContextListener.java
+bash&gt; ./src/main/resources
+bash&gt; ./src/main/resources/log4j.properties
+bash&gt; ./src/main/webapp
+bash&gt; ./src/main/webapp/console.gt
+bash&gt; ./src/main/webapp/health.gt
+bash&gt; ./src/main/webapp/home.gt
+bash&gt; ./src/main/webapp/WEB-INF
+bash&gt; ./src/main/webapp/WEB-INF/classes
+bash&gt; ./src/main/webapp/WEB-INF/classes/.keep
+bash&gt; ./src/main/webapp/WEB-INF/groovy
+bash&gt; ./src/main/webapp/WEB-INF/groovy/console.groovy
+bash&gt; ./src/main/webapp/WEB-INF/groovy/health.groovy
+bash&gt; ./src/main/webapp/WEB-INF/groovy/home.groovy
+bash&gt; ./src/main/webapp/WEB-INF/groovy/init.groovy
+bash&gt; ./src/main/webapp/WEB-INF/groovy/destroy.groovy
+bash&gt; ./src/main/webapp/WEB-INF/web.xml
+</code></pre>
+<p>As you can see it's a maven based application, and I have configured tomcat plugin, so you may run it like this:</p>
+<pre><code>bash&gt; mvn tomcat7:run
+bash&gt; open http://localhost:8080/maven-webapp-groovy/home.groovy
+</code></pre>
+<p>And ofcourse, with maven, running package phase will let you deploy it into any real application servers when ready.</p>
+<pre><code>bash&gt; mvn package
+bash&gt; cp target/maven-webapp-groovy.war $APP_SERVER_HOME/autodeploy
+</code></pre>
+<h1>What's in it</h1>
+<p>You should checkout the main config in <code>web.xml</code> file, and you'll see that there couple built-in Groovy servlets and a custom listener.</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;web-app xmlns=&quot;http://java.sun.com/xml/ns/javaee&quot;
+        xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+        xsi:schemaLocation=&quot;http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd&quot;
+        version=&quot;2.5&quot;&gt;
+
+    &lt;description&gt;Groovy Web Application&lt;/description&gt;
+    &lt;welcome-file-list&gt;
+        &lt;welcome-file&gt;home.groovy&lt;/welcome-file&gt;
+    &lt;/welcome-file-list&gt;
+
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;GroovyServlet&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;groovy.servlet.GroovyServlet&lt;/servlet-class&gt;
+    &lt;/servlet&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;GroovyServlet&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;*.groovy&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;TemplateServlet&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;groovy.servlet.TemplateServlet&lt;/servlet-class&gt;
+    &lt;/servlet&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;TemplateServlet&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;*.gt&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+
+    &lt;listener&gt;
+        &lt;listener-class&gt;deng.GroovyContextListener&lt;/listener-class&gt;
+    &lt;/listener&gt;
+    &lt;context-param&gt;  
+       &lt;param-name&gt;initScripts&lt;/param-name&gt;
+       &lt;param-value&gt;/WEB-INF/groovy/init.groovy&lt;/param-value&gt;
+    &lt;/context-param&gt;
+    &lt;context-param&gt;    
+       &lt;param-name&gt;destroyScripts&lt;/param-name&gt;
+       &lt;param-value&gt;/WEB-INF/groovy/destroy.groovy&lt;/param-value&gt;
+    &lt;/context-param&gt;
+
+&lt;/web-app&gt;
+</code></pre>
+<p>I've chosen to use <code>GroovyServlet</code> as a controller (it comes with Groovy!), and this let you use any scripts inside <code>/WEB-INF/groovy</code> directory. That's it, no further setup. That's about the only requirement you need to get a Groovy webapp started! See <code>console.groovy</code> as example and how it works. It's a groovy version of <a href="http://saltnlight5.blogspot.com/2012/07/script-console-tool-for-any-war.html">this JVM console</a></p>
+<p>Now you can use Groovy to process any logic and even generate the HTML output if you like, but I find it even more easier to use <code>TemplateServlet</code>. This allow Groovy template files to be serve as view. It's very much like JSP, but it uses Groovy instead! And we know Groovy syntax are much shorter to write! See <code>console.gt</code> as exmaple and how it works.</p>
+<p>The <code>GroovyContextListener</code> is something I wrote, and it's optional. This allow you to run any scripts during the webapp startup or shutdown states. I've created an empty <code>init.groovy</code> and <code>destroy.groovy</code> placeholder. So now you have all the hooks you need to prototype just about any web application you need.</p>
+<h1>Simplicity wins</h1>
+<p>This setup is just plain Java Servlet with Groovy loaded. I often think the more simple you get, then less bug and faster you code. No heavy frameworks, no extra learning curve, (other than basic Servlet API and Groovy/Java skills ofcourse), and off you go.</p>
+<p>Go have fun with this Groovy webapp template! And let me know if you have some cool prototypes to show off after playing with this. :)</p>
+</p>
+  			<a href="blog/2012/11/use-cygpath-with-p-option-for-your-java-classpath-conversion.html"><h1>Use cygpath with -p option for your Java CLASSPATH conversion</h1></a>
+  			<p>15 November 2012, tags: 
+			    <a href="../tags/cygwin.html">cygwin</a> 
+  			</p>
+  			<p><p>I just noticed that Cygwin's <code>cygpath</code> command supports <code>-p</code> option. This is a real gem when writing Java wrapper script that needs to covert CLASSPATH values. A simple script can demonstrate the purpose.</p>
+<pre><code>#!/usr/bin/env bash
+# Author: Zemian Deng, Date: 2012-11-16_06:30:00
+#
+# run.sh - A simple Java wrapper script for Cygwin and Unix/Linux shell. We assume 
+# this script is located in a subdiretory inside the application home directory.
+# Example:
+#   app/bin/run.sh
+#   app/config/log4j.properties
+#   app/lib/log4j.jar
+# Usage:
+#   bash&gt; run.sh app.Hello
+#
+DIR=$(cd &quot;$(dirname $0)/..&quot; &amp;&amp; pwd)
+CP=${CP:=&quot;$DIR/config:$DIR/lib/*&quot;}
+if [[ &quot;$OS&quot; == Windows* ]]; then
+ CP=$(cygpath -mp $CP)
+fi
+java -cp &quot;$CP&quot; &quot;$@&quot;
+</code></pre>
+</p>
+  			<a href="blog/2012/11/what-does-utf-8-with-bom-mean.html"><h1>What does UTF-8 with BOM mean?</h1></a>
+  			<p>02 November 2012  			</p>
+  			<p><p>Believe it or not, There is no such thing as Plain Text!</p>
+<p>All files in a modern Operating Sytems (Windows, Linux, or MacOSX) are saved with an encoding scheme! They are encoded (a table mapping of what each byte means) in such way so that other programs can read it back and understand how to get information out. It happens that US/ASCII encoding is earliest and widely used that people think it's just &quot;Plain Tex&quot;. But even ASCII is an encoding! It uses 7 bits in mapping all US characters in saving the bytes into file. Obviously you are free to use any kind of encoding (mapping) scheme to save any files, but if you want other programs to read it back easily, then sticking to some standard ones would help a lot. Without an agreed upon encoding, programs will not able to read files and be any useful!</p>
+<p>The most useful and practical file encoding today is &quot;UTF-8&quot; because it support Unicode, and it's widely used in internet.</p>
+<p>I discovered something odd when using Eclipse and Notepadd++. In Ecilpse, if we set default encoding with UTF-8, it would use normal UTF-8 without the Byte Order Mark (BOM). But in Notepad++, it appears to support UTF-8 wihtout BOM, but it won't recoginze it when first open. You can check this by going Menu &gt; Encoding and see which one is selected. Notepad++ seems to only recognize UTF-8 wihtout BOM with ones it converted by it's own conversion utility. Perhaps it's a bug in notepad++.</p>
+<p>So what is BOM? The byte order mark is useless for UTF-8. They only used for UTF-16 so they know which byte order is first. But UTF-8 will allow you to save these BOM for conversion purpose... they are ineffective in encoding the doc itself. So a &quot;normal&quot; UTF-8, it won't have BOM, but Windows would like to use them anyway. The Windows NOTEPAD would automatically save BOM in UTF-8!</p>
+<p>So be-aware when viewing UTF-8 without BOM encoding files in Notepad++, as it can be deceiving at first glance.</p>
+<p>Ref:</p>
+<p><a href="http://en.wikipedia.org/wiki/UTF-8">http://en.wikipedia.org/wiki/UTF-8</a></p>
+<p><a href="http://www.joelonsoftware.com/articles/Unicode.html">http://www.joelonsoftware.com/articles/Unicode.html</a></p>
+</p>
+  			<a href="blog/2012/10/a-simple-way-to-setup-java-application-with-external-configuration-file.html"><h1>A simple way to setup Java application with external configuration file</h1></a>
+  			<p>27 October 2012, tags: 
+			    <a href="../tags/java.html">java</a> 
+  			</p>
+  			<p><p>Many Java applications would deploy and run it with some kind of external configuration files. It's very typical that you would want a set of config files per environments such as DEV, QA and PROD. There many options in tackling this problem, especially in a Java app, but keeping it simple and easy to maintain would take some disciplines.</p>
+<p>Here I would layout a simple way you may use to depploy a typical Java application. The concept is simple and you can easily apply to a standalone, web, or even a JEE application.</p>
+<h2></h2>
+<p>Use a env System Properties per environment</p>
+<p>Java allows you to invoke any program with extra System Properties added. When launching an Java application, you should set an <code>env</code> property. For example:</p>
+<pre><code>bash&gt; java -Denv=prod myapp.Main
+</code></pre>
+<p>This property would give your <code>Main</code> application to identify which environment you are running against with. You should be reading it like this inside your code:</p>
+<pre><code>String env = System.getProperty(&quot;env&quot;, &quot;dev&quot;);
+</code></pre>
+<p>This way you always would have an environment to work with. Even if user doesn't supply one, it will default to use <code>dev</code> env.</p>
+<p>Another useful System Property to set is <code>app.home</code>. You want to set this value in relative to where your application is deployed, so you may reference any files (eg: data) easily. To do this, you can use a script wrapper to automatically calculate the path. See section below for an example.</p>
+<h2></h2>
+<p>Use a config dir prefix in CLASSPATH</p>
+<p>In stead of passing a explicit config file to your application as argument, another flexible way to load configuration file is to add an extra <code>config</code><br />
+folder into your CLASSPATH. For example, you can easily create a startup wrapper script <code>myapp.sh</code> like this:</p>
+<pre><code>#/usr/bin/env bash
+APP_HOME=$(cd &quot;`dirname $0`/..&quot; &amp;&amp; pwd)
+java $JAVA_OPTS -Dapp.home=$APP_HOME -cp &quot;$APP_HOME/config:$APP_HOME/lib/*&quot; myapp.Main &quot;$@&quot;
+</code></pre>
+<p>From this, you can setup the application packaging layout this way:</p>
+<pre><code>myapp
+    +- bin
+        +- myapp.sh
+    +- config
+        +- dev.properties
+        +- qa.properties
+        +- prod.properties
+    +- data
+        +- myrecords.data
+    +- lib
+        +- myapp-1.0.0.jar
+        +- slf4j-1.7.1.jar
+</code></pre>
+<p>You would typically invoke the application like this:</p>
+<pre><code>bash&gt; JAVA_OPTS='-Denv=prod' myapp/bin/myapp.sh
+</code></pre>
+<p>The above will give you a good foundation to load a single config properties file per <code>env</code>. For example, you can read your properites file like this somewhere in your code.</p>
+<pre><code>// Get appHome and data dir.
+String appHome = System.getProperty(&quot;app.home&quot;);
+String dataDir = appHome + &quot;/data&quot;;
+
+// Get env value to load config parameters
+String env = System.getProperty(&quot;env&quot;, &quot;dev&quot;);
+String config = env + &quot;.properites&quot;;
+Properties configProps = new Properties();
+InputStream inStream = null;
+try {
+    inStream = getClass().getClassLoader().getResourceAsStream(config);
+    configProps.load(inStream);
+} finally {
+    if (inStream != null)
+        inStream.close();
+}
+// Now load any config parameters from configProps map.
+</code></pre>
+<p>Now you would have the <code>configProps</code> object at your disposal to read any configuration keys and values set per an environment.</p>
+<p>NOTE: If you want a more flexible Java wrapper script, see my old post on <a href="http://saltnlight5.blogspot.com/2012/08/a-better-java-shell-script-wrapper.html">run-java</a> wrapper.</p>
+<h2></h2>
+<p>Do not abuse CLASSPATH</p>
+<p>Now, just because you have setup <code>config</code> as part of your CLASSPATH entry, I have to caution you not to abuse it. What I mean is do not go wild on<br />
+loading all your application resources in that folder! If you have that many resources that user MUST edit and configure, then you should re-think<br />
+about your application design! Simple interface, or configuration in this case, is always a win. Do not bother users with complexity just because<br />
+your application can support gazillion ways of configuration combination. If you can keep it as one config file, it would make users very happy.</p>
+<p>Also, this doesn't mean you have to put the entire world inside one of <code>prod.properites</code> either. In the real world, an application is likely going to have only<br />
+handful of user tunable parameters, and many other resources are less frequent used. I would recommand put the most frequently used parameters in these<br />
+config properties only. For all other (for example most of the Spring context files in an application do not belong to a typical users config level, they are more developer level config files. In another word, changing these files would have catastrophic effect to your application!) You should put these inside as part of your <code>myapp.jar</code>.</p>
+<p>You might ask, 'Oh, but what happen if I must want to override one of<br />
+the resource in the jar?'. But in that very unusual case, you would still have an option to override! You have the <code>config</code> as prefix in CLASSPATH, remember? Even when you nested resources inside a package inside the<br />
+jar, you would still able to overwrite by simply create same directory structure inside <code>config</code>. You probably only do this for emmergency and less frequent use anyway.</p>
+<h2></h2>
+<p>Feedback</p>
+<p>So what are some clever ways you have seen or done with your application configuration? I hope to hear from you and share.</p>
+</p>
+  			<a href="blog/2012/10/simple-variable-substitution-in-java-string.html"><h1>Simple Variable Substitution in Java String</h1></a>
+  			<p>24 October 2012, tags: 
+			    <a href="../tags/java.html">java</a> 
+  			</p>
+  			<p><p>When I wrote about how to improve the Java Properties class using <a href="http://saltnlight5.blogspot.com/2012/09/improving-javautilproperties.html">Props</a>, I've shown<br />
+a feature where you can use variable substition such as <code>mypath=${user.home}</code> in your config file. The implementation underneath it uses the Apache Common Lang library with <code>org.apache.commons.lang.text.StrSubstitutor</code>. There is nothing wrong with this, but I was curious how bad would it be to remove such dependency, so the <code>Props</code> can be more standalone.</p>
+<p>Here is a quick implementation in Groovy, but you should able to translate to Java easily.</p>
+<pre><code>// String variable substitutions
+def parseVariableNames(String text) {
+    def names = []
+    def pos = 0, max = text.length()
+    while (pos &lt; max) {
+        pos = text.indexOf('${', pos)
+        if (pos == -1)
+            break
+        def end = text.indexOf('}', pos + 2)
+        if (end == -1)
+            break
+        def name = text.substring(pos + 2, end)
+        names.add(name)
+        pos = end + 1
+    }
+    return names
+}
+def replaceVariable(String key, String value, String text) {
+    //println &quot;DEBUG: Replacing '${key}'' with '${value}'&quot;
+    result = text.replaceAll('\\$\\{' + key + '}', value)
+    return result
+}
+</code></pre>
+<p>Probably not the most efficient thing, but it should work. Let's have some tests.</p>
+<pre><code>// Test
+def map = [&quot;name&quot;: &quot;Zemian&quot;, &quot;id&quot;: &quot;1001&quot;]
+def inputs  = [
+    'Hello ${name}',
+    'My id is ${id}',
+    '${name} is a good programmer.',
+    '${name}\'s id is ${id}.'
+]
+
+result = inputs.collect{ line -&gt;
+    def names = parseVariableNames(line)
+    names.each{ key -&gt;
+        line = replaceVariable(key, map.get(key), line) 
+    }
+    line
+}
+assert result == [
+    'Hello Zemian',
+    'My id is 1001',
+    'Zemian is a good programmer.',
+    'Zemian\'s id is 1001.'
+]
+</code></pre>
+<p>The output should print nothing, as it passed the test. What do you think?</p>
+</p>
+
+	<hr />
+
+	<ul class="pager">
+		<li class="previous"><a href="https://zemian.github.io/21">Previous</a></li>
+		<li>Page: 22/29</li>
+		<li class="next"><a href="https://zemian.github.io/23">Next</a></li>
+	</ul>
+
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">&copy; 2011 - 2019 Zemian Deng All Rights Reserved | Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.5</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../js/jquery-1.11.1.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/prettify.js"></script>
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-135626598-1');
+    </script>
+
+  </body>
+</html>

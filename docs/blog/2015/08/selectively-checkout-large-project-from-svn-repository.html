@@ -40,7 +40,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -48,7 +48,6 @@
             <li><a href="../../../about.html">About</a></li>
             <li><a href="../../../archive.html">Archive</a></li>
             <li><a href="../../..//tags">Tags</a></li>
-            <li><a href="../../../feed.xml">Subscribe</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -62,23 +61,22 @@
 	    <a href="../../../tags/svn.html">svn</a> 
 	</p>
 
-	<p>Do you have a crazy large SVN repository that's just impractical to checkout the entire trunk? Or maybe you work on a large project that you only need few modules to do 
-your work only, and don't need the 1 hour checkout time for the rest of the trunk files? Here is how 
-you can do this with SVN command line.<br />
-<br />
-<pre>svn checkout --depth immediates http://myserver/svnrepo/myproject/trunk
+	<p><p>Do you have a crazy large SVN repository that's just impractical to checkout the entire trunk? Or maybe you work on a large project that you only need few modules to do<br />
+your work only, and don't need the 1 hour checkout time for the rest of the trunk files? Here is how<br />
+you can do this with SVN command line.</p>
+<pre><code>svn checkout --depth immediates http://myserver/svnrepo/myproject/trunk
 cd trunk
-svn update&nbsp;--depth infinity moduleA</pre>
-<pre>svn update&nbsp;--depth infinity moduleB</pre>
-<pre>svn update&nbsp;--depth infinity common/moduleX</pre>
-<pre>svn update&nbsp;--depth infinity common/moduleY</pre>
-<pre>svn update --depth empty lib/special
-svn update&nbsp;--depth infinity lib/special/jars</pre>
-<pre>
-</pre>
-<pre>
-</pre>
-<br />
+svn update --depth infinity moduleA
+
+svn update --depth infinity moduleB
+
+svn update --depth infinity common/moduleX
+
+svn update --depth infinity common/moduleY
+
+svn update --depth empty lib/special
+svn update --depth infinity lib/special/jars
+</code></pre>
 </p>
 
 	<hr />

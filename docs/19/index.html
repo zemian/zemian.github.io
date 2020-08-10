@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Zemian's Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/asciidoctor.css" rel="stylesheet">
+    <link href="../css/base.css" rel="stylesheet">
+    <link href="../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../about.html">About</a></li>
+            <li><a href="../archive.html">Archive</a></li>
+            <li><a href="..//tags">Tags</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">
+  			<a href="blog/2013/09/the-apache-camel-2-12-0-has-been-released.html"><h1>The Apache Camel 2.12.0 has been released!</h1></a>
+  			<p>10 September 2013, tags: 
+			    <a href="../tags/camel.html">camel</a> 
+  			</p>
+  			<p><p>The Apache Camel 2.12.0 has been released! Yeh!</p>
+<p>This is a special release to me mainly because I have help fixed few   <a href="https://issues.apache.org/jira/issues/?jql=project%20%3D%20CAMEL%20AND%20status%20in%20(Resolved%2C%20Closed)%20AND%20text%20~%20%22Zemian%22">Jira Issues</a>. :-P</p>
+<p>Among these, I have helped ported the old <code>quartz</code> component into <a href="http://camel.apache.org/quartz2.html">quartz2</a> using the new Quartz 2.0 API. As far as for Camel users concern, it should work just as old one, except it will now use the <code>quartz2://</code> URL prefix instead. But the implementation uses Quartz2 library that's not backward compatible with old Quartz1.8, which is very old. In addition, the <code>quartz2</code> component now has a new option <code>deleteJob=false</code> that will allow you to NOT delete the job created by Camel on shutdown, and it will also reuse existing job found with the same name in the Quartz scheduler if it exists during startup.</p>
+<p>Obviously my contribution seems tiny compare to what the <a href="http://camel.apache.org/camel-2120-release.html">full release</a> brings you, but it’s a start in helping out the project. I am glad the Camel folks accepted these patches and found it into their release.</p>
+<p>Try out the latest Camel and see what you think.</p>
+<p>Happing programming!</p>
+</p>
+  			<a href="blog/2013/09/exploring-apache-camel-core-seda-component.html"><h1>Exploring Apache Camel Core - Seda Component</h1></a>
+  			<p>08 September 2013, tags: 
+			    <a href="../tags/camel.html">camel</a> 
+  			</p>
+  			<p><p>The <code>seda</code> component in Apache Camel is very similar to the <code>direct</code> component that I’ve presented in previous blog, but in a asynchronous manner. To do this, it uses a <code>java.util.concurrent.BlockingQueue</code> as default implementation to queue up messages and disconnect from your main <code>Route</code> thread and then processing the messages in a separated thread. Because of this <code>BlockingQueue</code>, you need to be aware of the usage and config option.</p>
+<p>One option needs to be aware of asynchronous processing is the it default to queue size is unbound, meaning it will grow as much as your memory allowed. To cap this, set <code>size=1000</code>. Let’s see an example.</p>
+<pre><code>package camelcoredemo;
+
+import org.slf4j.*;
+import org.apache.camel.*;
+import org.apache.camel.builder.*;
+import org.apache.camel.main.Main;
+import java.io.*;
+
+public class SedaDemoCamel extends Main {
+    static Logger LOG = LoggerFactory.getLogger(SedaDemoCamel.class);
+    public static void main(String[] args) throws Exception {
+        SedaDemoCamel main = new SedaDemoCamel();
+        main.enableHangupSupport();
+        main.addRouteBuilder(createRouteBuilder1());
+        main.addRouteBuilder(createRouteBuilder2());
+        main.addRouteBuilder(createRouteBuilder3());
+        main.run(args);
+    }
+    // The file poller route
+    static RouteBuilder createRouteBuilder1() {
+        return new RouteBuilder() {
+            public void configure() {
+                from(&quot;file://target/input?preMove=staging&amp;move=.processed&quot;)
+                .process(new Processor() {
+                    public void process(Exchange msg) {
+                        CamelContext camelContext = msg.getContext();
+                        ProducerTemplate producer = camelContext.createProducerTemplate();
+                        String text = msg.getIn().getBody(String.class);
+                        String fileName = (String)msg.getIn().getHeader(&quot;CamelFileName&quot;);
+                        boolean specialFile = fileName.endsWith(&quot;_SPECIAL.dat&quot;);
+                        if (specialFile)
+                            producer.sendBody(&quot;seda:specialRoute&quot;, text);
+                        else
+                            producer.sendBody(&quot;seda:normalRoute&quot;, text);
+                    }
+                });
+            }
+        };
+    }
+    // The special file processing route
+    static RouteBuilder createRouteBuilder2() {
+        return new RouteBuilder() {
+            public void configure() {
+                from(&quot;seda:specialRoute&quot;)
+                .process(new Processor() {
+                    public void process(Exchange msg) {
+                        LOG.info(&quot;Processing special file: &quot; + msg);
+                    }
+                });
+            }
+        };
+    }
+    // The normal file processing route
+    static RouteBuilder createRouteBuilder3() {
+        return new RouteBuilder() {
+            public void configure() {
+                from(&quot;seda:normalRoute&quot;)
+                .process(new Processor() {
+                    public void process(Exchange msg) {
+                        LOG.info(&quot;Processing normal file: &quot; + msg);
+                    }
+                });
+            }
+        };
+    }
+}
+</code></pre>
+<p>You will notice that this demo code is very similar to the <code>direct</code> component demo, with few differences. First, we use <code>seda</code> endpoints. Second, in file poller, we read in the entire file content text. We do this because we are now passing to an asynchronous <code>Route</code> that will runs on separate threads. The poller is configured to move the processed file into different folder right after the first <code>Route</code> has ended. So we must ensure the processing <code>Route</code> is not depended on the path of the File, hence we will load entire text in instead.</p>
+<p>Another interesting <code>seda</code> option is you may set the number of concurrent threads to receive the messages to process them! Let’s say if your <strong>normal</strong> files are heavy in traffic, then you can configure to use more threads on that part (default is just one thread.)</p>
+<pre><code>from(&quot;seda:normalRoute?concurrentConsumers=10&quot;)
+.process(new Processor() {
+    public void process(Exchange msg) {
+        LOG.info(&quot;Processing normal file: &quot; + msg);
+    }
+});
+</code></pre>
+<p>To verify that your are running concurrently, you can easily configure your logger to display thread name. For<br />
+example with <code>log4j</code>, you can use this pattern:</p>
+<pre><code>log4j.rootLogger=INFO, stdout
+log4j.appender.stdout=org.apache.log4j.ConsoleAppender
+log4j.appender.stdout.layout=org.apache.log4j.PatternLayout
+log4j.appender.stdout.layout.ConversionPattern=%d %p %t [%c] - %m%n
+</code></pre>
+<p>There are more options availabe from <a href="http://camel.apache.org/seda.html">Seda</a> component<br />
+that you may explore.<br />
+<a href="http://saltnlight5.blogspot.com/2013/08/getting-started-with-apache-camel-using.html">Try it out with a Route</a><br />
+and see it for yourself.</p>
+</p>
+  			<a href="blog/2013/09/exploring-apache-camel-core-direct-component.html"><h1>Exploring Apache Camel Core - Direct Component</h1></a>
+  			<p>07 September 2013, tags: 
+			    <a href="../tags/camel.html">camel</a> 
+  			</p>
+  			<p><p>The Apache Camel allows you to create multiple <code>Route</code>'s within a single <code>CamelContext</code> space. The <code>direct</code> component in Camel would allow you to bridge messages between these <code>Route</code>'s. To demonstrate this, I will create few routes and pass messages between them.</p>
+<pre><code>package camelcoredemo;
+
+import org.slf4j.*;
+import org.apache.camel.*;
+import org.apache.camel.builder.*;
+import org.apache.camel.main.Main;
+import java.io.*;
+
+public class DirectDemoCamel extends Main {
+    static Logger LOG = LoggerFactory.getLogger(DirectDemoCamel.class);
+    public static void main(String[] args) throws Exception {
+        DirectDemoCamel main = new DirectDemoCamel();
+        main.enableHangupSupport();
+        main.addRouteBuilder(createRouteBuilder1());
+        main.addRouteBuilder(createRouteBuilder2());
+        main.addRouteBuilder(createRouteBuilder3());
+        main.run(args);
+    }
+    // The file poller route
+    static RouteBuilder createRouteBuilder1() {
+        return new RouteBuilder() {
+            public void configure() {
+                from(&quot;file://target/input?preMove=staging&amp;move=.processed&quot;)
+                .process(new Processor() {
+                    public void process(Exchange msg) {
+                        CamelContext camelContext = msg.getContext();
+                        ProducerTemplate producer = camelContext.createProducerTemplate();
+                        File file = msg.getIn().getBody(File.class);
+                        boolean specialFile = file.getName().endsWith(&quot;_SPECIAL.dat&quot;);
+                        if (specialFile)
+                            producer.send(&quot;direct:specialRoute&quot;, msg);
+                        else
+                            producer.send(&quot;direct:normalRoute&quot;, msg);
+                    }
+                });
+            }
+        };
+    }
+    // The special file processing route
+    static RouteBuilder createRouteBuilder2() {
+        return new RouteBuilder() {
+            public void configure() {
+                from(&quot;direct:specialRoute&quot;)
+                .process(new Processor() {
+                    public void process(Exchange msg) {
+                        LOG.info(&quot;Processing special file: &quot; + msg);
+                    }
+                });
+            }
+        };
+    }
+    // The normal file processing route
+    static RouteBuilder createRouteBuilder3() {
+        return new RouteBuilder() {
+            public void configure() {
+                from(&quot;direct:normalRoute&quot;)
+                .process(new Processor() {
+                    public void process(Exchange msg) {
+                        LOG.info(&quot;Processing normal file: &quot; + msg);
+                    }
+                });
+            }
+        };
+    }
+}
+</code></pre>
+<p>Here I have created 3 <code>Route</code>'s and re-used the <code>file</code> component I have introduced in the past. The first <code>Route</code> polls a directory, and then based on the name of the file found, we send it to either to <strong>special</strong> or <strong>normal</strong><code>Route</code> for processing. Because these <code>Route</code>'s are separated, we need a bridge channel to pass the messages through, hence it's what the <code>direct</code> component does. The usage is simply use any <strong>unique name</strong> within the <code>CamelContext</code>, and it will serve as a direct memory queue to pass messages. You may read from or send to these queues. So as you can see, the <code>direct</code> component let you easily breakup a complex route workflow into smaller part.</p>
+<p>In above demo, I have also introduced a bit of Camel core features: <code>ProducerTemplate</code>. Within a <code>CamelContext</code> you may create an instance of <code>ProducerTemplate</code> and it will allow you to send any messages to any endpoints dynamically at runtime. Usually you would probably want to store this producer object as member field instead of per each message processing. But for demo purpose, I will leave it as simple as that, and leave you as exercise to explore more on your own.</p>
+<p>There are more options availabe from <a href="http://camel.apache.org/direct.html">Direct</a> component<br />
+that you may explore.<br />
+<a href="http://saltnlight5.blogspot.com/2013/08/getting-started-with-apache-camel-using.html">Try it out with a Route</a><br />
+and see it for yourself.</p>
+</p>
+  			<a href="blog/2013/09/exploring-apache-camel-core-file-component.html"><h1>Exploring Apache Camel Core - File Component</h1></a>
+  			<p>04 September 2013, tags: 
+			    <a href="../tags/camel.html">camel</a> 
+  			</p>
+  			<p><p>A file poller is a very useful mechanism to solve common IT problems. Camel’s built-in <code>file</code> component is extremely flexible, and there are many options available for configuration. Let’s cover few common usages here.</p>
+<h2>Polling a directory for input files</h2>
+<p>Here is a typical Camel <code>Route</code> used to poll a directory for input files on every second.</p>
+<pre><code>import org.slf4j.*;
+import org.apache.camel.*;
+import org.apache.camel.builder.*;
+import java.io.*;
+
+public class FileRouteBuilder extends RouteBuilder {
+    static Logger LOG = LoggerFactory.getLogger(FileRouteBuilder.class);
+    public void configure() {
+        from(&quot;file://target/input?delay=1000&quot;)
+        .process(new Processor() {
+            public void process(Exchange msg) {
+                File file = msg.getIn().getBody(File.class);
+                LOG.info(&quot;Processing file: &quot; + file);
+            }
+        });
+    }
+}
+</code></pre>
+<p>Run this with following</p>
+<pre><code>mvn compile exec:java -Dexec.mainClass=org.apache.camel.main.Main -Dexec.args='-r camelcoredemo.FileRouteBuilder'
+</code></pre>
+<p>The program will begin to poll your <code>target/input</code> folder under your current directory, and wait for incoming files. To test with input files, you would need to open another terminal, and then create some files as follow.</p>
+<pre><code>echo 'Hello 1' &gt; target/input/test1.txt
+echo 'Hello 2' &gt; target/input/test2.txt
+</code></pre>
+<p>You should now see the first prompt window start to picking up the files and pass to the next <code>Processor</code> step. In the <code>Processor</code>, we obtain the <code>File</code> object from the message body. It then simply logs it’s file name. You may hit <code>CTRL+C</code> when you are done.</p>
+<p>There many configurable options from <code>file</code> componet you may use in the URL, but most of the default settings are enough to get you going as simple case above. Some of these default behavior is such that if the input folder doesn’t exists, it will create it. And when the file is done processing by the <code>Route</code>, it will be moved into a <code>.camel</code> folder. If you don’t want the file at all after processing, then set <code>delete=true</code> in the URL.</p>
+<h2>Read in the file content and converting to different types</h2>
+<p>By default, the <code>file</code> component will create a <code>org.apache.camel.component.file.GenericFile</code> object for each file found and pass it down your <code>Route</code> as message body. You may retrieve all your file information through this object. Or alternatively, you may also use the <code>Exchange</code> API to auto convert the message body object to a type you expect to receive (eg: as with <code>msg.getIn().getBody(File.class)</code>). In above example, the <code>File</code> is a type you expect to get from the message body, and Camel hence will try to convert it for you. The Camel uses the context’s registry space to pre-registered many <code>TypeConverter</code>'s that can handle most of the common data types (like Java primative etc) conversion. These <code>TypeConverter</code><em>s</em> are powerful way to make your <code>Route</code> and <code>Processor</code> more flexbile and portable.</p>
+<p>Camel will not only convert just your <code>File</code> object from message body, but it can also read the file content. If your files are character text based, then you can simply do this.</p>
+<pre><code>        from(&quot;file://target/input?charset=UTF-8&quot;)
+        .process(new Processor() {
+            public void process(Exchange msg) {
+                String text = msg.getIn().getBody(String.class);
+                LOG.info(&quot;Processing text: &quot; + text);
+            }
+        });
+</code></pre>
+<p>That’s it! Simply specify <code>String</code> type, and Camel will read your file in and pass the entire file text content as body message. You may even use the <code>charset</code> to change the encoding.</p>
+<p>If you are dealing with binary file, then simply try <code>byte[] bytes = msg.getIn().getBody(byte[].class);</code> conversion instead. Pretty cool huh?</p>
+<h2>Polling and processing large files</h2>
+<p>When working with large files, there few options in <code>file</code> componet that you might want to use to ensure proper handling. For example, you might want to move the input file into a <code>staging</code> folder before the <code>Route</code> starts the processing; and when it’s done, move it to a <code>.completed</code> folder.</p>
+<pre><code>        from(&quot;file://target/input?preMove=staging&amp;move=.completed&quot;)
+        .process(new Processor() {
+            public void process(Exchange msg) {
+                File file = msg.getIn().getBody(File.class);
+                LOG.info(&quot;Processing file: &quot; + file);
+            }
+        });
+</code></pre>
+<p>To feed input files properly into the polling folder, it’s best if the sender generates the input files in a temporary folder first, and only when it’s ready then move it into the polling folder. This will minimize reading an incomplete file by the <code>Route</code> if the input file might take times to generate. Also another solution to this is to config <code>file</code> endpoint to only read the polling folder when there is a signal or ready marker file exists. For example:</p>
+<pre><code>        from(&quot;file://target/input?preMove=staging&amp;move=.completed&amp;doneFileName=ReadyFile.txt&quot;)
+        .process(new Processor() {
+            public void process(Exchange msg) {
+                File file = msg.getIn().getBody(File.class);
+                LOG.info(&quot;Processing file: &quot; + file);
+            }
+        });
+</code></pre>
+<p>Above will only read the <code>target/input</code> folder when there is a <code>ReadyFile.txt</code> file exists. The marker file can be just an empty file, and it will be removed by Camel after polling. This solution would allow the sender to generate input files in however long time it might take.</p>
+<p>Another concern with large file processing is to avoid loading entire file content into memory for processing. To be more practical, you want to split the file into records (eg: per line) and process it one by one (or called &quot;streaming&quot;). Here is how you would do that using Camel.</p>
+<pre><code>        from(&quot;file://target/input?preMove=staging&amp;move=.completed&quot;)
+        .split(body().tokenize(&quot;\n&quot;))
+        .streaming()
+        .process(new Processor() {
+            public void process(Exchange msg) {
+                String line = msg.getIn().getBody(String.class);
+                LOG.info(&quot;Processing line: &quot; + line);
+            }
+        });
+</code></pre>
+<p>This <code>Route</code> will allow you to process large size file without cosuming too much memory and process it line by line very efficiently.</p>
+<h2>Writing messages back into file</h2>
+<p>The <code>file</code> component can also be used to write messages into files. Recall that we may use <code>dataset</code> component to generate sample messages. We will use that to feed the <code>Route</code> and send to the <code>file</code> component so you can see that each message generated will be saved into a file.</p>
+<pre><code>package camelcoredemo;
+
+import org.slf4j.*;
+import org.apache.camel.*;
+import org.apache.camel.builder.*;
+import org.apache.camel.main.Main;
+import org.apache.camel.component.dataset.*;
+
+public class FileDemoCamel extends Main {
+    static Logger LOG = LoggerFactory.getLogger(FileDemoCamel.class);
+    public static void main(String[] args) throws Exception {
+        FileDemoCamel main = new FileDemoCamel();
+        main.enableHangupSupport();
+        main.addRouteBuilder(createRouteBuilder());
+        main.bind(&quot;sampleGenerator&quot;, createDataSet());
+        main.run(args);
+    }
+    static RouteBuilder createRouteBuilder() {
+        return new RouteBuilder() {
+            public void configure() {
+                from(&quot;dataset://sampleGenerator&quot;)
+                .to(&quot;file://target/output&quot;);
+            }
+        };
+    }
+    static DataSet createDataSet() {
+        return new SimpleDataSet();
+    }
+}
+</code></pre>
+<p>Compile and run it</p>
+<pre><code>mvn compile exec:java -Dexec.mainClass=camelcoredemo.FileDemoCamel
+</code></pre>
+<p>Upon complete you will see that 10 files would be generated in <code>target/output</code> folder with<br />
+file name in <code>ID-&lt;hostname&gt;-&lt;unique-number&gt;-&lt;msg-seq-num&gt;</code> format.</p>
+<p>There are more options availabe from <a href="http://camel.apache.org/file2.html">File</a> component<br />
+that you may explore.<br />
+<a href="http://saltnlight5.blogspot.com/2013/08/getting-started-with-apache-camel-using.html">Try it out with a Route</a><br />
+and see it for yourself.</p>
+</p>
+  			<a href="blog/2013/09/exploring-apache-camel-core-dataset-component.html"><h1>Exploring Apache Camel Core - DataSet Component</h1></a>
+  			<p>03 September 2013, tags: 
+			    <a href="../tags/camel.html">camel</a> 
+  			</p>
+  			<p><p>A good sample data generator can help you test program more throughly and help measure<br />
+the processing throughput. The <code>camel-core</code> comes with a <code>dataset</code> component that can<br />
+help you do this easily. All you need is to provide a bean that implements<br />
+<code>org.apache.camel.component.dataset.DataSet</code> interface and bind it in<br />
+CamelContext registry. Here is an example:</p>
+<pre><code>package camelcoredemo;
+
+import org.slf4j.*;
+import org.apache.camel.*;
+import org.apache.camel.builder.*;
+import org.apache.camel.main.Main;
+import org.apache.camel.component.dataset.*;
+
+public class DataSetDemoCamel extends Main {
+    static Logger LOG = LoggerFactory.getLogger(DataSetDemoCamel.class);
+    public static void main(String[] args) throws Exception {
+        DataSetDemoCamel main = new DataSetDemoCamel();
+        main.enableHangupSupport();
+        main.addRouteBuilder(createRouteBuilder());
+        main.bind(&quot;sampleGenerator&quot;, createDataSet());
+        main.run(args);
+    }
+    static RouteBuilder createRouteBuilder() {
+        return new RouteBuilder() {
+            public void configure() {
+                from(&quot;dataset://sampleGenerator&quot;)
+                .to(&quot;log://demo&quot;);
+            }
+        };
+    }
+    static DataSet createDataSet() {
+        return new SimpleDataSet();
+    }
+}
+</code></pre>
+<p>Compile and run it.</p>
+<pre><code>mvn compile exec:java -Dexec.mainClass=camelcoredemo.DataSetDemoCamel
+</code></pre>
+<p>In here we have used the built-in <code>org.apache.camel.component.dataset.SimpleDataSet</code><br />
+implementation, which by default will generate 10 messages with a text body set<br />
+to <code>&lt;hello&gt;world!&lt;/hello&gt;</code>. You may easily change the value, or even provide your own<br />
+implementation starting with <code>org.apache.camel.component.dataset.DataSetSupport</code> base<br />
+class to customize your data set.</p>
+<h2>Use DataSet Component to measure throughput</h2>
+<p>One useful feature of <code>dataset</code> component I found is using it to load test your <code>Route</code>.<br />
+To do this, you have to adjust couple settings though. Let’s say if I want to load<br />
+a large text file as sample input data and feed it to the <code>Route</code>, and then measure its<br />
+throughout.</p>
+<pre><code>    static RouteBuilder createRouteBuilder() {
+        return new RouteBuilder() {
+            public void configure() {
+                from(&quot;dataset://sampleGenerator?produceDelay=0&quot;)
+                .to(&quot;log://demo?groupSize=100&quot;);
+            }
+        };
+    }
+    static DataSet createDataSet() {
+        SimpleDataSet result = new SimpleDataSet();
+        result.setSize(500);
+        result.setDefaultBody(readFileToString(&quot;my-large-sample.txt&quot;);
+        return result;
+    }
+</code></pre>
+<p>Replace above in the <code>Main</code> class and you will notice that it will pump 500 messages<br />
+into the <code>Route</code>, and it samples every 100 messages and display its throught rates. I<br />
+have to add <code>produceDelay=0</code> option so the generator so it will not pause between messages.<br />
+Then I have added <code>groupSize=100</code> option to <code>log</code> component for throughput measurement.<br />
+I skipped <code>readFileToString(String)</code> demo code since I assume you can easily figured that<br />
+out on your own. (Hint: checkout Apache <code>commons-io</code> library.)</p>
+<p>There is another side of <code>dataset</code> component that you may use, and that is to receive and<br />
+verify message content. You would simply use the same URL in a<br />
+<code>to(url)</code> line. Internally Camel would assert your message body against your original.</p>
+<p>There are more options availabe from <a href="http://camel.apache.org/dataset.html">DataSet</a> component<br />
+that you may explore.<br />
+<a href="http://saltnlight5.blogspot.com/2013/08/getting-started-with-apache-camel-using.html">Try it out with a Route</a><br />
+and see it for yourself.</p>
+</p>
+  			<a href="blog/2013/09/exploring-apache-camel-core-log-component.html"><h1>Exploring Apache Camel Core - Log Component</h1></a>
+  			<p>02 September 2013, tags: 
+			    <a href="../tags/camel.html">camel</a> 
+  			</p>
+  			<p><p>There are many ways to log and inspect the messages as it pass through your<br />
+Camel <code>Route</code>. The <code>camel-core</code> comes with a <code>log</code> component that let<br />
+you inspect the message. So instead of write a separate<br />
+<code>Processor</code> just to log a line as got processed, try using this:</p>
+<pre><code>from(&quot;timer://timer1?period=1s&quot;)
+.to(&quot;log:demo&quot;)
+</code></pre>
+<p>By default, the <code>log</code> component will record your message body content<br />
+through your logger name, <code>demo</code> in above case, at INFO level. Since you can give any<br />
+name, you can control the logging LEVEL anyway you like through a Camel<br />
+<a href="http://saltnlight5.blogspot.com/2013/08/how-to-configure-slf4j-with-different.html">SLF4J logger implementation</a>.</p>
+<p>To log the message in DEBUG level, try this</p>
+<pre><code>from(&quot;timer://timer1?period=1s&quot;)
+.to(&quot;log:demo?level=DEBUG&quot;)
+</code></pre>
+<p>Now if you use <code>log4j</code> as logger implementation, then ensure to add a<br />
+logger config like this.</p>
+<pre><code>log4j.logger.demo = DEBUG
+log4j.logger.org.apache.camel = INFO
+</code></pre>
+<p>The Camel message may have Properties and Headers as well, so to display<br />
+these, you may add <code>showAll=true</code>.</p>
+<p>When you process messages that have large body text, it might be more<br />
+practical to just dislay certain number of characters. To do this, add<br />
+<code>maxChars=256</code> to URL.</p>
+<h2>How to measure Camel messages throughput rate</h2>
+<p>One of the hidden gem of the <code>log</code> componet is its ability to log messages<br />
+throughput! You may specific group of messages to be logged, and once it<br />
+reached that count, it will print the msgs/sec rate output. To enable<br />
+this, just add <code>groupSize</code> option to URL.</p>
+<p>To demo this, I will create a <code>SampleGenerator</code> bean processor<br />
+that would flood the <code>Route</code> with sample messages. I will use the Camel<br />
+context registry to bind the bean, and then reference it in the <code>Route</code>. Here<br />
+is the demo code.</p>
+<pre><code>package camelcoredemo;
+
+import org.slf4j.*;
+import org.apache.camel.*;
+import org.apache.camel.builder.*;
+import org.apache.camel.main.Main;
+
+public class LogDemoCamel extends Main {
+    static Logger LOG = LoggerFactory.getLogger(LogDemoCamel.class);
+    public static void main(String[] args) throws Exception {
+        LogDemoCamel main = new LogDemoCamel();
+        main.enableHangupSupport();
+        main.addRouteBuilder(createRouteBuilder());
+        main.bind(&quot;sampleGenerator&quot;, new SampleGenerator());
+        main.run(args);
+    }
+    static RouteBuilder createRouteBuilder() {
+        return new RouteBuilder() {
+            public void configure() {
+                from(&quot;bean:sampleGenerator&quot;)
+                .to(&quot;log://demo?groupSize=100&quot;);
+            }
+        };
+    }
+    static class SampleGenerator implements Processor{
+        int count = 0;
+        public void process(Exchange msg) throws Exception {
+            if (count &gt;= 500){
+                LOG.info(&quot;Max count has reached. Do nothing.&quot;);
+                Thread.sleep(Long.MAX_VALUE);
+                return;
+            }
+
+            // Let's generate sample message.
+            count++;
+            LOG.trace(&quot;Generating sample msg #{}&quot;, count);
+            msg.getOut().setBody(&quot;Sample msg&quot;);
+        }
+    }
+}
+</code></pre>
+<p>Now you should able to compile and run this demo.</p>
+<pre><code>mvn compile exec:java -Dexec.mainClass=camelcoredemo.LogDemoCamel
+</code></pre>
+<p>When running this demo, you will notice the rate will be displayed on console<br />
+and how fast you can pump message to <code>Route</code> and to process it. This is a<br />
+very useful feature to help you measure and have a quick view on your <code>Route</code>'s<br />
+capability.</p>
+<p>There are more options availabe from <a href="http://camel.apache.org/log.html">Log</a> component<br />
+that you may explore.<br />
+<a href="http://saltnlight5.blogspot.com/2013/08/getting-started-with-apache-camel-using.html">Try it out with a Route</a><br />
+and see it for yourself.</p>
+</p>
+  			<a href="blog/2013/09/exploring-apache-camel-core-timer-component.html"><h1>Exploring Apache Camel Core - Timer Component</h1></a>
+  			<p>01 September 2013, tags: 
+			    <a href="../tags/camel.html">camel</a> 
+  			</p>
+  			<p><p>Camel Timer is a simple and yet useful component.<br />
+It brings the JDK’s timer functionality into your camel Route with very simple config.</p>
+<pre><code>   from(&quot;timer://mytimer?period=1000&quot;)
+    .process(new Processor() {
+        public void process(Exchange msg) {
+            LOG.info(&quot;Processing {}&quot;, msg);
+        }
+    });
+</code></pre>
+<p>That will generate a timer event message every second. You may short hand <code>1000</code> with<br />
+<code>1s</code> instead. It supports <code>m</code> for minutes, or <code>h</code> for hours as well. Pretty handy.</p>
+<p>Another useful timer feature is that it can limit (stop) the number of timer messages after a certain<br />
+count. You simply need to add <code>repeatCount</code> option toward the url.</p>
+<p>Couple of properties from the event message would be useful when handling the timer<br />
+message. Here is an example how to read them.</p>
+<pre><code>   from(&quot;timer://mytimer?period=1s&amp;repeatCount=5&quot;)
+    .process(new Processor() {
+        public void process(Exchange msg) {
+            java.util.Date fireTime = msg.getProperty(Exchange.TIMER_FIRED_TIME, java.util.Date.class);
+            int eventCount = msg.getProperty(Exchange.TIMER_COUNTER, Integer.class);
+            LOG.info(&quot;We received {}th timer event that was fired on {}&quot;, eventCount, fireTime);
+        }
+    });
+</code></pre>
+<p>There are more options availabe from <a href="http://camel.apache.org/timer.html">Timer</a> component<br />
+that you may explore.<br />
+<a href="http://saltnlight5.blogspot.com/2013/08/getting-started-with-apache-camel-using.html">Try it out with a Route</a><br />
+and see it for yourself.</p>
+</p>
+  			<a href="blog/2013/08/running-maven-war-packaging-project-without-pom-config.html"><h1>Running Maven war packaging project without pom config</h1></a>
+  			<p>27 August 2013, tags: 
+			    <a href="../tags/maven.html">maven</a> 
+  			</p>
+  			<p><p>Use Jetty (latest 9.x requires JDK7)</p>
+<pre><code>bash&gt; mvn org.eclipse.jetty:jetty-maven-plugin:run -Djetty.port=8081
+</code></pre>
+<p>Or use Jetty on JDK 6</p>
+<pre><code>bash&gt; mvn org.mortbay.jetty:jetty-maven-plugin:8.1.12.v20130726:run -Djetty.port=8081
+</code></pre>
+<p>Or use Tomcat</p>
+<pre><code>bash&gt; mvn org.apache.tomcat.maven:tomcat7-maven-plugin:run -Dmaven.tomcat.port=8081
+</code></pre>
+</p>
+  			<a href="blog/2013/08/how-to-create-web-app-with-quartz-scheduler-and-logging.html"><h1>How to create web-app with Quartz Scheduler and logging</h1></a>
+  			<p>25 August 2013, tags: 
+			    <a href="../tags/quartz.html">quartz</a> 
+  			</p>
+  			<p><p>I sometimes help out users in Quartz Scheduler forums. Once in a while some one would<br />
+ask how can he/she setup the Quartz inside a web application. This is actualy a fairly<br />
+simple thing to do. The library already comes with a <code>ServletContextListener</code> that<br />
+you can use to start a Scheduler. I will show you a simple webapp example here.</p>
+<p>First create a Maven <code>pom.xml</code> file.</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+    xsi:schemaLocation=
+        &quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd&quot;&gt;
+
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+
+    &lt;groupId&gt;quartz-web-demo&lt;/groupId&gt;
+    &lt;artifactId&gt;quartz-web-demo&lt;/artifactId&gt;
+    &lt;packaging&gt;war&lt;/packaging&gt;
+    &lt;version&gt;1.0-SANPSHOT&lt;/version&gt;
+
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.quartz-scheduler&lt;/groupId&gt;
+            &lt;artifactId&gt;quartz&lt;/artifactId&gt;
+            &lt;version&gt;2.2.0&lt;/version&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+
+&lt;/project&gt;
+</code></pre>
+<p>Then you need to create a <code>src/main/webapp/META-INF/web.xml</code> file.</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+ &lt;web-app version=&quot;2.5&quot;
+    xmlns=&quot;http://java.sun.com/xml/ns/javaee&quot;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+    xsi:schemaLocation=
+        &quot;http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd&quot;&gt;
+
+     &lt;context-param&gt;
+         &lt;param-name&gt;quartz:config-file&lt;/param-name&gt;
+         &lt;param-value&gt;quartz.properties&lt;/param-value&gt;
+     &lt;/context-param&gt;
+     &lt;context-param&gt;
+         &lt;param-name&gt;quartz:shutdown-on-unload&lt;/param-name&gt;
+         &lt;param-value&gt;true&lt;/param-value&gt;
+     &lt;/context-param&gt;
+     &lt;context-param&gt;
+         &lt;param-name&gt;quartz:wait-on-shutdown&lt;/param-name&gt;
+         &lt;param-value&gt;true&lt;/param-value&gt;
+     &lt;/context-param&gt;
+     &lt;context-param&gt;
+         &lt;param-name&gt;quartz:start-on-load&lt;/param-name&gt;
+         &lt;param-value&gt;true&lt;/param-value&gt;
+     &lt;/context-param&gt;
+
+     &lt;listener&gt;
+         &lt;listener-class&gt;org.quartz.ee.servlet.QuartzInitializerListener&lt;/listener-class&gt;
+     &lt;/listener&gt;
+
+ &lt;/web-app&gt;
+</code></pre>
+<p>And lastly, you need a <code>src/main/resources/quartz.properties</code> config file for Scheduler.</p>
+<pre><code># Main Quartz configuration
+org.quartz.scheduler.skipUpdateCheck = true
+org.quartz.scheduler.instanceName = MyQuartzScheduler
+org.quartz.scheduler.jobFactory.class = org.quartz.simpl.SimpleJobFactory
+org.quartz.threadPool.class = org.quartz.simpl.SimpleThreadPool
+org.quartz.threadPool.threadCount = 5
+</code></pre>
+<p>You may configure<br />
+<a href="http://quartz-scheduler.org/documentation/quartz-2.2.x/configuration/">many other things</a> with Quartz,<br />
+but above should get you started as in In-Memory scheduler.</p>
+<p>Now you should able to compile and run it.</p>
+<pre><code>bash&gt; mvn compile
+bash&gt; mvn org.apache.tomcat.maven:tomcat7-maven-plugin:2.1:run -Dmaven.tomcat.port=8081
+</code></pre>
+<h2>How to configure logging for Quartz Scheduler</h2>
+<p>Another frequently asked question is how do they setup logging and see the DEBUG level<br />
+messages. The Quartz Schedulers uses SLF4J, so you have many<br />
+<a href="http://saltnlight5.blogspot.com/2013/08/how-to-configure-slf4j-with-different.html">loggers options</a><br />
+to choose. I will show you how to setup Log4j for example below.</p>
+<p>First, add this to your <code>pom.xml</code></p>
+<pre><code>        &lt;dependency&gt;
+            &lt;groupId&gt;org.slf4j&lt;/groupId&gt;
+            &lt;artifactId&gt;slf4j-log4j12&lt;/artifactId&gt;
+            &lt;version&gt;1.7.5&lt;/version&gt;
+        &lt;/dependency&gt;
+</code></pre>
+<p>Then add <code>src/main/resources/log4j.properties</code> file to show messages onto STDOUT.</p>
+<pre><code>log4j.rootLogger=INFO, stdout
+log4j.logger.org.quartz=DEBUG
+log4j.appender.stdout=org.apache.log4j.ConsoleAppender
+log4j.appender.stdout.layout=org.apache.log4j.PatternLayout
+log4j.appender.stdout.layout.ConversionPattern=%5p [%t] (%F:%L) - %m%n
+</code></pre>
+<p>Restart your web application on command line, and now you should see all the DEBUG<br />
+level logging messages coming from Quartz library.</p>
+<p>With everything running, your next question might be asking how do you access the scheduler<br />
+from your web application? Well, when the scheduler is created by the servlet context listener,<br />
+it is stored inside the web app’s ServletContext space with<br />
+<code>org.quartz.impl.StdSchedulerFactory.KEY</code> key. So you may retrieve it and use it in your<br />
+own Servlet like this:</p>
+<pre><code>public class YourServlet extends HttpServlet {
+    public init(ServletConfig cfg) {
+        String key = &quot;org.quartz.impl.StdSchedulerFactory.KEY&quot;;
+        ServletContext servletContext = cfg.getServletContext();
+        StdSchedulerFactory factory = (StdSchedulerFactory) servletContext.getAttribute(key);
+        Scheduler quartzScheduler = factory.getScheduler(&quot;MyQuartzScheduler&quot;);
+        // TODO use quartzScheduler here.
+    }
+}
+</code></pre>
+<p>Now you are on your way to build your next scheduling application!</p>
+<p>Have fun!</p>
+</p>
+  			<a href="blog/2013/08/myschedule-3-2-1-0-is-out.html"><h1>MySchedule-3.2.1.0 is out!</h1></a>
+  			<p>23 August 2013, tags: 
+			    <a href="../tags/myschedule.html">myschedule</a> 
+  			</p>
+  			<p><p>The main work on this release is upgrade to Quartz 2.2.1</p>
+<ul>
+<li>Upgraded to Quartz 2.2.1
+<ul>
+<li>
+<p>Upgraded to SLF4J 1.7.5</p>
+</li>
+<li>
+<p>Quartz 2.2.1 API has some changes that break backward compatibility and this release addressed these<br />
+issues:</p>
+</li>
+</ul>
+<p>-- SchedulerPlugin interface now has different #initialize() signature<br />
+-- SchedulerListener interface has added new method #schedulerStarting()<br />
+-- Scheduler interface has couple new methods addJobs and schedulerJobs with Set instead of List.</p>
+</li>
+</ul>
+<p>Get it here: <a href="https://code.google.com/p/myschedule/downloads/list">https://code.google.com/p/myschedule/downloads/list</a></p>
+</p>
+
+	<hr />
+
+	<ul class="pager">
+		<li class="previous"><a href="https://zemian.github.io/18">Previous</a></li>
+		<li>Page: 19/29</li>
+		<li class="next"><a href="https://zemian.github.io/20">Next</a></li>
+	</ul>
+
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">&copy; 2011 - 2019 Zemian Deng All Rights Reserved | Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.5</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../js/jquery-1.11.1.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/prettify.js"></script>
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-135626598-1');
+    </script>
+
+  </body>
+</html>

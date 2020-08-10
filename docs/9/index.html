@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Zemian's Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/asciidoctor.css" rel="stylesheet">
+    <link href="../css/base.css" rel="stylesheet">
+    <link href="../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../about.html">About</a></li>
+            <li><a href="../archive.html">Archive</a></li>
+            <li><a href="..//tags">Tags</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">
+  			<a href="blog/2016/06/some-of-my-old-projects.html"><h1>Some of my old projects</h1></a>
+  			<p>30 June 2016  			</p>
+  			<p><div class="paragraph">
+<p>Here are some of interesting side projects I have worked on in the past</p>
+</div>
+<div class="sect2">
+<h3 id="_django_developer_at_shift_ministry">Django Developer at SHIFT Ministry</h3>
+<div class="paragraph">
+<p>Orlando, FL Feb 2013 to Present</p>
+</div>
+<div class="paragraph">
+<p>Eventful web application</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Technologies used: Python 2.7, Django 1.6, Bootstrap, JQuery, SublimeText, MySQL, Mercurial(hg).</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Simple CRM web application</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Technologies used: Python 3.5, Django 1.9, PyCharm, PostgreSQL, Mercurial(hg).</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_quartz_scheduler">Quartz Scheduler</h3>
+<div class="paragraph">
+<p><a href="http://quartz-scheduler.org" class="bare">http://quartz-scheduler.org</a></p>
+</div>
+<div class="paragraph">
+<p>I am a committer for Quartz Scheduler project, and I often help users on their forums. I have fixed many bug issues and implemented new features during the quartz 2.1 release. You may find my commits with svn username id <code>light5</code> in their repository, or <code>zemian</code> after they moved to github.com.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_myschedule">MySchedule</h3>
+<div class="paragraph">
+<p><a href="https://github.com/zemian/myschedule" class="bare">https://github.com/zemian/myschedule</a></p>
+</div>
+<div class="paragraph">
+<p>I have written a UI front-end web application to managing quartz schedulers. I am the owner of this project, and I have done build, release, and written full documentation on how to use the application. There are several thousands of downloads since the first release.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_timemachine_scheduler">TimeMachine Scheduler</h3>
+<div class="paragraph">
+<p><a href="https://bitbucket.org/zemian/timemachine-scheduler" class="bare">https://bitbucket.org/zemian/timemachine-scheduler</a> (Inactive!)</p>
+</div>
+<div class="paragraph">
+<p>Ive created a Java scheduler project that is fully scalable for enterprise use. Its a scheduler application that has easy job configuration and flexible scheduling with plugable data storage.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_sweetscala_web_framework">SweetScala Web Framework</h3>
+<div class="paragraph">
+<p><a href="https://code.google.com/archive/p/sweetscala" class="bare">https://code.google.com/archive/p/sweetscala</a> (Inactive!)</p>
+</div>
+<div class="paragraph">
+<p>Sweet is a MVC based web application framework for building dynamic web applications. The framework is made with Scala, an Object Oriented and Functional programming language that runs on JVM.</p>
+</div>
+</div></p>
+  			<a href="blog/2016/06/how-to-install-venv-and-pip-with-a-python-3-4-distribution.html"><h1>How to install venv and pip with a python 3.4 distribution</h1></a>
+  			<p>27 June 2016, tags: 
+			    <a href="../tags/python.html">python</a> 
+  			</p>
+  			<p><p>If you are unfortunate enough to have stuck with a Python 3.4 distribution and you want to setup a virtual env, then likely you will get the ensurepip module not found error:</p>
+<p>bash&gt; python3.4 -m venv mypy<br />
+Error: Command '['/home/zedeng/py-dev/mypy/bin/python3.4', '-Im', 'ensurepip', '--upgrade', '--default-pip']' returned non-zero exit status 1</p>
+<p>I found someone posted a nice solution [1] to this. So first remove the dir first.<br />
+bash&gt; rm -r mypy</p>
+<p>Now do it again like this:<br />
+bash&gt; python3.4 -m venv mypy --without-pip<br />
+bash&gt; . mypy/bin/activate</p>
+<p>mypy&gt; wget <a href="https://bootstrap.pypa.io/get-pip.py">https://bootstrap.pypa.io/get-pip.py</a><br />
+mypy&gt; python get-pip.py<br />
+mypy&gt; pip list</p>
+<p>Now the problem is solved. I believe this problem is gone if you upgrade to Python 3.5</p>
+<p>[1] <a href="http://www.thefourtheye.in/2014/12/Python-venv-problem-with-ensurepip-in-Ubuntu.html">http://www.thefourtheye.in/2014/12/Python-venv-problem-with-ensurepip-in-Ubuntu.html</a></p>
+</p>
+  			<a href="blog/2016/06/getting-started-with-postgresql-database.html"><h1>Getting started with PostgreSQL database</h1></a>
+  			<p>26 June 2016, tags: 
+			    <a href="../tags/postgres.html">postgres</a> 
+  			</p>
+  			<p><p>I have been learning and using PostgreSQL recently for a Django app, and I have to say it's really GOOD! I have used quite a bit of MySQL and Oracle DB in my workplace, so I didn't find good reason to learn PostgreSQL in the past. Now I finally get a chance to start another new project with Django, so I decided to give it a try, and I wasn't disappointed. I will write up a brief getting started guide here for those impatient to get things moving.</p>
+<p>Installing. If you are running on a Mac, the easiest way to try it out is just get the <a href="http://postgresapp.com">http://postgresapp.com</a>, you just start the App, and your DB is running! No config needed!</p>
+<p>After you have the database installed and running, you can either connect to the default &quot;postgres&quot; public database by (psql command), or create your own database. To create your own database, you run this command:</p>
+<p>bash&gt; PATH=/Applications/Postgres.app/Contents/Versions/latest/bin:$PATH<br />
+bash&gt; createdb mydb</p>
+<p>Now you can connect to the new database</p>
+<p>bash&gt; psql -d mydb</p>
+<p>Once you connected to database, you may run SQL to create/insert/select a table:<br />
+mydb-# create table test(id serial, name varchar(200));<br />
+mydb-# insert into test(name) values('Hello');<br />
+mydb-# select * from test;</p>
+<p>To inspect your  table columns:<br />
+mydb-# \d test;</p>
+<p>To see all tables available:<br />
+mydb-# \dt;</p>
+<p>To see all database available:<br />
+mydb-# \l;</p>
+<p>To switch to another database:<br />
+mydb-# \c mydb2;</p>
+<p>To see more help (check out \d options! it's super flexible and useful.):<br />
+mydb-# ?;</p>
+<p>To quit the psql shell:<br />
+mydb-# \q;</p>
+<p>To create a database user and set up password, you can do it on bash shell as well:</p>
+<p>bash&gt; echo &quot;CREATE ROLE mydbuser1 WITH CREATEDB LOGIN PASSWORD 'Welcome1'&quot; | psql</p>
+<p>bash&gt; echo &quot;GRANT ALL PRIVILEGES ON DATABASE mydb TO mydbuser1&quot; | psql</p>
+<p>Now you may relogin again with the user. It should prompt you for password.</p>
+<p>bash&gt; psql -U mydbuser1 -W</p>
+<p>Once you connected to your database again, you may check your user privileges:</p>
+<p>mydb-# \dp;</p>
+<p>These examples should be enough to get you setup a database for app development. The rest are just normal SQL access to database. The PostgresSQL documentation is excellent reference for all that you need: <a href="https://www.postgresql.org/docs/9.5/static/index.html">https://www.postgresql.org/docs/9.5/static/index.html</a></p>
+</p>
+  			<a href="blog/2016/06/how-to-fix-add-a-non-nullable-field-without-a-default-error.html"><h1>How to fix &apos;add a non-nullable field ... without a default&apos; error</h1></a>
+  			<p>26 June 2016, tags: 
+			    <a href="../tags/django.html">django</a> 
+  			</p>
+  			<p><p>Error example:</p>
+<p>(mypy) Zemians-Air:crmsite zemian$ ./manage.py makemigrations</p>
+<p>You are trying to add a non-nullable field 'created_dt' to customer without a default; we can't do that (the database needs something to populate existing rows).</p>
+<p>The reason this will happen if you already have a migration file that created the table first and then you create 2nd migration file that try to add new fields. The tool is not smart enough to know you don't have data there yet, and must require you to provide default data!</p>
+<p>Solution: if this is brand new table you are creating, manually remove the previous migration files and let it generate a complete one! Or if you already have table exists and it's during development, you can drop your table and recreate your migration files. Else if you have production table exist, you definitely want to address this with a default value in order to migrate successfully.</p>
+</p>
+  			<a href="blog/2016/06/untrack-file-without-deleting-it-with-a-hg-repository.html"><h1>Untrack file without deleting it with a hg repository</h1></a>
+  			<p>26 June 2016, tags: 
+			    <a href="../tags/hg.html">hg</a> 
+  			</p>
+  			<p><p>So I have created a maven based Java project using IntelliJ IDEA, and I added all files to my hg repository with this .hgignore file in place:</p>
+<p>syntax: glob<br />
+target/</p>
+<p>Later I learned that I shouln't track one of IDEA's workspace file, so I want to remove from my repository tracking, but I do not want it be deleted. Here is what you should do:</p>
+<p>bash&gt; hg forget .idea/workspace.xml<br />
+bash&gt; echo '.idea/workspace.xml' &gt;&gt; .hgignore</p>
+</p>
+  			<a href="blog/2016/06/example-of-mysql-stored-procedure-to-insert-from-a-select-cursor-values.html"><h1>Example of MySQL stored procedure to INSERT from a SELECT cursor values</h1></a>
+  			<p>26 June 2016, tags: 
+			    <a href="../tags/mysql.html">mysql</a> 
+  			</p>
+  			<p><p>DELIMITER //<br />
+DROP PROCEDURE IF EXISTS proc_hotfix1 //<br />
+CREATE PROCEDURE proc_hotfix1()<br />
+BEGIN<br />
+DECLARE flag INT DEFAULT 0;<br />
+DECLARE CID VARCHAR(64);<br />
+DECLARE LOGIN VARCHAR(1000);<br />
+DECLARE cur1 CURSOR FOR<br />
+SELECT CID, LOGIN FROM MYUSER WHERE LOGIN LIKE 'bad.guy%';</p>
+<p>OPEN cur1;<br />
+REPEAT<br />
+FETCH cur1 INTO CID, LOGIN;<br />
+INSERT INTO hotfix1(id,f1) VALUES (CID, LOGIN);<br />
+UNTIL flag<br />
+END REPEAT;<br />
+CLOSE cur1;<br />
+END //</p>
+<p>DELIMITER ;<br />
+DROP TABLE IF EXISTS hotfix1;<br />
+CREATE TABLE hotfix1(<br />
+id VARCHAR(64) KEY<br />
+,f1 VARCHAR(1000)<br />
+,f2 VARCHAR(1000)<br />
+,f3 VARCHAR(1000)<br />
+);<br />
+CALL proc_hotfix1();<br />
+SELECT COUNT(*) FROM hotfix1;<br />
+SELECT * FROM hotfix1;</p>
+</p>
+  			<a href="blog/2016/06/installing-a-local-downloaded-rpm-file.html"><h1>Installing a local downloaded .rpm file</h1></a>
+  			<p>26 June 2016, tags: 
+			    <a href="../tags/linux.html">linux</a> 
+  			</p>
+  			<p><p>To install:<br />
+bash&gt; sudo yum install &lt;package_name.rpm&gt;</p>
+<p>If you have problem installing it due to gpg check failure and you know it's a good RPM, then try with this.<br />
+bash&gt; sudo yum --nogpgcheck localinstall &lt;package_name.rpm&gt;</p>
+<p>To verify what's in the rpm:<br />
+bash&gt; rpm -qlp &lt;package_name.rpm&gt;</p>
+</p>
+  			<a href="blog/2016/06/how-to-install-zoom-conference-on-ubuntu-14-04-lts.html"><h1>How to install Zoom conference on Ubuntu 14.04 LTS</h1></a>
+  			<p>17 June 2016, tags: 
+			    <a href="../tags/linux.html">linux</a> 
+  			</p>
+  			<p><ol>
+<li>
+<p>Download latest zoom_2.0.52458.0531_amd64.deb package from <a href="https://zoom.us/download">https://zoom.us/download</a></p>
+</li>
+<li>
+<p>Run<br />
+bash&gt; sudo dpkg -i zoom_2.0.52458.0531_amd64.deb</p>
+</li>
+<li>
+<p>Even though the package installed complete, you will see error messages if you have a 64-bit OS because Zoom has other dependencies that's not met. And the above command will setup the apt-get to auto fetch the failed dependencies if you simply run the following next:<br />
+bash&gt; sudo apt-get -f install</p>
+</li>
+</ol>
+<p>That's it! Your zoom should be ready to go! Try to start Zoom by press Super + A, then type in &quot;Zoom&quot;.</p>
+<p>Extra: To Verify Installation, you may run:<br />
+bash&gt; dpkg -l |grep zoom</p>
+<p>UPDATE:</p>
+<p>The exact same steps can be used to install the Skype skype-ubuntu-precise_4.3.0.37-1_i386.deb on Ubuntu.</p>
+<p>NOTE: If you have errors running steps above, it's very likely you have upgraded your kernel or added extra repositories into apt-get that's causing all the package dependencies conflict. Try to revert back to original Ubuntu 14.04 install state and these steps should get you running!</p>
+</p>
+  			<a href="blog/2016/06/how-to-manually-test-a-datasource-connection-in-weblogic.html"><h1>How to manually test a DataSource connection in WebLogic</h1></a>
+  			<p>16 June 2016, tags: 
+			    <a href="../tags/weblogic.html">weblogic</a> 
+  			</p>
+  			<p><div class="paragraph">
+<p>When you creating new DataSource in WLS, it allows you to test the connectivity. However after you have created it, the test button is kinda hidden in a non-obvious way. This is how I get to it and test an existing DataSource that have targeted a server.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Login to Admin Console (eg: <a href="http://localhost:7100/console" class="bare">http://localhost:7100/console</a>)</p>
+</li>
+<li>
+<p>On the Domain Structure left panel, click:
+&nbsp;&nbsp;&nbsp; &lt;my_domain_name&gt; (eg: DefaultDomain) &gt; Services &gt; Data Sources</p>
+</li>
+<li>
+<p>On the right, Click on the DataSource name you want to test.</p>
+</li>
+<li>
+<p>Click the "Monitoring" tab &gt; "Testing" tab.</p>
+</li>
+<li>
+<p>Select the server the DataSource has targeted to and then press "Test Data Source" button.</p>
+</li>
+</ol>
+</div></p>
+  			<a href="blog/2016/06/how-to-setup-a-java-web-application-using-gradle.html"><h1>How to setup a Java web application using Gradle</h1></a>
+  			<p>14 June 2016, tags: 
+			    <a href="../tags/gradle.html">gradle</a> 
+  			</p>
+  			<p><p>For basic java and Gradle, it's really simple. All you need is one line in build.gradle file and you can start compiling Java source under src/main/java folder.</p>
+<p>apply plugin: 'java'</p>
+<p>But to setup a useful web application,  you would need little more. Here I have another example of Gradle 2.7 script file for building a Java web application. I also have noted few things I have discovered in the comments.</p>
+<h1>A Java web app project</h1>
+<h1>There should be a src/main/webapp as web content directory</h1>
+<p>apply plugin: 'war'<br />
+apply plugin: 'jetty'</p>
+<h1>Change jetty default port from 8080</h1>
+<p>httpPort = 9000</p>
+<h1>A repository must be given to fetch dependencies below.</h1>
+<p>repositories {<br />
+mavenCentral()<br />
+}</p>
+<h1>Library dependencies</h1>
+<p>dependencies {<br />
+// JDK lang support<br />
+// Ouch! Gradle does not support 'provided' scope! Let's use compile for now.<br />
+//provided 'org.projectlombok:lombok:1.16.6'<br />
+compile 'org.projectlombok:lombok:1.16.6'</p>
+<pre><code>// Testing
+testCompile 'junit:junit:4.12',
+    'org.hamcrest:hamcrest-library:1.3'
+
+// Database
+runtime 'mysql:mysql-connector-java:5.1.37'   
+
+// Scripting
+//runtime 'org.codehaus.groovy:groovy-all:2.4.5'
+/*
+NOTE: Error if you include groovy with gradle+jetty!!!
+java.lang.ExceptionInInitializerError:
+</code></pre>
+<p>groovy.lang.GroovyRuntimeException: Conflicting module versions. Module [groovy-all is loaded in version 2.3.10 and you are trying to load version 2.4.5<br />
+// Verify your groovy version using the following:<br />
+import javax.script.*<br />
+out.println(new ScriptEngineManager().getEngineFactories())<br />
+out.println(org.codehaus.groovy.jsr223.GroovyScriptEngineFactory.class.getProtectionDomain().getCodeSource().getLocation())<br />
+*/<br />
+}</p>
+<p>I also have this JSP in src/main/webapp/script.jsp folder</p>
+<p>&lt;%@ page import=&quot;javax.script.<em>, java.io.</em>&quot; %&gt;</p>
+<p>&lt;%<br />
+// Initialize parameters<br />
+String engineName = request.getParameter(&quot;engine&quot;);<br />
+if (engineName == null) engineName = &quot;Groovy&quot;;<br />
+String code = request.getParameter(&quot;code&quot;);<br />
+if (code == null) code = &quot;&quot;;<br />
+%&gt;</p>
+<!-- form: Script input code -->
+<h1>Scripting</h1>
+<form method="POST">
+<textarea name="code" cols="120" rows="25"><%= code %></textarea>
+<p/><input type="submit" value="Submit"/>
+</form>
+<pre>
+<%
+if (request.getMethod().equals("POST")) {
+// Process form and evaluate script code
+ScriptEngine se = new ScriptEngineManager().getEngineByName(engineName);
+if (se == null) {
+out.println("ERROR: " + engineName + " engine not found! Use 'engine' parameter to change it.");
+} else {
+try {
+Bindings b = se.createBindings();
+b.put("request", request);
+b.put("out", out);
+Object result = se.eval(code, b);
+<p>out.println(engineName + &quot; script result:&quot;);<br />
+out.println(&quot;&quot; + result);<br />
+} catch (Exception e) {<br />
+out.println(&quot;ERROR: &quot; + engineName + &quot; script failed to evaluate!&quot;);<br />
+e.printStackTrace(new PrintWriter(out));<br />
+}<br />
+}<br />
+}<br />
+%&gt;</p>
+</pre>
+<p>With this script.jsp, you can write something like this to test out your db connection.</p>
+<p>// Groovy script:<br />
+import java.sql*<br />
+conn = DriverManager.getConnection('jdbc:<a href="mysql://localhost/test">mysql://localhost/test</a>', 'dev', 'dev123')<br />
+out.println(&quot;conn=&quot; + conn)<br />
+conn.close()</p>
+<p>And just for fun, I have created a data class using ProjectLombok generator in src/main/java/myjava/MyData.java</p>
+<p>package myjava;<br />
+import java.util.*;</p>
+<p>@lombok.Data<br />
+public class MyData {<br />
+private Integer id;<br />
+private String name;<br />
+private Date createdDate;<br />
+private List<MyData> dataList;<br />
+private Map&lt;String, MyData&gt; dataMap;</p>
+<p>}</p>
+<p>I also have a unit test in src/test/java/myjava/MyDataTest.java</p>
+<p>package myjava;</p>
+<p>import org.junit.Test;<br />
+import static org.junit.Assert.assertThat;<br />
+import static org.hamcrest.Matchers.*;</p>
+<p>public class MyDataTest {<br />
+@Test<br />
+public void tesGeneratedGetterSettersAndToString() {<br />
+MyData d = new MyData();<br />
+d.setId(12345);<br />
+d.setName(&quot;foo&quot;);<br />
+assertThat(d.getId(), is(12345));<br />
+assertThat(d.getName(), is(&quot;foo&quot;));<br />
+assertThat(d.toString(), is(&quot;MyData(id=12345, name=foo, createdDate=null, dataList=null, dataMap=null)&quot;));<br />
+}</p>
+<p>}</p>
+<p>To compile code, type command: gradle compileJava</p>
+<p>To run test, type command: gradle test(A nice feature of Gradle is that it auto generate test reports! Look for them in your build/reports folder.)</p>
+<p>To run web app, type command: gradle jettyRun</p>
+</p>
+
+	<hr />
+
+	<ul class="pager">
+		<li class="previous"><a href="https://zemian.github.io/8">Previous</a></li>
+		<li>Page: 9/29</li>
+		<li class="next"><a href="https://zemian.github.io/10">Next</a></li>
+	</ul>
+
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">&copy; 2011 - 2019 Zemian Deng All Rights Reserved | Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.5</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../js/jquery-1.11.1.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/prettify.js"></script>
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-135626598-1');
+    </script>
+
+  </body>
+</html>

@@ -40,7 +40,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -48,7 +48,6 @@
             <li><a href="../../../about.html">About</a></li>
             <li><a href="../../../archive.html">Archive</a></li>
             <li><a href="../../..//tags">Tags</a></li>
-            <li><a href="../../../feed.xml">Subscribe</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -61,9 +60,7 @@
 	<p><em>01 May 2013</em>	</p>
 
 	<p><p>When designing a piece of software, I like to start with some pseudo code first, then work my way out. I tend to try mapping out the normal workflow (one that runs without any corner cases) with high level of actions as series of steps. Then the detailed implementation of the code can be filled in at later time.</p>
-
 <p>Now with Java, you can easily do this with pseudo code, bring it to life, and still make it very maintainable. Try this out.</p>
-
 <pre><code>package deng.javademo;
 
 /**
@@ -83,9 +80,7 @@ public class PseudoCodeToLife {
     }
 }
 </code></pre>
-
 <p>Now that's as high level as you can get, but it still let me fill in the implementation without losing the overall requirement flow. To implement such workflow, we need a contract that allow processor to move data from one step to another, and yet it needs to perform some action along the way. How about an interface like this.</p>
-
 <pre><code>package deng.javademo;
 
 /**
@@ -95,9 +90,7 @@ public interface StepAction {
     public void onAction(Exchange exchange);
 }
 </code></pre>
-
 <p>Next is how to wire steps together. For now we can just do it inside <code>CreditCardProcessor</code>, but you can easily abstract that into a re-usable base class.</p>
-
 <pre><code>package deng.javademo;
 
 import java.util.ArrayList;
@@ -122,11 +115,8 @@ public class CreditCardProcessor {
     }
 }
 </code></pre>
-
 <p>Pretty straight forward. Here I used an <code>Exchange</code> as message, passing between each steps to allow the workflow to exchange data. You can wrap just about any real payload and/or add a Map of header properties.</p>
-
 <p>Now what we are missing is just filling in each step of actions. Since we have an explicit step name when defining the workflow, we can just generate these method and fill in the actions per step required. I will add them all inside the <code>PseudoCodeToLife</code> and reprint it here.</p>
-
 <pre><code>package deng.javademo;
 
 /**
@@ -149,7 +139,7 @@ public class PseudoCodeToLife {
         return new StepAction() {
             @Override
             public void onAction(Exchange exchange) {
-                System.out.println("webServiceRequest step.");
+                System.out.println(&quot;webServiceRequest step.&quot;);
             }
         };
     }
@@ -158,7 +148,7 @@ public class PseudoCodeToLife {
         return new StepAction() {
             @Override
             public void onAction(Exchange exchange) {
-                System.out.println("validateCardNumber step.");
+                System.out.println(&quot;validateCardNumber step.&quot;);
             }
         };
     }
@@ -167,7 +157,7 @@ public class PseudoCodeToLife {
         return new StepAction() {
             @Override
             public void onAction(Exchange exchange) {
-                System.out.println("validateSecurityCode step.");
+                System.out.println(&quot;validateSecurityCode step.&quot;);
             }
         };
     }
@@ -176,7 +166,7 @@ public class PseudoCodeToLife {
         return new StepAction() {
             @Override
             public void onAction(Exchange exchange) {
-                System.out.println("checkAvailableCredit step.");
+                System.out.println(&quot;checkAvailableCredit step.&quot;);
             }
         };
     }
@@ -185,7 +175,7 @@ public class PseudoCodeToLife {
         return new StepAction() {
             @Override
             public void onAction(Exchange exchange) {
-                System.out.println("chargeCard step.");
+                System.out.println(&quot;chargeCard step.&quot;);
             }
         };
     }
@@ -194,13 +184,12 @@ public class PseudoCodeToLife {
         return new StepAction() {
             @Override
             public void onAction(Exchange exchange) {
-                System.out.println("webServiceResponse step.");
+                System.out.println(&quot;webServiceResponse step.&quot;);
             }
         };
     }
 }
 </code></pre>
-
 <p>That's all to this. What do you think? I think it's a simple way to tackle business problems. Simple software make less bugs and easier to maintain.</p>
 </p>
 

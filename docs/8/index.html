@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Zemian's Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/asciidoctor.css" rel="stylesheet">
+    <link href="../css/base.css" rel="stylesheet">
+    <link href="../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../about.html">About</a></li>
+            <li><a href="../archive.html">Archive</a></li>
+            <li><a href="..//tags">Tags</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">
+  			<a href="blog/2016/10/git-branch-name-with-slash.html"><h1>Git Branch name with &apos;slash&apos;</h1></a>
+  			<p>09 October 2016, tags: 
+			    <a href="../tags/git.html">git</a> 
+  			</p>
+  			<p><div class="paragraph">
+<p>Git allows you to use '/' slash in your branch name. It&#8217;s useful for grouping branches. However, you need
+to be careful that once a slashy branch name is created, you can&#8217;t use its name as the "base" for another
+new nested slash name! For example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre># this is fine
+git branch foo/bar
+git branch foo/bar2
+
+# but this fails
+git branch foo/bar/cool
+fatal: cannot lock ref 'refs/heads/foo/bar/cool': 'refs/heads/foo/bar' exists; cannot create 'refs/heads/foo/bar/cool'
+
+# So to use two level of slashes, you must first start a branch with two slashes!
+git branch foo2/bar/cool
+git branch foo2/bar/cool2
+git branch foo2/bar2/cool
+git branch foo2/bar2/cool2</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Here is a more concrete example. Let&#8217;s say you worked on an issue-123 branch, and now you are done but want to rename under a subcategory 'closed/issue-123'. If you were to create a branch 'closed' first, then the rename will fail! You have to first ensure 'closed' branch does not exist. In fact reate a 'closed/zkeepme' first, then you can always move your completed branch into that sub category!</p>
+</div></p>
+  			<a href="blog/2016/10/my-quick-git-reference.html"><h1>My Quick Git Reference</h1></a>
+  			<p>04 October 2016, tags: 
+			    <a href="../tags/git.html">git</a> 
+  			</p>
+  			<p><div class="paragraph">
+<p>I have started using git and here are some of my frequently used commands.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>git clone http://path/to/repo.git  # Retrieve a repo for work (auto checkout master branch into WorkingDir)
+git init                           # Create new repository for work (auto checkout master branch into WorkingDir)
+git init --bare                    # Create new repository without WorkingDir  - bare repo for server share only
+
+git status             # Print current status of the repo
+git branch -a          # List of all branches (including remote branches)
+git tag                # List of all tags
+git log -3                                      # Show last 3 commits
+git log -30 --oneline                           # Show last 30 commits one per line
+git log --decorate --graph --format='%h %an %s' # Show all log messages one per line in a graph
+git log --reverse |head                         # Show first commit message
+git show --stat &lt;sha1&gt; # Show what files changed on a commit
+git diff               # Show diff all files between Index and WorkingDir
+git diff readme.md     # Show diff of a file against Index
+git diff master..topic # Show diff between two branches
+
+git checkout -b topic               # Create a new topic branch and set as current branch
+                                      (New branch starts from previous checkout branch)
+git checkout -b topic origin/topic  # Create a new topic branch and set as current branch
+                                      (New branch starts from origin/topic "remote" branch)
+git branch --move topicA topicB     # Rename a branch
+git branch -d topic                 # Delete a branch (use -D to force it)
+git checkout master                 # Switch to master branch and set as current branch
+git merge topic                     # Merge changes from topic branch onto current branch
+
+git add .                        # Add files to Index
+git add readme.md                # Add one file to Index
+git add -A                       # Add everything to Index
+git commit -m 'topic: my change' # Commit Index changes
+
+git mv oldfile.md newfile.md     # Rename a file
+git rm outdated.md               # Remove a file from Index and WorkingDir
+git rm --cached outdated.md      # Remove a file from Index only (leave it in WorkingDir)
+
+git remote add origin http://path/to/repo.git     # Setup remote repository
+git remote set-url origin http://path/to/repo.git # Update remote repository
+git remote -v                                     # List remote repositories
+
+git push --set-upstream origin topic              # Push branch to remote first time
+git push                                          # Push branch to remote second time
+git push --all                                    # Push all the branches to remote!
+git push origin :topic                            # Push and DELETE the remote branch!
+
+git pull   # Fetch and merge the "auto tracked remote" branch onto current branch
+git fetch  # Fetch only the "auto tracked remote" branch onto current branch
+
+git checkout              # Restore WorkingDir from Index (will not override local modified files!)
+git checkout -- readme.md # Restore a single WorkingDir file from Index
+
+git reset          # Reset the HEAD and Index (same as --mixed)
+git reset --soft   # Reset the HEAD only
+git reset --hard   # Reset the HEAD, Index and WorkingDir!
+
+git reflog         # Inpect any recent transactions and can be use to recover lost (unnamed) commits
+
+git stash          # Put away all pending changes
+git stash pop      # Bring back all pending changes
+git stash list     # List all stashes</pre>
+</div>
+</div></p>
+  			<a href="blog/2016/07/how-to-install-cx-oracle-module-on-linux.html"><h1>How to install cx_Oracle module on Linux</h1></a>
+  			<p>23 July 2016, tags: 
+			    <a href="../tags/python.html">python</a> 
+
+			    <a href="../tags/oracle.html">oracle</a> 
+  			</p>
+  			<p><div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Here are my notes on installing <a href="http://cx-oracle.sourceforge.net/"><code>cx_Oracle</code> python module</a> to access Oracle Database 12c. First, you need to download these two packages from <a href="http://www.oracle.com/technetwork/database/features/instant-client">Oracle Instant Client</a> site.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Instant Client Package - Basic</p>
+</li>
+<li>
+<p>Instant Client Package - SDK</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+I&#8217;ve tried their <code>.rpm</code> packages and it did not work for me on Linux, so I would suggest you use the <code>.zip</code> packages instead.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Once you downloaded these two, unzip them into a single directory (eg: <code>$HOME/apps/instantclient</code>). You then need to follow these instructions to install the module itself.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>cd $HOME/apps/instantclient
+ln -s libclntsh.so.12.1 libclntsh.so
+export ORACLE_HOME=$HOME/apps/instantclient
+export LD_LIBRARY_PATH=$ORACLE_HOME:$LD_LIBRARY_PATH
+
+pip install cx_Oracle</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Here are some quick python test code to verify <code>cx_Oracle</code> is working.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="python">import cx_Oracle as db
+dsn='(DESCRIPTION=(ADDRESS=(HOST=myhost)(PORT=1521)(PROTOCOL=TCP))(CONNECT_DATA=(SERVER=DEDICATED)(SID=orcl)))'
+conn = db.connect('zemian', 'Welcome1', dsn)
+cur = conn.cursor()
+cur.execute('SELECT 1+1')
+print(cur.fetchone()[0])
+cur.close()
+conn.close()</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+Using the <code>dsn</code> form above can connect directly to database without the need to setup further entry in Oracle&#8217;s <code>tnsnames.ora</code> file.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_optionally_installing_sqlplus_client">Optionally installing sqlplus client</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The <code>sqlplus</code> is a classic client you may use to connect to the Oracle database. You may install this to perform adhoc query and verify your data. Download the following from the same download site above.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Instant Client Package - SQL*Plus</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Unzip and then add the following to your <code>PATH</code></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>export $ORACLE_HOME/bin:$PATH
+
+sqlplus mydbuser@(DESCRIPTION=(ADDRESS=(HOST=myhost)(PORT=1521)(PROTOCOL=TCP))(CONNECT_DATA=(SERVER=DEDICATED)(SID=orcl)))</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For more information, see <a href="https://docs.oracle.com/database/121/SQPUG/toc.htm"><code>sqlplus</code> doc</a></p>
+</div>
+</div>
+</div></p>
+  			<a href="blog/2016/07/simple-http-server-with-cgi-scripts-enabled.html"><h1>Simple http server with CGI scripts enabled</h1></a>
+  			<p>14 July 2016, tags: 
+			    <a href="../tags/python.html">python</a> 
+  			</p>
+  			<p><p>If you want to experiment some python code as CGI script to serve by a HTTP server,<br />
+you can get started by these steps:</p>
+<ol>
+<li>Create a <code>cgi-bin</code> directory.</li>
+<li>Ready!</li>
+</ol>
+<p>No, really, it's that simple! Try these CGI scripts out.</p>
+<h2></h2>
+<p>Example 1: <code>cgi-bin/hello.py</code></p>
+<pre><code>#!/usr/bin/env python3
+
+localvars_table = ''
+for x in dir():
+  localvars_table += '%s' % x
+localvars_table += ''
+
+print(&quot;Content-type: text/html&quot;)
+print(&quot;&quot;)
+print(&quot;&quot;&quot;
+Hello World! Your custom CGI script is working. Here are your current Python local variables.
+
+%s
+
+NOTE: If you want to write useful CGI script, try the Python 'cgi' module. See cgitest.py script.
+&quot;&quot;&quot; % (localvars_table))
+</code></pre>
+<p>To test and run this, you simply invoke these couple commands:</p>
+<pre><code>bash&gt; chmod a+x cgi-bin/hello.py
+bash&gt; python3 -m http.server --cgi
+</code></pre>
+<p>You may now test it on your browser with <a href="http://localhost:8000/cgi-bin/hello.py">http://localhost:8000/cgi-bin/hello.py</a>. Hit <code>CTRL+C</code> to stop the server.</p>
+<p>If you want to do more with fancy CGI scripts, try the Python's <code>cgi</code> module. Here is another example.</p>
+<h2></h2>
+<p>Example 2: <code>cgi-bin/cgitest.py</code></p>
+<pre><code>#!/usr/bin/env python3
+
+import cgi
+cgi.test()
+</code></pre>
+<p>Again <code>chmod</code> your <code>cgitest.py</code> script and visit <a href="http://localhost:8000/cgi-bin/cgitest.py">http://localhost:8000/cgi-bin/cgitest.py</a>. You will see all the<br />
+HTTP related data as expected when working with a CGI script. See <a href="https://docs.python.org/3/library/cgi.html">https://docs.python.org/3/library/cgi.html</a><br />
+for more details.</p>
+</p>
+  			<a href="blog/2016/07/how-to-install-posgresql-server-with-yum-on-linux.html"><h1>How to install posgresql-server with yum on Linux</h1></a>
+  			<p>08 July 2016, tags: 
+			    <a href="../tags/postgres.html">postgres</a> 
+  			</p>
+  			<p><p>If you have a RedHat/CentOS/OracleLinux distro of Linux, then <code>yum</code> should be available as your package manager. Here are the notes I have to get PostgreSQL server up running.</p>
+<pre><code>bash&gt; yum info postgresql-server
+bash&gt; # Verify that's the version you want to install
+
+bash&gt; # Ready to install
+bash&gt; sudo su -
+bash&gt; yum -y install postgresql-server
+bash&gt; service postgresql initdb
+
+bash&gt; # Startup the server manually
+bash&gt; service postgresql start
+
+bash&gt; # Make server startup at system reboot
+bash&gt; chkconfig postgresql on
+
+bash&gt; # Verify postgres DB is working
+bash&gt; su - postgres -c psql
+postgres=# \du
+postgres=# \q
+
+bash&gt; # We are done, exit root user shell
+bash&gt; exit
+</code></pre>
+<p>If you can't find <code>service</code> or <code>chkconfig</code> commands, then check to ensure you have have <code>/sbin</code> in your <code>$PATH</code>.</p>
+</p>
+  			<a href="blog/2016/07/how-to-switch-linux-account-user-without-the-target-users-password.html"><h1>How to switch Linux account user without the target user&apos;s password</h1></a>
+  			<p>07 July 2016, tags: 
+			    <a href="../tags/linux.html">linux</a> 
+  			</p>
+  			<p><p>Did you know if you have been granted <code>sudo</code> access to a remote<br />
+host with <code>su</code> command, then you may switch to any user without the<br />
+need to type in their password?</p>
+<p>Try this out:</p>
+<pre><code>zemian@myhost bash&gt; sudo su - postgres
+# When prompted for password, enter your own user account password.
+
+# Now you are in as `postgres` user!
+postgres@myhost bash&gt;
+</code></pre>
+<p>Or if you want to switch to the root user directly, simply try:</p>
+<pre><code>bash&gt; sudo su -
+</code></pre>
+<p>This is very useful when you need to switch to a user account that<br />
+was only setup just to run applications (eg: <code>postgres</code>, <code>mysql</code>,<br />
+<code>oracle</code>, or <code>weblogic</code> etc.) and not intented for real user. In this<br />
+case, you might not even know what the real password is. Above<br />
+trick should get you switch into that target user account.</p>
+</p>
+  			<a href="blog/2016/07/migrating-django-1-6-to-1-9.html"><h1>Migrating Django 1.6 to 1.9</h1></a>
+  			<p>06 July 2016, tags: 
+			    <a href="../tags/django.html">django</a> 
+  			</p>
+  			<p><div class="paragraph">
+<p>Couple years ago, I wrote a simple Events and Signin management app using django 1.6. It was fun to write and it worked really well. Just recently I have to write another quick simple CRM webapp and I decided to use Django again, but they current release is 1.9 now and I quickly found few differences.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The <code>INSTALLED_APPS</code> now takes <code>AppCofig</code> instead of package name. And there is a new <code>apps.py</code> file for it.</p>
+</li>
+<li>
+<p>There is now <code>makemigration</code> and <code>migrate</code> command to create database table.</p>
+</li>
+</ul>
+</div></p>
+  			<a href="blog/2016/07/login-to-remote-host-without-password.html"><h1>Login to remote host without password</h1></a>
+  			<p>06 July 2016, tags: 
+			    <a href="../tags/linux.html">linux</a> 
+
+			    <a href="../tags/ssh.html">ssh</a> 
+  			</p>
+  			<p><p>Most of remote systems are secured by SSH, and to gain remote control with terminal, you would need to <code>ssh</code> into the server. You will be prompted to login with your password on every session. To avoid typing password everytime, you need to setup as authorized client. Here is how you can do that with ssh key.</p>
+<p>First on your own client machine, generate the <code>$HOME/.ssh/id_rsa.pub</code> file:</p>
+<pre><code>bash&gt; ssh-keygen
+# When prompted to enter password, simply hit ENTER key to skip it!
+bash&gt; cat  ~/.ssh/id_rsa.pub
+xxxyyyzzz zemian@myhost
+# You will see a very long string instead of &quot;xxxyyyzzz&quot;.
+</code></pre>
+<p>Now you need to copy this public key string into your remote host. You need to <code>ssh</code> into the remote host with your valid password first to setup. If successful, the subsequent <code>ssh</code> into the remote host will not prompt you for password!</p>
+<pre><code>bash&gt; ssh myremotehost
+# Enter password to gain access
+</code></pre>
+<p>After you are in the remote host:</p>
+<pre><code>myremotehost&gt; vim ~/.ssh/authorized_keys
+#Paste and append the &quot;xxxyyyzzz&quot; into above file.
+</code></pre>
+<p>If you don’t already have the <code>~/.ssh/authorized_keys</code> file on remote host, then create it, but ensure you don’t let other users or groups to access it. Use command like this to change the permission:</p>
+<pre><code>bash&gt; chmod g-rw,o-rw ~/.ssh/authorized_keys
+</code></pre>
+<p>The cool thing about this is that it affects all <code>ssh</code> related commands, such as <code>scp</code> will now work without prompting you for password!</p>
+<p>Have a productive day!</p>
+</p>
+  			<a href="blog/2016/07/how-to-import-ssl-cert-into-wls-demotrust-jks-keystore-file.html"><h1>How to import SSL cert into WLS DemoTrust.jks keystore file</h1></a>
+  			<p>05 July 2016, tags: 
+			    <a href="../tags/weblogic.html">weblogic</a> 
+  			</p>
+  			<p><p>In WLS, you can import your own SSL cert into its trust keystore file to invoke &quot;https&quot; contents. Here is how you do that with the default WLS <code>DemoTrust.jks</code> file.</p>
+<pre><code>bash&gt; cd $WL_HOME/server/lib
+bash&gt; keytool -keystore DemoTrust.jks -storepass DemoTrustKeyStorePassPhrase -list
+bash&gt; keytool -keystore DemoTrust.jks -storepass DemoTrustKeyStorePassPhrase -importcert -alias mycert -file mycert.pem
+
+# Or to delete the entry
+bash&gt; keytool -keystore DemoTrust.jks -storepass DemoTrustKeyStorePassPhrase -delete -alias mycert
+</code></pre>
+<p>The file <code>mycert.pem</code> can be obtained by any modern browser when you visit the &quot;https&quot; site. For example using Firefox, you can follow these steps to export the cert file:</p>
+<ol>
+<li></li>
+</ol>
+<p>Click on the Lock icon next to the URL in the broswer</p>
+<ol>
+<li></li>
+</ol>
+<p>Click More Information button, then go to the &quot;Security Tab&quot;</p>
+<ol>
+<li></li>
+</ol>
+<p>Click View Certificate button, then go to the Details tab</p>
+<ol>
+<li></li>
+</ol>
+<p>Click Export ​ button</p>
+<ol>
+<li></li>
+</ol>
+<p>On the bottom right corner dropdown, select X.509 Cerificate with chain (PEM)</p>
+<ol>
+<li></li>
+</ol>
+<p>Type name of file to save (eg: <code>mycert.pem</code>) and then click Save button</p>
+</p>
+  			<a href="blog/2016/07/inspect-oracle-database-schema-and-tables-with-kotlin.html"><h1>Inspect Oracle Database Schema and Tables with Kotlin</h1></a>
+  			<p>05 July 2016, tags: 
+			    <a href="../tags/kotlin.html">kotlin</a> 
+  			</p>
+  			<p><div class="listingblock">
+<div class="content">
+<pre>// Filename: conn.kts
+// Usage: kotlinc -cp /home/zedeng/Downloads/ojdbc7.jar -script conn.kts
+
+import java.sql.*
+
+Class.forName("oracle.jdbc.driver.OracleDriver")
+val conn = DriverManager.getConnection("jdbc:oracle:thin:@myremotehost:1521:MYDB", "system", "mypassword123")
+
+println("Database connection established $conn")
+println("Database Default Catalog: ${conn.getCatalog()}")
+println("Database Default Schema: ${conn.getSchema()}")
+
+val m = conn.getMetaData()
+println("${m.getDatabaseProductName()} ${m.getDatabaseMajorVersion()} ${m.getDatabaseMinorVersion()}")
+
+println("List of Schemas")
+var rs: ResultSet
+rs = m.getSchemas()
+while(rs.next()) {
+    println("  ${rs.getObject(1)}")
+}
+rs.close()
+
+val listSchemaName = conn.getSchema()
+println("List of Tables for ${listSchemaName}")
+rs = m.getTables(conn.getCatalog(), listSchemaName, null, null)
+while(rs.next()) {
+    val name = rs.getObject("TABLE_NAME")
+    println("  $name")
+}
+rs.close()
+
+println("Execute query:")
+val stmt = conn.createStatement()
+rs = stmt.executeQuery("SELECT 1+1 FROM DUAL")
+while(rs.next()) {
+    val v = rs.getObject(1)
+    println("  1 + 1 from DB=$v")
+}
+rs.close()
+stmt.close()
+
+conn.close()</pre>
+</div>
+</div></p>
+
+	<hr />
+
+	<ul class="pager">
+		<li class="previous"><a href="https://zemian.github.io/7">Previous</a></li>
+		<li>Page: 8/29</li>
+		<li class="next"><a href="https://zemian.github.io/9">Next</a></li>
+	</ul>
+
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">&copy; 2011 - 2019 Zemian Deng All Rights Reserved | Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.5</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../js/jquery-1.11.1.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/prettify.js"></script>
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-135626598-1');
+    </script>
+
+  </body>
+</html>

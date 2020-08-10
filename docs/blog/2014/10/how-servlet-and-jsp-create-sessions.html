@@ -40,7 +40,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -48,7 +48,6 @@
             <li><a href="../../../about.html">About</a></li>
             <li><a href="../../../archive.html">Archive</a></li>
             <li><a href="../../..//tags">Tags</a></li>
-            <li><a href="../../../feed.xml">Subscribe</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -62,20 +61,15 @@
 	    <a href="../../../tags/servlet.html">servlet</a> 
 	</p>
 
-	<p>In Servlet, you may get the Session object by "httpServletRequest.getSession(true)". The "true" flag will create the session if it doesn't already exist, else it gets the existing session.<br />
-<br />
-Now if you want to check whether you have the session exists or not (without have to create one if doesn't exist), you need to pass in "false" and then check for "null".<br />
-<br />
-<span style="font-family: Courier New, Courier, monospace;">Session session = httpServletRequest.getSession(false);</span><br />
-<span style="font-family: Courier New, Courier, monospace;">if (session == null) {</span><br />
-<span style="font-family: Courier New, Courier, monospace;">&nbsp; // do something without creating session object.</span><br />
-<span style="font-family: Courier New, Courier, monospace;">}</span><br />
-<br />
-Now comes the trick party. If you run above code and then dispatch the request to render a JSP page, you might quickly come to find out that the container will create a new Session object still! It turns out that by default JSP will create new Session object if you do not have one! To disable this, you need to set this explicitly on top of the JSP page:<br />
-<br />
-<span style="font-family: Courier New, Courier, monospace;">&nbsp;&lt;% page session="false" %&gt;</span><br />
-<br />
-Only with this you will able to actually prevent creation of unnecessary Session object if you were to use JSP for output! Something to watch out for when debugging session based application.
+	<p><p>In Servlet, you may get the Session object by &quot;httpServletRequest.getSession(true)&quot;. The &quot;true&quot; flag will create the session if it doesn't already exist, else it gets the existing session.</p>
+<p>Now if you want to check whether you have the session exists or not (without have to create one if doesn't exist), you need to pass in &quot;false&quot; and then check for &quot;null&quot;.</p>
+<p>Session session = httpServletRequest.getSession(false);<br />
+if (session == null) {<br />
+// do something without creating session object.<br />
+}</p>
+<p>Now comes the trick party. If you run above code and then dispatch the request to render a JSP page, you might quickly come to find out that the container will create a new Session object still! It turns out that by default JSP will create new Session object if you do not have one! To disable this, you need to set this explicitly on top of the JSP page:</p>
+<p>&lt;% page session=&quot;false&quot; %&gt;</p>
+<p>Only with this you will able to actually prevent creation of unnecessary Session object if you were to use JSP for output! Something to watch out for when debugging session based application.</p>
 </p>
 
 	<hr />

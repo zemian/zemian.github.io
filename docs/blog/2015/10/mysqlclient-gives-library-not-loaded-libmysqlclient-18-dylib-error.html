@@ -40,7 +40,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -48,7 +48,6 @@
             <li><a href="../../../about.html">About</a></li>
             <li><a href="../../../archive.html">Archive</a></li>
             <li><a href="../../..//tags">Tags</a></li>
-            <li><a href="../../../feed.xml">Subscribe</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -64,61 +63,40 @@
 	    <a href="../../../tags/mysql.html">mysql</a> 
 	</p>
 
-	<p>If you want to use python MySQLdb module (eg: if you run Trac with MySQL backend), you would need first install MySQL server on MacOSX, then install the <span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">mysqlclient</span> python package using pip. However upon verifying it, you may encounter error like this:<br />
-<br />
-<div style="background-color: black; color: whitesmoke; font-family: Monaco; font-size: 14px; line-height: normal;">
-(mypy-test)Zemians-Air:dev zemian$ pip install mysqlclient</div>
-<div style="background-color: black; color: whitesmoke; font-family: Monaco; font-size: 14px; line-height: normal;">
-Collecting mysqlclient</div>
-<div style="background-color: black; color: whitesmoke; font-family: Monaco; font-size: 14px; line-height: normal;">
-&nbsp; Using cached mysqlclient-1.3.6.tar.gz</div>
-<div style="background-color: black; color: whitesmoke; font-family: Monaco; font-size: 14px; line-height: normal;">
-Building wheels for collected packages: mysqlclient</div>
-<div style="background-color: black; color: whitesmoke; font-family: Monaco; font-size: 14px; line-height: normal;">
-&nbsp; Running setup.py bdist_wheel for mysqlclient</div>
-<div style="background-color: black; color: whitesmoke; font-family: Monaco; font-size: 14px; line-height: normal;">
-&nbsp; Stored in directory: /Users/zemian/Library/Caches/pip/wheels/9c/3b/73/8f16f45dc76999dafc2af06b0d6e1e669bc0e1594f41fcc2e8</div>
-<div style="background-color: black; color: whitesmoke; font-family: Monaco; font-size: 14px; line-height: normal;">
-Successfully built mysqlclient</div>
-<div style="background-color: black; color: whitesmoke; font-family: Monaco; font-size: 14px; line-height: normal;">
-Installing collected packages: mysqlclient</div>
-<div style="background-color: black; color: whitesmoke; font-family: Monaco; font-size: 14px; line-height: normal;">
-Successfully installed mysqlclient-1.3.6</div>
-<div style="background-color: black; color: whitesmoke; font-family: Monaco; font-size: 14px; line-height: normal;">
-(mypy-test)Zemians-Air:dev zemian$ python</div>
-<div style="background-color: black; color: whitesmoke; font-family: Monaco; font-size: 14px; line-height: normal;">
-Python 2.7.10 (default, Aug 22 2015, 20:33:39)&nbsp;</div>
-<div style="background-color: black; color: whitesmoke; font-family: Monaco; font-size: 14px; line-height: normal;">
-[GCC 4.2.1 Compatible Apple LLVM 7.0.0 (clang-700.0.59.1)] on darwin</div>
-<div style="background-color: black; color: whitesmoke; font-family: Monaco; font-size: 14px; line-height: normal;">
-Type "help", "copyright", "credits" or "license" for more information.</div>
-<div style="background-color: black; color: whitesmoke; font-family: Monaco; font-size: 14px; line-height: normal;">
-&gt;&gt;&gt; import MySQLdb</div>
-<div style="background-color: black; color: whitesmoke; font-family: Monaco; font-size: 14px; line-height: normal;">
-Traceback (most recent call last):</div>
-<div style="background-color: black; color: whitesmoke; font-family: Monaco; font-size: 14px; line-height: normal;">
-&nbsp; File "&lt;stdin&gt;", line 1, in &lt;module&gt;</div>
-<div style="background-color: black; color: whitesmoke; font-family: Monaco; font-size: 14px; line-height: normal;">
-&nbsp; File "/Users/zemian/dev/mypy-test/lib/python2.7/site-packages/MySQLdb/__init__.py", line 19, in &lt;module&gt;</div>
-<div style="background-color: black; color: whitesmoke; font-family: Monaco; font-size: 14px; line-height: normal;">
-&nbsp; &nbsp; import _mysql</div>
-<div style="background-color: black; color: whitesmoke; font-family: Monaco; font-size: 14px; line-height: normal;">
-ImportError: dlopen(/Users/zemian/dev/mypy-test/lib/python2.7/site-packages/_mysql.so, 2): Library not loaded: libmysqlclient.18.dylib</div>
-<div style="background-color: black; color: whitesmoke; font-family: Monaco; font-size: 14px; line-height: normal;">
-&nbsp; Referenced from: /Users/zemian/dev/mypy-test/lib/python2.7/site-packages/_mysql.so</div>
-<div style="background-color: black; color: whitesmoke; font-family: Monaco; font-size: 14px; line-height: normal;">
-&nbsp; Reason: image not found</div>
-<div>
-<br /></div>
-<div>
-To resolve this, you need to add the following to your shell environment<br />
-<br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">export DYLD_LIBRARY_PATH=/usr/local/mysql/lib</span><br />
-<br />
-Update 2016-06-17<br />
-To install mysqlclient on Ubuntu 14, you might need to first install the mysql_config first:<br />
-&nbsp; <span style="font-family: &quot;Courier New&quot;,Courier,monospace;">bash&gt; sudo apt-get install libmysqlclient-dev</span><br />
-<br /></div>
+	<p><p>If you want to use python MySQLdb module (eg: if you run Trac with MySQL backend), you would need first install MySQL server on MacOSX, then install the mysqlclient python package using pip. However upon verifying it, you may encounter error like this:</p>
+<p>(mypy-test)Zemians-Air:dev zemian$ pip install mysqlclient</p>
+<p>Collecting mysqlclient</p>
+<p>Using cached mysqlclient-1.3.6.tar.gz</p>
+<p>Building wheels for collected packages: mysqlclient</p>
+<p>Running setup.py bdist_wheel for mysqlclient</p>
+<p>Stored in directory: /Users/zemian/Library/Caches/pip/wheels/9c/3b/73/8f16f45dc76999dafc2af06b0d6e1e669bc0e1594f41fcc2e8</p>
+<p>Successfully built mysqlclient</p>
+<p>Installing collected packages: mysqlclient</p>
+<p>Successfully installed mysqlclient-1.3.6</p>
+<p>(mypy-test)Zemians-Air:dev zemian$ python</p>
+<p>Python 2.7.10 (default, Aug 22 2015, 20:33:39)</p>
+<p>[GCC 4.2.1 Compatible Apple LLVM 7.0.0 (clang-700.0.59.1)] on darwin</p>
+<p>Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information.</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>import MySQLdb</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Traceback (most recent call last):</p>
+<p>File &quot;<stdin>&quot;, line 1, in <module></p>
+<p>File &quot;/Users/zemian/dev/mypy-test/lib/python2.7/site-packages/MySQLdb/<strong>init</strong>.py&quot;, line 19, in <module></p>
+<pre><code>import _mysql
+</code></pre>
+<p>ImportError: dlopen(/Users/zemian/dev/mypy-test/lib/python2.7/site-packages/_mysql.so, 2): Library not loaded: libmysqlclient.18.dylib</p>
+<p>Referenced from: /Users/zemian/dev/mypy-test/lib/python2.7/site-packages/_mysql.so</p>
+<p>Reason: image not found</p>
+<p>To resolve this, you need to add the following to your shell environment</p>
+<p>export DYLD_LIBRARY_PATH=/usr/local/mysql/lib</p>
+<p>Update 2016-06-17</p>
+<p>To install mysqlclient on Ubuntu 14, you might need to first install the mysql_config first:</p>
+<p>bash&gt; sudo apt-get install libmysqlclient-dev</p>
 </p>
 
 	<hr />

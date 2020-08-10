@@ -40,7 +40,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -48,7 +48,6 @@
             <li><a href="../../../about.html">About</a></li>
             <li><a href="../../../archive.html">Archive</a></li>
             <li><a href="../../..//tags">Tags</a></li>
-            <li><a href="../../../feed.xml">Subscribe</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -62,27 +61,44 @@
 	    <a href="../../../tags/java.html">java</a> 
 	</p>
 
-	<p>Don't you envy Ruby has the Benchmark module? Yes, there are many art and science go behind how to setup and run a good micro benchmark code, especially with the JVM. But many times you just want to see some result, quickly. There is actually a very groovy and quick way to bench mark Java code with gbench! Check this out:<br />
-<pre></pre>
-<pre><span style="font-family: 'Courier New',Courier,monospace;">&nbsp;</span></pre>
-<pre><span style="font-family: 'Courier New',Courier,monospace;">@Grab('com.googlecode.gbench:gbench:0.3.1-groovy-2.0')
+	<p><p>Don't you envy Ruby has the Benchmark module? Yes, there are many art and science go behind how to setup and run a good micro benchmark code, especially with the JVM. But many times you just want to see some result, quickly. There is actually a very groovy and quick way to bench mark Java code with gbench! Check this out:</p>
+<pre><code>@Grab('com.googlecode.gbench:gbench:0.3.1-groovy-2.0')
 @Grab('commons-lang:commons-lang:2.6')
 import gbench.*
 import org.apache.commons.lang.StringUtils
 new BenchmarkBuilder().run {
     'jdk.String.split' {
-        100.times{ "a b c d e f g h i j k l m n o p q r s t u v w x y z".split(" ") }
+        100.times{ &quot;a b c d e f g h i j k l m n o p q r s t u v w x y z&quot;.split(&quot; &quot;) }
     }
     'commons-lang.StringUtils.split' {
-        100.times{ StringUtils.split("a b c d e f g h i j k l m n o p q r s t u v w x y z", " ") }
+        100.times{ StringUtils.split(&quot;a b c d e f g h i j k l m n o p q r s t u v w x y z&quot;, &quot; &quot;) }
     }
-}.prettyPrint()</span></pre>
-<br />
-I ran above and get the following on my machine:<br />
-<br />
-<span style="font-family: 'Courier New',Courier,monospace;">$ groovy benchmarkSplit.groovy</span><br />
-<span style="font-family: 'Courier New',Courier,monospace;">Environment<br />===========<br />* Groovy: 2.0.0<br />* JVM: Java HotSpot(TM) Client VM (20.1-b02, Sun Microsystems Inc.)<br />&nbsp;&nbsp;&nbsp; * JRE: 1.6.0_26<br />&nbsp;&nbsp;&nbsp; * Total Memory: 15.5 MB<br />&nbsp;&nbsp;&nbsp; * Maximum Memory: 247.5 MB<br />* OS: Windows XP (5.1, x86)<br /><br />Options<br />=======<br />* Warm Up: Auto<br />* CPU Time Measurement: On<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; user&nbsp; system&nbsp;&nbsp;&nbsp;&nbsp; cpu&nbsp;&nbsp;&nbsp; real<br /><br />jdk.String.split&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 663219&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp; 663219&nbsp; 693382<br />commons-lang.StringUtils.split&nbsp; 192721&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp; 192721&nbsp; 212359<br /></span><br />
-<br />
+}.prettyPrint()
+</code></pre>
+<p>I ran above and get the following on my machine:</p>
+<h1>$ groovy benchmarkSplit.groovy<br />
+Environment</h1>
+<ul>
+<li>Groovy: 2.0.0</li>
+<li>JVM: Java HotSpot(TM) Client VM (20.1-b02, Sun Microsystems Inc.)
+<ul>
+<li>JRE: 1.6.0_26</li>
+<li>Total Memory: 15.5 MB</li>
+<li>Maximum Memory: 247.5 MB</li>
+</ul>
+</li>
+<li>OS: Windows XP (5.1, x86)</li>
+</ul>
+<h1>Options</h1>
+<ul>
+<li>Warm Up: Auto</li>
+<li>CPU Time Measurement: On
+<pre><code>                          user  system     cpu    real
+</code></pre>
+</li>
+</ul>
+<p>jdk.String.split                663219       0  663219  693382<br />
+commons-lang.StringUtils.split  192721       0  192721  212359</p>
 </p>
 
 	<hr />

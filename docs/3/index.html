@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Zemian's Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/asciidoctor.css" rel="stylesheet">
+    <link href="../css/base.css" rel="stylesheet">
+    <link href="../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../about.html">About</a></li>
+            <li><a href="../archive.html">Archive</a></li>
+            <li><a href="..//tags">Tags</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">
+  			<a href="blog/2018/08/sybase-data-types-and-test-table-.html"><h1>Sybase Data Types and Test Table</h1></a>
+  			<p>19 August 2018, tags: 
+			    <a href="../tags/sql.html">sql</a> 
+
+			    <a href="../tags/sybase.html">sybase</a> 
+  			</p>
+  			<p><div class="listingblock">
+<div class="content">
+<pre>-- Notes for Sybase Database 16
+-- http://infocenter.sybase.com/help/index.jsp?topic=/com.sybase.infocenter.dc70202.1570/html/quickref/title.htm
+
+-- Data Types
+-- http://infocenter.sybase.com/help/index.jsp?topic=/com.sybase.infocenter.dc32300.1600/doc/html/san1390612189202.html
+
+/*
+
+CHAR          Fixed length and space padded character string (sql: CHAR)
+VARCHAR       Variable length character string (sql: VARCHAR)
+UNIVARCHAR    Same as VARCHAR but with Unicode support
+TEXT          Variable length character large string (sql: TEXT)
+
+INT           Declare integer number (sql: INT 32 bits)
+SMALLINT      16 bits
+BIGINT        64 bits
+
+REAL             Declare floating-point number 32 bits
+DOUBLE PRECISION Declare floating-point number 64 bits
+
+NUMERIC(p,s)     Declare fixed-point number (sql: NUMERIC)
+
+DATE          Declare date
+TIME          Declare time
+DATETIME      Declare datetime with sub second precision
+
+BINARY        Binary data
+BINARY        Binary data
+BINARY        Binary data
+
+ */
+-- Test table
+create table test(
+  id    int identity primary key not null,
+  ts    datetime default getdate() not null,
+  cat   varchar(10) not null,
+
+  price    numeric(19,4) null,
+  qty      int null,
+
+  txtdata  text null,
+  bindata  binary null,
+
+  distx  real null,
+  disty  double precision null
+);
+insert into test(cat, price, qty) values ('test', 100000.10, 50000),
+                                         ('test', 100000.20, 0),
+                                         ('test', 100000.00, 1),
+                                         ('test', 9977000.3333, 179),
+                                         ('test', 104729.1129, 104729);
+insert into test(cat, bindata, txtdata) values ('test2', 0xCAFEBABE, 'CAFEBABE');
+insert into test(cat, bindata) values ('test3', convert(binary, rand()));
+insert into test(cat, bindata) values ('test3', convert(binary, rand()));
+insert into test(cat, bindata) values ('test3', convert(binary, rand()));
+insert into test(cat, distx, disty) values ('test4', rand(), rand());
+insert into test(cat, distx, disty) values ('test4', rand(), rand());
+insert into test(cat, distx, disty) values ('test4', rand(), rand());
+select sum(price) from test where cat = 'test';
+select * from test order by cat, ts desc;</pre>
+</div>
+</div></p>
+  			<a href="blog/2018/08/oracle-db-data-types-and-test-table-.html"><h1>Oracle DB Data Types and Test Table</h1></a>
+  			<p>18 August 2018, tags: 
+			    <a href="../tags/sql.html">sql</a> 
+
+			    <a href="../tags/oracle.html">oracle</a> 
+  			</p>
+  			<p><div class="listingblock">
+<div class="content">
+<pre>--
+-- Notes on Oracle Database 12.2
+-- https://docs.oracle.com/en/database/oracle/oracle-database/12.2/administration.html
+
+-- DataTypes
+-- https://docs.oracle.com/en/database/oracle/oracle-database/12.2/sqlrf/Data-Types.html
+
+/*
+CHAR          Fixed length and space padded character string (sql: CHAR)
+VARCHAR2      Variable length character string (sql: VARCHAR)
+              (Oracle discourage use of VARCHAR, even though it's same as VARCHAR2 as of now.)
+NVARCHAR2     Same as VARCHAR2 but with Unicode support
+CLOB          Variable length character large string (sql: TEXT)
+
+NUMBER(p)     Declare integer number (sql: INT)
+
+BINARY_FLOAT  Declare floating-point number (sql: REAL 32 bits)
+BINARY_DOUBLE Declare floating-point number (sql: DOUBLE PRECISION 64 bits)
+
+NUMBER        Declare floating-point number (like NUMERIC with max precision and scale. Values will be stored as exact, not binary.)
+NUMBER(p,s)   Declare fixed-point number (sql: NUMERIC)
+
+DATE          Declare datetime with no sub second precision (note: it includes time!)
+TIMESTAMP     Declare datetime with sub second precision
+TIMESTAMP WITH TIMEZONE
+              Declare datetime with sub second precision and timezone
+INTERVAL YEAR TO MONTH   Declare period of time difference
+INTERVAL DAY TO DECOND   Declare period of time difference
+
+BLOB          Binary data
+ */
+
+-- Test table
+create table test (
+  id    number(32) generated always as identity primary key,
+  ts    timestamp(6) default systimestamp not null,
+  cat   varchar2(10) not null,
+
+  price    number(19,4) null,
+  qty      int null,
+
+  txtdata  varchar2(1000) null,
+  bindata  blob null,
+
+  distx  binary_float null,
+  disty  binary_double null
+);
+insert into test(cat, price, qty) values ('test', 100000.10, 50000),
+                                         ('test', 100000.20, 0),
+                                         ('test', 100000.00, 1),
+                                         ('test', 9977000.3333, 179),
+                                         ('test', 104729.1129, 104729);
+insert into test(cat, bindata, txtdata) values ('test2', hextoraw('CAFEBABE'), 'CAFEBABE');
+insert into test(cat, bindata) values ('test3', hextoraw(to_char(floor(dbms_random.value(0,256)), 'XX')));
+insert into test(cat, bindata) values ('test3', hextoraw(to_char(floor(dbms_random.value(0,256)), 'XX')));
+insert into test(cat, bindata) values ('test3', hextoraw(to_char(floor(dbms_random.value(0,256)), 'XX')));
+update test set txtdata = rawtohex(bindata) where cat = 'test3';
+insert into test(cat, distx, disty) values ('test4', dbms_random.value(0.0, 1.0), dbms_random.value(0.0, 1.0));
+insert into test(cat, distx, disty) values ('test4', dbms_random.value(0.0, 1.0), dbms_random.value(0.0, 1.0));
+insert into test(cat, distx, disty) values ('test4', dbms_random.value(0.0, 1.0), dbms_random.value(0.0, 1.0));
+select sum(price) from test where cat = 'test';
+select * from test order by cat, ts desc;</pre>
+</div>
+</div></p>
+  			<a href="blog/2018/08/mysql-data-types-and-test-table-.html"><h1>MySQL Data Types and Test Table</h1></a>
+  			<p>17 August 2018, tags: 
+			    <a href="../tags/sql.html">sql</a> 
+
+			    <a href="../tags/mysql.html">mysql</a> 
+  			</p>
+  			<p><div class="listingblock">
+<div class="content">
+<pre>-- Notes for MySQL (8)
+-- https://dev.mysql.com/doc/refman/8.0/en/
+
+-- Data Types
+-- https://dev.mysql.com/doc/refman/8.0/en/data-types.html
+
+/*
+
+CHAR          Fixed length and space padded character string (sql: CHAR)
+VARCHAR       Variable length character string (sql: VARCHAR)
+TEXT          Variable length character large string (sql: TEXT)
+
+INT           Declare integer number (sql: INT 32 bits)
+SMALLINT      16 bits
+BIGINT        64 bits
+SERIAL        Auto increment integer (INT with sequence)
+              An alias for BIGINT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE.
+
+REAL             Declare floating-point number 32 bits
+DOUBLE PRECISION Declare floating-point number 64 bits
+
+NUMERIC(p,s)     Declare fixed-point number (sql: NUMERIC)
+
+DATE          Declare date
+TIME          Declare time
+TIMESTAMP     Declare datetime (stored as UTC but convert to client session timezone)
+
+BLOB          Binary data
+
+ */
+
+-- test table
+create table test(
+  id       serial primary key,
+  ts       timestamp default current_timestamp,
+  cat      varchar(10),
+
+  price    numeric(19,4),
+  qty      int,
+
+  txtdata  text,
+  bindata  blob,
+
+  distx    real,
+  disty    double precision
+);
+insert into test(cat, price, qty) values ('test', 100000.10, 50000),
+                                         ('test', 100000.20, 0),
+                                         ('test', 100000.00, 1),
+                                         ('test', 9977000.3333, 179),
+                                         ('test', 104729.1129, 104729);
+insert into test(cat, bindata, txtdata) values ('test2', X'CAFEBABE', 'CAFEBABE');
+insert into test(cat, bindata) values ('test3', unhex(replace(uuid(), '-','')));
+insert into test(cat, bindata) values ('test3', unhex(replace(uuid(), '-','')));
+insert into test(cat, bindata) values ('test3', unhex(replace(uuid(), '-','')));
+update test set txtdata = hex(bindata) where cat = 'test3';
+insert into test(cat, distx, disty) values ('test4', rand(), rand());
+insert into test(cat, distx, disty) values ('test4', rand(), rand());
+insert into test(cat, distx, disty) values ('test4', rand(), rand());
+select sum(price) from test where cat = 'test';
+select * from test order by cat, ts desc;</pre>
+</div>
+</div></p>
+  			<a href="blog/2018/08/a-simple-java-command-line-options-parser.html"><h1>A simple Java command line options parser</h1></a>
+  			<p>13 August 2018, tags: 
+			    <a href="../tags/commandline_parser.html">commandline_parser</a> 
+  			</p>
+  			<p><div class="listingblock">
+<div class="content">
+<pre>package com.zemian.hellojava;
+
+import java.util.*;
+
+/**
+ * A simple command line arguments and options parser in the format of "--optionName=optionValue" or
+ * "-optionName=optionValue".
+ *
+ * The optionName can be one ore more characters. The equals sign must be used when providing optionValue;
+ * else it will be treated as program arguments instead! If you ommit the "=optionValue" part, then it
+ * will default to "=true" for that optionName. The optionValue must be a single string. Any other argument
+ * that are not part of options are store in a new args list.
+ *
+ * The constructor will immediately parse the input arguments, and it should not throw any exceptions. In case
+ * user did not use correct format, by above rule, it will go into the argument list instead. We purposely made
+ * this class simple, and let end user to perform any validation they need for their program.
+ *
+ * Usage example:
+ *   Hello --help
+ *   Hello --num=101 --verbose one two three
+ * ----
+ * public class Hello {}
+ *     public static void main(String[] args) {
+ *         CmdOpts opts = new CmdOpts(args);
+ *         if (opts.hasOpt("help"))
+ *           System.out.println("You need help");
+ *         int num = opts.getIntOpt("num", 0);
+ *         System.out.println("Using num=" + num);
+ *         System.out.println("Using new args=" + opts.getArgs());
+ *     }
+ * }
+ * ----
+ *
+ * Created by Zemian Deng 2017.
+ */
+public class CmdOpts {
+    private Map&lt;String, Object&gt; opts = new HashMap&lt;&gt;();
+    private List&lt;String&gt; args = new ArrayList&lt;&gt;();
+
+    public CmdOpts(String[] arguments) {
+        parse(arguments);
+    }
+
+    private void parse(String[] arguments) {
+        for (String arg : arguments) {
+            if (arg.startsWith("--")) {
+                addOpt(arg.substring(2));
+            } else if (arg.startsWith("-")) {
+                addOpt(arg.substring(1));
+            } else {
+                args.add(arg);
+            }
+
+        }
+    }
+
+    private void addOpt(String option) {
+        if (option != null &amp;&amp; !"".equals(option)) {
+            String[] options = option.split("=", 2);
+            String optionName = options[0];
+            String optionValue = "true";
+            if (options.length == 2) {
+                optionValue = options[1];
+            }
+
+            Object existingOpt = opts.get(optionName);
+            if (existingOpt == null) {
+                opts.put(optionName, optionValue);
+            } else {
+                // Support multi options with same key
+                if (existingOpt instanceof List) {
+                    // Third + items
+                    ((List&lt;String&gt;) existingOpt).add(optionValue);
+                } else {
+                    // Second items
+                    List&lt;String&gt; list = new ArrayList&lt;&gt;();
+                    list.add((String) existingOpt);
+                    list.add(optionValue);
+                    opts.put(optionName, list);
+                }
+            }
+        }
+    }
+
+    public int getOptsSize() {
+        return opts.size();
+    }
+
+    public Set&lt;String&gt; getOptsNames() {
+        return opts.keySet();
+    }
+
+    public boolean hasOpt(String name) {
+        return opts.containsKey(name);
+    }
+
+    public Map&lt;String, Object&gt; getOpts() {
+        return opts;
+    }
+
+    public void setOpts(Map&lt;String, Object&gt; opts) {
+        this.opts = opts;
+    }
+
+    public String getOpt(String name) {
+        return (String) opts.get(name);
+    }
+
+    public String getOpt(String name, String def) {
+        String result = getOpt(name);
+        if (result == null)
+            result = def;
+        return result;
+    }
+
+    public boolean getBooleanOpt(String name) {
+        if (hasOpt(name)) {
+            return true;
+        }
+        return Boolean.parseBoolean(getOpt(name));
+    }
+
+    public boolean getBooleanOpt(String name, boolean def) {
+        if (hasOpt(name)) {
+            return true;
+        }
+        String result = getOpt(name);
+        if (result == null)
+            return def;
+        return Boolean.parseBoolean(result);
+    }
+
+    public int getIntOpt(String name) {
+        return Integer.parseInt(getOpt(name));
+    }
+
+    public int getIntOpt(String name, int def) {
+        String result = getOpt(name);
+        if (result == null)
+            return def;
+        return Integer.parseInt(result);
+    }
+
+    public long getLongOpt(String name) {
+        return Long.parseLong(getOpt(name));
+    }
+
+    public long getLongOpt(String name, long def) {
+        String result = getOpt(name);
+        if (result == null)
+            return def;
+        return Long.parseLong(result);
+    }
+
+    public List&lt;String&gt; getMultiOpts(String name) {
+        List&lt;String&gt; list = new ArrayList&lt;&gt;();
+        Object optVal = opts.get(name);
+        if (optVal == null) {
+            return list;
+        } else if (optVal instanceof String) {
+            list.add((String) optVal);
+            return list;
+        }
+
+        list.addAll((List&lt;String&gt;) optVal);
+        return list;
+    }
+
+    public int getArgsSize() {
+        return args.size();
+    }
+    public List&lt;String&gt; getArgs() {
+        return args;
+    }
+    public String[] getArgsArray() {
+        return args.toArray(new String[args.size()]);
+    }
+
+    public String getArgOrError(int index, String errorIfMissing) {
+        if (index &gt;= args.size() || index &lt; 0) {
+            throw new IllegalArgumentException(errorIfMissing);
+        }
+        return args.get(index);
+    }
+
+    public String getArg(int index) {
+        return args.get(index);
+    }
+
+    /** A test class to try out CmdOpts. */
+    public static void main(String[] args) {
+        CmdOpts opts = new CmdOpts(args);
+        if (opts.hasOpt("help"))
+            System.out.println("You need help");
+        int num = opts.getIntOpt("num", 0);
+        System.out.println("Using num=" + num);
+        System.out.println("Using new args=" + opts.getArgs());
+    }
+}</pre>
+</div>
+</div></p>
+  			<a href="blog/2018/08/examples-of-postgres-functions-and-triggers.html"><h1>Examples of Postgres Functions and Triggers</h1></a>
+  			<p>09 August 2018, tags: 
+			    <a href="../tags/postgres.html">postgres</a> 
+
+			    <a href="../tags/function.html">function</a> 
+
+			    <a href="../tags/trigger.html">trigger</a> 
+  			</p>
+  			<p><div class="listingblock">
+<div class="content">
+<pre>-- Simple Function
+create or replace function rand_range(a int, b int) returns int
+as $$
+  -- return a random range of int between a and b, both inclusive!;
+  select cast(floor(random()*((b + 1)-a)+a) as int);
+$$ language sql;
+select rand_range(1, 10);
+select rand_range(90, 95) from generate_series(1, 10);
+
+-- Function to print message on DB server
+create or replace function print_msg(msg text, lev text default 'notice') returns void
+  as $$
+  begin
+    case
+      when lev = 'debug' then
+        raise debug '%', msg;
+      when lev = 'info' then
+        raise info '%', msg;
+      else
+        raise notice '%', msg;
+    end case;
+  end;
+$$ language plpgsql;
+select print_msg('hello world');
+
+-- Log Function
+drop table log;
+create table log(
+  id serial,
+  msg text not null,
+  ts timestamptz default current_timestamp not null,
+  category varchar(50) default 'INFO' not null,
+  user_id varchar(50) default 'system' not null,
+  source_info text null
+);
+create or replace function add_log(
+  msg text,
+  category varchar(50) default 'INFO'
+) returns void
+as $$
+begin
+  insert into log(msg, category, source_info, user_id)
+    values(msg, category, 'client=' || inet_client_addr(), current_user);
+end;
+$$ language plpgsql;
+
+select add_log('hello2');
+select public.add_log('hello3');
+select * from log;
+
+-- Triggers to log data entry or update
+drop table test;
+create table test(id serial, f1 real);
+create or replace function log_test_update() returns trigger
+as $$
+begin
+  perform add_log('Insert or Update on test table');
+  return NEW;
+end
+$$ language plpgsql;
+create trigger test_logging_trigger
+  after insert or update on test
+  for each row
+  execute procedure log_test_update();
+insert into test(f1) values(0.10), (0.20), (0.30);
+update test set f1 = 3.5 where id = 1;
+select * from test;
+select * from log;</pre>
+</div>
+</div></p>
+  			<a href="blog/2018/07/a-plain-and-simple-jdbc-service-for-java8.html"><h1>A plain and simple Jdbc service for Java8</h1></a>
+  			<p>28 July 2018, tags: 
+			    <a href="../tags/java.html">java</a> 
+
+			    <a href="../tags/jdbc.html">jdbc</a> 
+  			</p>
+  			<p><div class="paragraph">
+<p>With Java8, we can create simple and thin Jdbc service that&#8217;s productive and easy to use. This service implementation is inspired by Spring&#8217;s JdbcTemplate, but much lighter and has zero dependency.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>package zemian.jdbc;
+
+import javax.sql.DataSource;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.sql.*;
+import java.util.*;
+import java.util.stream.Collectors;
+
+/**
+ * This class provide an easier interface to run SQLs and retrieve data than direct Java JDBC API.
+ *
+ * You can instantiate this class in two ways:
+ *
+ * - Method1: Using a DataSource. Each operation will get a Connection object from the #dataSource.
+ * - Method2: Using a direct Connection object. Use this to reuse a single connection to perform all
+ *            JDBC operations.
+ *
+ * Both methods above will not directly close the Connection object per Jdbc instance. It's user
+ * responsibility to close it after use. For pooled DataSource, it should be automatic, else you
+ * might want to use the Jdbc.withJdbc() convenient method. This method will let you quickly start a single
+ * new DB connection and Jdbc instance, and it will auto close connection when method is exited.
+ *
+ * This class provide these easy methods to work with DB data:
+ * - #execute() perform update SQLs that returns number of records updated.
+ * - #query() perform select SQLs that returns a list of records.
+ * - #get() perform select SQLs that return a single object element.
+ * - #insert() perform table insert using a Map as record.
+ * - #update() perform table update using a Map as record.
+ *
+ * The #query() and #get() methods allow you to provide custom RSMapper to convert ResultSet instance
+ * into any user object.
+ *
+ * @author Zemian Deng 2018-07-28
+ */
+public class Jdbc {
+    // == Static utility methods and supporting inner classes
+    public static void withJdbc(String propsResourceName, JdbcAction task) {
+        Properties props = new Properties();
+        URL propsUrl = Thread.currentThread().getContextClassLoader().getResource(propsResourceName);
+        try (InputStream ins = propsUrl.openStream()) {
+            props.load(ins);
+        } catch (IOException e) {
+            throw new RuntimeException("Unable to open properties from resource: " + propsResourceName, e);
+        }
+        withJdbc(props, task);
+    }
+
+    public static void withJdbc(String url, String user, String password, JdbcAction task) {
+        Properties props = new Properties();
+        props.setProperty("url", url);
+        props.setProperty("user", user);
+        props.setProperty("password", password);
+        withJdbc(props, task);
+    }
+
+    public static void withJdbc(Properties jdbcProps, JdbcAction task) {
+        try (Connection conn = DriverManager.getConnection(jdbcProps.getProperty("url"), jdbcProps)) {
+            Jdbc jdbc = new Jdbc(conn);
+            task.runJdbc(jdbc);
+        } catch (Exception e) {
+            if (e instanceof RuntimeException)
+                throw (RuntimeException) e;
+            throw new RuntimeException("Failed to process Jdbc", e);
+        }
+    }
+
+    public static List&lt;String&gt; getFieldNames(ResultSet rs) throws SQLException {
+        List&lt;String&gt; names = new ArrayList&lt;&gt;();
+        ResultSetMetaData md = rs.getMetaData();
+        for (int i = 1, max = md.getColumnCount(); i &lt;= max; i++) {
+            names.add(md.getColumnName(i));
+        }
+        return names;
+    }
+
+    public static void setParams(PreparedStatement st, Object[] params) throws SQLException {
+        for (int i = 0; i &lt; params.length; i++) {
+            st.setObject(i + 1, params[i]);
+        }
+    }
+
+    interface JdbcAction {
+        void runJdbc(Jdbc jdbc) throws Exception;
+    }
+
+    interface ConnAction&lt;T&gt; {
+        T runConn(Connection conn) throws Exception;
+    }
+
+    interface ConnActionNoRet {
+        void runConn(Connection conn) throws Exception;
+    }
+
+    interface RSMapper&lt;T&gt; {
+        T map(ResultSet rs, int idx) throws Exception;
+    }
+
+    public static class Record extends HashMap&lt;String, Object&gt; {
+        public Record() {}
+        public Record(ResultSet rs) throws SQLException {
+            this(rs, Jdbc.getFieldNames(rs));
+        }
+        public Record(ResultSet rs, List&lt;String&gt; names) throws SQLException {
+            for (String name : names) {
+                Object val = rs.getObject(name);
+                put(name, val);
+            }
+        }
+        public Record(Object ... entries) {
+            for (int i = 0; i &lt; entries.length; i+= 2) {
+                Object key = entries[i];
+                Object val = entries[i + 1];
+                put(key.toString(), val);
+            }
+        }
+        public &lt;T&gt; T getValue(String key) {
+            return (T) get(key);
+        }
+        public List&lt;String&gt; getFieldNames() {
+            return new ArrayList&lt;&gt;(keySet());
+        }
+        @Override
+        public String toString() {
+            return "Record" + super.toString();
+        }
+    }
+
+    // == Jdbc Service implementation
+    private DataSource dataSource;
+    private Connection conn;
+
+    public Jdbc(Connection conn) {
+        this.conn = conn;
+    }
+
+    public Jdbc(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+
+    public Connection getConn() throws SQLException {
+        if (conn != null) {
+            return conn;
+        } else {
+            return dataSource.getConnection();
+        }
+    }
+
+    public &lt;T&gt; T withConn(ConnAction&lt;T&gt; action) {
+        try {
+            return action.runConn(getConn());
+        } catch (Exception e) {
+            if (e instanceof RuntimeException)
+                throw (RuntimeException) e;
+            throw new RuntimeException("Failed to process DB conn", e);
+        }
+    }
+
+    public void withConnNoRet(ConnActionNoRet action) {
+        withConn(conn -&gt; {
+            action.runConn(conn);
+            return null;
+        });
+    }
+
+    public &lt;T&gt; T get(String sql, Object ... params) {
+        return get((rs, idx) -&gt; (T) rs.getObject(1), sql, params);
+    }
+
+    public &lt;T&gt; T get(RSMapper&lt;T&gt; mapper, String sql, Object ... params) {
+        return withConn(conn -&gt; {
+            try (PreparedStatement st = conn.prepareStatement(sql)) {
+                setParams(st, params);
+                st.executeQuery();
+                try (ResultSet rs = st.getResultSet()) {
+                    if (rs.next()) {
+                        return mapper.map(rs, 0);
+                    }
+                }
+            }
+            throw new RuntimeException("There is no unique record from query.");
+        });
+    }
+
+    public Record getRecord(String sql, Object ... params) {
+        return get((rs, idx) -&gt; new Record(rs), sql, params);
+    }
+
+    public List&lt;Record&gt; query(String sql, Object ... params) {
+        final List&lt;String&gt; names = new ArrayList&lt;&gt;();
+        return query((rs, idx) -&gt; {
+            if (idx == 0) {
+                names.addAll(getFieldNames(rs));
+            }
+            return new Record(rs, names);
+        }, sql, params);
+    }
+
+    public &lt;T&gt; List&lt;T&gt; query(RSMapper&lt;T&gt; mapper, String sql, Object ... params) {
+        return withConn(conn -&gt; {
+            List&lt;T&gt; list = new ArrayList&lt;&gt;();
+            try (PreparedStatement st = conn.prepareStatement(sql)) {
+                setParams(st, params);
+                st.executeQuery();
+                try (ResultSet rs = st.getResultSet()) {
+                    int idx = 0;
+                    while (rs.next()) {
+                        T t = mapper.map(rs, idx++);
+                        list.add(t);
+                    }
+                }
+            }
+            return list;
+        });
+    }
+
+    public int execute(String sql, Object ... params) {
+        return withConn(conn -&gt; {
+            try (PreparedStatement st = conn.prepareStatement(sql)) {
+                setParams(st, params);
+                return st.executeUpdate();
+            }
+        });
+    }
+
+    public int insert(String table, Record record) {
+        return insert(table, record, record.getFieldNames());
+    }
+
+    public int insert(String table, Record record, List&lt;String&gt; insertFields) {
+        String fields = insertFields.stream().collect(Collectors.joining(", "));
+        String qMarks = insertFields.stream().map(e -&gt; "?").collect(Collectors.joining(", "));
+        String sql = "INSERT INTO " + table + "(" + fields + ") VALUES (" + qMarks + ")";
+        List&lt;Object&gt; params = insertFields.stream().map(e -&gt; record.get(e)).collect(Collectors.toList());
+        return withConn(conn -&gt; {
+            try (PreparedStatement st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+                setParams(st, params.toArray());
+                int uc = st.executeUpdate();
+                // Check for auto generated keys, if present add into the record.
+                // NOTE it will not override existing fields in record!
+                try (ResultSet rs = st.getGeneratedKeys()) {
+                    if (rs.next()) {
+                        List&lt;String&gt; names = getFieldNames(rs);
+                        for (String name : names) {
+                            if (!record.containsKey(name))
+                                record.put(name, rs.getObject(name));
+                        }
+                    }
+                }
+                return uc;
+            }
+        });
+    }
+
+    public int update(String table, Record record, String ... keyFields) {
+        List&lt;String&gt; updateFields = record.getFieldNames();
+        for (String key : keyFields)
+            updateFields.remove(key);
+        return update(table, record, updateFields, Arrays.asList(keyFields));
+    }
+
+    public int update(String table, Record record, List&lt;String&gt; updateFields, List&lt;String&gt; keyFields) {
+        String updateFieldsNames = updateFields.stream().map(e -&gt; e + " = ?").collect(Collectors.joining(", "));
+        String keyFieldsNames = keyFields.stream().map(e -&gt; e + " = ?").collect(Collectors.joining(", "));
+        String sql = "UPDATE " + table + " SET " + updateFieldsNames + " WHERE " + keyFieldsNames;
+        List&lt;Object&gt; params = updateFields.stream().map(e -&gt; record.get(e)).collect(Collectors.toList());
+        for (String key : keyFields)
+            params.add(record.get(key));
+        return execute(sql, params.toArray());
+    }
+
+    // Test Jdbc with Postgres DB
+    public static void main(String[] args) {
+        String url = System.getProperty("url", "jdbc:postgresql://localhost:5432/postgres");
+        String user = System.getProperty("user", "postgres");
+        String password = System.getProperty("password", "");
+
+        Jdbc.withJdbc(url, user, password, jdbc -&gt; {
+            jdbc.withConnNoRet(conn -&gt; System.out.println(conn));
+        });
+
+        Jdbc.withJdbc(url, user, password, jdbc -&gt; {
+            // Execute
+            jdbc.execute("create temp table test(id varchar(10) primary key, seq serial, amount numeric(19,4))");
+            int uc = jdbc.execute("insert into test(id, amount) values(?, ?)", "T01", 0.01);
+            System.out.println("test record inserted: uc=" + uc);
+
+            Record record = jdbc.getRecord("select * from test where id = ?", "T01");
+            System.out.println(record);
+
+            // Get
+            Integer seq = jdbc.get("select seq from test where id = ?", "T01");
+            System.out.println("seq = " + seq);
+
+            java.math.BigDecimal amount = jdbc.get("select amount from test where id = ?", "T01");
+            System.out.println("amount = " + amount);
+
+            // Update
+            record.put("amount", amount.doubleValue() + 0.20);
+            System.out.println("amount to be updated: " + record.getValue("amount"));
+            uc = jdbc.update("test", record, "id");
+            System.out.println("amount udpated. uc=" + uc);
+
+            amount = jdbc.get("select amount from test where id = ?", "T01");
+            System.out.println("after update from db: amount = " + amount);
+
+            // Insert
+            record = new Record("id", "T02", "amount", 0.30);
+            jdbc.insert("test", record);
+            int newSeq = (Integer) record.get("seq");
+            System.out.println("generated column seq=" + newSeq);
+            Record record2 = jdbc.getRecord("select * from test where id = ?", "T02");
+            System.out.println(record2);
+
+            // Query
+            List&lt;Record&gt; records = jdbc.query("select * from test order by id");
+            System.out.println(records);
+        });
+    }
+}</pre>
+</div>
+</div></p>
+  			<a href="blog/2018/07/adding-new-cacert-entry-into-adoptopenjdk.html"><h1>Adding new cacert entry into AdoptOpenJDK</h1></a>
+  			<p>23 July 2018, tags: 
+			    <a href="../tags/cacert.html">cacert</a> 
+
+			    <a href="../tags/keytool.html">keytool</a> 
+
+			    <a href="../tags/openjdk.html">openjdk</a> 
+  			</p>
+  			<p><div class="paragraph">
+<p>I downloaded latest Tomcat source and it failed to get the dependencies.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>  cd src/github/tomcat
+  ant download-test-compile
+        [get] Error getting https://repo.maven.apache.org/maven2/junit/junit/4.12/junit-4.12.jar to C:\Users\zemian\tomcat-build-libs\download-2000731528.tmp
+
+BUILD FAILED
+C:\Users\zemian\src\github\tomcat\build.xml:2705: The following error occurred while executing this line:
+C:\Users\zemian\src\github\tomcat\build.xml:3051: javax.net.ssl.SSLException: java.lang.RuntimeException: Unexpected error: java.security.InvalidAlgorithmParameterException: the trustAnchors parameter must be non-empty
+        at sun.security.ssl.Alerts.getSSLException(Alerts.java:208)</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>It turns out this error is caused by the OpenJDK 8 that I am using. The one I got is from <a href="https://adoptopenjdk.net/" class="bare">https://adoptopenjdk.net/</a>, and the $JAVA_HOME/jre/lib/security/cacert file has no entries for trusted CA certs!</p>
+</div>
+<div class="paragraph">
+<p>So I found few solutions:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Find a copy of OracleJDK and copy their <code>cacerts</code> over.</p>
+</li>
+<li>
+<p>If you are on Linux, you can try installing cacerts using tools the OS provided. (eg: Ubuntu can be done like here: <a href="https://stackoverflow.com/questions/6784463/error-trustanchors-parameter-must-be-non-empty" class="bare">https://stackoverflow.com/questions/6784463/error-trustanchors-parameter-must-be-non-empty</a>)</p>
+</li>
+<li>
+<p>Upgrade OpenJDK to 10</p>
+</li>
+<li>
+<p>Or the quick way, go to the site that gives you problem, export their cert using the browser, and then import into to the <code>cacerts</code> file.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>So for me, I went to <a href="https://repo.maven.apache.org/" class="bare">https://repo.maven.apache.org/</a> and exported <code>repomavenapacheorg.crt</code>, and then I ran the following:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>cd $JAVA_HOME/jre/lib/security
+keytool -keystore cacerts -storepasswd changeit -importcert -file 'Downloads/repomavenapacheorg.crt' -trustcacerts
+keytool -keystore cacerts -storepasswd changeit -list</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This fixed my problem.</p>
+</div></p>
+  			<a href="blog/2018/06/run-tomcat-with-webapp-runner-jar.html"><h1>Run Tomcat with webapp-runner.jar</h1></a>
+  			<p>21 June 2018, tags: 
+			    <a href="../tags/tomcat.html">tomcat</a> 
+
+			    <a href="../tags/webapp-runner.html">webapp-runner</a> 
+  			</p>
+  			<p><div class="paragraph">
+<p>I have used <a href="https://github.com/jsimone/webapp-runner" class="bare">https://github.com/jsimone/webapp-runner</a> in several projects now, and I find it really useful.</p>
+</div>
+<div class="paragraph">
+<p>You can start a Tomcat instance as simple as this:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>java -jar target/webapp-runner.jar target/adocblog.war</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>However if you need to run it with extra classpath entries, then you would need to use the <code>-cp</code> instead of <code>-jar</code> Java option. Like this:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>java -cp "target/extra-classes:target/webapp-runner.jar" webapp.runner.launch.Main target/adocblog.war</pre>
+</div>
+</div></p>
+  			<a href="blog/2018/06/installing-python-on-windows-without-admin-rights.html"><h1>Installing Python on Windows Without Admin Rights</h1></a>
+  			<p>06 June 2018, tags: 
+			    <a href="../tags/python-install.html">python-install</a> 
+  			</p>
+  			<p><div class="paragraph">
+<p>To install Python on Windows without Admin Rights:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Download binary from <a href="https://www.python.org/downloads/windows/" class="bare">https://www.python.org/downloads/windows/</a></p>
+</li>
+<li>
+<p>Run the following in <code>cmd.exe</code> terminal.</p>
+<div class="literalblock">
+<div class="content">
+<pre>mkdir %USERPROFILE%\apps\python-2.6.6
+msiexec /a python-2.6.6.amd64.msi /qb TARGETDIR=%USERPROFILE%\apps\python-2.6.6</pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+Starting Python 3.5 the official downloads site already has "Windows x86-64 embeddable zip file" version you may download. This you may install without Admin Rights already.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Ref: <a href="https://stackoverflow.com/questions/2678702/install-python-2-6-without-using-installer-on-win32" class="bare">https://stackoverflow.com/questions/2678702/install-python-2-6-without-using-installer-on-win32</a></p>
+</div></p>
+  			<a href="blog/2018/06/python-argparse-with-multiple-occurance-of-an-option.html"><h1>Python argparse with multiple occurance of an option</h1></a>
+  			<p>06 June 2018, tags: 
+			    <a href="../tags/python-argparse.html">python-argparse</a> 
+  			</p>
+  			<p><div class="listingblock">
+<div class="title">test.py</div>
+<div class="content">
+<pre>import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument("prog_args", nargs='*')
+parser.add_argument("-e", action='append')
+args = parser.parse_args()
+prog_args = args.prog_args
+env = dict([e.split('=') for e in args.e])
+
+print(f"Program args: {prog_args}")
+print(f"Env options: {env}")</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Example</div>
+<div class="content">
+<pre>$ python3 test.py one two three -ek1=1 -e k2=foo
+Program args: ['one', 'two', 'three']
+Env options: {'k1': '1', 'k2': 'foo'}</pre>
+</div>
+</div></p>
+
+	<hr />
+
+	<ul class="pager">
+		<li class="previous"><a href="https://zemian.github.io/2">Previous</a></li>
+		<li>Page: 3/29</li>
+		<li class="next"><a href="https://zemian.github.io/4">Next</a></li>
+	</ul>
+
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">&copy; 2011 - 2019 Zemian Deng All Rights Reserved | Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.5</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../js/jquery-1.11.1.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/prettify.js"></script>
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-135626598-1');
+    </script>
+
+  </body>
+</html>

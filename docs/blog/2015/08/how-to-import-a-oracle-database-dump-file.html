@@ -40,7 +40,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -48,7 +48,6 @@
             <li><a href="../../../about.html">About</a></li>
             <li><a href="../../../archive.html">Archive</a></li>
             <li><a href="../../..//tags">Tags</a></li>
-            <li><a href="../../../feed.xml">Subscribe</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -62,47 +61,35 @@
 	    <a href="../../../tags/oracle.html">oracle</a> 
 	</p>
 
-	<p>Here is an example on how to import a Oracle database dump file (a binary file that's exported from a Oracle database using the Oracle data pump utility). For this instruction example, let's say I was given a <span style="font-family: Courier New, Courier, monospace;">myapp.dmp.gz</span> file.<br />
-<br />
-NOTE: If you do not use the same db user/tablespace for export and import, then you need to know its names used during export to perform the remapping during import.<br />
-<br />
-Step 1: If you don't have an Oracle database instance to work with, create one first. Or ask your DBA to create or allocate a instance for your import purpose.<br />
-<br />
-Step 2: Create a new tablespace and a DB user in an Oracle database instance. (For this example, I will call my new user&nbsp;<span style="font-family: Courier New, Courier, monospace;">MYAPP08182015</span>, password <span style="font-family: Courier New, Courier, monospace;">Password1</span>, and tablespace named <span style="font-family: Courier New, Courier, monospace;">MY_TABLE_SPACE</span>.)<br />
-<br />
-<span style="font-family: Courier New, Courier, monospace;">create tablespace&nbsp;</span><span style="font-family: 'Courier New', Courier, monospace;">MY_TABLE_SPACE&nbsp;</span><span style="font-family: Courier New, Courier, monospace;">datafile</span><br />
-<span style="font-family: Courier New, Courier, monospace;">&nbsp; '</span><span style="font-family: Courier New, Courier, monospace;">/opt/</span><span style="font-family: 'Courier New', Courier, monospace;">myapp_datafiles/</span><span style="font-family: 'Courier New', Courier, monospace;">MY_TABLE_SPACE</span><span style="font-family: 'Courier New', Courier, monospace;">.dat</span><span style="font-family: 'Courier New', Courier, monospace;">'</span><br />
-<span style="font-family: Courier New, Courier, monospace;">&nbsp; size 500m autoextend on next 500m</span><br />
-<span style="font-family: Courier New, Courier, monospace;">&nbsp; extent management local</span><br />
-<span style="font-family: Courier New, Courier, monospace;">&nbsp; segment space management auto;</span><br />
-<span style="font-family: Courier New, Courier, monospace;"><br /></span>
-<span style="font-family: Courier New, Courier, monospace;">create user MYAPP08182015 identified by Password1</span><br />
-<span style="font-family: Courier New, Courier, monospace;">&nbsp; default tablespace MY_TABLE_SPACE</span><br />
-<span style="font-family: Courier New, Courier, monospace;">&nbsp; temporary tablespace TEMP</span><br />
-<span style="font-family: Courier New, Courier, monospace;">&nbsp; quota unlimited on MYTABLESPACE;</span><br />
-<span style="font-family: Courier New, Courier, monospace;"><br /></span>
-<span style="font-family: Courier New, Courier, monospace;">grant create session, grant any privilege to&nbsp;</span><span style="font-family: 'Courier New', Courier, monospace;">MYAPP08182015</span><span style="font-family: Courier New, Courier, monospace;">;<br />grant IMP_FULL_DATABASE to&nbsp;</span><span style="font-family: 'Courier New', Courier, monospace;">MYAPP08182015</span><span style="font-family: Courier New, Courier, monospace;">;</span><br />
-<span style="font-family: Courier New, Courier, monospace;"><br /></span>
-<span style="font-family: Courier New, Courier, monospace;">create directory MY_DATADUMP_DIR as '/opt/</span><span style="font-family: 'Courier New', Courier, monospace;">myapp_datadump</span><span style="font-family: Courier New, Courier, monospace;">';</span><br />
-<br />
-Note that user must have&nbsp;<span style="font-family: 'Courier New', Courier, monospace;">IMP_FULL_DATABASE</span>&nbsp;privilege to be able to used by import tool. And if you don't want to use default import data directory, then you would need to create the directory object to be used by import as shown above.<br />
-<br />
-Note also that your TEMP tablespace might not have enough disk space for large import. In this case, you may increase it like this:<br />
-<br />
-<span style="font-family: Courier New, Courier, monospace;">alter tablespace temp add tempfile</span><br />
-<span style="font-family: Courier New, Courier, monospace;">&nbsp; '</span><span style="font-family: Courier New, Courier, monospace;">/opt/</span><span style="font-family: 'Courier New', Courier, monospace;">myapp_datafiles/</span><span style="font-family: Courier New, Courier, monospace;">TEMP2.dat'</span><br />
-<span style="font-family: Courier New, Courier, monospace;">&nbsp; size 500m autoextend on next&nbsp;</span><span style="font-family: 'Courier New', Courier, monospace;">500</span><span style="font-family: Courier New, Courier, monospace;">m;</span><br />
-<br />
-Step 3: Now you have a new db User (Schema) and password, you may start the data import using the command line prompt. Ssh into the database server where you can find the <span style="font-family: Courier New, Courier, monospace;">impdp</span>&nbsp;command utility.<br />
-<br />
-<span style="font-family: Courier New, Courier, monospace;">scp myapp.dmp.gz zemian@mydbserver:/</span><span style="font-family: 'Courier New', Courier, monospace;">opt</span><span style="font-family: Courier New, Courier, monospace;">/</span><span style="font-family: 'Courier New', Courier, monospace;">myapp_datadump</span><br />
-<span style="font-family: Courier New, Courier, monospace;">ssh zemian@mydbserver</span><br />
-<span style="font-family: Courier New, Courier, monospace;">cd&nbsp;</span><span style="font-family: Courier New, Courier, monospace;">/</span><span style="font-family: 'Courier New', Courier, monospace;">opt</span><span style="font-family: Courier New, Courier, monospace;">/myapp_datafiles</span><br />
-<span style="font-family: Courier New, Courier, monospace;">gunzip myapp.dmp.gz</span><br />
-<span style="font-family: 'Courier New', Courier, monospace;">/app/oracle/dbhome/bin/</span><span style="font-family: Courier New, Courier, monospace;">impdp MYAPP08182015/Password1&nbsp;DIRECTORY=</span><span style="font-family: 'Courier New', Courier, monospace;">MY_DATADUMP_DIR&nbsp;</span><span style="font-family: 'Courier New', Courier, monospace;">REMAP_SCHEMA=MYAPP:MYAPP08182015 REMAP_TABLESPACE=USERS:MY_TABLE_SPACE LOGFILE=myapp-import.log DUMPFILE=myapp.dmp</span><br />
-<br />
-References:<br />
-<a href="http://docs.oracle.com/cd/B19306_01/server.102/b14215/dp_overview.htm">http://docs.oracle.com/cd/B19306_01/server.102/b14215/dp_overview.htm</a>
+	<p><p>Here is an example on how to import a Oracle database dump file (a binary file that's exported from a Oracle database using the Oracle data pump utility). For this instruction example, let's say I was given a myapp.dmp.gz file.</p>
+<p>NOTE: If you do not use the same db user/tablespace for export and import, then you need to know its names used during export to perform the remapping during import.</p>
+<p>Step 1: If you don't have an Oracle database instance to work with, create one first. Or ask your DBA to create or allocate a instance for your import purpose.</p>
+<p>Step 2: Create a new tablespace and a DB user in an Oracle database instance. (For this example, I will call my new user MYAPP08182015, password Password1, and tablespace named MY_TABLE_SPACE.)</p>
+<p>create tablespace MY_TABLE_SPACE datafile<br />
+'/opt/myapp_datafiles/MY_TABLE_SPACE.dat'<br />
+size 500m autoextend on next 500m<br />
+extent management local<br />
+segment space management auto;</p>
+<p>create user MYAPP08182015 identified by Password1<br />
+default tablespace MY_TABLE_SPACE<br />
+temporary tablespace TEMP<br />
+quota unlimited on MYTABLESPACE;</p>
+<p>grant create session, grant any privilege to MYAPP08182015;<br />
+grant IMP_FULL_DATABASE to MYAPP08182015;</p>
+<p>create directory MY_DATADUMP_DIR as '/opt/myapp_datadump';</p>
+<p>Note that user must have IMP_FULL_DATABASE privilege to be able to used by import tool. And if you don't want to use default import data directory, then you would need to create the directory object to be used by import as shown above.</p>
+<p>Note also that your TEMP tablespace might not have enough disk space for large import. In this case, you may increase it like this:</p>
+<p>alter tablespace temp add tempfile<br />
+'/opt/myapp_datafiles/TEMP2.dat'<br />
+size 500m autoextend on next 500m;</p>
+<p>Step 3: Now you have a new db User (Schema) and password, you may start the data import using the command line prompt. Ssh into the database server where you can find the impdp command utility.</p>
+<p>scp myapp.dmp.gz zemian@mydbserver:/opt/myapp_datadump<br />
+ssh zemian@mydbserver<br />
+cd /opt/myapp_datafiles<br />
+gunzip myapp.dmp.gz<br />
+/app/oracle/dbhome/bin/impdp MYAPP08182015/Password1 DIRECTORY=MY_DATADUMP_DIR REMAP_SCHEMA=MYAPP:MYAPP08182015 REMAP_TABLESPACE=USERS:MY_TABLE_SPACE LOGFILE=myapp-import.log DUMPFILE=myapp.dmp</p>
+<p>References:<br />
+<a href="http://docs.oracle.com/cd/B19306_01/server.102/b14215/dp_overview.htm">http://docs.oracle.com/cd/B19306_01/server.102/b14215/dp_overview.htm</a></p>
 </p>
 
 	<hr />

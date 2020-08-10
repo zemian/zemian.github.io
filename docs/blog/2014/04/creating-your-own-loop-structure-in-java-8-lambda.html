@@ -40,7 +40,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -48,7 +48,6 @@
             <li><a href="../../../about.html">About</a></li>
             <li><a href="../../../archive.html">Archive</a></li>
             <li><a href="../../..//tags">Tags</a></li>
-            <li><a href="../../../feed.xml">Subscribe</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -62,20 +61,32 @@
 	    <a href="../../../tags/java.html">java</a> 
 	</p>
 
-	<p>Java doesn't have an easy construct of repeat something N number of times. We can make a for loop of course, but many times we don't even care about the variable that we created in the loop. We just want repeat N times of some code and that's it. With the lambda available in Java 8, you may attempt something like this:<br />
-<br />
-<span style="font-family: &quot;Courier New&quot;,Courier,monospace;">public class RepeatDemo {<br />&nbsp;&nbsp;&nbsp; public static void main(String[] args) {</span><br />
-<span style="font-family: &quot;Courier New&quot;,Courier,monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // One liner repeat<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; repeat(10, () -&gt; System.out.println("HELLO"));</span><br />
-<span style="font-family: &quot;Courier New&quot;,Courier,monospace;"><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Multi-liners repeat</span><br />
-<span style="font-family: &quot;Courier New&quot;,Courier,monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; repeat(10, () -&gt; {<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; System.out.println("HELLO");<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; System.out.println("WORLD");<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; });<br />&nbsp;&nbsp;&nbsp; }<br />&nbsp;&nbsp;&nbsp; <br />&nbsp;&nbsp;&nbsp; static void repeat(int n, Runnable r) {<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for (int i = 0; i &lt; n; i++)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; r.run();<br />&nbsp;&nbsp;&nbsp; }<br />}</span><br />
-<br />
-<br />
-Probably not as eye pleasing or straight forward as the good fashion for-loop, but you do get rid of the unnecessary loop variable. Only if Java 8 would go extra mile and treat the lambda argument in method  with sugar syntax, then we could have it something like the Scala/Groovy style, which makes code more smoother. For example:<br />
-<span style="font-family: &quot;Courier New&quot;,Courier,monospace;"><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Wouldn't this be nice to have in Java?</span><br />
-<span style="font-family: &quot;Courier New&quot;,Courier,monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; repeat(10) {<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; System.out.println("HELLO");<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; System.out.println("WORLD");<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</span><br />
-<br />
-Hum....<br />
-<span style="font-family: &quot;Courier New&quot;,Courier,monospace;"><span style="font-family: Arial,Helvetica,sans-serif;"></span></span>
+	<p><p>Java doesn't have an easy construct of repeat something N number of times. We can make a for loop of course, but many times we don't even care about the variable that we created in the loop. We just want repeat N times of some code and that's it. With the lambda available in Java 8, you may attempt something like this:</p>
+<p>public class RepeatDemo {<br />
+public static void main(String[] args) {<br />
+// One liner repeat<br />
+repeat(10, () -&gt; System.out.println(&quot;HELLO&quot;));</p>
+<pre><code>    // Multi-liners repeat
+    repeat(10, () -&gt; {
+        System.out.println(&quot;HELLO&quot;);
+        System.out.println(&quot;WORLD&quot;);
+    });
+}
+
+static void repeat(int n, Runnable r) {
+    for (int i = 0; i &lt; n; i++)
+        r.run();
+}
+</code></pre>
+<p>}</p>
+<p>Probably not as eye pleasing or straight forward as the good fashion for-loop, but you do get rid of the unnecessary loop variable. Only if Java 8 would go extra mile and treat the lambda argument in method  with sugar syntax, then we could have it something like the Scala/Groovy style, which makes code more smoother. For example:</p>
+<pre><code>    // Wouldn't this be nice to have in Java?
+    repeat(10) {
+        System.out.println(&quot;HELLO&quot;);
+        System.out.println(&quot;WORLD&quot;);
+    }
+</code></pre>
+<p>Hum....</p>
 </p>
 
 	<hr />

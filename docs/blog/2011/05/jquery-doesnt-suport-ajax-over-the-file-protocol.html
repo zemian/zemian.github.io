@@ -40,7 +40,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -48,7 +48,6 @@
             <li><a href="../../../about.html">About</a></li>
             <li><a href="../../../archive.html">Archive</a></li>
             <li><a href="../../..//tags">Tags</a></li>
-            <li><a href="../../../feed.xml">Subscribe</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -62,17 +61,18 @@
 	    <a href="../../../tags/jquery.html">jquery</a> 
 	</p>
 
-	<p>I was playing with jQueryUI today, and a simple example like this failed to update an page.<br />
-<br />
-<span style="font-family: &quot;Courier New&quot;,Courier,monospace;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; $.get('data1.xml', function(data) {</span><br style="font-family: &quot;Courier New&quot;,Courier,monospace;" /><span style="font-family: &quot;Courier New&quot;,Courier,monospace;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; $('#main-panel').html(data)</span><br style="font-family: &quot;Courier New&quot;,Courier,monospace;" /><span style="font-family: &quot;Courier New&quot;,Courier,monospace;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; });</span><br />
-<br />
-Running under Firefox4 locally on a PC (static local file protocols), I get errors like this inside Firebug:<br />
-<br />
-<br />
-<div class="errorTitle focusRow subLogRow " role="listitem" style="color: red;"><span class="errorMessage ">Node cannot be inserted at the specified point in the hierarchy"  code: "3</span></div><span class=" " style="color: red;"></span><div class="errorSourceBox errorSource-show focusRow subLogRow " role="listitem" style="color: red;"><img class="errorBreak a11yFocus " role="checkbox" src="chrome://firebug/content/blank.gif" title="Break On This Error" /><a class="errorSource a11yFocus " href="" title="fragment.appendChild( ret[i] );">     fragment.appendChild( ret[i] );&nbsp; jquery.js (line 6134)</a></div><br />
-Turns out that this failure only occur when fetching local files because the same code works when deployed and run from a web server. Reading from a bug report here http://bugs.jqueryui.com/ticket/7225 seems to indicate that jQuery AJAX doesn't support local file protocol.<br />
-<br />
-Interestingly, an IE browser works with above code! And also the jQuery's load method like <span style="font-family: &quot;Courier New&quot;,Courier,monospace;">$('#main-panel').load('data1.xml');</span> works fine with local file!
+	<p><p>I was playing with jQueryUI today, and a simple example like this failed to update an page.</p>
+<pre><code>    $.get('data1.xml', function(data) {
+        $('#main-panel').html(data)
+    });
+</code></pre>
+<p>Running under Firefox4 locally on a PC (static local file protocols), I get errors like this inside Firebug:</p>
+<pre><code>Node cannot be inserted at the specified point in the hierarchy&quot;  code: &quot;3
+
+fragment.appendChild( ret[i] ); jquery.js (line 6134)
+</code></pre>
+<p>Turns out that this failure only occur when fetching local files because the same code works when deployed and run from a web server. Reading from a bug report here <a href="http://bugs.jqueryui.com/ticket/7225">http://bugs.jqueryui.com/ticket/7225</a> seems to indicate that jQuery AJAX doesn't support local file protocol.</p>
+<p>Interestingly, an IE browser works with above code! And also the jQuery's load method like $('#main-panel').load('data1.xml'); works fine with local file!</p>
 </p>
 
 	<hr />

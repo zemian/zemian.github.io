@@ -40,7 +40,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -48,7 +48,6 @@
             <li><a href="../../../about.html">About</a></li>
             <li><a href="../../../archive.html">Archive</a></li>
             <li><a href="../../..//tags">Tags</a></li>
-            <li><a href="../../../feed.xml">Subscribe</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -62,11 +61,9 @@
 	    <a href="../../../tags/java.html">java</a> 
 	</p>
 
-	<p><p>When I wrote about how to improve the Java Properties class using <a href="http://saltnlight5.blogspot.com/2012/09/improving-javautilproperties.html">Props</a>, I've shown
+	<p><p>When I wrote about how to improve the Java Properties class using <a href="http://saltnlight5.blogspot.com/2012/09/improving-javautilproperties.html">Props</a>, I've shown<br />
 a feature where you can use variable substition such as <code>mypath=${user.home}</code> in your config file. The implementation underneath it uses the Apache Common Lang library with <code>org.apache.commons.lang.text.StrSubstitutor</code>. There is nothing wrong with this, but I was curious how bad would it be to remove such dependency, so the <code>Props</code> can be more standalone.</p>
-
 <p>Here is a quick implementation in Groovy, but you should able to translate to Java easily.</p>
-
 <pre><code>// String variable substitutions
 def parseVariableNames(String text) {
     def names = []
@@ -85,16 +82,14 @@ def parseVariableNames(String text) {
     return names
 }
 def replaceVariable(String key, String value, String text) {
-    //println "DEBUG: Replacing '${key}'' with '${value}'"
+    //println &quot;DEBUG: Replacing '${key}'' with '${value}'&quot;
     result = text.replaceAll('\\$\\{' + key + '}', value)
     return result
 }
 </code></pre>
-
 <p>Probably not the most efficient thing, but it should work. Let's have some tests.</p>
-
 <pre><code>// Test
-def map = ["name": "Zemian", "id": "1001"]
+def map = [&quot;name&quot;: &quot;Zemian&quot;, &quot;id&quot;: &quot;1001&quot;]
 def inputs  = [
     'Hello ${name}',
     'My id is ${id}',
@@ -116,9 +111,7 @@ assert result == [
     'Zemian\'s id is 1001.'
 ]
 </code></pre>
-
 <p>The output should print nothing, as it passed the test. What do you think?</p>
-       
 </p>
 
 	<hr />

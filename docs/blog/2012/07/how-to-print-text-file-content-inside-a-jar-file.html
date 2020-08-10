@@ -40,7 +40,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -48,7 +48,6 @@
             <li><a href="../../../about.html">About</a></li>
             <li><a href="../../../archive.html">Archive</a></li>
             <li><a href="../../..//tags">Tags</a></li>
-            <li><a href="../../../feed.xml">Subscribe</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -62,52 +61,97 @@
 	    <a href="../../../tags/java.html">java</a> 
 	</p>
 
-	<p>Have you ever wonder what's the exact version of your <code>ojdbc6.jar</code> that you have? All the jar files will contain a <code>META-INF/MANIFEST.MF</code> file, and chances are the version will be in it! You may try using <code>$JAVA_HOME/bin/jar -xvf</code> to extract the jar and then view the text file. But afterward you would have to clean up the extracted file so not to liter.
-
-<br />
-However, if you got Groovy, you can print any text file inside a jar without above mess.
-<br />
-<pre>file = new File(args[0])
-name = args.size() &gt; 1 ? args[1] : "META-INF/MANIFEST.MF"
+	<p><p>Have you ever wonder what's the exact version of your <code>ojdbc6.jar</code> that you have? All the jar files will contain a <code>META-INF/MANIFEST.MF</code> file, and chances are the version will be in it! You may try using <code>$JAVA_HOME/bin/jar -xvf</code> to extract the jar and then view the text file. But afterward you would have to clean up the extracted file so not to liter.</p>
+<p>However, if you got Groovy, you can print any text file inside a jar without above mess.</p>
+<pre><code>file = new File(args[0])
+name = args.size() &gt; 1 ? args[1] : &quot;META-INF/MANIFEST.MF&quot;
 jar = new java.util.jar.JarFile(file)
 entry = jar.getEntry(name)
 istream = jar.getInputStream(entry)
 println(istream.text)
 istream.close()
-</pre>
-<br />
-You may use this script like this:
-<br />
-<pre>$ groovy printjar.groovy /path/to/objdbc6.jar
+</code></pre>
+<p>You may use this script like this:</p>
+<pre><code>$ groovy printjar.groovy /path/to/objdbc6.jar
 
 # Or give an explicit entry name
-$ groovy printjar.groovy $JBOSS_HOME/jboss-modules.jar 'META-INF/maven/org.jboss.modules/jboss-modules/pom.properties'</pre>
-<pre>&nbsp;</pre>
-UPDATES:<br />
-Here are different implementations of similar program in differnet JVM based languages.<br />
-<br />
-Java<br />
-<span style="font-family: &quot;Courier New&quot;,Courier,monospace;">import java.io.BufferedReader;<br />import java.io.InputStream;<br />import java.io.InputStreamReader;<br />import java.util.Enumeration;<br />import java.util.jar.JarEntry;<br />import java.util.jar.JarFile;<br /><br />/**<br />&nbsp;* Print text based resource file inside a jar file. (eg: META-INF/MANIFEST.MF)<br />&nbsp;* <br />&nbsp;* @author Zemian Deng<br />&nbsp;*/<br />public class printjar {<br />&nbsp;&nbsp;&nbsp; public static void main(String[] args) throws Exception {<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; // Search given name in a jar<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; JarFile jarFile = new JarFile(args[0]);<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; final String searchName = (args.length &gt;= 2) ? args[1]<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; : "META-INF/MANIFEST.MF";<br /><br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; Enumeration&lt;JarEntry&gt; entries = jarFile.entries();<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; while (entries.hasMoreElements()) {<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; JarEntry entry = entries.nextElement();<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; if (entry.getName().contains(searchName)) {<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; // Print the JarEntry<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; InputStream instream = jarFile.getInputStream(entry);<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; try {<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; BufferedReader reader = new BufferedReader(<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; new InputStreamReader(instream));<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; String line = null;<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; while ((line = reader.readLine()) != null) {<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; System.out.println(line);<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; } finally {<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; if (instream != null)<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; instream.close();<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }<br />&nbsp;&nbsp;&nbsp; }<br />}</span><br />
-<br />
-JavaScript (Run it with jrunscript command)<br />
-<span style="font-family: &quot;Courier New&quot;,Courier,monospace;">jar = new java.util.jar.JarFile(arguments[0])<br />pattern = arguments[arguments.length -1];<br />entries = jar.entries();<br />while(entries.hasMoreElements()) {<br />&nbsp;&nbsp;&nbsp; jarEntry = entries.nextElement();<br />&nbsp;&nbsp;&nbsp; if (jarEntry.toString().search(pattern) != -1) {<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; istream = jar.getInputStream(jarEntry);<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; cat(istream);<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; istream.close();<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; break;<br />&nbsp;&nbsp;&nbsp; }<br />}<br />jar.close();</span><br />
-<br />
-Kotlin<br />
-<span style="font-family: Courier New, Courier, monospace;">import java.io.BufferedReader</span><br />
-<span style="font-family: Courier New, Courier, monospace;">import java.io.InputStreamReader</span><br />
-<span style="font-family: Courier New, Courier, monospace;">import java.util.jar.JarFile</span><br />
-<span style="font-family: Courier New, Courier, monospace;">val jarFile = JarFile(args[0])</span><br />
-<span style="font-family: Courier New, Courier, monospace;">val searchName = if (args.size() &gt;= 2) args[1] else "META-INF/MANIFEST.MF"</span><br />
-<span style="font-family: Courier New, Courier, monospace;">for (entry in jarFile.entries()) {</span><br />
-<span style="font-family: Courier New, Courier, monospace;"><span class="Apple-tab-span" style="white-space: pre;"> </span>if (entry.getName().contains(searchName)) {</span><br />
-<span style="font-family: Courier New, Courier, monospace;"><span class="Apple-tab-span" style="white-space: pre;">  </span>jarFile.getInputStream(entry).use { it -&gt;</span><br />
-<span style="font-family: Courier New, Courier, monospace;"><span class="Apple-tab-span" style="white-space: pre;">   </span>val reader = BufferedReader(InputStreamReader(it))</span><br />
-<span style="font-family: Courier New, Courier, monospace;"><span class="Apple-tab-span" style="white-space: pre;">   </span>for (line in reader.lineSequence())</span><br />
-<span style="font-family: Courier New, Courier, monospace;"><span class="Apple-tab-span" style="white-space: pre;">    </span>println(line)</span><br />
-<span style="font-family: Courier New, Courier, monospace;"><span class="Apple-tab-span" style="white-space: pre;">  </span>}</span><br />
-<span style="font-family: Courier New, Courier, monospace;"><span class="Apple-tab-span" style="white-space: pre;"> </span>}</span><br />
-<span style="font-family: Courier New, Courier, monospace;">}</span><br />
-<br />
+$ groovy printjar.groovy $JBOSS_HOME/jboss-modules.jar 'META-INF/maven/org.jboss.modules/jboss-modules/pom.properties'
+</code></pre>
+<p>UPDATES:</p>
+<p>Here are different implementations of similar program in differnet JVM based languages.</p>
+<p>Java</p>
+<pre><code>import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.Enumeration;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
+
+/**
+ * Print text based resource file inside a jar file. (eg: META-INF/MANIFEST.MF)
+ * 
+ * @author Zemian Deng
+ */
+public class printjar {
+    public static void main(String[] args) throws Exception {
+        // Search given name in a jar
+        JarFile jarFile = new JarFile(args[0]);
+        final String searchName = (args.length &gt;= 2) ? args[1]
+                : &quot;META-INF/MANIFEST.MF&quot;;
+
+        Enumeration&lt;JarEntry&gt; entries = jarFile.entries();
+        while (entries.hasMoreElements()) {
+            JarEntry entry = entries.nextElement();
+            if (entry.getName().contains(searchName)) {
+                // Print the JarEntry
+                InputStream instream = jarFile.getInputStream(entry);
+                try {
+                    BufferedReader reader = new BufferedReader(
+                            new InputStreamReader(instream));
+                    String line = null;
+                    while ((line = reader.readLine()) != null) {
+                        System.out.println(line);
+                    }
+                } finally {
+                    if (instream != null)
+                        instream.close();
+                }
+            }
+        }
+    }
+}
+</code></pre>
+<p>JavaScript (Run it with <code>jrunscript</code> command)</p>
+<pre><code>jar = new java.util.jar.JarFile(arguments[0])
+pattern = arguments[arguments.length -1];
+entries = jar.entries();
+while(entries.hasMoreElements()) {
+    jarEntry = entries.nextElement();
+    if (jarEntry.toString().search(pattern) != -1) {
+        istream = jar.getInputStream(jarEntry);
+        cat(istream);
+        istream.close();
+        break;
+    }
+}
+jar.close();
+</code></pre>
+<p>Kotlin</p>
+<pre><code>import java.io.BufferedReader
+import java.io.InputStreamReader
+import java.util.jar.JarFile
+val jarFile = JarFile(args[0])
+val searchName = if (args.size() &gt;= 2) args[1] else &quot;META-INF/MANIFEST.MF&quot;
+for (entry in jarFile.entries()) {
+    if (entry.getName().contains(searchName)) {
+        jarFile.getInputStream(entry).use { it -&gt;
+            val reader = BufferedReader(InputStreamReader(it))
+            for (line in reader.lineSequence())
+            println(line)
+        }
+    }
+}
+</code></pre>
 </p>
 
 	<hr />

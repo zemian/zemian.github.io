@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Zemian's Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/asciidoctor.css" rel="stylesheet">
+    <link href="../css/base.css" rel="stylesheet">
+    <link href="../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../about.html">About</a></li>
+            <li><a href="../archive.html">Archive</a></li>
+            <li><a href="..//tags">Tags</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">
+  			<a href="blog/2018/03/reduce-recent-project-list-size-in-intellij.html"><h1>Reduce recent project list size in IntelliJ</h1></a>
+  			<p>07 March 2018, tags: 
+			    <a href="../tags/intellij.html">intellij</a> 
+  			</p>
+  			<p><div class="paragraph">
+<p>When opening a project from IntelliJ IDE, it will give you a list of menu that contains your recent projects. This list however has default of 50 items max, and sometimes I find it stretched the menu popup too long and covered some of IDE the status line (which I need to verify the project path to be open). It&#8217;s a pity that there is obvious normal IDE Settings to change this, but today I found a post that shows how you can do it this:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Go to menu: <code>Help&#8594;Find Action&#8594;Registry</code></p>
+</li>
+<li>
+<p>In the diablog table, find the "ide.max.recent.projects" key entry and change the value to your liking (eg: <code>10</code>)</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Ref: <a href="https://intellij-support.jetbrains.com/hc/en-us/community/posts/207089089-SOLVED-Where-do-I-set-the-maximum-number-of-recent-projects-to-be-shown-in-the-File-Open-Recent-list-" class="bare">https://intellij-support.jetbrains.com/hc/en-us/community/posts/207089089-SOLVED-Where-do-I-set-the-maximum-number-of-recent-projects-to-be-shown-in-the-File-Open-Recent-list-</a></p>
+</div></p>
+  			<a href="blog/2018/03/package-manager-for-macosx.html"><h1>Package manager for MacOSX</h1></a>
+  			<p>05 March 2018, tags: 
+			    <a href="../tags/macosx.html">macosx</a> 
+
+			    <a href="../tags/package-manager.html">package-manager</a> 
+
+			    <a href="../tags/brew.html">brew</a> 
+  			</p>
+  			<p><div class="listingblock">
+<div class="content">
+<pre>#
+# Install package manager for macosx called brew from https://brew.sh
+#
+# Install
+$ /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+
+# If your brew installation have problem with error writing to /usr/local
+# then try to uninstall then install brew again.
+#
+# Uninstall
+$ /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/uninstall)"</pre>
+</div>
+</div></p>
+  			<a href="blog/2018/03/installing-c-compiler-on-macosx.html"><h1>Installing C compiler on MacOSX</h1></a>
+  			<p>05 March 2018, tags: 
+			    <a href="../tags/macosx.html">macosx</a> 
+
+			    <a href="../tags/compiler.html">compiler</a> 
+  			</p>
+  			<p><div class="listingblock">
+<div class="content">
+<pre># Install xcode - it contains C compiler and many other developer tools for MacOSX system
+xcode-select --install</pre>
+</div>
+</div></p>
+  			<a href="blog/2018/03/how-to-setup-httpd-reverse-proxy-to-tomcat.html"><h1>How to setup Httpd Reverse Proxy To Tomcat</h1></a>
+  			<p>05 March 2018, tags: 
+			    <a href="../tags/httpd.html">httpd</a> 
+
+			    <a href="../tags/reverse.html">reverse</a> 
+
+			    <a href="../tags/proxy.html">proxy</a> 
+
+			    <a href="../tags/tomcat.html">tomcat</a> 
+  			</p>
+  			<p><div class="paragraph">
+<p>Here is an example on how to configure HTTPD server with reverse proxy into Tomcat, and adding the authenticated user as header and passing to Tocmat server.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Example of <code>httpd.conf</code> file</p>
+</li>
+</ol>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre># Apache httpd v2.4 minimal configuration
+ServerRoot "/etc/httpd"
+Listen 80
+
+LoadModule mpm_prefork_module modules/mod_mpm_prefork.so
+LoadModule unixd_module modules/mod_unixd.so
+LoadModule authz_core_module modules/mod_authz_core.so
+LoadModule authz_user_module modules/mod_authz_user.so
+LoadModule log_config_module modules/mod_log_config.so
+LoadModule dir_module modules/mod_dir.so
+
+# Other useful features
+LoadModule mime_module modules/mod_mime.so
+LoadModule autoindex_module modules/mod_autoindex.so
+LoadModule status_module modules/mod_status.so
+LoadModule alias_module modules/mod_alias.so
+LoadModule env_module modules/mod_env.so
+LoadModule setenvif_module modules/mod_setenvif.so
+LoadModule filter_module modules/mod_filter.so
+LoadModule ext_filter_module modules/mod_ext_filter.so
+
+DirectoryIndex index.html
+ErrorLog /var/log/httpd/error.log
+LogFormat "%h %l %u %t \"%r\" %&gt;s %b" common
+CustomLog /var/log/httpd/access.log common
+&lt;Directory /&gt;
+  AllowOverride None
+  Require all denied
+&lt;/Directory&gt;
+
+DocumentRoot "/srv/www/htdocs"
+&lt;Directory "/srv/www/htdocs"&gt;
+  Require all granted
+&lt;/Directory&gt;
+
+# Tomcat Reverse Proxy setup
+LoadModule proxy_module modules/mod_proxy.so
+LoadModule proxy_http_module modules/mod_proxy_http.so
+LoadModule rewrite_module modules/mod_rewrite.so
+LoadModule headers_module modules/mod_headers.so
+LoadModule request_module modules/mod_request.so
+
+LoadModule auth_form_module modules/mod_auth_form.so
+LoadModule auth_digest_module modules/mod_auth_digest.so
+LoadModule authn_core_module modules/mod_authn_core.so
+LoadModule authn_file_module modules/mod_authn_file.so
+LoadModule session_module modules/mod_session.so
+LoadModule session_cookie_module modules/mod_session_cookie.so
+
+ProxyPass "/jspwebapp" "http://localhost:8080/jspwebapp"
+ProxyPassReverse "/jspwebapp" "http://localhost/jspwebapp"
+ProxyPass "/jspwebapp2" "http://localhost:8080/jspwebapp2"
+ProxyPassReverse "/jspwebapp2" "http://localhost/jspwebapp2"
+
+# HTTPD Form Login/logout process
+&lt;LocationMatch "/(jspwebapp|jspwebapp2)"&gt;
+	Require valid-user
+	AuthName "SecuredArea"
+	AuthFormProvider file
+	AuthUserFile "/etc/httpd/passwd/passwords"
+	AuthType form
+	AuthFormLoginRequiredLocation "/login.html"
+
+	Session On
+	SessionCookieName session path=/
+	SessionMaxAge 1800
+	SessionEnv On
+	SessionHeader X-Replace-Session
+
+	RewriteEngine On
+	RewriteRule .* - [env=X_REMOTE_USER:%{LA-U:REMOTE_USER}]
+	RequestHeader set appuser "%{X_REMOTE_USER}e"
+&lt;/LocationMatch&gt;
+&lt;Location "/login"&gt;
+	SetHandler form-login-handler
+	AuthName "SecuredArea"
+	AuthFormProvider file
+	AuthUserFile "/etc/httpd/passwd/passwords"
+	AuthType form
+	AuthFormLoginRequiredLocation "/login.html"
+	AuthFormLoginSuccessLocation "/secured/index.html"
+
+	Session On
+	SessionCookieName session path=/
+	SessionMaxAge 1800
+&lt;/Location&gt;
+&lt;Location "/logout"&gt;
+	SetHandler form-logout-handler
+	AuthName "SecuredArea"
+	AuthFormLogoutLocation "http://localhost/logout.html"
+
+	Session On
+	SessionCookieName session path=/
+	SessionMaxAge 1
+&lt;/Location&gt;</pre>
+</div>
+</div></p>
+  			<a href="blog/2018/03/fetching-data-from-postgresql-using-python-psycopg2.html"><h1>Fetching Data From PostgreSQL Using Python psycopg2</h1></a>
+  			<p>04 March 2018, tags: 
+			    <a href="../tags/python.html">python</a> 
+
+			    <a href="../tags/postgres.html">postgres</a> 
+  			</p>
+  			<p><div class="listingblock">
+<div class="content">
+<pre>import psycopg2
+conn = psycopg2.connect('dbname=test user=test')
+cur = conn.cursor()
+cur.execute("select * from users order by username")
+while True:
+    row = cur.fetchmany()
+    if len(row) == 0:
+        break
+    print(row)
+cur.close()
+conn.close()</pre>
+</div>
+</div></p>
+  			<a href="blog/2018/03/minimal-httpd-config-file.html"><h1>Minimal HTTPD config file</h1></a>
+  			<p>04 March 2018, tags: 
+			    <a href="../tags/httpd.html">httpd</a> 
+  			</p>
+  			<p><div class="paragraph">
+<p>If you are looking for small set of httpd config file, here is one I come up with based on original <a href="https://wiki.apache.org/httpd/Minimal_Config">httpd wiki</a>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre># Apache httpd v2.4 minimal configuration
+ServerName localhost
+ServerRoot "/usr/local/apache2"
+Listen 80
+
+User daemon
+Group daemon
+
+# Core modules
+LoadModule mpm_worker_module modules/mod_mpm_worker.so
+LoadModule unixd_module modules/mod_unixd.so
+LoadModule authz_core_module modules/mod_authz_core.so
+LoadModule authz_user_module modules/mod_authz_user.so
+LoadModule log_config_module modules/mod_log_config.so
+LoadModule dir_module modules/mod_dir.so
+
+# Other useful features
+LoadModule mime_module modules/mod_mime.so
+LoadModule autoindex_module modules/mod_autoindex.so
+LoadModule status_module modules/mod_status.so
+LoadModule alias_module modules/mod_alias.so
+LoadModule env_module modules/mod_env.so
+LoadModule setenvif_module modules/mod_setenvif.so
+LoadModule filter_module modules/mod_filter.so
+
+DirectoryIndex index.html
+ErrorLog logs/error.log
+LogFormat "%h %l %u %t \"%r\" %&gt;s %b" common
+CustomLog logs/access.log common
+
+DocumentRoot "htdocs"
+&lt;Directory "htdocs"&gt;
+  Options Indexes FollowSymLinks
+  AllowOverride None
+  Require all granted
+&lt;/Directory&gt;
+
+# Enable CGI support
+LoadModule cgid_module modules/mod_cgid.so
+ScriptAlias /cgi-bin/ "cgi-bin/"
+&lt;Directory "cgi-bin"&gt;
+    AllowOverride None
+    Options None
+    Require all granted
+&lt;/Directory&gt;</pre>
+</div>
+</div></p>
+  			<a href="blog/2018/03/git-clone-failed-with-ssl-certificate-problem.html"><h1>Git clone failed with SSL certificate problem</h1></a>
+  			<p>03 March 2018  			</p>
+  			<p><div class="paragraph">
+<p>Problem:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>git clone https://github.com/notepad-plus-plus/notepad-plus-plus
+Cloning into 'notepad-plus-plus'...
+fatal: unable to access 'https://github.com/notepad-plus-plus/notepad-plus-plus/': SSL certificate problem: unable to get local issuer certificate</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Solution:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>git config --global http.sslVerify false
+# then retry above command</pre>
+</div>
+</div></p>
+  			<a href="blog/2018/02/how-to-find-httpd-config-file-location.html"><h1>How to find httpd config file location</h1></a>
+  			<p>28 February 2018, tags: 
+			    <a href="../tags/httpd.html">httpd</a> 
+  			</p>
+  			<p><div class="listingblock">
+<div class="content">
+<pre>Zemians-MacBook-Air:~ zemian$ httpd -t -D DUMP_INCLUDES
+Included configuration files:
+  (*) /private/etc/apache2/httpd.conf
+    (498) /private/etc/apache2/extra/httpd-mpm.conf
+    (504) /private/etc/apache2/extra/httpd-autoindex.conf
+    (544) /private/etc/apache2/other/php7.conf</pre>
+</div>
+</div></p>
+  			<a href="blog/2018/02/how-to-setup-httpd-form-authentication-and-user-session-loginlogout.html"><h1>How to setup httpd form authentication and user session login/logout</h1></a>
+  			<p>27 February 2018, tags: 
+			    <a href="../tags/httpd.html">httpd</a> 
+
+			    <a href="../tags/authentication.html">authentication</a> 
+
+			    <a href="../tags/session.html">session</a> 
+  			</p>
+  			<p><div class="sect1">
+<h2 id="_configuration_setup_for_httpd_conf">Configuration setup for <code>httpd.conf</code></h2>
+<div class="sectionbody">
+<div class="literalblock">
+<div class="title">Enable modules</div>
+<div class="content">
+<pre>LoadModule auth_form_module modules/mod_auth_form.so
+LoadModule auth_digest_module modules/mod_auth_digest.so
+LoadModule session_module modules/mod_session.so
+LoadModule session_cookie_module modules/mod_session_cookie.so</pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+This configuration is only for tutorial purpose and not secured by default! Using Cookies session store is NOT secured! It&#8217;s recommend you use <code>mod_session_crypto</code> to further secure data, or use server side session data store.
+</td>
+</tr>
+</table>
+</div>
+<div class="literalblock">
+<div class="title">Setup users</div>
+<div class="content">
+<pre># First user and new file
+htpasswd -c /etc/httpd/passwd/passwords test
+# Update/add more user
+htpasswd /etc/httpd/passwd/passwords zemian</pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+You need <code>httpd-tool</code> package from Cygwin to find <code>htpasswd</code> command.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="title">Example of Digest login</div>
+<div class="content">
+<pre># Digest Login
+&lt;Location "/secured"&gt;
+	AuthType Basic
+	AuthName "Restricted Files"
+	AuthBasicProvider file
+	AuthUserFile "/etc/httpd/passwd/passwords"
+	Require valid-user
+&lt;/Location&gt;</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Example of form login</div>
+<div class="content">
+<pre># Form Login/logout process
+&lt;LocationMatch "(/secured|/cgi-bin/secured)"&gt;
+	Require valid-user
+	AuthName "SecuredArea"
+	AuthFormProvider file
+	AuthUserFile "/etc/httpd/passwd/passwords"
+    AuthType form
+	AuthFormLoginRequiredLocation "/login.html"
+
+	Session On
+	SessionCookieName session path=/
+	SessionMaxAge 30
+	SessionEnv On
+	SessionHeader X-Replace-Session
+&lt;/LocationMatch&gt;
+&lt;Location "/login"&gt;
+	SetHandler form-login-handler
+	AuthName "SecuredArea"
+	AuthFormProvider file
+	AuthUserFile "/etc/httpd/passwd/passwords"
+    AuthType form
+	AuthFormLoginRequiredLocation "/login.html"
+    AuthFormLoginSuccessLocation "/secured/index.html"
+
+	Session On
+	SessionCookieName session path=/
+&lt;/Location&gt;
+&lt;Location "/logout"&gt;
+	SetHandler form-logout-handler
+	AuthName "SecuredArea"
+	AuthFormLogoutLocation "http://localhost/logout.html"
+
+	Session On
+	SessionCookieName session path=/
+	SessionMaxAge 1
+&lt;/Location&gt;</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="title">Login page <code>htdocs/login.html</code></div>
+<div class="content">
+<pre>&lt;form method="POST" action="/login"&gt;
+  Username: &lt;input type="text" name="httpd_username" value="" /&gt;
+  Password: &lt;input type="password" name="httpd_password" value="" /&gt;
+  &lt;input type="submit" name="login" value="Login" /&gt;
+&lt;/form&gt;</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="title">Logout page <code>htdocs/logout.html</code></div>
+<div class="content">
+<pre>&lt;p&gt;You have been logged out.&lt;/p&gt;</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="title">Secured page <code>htdocs/secured/index.html</code></div>
+<div class="content">
+<pre>&lt;p&gt;This is secured area&lt;/p&gt;</pre>
+</div>
+</div>
+</div>
+</div></p>
+  			<a href="blog/2018/02/getting-started-with-apache-httpd-web-server-on-windows.html"><h1>Getting started with Apache HTTPD Web Server on Windows</h1></a>
+  			<p>27 February 2018, tags: 
+			    <a href="../tags/httpd.html">httpd</a> 
+
+			    <a href="../tags/cygwin.html">cygwin</a> 
+  			</p>
+  			<p><div class="sect1">
+<h2 id="_using_native_windows_binary_without_admin_rights">Using native Windows Binary (without admin rights)</h2>
+<div class="sectionbody">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Download one of binary from <a href="https://httpd.apache.org/docs/current/platform/windows.html#down" class="bare">https://httpd.apache.org/docs/current/platform/windows.html#down</a></p>
+</li>
+<li>
+<p>Unzip a portable version (zip file) into <code>C:\Apache24</code></p>
+</li>
+<li>
+<p>cd <code>C:\Apache24\bin</code> and run httpd.exe</p>
+</li>
+<li>
+<p>Open browser to <a href="http://localhost" class="bare">http://localhost</a></p>
+</li>
+</ol>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+Press <code>CTRL+C</code> to stop the server.
+</td>
+</tr>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_where_is_the_httpd_conf">Where is the <code>httpd.conf</code>?</h3>
+<div class="paragraph">
+<p>The web server config file is located at <code>C:\Apache24\conf\httpd.conf</code></p>
+</div>
+<div class="paragraph">
+<p>The default document root should be at <code>C:\Apache24\htdocs</code></p>
+</div>
+<div class="paragraph">
+<p>The default error log file is at <code>C:\Apache24\logs\error.log</code></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_how_to_enable_cgi_bin_scripts">How to enable cgi-bin scripts</h3>
+<div class="paragraph">
+<p>There is a default <code>perl</code> test script under <code>C:\Apache24\cgi-bin\printenv.pl</code>,
+and if you have native Windows Perl installed, you need to modify the first
+line in the script. Example: <code>#!/C:/perl5/perl.exe</code></p>
+</div>
+<div class="paragraph">
+<p>Now test it on <a href="http://localhost/cgi-bin/printenv.pl" class="bare">http://localhost/cgi-bin/printenv.pl</a></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_using_python_as_cgi_bin_test_script">Using Python as <code>cgi-bin</code> test script</h3>
+<div class="paragraph">
+<p>Create <code>C:\Apache24\cgi-bin\printenv.py</code> script:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>#!C:/Python36/python.exe
+import cgi
+cgi.test()</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Test it on <a href="http://localhost/cgi-bin/printenv.py" class="bare">http://localhost/cgi-bin/printenv.py</a></p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_using_cygwin_for_windows">Using Cygwin for Windows</h2>
+<div class="sectionbody">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Install <code>httpd</code> and <code>httpd-tool</code> packages in your cygwin</p>
+</li>
+<li>
+<p>If you have not started <code>cygserver</code>, run it now in the background.</p>
+</li>
+<li>
+<p>Run <code>apachectl -k start</code></p>
+</li>
+<li>
+<p>Open browser to <a href="http://localhost" class="bare">http://localhost</a></p>
+</li>
+</ol>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+Run <code>apachectl -k stop</code> to stop the server.
+</td>
+</tr>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_where_is_the_httpd_conf_2">Where is the <code>httpd.conf</code> ?</h3>
+<div class="paragraph">
+<p>The web server config file is located at <code>/etc/httpd/conf/httpd.conf</code></p>
+</div>
+<div class="paragraph">
+<p>The default document root should be at <code>/srv/www/htdocs</code></p>
+</div>
+<div class="paragraph">
+<p>The default error log file is at <code>/var/log/httpd/error_log</code></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_how_to_enable_cgi_bin_scripts_2">How to enable cgi-bin scripts</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Ensure you have installed <code>perl</code> package in Cygwin.</p>
+</li>
+<li>
+<p>Modify <code>/srv/www/cgi-bin/printenv</code> file first line with <code>#!/usr/bin/perl</code></p>
+</li>
+<li>
+<p>Run <code>chmod a+x</code></p>
+</li>
+<li>
+<p>Modify <code>httpd.conf</code> to enable <code>mod_cgi</code>:</p>
+<div class="literalblock">
+<div class="content">
+<pre>&lt;IfModule mpm_prefork_module&gt;
+	LoadModule cgi_module modules/mod_cgi.so
+&lt;/IfModule&gt;</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Restart httpd server</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Now test it on <a href="http://localhost/cgi-bin/printenv" class="bare">http://localhost/cgi-bin/printenv</a></p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+You can also test the <code>/srv/www/cgi-bin/test-cgi</code> script, but
+it uses <code>#!/usr/bin/sh</code> instead of <code>perl</code>!
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+If you use default <code>cgi-bin</code> folder that are setup with <code>ScriptAlias</code>, then you do not need to add <code>Options +ExecCGI</code> line to
+the conf file.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_using_python_as_cgi_bin_test_script_2">Using Python as <code>cgi-bin</code> test script</h3>
+<div class="paragraph">
+<p>Create <code>/srv/www/cgi-bin/printenv.py</code> script:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>#!/usr/bin/python3
+import cgi
+cgi.test()</pre>
+</div>
+</div>
+</div>
+</div>
+</div></p>
+
+	<hr />
+
+	<ul class="pager">
+		<li class="previous"><a href="https://zemian.github.io/5">Previous</a></li>
+		<li>Page: 6/29</li>
+		<li class="next"><a href="https://zemian.github.io/7">Next</a></li>
+	</ul>
+
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">&copy; 2011 - 2019 Zemian Deng All Rights Reserved | Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.5</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../js/jquery-1.11.1.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/prettify.js"></script>
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-135626598-1');
+    </script>
+
+  </body>
+</html>

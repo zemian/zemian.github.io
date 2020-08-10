@@ -40,7 +40,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -48,7 +48,6 @@
             <li><a href="../../../about.html">About</a></li>
             <li><a href="../../../archive.html">Archive</a></li>
             <li><a href="../../..//tags">Tags</a></li>
-            <li><a href="../../../feed.xml">Subscribe</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -63,27 +62,27 @@
 	</p>
 
 	<p><p>If you have a RedHat/CentOS/OracleLinux distro of Linux, then <code>yum</code> should be available as your package manager. Here are the notes I have to get PostgreSQL server up running.</p>
-<pre><code>bash> yum info postgresql-server
-bash> # Verify that's the version you want to install
+<pre><code>bash&gt; yum info postgresql-server
+bash&gt; # Verify that's the version you want to install
 
-bash> # Ready to install
-bash> sudo su -
-bash> yum -y install postgresql-server
-bash> service postgresql initdb
+bash&gt; # Ready to install
+bash&gt; sudo su -
+bash&gt; yum -y install postgresql-server
+bash&gt; service postgresql initdb
 
-bash> # Startup the server manually
-bash> service postgresql start
+bash&gt; # Startup the server manually
+bash&gt; service postgresql start
 
-bash> # Make server startup at system reboot
-bash> chkconfig postgresql on
+bash&gt; # Make server startup at system reboot
+bash&gt; chkconfig postgresql on
 
-bash> # Verify postgres DB is working
-bash> su - postgres -c psql
+bash&gt; # Verify postgres DB is working
+bash&gt; su - postgres -c psql
 postgres=# \du
 postgres=# \q
 
-bash> # We are done, exit root user shell
-bash> exit
+bash&gt; # We are done, exit root user shell
+bash&gt; exit
 </code></pre>
 <p>If you can't find <code>service</code> or <code>chkconfig</code> commands, then check to ensure you have have <code>/sbin</code> in your <code>$PATH</code>.</p>
 </p>

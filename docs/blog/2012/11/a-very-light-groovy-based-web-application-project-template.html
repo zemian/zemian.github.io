@@ -40,7 +40,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -48,7 +48,6 @@
             <li><a href="../../../about.html">About</a></li>
             <li><a href="../../../archive.html">Archive</a></li>
             <li><a href="../../..//tags">Tags</a></li>
-            <li><a href="../../../feed.xml">Subscribe</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -62,13 +61,10 @@
 	    <a href="../../../tags/groovy.html">groovy</a> 
 	</p>
 
-	<p><p>You might have heard of the project Grails is a Groovy version of Ruby on Rails like framework that let you create web application much more easier with
-Dynamic scripting. Despite all that power Grails provided, it is not "light" if you look under the hood. I am not saying Grails is bad or anything. Grails is actually pretty cool to write web application with. However I found myself often want something even lighter and yet still want to prototype with Groovy. So here I will show you a <a href="https://bitbucket.org/saltnlight5/sandbox/downloads/maven-webapp-groovy.zip">maven-groovy-webapp</a> project template that I use to get start any web application development. It's very simple, light, and yet very Groovy.</p>
-
+	<p><p>You might have heard of the project Grails is a Groovy version of Ruby on Rails like framework that let you create web application much more easier with<br />
+Dynamic scripting. Despite all that power Grails provided, it is not &quot;light&quot; if you look under the hood. I am not saying Grails is bad or anything. Grails is actually pretty cool to write web application with. However I found myself often want something even lighter and yet still want to prototype with Groovy. So here I will show you a <a href="https://bitbucket.org/saltnlight5/sandbox/downloads/maven-webapp-groovy.zip">maven-groovy-webapp</a> project template that I use to get start any web application development. It's very simple, light, and yet very Groovy.</p>
 <h1>How to get started</h1>
-
 <p>Unzip <code>maven-webapp-groovy.zip</code> above and you should see these few files:</p>
-
 <pre><code>bash&gt; cd maven-webapp-groovy
 bash&gt; find .
 bash&gt; ./pom.xml
@@ -95,28 +91,21 @@ bash&gt; ./src/main/webapp/WEB-INF/groovy/init.groovy
 bash&gt; ./src/main/webapp/WEB-INF/groovy/destroy.groovy
 bash&gt; ./src/main/webapp/WEB-INF/web.xml
 </code></pre>
-
 <p>As you can see it's a maven based application, and I have configured tomcat plugin, so you may run it like this:</p>
-
 <pre><code>bash&gt; mvn tomcat7:run
 bash&gt; open http://localhost:8080/maven-webapp-groovy/home.groovy
 </code></pre>
-
 <p>And ofcourse, with maven, running package phase will let you deploy it into any real application servers when ready.</p>
-
 <pre><code>bash&gt; mvn package
 bash&gt; cp target/maven-webapp-groovy.war $APP_SERVER_HOME/autodeploy
 </code></pre>
-
 <h1>What's in it</h1>
-
 <p>You should checkout the main config in <code>web.xml</code> file, and you'll see that there couple built-in Groovy servlets and a custom listener.</p>
-
-<pre><code>&lt;?xml version="1.0"?&gt;
-&lt;web-app xmlns="http://java.sun.com/xml/ns/javaee"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
-        version="2.5"&gt;
+<pre><code>&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;web-app xmlns=&quot;http://java.sun.com/xml/ns/javaee&quot;
+        xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+        xsi:schemaLocation=&quot;http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd&quot;
+        version=&quot;2.5&quot;&gt;
 
     &lt;description&gt;Groovy Web Application&lt;/description&gt;
     &lt;welcome-file-list&gt;
@@ -155,19 +144,12 @@ bash&gt; cp target/maven-webapp-groovy.war $APP_SERVER_HOME/autodeploy
 
 &lt;/web-app&gt;
 </code></pre>
-
 <p>I've chosen to use <code>GroovyServlet</code> as a controller (it comes with Groovy!), and this let you use any scripts inside <code>/WEB-INF/groovy</code> directory. That's it, no further setup. That's about the only requirement you need to get a Groovy webapp started! See <code>console.groovy</code> as example and how it works. It's a groovy version of <a href="http://saltnlight5.blogspot.com/2012/07/script-console-tool-for-any-war.html">this JVM console</a></p>
-
 <p>Now you can use Groovy to process any logic and even generate the HTML output if you like, but I find it even more easier to use <code>TemplateServlet</code>. This allow Groovy template files to be serve as view. It's very much like JSP, but it uses Groovy instead! And we know Groovy syntax are much shorter to write! See <code>console.gt</code> as exmaple and how it works.</p>
-
 <p>The <code>GroovyContextListener</code> is something I wrote, and it's optional. This allow you to run any scripts during the webapp startup or shutdown states. I've created an empty <code>init.groovy</code> and <code>destroy.groovy</code> placeholder. So now you have all the hooks you need to prototype just about any web application you need.</p>
-
 <h1>Simplicity wins</h1>
-
 <p>This setup is just plain Java Servlet with Groovy loaded. I often think the more simple you get, then less bug and faster you code. No heavy frameworks, no extra learning curve, (other than basic Servlet API and Groovy/Java skills ofcourse), and off you go.</p>
-
 <p>Go have fun with this Groovy webapp template! And let me know if you have some cool prototypes to show off after playing with this. :)</p>
-              
 </p>
 
 	<hr />

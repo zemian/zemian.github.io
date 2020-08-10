@@ -40,7 +40,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -48,7 +48,6 @@
             <li><a href="../../../about.html">About</a></li>
             <li><a href="../../../archive.html">Archive</a></li>
             <li><a href="../../..//tags">Tags</a></li>
-            <li><a href="../../../feed.xml">Subscribe</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -62,13 +61,10 @@
 	    <a href="../../../tags/crontab.html">crontab</a> 
 	</p>
 
-	<p>Did you know that crontab service has the "@reboot" schedule that would start a script during your system startup time? This is handy if you want something to run right after your system has stared. Try this:<br />
-<br />
-<span style="font-family: &quot;Courier New&quot;,Courier,monospace;"># crontab -e</span><br />
-<span style="font-family: &quot;Courier New&quot;,Courier,monospace;">@reboot $HOME/crontab/runcmd.sh /apps/start-myapp.sh</span><br />
-<br />
-The disadvantage of this vs the rc.d scripts are you do not have control on when the system shutdown("stop") state. So if your app doens't need to clean up during shutdown, but only care to start when during reboot, this would be an easy option.<br />
-<br />
+	<p><p>Did you know that crontab service has the &quot;@reboot&quot; schedule that would start a script during your system startup time? This is handy if you want something to run right after your system has stared. Try this:</p>
+<h1>crontab -e</h1>
+<p>@reboot $HOME/crontab/runcmd.sh /apps/start-myapp.sh</p>
+<p>The disadvantage of this vs the rc.d scripts are you do not have control on when the system shutdown(&quot;stop&quot;) state. So if your app doens't need to clean up during shutdown, but only care to start when during reboot, this would be an easy option.</p>
 </p>
 
 	<hr />

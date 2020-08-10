@@ -40,7 +40,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -48,7 +48,6 @@
             <li><a href="../../../about.html">About</a></li>
             <li><a href="../../../archive.html">Archive</a></li>
             <li><a href="../../..//tags">Tags</a></li>
-            <li><a href="../../../feed.xml">Subscribe</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -62,22 +61,29 @@
 	    <a href="../../../tags/weblogic.html">weblogic</a> 
 	</p>
 
-	<p>The WebLogic Server docs recommand you to create a dedicated admin server and then sepearate managed servers for application deployment. Here I will show you how to create one or more managed server in the same host as the admin server.<br />
-<br />
-I assume you already have WLS installed with your own domain created and running. If you haven't done this before, you may refer to my <a href="http://saltnlight5.blogspot.com/2014/01/getting-started-with-weblogic-server.html">previous blog on how to create and start WLS.</a> After you started your domain (that's the default admin server), then follow these steps.<br />
-<br />
-1. Login into your http://localhost:7001/console webapp.<br />
-2. On the right menu tree, click Environment &gt; Servers. You should see "myserver(admin)" already listed.<br />
-3. Click "New" button, enter Server Name: <b>appserver</b> and set Server Listen Port: <b>7002</b><br />
-4. Click "Next" and then "Finish"<br />
-5. Now open a new terminal and run these commands: <br />
-<span style="font-family: &quot;Courier New&quot;,Courier,monospace;">&nbsp;&nbsp;&nbsp; cd mydomain</span><br />
-<span style="font-family: &quot;Courier New&quot;,Courier,monospace;">&nbsp;&nbsp;&nbsp; bin/<b>startManagedWeblogic.sh</b> appserver1 localhost:7001</span><br />
-<br />
-You would need to enter the username and password, same as for your /console webapp. After this managed server is up and running you may send the process in the background by pressing <b>CTRL+Z</b> and then run <b>bg </b>command. Or you may use the <span style="font-family: &quot;Courier New&quot;,Courier,monospace;">servers/appserver/security/boot.properties</span> file to bypass the user/password prompt on every restart of this managed server.<br />
-<br />
-Now you have one managed server started along with your admin server. After this you may start deploying application onto this managed server. All the webapp deployed would now accessable by its assigned port such as http://localhost:<b>7002</b>/yourwebapp url. You may repeat the same for however number of managed server you like to run on the same host. Try to name your server name and port number unique.<br />
-<br />
+	<p><p>The WebLogic Server docs recommand you to create a dedicated admin server and then sepearate managed servers for application deployment. Here I will show you how to create one or more managed server in the same host as the admin server.</p>
+<p>I assume you already have WLS installed with your own domain created and running. If you haven't done this before, you may refer to my <a href="http://saltnlight5.blogspot.com/2014/01/getting-started-with-weblogic-server.html">previous blog on how to create and start WLS.</a> After you started your domain (that's the default admin server), then follow these steps.</p>
+<ol>
+<li>
+<p>Login into your <a href="http://localhost:7001/console">http://localhost:7001/console</a> webapp.</p>
+</li>
+<li>
+<p>On the right menu tree, click Environment &gt; Servers. You should see &quot;myserver(admin)&quot; already listed.</p>
+</li>
+<li>
+<p>Click &quot;New&quot; button, enter Server Name: appserver and set Server Listen Port: 7002</p>
+</li>
+<li>
+<p>Click &quot;Next&quot; and then &quot;Finish&quot;</p>
+</li>
+<li>
+<p>Now open a new terminal and run these commands:<br />
+cd mydomain<br />
+bin/startManagedWeblogic.sh appserver1 localhost:7001</p>
+</li>
+</ol>
+<p>You would need to enter the username and password, same as for your /console webapp. After this managed server is up and running you may send the process in the background by pressing CTRL+Z and then run bg command. Or you may use the servers/appserver/security/boot.properties file to bypass the user/password prompt on every restart of this managed server.</p>
+<p>Now you have one managed server started along with your admin server. After this you may start deploying application onto this managed server. All the webapp deployed would now accessable by its assigned port such as <a href="http://localhost:7002/yourwebapp">http://localhost:7002/yourwebapp</a> url. You may repeat the same for however number of managed server you like to run on the same host. Try to name your server name and port number unique.</p>
 </p>
 
 	<hr />

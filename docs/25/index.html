@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Zemian's Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/asciidoctor.css" rel="stylesheet">
+    <link href="../css/base.css" rel="stylesheet">
+    <link href="../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../about.html">About</a></li>
+            <li><a href="../archive.html">Archive</a></li>
+            <li><a href="..//tags">Tags</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">
+  			<a href="blog/2012/08/timemachine-jars-size-and-dependencies.html"><h1>TimeMachine jars size and dependencies</h1></a>
+  			<p>03 August 2012, tags: 
+			    <a href="../tags/timemachine.html">timemachine</a> 
+  			</p>
+  			<p><p>From the <a href="https://bitbucket.org/timemachine/scheduler/downloads">TimeMachine Scheduler</a> download page you will see that the latest 1.2.1 release zip package size is around 13M. It may seem large for a scheduler application, but let's examine it closely to see what's in there. Here is how the zip package looks like inside</p>
+<pre><code>timemachine-scheduler-1.2.1
++-- bin
++-- lib
++-- config
+</code></pre>
+<p>The <code>config</code> directory contains many sample configurations and scripts to help new users get started. The <code>bin</code> contains few startup wrapper scripts that let you start the scheduler. The <code>lib</code> contains the libraries for the scheduler application. I want to go into more details on these.</p>
+<pre><code>+-- lib
+-rw-r--r--@  1 zemian  staff   445288 Jun 20 23:20 antlr-2.7.7.jar
+-rw-r--r--@  1 zemian  staff   610790 Jun 20 23:26 c3p0-0.9.1.2.jar
+-rw-r--r--@  1 zemian  staff   109043 Jun 20 23:20 commons-io-1.4.jar
+-rw-r--r--@  1 zemian  staff   279193 Jun 20 23:20 commons-lang-2.5.jar
+-rw-r--r--@  1 zemian  staff   313898 Jun 20 23:26 dom4j-1.6.1.jar
+-rw-r--r--@  1 zemian  staff  6156866 Aug  2 22:05 groovy-all-2.0.0.jar
+-rw-r--r--@  1 zemian  staff  1267149 Jun 20 23:26 h2-1.3.163.jar
+-rw-r--r--@  1 zemian  staff    81271 Jun 20 23:26 hibernate-commons-annotations-4.0.1.Final.jar
+-rw-r--r--@  1 zemian  staff  4407494 Jun 20 23:26 hibernate-core-4.1.3.Final.jar
+-rw-r--r--@  1 zemian  staff   102661 Jun 20 23:26 hibernate-jpa-2.0-api-1.0.1.Final.jar
+-rw-r--r--@  1 zemian  staff   648253 Jun 20 23:26 javassist-3.15.0-GA.jar
+-rw-r--r--@  1 zemian  staff    60768 Jun 20 23:26 jboss-logging-3.1.0.GA.jar
+-rw-r--r--@  1 zemian  staff    11209 Jun 20 23:26 jboss-transaction-api_1.1_spec-1.0.0.Final.jar
+-rw-r--r--@  1 zemian  staff   481535 Jun 20 23:20 log4j-1.2.16.jar
+-rw-r--r--@  1 zemian  staff    25496 Jun 20 23:20 slf4j-api-1.6.1.jar
+-rw-r--r--@  1 zemian  staff     9753 Jun 20 23:20 slf4j-log4j12-1.6.1.jar
+-rw-r--r--@  1 zemian  staff    46885 Aug  2 22:37 timemachine-hibernate-1.2.1.jar
+-rw-r--r--@  1 zemian  staff   154925 Aug  2 22:36 timemachine-scheduler-1.2.1.jar
+</code></pre>
+<p>The core of the scheduler <code>timemachine-scheduler-1.2.1.jar</code> would only need <code>slf4j-api-1.6.1.jar</code>, <code>commons-io-1.4.jar</code> and <code>commons-lang-2.5.jar</code> to run. These would support full scheduler with in memory data store. As you can see these add up to only about 500K!</p>
+<p>To be able to see useful logging output, you need an SLF4j impl. You may use built-in JDK's logger if you choose, or you may use <code>slf4j-log4j12-1.6.1.jar</code> and <code>log4j-1.2.16.jar</code>. I personally think the JDK logger is horrible to use and configure, so I package up log4j as option for you.</p>
+<p>A Java scripting engine is only optional in TimeMachine, and JDK already comes with JavaScript. To be practical, I also package the Groovy engine <code>groovy-all-2.0.0.jar</code>. It's much more easy to use. But the full groovy engine is costing us 6M in size!</p>
+<p>The TimeMachine allows you to switch data store service. We provided the <code>HibernateDataService</code> service in <code>timemachine-scheduler-1.2.1.jar</code>. This service would require the Hibernate dependencies, which is pretty heavy. They are: <code>hibernate-*.jar</code>, <code>jboss-*.jar</code>, <code>javassist-3.15.0-GA.jar</code>, <code>antlr-2.7.7.jar</code>, and <code>dom4j-1.6.1.jar</code>. These can add up to another 5M in size!</p>
+<p>Now with the Hibernate data service, you would also need a database driver that match to your database. I have included a H2Database, a Java database that provides full SQL database service including its driver in <code>h2-1.3.163.jar</code>. This alone is about 1.2M in size.</p>
+<p>When you working with Hibernate and Database, you should always use a Database connection pool. I packaged the <code>c3p0-0.9.1.2.jar</code> implementation which Hibernate can automatically detects.</p>
+<p>I hope these information can help you decide what to remove or add in case you want to customize your scheduler to fit into your application. You may also visit the project to see the Maven site dependencies report that has all the details. This also means that if you use Maven to bring in TimeMachine scheduler as dependency, you will automatically gets the minimal because I have carefully set all the optional items not to be included with the proper Maven scopes.</p>
+</p>
+  			<a href="blog/2012/08/a-better-java-shell-script-wrapper.html"><h1>A better java shell script wrapper</h1></a>
+  			<p>01 August 2012, tags: 
+			    <a href="../tags/java.html">java</a> 
+
+			    <a href="../tags/bash.html">bash</a> 
+
+			    <a href="../tags/shell.html">shell</a> 
+  			</p>
+  			<p><p>In many Java projects, you often see wrapper shell script to invoke the <code>java</code> command with its custom application parameters. For example, <code>$ANT_HOME/bin/ant</code>, <code>$GROOVY_HOME/bin/groovy</code>, or even in our <a href="http://bitbucket.org/timemachine/scheduler">TimeMachine Scheduler</a> you will see <code>$TIMEMACHINE_HOME/bin/scheduler.sh</code>.</p>
+<p>Writing these wrapper script is boring and error prone. Most of the problems come from setting the correct classpath for the application. If you're working on an in-house project for a company, then you can get away with hardcoding paths and your environment vars. But for open source projects, folks have to make the wrapper more flexible and generic. Most of them even provide a <code>.bat</code> version of it. Windows DOS is really a brutal and limited terminal to script away your project need. For this reason, I often encourage others to use Cygwin as much as they can. It at least has a real bash shell to work with. Another common problem with these wrappers is it can quickly get out of hand and have too many duplication of similar scripts liter every where in your project.</p>
+<p>In this post, I will show you a Java wrapper script that I've written. It's simple to use and very flexible for running just about any Java program. Let's see how it's used first, and then I will print its content at the bottom of the post.</p>
+<h2>Introducing the <code>run-java</code> wrapper script</h2>
+<p>If you take a look at <code>$TIMEMACHINE_HOME/bin/scheduler.sh</code>, you will see that it in turns calls a <code>run-java</code> script that comes in the same directory.</p>
+<pre><code>DIR=$(dirname $0)
+SCHEDULER_HOME=$DIR/..
+$DIR/run-java -Dscheduler.home=&quot;$SCHEDULER_HOME&quot; timemachine.scheduler.tool.SchedulerServer &quot;$@&quot;
+</code></pre>
+<p>As you can see, our <code>run-java</code> can take <code>-D</code> options. Not only this, it can also take <code>-cp</code> option as well! What's more is that you can specify these options even <strong>after</strong> the main class! This makes the <code>run-java</code> re-wrappable by other script, and still be able to add additional system properties and classpath.</p>
+<p>For examples, the TimeMachine comes with Groovy library, so instead of downloading it's full distribution again, you can simply invoke the groovy like this</p>
+<pre><code>$TIMEMACHINE_HOME/bin/run-java groovy.ui.GroovyMain test.groovy
+</code></pre>
+<p>You can use <code>run-java</code> in any directory you're in, so it's convenient. It will resolve it's own directory and load any jars in the <code>lib</code> directory automatically. Now if you want Groovy to run with more additional jars, you can use the <code>-cp</code> option like this:</p>
+<pre><code>$TIMEMACHINE_HOME/bin/run-java -cp &quot;$HOME/apps/my-app/lib/*&quot; groovy.ui.GroovyMain test.groovy
+</code></pre>
+<p>Often times things will go wrong if you are not careful with Java classpath, but with <code>run-java</code> script you can perform a dry run first:</p>
+<pre><code>RUN_JAVA_DRY=1 $TIMEMACHINE_HOME/bin/run-java -cp &quot;$HOME/apps/my-app/lib/*&quot; groovy.ui.GroovyMain test.groovy
+</code></pre>
+<p>You would run the above all in single line on a command prompt. It should print out your full java command with all options and arguments for you to inspect.</p>
+<p>There are many more options to the script, which you can find out more by reading the comments in it. The current script will work on any Linux bash or on a Windows Cygwin terminal.</p>
+<h2>Using <code>run-java</code> during development with Maven</h2>
+<p>Above examples are assuming you are in a released project structure such as this:</p>
+<pre><code>$TIMEMACHINE_HOME
+  +- bin/run-java
+  +- lib/*.jar
+</code></pre>
+<p>But what about during development? A frequent use case is that you want to be able to run your latest compiled classes under <code>target/classes</code> without have to package up or release the entire project. You can use our <code>run-java</code> in these scenario as well. First, simply add <code>bin/run-java</code> in your project, then you run <code>mvn compile dependency:copy-dependencies</code> that will generate all the <code>jar</code> files into <code>target/dependency</code>. That's all. The <code>run-java</code> will automatically detect these directories and create the correct classpath to run your main class.</p>
+<p>If you use Eclipse IDE for development, then your <code>target/classes</code> will be always up-to-date, and the <code>run-java</code> can be a great gem to have in your project even for development.</p>
+</p>
+  			<a href="blog/2012/07/how-to-print-text-file-content-inside-a-jar-file.html"><h1>How to print text file content inside a jar file</h1></a>
+  			<p>30 July 2012, tags: 
+			    <a href="../tags/java.html">java</a> 
+  			</p>
+  			<p><p>Have you ever wonder what's the exact version of your <code>ojdbc6.jar</code> that you have? All the jar files will contain a <code>META-INF/MANIFEST.MF</code> file, and chances are the version will be in it! You may try using <code>$JAVA_HOME/bin/jar -xvf</code> to extract the jar and then view the text file. But afterward you would have to clean up the extracted file so not to liter.</p>
+<p>However, if you got Groovy, you can print any text file inside a jar without above mess.</p>
+<pre><code>file = new File(args[0])
+name = args.size() &gt; 1 ? args[1] : &quot;META-INF/MANIFEST.MF&quot;
+jar = new java.util.jar.JarFile(file)
+entry = jar.getEntry(name)
+istream = jar.getInputStream(entry)
+println(istream.text)
+istream.close()
+</code></pre>
+<p>You may use this script like this:</p>
+<pre><code>$ groovy printjar.groovy /path/to/objdbc6.jar
+
+# Or give an explicit entry name
+$ groovy printjar.groovy $JBOSS_HOME/jboss-modules.jar 'META-INF/maven/org.jboss.modules/jboss-modules/pom.properties'
+</code></pre>
+<p>UPDATES:</p>
+<p>Here are different implementations of similar program in differnet JVM based languages.</p>
+<p>Java</p>
+<pre><code>import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.Enumeration;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
+
+/**
+ * Print text based resource file inside a jar file. (eg: META-INF/MANIFEST.MF)
+ * 
+ * @author Zemian Deng
+ */
+public class printjar {
+    public static void main(String[] args) throws Exception {
+        // Search given name in a jar
+        JarFile jarFile = new JarFile(args[0]);
+        final String searchName = (args.length &gt;= 2) ? args[1]
+                : &quot;META-INF/MANIFEST.MF&quot;;
+
+        Enumeration&lt;JarEntry&gt; entries = jarFile.entries();
+        while (entries.hasMoreElements()) {
+            JarEntry entry = entries.nextElement();
+            if (entry.getName().contains(searchName)) {
+                // Print the JarEntry
+                InputStream instream = jarFile.getInputStream(entry);
+                try {
+                    BufferedReader reader = new BufferedReader(
+                            new InputStreamReader(instream));
+                    String line = null;
+                    while ((line = reader.readLine()) != null) {
+                        System.out.println(line);
+                    }
+                } finally {
+                    if (instream != null)
+                        instream.close();
+                }
+            }
+        }
+    }
+}
+</code></pre>
+<p>JavaScript (Run it with <code>jrunscript</code> command)</p>
+<pre><code>jar = new java.util.jar.JarFile(arguments[0])
+pattern = arguments[arguments.length -1];
+entries = jar.entries();
+while(entries.hasMoreElements()) {
+    jarEntry = entries.nextElement();
+    if (jarEntry.toString().search(pattern) != -1) {
+        istream = jar.getInputStream(jarEntry);
+        cat(istream);
+        istream.close();
+        break;
+    }
+}
+jar.close();
+</code></pre>
+<p>Kotlin</p>
+<pre><code>import java.io.BufferedReader
+import java.io.InputStreamReader
+import java.util.jar.JarFile
+val jarFile = JarFile(args[0])
+val searchName = if (args.size() &gt;= 2) args[1] else &quot;META-INF/MANIFEST.MF&quot;
+for (entry in jarFile.entries()) {
+    if (entry.getName().contains(searchName)) {
+        jarFile.getInputStream(entry).use { it -&gt;
+            val reader = BufferedReader(InputStreamReader(it))
+            for (line in reader.lineSequence())
+            println(line)
+        }
+    }
+}
+</code></pre>
+</p>
+  			<a href="blog/2012/07/getting-jboss-cli-sh-to-work-on-macosx.html"><h1>Getting jboss-cli.sh to work on MacOSX</h1></a>
+  			<p>28 July 2012, tags: 
+			    <a href="../tags/jboss.html">jboss</a> 
+  			</p>
+  			<p><p>If you use MacOSX and JBossAS, then you might have encountered this problem when using the jboss-client.sh tool:</p>
+<pre><code>$ bin/jboss-cli.sh 
+</code></pre>
+<p>You are disconnected at the moment. Type 'connect' to connect to the server or 'help' for the list of supported commands.</p>
+<pre><code>[disconnected /] connect
+The controller is not available at localhost:9999
+</code></pre>
+<p>Or you will get this:</p>
+<pre><code>$ bin/jboss-cli.sh --connect
+org.jboss.as.cli.CliInitializationException: Failed to connect to the controller
+at org.jboss.as.cli.impl.CliLauncher.initCommandContext(CliLauncher.java:229)
+at org.jboss.as.cli.impl.CliLauncher.main(CliLauncher.java:207)
+at org.jboss.as.cli.CommandLineMain.main(CommandLineMain.java:34)
+at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+at java.lang.reflect.Method.invoke(Method.java:601)
+at org.jboss.modules.Module.run(Module.java:260)
+at org.jboss.modules.Main.main(Main.java:291)
+Caused by: org.jboss.as.cli.CommandLineException: The controller is not available at localhost:9999
+at org.jboss.as.cli.impl.CommandContextImpl.connectController(CommandContextImpl.java:639)
+at org.jboss.as.cli.impl.CommandContextImpl.connectController(CommandContextImpl.java:613)
+at org.jboss.as.cli.impl.CliLauncher.initCommandContext(CliLauncher.java:227)
+... 8 more
+</code></pre>
+<p>It turns out this is bug on the JDK 1.7 that only appears on MacOSX JDK7! To be exact, I have the following: MacOSX 10.7.4 with JDK 1.7.0_05 and JBossAS 7.1.1.Final.</p>
+<p>This problem has already been discovered by these posts:</p>
+<p><a href="http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=7159361">http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=7159361</a></p>
+<p><a href="https://community.jboss.org/message/750861#750861">https://community.jboss.org/message/750861#750861</a></p>
+<p>Except after ready through all, and I can't still get it to work because no one listed a clear steps by steps solution. So I re-summarize it again. You need to use that bug's report workaround solution on both the server and client!</p>
+<p>Start the server:</p>
+<pre><code>$ bin/standalone.sh -Djava.nio.channels.spi.SelectorProvider=sun.nio.ch.KQueueSelectorProvider 
+... 
+18:37:22,555 INFO  [org.jboss.as] (Controller Boot Thread) JBAS015874: JBoss AS 7.1.1.Final &quot;Brontes&quot; started in 1686ms - Started 133 of 208 services (74 services are passive or on-demand)
+</code></pre>
+<p>And on separate terminal, run the CLI:</p>
+<pre><code>$JAVA_OPTS=&quot;-Djava.nio.channels.spi.SelectorProvider=sun.nio.ch.KQueueSelectorProvider&quot; bin/jboss-cli.sh --connect 
+[standalone@localhost:9999 /] 
+</code></pre>
+<p>There, now we may continue to explore the cool JBossAS on the fancy OS.</p>
+</p>
+  			<a href="blog/2012/07/using-timemachine-scheduler-on-jbossas-7.html"><h1>Using TimeMachine Scheduler on JBossAS 7</h1></a>
+  			<p>23 July 2012, tags: 
+			    <a href="../tags/jboss.html">jboss</a> 
+
+			    <a href="../tags/timemachine.html">timemachine</a> 
+  			</p>
+  			<p><div class="paragraph">
+<p>I&#8217;ve written an article for MasterTheBoss.com on integrating <a href="http://mastertheboss.com/jboss-quartz/using-timemachine-scheduler-on-jbossas-7">TimeMachine Scheduler on JBossAS7</a></p>
+</div></p>
+  			<a href="blog/2012/07/script-console-tool-for-any-war-application.html"><h1>Script Console Tool for any WAR application</h1></a>
+  			<p>21 July 2012, tags: 
+			    <a href="../tags/java.html">java</a> 
+
+			    <a href="../tags/script.html">script</a> 
+  			</p>
+  			<p><p>In the latest release of <a href="https://bitbucket.org/timemachine/scheduler">TimeMachine scheduler project</a>, I've added a Groovy scripting console to the web app and allow user to script the scheduler. This feature is actually very useful for any servlet application as well. Imagine that if you have a script/shell console for your web application that allow you to dynamically inspect any variables or data?</p>
+<p>With the same idea, I've written a very basic JSP file <code>script-console.jsp</code> that provides a great ad hoc tool. For simplicity sake, I put everything into single file. All you need is just add this one file into your java webapp root directory, and you'll have an instant scripting console shell! (Yes, I am aware having code in JSP is bad, but having everything in one page is convenient, specially if you plan to just use this as one time inspection.)</p>
+<p>The JSP will automatically detect all the scripting engine available in your JVM (1.6+) and let you choose any one to use. In the text area you can enter any script codes. All the JSP implicit variables are available for you to use as well. JVM 1.6 or higher will have at least JavaScript engine available, so you can use it immediately.</p>
+<p>Be aware that this is a huge security risk since the script console not only expose your application, it also expose your entire JVM! It must be use with care, and if possible, it needs to be added as protected resources in your web application.</p>
+</p>
+  			<a href="blog/2012/07/timemachine-scheduler-1-2-0-release-is-out.html"><h1>TimeMachine Scheduler 1.2.0 release is out!</h1></a>
+  			<p>15 July 2012, tags: 
+			    <a href="../tags/timemachine.html">timemachine</a> 
+  			</p>
+  			<p><p>I just released the <a href="https://bitbucket.org/timemachine/scheduler/downloads">timemachine-scheudler-1.2.0</a>, and it now comes with both stand-alone server (zip) and web application (war) distribution packages.</p>
+<p>In this <a href="https://bitbucket.org/timemachine/scheduler/wiki/ReleaseNotes">release</a>, I fixed few major bugs and made many small clean ups and minor fixes. I also added few new features. I will briefly introduce them to you here.</p>
+<h2></h2>
+<p>Groovy 2.0</p>
+<p>I have upgraded the optional script engine dependency to latest groovy 2.0.0 within our scheduler distribution. The groovy-2.0.0 has modularized their jar distribution, and our scheduler only requires minimal of jsr-223 module, so our overall package size should be smaller.</p>
+<h2></h2>
+<p>TimeMachine-Web</p>
+<p>I have added a web application that can provide a fully running scheduler. This web app provides UI screens that let you manage and view jobs/schedules, and it can even edit the scheduler configuration online.</p>
+<p>You can see more info on <a href="https://bitbucket.org/timemachine/scheduler/wiki/WebConsole">WebConsole</a> doc, or try it out with our <a href="http://demos-tmscheduler.rhcloud.com/timemachine-web">demo</a>.</p>
+<h2></h2>
+<p>Schedule Priority</p>
+<p>You may now set a priority value 1-9 on any Schedule, and the default is 5. These are used if you have schedules that has same nextRun time, and having the lower priority value will get to run first.</p>
+<h2></h2>
+<p>Event and Job Histories</p>
+<p>In this release, I also provided a EventHistoryService that can record all major scheduler events such as when scheduler init, start, stop or destroyed. Also when scheduling data are added or deleted. And all the job run events are also recorded. To support this, we added a new built-in data model: EventHistory. You may retrieve and store these with our DataStore service if you desire. As convenience, we have added a History screen on our web application that display all the events happening in the scheduler.</p>
+<p>This feature is disabled by default, but to enable it is easy. You simply add the following value in the scheduler configuration file:<br />
+timemachine.scheduler.eventHistory.class = timemachine.scheduler.service.EventHistoryService</p>
+<p>There are few more options you may configure with this service, and you can read more it on the scheduler <a href="https://bitbucket.org/timemachine/scheduler/wiki/ReferenceManual">reference doc</a>.</p>
+</p>
+  			<a href="blog/2012/07/ctrl-c-not-working-on-cygwin-1-7-15-1.html"><h1>CTRL+C not working on Cygwin 1.7.15-1</h1></a>
+  			<p>12 July 2012, tags: 
+			    <a href="../tags/cygwin.html">cygwin</a> 
+  			</p>
+  			<p><p>When I installed new package in my Cygwin recently, it also automatically upgraded to latest Cygwin 1.7.15-1 DLL. After this, pressing CTRL+C no longer work</p>
+<p>on a running Java process the cygwin shell. I found the reason why this happens, and here is the email I sent to cygwin mailing list:</p>
+<blockquote>
+<p>Okay, I finally found out what's going on.</p>
+<p>I used to have an old cygwin installed (not even sure what version) that only has &quot;C:\Cygwin\Cygwin.bat&quot; to start an terminal. This batch file open a terminal that I can run java.exe, and I used to hit CTRL+C to end it (not only that, it will also invoke the Java's shutdown hook.)</p>
+<p>After I upgraded to cygwin 1.7.15-1 (it will auto upgrade when we run setup.exe!). The above behavior no longer works!</p>
+<p>It turns out the new cygwin 1.7.15-1 automatically comes with Mintty terminal now, and will default to create a Shortcut to this on desktop. Well I still have a shortcut to &quot;C:\Cygwin\Cygwin.bat&quot;. What I discover is that Java will no longer work with terminal that opens with &quot;C:\Cygwin\Cygwin.bat&quot;! But it DOES work with the Mintty terminal!</p>
+<p>It's all great for me, because I kind of like Mintty terminal. It's kindda funny because for years I would love to use Mintty, but only to stop because CTRL+C wont' work there. Now we have reverse!</p>
+<p>However, I have to point out also that although I can hit CTRL+C in mintty to kill a java.exe process, but it DOES NOT invoke the Java's shutdown hook process! Which is shame, because now I can't test my shutdown procedure code.</p>
+<p>I hope cygwin team can look at this further and provide a good solution, even for the Java folks like myself. I can only cope with Windows because of cygwin exists, so kudo to all the cygwin team and their hard work!</p>
+<p>Hope also this post will help other Java developers out there.</p>
+<p>Cheers,<br />
+Zemian</p>
+</blockquote>
+<p>Ref: <a href="http://old.nabble.com/CTRL%2BC-is-not-working-with-java-on-latest-cygwin-1.7.15-tt34147441.html">http://old.nabble.com/CTRL%2BC-is-not-working-with-java-on-latest-cygwin-1.7.15-tt34147441.html</a></p>
+</p>
+  			<a href="blog/2012/07/quick-way-to-benchmark-java-code.html"><h1>Quick way to benchmark Java code</h1></a>
+  			<p>11 July 2012, tags: 
+			    <a href="../tags/java.html">java</a> 
+  			</p>
+  			<p><p>Don't you envy Ruby has the Benchmark module? Yes, there are many art and science go behind how to setup and run a good micro benchmark code, especially with the JVM. But many times you just want to see some result, quickly. There is actually a very groovy and quick way to bench mark Java code with gbench! Check this out:</p>
+<pre><code>@Grab('com.googlecode.gbench:gbench:0.3.1-groovy-2.0')
+@Grab('commons-lang:commons-lang:2.6')
+import gbench.*
+import org.apache.commons.lang.StringUtils
+new BenchmarkBuilder().run {
+    'jdk.String.split' {
+        100.times{ &quot;a b c d e f g h i j k l m n o p q r s t u v w x y z&quot;.split(&quot; &quot;) }
+    }
+    'commons-lang.StringUtils.split' {
+        100.times{ StringUtils.split(&quot;a b c d e f g h i j k l m n o p q r s t u v w x y z&quot;, &quot; &quot;) }
+    }
+}.prettyPrint()
+</code></pre>
+<p>I ran above and get the following on my machine:</p>
+<h1>$ groovy benchmarkSplit.groovy<br />
+Environment</h1>
+<ul>
+<li>Groovy: 2.0.0</li>
+<li>JVM: Java HotSpot(TM) Client VM (20.1-b02, Sun Microsystems Inc.)
+<ul>
+<li>JRE: 1.6.0_26</li>
+<li>Total Memory: 15.5 MB</li>
+<li>Maximum Memory: 247.5 MB</li>
+</ul>
+</li>
+<li>OS: Windows XP (5.1, x86)</li>
+</ul>
+<h1>Options</h1>
+<ul>
+<li>Warm Up: Auto</li>
+<li>CPU Time Measurement: On
+<pre><code>                          user  system     cpu    real
+</code></pre>
+</li>
+</ul>
+<p>jdk.String.split                663219       0  663219  693382<br />
+commons-lang.StringUtils.split  192721       0  192721  212359</p>
+</p>
+  			<a href="blog/2012/07/creating-oracle-stored-procedure-using-java.html"><h1>Creating Oracle Stored Procedure using Java</h1></a>
+  			<p>11 July 2012, tags: 
+			    <a href="../tags/oracle.html">oracle</a> 
+
+			    <a href="../tags/java.html">java</a> 
+  			</p>
+  			<p><p>Did you know you can write Oracle database stored procedure in Java? Give this a try in your <code>sqlplus</code> prompt.</p>
+<pre><code>sql&gt; create or replace and compile java source named &quot;MyJavaDbProcedure&quot; as
+sql&gt; public class MyJavaDbProcedure {
+sql&gt;   public static String upcase(String text) {
+sql&gt;     return text.toUpperCase();
+sql&gt;   }
+sql&gt; };
+sql&gt; /
+sql&gt; 
+sql&gt; create or replace function upcase (s in varchar2)
+sql&gt;   return varchar2
+sql&gt; as language java
+sql&gt;   name 'MyJavaDbProcedure.upcase(java.lang.String) return java.lang.String';
+sql&gt; /
+sql&gt; 
+sql&gt; select upcase('hello') from dual;
+sql&gt; /
+</code></pre>
+<p>I let the database compile a Java source directly, but there is also the <code>java class</code> PL/SQL that you can load Java binary <code>.class</code> file as well. I am sure your DBA will fight all their might to prevent you doing stuff like this. But it's cool to see that this option is available.</p>
+</p>
+
+	<hr />
+
+	<ul class="pager">
+		<li class="previous"><a href="https://zemian.github.io/24">Previous</a></li>
+		<li>Page: 25/29</li>
+		<li class="next"><a href="https://zemian.github.io/26">Next</a></li>
+	</ul>
+
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">&copy; 2011 - 2019 Zemian Deng All Rights Reserved | Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.5</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../js/jquery-1.11.1.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/prettify.js"></script>
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-135626598-1');
+    </script>
+
+  </body>
+</html>

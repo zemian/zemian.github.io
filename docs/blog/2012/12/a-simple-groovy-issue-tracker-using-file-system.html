@@ -40,7 +40,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -48,7 +48,6 @@
             <li><a href="../../../about.html">About</a></li>
             <li><a href="../../../archive.html">Archive</a></li>
             <li><a href="../../..//tags">Tags</a></li>
-            <li><a href="../../../feed.xml">Subscribe</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -62,18 +61,15 @@
 	    <a href="../../../tags/groovy.html">groovy</a> 
 	</p>
 
-	<p>It will be a chaos not to track bugs and feature requests when you developing software. Having a simple issue tracker would make managing the project much more successful. Now I like simple stuff, and I think for small project, having this tracker right inside the source control (especially with DSVC like Mercurial/Git etc) repository is not only doable, but very convenient as well. You don't have to go crazy with all the fancy features, but just enough to track issues are fine. I would like to propose this layout for you.
-
-<p>Let's say you have a project that looks like this
-<pre>
-project
+	<p><p>It will be a chaos not to track bugs and feature requests when you developing software. Having a simple issue tracker would make managing the project much more successful. Now I like simple stuff, and I think for small project, having this tracker right inside the source control (especially with DSVC like Mercurial/Git etc) repository is not only doable, but very convenient as well. You don't have to go crazy with all the fancy features, but just enough to track issues are fine. I would like to propose this layout for you.</p>
+<p>Let's say you have a project that looks like this</p>
+<pre><code>project
  +- src/main/java/Hello.java
  +- issues/issue-001.md
  +- pom.xml
-</pre>
-
-<p>All I need is a simple directory <code>issues</code> to get going. Now I have a place to track my issue! First issue <code>issue-000.md</code> should be what your project is about. For example:
-<pre>/id=issue-001
+</code></pre>
+<p>All I need is a simple directory <code>issues</code> to get going. Now I have a place to track my issue! First issue <code>issue-000.md</code> should be what your project is about. For example:</p>
+<pre><code>/id=issue-001
 /createdon=2012-12-16 18:07:08
 /type=bug
 /status=new
@@ -86,13 +82,10 @@ project
 
 # Updated on 2012-12-16 18:07:08
 
-We want to create a Maven based Hello world program. It should print "Hello World."
-</pre>
-
-<p>I choose <code>.md</code> as file extension for intending to write comments in Markdown format. Since it's a text file, you do what you want. To be more structured, I have added some headers metadata for issue tracking. Let's define some here. I would propose to use these and formatting:
-
-<pre><code>
- /id=issue-&lt;NUM&gt;
+We want to create a Maven based Hello world program. It should print &quot;Hello World.&quot;
+</code></pre>
+<p>I choose <code>.md</code> as file extension for intending to write comments in Markdown format. Since it's a text file, you do what you want. To be more structured, I have added some headers metadata for issue tracking. Let's define some here. I would propose to use these and formatting:</p>
+<pre><code> /id=issue-&lt;NUM&gt;
  /createdon=&lt;TIMESTAMP&gt;
  /type=feature|bug|question
  /status=new|reviewing|working|onhold|testing|resolved
@@ -102,27 +95,21 @@ We want to create a Maven based Hello world program. It should print "Hello Worl
  /found=&lt;VERSION_FOUND&gt;
  /fixed=&lt;VERSION_FIXED&gt;
 </code></pre>
-
-<p>That should cover most of the bug and feature development issues. It's not cool to write software without a history of changes, including these issues created. So let's use a source control. I highly recommend you to use Mercurial <code>hg</code>. You can create and initialize a new repository like this.
-
-<pre>
-bash> cd project
-bash> hg init
-bash> hg add
-bash> hg commit -m "My hello world project"
-</pre>
-
-<p>Now your project is created and we have a place to track your issues. Now it's simple text file, so use your favorite text editor and edit away. However, creating new issue with those header tags is boring. It will be nice to have a script that manage it a little. I have a Groovy script <code>issue.groovy</code> (see at the end of this article) that let you run reports and create new issues. You can add this script into your <code>project/issues</code> directory and you can instantly creating new issue and querying reports! Here is an example output on my PC:
-
-<pre>
-bash> cd project
-bash> groovy scripts/issue.groovy
+<p>That should cover most of the bug and feature development issues. It's not cool to write software without a history of changes, including these issues created. So let's use a source control. I highly recommend you to use Mercurial <code>hg</code>. You can create and initialize a new repository like this.</p>
+<pre><code>bash&gt; cd project
+bash&gt; hg init
+bash&gt; hg add
+bash&gt; hg commit -m &quot;My hello world project&quot;
+</code></pre>
+<p>Now your project is created and we have a place to track your issues. Now it's simple text file, so use your favorite text editor and edit away. However, creating new issue with those header tags is boring. It will be nice to have a script that manage it a little. I have a Groovy script <code>issue.groovy</code> (see at the end of this article) that let you run reports and create new issues. You can add this script into your <code>project/issues</code> directory and you can instantly creating new issue and querying reports! Here is an example output on my PC:</p>
+<pre><code>bash&gt; cd project
+bash&gt; groovy scripts/issue.groovy
 
 Searching for issues with /status!=resolved
 Issue: /id=issue-001 /status=new /subject=A simple Java Hello program
 1 issues found.
 
-bash> groovy scripts/issue.groovy --new /type=feature /subject='Add a unit test.'
+bash&gt; groovy scripts/issue.groovy --new /type=feature /subject='Add a unit test.'
 
 project/issues/issue-002.md created.
 /id=issue-002
@@ -136,14 +123,14 @@ project/issues/issue-002.md created.
 /fixed=
 /subject=Add a unit test.
 
-bash> groovy scripts/issue.groovy
+bash&gt; groovy scripts/issue.groovy
 
 Searching for issues with /status!=resolved
 Issue: /id=issue-000 /status=new /subject=A simple Java Hello program
 Issue: /id=issue-002 /status=new /subject=Add a unit test.
 2 issues found.
 
-bash> groovy scripts/issue.groovy --details /id=002
+bash&gt; groovy scripts/issue.groovy --details /id=002
 
 Searching for issues with /id=002
 Issue: /id=issue-002
@@ -151,41 +138,34 @@ Issue: /id=issue-002
   /subject=Add a unit test.
 1 issues found.
 
-bash> groovy scripts/issue.groovy --update /id=001 /status=resolved /resolution=fixed 'I fixed this thang.'
+bash&gt; groovy scripts/issue.groovy --update /id=001 /status=resolved /resolution=fixed 'I fixed this thang.'
 Updating issue /id=issue-001
 Updating /status=resolved
 Updating /resolution=fixed
 
 Update issue-001 completed.
-</pre>
-
-<p>The script give you some quick and consistent way to create/update/search issues. But they are just plain text files! You can just as well fire up your favorite text editor and change any any thing you want. Save and even commit it into your source repository. All will not lost. 
-
-<p>I hope this issue tracking script can get your next project started quickly. Let me know what you do you think!
-
-<p>Enjoy!
-<p>Zemian
-
-<p>And here is my <code>issue.groovy</code> script.
-<p>
-<script src="https://bitbucket.org/saltnlight5/sandbox/src/3271cecf4af6b8ee21416839d8939dc64d355e53/scripts/issue.groovy?embed=t">
-</script>
-
-<hr/>
-
-<p>Oh, and of course I eat my own *dog food. Here are few issues that I started to track the <code>issue.grooy</code> itself.
-
+</code></pre>
+<p>The script give you some quick and consistent way to create/update/search issues. But they are just plain text files! You can just as well fire up your favorite text editor and change any any thing you want. Save and even commit it into your source repository. All will not lost.</p>
+<p>I hope this issue tracking script can get your next project started quickly. Let me know what you do you think!</p>
+<p>Enjoy!</p>
+<p>Zemian</p>
+<p>And here is my <code>issue.groovy</code> script.</p>
+<hr />
+<p>Oh, and of course I eat my own *dog food. Here are few issues that I started to track the <code>issue.grooy</code> itself.</p>
 <ul>
-  <li>v1.0.0 (2012/12/19)</li>
-  <ul>
-    <li><a href="https://bitbucket.org/saltnlight5/sandbox/src/tip/scripts/issue-001.md">issue-001</a></li>
-  </ul>
-  
-  <li>v1.0.1 (2012/12/20)</li>
-  <ul>
-    <li><a href="https://bitbucket.org/saltnlight5/sandbox/src/tip/scripts/issue-002.md">issue-002</a></li>
-    <li><a href="https://bitbucket.org/saltnlight5/sandbox/src/tip/scripts/issue-003.md">issue-003</a></li>
-  </ul>
+<li>
+<p>v1.0.0 (2012/12/19)</p>
+</li>
+<li>
+<p><a href="https://bitbucket.org/saltnlight5/sandbox/src/tip/scripts/issue-001.md">issue-001</a></p>
+</li>
+<li>
+<p>v1.0.1 (2012/12/20)</p>
+</li>
+<li>
+<p><a href="https://bitbucket.org/saltnlight5/sandbox/src/tip/scripts/issue-002.md">issue-002</a></p>
+</li>
+<li><a href="https://bitbucket.org/saltnlight5/sandbox/src/tip/scripts/issue-003.md">issue-003</a></li>
 </ul>
 </p>
 

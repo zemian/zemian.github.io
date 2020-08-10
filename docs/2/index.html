@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Zemian's Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/asciidoctor.css" rel="stylesheet">
+    <link href="../css/base.css" rel="stylesheet">
+    <link href="../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../about.html">About</a></li>
+            <li><a href="../archive.html">Archive</a></li>
+            <li><a href="..//tags">Tags</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">
+  			<a href="blog/2020/03/hello-ojet.html"><h1>Hello Oracle JET</h1></a>
+  			<p>25 March 2020, tags: 
+			    <a href="../tags/ojet.html">ojet</a> 
+  			</p>
+  			<p><p>Here are some short instructions on how to create your first Oracle JET (v8.1.0) application.</p>
+<ol>
+<li>First you need to install NodeJS and then you should have npm command available in a Terminal.</li>
+<li>Install OJET command line tool globally into NPM. Afterward, you will have the ojet command available in a Terminal.</li>
+</ol>
+<pre><code>npm install -g @oracle/ojet-cli
+ojet --version
+</code></pre>
+<ol>
+<li>Generate an OJET application.</li>
+</ol>
+<pre><code>ojet create hello-ojet --template=basic
+</code></pre>
+<ol>
+<li>Now start the web server that comes with your project.</li>
+</ol>
+<pre><code>cd hello-app
+ojet serve
+open http://localhost:8000
+</code></pre>
+<p>Now you should see a blank application ready for you to start your next project!</p>
+<p>The project source that was generated in this article is available at <a href="https://github.com/zemian/hello-ojet/tree/demo-basic-template">GitHub</a>.</p>
+</p>
+  			<a href="blog/2020/03/front-end.html"><h1>From Back End to Front End Development</h1></a>
+  			<p>22 March 2020, tags: 
+			    <a href="../tags/zemian.html">zemian</a> 
+
+			    <a href="../tags/frontend.html">frontend</a> 
+  			</p>
+  			<p><p>A year ago I was given an opportunity to work on the Oracle CX Knowledge Management product. In this development team, we use Oracle JET (OJET), a JavaScript toolkit for building our UI application. The product also has a mature RESTFul API service that manage the content data from the back end.</p>
+<p>In the past, I have been doing Java development for more than a decade, and have exposed to UI work when developing web applications. But my experience has always been doing UI with server side rendering technologies with Java. For example using Servlet MVC pattern and a template engine such as JSP or Freemarker. So switching to full time JavaScript (JS) UI is a shock to me and took some time to get used to.</p>
+<p>Today the JS ecosystem is vast and changed a lot since when I first learned it. It’s no longer just a little script file (eg: jQuery) in a browser to enhance HTML anymore. Large JS application has promoted the language to support splitting code in modules (or using library such as RequireJS to manage it.) And the introduction of NodeJS has brought JS out of browser and running on local system with command line build tool such as Grunt and local Web Server possible. The NPM repository allow JS developers to share code much faster, so it’s hard to just keep up what’s new everyday. Today, a typical JS project will start as a NPM based project with Webpack build tool to build separated src folder that contains modularized html and js files to generate the web output folder. The project normally can setup a local web server that power by NodeJS so that we don’t even need to setup real Apache HTTPD web server during development! My goodness, it true JS all the way!</p>
+<p>Now, Oracle also has their own JS framework and UI library called OJET that they have been using for a while now. The OJET is a UI components libraries built on top of KnockoutJS (KO). The KnockoutJS was very popular few years ago, but now it has slow down and replaced by other newer libraries such as VueJS. But despite that, KO is a very nice and easy to use library. It provides JS model objects binding to HTML dom tree elements. The model can have observables that will “react” to changes and automatically update the DOM elements (UI). This is the whole basis of what they call MVVM pattern. And the OJET application is built based on that.</p>
+<p>I will try to write up some more updates, tips and tutorials on how to use OJET and other JS related topics here. So keep in touch!</p>
+</p>
+  			<a href="blog/2020/03/move-to-medium.html"><h1>Moved To Medium</h1></a>
+  			<p>22 March 2020, tags: 
+			    <a href="../tags/blog.html">blog</a> 
+
+			    <a href="../tags/zemian.html">zemian</a> 
+
+			    <a href="../tags/medium.html">medium</a> 
+  			</p>
+  			<p><p>Trying out <a href="https://medium.com/@zemiandeng">Medium Blogging</a></p>
+</p>
+  			<a href="blog/2019/04/new-quartz-2-3-1-released.html"><h1>New Quartz 2.3.1 Released</h1></a>
+  			<p>02 April 2019, tags: 
+			    <a href="../tags/quartz.html">quartz</a> 
+  			</p>
+  			<p><div class="paragraph">
+<p>Quartz project has little development activities for quite some time now. I finally able to put in some time and help get many bugs fixed up. After more than two years since Quartz last release (April 2017), I am happy to annouce the <a href="https://search.maven.org/artifact/org.quartz-scheduler/quartz/2.3.1/jar">quartz-2.3.1</a> is finally out!</p>
+</div>
+<div class="paragraph">
+<p>This release is a minor release that <a href="https://github.com/quartz-scheduler/quartz/releases/tag/quartz-2.3.1">fixed many bugs</a> on the 2.3 series that uses JDK 7. We also cleaned up the <a href="http://www.quartz-scheduler.org/documentation/">documentation</a> that generated from <code>asciidoc</code> and placed it along with the source repository.</p>
+</div>
+<div class="paragraph">
+<p>Our <a href="https://github.com/quartz-scheduler/quartz">master branch</a> now target the next <a href="https://github.com/quartz-scheduler/quartz/milestone/6">quartz 2.4.0 milestone</a>, which will support the JDK 8 build.</p>
+</div></p>
+  			<a href="blog/2019/03/using-spring-boot-cli.html"><h1>Using Spring Boot Cli</h1></a>
+  			<p>03 March 2019, tags: 
+			    <a href="../tags/spring-boot.html">spring-boot</a> 
+
+			    <a href="../tags/groovy.html">groovy</a> 
+  			</p>
+  			<p><div class="paragraph">
+<p>The easiest way to get started with Spring is to setup SpringBoot
+with their CLI tool. You can bootstrap a web application with a
+single Groovy script!</p>
+</div>
+<div class="paragraph">
+<p>Download the CLI from <a href="https://docs.spring.io/spring-boot/docs/current/reference/html/getting-started-installing-spring-boot.html#getting-started-installing-the-cli" class="bare">https://docs.spring.io/spring-boot/docs/current/reference/html/getting-started-installing-spring-boot.html#getting-started-installing-the-cli</a></p>
+</div>
+<div class="paragraph">
+<p>Now unzip and setup PATH to use the <code>spring</code> command.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>unzip spring-boot-cli-2.0.5.RELEASE-bin.zip
+export PATH=`pwd`/spring-2.0.5.RELEASE/bin:$PATH</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Create a simple groovy app script</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>// file: app.groovy
+@RestController
+class HelloApp {
+    @RequestMapping("/")
+    String home() {
+        return "Hello World!"
+    }
+}</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now run it and test it with a browser:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>spring run app.groovy
+open http://localhost:8080</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Or you can create a full SpringBoot project with Maven build:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre># Or create a new project
+spring init -d=web -x --package-name zemian.springbootstarter.hello hello-spring-boot
+cd hello-spring-boot
+./mvnw spring-boot:run
+open http://localhost:8080</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can learn more from my starter project: <a href="https://github.com/zemian/spring-boot-starter" class="bare">https://github.com/zemian/spring-boot-starter</a></p>
+</div></p>
+  			<a href="blog/2019/02/setup-quartz-db-with-liquibase.html"><h1>Setup Quartz DB With Liquibase</h1></a>
+  			<p>15 February 2019, tags: 
+			    <a href="../tags/quartz.html">quartz</a> 
+  			</p>
+  			<p><div class="paragraph">
+<p>There is a <a href="http://www.liquibase.org/">Liquibase</a> init file now in Quartz that you may use to setup your database. I have added instructions on how to run this <a href="https://github.com/quartz-scheduler/quartz/wiki/How-to-Setup-Databases#using-liquibase-tool">on Quartz WIKI here</a>.</p>
+</div></p>
+  			<a href="blog/2019/01/getting-started-with-jbake.html"><h1>Getting Started with jbake</h1></a>
+  			<p>15 January 2019, tags: 
+			    <a href="../tags/blog.html">blog</a> 
+
+			    <a href="../tags/jbake.html">jbake</a> 
+  			</p>
+  			<p><div class="paragraph">
+<p>I started using <a href="https://jbake.org/" class="bare">https://jbake.org/</a> for <a href="https://zemian.github.io/">my blog site</a> here at GitHub page. It&#8217;s a Java based static site generator that has decent options. For Java developers, it&#8217;s easy to learn and use. I can customize the site with Freemarker (and other templates as well).</p>
+</div>
+<div class="paragraph">
+<p>So far I am pretty happy with this.</p>
+</div>
+<div class="sect1">
+<h2 id="_getting_started">Getting Started</h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre>mkdir hello-site
+cd hello-site
+jbake -i
+jbake -b -s</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>-b</code> option is for baking (generating) the content, and the <code>-s</code> is to run a server for testing it. The default output of the site will be in <code>output</code> folder. You can change it as <code>jbake -b -s . my-site-output</code></p>
+</div>
+</div>
+</div></p>
+  			<a href="blog/2018/08/python-string-successor-method.html"><h1>Python string successor method</h1></a>
+  			<p>24 August 2018, tags: 
+			    <a href="../tags/python.html">python</a> 
+  			</p>
+  			<p><div class="listingblock">
+<div class="content">
+<pre># A simple implementation of Ruby's String#next() successor method in Python
+# See https://ruby-doc.org/core-2.4.1/String.html#method-i-next
+def next(id_template, id_chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"):
+	first_ch = id_chars[0]
+	last_ch = id_chars[-1]
+	new_id = list(id_template)
+
+	idx = len(new_id) - 1
+	while idx &gt;= 0:
+		ch = new_id[idx]
+		if ch == last_ch:
+			new_id[idx] = first_ch
+		else:
+			next_idx = id_chars.index(ch) + 1
+			new_id[idx] = id_chars[next_idx]
+			break
+		idx -= 1
+
+	return ''.join(new_id)
+
+# Tests
+import unittest
+class StringNextTest(unittest.TestCase):
+	def test_next(self):
+		self.assertEqual(next("0"), "1");
+		self.assertEqual(next("9"), "A");
+		self.assertEqual(next("A"), "B");
+		self.assertEqual(next("Y"), "Z");
+		self.assertEqual(next("Z"), "0");
+
+		self.assertEqual(next("AAA"), "AAB");
+		self.assertEqual(next("AAB"), "AAC");
+		self.assertEqual(next("AAC"), "AAD");
+		self.assertEqual(next("ZZ0"), "ZZ1");
+		self.assertEqual(next("ZZ1"), "ZZ2");
+		self.assertEqual(next("ZZ2"), "ZZ3");
+		self.assertEqual(next("ZZY"), "ZZZ");
+		self.assertEqual(next("ZZZ"), "000");
+		self.assertEqual(next("ZZZZZZ"), "000000");
+		self.assertEqual(next("ZZZZZZZZZ"), "000000000");
+
+		self.assertEqual(next("ABC999GHI"), "ABC999GHJ");
+		self.assertEqual(next("ABC999GZZ"), "ABC999H00");
+
+	def samples(self):
+		id = "ZZX"
+		print(id)
+		for i in range(10):
+			id = next(id)
+			print(id)
+
+		id = "FF9"
+		print(id)
+		for i in range(10):
+			id = next(id, "0123456789ABCDEF")
+			print(id)
+
+if __name__ == '__main__':
+	#StringNextTest().samples()
+	unittest.main()</pre>
+</div>
+</div></p>
+  			<a href="blog/2018/08/sqlite3-data-types-and-test-table-.html"><h1>SQLite3 Data Types and Test Table</h1></a>
+  			<p>21 August 2018, tags: 
+			    <a href="../tags/sql.html">sql</a> 
+
+			    <a href="../tags/sqlite3.html">sqlite3</a> 
+  			</p>
+  			<p><div class="listingblock">
+<div class="content">
+<pre>-- Notes for SQLite3 Database (3.24)
+-- https://www.sqlite.org/docs.html
+
+-- Data Types
+-- https://www.sqlite.org/datatype3.html
+
+-- Functions
+-- https://www.sqlite.org/lang_corefunc.html
+
+/*
+SQLite does not have strong data type, but dynamic type that define by value rather than by schema/container.
+
+SQLite only has 5 storage class that it can be used to store data (desc their doc):
+
+NULL. The value is a NULL value.
+INTEGER. The value is a signed integer, stored in 1, 2, 3, 4, 6, or 8 bytes depending on the magnitude of the value.
+REAL. The value is a floating point value, stored as an 8-byte IEEE floating point number.
+TEXT. The value is a text string, stored using the database encoding (UTF-8, UTF-16BE or UTF-16LE).
+BLOB. The value is a blob of data, stored exactly as it was input.
+
+SQLite can conform to standard SQL types by mapping what's called "affinity" type.
+
+CHAR          Map to TEXT
+VARCHAR       Map to TEXT
+TEXT          Map to TEXT
+
+INT           Map to INTEGER
+
+REAL             Map to REAL
+DOUBLE PRECISION Map to REAL
+
+NUMERIC       Map to INTEGER, REAL, TEXT or BLOB
+
+DATE          Map to INTEGER, REAL, TEXT or BLOB
+DATETIME      Map to INTEGER, REAL, TEXT or BLOB
+
+NOTE: Despite there is a "NUMERIC" affinity type, it's not a fixed-point type! SQLite
+does not have native NUMERIC. It will dynamically choose a best fit storage class
+instead (REAL if it can keep 15 digits accuracy). If you need true fixed point data type,
+you may try to use TEXT data stored instead. Same as with DATETIME types. For example you
+can store DATETIME as TEXT, and then SQLite provides many built-in functions that help you
+manipulate dates instead. Note also that precision and scale such as VARCHAR(n) or
+NUMERIC(p, s) has no real meaning other than DDL schema documentation only!
+
+The SQLite INT size can auto grow into 64-bits (like sql: BIGINT) if needed. The REAL type
+is 64-bits size! (unlike many other DB that use REAL for 32-bits and DOUBLE PRECISION for
+64 bits).
+ */
+
+-- Test table
+create table test(
+  id      integer primary key,
+  ts      text default (datetime('now')),
+  cat     text,
+
+  price   text,
+  qty     int,
+
+  txtdata text,
+  bindata blob,
+
+  distx   real,
+  disty   real
+);
+insert into test(cat, price, qty) values ('test', 100000.10, 50000),
+                                         ('test', 100000.20, 0),
+                                         ('test', 100000.00, 1),
+                                         ('test', 9977000.3333, 179),
+                                         ('test', 104729.1129, 104729);
+insert into test(cat, bindata, txtdata) values ('test2', x'CAFEBABE', 'CAFEBABE');
+insert into test(cat, bindata) values ('test3', randomblob(16));
+insert into test(cat, bindata) values ('test3', randomblob(16));
+insert into test(cat, bindata) values ('test3', randomblob(16));
+update test set txtdata = hex(bindata) where cat = 'test3';
+insert into test(cat, distx, disty) values ('test4', random(), random());
+insert into test(cat, distx, disty) values ('test4', random(), random());
+insert into test(cat, distx, disty) values ('test4', random(), random());
+select sum(price) from test where cat = 'test';
+select * from test order by cat, ts desc;
+----</pre>
+</div>
+</div></p>
+  			<a href="blog/2018/08/postgresql-data-types-and-test-table-.html"><h1>PostgreSQL Data Types and Test Table</h1></a>
+  			<p>20 August 2018, tags: 
+			    <a href="../tags/sql.html">sql</a> 
+
+			    <a href="../tags/postgres.html">postgres</a> 
+  			</p>
+  			<p><div class="listingblock">
+<div class="content">
+<pre>-- Notes for PostgreSQL Database (9.6)
+-- https://www.postgresql.org/docs/9.6/static/index.html
+
+-- Data Types
+-- https://www.postgresql.org/docs/9.6/static/datatype.html
+
+/*
+
+CHAR          Fixed length and space padded character string (sql: CHAR)
+VARCHAR       Variable length character string (sql: VARCHAR)
+TEXT          Variable length character large string (sql: TEXT)
+
+INT           Declare integer number (sql: INT 32 bits)
+SMALLINT      16 bits
+BIGINT        64 bits
+SERIAL        Auto increment integer (INT with sequence)
+
+REAL             Declare floating-point number 32 bits
+DOUBLE PRECISION Declare floating-point number 64 bits
+
+NUMERIC(p,s)     Declare fixed-point number (sql: NUMERIC)
+
+DATE          Declare date
+TIME          Declare time
+TIMESTAMP     Declare datetime
+TIMESTAMP WITH TIMEZONE or TIMESTAMPTZ
+              Declare datetime as timezone aware (stored as UTC but convert to client session timezone)
+INTERVAL      Declare period of time difference
+
+BYTEA         Binary data
+
+ */
+-- test table
+create table test(
+  id       serial primary key,
+  ts       timestamptz default current_timestamp,
+  cat      varchar(10),
+
+  price    numeric(19,4),
+  qty      int,
+
+  txtdata  text,
+  bindata  bytea,
+
+  distx    real,
+  disty    double precision
+);
+insert into test(cat, price, qty) values ('test', 100000.10, 50000),
+                                         ('test', 100000.20, 0),
+                                         ('test', 100000.00, 1),
+                                         ('test', 9977000.3333, 179),
+                                         ('test', 104729.1129, 104729);
+insert into test(cat, bindata, txtdata) values ('test2', E'\\xCAFEBABE', 'CAFEBABE');
+insert into test(cat, bindata) values ('test3', decode(md5(random()::text), 'hex'));
+insert into test(cat, bindata) values ('test3', decode(md5(random()::text), 'hex'));
+insert into test(cat, bindata) values ('test3', decode(md5(random()::text), 'hex'));
+update test set txtdata = encode(bindata, 'hex') where cat = 'test3';
+insert into test(cat, distx, disty) values ('test4', random(), random());
+insert into test(cat, distx, disty) values ('test4', random(), random());
+insert into test(cat, distx, disty) values ('test4', random(), random());
+select sum(price) from test where cat = 'test';
+select * from test order by cat, ts desc;</pre>
+</div>
+</div></p>
+
+	<hr />
+
+	<ul class="pager">
+		<li class="previous"><a href="https://zemian.github.io/">Previous</a></li>
+		<li>Page: 2/29</li>
+		<li class="next"><a href="https://zemian.github.io/3">Next</a></li>
+	</ul>
+
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">&copy; 2011 - 2019 Zemian Deng All Rights Reserved | Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.5</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../js/jquery-1.11.1.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/prettify.js"></script>
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-135626598-1');
+    </script>
+
+  </body>
+</html>

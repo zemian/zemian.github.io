@@ -40,7 +40,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -48,7 +48,6 @@
             <li><a href="../../../about.html">About</a></li>
             <li><a href="../../../archive.html">Archive</a></li>
             <li><a href="../../..//tags">Tags</a></li>
-            <li><a href="../../../feed.xml">Subscribe</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -62,10 +61,10 @@
 	    <a href="../../../tags/groovy.html">groovy</a> 
 	</p>
 
-	<p>Groovy has made fetching data from URL a snap:<br />
-<pre><code>println(new URL("http://www.google.com").text)
+	<p><p>Groovy has made fetching data from URL a snap:</p>
+<pre><code>println(new URL(&quot;http://www.google.com&quot;).text)
 </code></pre>
-But have you ever try to get data from an <code>https</code> of an site that's using a self signed certificate? A browser will prompt you a risk warning, but it let you trust it and still continue. But it's much more hassle if we want to fetch the data programmatically. For example, try fetching <a href="https://www.pcwebshop.co.uk/">https://www.pcwebshop.co.uk</a> and you will see that it failed miserably:<br />
+<p>But have you ever try to get data from an <code>https</code> of an site that's using a self signed certificate? A browser will prompt you a risk warning, but it let you trust it and still continue. But it's much more hassle if we want to fetch the data programmatically. For example, try fetching <a href="https://www.pcwebshop.co.uk/">https://www.pcwebshop.co.uk</a> and you will see that it failed miserably:</p>
 <pre><code>Caught: javax.net.ssl.SSLHandshakeException: sun.security.validator.ValidatorException: PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target
 javax.net.ssl.SSLHandshakeException: sun.security.validator.ValidatorException: PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target
     at com.sun.net.ssl.internal.ssl.Alerts.getSSLException(Alerts.java:174)
@@ -90,16 +89,16 @@ Caused by: sun.security.validator.ValidatorException: PKIX path building failed:
 Caused by: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target
     ... 12 more
 </code></pre>
-This is due to Java API won't let you get data if your certs is not in the keystore or "trusted". Now if you have your own testing site and did a self-signed like above, then sure you just want to trust it temporary and simply want to fetch the data. However configuring the Java API to do such simple task is a nightmare.<br />
-Today, I found a library that allow you to perform exactly this: <a href="https://github.com/kevinsawicki/http-request">https://github.com/kevinsawicki/http-request</a> Trying this out using Groovy is pretty sweet:<br />
+<p>This is due to Java API won't let you get data if your certs is not in the keystore or &quot;trusted&quot;. Now if you have your own testing site and did a self-signed like above, then sure you just want to trust it temporary and simply want to fetch the data. However configuring the Java API to do such simple task is a nightmare.</p>
+<p>Today, I found a library that allow you to perform exactly this: <a href="https://github.com/kevinsawicki/http-request">https://github.com/kevinsawicki/http-request</a> Trying this out using Groovy is pretty sweet:</p>
 <pre><code>@Grab('com.github.kevinsawicki:http-request:3.1')
 import com.github.kevinsawicki.http.*
-def req = HttpRequest.get("https://www.pcwebshop.co.uk</code><code>")
+def req = HttpRequest.get(&quot;https://www.pcwebshop.co.uk&quot;)
 req.trustAllCerts()
 req.trustAllHosts()
 println(req.body())
 </code></pre>
-And Voila! We read the URL context without the pesky exception. This <code>http-request</code> is awesome! Now I wish JDK let you do simple thing like this. This is extremely useful for testing.
+<p>And Voila! We read the URL context without the pesky exception. This <code>http-request</code> is awesome! Now I wish JDK let you do simple thing like this. This is extremely useful for testing.</p>
 </p>
 
 	<hr />

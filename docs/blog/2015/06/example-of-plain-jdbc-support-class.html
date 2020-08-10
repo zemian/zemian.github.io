@@ -40,7 +40,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -48,7 +48,6 @@
             <li><a href="../../../about.html">About</a></li>
             <li><a href="../../../archive.html">Archive</a></li>
             <li><a href="../../..//tags">Tags</a></li>
-            <li><a href="../../../feed.xml">Subscribe</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -64,15 +63,99 @@
 	    <a href="../../../tags/jdbc.html">jdbc</a> 
 	</p>
 
-	<p>Need to fetch some data from DB quickly with Java? Here is a quick example of plain JDBC JdbcSupport  Class to help you.<br />
-<br />
-<span style="font-family: &quot;Courier New&quot;,Courier,monospace;">package zemian.jdbcexample<br /><br />import org.slf4j.Logger;<br />import org.slf4j.LoggerFactory;<br /><br />import javax.sql.DataSource;<br />import java.sql.Connection;<br />import java.sql.PreparedStatement;<br />import java.sql.ResultSet;<br />import java.sql.ResultSetMetaData;<br />import java.util.ArrayList;<br />import java.util.Arrays;<br />import java.util.List;<br /><br />public abstract class JdbcSupport {<br />&nbsp;&nbsp;&nbsp; private static final Logger LOGGER = LoggerFactory.getLogger(JdbcSupport.class);<br /><br />&nbsp;&nbsp;&nbsp; protected DataSource dataSource;<br /><br />&nbsp;&nbsp;&nbsp; public JdbcSupport(DataSource dataSource) throws Exception {<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; this.dataSource = dataSource;<br />&nbsp;&nbsp;&nbsp; }<br /><br />&nbsp;&nbsp;&nbsp; protected Row toRowMap(ResultSet rs) throws Exception {<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Row row = new Row();<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ResultSetMetaData meta = rs.getMetaData();<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int count = meta.getColumnCount();<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for (int i=1; i &lt;= count; i++) {<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; row.map.put(meta.getColumnName(i), rs.getObject(i));<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return row;<br />&nbsp;&nbsp;&nbsp; }<br /><br />&nbsp;&nbsp;&nbsp; protected List&lt;Row&gt; queryRowList(Connection conn, String sql, Object... params) throws Exception {<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; LOGGER.debug("Query sql={}, params={}", sql, Arrays.asList(params));<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; List&lt;Row&gt; result = new ArrayList&lt;&gt;();<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; try(PreparedStatement st = conn.prepareStatement(sql)) {<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for (int i = 1; i &lt;= params.length; i++) {<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; st.setObject(i, params[i -1]);<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; try (ResultSet rs = st.executeQuery()) {<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; while(rs.next()) {<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; result.add(toRowMap(rs));<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return result;<br />&nbsp;&nbsp;&nbsp; }<br /><br />&nbsp;&nbsp;&nbsp; protected Row queryRow(Connection conn, String sql, Object... params) throws Exception {<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; List&lt;Row&gt; rowList = queryRowList(conn, sql, params);<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (rowList.size() != 1) {<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; throw new RuntimeException("No unique result from query.");<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return rowList.get(0);<br />&nbsp;&nbsp;&nbsp; }<br />&nbsp;&nbsp;&nbsp; <br />&nbsp;&nbsp;&nbsp; public static class Row {<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; public Map&lt;String, Object&gt; map = new HashMap&lt;&gt;();<br /><br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; public &lt;T&gt; T get(String name) {<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; T result = (T)map.get(name);<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; return result;<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }<br /><br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; public &lt;T&gt; T get(String name, T defVal) {<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; T result = (T)map.get(name);<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; if (result == null)<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; return defVal;<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; return result;<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }<br />&nbsp;&nbsp;&nbsp; }<br />}</span><br />
-<br />
-To use it, one may do something like this:<br />
-<br />
-<span style="font-family: &quot;Courier New&quot;,Courier,monospace;">public class AccountStore extends JdbcSupport {<br />&nbsp;&nbsp;&nbsp; public AccountStore(DataSource dataSource) {<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; super(dataSource);<br />&nbsp;&nbsp;&nbsp; }<br />&nbsp;&nbsp;&nbsp; <br />&nbsp;&nbsp;&nbsp; public void printAccountProfiles() {<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; try(Connection conn = dataSource.getConnection()) {<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; String sql = "SELECT ACCOUNTID FROM USERS WHERE USERNAME=?";<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; Row row = queryRow(conn, sql, "zemian");<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; String accountId = row.get("ACCOUNTID");<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; String department = "IT";<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; sql = "SELECT * FROM ACCOUNTPROFILES WHERE ID=? AND DEPARTMENT=?";<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; List&lt;Row&gt; rowList = queryRowList(conn, sql, accountId, department);<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; for (Row row : rowList) {<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; System.out.println("Got profile: " + row.map);<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }<br />&nbsp;&nbsp;&nbsp; }<br />}</span><br />
-<br />
-<br />
+	<p><p>Need to fetch some data from DB quickly with Java? Here is a quick example of plain JDBC JdbcSupport  Class to help you.</p>
+<p>package zemian.jdbcexample</p>
+<p>import org.slf4j.Logger;<br />
+import org.slf4j.LoggerFactory;</p>
+<p>import javax.sql.DataSource;<br />
+import java.sql.Connection;<br />
+import java.sql.PreparedStatement;<br />
+import java.sql.ResultSet;<br />
+import java.sql.ResultSetMetaData;<br />
+import java.util.ArrayList;<br />
+import java.util.Arrays;<br />
+import java.util.List;</p>
+<p>public abstract class JdbcSupport {<br />
+private static final Logger LOGGER = LoggerFactory.getLogger(JdbcSupport.class);</p>
+<pre><code>protected DataSource dataSource;
+
+public JdbcSupport(DataSource dataSource) throws Exception {
+    this.dataSource = dataSource;
+}
+
+protected Row toRowMap(ResultSet rs) throws Exception {
+    Row row = new Row();
+    ResultSetMetaData meta = rs.getMetaData();
+    int count = meta.getColumnCount();
+    for (int i=1; i &lt;= count; i++) {
+        row.map.put(meta.getColumnName(i), rs.getObject(i));
+    }
+    return row;
+}
+
+protected List&lt;Row&gt; queryRowList(Connection conn, String sql, Object... params) throws Exception {
+    LOGGER.debug(&quot;Query sql={}, params={}&quot;, sql, Arrays.asList(params));
+    List&lt;Row&gt; result = new ArrayList&lt;&gt;();
+    try(PreparedStatement st = conn.prepareStatement(sql)) {
+        for (int i = 1; i &lt;= params.length; i++) {
+            st.setObject(i, params[i -1]);
+        }
+        try (ResultSet rs = st.executeQuery()) {
+            while(rs.next()) {
+                result.add(toRowMap(rs));
+            }
+        }
+    }
+    return result;
+}
+
+protected Row queryRow(Connection conn, String sql, Object... params) throws Exception {
+    List&lt;Row&gt; rowList = queryRowList(conn, sql, params);
+    if (rowList.size() != 1) {
+        throw new RuntimeException(&quot;No unique result from query.&quot;);
+    }
+    return rowList.get(0);
+}
+
+public static class Row {
+    public Map&lt;String, Object&gt; map = new HashMap&lt;&gt;();
+
+    public &lt;T&gt; T get(String name) {
+        T result = (T)map.get(name);
+        return result;
+    }
+
+    public &lt;T&gt; T get(String name, T defVal) {
+        T result = (T)map.get(name);
+        if (result == null)
+            return defVal;
+        return result;
+    }
+}
+</code></pre>
+<p>}</p>
+<p>To use it, one may do something like this:</p>
+<p>public class AccountStore extends JdbcSupport {<br />
+public AccountStore(DataSource dataSource) {<br />
+super(dataSource);<br />
+}</p>
+<pre><code>public void printAccountProfiles() {
+    try(Connection conn = dataSource.getConnection()) {
+        String sql = &quot;SELECT ACCOUNTID FROM USERS WHERE USERNAME=?&quot;;
+        Row row = queryRow(conn, sql, &quot;zemian&quot;);
+        
+        String accountId = row.get(&quot;ACCOUNTID&quot;);
+        String department = &quot;IT&quot;;
+        sql = &quot;SELECT * FROM ACCOUNTPROFILES WHERE ID=? AND DEPARTMENT=?&quot;;
+        List&lt;Row&gt; rowList = queryRowList(conn, sql, accountId, department);
+        
+        for (Row row : rowList) {
+            System.out.println(&quot;Got profile: &quot; + row.map);
+        }
+    }
+}
+</code></pre>
+<p>}</p>
 </p>
 
 	<hr />

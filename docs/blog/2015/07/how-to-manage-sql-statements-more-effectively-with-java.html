@@ -40,7 +40,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -48,7 +48,6 @@
             <li><a href="../../../about.html">About</a></li>
             <li><a href="../../../archive.html">Archive</a></li>
             <li><a href="../../..//tags">Tags</a></li>
-            <li><a href="../../../feed.xml">Subscribe</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -64,80 +63,70 @@
 	    <a href="../../../tags/sql.html">sql</a> 
 	</p>
 
-	<p>If you work with plain Java JDBC without any external libraries, you will need to manage your own SQL statements. Unfortunately Java String does not support muti-lines construct, and you have to use many "quotes" + "concatenation" and makes the SQL very hard to read and manage. This makes it hard to maintain and test (try to copy a SQL from Java code into your SQL client). It would be so nice to keep the entire SQL block of text intact without these Java noise.<br />
-<br />
-Here is a solution. Store your SQL queries in XML inside CDATA:<br />
-<br />
-<span style="font-family: Courier New, Courier, monospace;">&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;</span><br />
-<span style="font-family: Courier New, Courier, monospace;">&lt;sqlMap&gt;</span><br />
-<span style="font-family: Courier New, Courier, monospace;">&nbsp;&nbsp;&nbsp; &lt;sqls&gt;</span><br />
-<span style="font-family: Courier New, Courier, monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;entry&gt;</span><br />
-<span style="font-family: Courier New, Courier, monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;key&gt;getUser&lt;/key&gt;</span><br />
-<span style="font-family: Courier New, Courier, monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;value&gt;&lt;![CDATA[</span><br />
-<span style="font-family: Courier New, Courier, monospace;">SELECT *</span><br />
-<span style="font-family: Courier New, Courier, monospace;">FROM USERS</span><br />
-<span style="font-family: Courier New, Courier, monospace;">WHERE ID = ?</span><br />
-<span style="font-family: Courier New, Courier, monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ]]&gt;&lt;/value&gt;</span><br />
-<span style="font-family: Courier New, Courier, monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/entry&gt;</span><br />
-<span style="font-family: Courier New, Courier, monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;entry&gt;</span><br />
-<span style="font-family: Courier New, Courier, monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;key&gt;getSpecialCodeByUserId&lt;/key&gt;</span><br />
-<span style="font-family: Courier New, Courier, monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;value&gt;&lt;![CDATA[</span><br />
-<span style="font-family: Courier New, Courier, monospace;">SELECT u.EMAIL, p.ID as PROFILEID, p.SPECIALCODE, a.MANAGERID</span><br />
-<span style="font-family: Courier New, Courier, monospace;">FROM USERS u</span><br />
-<span style="font-family: Courier New, Courier, monospace;">&nbsp; LEFT JOIN PROFILE p ON p.USERID = u.ID</span><br />
-<span style="font-family: Courier New, Courier, monospace;">&nbsp; LEFT JOIN ACCOUNT a ON a.PROFILEID = p.ID</span><br />
-<span style="font-family: Courier New, Courier, monospace;">WHERE u.ID = ?&nbsp; ]]&gt;&lt;/value&gt;</span><br />
-<span style="font-family: Courier New, Courier, monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/entry&gt;&nbsp; &lt;/sqls&gt;</span><br />
-<span style="font-family: Courier New, Courier, monospace;">&lt;/sqlMap&gt;</span><br />
-<br />
-Now you just need to read it. One way to do this is with built-in JAXB<br />
-<br />
-<span style="font-family: Courier New, Courier, monospace;">import javax.xml.bind.annotation.XmlRootElement;</span><br />
-<span style="font-family: Courier New, Courier, monospace;">import java.util.HashMap;</span><br />
-<span style="font-family: Courier New, Courier, monospace;">import java.util.Map;</span><br />
-<span style="font-family: Courier New, Courier, monospace;"><br /></span>
-<span style="font-family: Courier New, Courier, monospace;">@XmlRootElement</span><br />
-<span style="font-family: Courier New, Courier, monospace;">public class SqlMap {</span><br />
-<span style="font-family: Courier New, Courier, monospace;">&nbsp; &nbsp; Map&lt;String, String&gt; sqls = new HashMap&lt;&gt;();</span><br />
-<span style="font-family: Courier New, Courier, monospace;"><br /></span>
-<span style="font-family: Courier New, Courier, monospace;">&nbsp; &nbsp; public Map&lt;String, String&gt; getSqls() {</span><br />
-<span style="font-family: Courier New, Courier, monospace;">&nbsp; &nbsp; &nbsp; &nbsp; return sqls;</span><br />
-<span style="font-family: Courier New, Courier, monospace;">&nbsp; &nbsp; }</span><br />
-<span style="font-family: Courier New, Courier, monospace;"><br /></span>
-<span style="font-family: Courier New, Courier, monospace;">&nbsp; &nbsp; public void setSqls(Map&lt;String, String&gt; sqls) {</span><br />
-<span style="font-family: Courier New, Courier, monospace;">&nbsp; &nbsp; &nbsp; &nbsp; this.sqls = sqls;</span><br />
-<span style="font-family: Courier New, Courier, monospace;">&nbsp; &nbsp; }</span><br />
-<span style="font-family: Courier New, Courier, monospace;"><br /></span>
-<span style="font-family: Courier New, Courier, monospace;">&nbsp; &nbsp; public String getSql(String name) {</span><br />
-<span style="font-family: Courier New, Courier, monospace;">&nbsp; &nbsp; &nbsp; &nbsp; return sqls.get(name);</span><br />
-<span style="font-family: Courier New, Courier, monospace;">&nbsp; &nbsp; }</span><br />
-<span style="font-family: Courier New, Courier, monospace;"><br /></span>
-<span style="font-family: Courier New, Courier, monospace;">&nbsp; &nbsp; public static SqlMap load(String name) throws Exception {</span><br />
-<span style="font-family: Courier New, Courier, monospace;">&nbsp; &nbsp; &nbsp; &nbsp; InputStream inStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(name);</span><br />
-<span style="font-family: Courier New, Courier, monospace;">&nbsp; &nbsp; &nbsp; &nbsp; SqlMap sqlMap = JAXB.unmarshal(inStream, SqlMap.class);</span><br />
-<span style="font-family: Courier New, Courier, monospace;">&nbsp; &nbsp; &nbsp; &nbsp; return sqlMap;</span><br />
-<span style="font-family: Courier New, Courier, monospace;">&nbsp; &nbsp; }</span><br />
-<span style="font-family: Courier New, Courier, monospace;">}</span><br />
-<span style="font-family: Courier New, Courier, monospace;"><br /></span>
-<br />
-Another way is to simply use <span style="font-family: Courier New, Courier, monospace;">java.util.Properties#loadFromXML</span>&nbsp;by following their schema DTD. Here is an example of XML:<br />
-<br />
-<span style="font-family: Courier New, Courier, monospace;">&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;</span><br />
-<span style="font-family: Courier New, Courier, monospace;">&lt;!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd"&gt;</span><br />
-<span style="font-family: Courier New, Courier, monospace;">&lt;properties&gt;</span><br />
-<span style="font-family: Courier New, Courier, monospace;">&nbsp; &nbsp; &lt;comment&gt;XML Props&lt;/comment&gt;</span><br />
-<span style="font-family: Courier New, Courier, monospace;">&nbsp; &nbsp; &lt;!-- Foo entry --&gt;</span><br />
-<span style="font-family: Courier New, Courier, monospace;">&nbsp; &nbsp; &lt;entry key="foo"&gt;bar&lt;/entry&gt;</span><br />
-<span style="font-family: Courier New, Courier, monospace;">&nbsp; &nbsp; &lt;!-- Query entry --&gt;</span><br />
-<span style="font-family: Courier New, Courier, monospace;">&nbsp; &nbsp; &lt;entry key="query"&gt;</span><br />
-<span style="font-family: Courier New, Courier, monospace;">&nbsp; &nbsp; &nbsp; &nbsp; &lt;![CDATA[</span><br />
-<span style="font-family: Courier New, Courier, monospace;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; SELECT * FROM USERS</span><br />
-<span style="font-family: Courier New, Courier, monospace;">&nbsp; &nbsp; &nbsp; &nbsp; ]]&gt;</span><br />
-<span style="font-family: Courier New, Courier, monospace;">&nbsp; &nbsp; &lt;/entry&gt;</span><br />
-<span style="font-family: Courier New, Courier, monospace;">&lt;/properties&gt;</span><br />
-<br />
-Both of these are built-in from your JDK!<br />
-<br />
+	<p><p>If you work with plain Java JDBC without any external libraries, you will need to manage your own SQL statements. Unfortunately Java String does not support muti-lines construct, and you have to use many &quot;quotes&quot; + &quot;concatenation&quot; and makes the SQL very hard to read and manage. This makes it hard to maintain and test (try to copy a SQL from Java code into your SQL client). It would be so nice to keep the entire SQL block of text intact without these Java noise.</p>
+<p>Here is a solution. Store your SQL queries in XML inside CDATA:</p>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<sqlMap>
+    <sqls>
+        <entry>
+            <key>getUser</key>
+            <value><![CDATA[
+SELECT *
+FROM USERS
+WHERE ID = ?
+            ]]></value>
+        </entry>
+        <entry>
+            <key>getSpecialCodeByUserId</key>
+            <value><![CDATA[
+SELECT u.EMAIL, p.ID as PROFILEID, p.SPECIALCODE, a.MANAGERID
+FROM USERS u
+  LEFT JOIN PROFILE p ON p.USERID = u.ID
+  LEFT JOIN ACCOUNT a ON a.PROFILEID = p.ID
+WHERE u.ID = ?  ]]></value>
+        </entry>  </sqls>
+</sqlMap>
+<p>Now you just need to read it. One way to do this is with built-in JAXB</p>
+<p>import javax.xml.bind.annotation.XmlRootElement;<br />
+import java.util.HashMap;<br />
+import java.util.Map;</p>
+<p>@XmlRootElement<br />
+public class SqlMap {<br />
+Map&lt;String, String&gt; sqls = new HashMap&lt;&gt;();</p>
+<pre><code>public Map&lt;String, String&gt; getSqls() {
+    return sqls;
+}
+
+public void setSqls(Map&lt;String, String&gt; sqls) {
+    this.sqls = sqls;
+}
+
+public String getSql(String name) {
+    return sqls.get(name);
+}
+
+public static SqlMap load(String name) throws Exception {
+    InputStream inStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(name);
+    SqlMap sqlMap = JAXB.unmarshal(inStream, SqlMap.class);
+    return sqlMap;
+}
+</code></pre>
+<p>}</p>
+<p>Another way is to simply use java.util.Properties#loadFromXML by following their schema DTD. Here is an example of XML:</p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <comment>XML Props</comment>
+    <!-- Foo entry -->
+    <entry key="foo">bar</entry>
+    <!-- Query entry -->
+    <entry key="query">
+        <![CDATA[
+                SELECT * FROM USERS
+        ]]>
+    </entry>
+</properties>
+<p>Both of these are built-in from your JDK!</p>
 </p>
 
 	<hr />

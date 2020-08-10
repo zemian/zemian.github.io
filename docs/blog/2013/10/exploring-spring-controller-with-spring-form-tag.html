@@ -40,7 +40,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -48,7 +48,6 @@
             <li><a href="../../../about.html">About</a></li>
             <li><a href="../../../archive.html">Archive</a></li>
             <li><a href="../../..//tags">Tags</a></li>
-            <li><a href="../../../feed.xml">Subscribe</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -62,37 +61,24 @@
 	    <a href="../../../tags/spring.html">spring</a> 
 	</p>
 
-	<p><div class="paragraph">
-<p>In the past <a href="http://saltnlight5.blogspot.com/2013/10/exploring-spring-controller-with-jstl.html">article</a>, I have shown you how to process an plain HTML form with Spring controller. But a more powerful way to process form is to use Spring&#8217;s <code>@ModelAttribute</code> and its <code>spring:form</code> tags. I will show you how to get that started here by modifying last article&#8217;s project setup. We will simply modify the Comment form and controller to use this feature.</p>
-</div>
-<div class="paragraph">
+	<p><p>In the past <a href="http://saltnlight5.blogspot.com/2013/10/exploring-spring-controller-with-jstl.html">article</a>, I have shown you how to process an plain HTML form with Spring controller. But a more powerful way to process form is to use Spring’s <code>@ModelAttribute</code> and its <code>spring:form</code> tags. I will show you how to get that started here by modifying last article’s project setup. We will simply modify the Comment form and controller to use this feature.</p>
 <p>In the same project, modify the <code>src/webapp/comment.jsp</code> view file into this:</p>
-</div>
-<div class="listingblock">
-
-<div class="content monospaced">
-<pre>&lt;%@ taglib prefix="spring" uri="http://www.springframework.org/tags/form" %&gt;
-&lt;spring:form modelAttribute="comment"&gt;
+<pre><code>&lt;%@ taglib prefix=&quot;spring&quot; uri=&quot;http://www.springframework.org/tags/form&quot; %&gt;
+&lt;spring:form modelAttribute=&quot;comment&quot;&gt;
   &lt;table&gt;
     &lt;tr&gt;
-        &lt;td&gt;&lt;spring:textarea path="text" rows="20" cols="80"/&gt;&lt;/td&gt;
+        &lt;td&gt;&lt;spring:textarea path=&quot;text&quot; rows=&quot;20&quot; cols=&quot;80&quot;/&gt;&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
-        &lt;td colspan="2"&gt;
-        &lt;input type="submit" value="Post"/&gt;
+        &lt;td colspan=&quot;2&quot;&gt;
+        &lt;input type=&quot;submit&quot; value=&quot;Post&quot;/&gt;
         &lt;/td&gt;
     &lt;/tr&gt;
   &lt;/table&gt;
-&lt;/spring:form&gt;</pre>
-</div>
-</div>
-<div class="paragraph">
+&lt;/spring:form&gt;
+</code></pre>
 <p>This view now use the <code>spring:form</code> tag to render the comment form instead of plain HTML. I have only shown you one element here, but the <code>spring:form</code> tag library also comes with all the matching HTML form elements that helps you quickly render the form with data binded. This automatically triggers the <code>CommentController</code> when you submit. We will need to modify that to capture the form.</p>
-</div>
-<div class="listingblock">
-
-<div class="content monospaced">
-<pre>package springweb.controller;
+<pre><code>package springweb.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -114,27 +100,27 @@ public class CommentController {
     @Autowired
     private CommentService commentService;
 
-    @RequestMapping(value="/comments")
+    @RequestMapping(value=&quot;/comments&quot;)
     public ModelAndView comments() {
         List&lt;Comment&gt; comments = commentService.findComments();
-        ModelAndView result = new ModelAndView("/comments");
-        result.addObject("comments", comments);
+        ModelAndView result = new ModelAndView(&quot;/comments&quot;);
+        result.addObject(&quot;comments&quot;, comments);
         return result;
     }
 
-    @ModelAttribute("comment")
+    @ModelAttribute(&quot;comment&quot;)
     public Comment createFormModelAttribute() {
-        return Comment.create("");
+        return Comment.create(&quot;&quot;);
     }
 
-    @RequestMapping(value="/comment")
+    @RequestMapping(value=&quot;/comment&quot;)
     public String comment() {
-        return "comment";
+        return &quot;comment&quot;;
     }
 
-    @RequestMapping(value="/comment", method = RequestMethod.POST)
+    @RequestMapping(value=&quot;/comment&quot;, method = RequestMethod.POST)
     public ModelAndView postComment(HttpServletRequest req,
-                                @ModelAttribute("comment") Comment comment) {
+                                @ModelAttribute(&quot;comment&quot;) Comment comment) {
         String fromUrl = req.getRequestURI();
         String user = req.getRemoteUser();
         String userIp = req.getRemoteAddr();
@@ -142,21 +128,14 @@ public class CommentController {
         comment.setFromUser(user);
         comment.setFromUrl(fromUrl);
         commentService.insert(comment);
-        ModelAndView result = new ModelAndView("comment-posted");
-        result.addObject("comment", comment);
+        ModelAndView result = new ModelAndView(&quot;comment-posted&quot;);
+        result.addObject(&quot;comment&quot;, comment);
         return result;
     }
-}</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>The difference in this controller compare to the old one is we used <code>@ModelAttribute</code> with an <code>form</code> object (or Spring calls it a <code>command</code> object.) We can name it, which I called <code>comment</code> here. It&#8217;s just a java POJO class, nothing special. But it is used to capture all the form input and then pass to Controller, which is called data binding. Notice that it will instanciate by <code>createFormModelAttribute()</code> method as you request the form view first. If you pre-populate the pojo with text, then it will automatically shows in the form! When user submit the controller will process in <code>postComment()</code> method, and the form object is re-populated with new form input again for processing. This allows you to work with form in pure Object style, and in many ways, it&#8217;s shorter and cleaner compare to plain HTML form.</p>
-</div>
-<div class="paragraph">
+}
+</code></pre>
+<p>The difference in this controller compare to the old one is we used <code>@ModelAttribute</code> with an <code>form</code> object (or Spring calls it a <code>command</code> object.) We can name it, which I called <code>comment</code> here. It’s just a java POJO class, nothing special. But it is used to capture all the form input and then pass to Controller, which is called data binding. Notice that it will instanciate by <code>createFormModelAttribute()</code> method as you request the form view first. If you pre-populate the pojo with text, then it will automatically shows in the form! When user submit the controller will process in <code>postComment()</code> method, and the form object is re-populated with new form input again for processing. This allows you to work with form in pure Object style, and in many ways, it’s shorter and cleaner compare to plain HTML form.</p>
 <p>There are much to the Spring MVC form processing. One powerful feature is it able to help you orgainze the <code>form</code> object validation and collect the error messages. Spring also helps localize your error message text etc. You may read more on their reference doc.</p>
-</div>
-
-
 </p>
 
 	<hr />

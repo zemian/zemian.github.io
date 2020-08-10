@@ -40,7 +40,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -48,7 +48,6 @@
             <li><a href="../../../about.html">About</a></li>
             <li><a href="../../../archive.html">Archive</a></li>
             <li><a href="../../..//tags">Tags</a></li>
-            <li><a href="../../../feed.xml">Subscribe</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -62,16 +61,68 @@
 	    <a href="../../../tags/java.html">java</a> 
 	</p>
 
-	<p>Similar to <a href="http://saltnlight5.blogspot.com/2012/07/how-to-print-text-file-content-inside.html">printjar </a>utility, here is a <b>findjar </b>util that can comes in handy to verify whether a class exists or not among a pile of jar files.<br />
-<br />
-JavaScript (run with jrunscript command)<br />
-<span style="font-family: &quot;Courier New&quot;,Courier,monospace;">pattern = arguments[arguments.length -1];<br />for (i=0; i &lt; arguments.length - 1; i++) {<br />&nbsp;&nbsp;&nbsp; path = arguments[i];<br />&nbsp;&nbsp;&nbsp; jar = new java.util.jar.JarFile(path)<br />&nbsp;&nbsp;&nbsp; entries = jar.entries();<br />&nbsp;&nbsp;&nbsp; while(entries.hasMoreElements()) {<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; jarEntry = entries.nextElement();<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; if (jarEntry.toString().search(pattern) != -1) {<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; println(jarEntry + " : " + path);<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }<br />&nbsp;&nbsp;&nbsp; }<br />&nbsp;&nbsp;&nbsp; jar.close();<br />}</span><br />
-<br />
-Jython<br />
-<span style="font-family: &quot;Courier New&quot;,Courier,monospace;">import sys, glob, re<br />from java.util.jar import JarFile<br />pattern = sys.argv[-1]<br />for name in sys.argv[1: -2]:<br />&nbsp;&nbsp;&nbsp; for path in glob.glob(name):<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; jar = JarFile(path)<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; for e in jar.entries():<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; if re.search(pattern, str(e)):<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; print "%s %s" % (str(e), path)<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; jar.close()</span><br />
-<br />
-Java version (The search argument input is at position one in this example)<br />
-<span style="font-family: &quot;Courier New&quot;,Courier,monospace;">import java.io.File;<br />import java.util.Enumeration;<br />import java.util.jar.JarEntry;<br />import java.util.jar.JarFile;<br /><br />public class findjar {<br />&nbsp;&nbsp;&nbsp; public static void main(String[] args) throws Exception {<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; String searchText = args[0];<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; if (searchText.contains("."))<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; searchText = searchText.replaceAll("\\.", "/");<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; String dir = args[1];<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; System.out.println("Searching " + searchText + " in " + dir);<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; search(searchText, new File(dir));<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; System.out.println("Done.");<br />&nbsp;&nbsp;&nbsp; }<br /><br />&nbsp;&nbsp;&nbsp; private static void search(String searchText, File dir) throws Exception {<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; File[] files = dir.listFiles();<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; for (File file : files) {<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; if (file.isFile() &amp;&amp; file.getName().endsWith(".jar")) {<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; JarFile jarFile = new JarFile(file);<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; Enumeration&lt;JarEntry&gt; entries = jarFile.entries();<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; while(entries.hasMoreElements()) {<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; JarEntry e = entries.nextElement();<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; String name = e.getName();<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; if (name.indexOf(searchText) &gt;= 0) {<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; System.out.println("Found: " + name + " in " + jarFile.getName());<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; jarFile.close();<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; } else if (file.isDirectory()){<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; search(searchText, file);<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }<br />&nbsp;&nbsp;&nbsp; }<br />}</span>
+	<p><p>Similar to <a href="http://saltnlight5.blogspot.com/2012/07/how-to-print-text-file-content-inside.html">printjar</a>utility, here is a findjar util that can comes in handy to verify whether a class exists or not among a pile of jar files.</p>
+<p>JavaScript (run with jrunscript command)<br />
+pattern = arguments[arguments.length -1];<br />
+for (i=0; i &lt; arguments.length - 1; i++) {<br />
+path = arguments[i];<br />
+jar = new java.util.jar.JarFile(path)<br />
+entries = jar.entries();<br />
+while(entries.hasMoreElements()) {<br />
+jarEntry = entries.nextElement();<br />
+if (jarEntry.toString().search(pattern) != -1) {<br />
+println(jarEntry + &quot; : &quot; + path);<br />
+}<br />
+}<br />
+jar.close();<br />
+}</p>
+<p>Jython<br />
+import sys, glob, re<br />
+from java.util.jar import JarFile<br />
+pattern = sys.argv[-1]<br />
+for name in sys.argv[1: -2]:<br />
+for path in glob.glob(name):<br />
+jar = JarFile(path)<br />
+for e in jar.entries():<br />
+if re.search(pattern, str(e)):<br />
+print &quot;%s %s&quot; % (str(e), path)<br />
+jar.close()</p>
+<p>Java version (The search argument input is at position one in this example)<br />
+import java.io.File;<br />
+import java.util.Enumeration;<br />
+import java.util.jar.JarEntry;<br />
+import java.util.jar.JarFile;</p>
+<p>public class findjar {<br />
+public static void main(String[] args) throws Exception {<br />
+String searchText = args[0];<br />
+if (searchText.contains(&quot;.&quot;))<br />
+searchText = searchText.replaceAll(&quot;\.&quot;, &quot;/&quot;);<br />
+String dir = args[1];<br />
+System.out.println(&quot;Searching &quot; + searchText + &quot; in &quot; + dir);<br />
+search(searchText, new File(dir));<br />
+System.out.println(&quot;Done.&quot;);<br />
+}</p>
+<pre><code>private static void search(String searchText, File dir) throws Exception {
+    File[] files = dir.listFiles();
+    for (File file : files) {
+        if (file.isFile() &amp;&amp; file.getName().endsWith(&quot;.jar&quot;)) {
+            JarFile jarFile = new JarFile(file);
+            Enumeration&lt;JarEntry&gt; entries = jarFile.entries();
+            while(entries.hasMoreElements()) {
+                JarEntry e = entries.nextElement();
+                String name = e.getName();
+                if (name.indexOf(searchText) &gt;= 0) {
+                    System.out.println(&quot;Found: &quot; + name + &quot; in &quot; + jarFile.getName());
+                }
+            }
+            jarFile.close();
+        } else if (file.isDirectory()){
+            search(searchText, file);
+        }
+    }
+}
+</code></pre>
+<p>}</p>
 </p>
 
 	<hr />

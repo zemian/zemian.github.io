@@ -40,7 +40,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -48,7 +48,6 @@
             <li><a href="../../../about.html">About</a></li>
             <li><a href="../../../archive.html">Archive</a></li>
             <li><a href="../../..//tags">Tags</a></li>
-            <li><a href="../../../feed.xml">Subscribe</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -62,54 +61,27 @@
 	    <a href="../../../tags/weblogic.html">weblogic</a> 
 	</p>
 
-	<p><div>
-You can easily <a href="http://saltnlight5.blogspot.com/2014/01/getting-started-with-weblogic-server.html">start up a WebLogic Server</a> on an empty directory and it will create a domain. Here is another way to create WLS domain structure folder without actually starting up a WLS server.</div>
-<br /><div>
-<div>
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"># Usage: wlst.cmd createDomain.py &lt;domain_home&gt; &lt;port&gt; &lt;password&gt;</span></div>
-<div>
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"># NOTE: the &lt;domain_home&gt; must be a absolute path.</span></div>
-<div>
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"># Example: C:\wls12130\wlserver\common\bin\wlst.cmd scripts\createDomain.py C:\data\wls12c_domains\dev 7001 weblogic1</span></div>
-<div>
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><br /></span></div>
-<div>
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">import os, sys</span></div>
-<div>
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">domain_home = sys.argv[1]</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">domain_name <span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">= 'mydomain'</span></span></span></div>
-<div>
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">port = int(sys.argv[2])</span></div>
-<div>
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">password = sys.argv[3]</span></div>
-<div>
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">readTemplate(os.environ['MW_HOME'] + "/wlserver/common/templates/wls/wls.jar")</span></div>
-<div>
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">cd('/Server/AdminServer')</span><br />
-<div>
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">set('<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">Name</span>', domain_name + '<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">-admin</span>')</span></div>
-</div>
-<div>
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">set('ListenAddress','')</span></div>
-<div>
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">set('ListenPort', port)</span></div>
-<div>
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">cd('/Security/base_domain/User/weblogic')</span></div>
-<div>
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">cmo.setPassword(password)</span><br />
-<div>
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">cd('/')</span><br />
-<div>
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">set('<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">Name</span>', domain_name)</span></div>
-</div>
-</div>
-<div>
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">writeDomain(domain_home)</span></div>
-<div>
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">closeTemplate()</span></div>
-<div>
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">exit()</span></div>
-</div>
+	<p><p>You can easily <a href="http://saltnlight5.blogspot.com/2014/01/getting-started-with-weblogic-server.html">start up a WebLogic Server</a> on an empty directory and it will create a domain. Here is another way to create WLS domain structure folder without actually starting up a WLS server.</p>
+<h1>Usage: wlst.cmd createDomain.py &lt;domain_home&gt; <port> <password></h1>
+<h1>NOTE: the &lt;domain_home&gt; must be a absolute path.</h1>
+<h1>Example: C:\wls12130\wlserver\common\bin\wlst.cmd scripts\createDomain.py C:\data\wls12c_domains\dev 7001 weblogic1</h1>
+<p>import os, sys</p>
+<p>domain_home = sys.argv[1]<br />
+domain_name = 'mydomain'</p>
+<p>port = int(sys.argv[2])</p>
+<p>password = sys.argv[3]</p>
+<p>readTemplate(os.environ['MW_HOME'] + &quot;/wlserver/common/templates/wls/wls.jar&quot;)</p>
+<p>cd('/Server/AdminServer')</p>
+<p>set('Name', domain_name + '-admin')</p>
+<p>set('ListenAddress','')</p>
+<p>set('ListenPort', port)</p>
+<p>cd('/Security/base_domain/User/weblogic')</p>
+<p>cmo.setPassword(password)</p>
+<p>cd('/')</p>
+<p>set('Name', domain_name)</p>
+<p>writeDomain(domain_home)</p>
+<p>closeTemplate()</p>
+<p>exit()</p>
 </p>
 
 	<hr />

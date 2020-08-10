@@ -40,7 +40,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -48,7 +48,6 @@
             <li><a href="../../../about.html">About</a></li>
             <li><a href="../../../archive.html">Archive</a></li>
             <li><a href="../../..//tags">Tags</a></li>
-            <li><a href="../../../feed.xml">Subscribe</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -62,28 +61,21 @@
 	    <a href="../../../tags/python.html">python</a> 
 	</p>
 
-	<p>https://docs.python.org/3/howto/argparse.html<br />
-<br />
-The python doc for <a href="https://docs.python.org/3.4/library/argparse.html">argparse </a>module didn't provide enough examples on the usage. I also think the module and parser itself is TOO flexible, in that the add_argument function accept too many parameters and it's confusing to use.<br />
-<br />
-In most cases, you would define structure of your program's input with two parts: Your program actual arguments and optional parameters. Then you would invoke the parser and use the result as a dict (Namespace) like object.<br />
-<br />
-Here are few examples that demonstrate how to use it in few common cases.<br />
-<br />
-Example0: Handle raw arguments<br />
-<pre></pre>
-<pre>import sys
+	<p><p><a href="https://docs.python.org/3/howto/argparse.html">https://docs.python.org/3/howto/argparse.html</a></p>
+<p>The python doc for <a href="https://docs.python.org/3.4/library/argparse.html">argparse</a>module didn't provide enough examples on the usage. I also think the module and parser itself is TOO flexible, in that the add_argument function accept too many parameters and it's confusing to use.</p>
+<p>In most cases, you would define structure of your program's input with two parts: Your program actual arguments and optional parameters. Then you would invoke the parser and use the result as a dict (Namespace) like object.</p>
+<p>Here are few examples that demonstrate how to use it in few common cases.</p>
+<p>Example0: Handle raw arguments</p>
+<pre><code>import sys
 args = sys.argv[1:]
-</pre>
-<pre></pre>
-<pre>for name in args:</pre>
-<pre>  print(name)</pre>
-<div>
-<br /></div>
-Example1: Handle 2 arguments and a boolean option
-<br />
-<br />
-<pre>import argparse
+
+
+for name in args:
+
+  print(name)
+</code></pre>
+<p>Example1: Handle 2 arguments and a boolean option</p>
+<pre><code>import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument('hostname', default='localhost')
 parser.add_argument('port', default=12345, type=int)
@@ -91,13 +83,10 @@ parser.add_argument('-d', default=False, action='store_true')
 args = parser.parse_args()
 
 if args.d:
- print("Processing host %s on port %d" % (args.hostname, args.port))
-</pre>
-<br />
-Example2:&nbsp;Handle 1 argument with many options
-<br />
-<br />
-<pre>import argparse
+ print(&quot;Processing host %s on port %d&quot; % (args.hostname, args.port))
+</code></pre>
+<p>Example2: Handle 1 argument with many options</p>
+<pre><code>import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument('url')
 parser.add_argument('-u', '--user', help='user', default='demo')
@@ -106,23 +95,19 @@ parser.add_argument('-l', '--limit', help='max limit value', default=1000, type=
 parser.add_argument('--payload', help='text file payload', default='payload.xml')
 args = parser.parse_args()
 
-print("Processing url %s" % args.url)
+print(&quot;Processing url %s&quot; % args.url)
 
 user, password = args.user, args.password
-print("Got option user=%s" % user)
+print(&quot;Got option user=%s&quot; % user)
 
 with open(args.payload) as fh:
   payload = fh.read()
 
 if args.limit &gt; 100:
-  print("Limit has exceed 100")
-
-</pre>
-<br />
-Example3:&nbsp;Handle one or more arguments with a boolean option
-<br />
-<br />
-<pre>import argparse, fileinput
+  print(&quot;Limit has exceed 100&quot;)
+</code></pre>
+<p>Example3: Handle one or more arguments with a boolean option</p>
+<pre><code>import argparse, fileinput
 parser = argparse.ArgumentParser()
 parser.add_argument('files', metavar='FILE', nargs='+')
 parser.add_argument('-d', default=False, action='store_true')
@@ -130,17 +115,11 @@ args = parser.parse_args()
 
 for line in fileinput.input(args.files):
   if args.d:
-    print("Processing line: %s" % line, end='')
-</pre>
-<br />
-To display the default values in the helppage, do this with the parser<br />
-<br />
-<pre>parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-</pre>
-<br />
-<br />
-<br />
-<br />
+    print(&quot;Processing line: %s&quot; % line, end='')
+</code></pre>
+<p>To display the default values in the helppage, do this with the parser</p>
+<pre><code>parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+</code></pre>
 </p>
 
 	<hr />

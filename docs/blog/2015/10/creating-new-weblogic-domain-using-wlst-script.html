@@ -40,7 +40,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -48,7 +48,6 @@
             <li><a href="../../../about.html">About</a></li>
             <li><a href="../../../archive.html">Archive</a></li>
             <li><a href="../../..//tags">Tags</a></li>
-            <li><a href="../../../feed.xml">Subscribe</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -62,45 +61,34 @@
 	    <a href="../../../tags/weblogic.html">weblogic</a> 
 	</p>
 
-	<p>Here is how to creating new WebLogic domain using WLST script without starting up a WebLogic server instance. The default AdminServer console login username is 'weblogic', and the script allow you to change its password and a port number for the AdminServer instance.<br />
-<br />
-<span style="font-family: Courier New, Courier, monospace;"># Usage: wlst.cmd createDomain.py &lt;domain_home&gt; &lt;port&gt; &lt;password&gt;</span><br />
-<span style="font-family: Courier New, Courier, monospace;"># Example:&nbsp;</span><br />
-<span style="font-family: Courier New, Courier, monospace;"># &nbsp; cd D:\apps\wls1036_dev\wlserver\common\bin</span><br />
-<span style="font-family: Courier New, Courier, monospace;"># &nbsp; wlst.cmd scripts\createDomain.py C:\data\wls11g_domains\dev 7001 weblogic1</span><br />
-<span style="font-family: Courier New, Courier, monospace;"><br /></span>
-<span style="font-family: Courier New, Courier, monospace;">import os, sys, os.path</span><br />
-<span style="font-family: Courier New, Courier, monospace;">domain_home, port_s, password = sys.argv[1:]</span><br />
-<span style="font-family: Courier New, Courier, monospace;"><br /></span>
-<span style="font-family: Courier New, Courier, monospace;">port = int(port_s)</span><br />
-<span style="font-family: Courier New, Courier, monospace;">domain_home = os.path.abspath(domain_home)</span><br />
-<span style="font-family: Courier New, Courier, monospace;">domain_name = os.path.basename(os.path.normpath(domain_home))</span><br />
-<span style="font-family: Courier New, Courier, monospace;">template = "%s/wlserver/common/templates/domains/wls.jar" % os.environ['MW_HOME']</span><br />
-<span style="font-family: Courier New, Courier, monospace;"><br /></span>
-<span style="font-family: Courier New, Courier, monospace;"><br /></span>
-<span style="font-family: Courier New, Courier, monospace;">print("Creating WLS domain: %s" % domain_name)</span><br />
-<span style="font-family: Courier New, Courier, monospace;"># MW_HOME should be auto set by wlst.cmd script</span><br />
-<span style="font-family: Courier New, Courier, monospace;">readTemplate(template)</span><br />
-<span style="font-family: Courier New, Courier, monospace;"><br /></span>
-<span style="font-family: Courier New, Courier, monospace;"># Set domain name</span><br />
-<span style="font-family: Courier New, Courier, monospace;">set('Name', domain_name)</span><br />
-<span style="font-family: Courier New, Courier, monospace;"><br /></span>
-<span style="font-family: Courier New, Courier, monospace;"># Set AdminServer port&nbsp;</span><br />
-<span style="font-family: Courier New, Courier, monospace;">cd('Servers/AdminServer')</span><br />
-<span style="font-family: Courier New, Courier, monospace;">set('ListenAddress','')</span><br />
-<span style="font-family: Courier New, Courier, monospace;">set('ListenPort', port)</span><br />
-<span style="font-family: Courier New, Courier, monospace;"><br /></span>
-<span style="font-family: Courier New, Courier, monospace;"># Set weblogic password</span><br />
-<span style="font-family: Courier New, Courier, monospace;">cd('/Security/%s/User/weblogic' % domain_name)</span><br />
-<span style="font-family: Courier New, Courier, monospace;">cmo.setPassword(password)</span><br />
-<span style="font-family: Courier New, Courier, monospace;"><br /></span>
-<span style="font-family: Courier New, Courier, monospace;"># Write domain</span><br />
-<span style="font-family: Courier New, Courier, monospace;">#setOption('OverwriteDomain', 'true')</span><br />
-<span style="font-family: Courier New, Courier, monospace;">writeDomain(domain_home)</span><br />
-<span style="font-family: Courier New, Courier, monospace;">closeTemplate()</span><br />
-<span style="font-family: Courier New, Courier, monospace;">exit()</span><br />
-<div>
-<br /></div>
+	<p><p>Here is how to creating new WebLogic domain using WLST script without starting up a WebLogic server instance. The default AdminServer console login username is 'weblogic', and the script allow you to change its password and a port number for the AdminServer instance.</p>
+<h1>Usage: wlst.cmd createDomain.py &lt;domain_home&gt; <port> <password></h1>
+<h1>Example:</h1>
+<h1>cd D:\apps\wls1036_dev\wlserver\common\bin</h1>
+<h1>wlst.cmd scripts\createDomain.py C:\data\wls11g_domains\dev 7001 weblogic1</h1>
+<p>import os, sys, os.path<br />
+domain_home, port_s, password = sys.argv[1:]</p>
+<p>port = int(port_s)<br />
+domain_home = os.path.abspath(domain_home)<br />
+domain_name = os.path.basename(os.path.normpath(domain_home))<br />
+template = &quot;%s/wlserver/common/templates/domains/wls.jar&quot; % os.environ['MW_HOME']</p>
+<p>print(&quot;Creating WLS domain: %s&quot; % domain_name)</p>
+<h1>MW_HOME should be auto set by wlst.cmd script</h1>
+<p>readTemplate(template)</p>
+<h1>Set domain name</h1>
+<p>set('Name', domain_name)</p>
+<h1>Set AdminServer port</h1>
+<p>cd('Servers/AdminServer')<br />
+set('ListenAddress','')<br />
+set('ListenPort', port)</p>
+<h1>Set weblogic password</h1>
+<p>cd('/Security/%s/User/weblogic' % domain_name)<br />
+cmo.setPassword(password)</p>
+<h1>Write domain</h1>
+<h1>setOption('OverwriteDomain', 'true')</h1>
+<p>writeDomain(domain_home)<br />
+closeTemplate()<br />
+exit()</p>
 </p>
 
 	<hr />

@@ -40,7 +40,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -48,7 +48,6 @@
             <li><a href="../../../about.html">About</a></li>
             <li><a href="../../../archive.html">Archive</a></li>
             <li><a href="../../..//tags">Tags</a></li>
-            <li><a href="../../../feed.xml">Subscribe</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -62,24 +61,38 @@
 	    <a href="../../../tags/security.html">security</a> 
 	</p>
 
-	<p>There are many benefits to allow a container in managing users, groups and authentication policies. You may configure your WAR application to take advantage of this by adding the following in the <span style="font-family: &quot;Courier New&quot;,Courier,monospace;">WEB-INF/web.xml</span> file<br />
-<br />
-<span style="font-family: &quot;Courier New&quot;,Courier,monospace;">&nbsp;&nbsp; &lt;security-constraint&gt;<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;web-resource-collection&gt;<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;web-resource-name&gt;webuser&lt;/web-resource-name&gt;<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;url-pattern&gt;/*&lt;/url-pattern&gt;</span><br />
-<span style="font-family: &quot;Courier New&quot;,Courier,monospace;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;/web-resource-collection&gt;<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;auth-constraint&gt;<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;role-name&gt;webuser&lt;/role-name&gt; <br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;/auth-constraint&gt;<br />&nbsp;&nbsp;&nbsp; &lt;/security-constraint&gt;<br />&nbsp;&nbsp;&nbsp; &lt;login-config&gt;<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;auth-method&gt;BASIC&lt;/auth-method&gt;<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;realm-name&gt;default&lt;/realm-name&gt;<br />&nbsp;&nbsp;&nbsp; &lt;/login-config&gt;<br />&nbsp;&nbsp;&nbsp; &lt;security-role&gt;<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;role-name&gt;webuser&lt;/role-name&gt;<br />&nbsp;&nbsp;&nbsp; &lt;/security-role&gt;</span><br />
-<br />
-Above will secure the entire application and allow only users with "webuser" role to access it. The name "webuser" can be any name you want.<br />
-<br />
-Each app server will manage users differently. In the case of WLS, it lets you create "user" and "user group", and then you can map the defined role above to the group. To do this, add the following to the&nbsp; <span style="font-family: &quot;Courier New&quot;,Courier,monospace;">WEB-INF/weblogic.xml</span> file.<br />
-<br />
-<span style="font-family: &quot;Courier New&quot;,Courier,monospace;">&lt;weblogic-web-app <br />&nbsp;&nbsp;&nbsp; xmlns="http://xmlns.oracle.com/weblogic/weblogic-web-app" <br />&nbsp;&nbsp;&nbsp; xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" <br />&nbsp;&nbsp;&nbsp; xsi:schemaLocation="http://xmlns.oracle.com/weblogic/weblogic-web-app <br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; http://xmlns.oracle.com/weblogic/weblogic-web-app/1.2/weblogic-web-app.xsd"&gt;</span><br />
-<span style="font-family: &quot;Courier New&quot;,Courier,monospace;">&nbsp;&nbsp;&nbsp; &lt;security-role-assignment&gt;<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;role-name&gt;webuser&lt;/role-name&gt;<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;principal-name&gt;webusergroup&lt;/principal-name&gt;<br />&nbsp;&nbsp;&nbsp; &lt;/security-role-assignment&gt;<br />&lt;/weblogic-web-app&gt;</span><br />
-<br />
-Here we tell WLS that we map the "webuser" role defined in web.xml to use the "webusergroup", a WLS user group.<br />
-<br />
-To create&nbsp; user or user group in WLS, you may use the WLS Admin console web application. Go to the Security Realm and select the default "myrealm", and then select User or Group tab. Go ahead and add a user with password under a new group named "webusergroup". After this you can deploy your app, and it would prompt you for user and password whenever you try to access its URL.<br />
-<br />
-You can find out more security info at <a href="https://docs.oracle.com/cd/E23943_01/web.1111/e13711/thin_client.htm#SCPRG171">https://docs.oracle.com/cd/E23943_01/web.1111/e13711/thin_client.htm#SCPRG171</a>. <br />
-<br />
+	<p><p>There are many benefits to allow a container in managing users, groups and authentication policies. You may configure your WAR application to take advantage of this by adding the following in the WEB-INF/web.xml file</p>
+<p><security-constraint><br />
+<web-resource-collection><br />
+<web-resource-name>webuser</web-resource-name><br />
+<url-pattern>/*</url-pattern><br />
+</web-resource-collection><br />
+<auth-constraint><br />
+<role-name>webuser</role-name><br />
+</auth-constraint><br />
+</security-constraint><br />
+<login-config><br />
+<auth-method>BASIC</auth-method><br />
+<realm-name>default</realm-name><br />
+</login-config><br />
+<security-role><br />
+<role-name>webuser</role-name><br />
+</security-role></p>
+<p>Above will secure the entire application and allow only users with &quot;webuser&quot; role to access it. The name &quot;webuser&quot; can be any name you want.</p>
+<p>Each app server will manage users differently. In the case of WLS, it lets you create &quot;user&quot; and &quot;user group&quot;, and then you can map the defined role above to the group. To do this, add the following to the  WEB-INF/weblogic.xml file.</p>
+<p><weblogic-web-app 
+xmlns="http://xmlns.oracle.com/weblogic/weblogic-web-app" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://xmlns.oracle.com/weblogic/weblogic-web-app 
+http://xmlns.oracle.com/weblogic/weblogic-web-app/1.2/weblogic-web-app.xsd"><br />
+<security-role-assignment><br />
+<role-name>webuser</role-name><br />
+<principal-name>webusergroup</principal-name><br />
+</security-role-assignment><br />
+</weblogic-web-app></p>
+<p>Here we tell WLS that we map the &quot;webuser&quot; role defined in web.xml to use the &quot;webusergroup&quot;, a WLS user group.</p>
+<p>To create  user or user group in WLS, you may use the WLS Admin console web application. Go to the Security Realm and select the default &quot;myrealm&quot;, and then select User or Group tab. Go ahead and add a user with password under a new group named &quot;webusergroup&quot;. After this you can deploy your app, and it would prompt you for user and password whenever you try to access its URL.</p>
+<p>You can find out more security info at <a href="https://docs.oracle.com/cd/E23943_01/web.1111/e13711/thin_client.htm#SCPRG171">https://docs.oracle.com/cd/E23943_01/web.1111/e13711/thin_client.htm#SCPRG171</a>.</p>
 </p>
 
 	<hr />

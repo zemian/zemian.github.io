@@ -40,7 +40,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -48,7 +48,6 @@
             <li><a href="../../../about.html">About</a></li>
             <li><a href="../../../archive.html">Archive</a></li>
             <li><a href="../../..//tags">Tags</a></li>
-            <li><a href="../../../feed.xml">Subscribe</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -64,22 +63,31 @@
 	    <a href="../../../tags/django.html">django</a> 
 	</p>
 
-	<p>A friend asked me how to setup an Django enviroment on Windows without the Cygwin fuzz. Here is the shortest steps I can think of:<br />
-<br />
-1. Install Python3.4 as default path. (It should be "C:\Python34").<br />
-2. Open cmd.exe program on Windows and run the following commands:<br />
-<br />
-<span style="font-family: &quot;Courier New&quot;,Courier,monospace;">&nbsp;&nbsp; &nbsp;set PATH=%PATH%;C:\Python34;C:\Python34\Scripts<br />&nbsp;&nbsp; &nbsp;pip install django<br />&nbsp;&nbsp; &nbsp;python C:\Python34\Lib\site-packages\django\bin\django-admin.py startproject mysite<br />&nbsp;&nbsp; &nbsp;cd mysite<br />&nbsp;&nbsp; &nbsp;python manage.py syncdb</span><span style="font-family: &quot;Courier New&quot;,Courier,monospace;"><br />&nbsp;&nbsp; &nbsp;<span style="font-size: x-small;"><i>(Follow prompts to setup an initial db. remember the user you used here.)</i></span> </span><br />
-<span style="font-family: &quot;Courier New&quot;,Courier,monospace;">&nbsp;&nbsp;&nbsp; python manage.py runserver</span><br />
-<br />
-3. You are ready to django! Open your browser http://127.0.0.1:8000 to verify.<br />
-&nbsp;&nbsp; &nbsp;Or login into http://127.0.0.1:8000/admin with the user you setup above.<br />
-&nbsp;&nbsp; <br />
-What's next?<br />
-&nbsp;&nbsp; &nbsp;Explore django with a guided tutorial here: <br />
-&nbsp;&nbsp; &nbsp;<a href="https://docs.djangoproject.com/en/1.6/intro/tutorial01">https://docs.djangoproject.com/en/1.6/intro/tutorial01</a><br />
-&nbsp;&nbsp;&nbsp; <br />
-<br />
+	<p><p>A friend asked me how to setup an Django enviroment on Windows without the Cygwin fuzz. Here is the shortest steps I can think of:</p>
+<ol>
+<li>
+<p>Install Python3.4 as default path. (It should be &quot;C:\Python34&quot;).</p>
+</li>
+<li>
+<p>Open cmd.exe program on Windows and run the following commands:</p>
+<p>set PATH=%PATH%;C:\Python34;C:\Python34\Scripts<br />
+pip install django<br />
+python C:\Python34\Lib\site-packages\django\bin\django-admin.py startproject mysite<br />
+cd mysite<br />
+python manage.py syncdb<br />
+(Follow prompts to setup an initial db. remember the user you used here.)<br />
+python manage.py runserver</p>
+</li>
+<li>
+<p>You are ready to django! Open your browser <a href="http://127.0.0.1:8000">http://127.0.0.1:8000</a> to verify.</p>
+<p>Or login into <a href="http://127.0.0.1:8000/admin">http://127.0.0.1:8000/admin</a> with the user you setup above.</p>
+</li>
+</ol>
+<p>What's next?</p>
+<pre><code>Explore django with a guided tutorial here: 
+
+[https://docs.djangoproject.com/en/1.6/intro/tutorial01](https://docs.djangoproject.com/en/1.6/intro/tutorial01)
+</code></pre>
 </p>
 
 	<hr />

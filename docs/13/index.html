@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Zemian's Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/asciidoctor.css" rel="stylesheet">
+    <link href="../css/base.css" rel="stylesheet">
+    <link href="../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../about.html">About</a></li>
+            <li><a href="../archive.html">Archive</a></li>
+            <li><a href="..//tags">Tags</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">
+  			<a href="blog/2015/05/how-to-setup-intellij-ide-war-exploded-artifact-with-multiple-cdi-dependent-projects.html"><h1>How to setup Intellij IDE war exploded artifact with multiple CDI dependent projects</h1></a>
+  			<p>29 May 2015, tags: 
+			    <a href="../tags/intellij.html">intellij</a> 
+  			</p>
+  			<p><p>I have a large Java project with many sub modules, and they have simple top down dependencies like this:</p>
+<p>ProjectX<br />
++-ModuleLibA<br />
++-ModuleLibB<br />
++-ModuleCdiLibC<br />
++-ModuleCdiLibC2<br />
++-ModuleLibD<br />
++-ModuleCdiLibE<br />
++-ModuleCdiLibE2<br />
++-ModuleCdiLibE3<br />
++-ModuleLibF<br />
++-ModuleLibG<br />
++-ModuleWebAppX</p>
+<p>Each of these modules has their own third party dependency jars. When I say top down, it simply means Module from bottom have all the one above sub module and its third party dependencies as well. The project is large, and with many files, but the structure is straight forward. It does have large amount of third party jars though. At the end, the webapp would have over 100 jars packaged in WEB-INF/lib folder!</p>
+<p>When you create this project structure in IntelliJ IDE (no I do not have the luxury of using Maven in this case), all the third party dependencies are nicely exported and managed from one Module to another as I create my Project with existing source and third parties jars. I do not need to re-define any redudant jars libraries definitions between Modules. When it come to define ModuleWebAppX at the end, all I have to do is to add ModuleLibG as a project dependency, and it brings all the other &quot;transitives&quot; dependent jars in! This is all done by IntelliJ IDE, which is very nice!</p>
+<p>IntelliJ IDE also let you setup Artifacts from your project to prepare for package and deployment that can run inside your IDE servers. By default, any web application will have an option to create a war:exploded artifact definition, and the IDE will automatically copy and update your project build artifacts into this output folder, and it can be deploy/redeploy into any EE server as exploded mode nicely.</p>
+<p>All these work really smoothly, until there is one problem that hit hard! The way IntelliJ IDE package default war:exploded artifact is that it will copy all the .class files generated from each Modules into a single &quot;out/artifact/ProjectX_war_exploded&quot; output folder. This works most of the time when our Java package and classes are unique, but not so with resource files that's not unique! My project uses several dependent CDI based modules. As you might know, each CDI module suppose to define their own, one and single location at META-INF/beans.xml to enable it and to customize CDI behavior. But becuase IntelliJ IDE flatten everything into a single output directory, I've lost the unique beans.xml file per each Module!</p>
+<p>This problem is hard to troubleshoot since it doesn't produce any error at first, nor it stops the web app from running. It just not able to load certain CDI beans that you have customized in the beans.xml!!!</p>
+<p>To resolve this, I have to make the IntelliJIDE artifact dependent modules to generate it's JAR instead of all copy into a single output. But we still want it to auto copy generated build files into the JAR archive automatically when we make a change. Lukcly IntelliJ has this feature. This is how I do it:</p>
+<ol>
+<li>
+<p>Open your project settings then select Artifacts on left.</p>
+</li>
+<li>
+<p>Choose your war:exploded artifacts and look to your right.</p>
+</li>
+<li>
+<p>Under OutputLayout tab, expand WEB-INF/lib, then right clik and &quot;Create Archive&quot; &gt; Enter your moduleX name.jar.</p>
+</li>
+<li>
+<p>Right click this newly created archive moduleX.jar name, then &quot;Add Copy of&quot; &gt; &quot;Module Output&quot; and select one of your dependent module.</p>
+</li>
+<li>
+<p>Repeat for each of the CDI based Modules!</p>
+</li>
+</ol>
+<p>I wish there is a easier way to do across all Modules for this, but at least this manual solution works!</p>
+</p>
+  			<a href="blog/2015/05/how-to-package-skinny-war-with-plain-maven-war-plugin.html"><h1>How to package skinny war with plain maven-war-plugin</h1></a>
+  			<p>22 May 2015, tags: 
+			    <a href="../tags/maven.html">maven</a> 
+  			</p>
+  			<p><p>If you are not using maven EAR plugin, then you can also use plain maven-war-plugin to package a Skinny war package like this:<br />
+<plugin><br />
+<groupId>org.apache.maven.plugins</groupId><br />
+<artifactId>maven-war-plugin</artifactId><br />
+<version>2.6</version><br />
+<configuration><br />
+<!--
+We want to package skinny war to avoid third party jars --><br />
+<packagingExcludes><br />
+WEB-INF/lib/*.jar<br />
+</packagingExcludes><br />
+<archiveClasses>true</archiveClasses><br />
+</configuration><br />
+</plugin></p>
+<p>However, if you ran into the problem I described in <a href="http://saltnlight5.blogspot.com/2015/05/getting-version-string-from-maven-based.html">last post</a>, then you want a Skinny war, but still want to include the jar it produced from your own web project. In this case, you can try this:</p>
+<pre><code>        &lt;plugin&gt;
+            &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+            &lt;artifactId&gt;maven-war-plugin&lt;/artifactId&gt;
+            &lt;version&gt;2.6&lt;/version&gt;
+            &lt;configuration&gt;
+                &lt;!--
+                We want to package skinny war to avoid third party jars, but we do want the classes from
+                this project to be included --&gt;
+                &lt;packagingExcludes&gt;
+                    %regex[WEB-INF/lib/(?!my-project-artifact-name-.*\.jar).*\.jar]
+                &lt;/packagingExcludes&gt;
+                &lt;archiveClasses&gt;true&lt;/archiveClasses&gt;
+            &lt;/configuration&gt;
+        &lt;/plugin&gt;
+</code></pre>
+<p>The plugin would accept a REGEX expression for exclusion as well, but getting it to work might take you a few tries! If you need more than this, try this online Java REGEX testing tool: <a href="http://www.regexplanet.com/advanced/java/index.html">http://www.regexplanet.com/advanced/java/index.html</a></p>
+</p>
+  			<a href="blog/2015/05/getting-version-string-from-a-maven-based-web-application.html"><h1>Getting version string from a Maven based web application</h1></a>
+  			<p>20 May 2015, tags: 
+			    <a href="../tags/maven.html">maven</a> 
+
+			    <a href="../tags/java.html">java</a> 
+  			</p>
+  			<p><p>When you package a maven project, it will automatically generate a pom.properties file inside that will contains the version, artifactId and groupId information. These are handy to have and to display for your web application at runtime. One can use a method like following to retrive it.</p>
+<p>public class Application {<br />
+private String version;</p>
+<pre><code> public String getVersion() {
+    if (version == null) {
+        String res = &quot;META-INF/maven/myapp/pom.properties&quot;;
+        URL url = Thread.currentThread().getContextClassLoader().getResource(res);
+        if (url == null) {
+            version = &quot;SNAPSHOT.&quot; + Utils.timestamp();
+        } else {
+            Properties props = Utils.loadProperties(res);
+            version = props.getProperty(&quot;version&quot;);
+        }
+    }
+    return version;
+}
+</code></pre>
+<p>}</p>
+<p>Sounds good? Not too fast! Turns out you have to do little more trick to have this working properly for deployment. By default the maven war plugin will package your classes files into the WEB-INF/classes, but the pom.properties are in META-INF at the same level, and not in WEB-INF/classes/META-INF! This resulted the above code not finding your resource pom.properties from classpath!</p>
+<p>To fix this, you need to add the following to your pom.xml file:</p>
+<pre><code>        &lt;plugin&gt;
+            &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+            &lt;artifactId&gt;maven-war-plugin&lt;/artifactId&gt;
+            &lt;version&gt;2.6&lt;/version&gt;
+            &lt;configuration&gt;
+                &lt;archiveClasses&gt;true&lt;/archiveClasses&gt;
+            &lt;/configuration&gt;
+        &lt;/plugin&gt;
+</code></pre>
+<p>This will tell maven to jar up your classes along with the pom.properties in a separate file, then place it in WEB-INF/lib folder instead of using the unpacked WEB-INF/classes version. This forces the pom.properties to be properly added and read by our getVersion() method.</p>
+</p>
+  			<a href="blog/2015/05/netbeans-projects-dependencies.html"><h1>NetBeans projects dependencies</h1></a>
+  			<p>13 May 2015, tags: 
+			    <a href="../tags/netbeans.html">netbeans</a> 
+  			</p>
+  			<p><p>With all the coolness of NetBeans, one of the feature I feel it's lacking is managing project denpendencies natively in IDE. Currently the only way to get this feature is if your Java projects are Maven based. If you have Ant based projects, then you would have to manually do this with hacks, and for each projects/sub-projects! Take a look at these two links:</p>
+<p><a href="http://stackoverflow.com/questions/13669237/netbeans-java-how-to-add-as-library-another-project-with-dependencies">http://stackoverflow.com/questions/13669237/netbeans-java-how-to-add-as-library-another-project-with-dependencies</a></p>
+<p><a href="https://netbeans.org/bugzilla/show_bug.cgi?id=47507">https://netbeans.org/bugzilla/show_bug.cgi?id=47507</a></p>
+<p>With today's EE projects, you likely going to have many sub projects, and manually handling their dependencies on each project within the IDE is not fun, and hard to maintain. Basically the time you used to setup third party libraries on a ProjectA is wasted and will not automatically exported to ProjectB if it depends on it within the IDE. NetBeans seems to only use project dependencies as way to link related projects together, and to export the main proejct jar/classes, not its third party libraries. A transitive dependencies management feature is needed. Some of user's responses on this topic seem to simply suggest one should go with Maven. Well, as much as I like to use Maven myself, I don't think it acceptable to tell users to convert their existing projects from Ant to Maven just to use an IDE. The IDE tool should be more transparent in this regard.</p>
+<p>It's worth to note that both Eclipse and Intellij have this feature and it's productive. I wish NetBeans can improve on this and provide a solution in near future.</p>
+</p>
+  			<a href="blog/2015/04/how-to-create-multiple-workspaces-with-netbeans.html"><h1>How to create multiple workspaces with NetBeans</h1></a>
+  			<p>23 April 2015, tags: 
+			    <a href="../tags/netbeans.html">netbeans</a> 
+  			</p>
+  			<p><h4>Examples</h4>
+<ul>
+<li>
+<p>Windows:<br />
+netbeans.exe --userdir C:\MyOtherUserdir --cachedir &quot;%HOME%\Locale Settings\Application Data\NetBeans\7.1\cache&quot;</p>
+</li>
+<li>
+<p>Unix:<br />
+./netbeans --userdir ~/my-other-userdir</p>
+</li>
+<li>
+<p>Mac OS:<br />
+/Applications/NetBeans.app/Contents/MacOS/executable --userdir ~/my-other-userdir</p>
+</li>
+</ul>
+<p>Ref: <a href="http://wiki.netbeans.org/FaqAlternateUserdir">http://wiki.netbeans.org/FaqAlternateUserdir</a></p>
+</p>
+  			<a href="blog/2015/03/ee-jsp-and-servlet-3-crafting-your-own-mvc-pattern.html"><h1>EE JSP and Servlet 3: Crafting Your Own MVC Pattern</h1></a>
+  			<p>13 March 2015, tags: 
+			    <a href="../tags/jsp.html">jsp</a> 
+
+			    <a href="../tags/servlet.html">servlet</a> 
+  			</p>
+  			<p><div class="paragraph">
+<p>The combination of JSP and Servlet allows you to develope MVC pattern web application easily. The main focus of MVC pattern is that we want to write a Controller
+logic that can produce data Model, and then let the View to display
+these data and generate the desired HTML output. These are done so we may separate the concern on each layer, and makes developing larger application easier. In EE, we can map a Servlet to a URL and let the Servlet becomes the Contoller, and when all data model are gathered and stored in request, session or application scope, we can then forward to a JSP for rendering output.</p>
+</div>
+<div class="paragraph">
+<p>Now the last part is CONTROLLER, which can be verbose and a bit raw feel if you were to write a Servlet class per each. So we can improve this part and define a simplier interface to let developer write controller easier. Here I will show you how a simple MVC style of code can look like.</p>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/saltnlight5/java-ee6-examples/tree/master/mvc-example">mvc-example</a></p>
+</div></p>
+  			<a href="blog/2015/02/ee-cdi-better-backend-service-management-through-automatic-service-injection.html"><h1>EE CDI: Better Backend Service Management through Automatic Service Injection</h1></a>
+  			<p>09 February 2015, tags: 
+			    <a href="../tags/cdi.html">cdi</a> 
+  			</p>
+  			<p><p>In one of my <a href="http://saltnlight5.blogspot.com/2015/01/ee-servlet-3-how-to-setup-backend.html">previous post</a>, I have introduced the Application class that holds backend services, and we are exposing the services to Servlet by a singleton instance lookup pattern. This usage is very common and the Application class is been used as a global space holder in your application. Starting with EE 6, there is a new spec API introduced called CDI (context dependency injection) that can replace this kind of direct service lookup in your application. The CDI is a Java objects container (services in our case), or sometimes<br />
+called &quot;beans container&quot; that automatically manged the objects life<br />
+cycles for you; and then it can &quot;inject&quot; into places where you need<br />
+them. Using CDI to manage your services can make your Servlet easier to test, and less code to maintain since you don't have to write and maintain the Application class.</p>
+<p>Let's see how we can turn our previous example to use CDI.</p>
+<p>First step is to remove the Application class have have, and to use injection of UserService instead. In our example, we initialize Application in WebAppStartup, so that can be remove; and we will initialize CDI instead. By the spec, all we need is to add a beans XML file in src/main/webapp/WEB-INF folder.</p>
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://java.sun.com/xml/ns/javaee"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/beans_1_0.xsd">
+</beans>
+<p>That's all you need to enable CDI in your EE application!</p>
+<p>Now how can we do service injection, Inside LoginServlet is where we are using UserService, and that's where we want CDI to provide us the managed instance of UserService. So refactor UserService and remove Application usage there, but replace with a member field for UserService by injection using the @Inject annotation.</p>
+<p>import javax.inject.Inject;<br />
+...</p>
+<p>@WebServlet(&quot;/login&quot;)<br />
+public class LoginServlet  extends HtmlWriterServlet {</p>
+<pre><code>@Inject
+private UserService userService;
+</code></pre>
+<p>...<br />
+private boolean login(HttpServletRequest req) throws IOException {<br />
+String username = req.getParameter(&quot;username&quot;);<br />
+String password = req.getParameter(&quot;password&quot;);</p>
+<pre><code>    if (userService.validate(username, password)) {
+</code></pre>
+<p>...</p>
+<p>There is one more area we need to take care of to complete the refactoring. Our  UserService has a init() method that's originally called by Application class. But now that we removed it, we need this to be called by CDI container since it now manage the UserSerivce instance lifecycle. And the CDI spec provides us a simple way to use the @PostConstruct annotation to do so.</p>
+<p>import javax.annotation.PostConstruct;<br />
+...</p>
+<p>public class UserService {<br />
+...</p>
+<pre><code>@PostConstruct
+public void init() {
+</code></pre>
+<p>...</p>
+<p>That's all the modifications you need to switch from your custom Application singleton pattern to use CDI to manage your backend services.</p>
+<p>One question you might ask is how does CDI know when to create new instance of UserService? The answer is by the @Inject annotation. Upon startup of the CDI container, it scans your application packages to see what's needed to be injected. It also depends when you needed this service instance to be injected. In our case, it's inside a Servlet, so it's not needed until the HTTP request is called for, so CDI will create the new instance under what's called &quot;Request&quot; scope. The CDI will inject a instance of UserService into LoginServlet right before it's processing the request.</p>
+<p>With CDI available, you will quickly appreciate the power and simplicity of the EE application server. There are many more CDI features you may use in your application; and I hope I have sparked your interests to explore further on your own.</p>
+</p>
+  			<a href="blog/2015/02/ee-jsp-generating-dynamic-content-with-jstl-tag-libraries.html"><h1>EE JSP: Generating Dynamic Content with JSTL Tag Libraries</h1></a>
+  			<p>06 February 2015, tags: 
+			    <a href="../tags/jstl.html">jstl</a> 
+  			</p>
+  			<p><p>Besides writing your own <a href="http://saltnlight5.blogspot.com/2015/02/ee-jsp-generating-dynamic-content-with.html">Custom Tags in JSP</a>, you will find that Java EE actually provides a set of Java Standard Tag Library (JSTL) ready for you to use. These built-in tags include repeating (for-loop) tags, if condition tags, variable declaration and output tags etc. The Libraries also come with many utility functions and international message formatting tags. Here is an example how it looks like.</p>
+<p>&lt;%@ taglib prefix=&quot;c&quot; uri=&quot;<a href="http://java.sun.com/jsp/jstl/core">http://java.sun.com/jsp/jstl/core</a>&quot; %&gt;<br />
+&lt;%@ taglib prefix=&quot;x&quot; uri=&quot;<a href="http://java.sun.com/jsp/jstl/xml">http://java.sun.com/jsp/jstl/xml</a>&quot; %&gt;<br />
+&lt;%@ taglib prefix=&quot;fmt&quot; uri=&quot;<a href="http://java.sun.com/jsp/jstl/fmt">http://java.sun.com/jsp/jstl/fmt</a>&quot; %&gt;<br />
+&lt;%@ taglib prefix=&quot;sql&quot; uri=&quot;<a href="http://java.sun.com/jsp/jstl/sql">http://java.sun.com/jsp/jstl/sql</a>&quot; %&gt;<br />
+&lt;%@ taglib prefix=&quot;fn&quot; uri=&quot;<a href="http://java.sun.com/jsp/jstl/functions">http://java.sun.com/jsp/jstl/functions</a>&quot; %&gt;</p>
+<!DOCTYPE html>
+<html>
+    <body>
+        <h1>JSTL Examples</h1>
+        <h2>List of Application Context: ${applicationScope}</h2>
+        <table>
+            <c:forEach var="entry" items="${applicationScope}">
+            <tr>
+                <td>${entry.key}</td>
+                <td>
+                    <c:out value="${entry.value}"/>
+                </td>
+            </tr>
+            </c:forEach>
+        </table>
+<pre><code>    &lt;h2&gt;List of Session Context: ${sessionScope}&lt;/h2&gt;
+    &lt;table&gt;
+        &lt;c:forEach var=&quot;entry&quot; items=&quot;${sessionScope}&quot;&gt;
+        &lt;tr&gt;
+            &lt;td&gt;${entry.key}&lt;/td&gt;
+            &lt;td&gt;
+                &lt;c:out value=&quot;${entry.value}&quot;/&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;/c:forEach&gt;
+    &lt;/table&gt;
+    
+    &lt;h2&gt;List of Page Context: ${pageScope}&lt;/h2&gt;
+    &lt;table&gt;
+        &lt;c:forEach var=&quot;entry&quot; items=&quot;${pageScope}&quot;&gt;
+        &lt;tr&gt;
+            &lt;td&gt;${entry.key}&lt;/td&gt;
+            &lt;td&gt;
+                &lt;c:out value=&quot;${entry.value}&quot;/&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;/c:forEach&gt;
+    &lt;/table&gt;
+    
+    &lt;h2&gt;List of Request Context: ${requestSope}&lt;/h2&gt;
+    &lt;table&gt;
+        &lt;c:forEach var=&quot;entry&quot; items=&quot;${requestSope}&quot;&gt;
+        &lt;tr&gt;
+            &lt;td&gt;${entry.key}&lt;/td&gt;
+            &lt;td&gt;
+                &lt;c:out value=&quot;${entry.value}&quot;/&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;/c:forEach&gt;
+    &lt;/table&gt;
+    
+    &lt;h2&gt;List of Query Parameters: ${param}&lt;/h2&gt;
+    &lt;table&gt;
+        &lt;c:forEach var=&quot;entry&quot; items=&quot;${param}&quot;&gt;
+        &lt;tr&gt;
+            &lt;td&gt;${entry.key}&lt;/td&gt;
+            &lt;td&gt;
+                &lt;c:out value=&quot;${entry.value}&quot;/&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;/c:forEach&gt;
+    &lt;/table&gt;
+    
+    &lt;h2&gt;List of Header Parameters: ${header}&lt;/h2&gt;
+    &lt;table&gt;
+        &lt;c:forEach var=&quot;entry&quot; items=&quot;${header}&quot;&gt;
+        &lt;tr&gt;
+            &lt;td&gt;${entry.key}&lt;/td&gt;
+            &lt;td&gt;
+                &lt;c:out value=&quot;${entry.value}&quot;/&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;/c:forEach&gt;
+    &lt;/table&gt;        
+    
+    &lt;h2&gt;List of Cookies: ${cookie}&lt;/h2&gt;
+    &lt;table&gt;
+        &lt;c:forEach var=&quot;entry&quot; items=&quot;${cookie}&quot;&gt;
+        &lt;tr&gt;
+            &lt;td&gt;${entry.key}&lt;/td&gt;
+            &lt;td&gt;
+                &lt;c:out value=&quot;${entry.value}&quot;/&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;/c:forEach&gt;
+    &lt;/table&gt;
+&lt;/body&gt;
+</code></pre>
+</html>
+<p>I used the core tag here to display map entries of few implicit variables. You may explore more on those tags declarations I have define on top of the example page from the Spec. These code are from the <a href="https://github.com/saltnlight5/java-ee6-examples/tree/master/jsp-example">jsp-example</a> from GitHub.</p>
+<p>GLASSFISH NOTE: When deploying above example in GlassFish 3/4, you will run into a NullPointerException and causing the page resulted in error. It turns out that GF server added a internal variable named com.sun.jsp.taglibraryCache  in ServletContext (Application Scope) that throws NPE when its toString() is called! To workaround this, I created <a href="https://github.com/saltnlight5/java-ee6-examples/blob/master/jsp-example/src/main/webapp/jstl-example2.jsp">jstl-example2.jsp</a> that wraps the ${entry.value} into a custom JSTL function so that it guarantees to return an output without throwing exception. So the lesson learned is that you should always return a String and not throw Exception when overriding toString() of a Java class. It's just bad practice.</p>
+</p>
+  			<a href="blog/2015/02/ee-jsp-generating-dynamic-content-with-custom-tag-libraries.html"><h1>EE JSP: Generating Dynamic Content with Custom Tag Libraries</h1></a>
+  			<p>02 February 2015, tags: 
+			    <a href="../tags/jsp.html">jsp</a> 
+
+			    <a href="../tags/tag.html">tag</a> 
+  			</p>
+  			<p><p>When developing View layer in a web application, you want to try not to duplicate content in JSP files as much as possible. The JSP spec API allows you to reduce this duplication by using tag libraries. A custom JSP tag is a user defined xml tag element that you can insert into JSP file to replace with some dynamic content.</p>
+<p>Here is an simple <a href="https://github.com/saltnlight5/java-ee6-examples/blob/master/jsp-example/">jsp-example</a> using a custom JSP tag that insert a server time stamp value:</p>
+<p>&lt;%@ taglib prefix=&quot;myapp&quot; tagdir=&quot;/WEB-INF/myappTags&quot; %&gt;</p>
+<!DOCTYPE html>
+<html>
+    <body>
+        <h1>Hello World!</h1>
+        <p>Page served on <myapp:serverTime pattern="yyyy-MM-dd HH:mm:ss"/></p>
+    </body>
+</html>
+<p>JSP tags can also allow you to pass in parameters as attributes of the tag. In the example above <a href="myapp:serverTime">myapp:serverTime</a> tag uses a custom pattern attribute to control how the date string should be formatted.</p>
+<p>JSP tags can also be nested with sub tags, or any HTML content elements. The nested JSP tags can provide a way for you to conditionally render the enclosed content. Using tag to render conditional content is more verbose due to XML structure, but it eliminates the use of direct Scriptlet code in JSP.</p>
+<p>There are two ways you can create custom JSP tags. The first method is to implement the tag using pure Java code and then register it with a XML taglib definition file. I will skip this method for now and show you another easier way.</p>
+<p>The second method uses &quot;Tag Files&quot; that are similar to JSP pages to construct a tag (remember that JSP tag is nothing more than just a placeholder for some content!). I am going to show you how the second method is done for above example. First create a serverTime.tag file under your src/main/webapp/WEB-INF/tags/myapp project folder.</p>
+<p>&lt;%@ attribute name=&quot;pattern&quot; required=&quot;true&quot; %&gt;<br />
+&lt;%@ tag import=&quot;java.util.Date, java.text.SimpleDateFormat&quot; %&gt;<br />
+&lt;%= new SimpleDateFormat(pattern).format(new Date()) %&gt;</p>
+<p>The Tag File implementation depends on simple convention of file naming and location. Note that the src/main/webapp/WEB-INF/tags directory is a required path. Inside this folder,  you may create any sub folder you want to organize the tag files. In our case, it's the myapp directory. A Tag File can be just like any JSP file you would normally create, except the tag directives are little different. You can see the JSP spec for a complete list of them. Whatever you output from the Tag File, it will be inserted and replaced the caller of the tag. Notice how I use the pattern attribute parameter to allow user change the date pattern, and it's available in the Tag File inside the Scriptlet Java code as variable.</p>
+<p>Since you can write Tag Files just as you would with JSP, I will again caution the excessive use of Java code Scriptlet even inside Tag Files. If you must call Java code, try to wrap the code and replace by single line call, or write the Tag implementation with pure Java code; especially if you have very complex business logic involve. This would bring debugging much easier on your code and to maintain.</p>
+<p>JSP tags provide a powerful way to construct your View layer in the web application. It helps you reuse code or content, and generating a specific piece of response.</p>
+</p>
+  			<a href="blog/2015/01/ee-jsp-the-reversed-jacket-of-servlet.html"><h1>EE JSP: The Reversed Jacket of Servlet</h1></a>
+  			<p>25 January 2015, tags: 
+			    <a href="../tags/jsp.html">jsp</a> 
+  			</p>
+  			<p><p>Generating HTML from Servlet is only practical if you have small amount of pages, or needed fine control of the content you are generating, (binary PDF etc). For most application, the output is going to be HTML, and we need a better way to do this; and that's where the JSP (Java Server Pages) comes in.</p>
+<p>With JSP, you write and focus on the HTML content in a file; then only when you needed dynamic or condition logic in between the content, you would insert the Java code, which called the Scriptlet. When the application server process the JSP page, it will automatically generate a Servlet class that write these JSP file's content out (as you would programatically writing it using PrintWriter as shown in my previous posts). Wherever you have the Scriptlet in JSP, it will be inlined in the generated Servlet class. The generated jsp servlet classes are all managed, compiled and deployed by the application server within your application automatically. In short, the JSP is nothing more than the reverse jacket of the Servlet.</p>
+<p>Here is a simple example of JSP that print Hello World and a server timestamp.</p>
+<!DOCTYPE html>
+<html>
+    <body>
+        <p>Hello World!</p>
+        <p>Page served on <%= new java.util.Date()%></p>
+    </body>
+</html>
+<p>Simply save this as text file named hello.jsp inside your src/main/webapp maven based folder, and it will be runnable within your NetBeans IDE. For JSP, you do not need to configure URL mapping as in Serlvet, and it's directly accessable from your context path. For example, above should display in your browser by <a href="http://localhost:8080/hello.jsp">http://localhost:8080/hello.jsp</a> URL.</p>
+<p>Notice the example also show how you can embed Java code. You can place a method or object inside &lt;%= %&gt; scriptlet, and it will use the resulted object's toString() method output to concatenate to the HTML outside the scriptlet tag. You can also define new methods using &lt;%! %&gt; scriptlet tag, or execute any code that does not generate output using &lt;% %&gt; scriptlets. Note that you can add comments in JSP between &lt;%-- --%&gt; scriptlet as well.</p>
+<p>JSP also allows you to insert &quot;Page Directives&quot; to control how the JSP container render the result. For example, you can change the result content type by insert this on top of the page</p>
+<pre><code>&lt;%@ page contentType=&quot;text/txt&quot; %&gt;
+</code></pre>
+<p>Another often used page directive is import Java package so you don't need to prefix it on each Java statement line.</p>
+<pre><code>&lt;%@ page imporet=&quot;java.util.*&quot; %&gt;
+
+ 
+
+...
+
+ 
+
+&lt;p&gt;Page served on &lt;%= new Date()%&gt;&lt;/p&gt;
+</code></pre>
+<p>There are many more directives you can use. Checkout the JSP spec doc for more details.</p>
+<p>Besides inserting your own Java code, JSP also predefined some variables you may access directly without declaring them. Here is an example that displays most of these built-in implicit variables.</p>
+<!DOCTYPE html>
+<html>
+    <body>
+        <h1>JSP Examples</h1>
+        <p>Implicit Variables</p>
+        <table>
+            <tr>
+                <td>Name</td><td>Instance</td><td>Example</td>
+            </tr>
+            <tr>
+                <td>applicationScope</td><td>${applicationScope}</td><td>${applicationScope['myAppName']}</td>
+            </tr>
+            <tr>
+                <td>sessionSope</td><td>${sessionSope}</td><td>${sessionSope['loginSession']}</td>
+            </tr>
+            <tr>
+                <td>pageScope</td><td>${pageScope}</td><td>${pageScope['javax.servlet.jsp.jspConfig']}</td>
+            </tr>
+            <tr>
+                <td>requestScope</td><td>${requestScope}</td><td>${requestScope['foo']}</td>
+            </tr>
+            <tr>
+                <td>param</td><td>${param}</td><td>${param['query']}</td>
+            </tr>
+            <tr>
+                <td>header</td><td>${header}</td><td>${header['user-agent']}</td>
+            </tr>
+            <tr>
+                <td>cookie</td><td>${cookie}</td><td>${cookie['JSESSIONID']}</td>
+            </tr>
+            <tr>
+                <td>pageContext</td><td>${pageContext}</td><td>${pageContext.request.contextPath}</td>
+            </tr>
+        </table>
+        <p>Page served on <%= new java.util.Date()%></p>
+    </body>
+</html>  
+<p>In above example, I accessed the implicit variables using the JSP Expression Language (EL) syntax rather than the &lt;%= %&gt; scriptlet. The EL is more compact and easier to read, however it only can read variable that existed in any of the request, session or application scopes. The EL uses DOT notation to access fields or even nested fields from the object variable; assuming the fields have corresponding getter methods that is. EL can also access map with &quot;myMap[key]&quot; format, or a list with &quot;myList[index]&quot; syntax. Most of these implicit variables can be access as a Map object, and they exposed mainly from the ServletHttpRequest object on the request, as you would from your own Servlet class.</p>
+<p>JSP can be seen as a template language in the web application. It helps generate the &quot;VIEW&quot; part of the application. It let you or the authoring in your team to focus on the HTML and look and feel of the content. It can help building larger web application much easier. Be careful about using excessive and complex logic Java code inside your JSP files though, as it will make it harder to debug and read; especially if you have a Java statement that throws an exception. The line number from the stacktrace would be harder to track and match to your Scriptlet code. Also imagine if you start to have JavaScript code inside JSP files, then it can get really messy. Better to keep these in separate files. If you must embed Java code in JSP, try to wrap it in a single line of Java invocation call. Better yet, try to process request using Servlet code, and generate all the data you need to display in JSP by insert them into the request scope space, and then forward to a JSP file for rendering. With this pattern, you can actually limit usage of scriptlet<br />
+in JSP, and only use EL and JSP tags.</p>
+<p>You can find above code in my <a href="https://github.com/saltnlight5/java-ee6-examples/tree/master/jsp-example">jsp-example</a> in GitHub.</p>
+</p>
+
+	<hr />
+
+	<ul class="pager">
+		<li class="previous"><a href="https://zemian.github.io/12">Previous</a></li>
+		<li>Page: 13/29</li>
+		<li class="next"><a href="https://zemian.github.io/14">Next</a></li>
+	</ul>
+
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">&copy; 2011 - 2019 Zemian Deng All Rights Reserved | Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.5</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../js/jquery-1.11.1.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/prettify.js"></script>
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-135626598-1');
+    </script>
+
+  </body>
+</html>

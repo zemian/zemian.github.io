@@ -40,7 +40,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -48,7 +48,6 @@
             <li><a href="../../../about.html">About</a></li>
             <li><a href="../../../archive.html">Archive</a></li>
             <li><a href="../../..//tags">Tags</a></li>
-            <li><a href="../../../feed.xml">Subscribe</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -64,17 +63,29 @@
 	    <a href="../../../tags/regex.html">regex</a> 
 	</p>
 
-	<p>Need to replace all occurances of a pattern text and replace it with a captured group? Something like this in Java works nicely:<br />
-<br />
-<span style="font-family: &quot;Courier New&quot;,Courier,monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; String html = "&lt;a href='myurl?id=1123'&gt;myurl&lt;/a&gt;\n" +<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "&lt;a href='myurl2?id=2123'&gt;myurl2&lt;/a&gt;\n" +<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "&lt;a href='myurl3?id=3123'&gt;myurl3&lt;/a&gt;";<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; html = html.replaceAll("id=(\\w+)'?", "productId=$1'");</span><br />
-<br />
-Here I swapped the query name from "id" to "productId" on all the links that matched my criteria. But what happen if I needed to pre-process the captured ID value before replacing it? Let's say now I want to do a lookup and transform the ID value to something else?<br />
-<br />
-This extra requirement would lead us to dig deeper into Java RegEx package. Here is what I come up with:<br />
-<br />
-<span style="font-family: &quot;Courier New&quot;,Courier,monospace;">import java.util.regex.*;</span><br />
-<span style="font-family: &quot;Courier New&quot;,Courier,monospace;">...</span><br />
-<span style="font-family: &quot;Courier New&quot;,Courier,monospace;">&nbsp;&nbsp;&nbsp; public String replaceAndLookupIds(String html) {<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; StringBuffer newHtml = new StringBuffer();<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Pattern p = Pattern.compile("id=(\\w+)'?");<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Matcher m = p.matcher(html);<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; while (m.find()) {<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; String id= m.group(1);<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; String newId = lookup(id);<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; String rep = "productId=" + newId + "'";<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; m.appendReplacement(newHtml, rep);<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; m.appendTail(newHtml);<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return newHtml.toString();<br />&nbsp;&nbsp;&nbsp; }</span>
+	<p><p>Need to replace all occurances of a pattern text and replace it with a captured group? Something like this in Java works nicely:</p>
+<pre><code>    String html = &quot;&lt;a href='myurl?id=1123'&gt;myurl&lt;/a&gt;\n&quot; +
+            &quot;&lt;a href='myurl2?id=2123'&gt;myurl2&lt;/a&gt;\n&quot; +
+            &quot;&lt;a href='myurl3?id=3123'&gt;myurl3&lt;/a&gt;&quot;;
+    html = html.replaceAll(&quot;id=(\\w+)'?&quot;, &quot;productId=$1'&quot;);
+</code></pre>
+<p>Here I swapped the query name from &quot;id&quot; to &quot;productId&quot; on all the links that matched my criteria. But what happen if I needed to pre-process the captured ID value before replacing it? Let's say now I want to do a lookup and transform the ID value to something else?</p>
+<p>This extra requirement would lead us to dig deeper into Java RegEx package. Here is what I come up with:</p>
+<p>import java.util.regex.*;<br />
+...<br />
+public String replaceAndLookupIds(String html) {<br />
+StringBuffer newHtml = new StringBuffer();<br />
+Pattern p = Pattern.compile(&quot;id=(\w+)'?&quot;);<br />
+Matcher m = p.matcher(html);<br />
+while (m.find()) {<br />
+String id= m.group(1);<br />
+String newId = lookup(id);<br />
+String rep = &quot;productId=&quot; + newId + &quot;'&quot;;<br />
+m.appendReplacement(newHtml, rep);<br />
+}<br />
+m.appendTail(newHtml);<br />
+return newHtml.toString();<br />
+}</p>
 </p>
 
 	<hr />

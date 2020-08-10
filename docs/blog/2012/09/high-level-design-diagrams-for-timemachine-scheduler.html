@@ -40,7 +40,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -48,7 +48,6 @@
             <li><a href="../../../about.html">About</a></li>
             <li><a href="../../../archive.html">Archive</a></li>
             <li><a href="../../..//tags">Tags</a></li>
-            <li><a href="../../../feed.xml">Subscribe</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -62,60 +61,33 @@
 	    <a href="../../../tags/timemachine.html">timemachine</a> 
 	</p>
 
-	<p><p>Despite the advance of all the computers, I am one of those guys who still carry a pen and composition notebook around. I am far from those who has photographic memories, nor one who can digest every thing in their heads. Especially when it comes to doing software design. I still find my self scribbling on my notebook quite a bit, or even on piece of napkin if no paper is available. I am also one of those who only need high level ideas drawn out, then I can usually go directly to code, map it to some API and then write some simple implementations to get started. </p>
-
+	<p><p>Despite the advance of all the computers, I am one of those guys who still carry a pen and composition notebook around. I am far from those who has photographic memories, nor one who can digest every thing in their heads. Especially when it comes to doing software design. I still find my self scribbling on my notebook quite a bit, or even on piece of napkin if no paper is available. I am also one of those who only need high level ideas drawn out, then I can usually go directly to code, map it to some API and then write some simple implementations to get started.</p>
 <p>That's how I started with the <a href="https://bitbucket.org/timemachine/scheduler">TimeMachine Scheduler</a> project a while back. However, as we come to a point where we have a solid runnable code, we must also start to present it to others. Showing my composition notebook is not the prettier thing in the world, specially when I have no gift in penmenship at all. This is a time to look into some professional diagram and design tools to draw up the high level architecture.</p>
-
 <p>I was contacted by <a href="http://www.architexa.com">Architexa</a> to give them some review of their tool. I think this is a great opportunity for me to try it to draw up some diagrams on the TimeMachine project. Most of what I have diagrammed here are explained in details in the project <a href="https://bitbucket.org/timemachine/scheduler/wiki/ReferenceManual">reference manual</a>, so if you want to know more, please do read it up for further reference.</p>
-
 <h1>TimeMachine top level packages</h1>
-
 <p>First, the Architexa provides their software as an Eclipse plugin, and after installing it, it can analysis an existing project. I did that and here is the package level view it presents me for the TimeMachine.</p>
-
-<p><img src="https://bitbucket.org/saltnlight5/images/raw/84cde5b1e9ba/timemachine-diagrams/package-dependencies.png" alt="TimeMachine packages dependencies diagram" title="TimeMachine packages dependencies diagram" /></p>
-
+<p><img src="https://bitbucket.org/saltnlight5/images/raw/84cde5b1e9ba/timemachine-diagrams/package-dependencies.png" alt="TimeMachine packages dependencies diagram" /></p>
 <p>The graph is not very clear on why everything depends on <code>schedule</code> package, but perhaps Schedule is used through the code. Any way the TimeMachine has been carefully separating out the pakcages so it's easy for user to use. All the interfaces you need to scheduler jobs are in <code>timemachine.scheduler</code>. In it, there are couple static factories class: <code>Schedules</code> and <code>JobTasks</code> provide majority of the functionity you need. So the goal is you can do quiet a bit with just <code>import timemachine.scheduler.*;</code>; then as you need each layer functionality, you can import them explicitly the sub-packages.</p>
-
 <h1>TimeMachine main classes diagrams</h1>
-
-<p>In TimeMachine, you have few major class hierarchy that you must need to get familiar in order to write effective scheduling jobs. </p>
-
+<p>In TimeMachine, you have few major class hierarchy that you must need to get familiar in order to write effective scheduling jobs.</p>
 <p>A job in TimeMachine is implemented by a class with <code>JobTask</code> interface. The project provide few for you to get started.</p>
-
-<p><img src="https://bitbucket.org/saltnlight5/images/raw/84cde5b1e9ba/timemachine-diagrams/jobtask-class-hierarchy.png" alt="TimeMachine JobTask class diagram" title="TimeMachine JobTask class diagram" /></p>
-
+<p><img src="https://bitbucket.org/saltnlight5/images/raw/84cde5b1e9ba/timemachine-diagrams/jobtask-class-hierarchy.png" alt="TimeMachine JobTask class diagram" /></p>
 <p>How often and frequent to run your job in the scheduler is provided by a <code>Schedule</code>. Here we provided some most used implementations, including the customizable <code>DateListSchedule</code> that uses a <code>provider</code> generator.</p>
-
-<p><img src="https://bitbucket.org/saltnlight5/images/raw/84cde5b1e9ba/timemachine-diagrams/schedule-class-hierarchy.png" alt="TimeMachine Schedule class diagram" title="TimeMachine Schedule class diagram" /></p>
-
+<p><img src="https://bitbucket.org/saltnlight5/images/raw/84cde5b1e9ba/timemachine-diagrams/schedule-class-hierarchy.png" alt="TimeMachine Schedule class diagram" /></p>
 <p>The TimeMachine is a scheduler composed by a stackable service container. Here are some of the services that power the scheduler as a whole. The user/developer can write their own user <code>Service</code> and add into the container as well.</p>
-
-<p><img src="https://bitbucket.org/saltnlight5/images/raw/84cde5b1e9ba/timemachine-diagrams/service-class-hierarchy.png" alt="TimeMachine Service class diagram" title="TimeMachine SchedulerEngine class diagram" /></p>
-
+<p><img src="https://bitbucket.org/saltnlight5/images/raw/84cde5b1e9ba/timemachine-diagrams/service-class-hierarchy.png" alt="TimeMachine SchedulerEngine class diagram" /></p>
 <p>The services above are then combined together to form the scheduler engine.</p>
-
-<p><img src="https://bitbucket.org/saltnlight5/images/raw/84cde5b1e9ba/timemachine-diagrams/scheduler-engine-class-hierarchy.png" alt="TimeMachine SchedulerEngine class diagram" title="TimeMachine SchedulerEngine class diagram" /></p>
-
+<p><img src="https://bitbucket.org/saltnlight5/images/raw/84cde5b1e9ba/timemachine-diagrams/scheduler-engine-class-hierarchy.png" alt="TimeMachine SchedulerEngine class diagram" /></p>
 <h1>TimeMachine in action diagrams</h1>
-
 <p>Depicting sequence diagram is pretty challenging. The Architexa plugin is pretty good in this area, especially when you already have code already done. The Architexa plugin would take advantage of existing code and Java reflection and give you a selectable choice on what and to where as action. Here I will highlight couple actions in TimeMachine.</p>
-
 <p>The most basic startup of the TimeMachine sequence would look something like this.</p>
-
-<p><img src="https://bitbucket.org/saltnlight5/images/raw/84cde5b1e9ba/timemachine-diagrams/scheduler-start-up-sequence.png" alt="TimeMachine Scheduler startup up sequence diagram" title="TimeMachine Scheduler startup up sequence diagram" /></p>
-
+<p><img src="https://bitbucket.org/saltnlight5/images/raw/84cde5b1e9ba/timemachine-diagrams/scheduler-start-up-sequence.png" alt="TimeMachine Scheduler startup up sequence diagram" /></p>
 <p>In the heart of the scheduler logic is in the <code>PollingScheduleRunner</code> service, and here are some of the actions depicted.</p>
-
-<p><img src="https://bitbucket.org/saltnlight5/images/raw/84cde5b1e9ba/timemachine-diagrams/polling-schedule-runner-sequence.png" alt="TimeMachine PollingScheduleRunner sequence diagram" title="TimeMachine PollingScheduleRunner sequence diagram" /></p>
-
+<p><img src="https://bitbucket.org/saltnlight5/images/raw/84cde5b1e9ba/timemachine-diagrams/polling-schedule-runner-sequence.png" alt="TimeMachine PollingScheduleRunner sequence diagram" /></p>
 <h1>Using Architexa</h1>
-
 <p>Over all, I think Architexa provided a pretty good plugin for Eclipse. I have some problems when generating the sequence diagrams. For example, I can't resize the width between two actors(classes) to display full method name. And in some actions there are no lines drawn! I suspect it's due to the tool is using code inspection, and some of the call are called by different threads.</p>
-
 <p>The plugin itself seems pretty solid. You can install and uninstall without harm. They currently offer free download for small number of users, which I think it's a great way for you to explorer.</p>
-
 <p>I am not too sure how effective of Architexa on builing a collabration of sharing these diagrams as platform. I treat these diagrams as supplement to the project. It certainly helps in explaining high level architeture, but it's far from the complete documentation. No documentation can get any closer to the code. I think the strength of Java being static already provided some level of documentation when just reading the code alone. I would rather Architexa to focus and perfecting the plugin that draw the diagram, because these are more important to me.</p>
-                       
 </p>
 
 	<hr />

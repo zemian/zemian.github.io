@@ -40,7 +40,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -48,7 +48,6 @@
             <li><a href="../../../about.html">About</a></li>
             <li><a href="../../../archive.html">Archive</a></li>
             <li><a href="../../..//tags">Tags</a></li>
-            <li><a href="../../../feed.xml">Subscribe</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -64,20 +63,89 @@
 	    <a href="../../../tags/scripting.html">scripting</a> 
 	</p>
 
-	<p>I love the fact that JDK comes with a ScriptEngine. It's so flexible when you want to evaluate and troubleshoot your application that's already deployed in an server environment. Add this REST endpoint into a Java EE app, and it will give you instant access to internal states of the app.<br />
-<br />
-<span style="font-family: &quot;Courier New&quot;,Courier,monospace;">package myrestapp;<br /><br />import java.io.StringReader;<br />import java.util.logging.Logger;<br />import javax.script.Bindings;<br />import javax.script.ScriptEngine;<br />import javax.script.ScriptEngineManager;<br />import javax.servlet.ServletContext;<br />import javax.servlet.http.HttpServletRequest;<br />import javax.ws.rs.POST;<br />import javax.ws.rs.Path;<br />import javax.ws.rs.core.Context;<br /><br />/**<br />&nbsp;* Give instant access to your internal application with dynamic scripting.<br />&nbsp;* <br />&nbsp;* &lt;p&gt;Example script:<br />&nbsp;* &lt;pre&gt;<br />&nbsp;* "sc" + servletContext + ", req=" + request;<br />&nbsp;* &lt;/pre&gt;<br />&nbsp;* <br />&nbsp;* &lt;p&gt;Example2<br />&nbsp;* &lt;pre&gt;<br />&nbsp;* names = servletContext.getAttributeNames();<br />&nbsp;* while(names.hasMoreElements()) {<br />&nbsp;*&nbsp;&nbsp; name = names.nextElement();<br />&nbsp;*&nbsp;&nbsp; println(name);<br />&nbsp;* }<br />&nbsp;* &lt;/pre&gt;<br />&nbsp;* <br />&nbsp;* &lt;p&gt;Example on how to import Java packages and classes.<br />&nbsp;* &lt;pre&gt;<br />&nbsp;* importPackage(Packages.java.text);<br />&nbsp;* df = new SimpleDateFormat("MM/dd/yyyy");<br />&nbsp;* dt = df.parse("01/01/2014");<br />&nbsp;* &lt;/pre&gt;<br />&nbsp;*/<br />@Path("script")<br />public class ScriptResource {<br />&nbsp;&nbsp;&nbsp; private static final Logger logger = Logger.getLogger(ScriptResource.class.getName());<br />&nbsp;&nbsp;&nbsp; <br />&nbsp;&nbsp;&nbsp; @Context<br />&nbsp;&nbsp;&nbsp; private ServletContext servletContext;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />&nbsp;&nbsp;&nbsp; @POST<br />&nbsp;&nbsp;&nbsp; public String script(@Context HttpServletRequest request, String scriptText) throws Exception {<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; String engineName = "JavaScript";<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ScriptEngineManager manager = new ScriptEngineManager();<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ScriptEngine engine = manager.getEngineByName(engineName);<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; logger.info("Running script text length=" + scriptText.length() + ", engine=" + engine);<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Object result = null;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; try (StringReader reader = new StringReader(scriptText)) {<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Bindings bindings = engine.createBindings();<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; bindings.put("servletContext", servletContext);<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; bindings.put("request", request);<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; result = engine.eval(reader, bindings);<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; logger.info("Result " + result);<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return "RESULT=" + result;<br />&nbsp;&nbsp;&nbsp; }<br />}</span><br />
-<br />
-Notice that I gave couple JavaScript examples in the comment area already. You will have access to two binding variables that should give you full access to many internal components of your application. And here is a <a href="http://docs.oracle.com/javase/7/docs/technotes/guides/scripting/programmer_guide">quick reference on scripting JDK 7</a>.<br />
-<br />
-Need an UI to test out this endpoint? How about give the "Advance Rest Client" Chrome Extension a try? (Thanks to my co-worker's Chris Griffith for showing me this cool extension. It's really handy tool to have!).<br />
-<br />
-UPDATES (12/8/2014) <br />
-- If you are using FireFox, try the "RESTClient" add-ons.<br />
-- If you are using JDK7 Rhino JavaScript engine, here is a good ref for help: https://developer.mozilla.org/en-US/docs/Mozilla/Projects/Rhino/Scripting_Java <br />
-- If you're in a EE6 web application and doesn't have REST enabled yet, then simply add a class like this to your application. It should automatically configure an endpoint that you can access as "http://localhost/rest/script".<br />
-<br />
-<span style="font-family: &quot;Courier New&quot;,Courier,monospace;">package myrestapp;<br /><br />import javax.ws.rs.ApplicationPath;<br />import javax.ws.rs.core.Application;<br /><br />/**<br />&nbsp;* This is the main entry into REST Application that bootstrap the provider.<br />&nbsp;*/<br />@ApplicationPath("rest")<br />public class RestApplication extends Application {<br />}</span>
+	<p><p>I love the fact that JDK comes with a ScriptEngine. It's so flexible when you want to evaluate and troubleshoot your application that's already deployed in an server environment. Add this REST endpoint into a Java EE app, and it will give you instant access to internal states of the app.</p>
+<p>package myrestapp;</p>
+<p>import java.io.StringReader;<br />
+import java.util.logging.Logger;<br />
+import javax.script.Bindings;<br />
+import javax.script.ScriptEngine;<br />
+import javax.script.ScriptEngineManager;<br />
+import javax.servlet.ServletContext;<br />
+import javax.servlet.http.HttpServletRequest;<br />
+import javax.ws.rs.POST;<br />
+import javax.ws.rs.Path;<br />
+import javax.ws.rs.core.Context;</p>
+<p>/**<br />
+* Give instant access to your internal application with dynamic scripting.<br />
+*<br />
+* <p>Example script:<br />
+* <pre><br />
+* &quot;sc&quot; + servletContext + &quot;, req=&quot; + request;<br />
+* </pre><br />
+*<br />
+* <p>Example2<br />
+* <pre><br />
+* names = servletContext.getAttributeNames();<br />
+* while(names.hasMoreElements()) {<br />
+*   name = names.nextElement();<br />
+*   println(name);<br />
+* }<br />
+* </pre><br />
+*<br />
+* <p>Example on how to import Java packages and classes.<br />
+* <pre><br />
+* importPackage(Packages.java.text);<br />
+* df = new SimpleDateFormat(&quot;MM/dd/yyyy&quot;);<br />
+* dt = df.parse(&quot;01/01/2014&quot;);<br />
+* </pre><br />
+*/<br />
+@Path(&quot;script&quot;)<br />
+public class ScriptResource {<br />
+private static final Logger logger = Logger.getLogger(ScriptResource.class.getName());</p>
+<pre><code>@Context
+private ServletContext servletContext;
+    
+@POST
+public String script(@Context HttpServletRequest request, String scriptText) throws Exception {
+    String engineName = &quot;JavaScript&quot;;
+    ScriptEngineManager manager = new ScriptEngineManager();
+    ScriptEngine engine = manager.getEngineByName(engineName);
+    logger.info(&quot;Running script text length=&quot; + scriptText.length() + &quot;, engine=&quot; + engine);
+    Object result = null;
+    try (StringReader reader = new StringReader(scriptText)) {
+        Bindings bindings = engine.createBindings();
+        bindings.put(&quot;servletContext&quot;, servletContext);
+        bindings.put(&quot;request&quot;, request);
+        result = engine.eval(reader, bindings);
+    }
+    logger.info(&quot;Result &quot; + result);
+    return &quot;RESULT=&quot; + result;
+}
+</code></pre>
+<p>}</p>
+<p>Notice that I gave couple JavaScript examples in the comment area already. You will have access to two binding variables that should give you full access to many internal components of your application. And here is a <a href="http://docs.oracle.com/javase/7/docs/technotes/guides/scripting/programmer_guide">quick reference on scripting JDK 7</a>.</p>
+<p>Need an UI to test out this endpoint? How about give the &quot;Advance Rest Client&quot; Chrome Extension a try? (Thanks to my co-worker's Chris Griffith for showing me this cool extension. It's really handy tool to have!).</p>
+<p>UPDATES (12/8/2014)</p>
+<ul>
+<li>
+<p>If you are using FireFox, try the &quot;RESTClient&quot; add-ons.</p>
+</li>
+<li>
+<p>If you are using JDK7 Rhino JavaScript engine, here is a good ref for help: <a href="https://developer.mozilla.org/en-US/docs/Mozilla/Projects/Rhino/Scripting_Java">https://developer.mozilla.org/en-US/docs/Mozilla/Projects/Rhino/Scripting_Java</a></p>
+</li>
+<li>
+<p>If you're in a EE6 web application and doesn't have REST enabled yet, then simply add a class like this to your application. It should automatically configure an endpoint that you can access as &quot;<a href="http://localhost/rest/script">http://localhost/rest/script</a>&quot;.</p>
+</li>
+</ul>
+<p>package myrestapp;</p>
+<p>import javax.ws.rs.ApplicationPath;<br />
+import javax.ws.rs.core.Application;</p>
+<p>/**<br />
+* This is the main entry into REST Application that bootstrap the provider.<br />
+*/<br />
+@ApplicationPath(&quot;rest&quot;)<br />
+public class RestApplication extends Application {<br />
+}</p>
 </p>
 
 	<hr />

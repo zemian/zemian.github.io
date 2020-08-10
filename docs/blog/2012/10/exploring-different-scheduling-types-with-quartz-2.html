@@ -40,7 +40,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -48,7 +48,6 @@
             <li><a href="../../../about.html">About</a></li>
             <li><a href="../../../archive.html">Archive</a></li>
             <li><a href="../../..//tags">Tags</a></li>
-            <li><a href="../../../feed.xml">Subscribe</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -63,7 +62,6 @@
 	</p>
 
 	<p><p>We often think of Cron when we want to schedule a job. Cron is very flexible in expressing an repeating occurance of an event/job in a very compact expression. However it's not answer for everything, as I often see people are asking for help in the Quartz user forum. Did you know that the popular <a href="http://quartz-scheduler.org">Quartz 2</a> library provide many other schedule types (called Trigger) besides cron? I will show you each of the Quartz 2 built-in schedule types here within a complete, standalone Groovy script that you can run and test it out. Let's start with a simple one.</p>
-
 <pre><code>@Grab('org.quartz-scheduler:quartz:2.1.6')
 @Grab('org.slf4j:slf4j-simple:1.7.1')
 import org.quartz.*
@@ -85,11 +83,8 @@ def trigger = newTrigger()
 dates = TriggerUtils.computeFireTimes(trigger, null, 20)
 dates.each{ println it }
 </code></pre>
-
 <p>This is the Quartz's <code>SimpleTrigger</code>, and it allows you to create a fixed rate repeating job. You can even limit to certain number of count if you like. I have imported all the nessary classes the script needs, and I use the latest Quartz 2.x builder API to create an instance of the trigger.</p>
-
 <p>The quickest way to explore and test out whether a scheduling fits your need is to print out its future execution times. Hence you see me using <code>TriggerUtils.computeFireTimes</code> in the script. Run the above and you should get the datetimes as scheduled to be run, in this case every 3 seconds.</p>
-
 <pre><code>bash&gt; $ groovy simpleTrigger.groovy
     Tue Oct 23 20:28:01 EDT 2012
     Tue Oct 23 20:28:04 EDT 2012
@@ -112,9 +107,7 @@ dates.each{ println it }
     Tue Oct 23 20:28:55 EDT 2012
     Tue Oct 23 20:28:58 EDT 2012
 </code></pre>
-
 <p>The most frequent used scheduling type is the <code>CronTrigger</code>, and you can test it out in similar way.</p>
-
 <pre><code>@Grab('org.quartz-scheduler:quartz:2.1.6')
 @Grab('org.slf4j:slf4j-simple:1.7.1')
 import org.quartz.*
@@ -127,18 +120,15 @@ import static org.quartz.TriggerBuilder.*
 import static org.quartz.CronScheduleBuilder.*
 
 def trigger = newTrigger()
-    .withSchedule(cronSchedule("0 30 08 * * ?"))
+    .withSchedule(cronSchedule(&quot;0 30 08 * * ?&quot;))
     .startNow()
     .build()
 dates = TriggerUtils.computeFireTimes(trigger, null, 20)
 dates.each{ println it }
 </code></pre>
-
 <p>The javadoc for <a href="http://quartz-scheduler.org/api/2.1.5/org/quartz/CronExpression.html">CronExpression</a> is very good and you should definately read it throughly to use it effectively. With the script, you can explore all the combination you want easily and verify future fire times before your job is invoked.</p>
-
-<p>Now, if you have some odd scheduling needs such as run a job every 30 mins from MON to FRI and only between 8:00AM to 10:00AM, then don't try to cramp all that into the Cron expression. The Quartz 2.x has a dedicated trigger type just for this use, and it's 
+<p>Now, if you have some odd scheduling needs such as run a job every 30 mins from MON to FRI and only between 8:00AM to 10:00AM, then don't try to cramp all that into the Cron expression. The Quartz 2.x has a dedicated trigger type just for this use, and it's<br />
 called <code>DailyTimeIntervalTrigger</code>! Check this out:</p>
-
 <pre><code>@Grab('org.quartz-scheduler:quartz:2.1.6')
 @Grab('org.slf4j:slf4j-simple:1.7.1')
 import org.quartz.*
@@ -163,9 +153,7 @@ def trigger = newTrigger()
 dates = TriggerUtils.computeFireTimes(trigger, null, 20)
 dates.each{ println it }
 </code></pre>
-
 <p>Another hidden Trigger type from Quartz is <code>CalendarIntervalTrigger</code>, and you would use this if you need to repeat job that's in every interval of a calendar period, such as every year or month etc, where the interval is not fixed, but calendar specific. Here is a test script for that.</p>
-
 <pre><code>@Grab('org.quartz-scheduler:quartz:2.1.6')
 @Grab('org.slf4j:slf4j-simple:1.7.1')
 import org.quartz.*
@@ -187,7 +175,6 @@ def trigger = newTrigger()
 dates = TriggerUtils.computeFireTimes(trigger, null, 20)
 dates.each{ println it }
 </code></pre>
-
 <p>I hope these will help you get started on most of your scheduling need with Quartz 2. Try these out and see your future fire times before even scheduling a job into the scheduler should save you some times and troubles.</p>
 </p>
 

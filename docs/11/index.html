@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Zemian's Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/asciidoctor.css" rel="stylesheet">
+    <link href="../css/base.css" rel="stylesheet">
+    <link href="../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../about.html">About</a></li>
+            <li><a href="../archive.html">Archive</a></li>
+            <li><a href="..//tags">Tags</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">
+  			<a href="blog/2015/10/setup-mysql-datasource-on-wls.html"><h1>Setup MySQL DataSource on WLS</h1></a>
+  			<p>04 October 2015, tags: 
+			    <a href="../tags/weblogic.html">weblogic</a> 
+
+			    <a href="../tags/mysql.html">mysql</a> 
+  			</p>
+  			<p><p>Here is a WLST script to setup MySQL DataSource in WebLogic server after you have created a domain. The script will also assign this DataSource to one or more servers you pass in at the end of arguments.</p>
+<h1>Update an existing domain to setup a DataSource and assign it to servers</h1>
+<h1>Example</h1>
+<h1>wlst.cmd setupDataSource.py C:\data\wls11g_domains\dev MYTESTDB jdbc/MYTESTDB com.mysql.jdbc.Driver jdbc:<a href="mysql://localhost/mytestdb">mysql://localhost/mytestdb</a> test test123 AdminServer</h1>
+<p>import os, sys, os.path<br />
+(domain_home, ds_name, jndi_name, driver_name, url, user, password) = sys.argv[1:8]<br />
+servers = sys.argv[8:]</p>
+<p>domain_home = os.path.abspath(domain_home)</p>
+<p>readDomain(domain_home)</p>
+<p>print(&quot;Setting up WLS DataSource: %s&quot; % ds_name)<br />
+create(ds_name, 'JDBCSystemResource')<br />
+cd('/JDBCSystemResource/%s/JdbcResource/%s' %(ds_name, ds_name))<br />
+create('myJdbcDriverParams','JDBCDriverParams')<br />
+cd('JDBCDriverParams/NO_NAME_0')<br />
+set('DriverName',driver_name)<br />
+set('URL', url)<br />
+set('PasswordEncrypted', password)<br />
+set('UseXADataSourceInterface', 'false')<br />
+create('myProps','Properties')<br />
+cd('Properties/NO_NAME_0')<br />
+create('user', 'Property')<br />
+create('characterEncoding', 'Property')<br />
+create('connectionCollation', 'Property')<br />
+create('useUnicode', 'Property')<br />
+cd('Property/user')<br />
+cmo.setValue(user)<br />
+cd('../characterEncoding')<br />
+cmo.setValue('utf-8')<br />
+cd('../connectionCollation')<br />
+cmo.setValue('utf8_general_ci')<br />
+cd('../useUnicode')<br />
+cmo.setValue('true')</p>
+<p>cd('/JDBCSystemResource/%s/JdbcResource/%s' %(ds_name, ds_name))<br />
+create('myJdbcDataSourceParams','JDBCDataSourceParams')<br />
+cd('JDBCDataSourceParams/NO_NAME_0')<br />
+set('JNDIName', java.lang.String(jndi_name))</p>
+<p>cd('/')<br />
+for server in servers:<br />
+print(&quot;Assigning DS to server: %s&quot; % server)<br />
+assign('JDBCSystemResource', ds_name, 'Target', server)</p>
+<p>updateDomain()<br />
+exit()</p>
+</p>
+  			<a href="blog/2015/10/creating-new-weblogic-domain-using-wlst-script.html"><h1>Creating new WebLogic domain using WLST script</h1></a>
+  			<p>02 October 2015, tags: 
+			    <a href="../tags/weblogic.html">weblogic</a> 
+  			</p>
+  			<p><p>Here is how to creating new WebLogic domain using WLST script without starting up a WebLogic server instance. The default AdminServer console login username is 'weblogic', and the script allow you to change its password and a port number for the AdminServer instance.</p>
+<h1>Usage: wlst.cmd createDomain.py &lt;domain_home&gt; <port> <password></h1>
+<h1>Example:</h1>
+<h1>cd D:\apps\wls1036_dev\wlserver\common\bin</h1>
+<h1>wlst.cmd scripts\createDomain.py C:\data\wls11g_domains\dev 7001 weblogic1</h1>
+<p>import os, sys, os.path<br />
+domain_home, port_s, password = sys.argv[1:]</p>
+<p>port = int(port_s)<br />
+domain_home = os.path.abspath(domain_home)<br />
+domain_name = os.path.basename(os.path.normpath(domain_home))<br />
+template = &quot;%s/wlserver/common/templates/domains/wls.jar&quot; % os.environ['MW_HOME']</p>
+<p>print(&quot;Creating WLS domain: %s&quot; % domain_name)</p>
+<h1>MW_HOME should be auto set by wlst.cmd script</h1>
+<p>readTemplate(template)</p>
+<h1>Set domain name</h1>
+<p>set('Name', domain_name)</p>
+<h1>Set AdminServer port</h1>
+<p>cd('Servers/AdminServer')<br />
+set('ListenAddress','')<br />
+set('ListenPort', port)</p>
+<h1>Set weblogic password</h1>
+<p>cd('/Security/%s/User/weblogic' % domain_name)<br />
+cmo.setPassword(password)</p>
+<h1>Write domain</h1>
+<h1>setOption('OverwriteDomain', 'true')</h1>
+<p>writeDomain(domain_home)<br />
+closeTemplate()<br />
+exit()</p>
+</p>
+  			<a href="blog/2015/09/create-simple-wls-domain-using-wlst-and-built-in-template-jar.html"><h1>Create simple WLS domain using WLST and built-in template jar</h1></a>
+  			<p>25 September 2015, tags: 
+			    <a href="../tags/weblogic.html">weblogic</a> 
+  			</p>
+  			<p><p>You can easily <a href="http://saltnlight5.blogspot.com/2014/01/getting-started-with-weblogic-server.html">start up a WebLogic Server</a> on an empty directory and it will create a domain. Here is another way to create WLS domain structure folder without actually starting up a WLS server.</p>
+<h1>Usage: wlst.cmd createDomain.py &lt;domain_home&gt; <port> <password></h1>
+<h1>NOTE: the &lt;domain_home&gt; must be a absolute path.</h1>
+<h1>Example: C:\wls12130\wlserver\common\bin\wlst.cmd scripts\createDomain.py C:\data\wls12c_domains\dev 7001 weblogic1</h1>
+<p>import os, sys</p>
+<p>domain_home = sys.argv[1]<br />
+domain_name = 'mydomain'</p>
+<p>port = int(sys.argv[2])</p>
+<p>password = sys.argv[3]</p>
+<p>readTemplate(os.environ['MW_HOME'] + &quot;/wlserver/common/templates/wls/wls.jar&quot;)</p>
+<p>cd('/Server/AdminServer')</p>
+<p>set('Name', domain_name + '-admin')</p>
+<p>set('ListenAddress','')</p>
+<p>set('ListenPort', port)</p>
+<p>cd('/Security/base_domain/User/weblogic')</p>
+<p>cmo.setPassword(password)</p>
+<p>cd('/')</p>
+<p>set('Name', domain_name)</p>
+<p>writeDomain(domain_home)</p>
+<p>closeTemplate()</p>
+<p>exit()</p>
+</p>
+  			<a href="blog/2015/09/javascript-jdbc-quick-test.html"><h1>JavaScript Jdbc Quick Test</h1></a>
+  			<p>09 September 2015, tags: 
+			    <a href="../tags/javascript.html">javascript</a> 
+
+			    <a href="../tags/jdbc.html">jdbc</a> 
+  			</p>
+  			<p><p>importPackage(java.sql)<br />
+url = &quot;jdbc:<a href="mysql://localhost/test">mysql://localhost/test</a>&quot;;<br />
+username = &quot;test&quot;;<br />
+password = &quot;test123&quot;;</p>
+<p>// Util for nice print of result<br />
+function printResultSet(rs) {<br />
+colCount = rs.getMetaData().getColumnCount();<br />
+while (rs.next()) {<br />
+for (i=1; i &lt;= colCount; i++) {<br />
+printf(&quot;%s\t&quot;, rs.getObject(i));<br />
+}<br />
+println();<br />
+}<br />
+}</p>
+<p>// Get a DB conn<br />
+sql = &quot;SELECT * FROM ztest_issues&quot;;<br />
+conn = DriverManager.getConnection(url, username, password);</p>
+<p>// Example of simple query<br />
+st = conn.createStatement();<br />
+rs = st.executeQuery(sql);<br />
+while (rs.next()) {<br />
+for (i=1; i &lt;= 4; i++) {<br />
+printf(&quot;%s\t&quot;, rs.getObject(i));<br />
+}<br />
+println();<br />
+}<br />
+st.close();</p>
+<p>// Example of prepared statment with binding params<br />
+sql = &quot;SELECT * FROM ztest_issues WHERE title=?&quot;;<br />
+st = conn.prepareStatement(sql);<br />
+st.setObject(1, &quot;test&quot;);<br />
+rs = st.executeQuery();<br />
+printResultSet(rs);<br />
+st.close();</p>
+<p>// Close DB conn<br />
+conn.close();</p>
+</p>
+  			<a href="blog/2015/08/be-aware-of-the-count-0-when-using-pythons-re-sub-to-find-and-replace-text.html"><h1>Be aware of the count=0 when using Python&apos;s re.sub() to find and replace text</h1></a>
+  			<p>23 August 2015, tags: 
+			    <a href="../tags/python.html">python</a> 
+  			</p>
+  			<p><p>I have an xml file and I want to remove a whole section of element without actually parsing the XML file. I wrote an Python script to do just that. I first tested it out like this:</p>
+<p>import re<br />
+input_text = open('my.xml').read()<br />
+result = re.findall(r'<library-ref>.*</library-ref>', input_text, re.S)<br />
+print(result)</p>
+<p>The result IS what I wanted, so I thought I can quickly replace it with something like this:</p>
+<p>result = re.sub(r'<library-ref>.*</library-ref>', '', input_text, re.S)</p>
+<p>And to my surprise this does not work. It took me a while to notice that I mis used the method according to the documentation, which has this signature:</p>
+<p>re.sub(pattern, repl, string, count=0, flags=0)</p>
+<p>At first glace, I thought that count is already default to zero and I do not need to set it, but because that is a positional parameter, you must include it! So you suppose to call it explicit like this:</p>
+<p>result = re.sub(r'<library-ref>.*</library-ref>', '', input_text, 0, re.S)</p>
+<p>Or, if you like, you can use the &quot;flags&quot; parameter name explicitly without the odd looking zero.</p>
+<p>result = re.sub(r'<library-ref>.*</library-ref>', '', input_text, flags=re.S)</p>
+<p>So here is an example of flexible dynamic typing of optional parameters can bite if you are not careful.</p>
+</p>
+  			<a href="blog/2015/08/view-and-terminate-oracle-database-user-sessions.html"><h1>View and terminate Oracle Database user sessions</h1></a>
+  			<p>21 August 2015, tags: 
+			    <a href="../tags/oracle.html">oracle</a> 
+  			</p>
+  			<p><p>Verify sessions:<br />
+SELECT USERNAME FROM V$SESSION;</p>
+<p>SELECT USERNAME, SID, SERIAL#, STATUS<br />
+FROM V$SESSION<br />
+WHERE USERNAME like 'SCOTT%';</p>
+<p>Generate SQL to terminate sessions:<br />
+SELECT 'ALTER SYSTEM KILL SESSION ''' || SID || ',' || SERIAL# || ''';'<br />
+FROM V$SESSION<br />
+WHERE USERNAME like 'SCOTT%';</p>
+</p>
+  			<a href="blog/2015/08/how-to-import-a-oracle-database-dump-file.html"><h1>How to import a Oracle database dump file</h1></a>
+  			<p>18 August 2015, tags: 
+			    <a href="../tags/oracle.html">oracle</a> 
+  			</p>
+  			<p><p>Here is an example on how to import a Oracle database dump file (a binary file that's exported from a Oracle database using the Oracle data pump utility). For this instruction example, let's say I was given a myapp.dmp.gz file.</p>
+<p>NOTE: If you do not use the same db user/tablespace for export and import, then you need to know its names used during export to perform the remapping during import.</p>
+<p>Step 1: If you don't have an Oracle database instance to work with, create one first. Or ask your DBA to create or allocate a instance for your import purpose.</p>
+<p>Step 2: Create a new tablespace and a DB user in an Oracle database instance. (For this example, I will call my new user MYAPP08182015, password Password1, and tablespace named MY_TABLE_SPACE.)</p>
+<p>create tablespace MY_TABLE_SPACE datafile<br />
+'/opt/myapp_datafiles/MY_TABLE_SPACE.dat'<br />
+size 500m autoextend on next 500m<br />
+extent management local<br />
+segment space management auto;</p>
+<p>create user MYAPP08182015 identified by Password1<br />
+default tablespace MY_TABLE_SPACE<br />
+temporary tablespace TEMP<br />
+quota unlimited on MYTABLESPACE;</p>
+<p>grant create session, grant any privilege to MYAPP08182015;<br />
+grant IMP_FULL_DATABASE to MYAPP08182015;</p>
+<p>create directory MY_DATADUMP_DIR as '/opt/myapp_datadump';</p>
+<p>Note that user must have IMP_FULL_DATABASE privilege to be able to used by import tool. And if you don't want to use default import data directory, then you would need to create the directory object to be used by import as shown above.</p>
+<p>Note also that your TEMP tablespace might not have enough disk space for large import. In this case, you may increase it like this:</p>
+<p>alter tablespace temp add tempfile<br />
+'/opt/myapp_datafiles/TEMP2.dat'<br />
+size 500m autoextend on next 500m;</p>
+<p>Step 3: Now you have a new db User (Schema) and password, you may start the data import using the command line prompt. Ssh into the database server where you can find the impdp command utility.</p>
+<p>scp myapp.dmp.gz zemian@mydbserver:/opt/myapp_datadump<br />
+ssh zemian@mydbserver<br />
+cd /opt/myapp_datafiles<br />
+gunzip myapp.dmp.gz<br />
+/app/oracle/dbhome/bin/impdp MYAPP08182015/Password1 DIRECTORY=MY_DATADUMP_DIR REMAP_SCHEMA=MYAPP:MYAPP08182015 REMAP_TABLESPACE=USERS:MY_TABLE_SPACE LOGFILE=myapp-import.log DUMPFILE=myapp.dmp</p>
+<p>References:<br />
+<a href="http://docs.oracle.com/cd/B19306_01/server.102/b14215/dp_overview.htm">http://docs.oracle.com/cd/B19306_01/server.102/b14215/dp_overview.htm</a></p>
+</p>
+  			<a href="blog/2015/08/selectively-checkout-large-project-from-svn-repository.html"><h1>Selectively checkout large project from SVN repository</h1></a>
+  			<p>16 August 2015, tags: 
+			    <a href="../tags/svn.html">svn</a> 
+  			</p>
+  			<p><p>Do you have a crazy large SVN repository that's just impractical to checkout the entire trunk? Or maybe you work on a large project that you only need few modules to do<br />
+your work only, and don't need the 1 hour checkout time for the rest of the trunk files? Here is how<br />
+you can do this with SVN command line.</p>
+<pre><code>svn checkout --depth immediates http://myserver/svnrepo/myproject/trunk
+cd trunk
+svn update --depth infinity moduleA
+
+svn update --depth infinity moduleB
+
+svn update --depth infinity common/moduleX
+
+svn update --depth infinity common/moduleY
+
+svn update --depth empty lib/special
+svn update --depth infinity lib/special/jars
+</code></pre>
+</p>
+  			<a href="blog/2015/08/how-to-check-oracle-database-tablespace.html"><h1>How to check Oracle Database tablespace</h1></a>
+  			<p>14 August 2015, tags: 
+			    <a href="../tags/oracle.html">oracle</a> 
+  			</p>
+  			<p><p>When creating a new users in Oracle database (new schema), you need to verify the existing tablespace availability. This query will show you what's there and how much space are free to use.</p>
+<p>SELECT df.tablespace_name &quot;Tablespace&quot;,</p>
+<p>totalusedspace &quot;Used MB&quot;,</p>
+<p>(df.totalspace - tu.totalusedspace) &quot;Free MB&quot;,</p>
+<p>df.totalspace &quot;Total MB&quot;,</p>
+<p>ROUND(100 * ( (df.totalspace - tu.totalusedspace)/ df.totalspace)) &quot;% Free&quot;</p>
+<p>FROM</p>
+<p>(SELECT tablespace_name,</p>
+<pre><code>ROUND(SUM(bytes) / 1048576) TotalSpace
+</code></pre>
+<p>FROM dba_data_files</p>
+<p>GROUP BY tablespace_name</p>
+<p>) df,</p>
+<p>(SELECT ROUND(SUM(bytes)/(1024*1024)) totalusedspace,</p>
+<pre><code>tablespace_name
+</code></pre>
+<p>FROM dba_segments</p>
+<p>GROUP BY tablespace_name</p>
+<p>) tu</p>
+<p>WHERE df.tablespace_name = tu.tablespace_name;</p>
+<p>Also, this query will show where the tablespace file are located:</p>
+<p>SELECT  FILE_NAME, BLOCKS, TABLESPACE_NAME</p>
+<p>FROM DBA_DATA_FILES;</p>
+<p>Here are some references on how Oracle manages user, schema and tablespace.</p>
+<p><a href="https://community.oracle.com/message/1832920">https://community.oracle.com/message/1832920</a></p>
+<p><a href="http://docs.oracle.com/cd/B28359_01/server.111/b28310/tspaces014.htm#ADMIN11412">http://docs.oracle.com/cd/B28359_01/server.111/b28310/tspaces014.htm#ADMIN11412</a><br />
+<a href="http://docs.oracle.com/cd/B28359_01/server.111/b28286/statements_8003.htm">http://docs.oracle.com/cd/B28359_01/server.111/b28286/statements_8003.htm</a><br />
+<a href="http://stackoverflow.com/questions/880230/difference-between-a-user-and-a-schema-in-oracle">http://stackoverflow.com/questions/880230/difference-between-a-user-and-a-schema-in-oracle</a><br />
+<a href="https://asktom.oracle.com/pls/asktom/f?p=100:11:0::::P11_QUESTION_ID:6162110256950">https://asktom.oracle.com/pls/asktom/f?p=100:11:0::::P11_QUESTION_ID:6162110256950</a></p>
+</p>
+  			<a href="blog/2015/08/how-to-run-kotlin-script-file.html"><h1>How to run Kotlin script file</h1></a>
+  			<p>03 August 2015, tags: 
+			    <a href="../tags/kotlin.html">kotlin</a> 
+  			</p>
+  			<p><p>The script name MUST have &quot;.kts&quot; extension! If not, you will get a unfriendly error message.</p>
+<p>kotlinc -script hello.kts</p>
+<p>Hello World</p>
+<p>vs</p>
+<p>kotlinc -script hello.kt</p>
+<p>EXCEPTION: java.lang.RuntimeException: Failed to evaluate script: java.lang.NullPointerException</p>
+<pre><code>    at org.jetbrains.kotlin.cli.jvm.compiler.KotlinToJVMBytecodeCompiler.compileScript(KotlinToJVMBytecodeCompiler.java:290)
+
+    at org.jetbrains.kotlin.cli.jvm.compiler.KotlinToJVMBytecodeCompiler.compileAndExecuteScript(KotlinToJVMBytecodeCompiler.java:243)
+
+    at org.jetbrains.kotlin.cli.jvm.K2JVMCompiler.doExecute(K2JVMCompiler.java:186)
+
+    at org.jetbrains.kotlin.cli.jvm.K2JVMCompiler.doExecute(K2JVMCompiler.java:53)
+
+    at org.jetbrains.kotlin.cli.common.CLICompiler.exec(CLICompiler.java:148)
+
+    at org.jetbrains.kotlin.cli.common.CLICompiler.exec(CLICompiler.java:128)
+
+    at org.jetbrains.kotlin.cli.common.CLICompiler.exec(CLICompiler.java:52)
+
+    at org.jetbrains.kotlin.cli.common.CLICompiler.doMainNoExit(CLICompiler.java:197)
+
+    at org.jetbrains.kotlin.cli.common.CLICompiler.doMain(CLICompiler.java:188)
+
+    at org.jetbrains.kotlin.cli.jvm.K2JVMCompiler.main(K2JVMCompiler.java:57)
+
+    at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+
+    at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+
+    at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+
+    at java.lang.reflect.Method.invoke(Method.java:606)
+
+    at org.jetbrains.kotlin.preloading.Preloader.main(Preloader.java:83)
+</code></pre>
+<p>Caused by: java.lang.NullPointerException</p>
+<pre><code>    at org.jetbrains.kotlin.resolve.ScriptNameUtil.classNameForScript(ScriptNameUtil.java:33)
+
+    at org.jetbrains.kotlin.cli.jvm.compiler.KotlinToJVMBytecodeCompiler.compileScript(KotlinToJVMBytecodeCompiler.java:286)
+
+    ... 14 more
+</code></pre>
+<p>See <a href="http://kotlinlang.org/docs/tutorials/command-line.html">http://kotlinlang.org/docs/tutorials/command-line.html</a></p>
+</p>
+
+	<hr />
+
+	<ul class="pager">
+		<li class="previous"><a href="https://zemian.github.io/10">Previous</a></li>
+		<li>Page: 11/29</li>
+		<li class="next"><a href="https://zemian.github.io/12">Next</a></li>
+	</ul>
+
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">&copy; 2011 - 2019 Zemian Deng All Rights Reserved | Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.5</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../js/jquery-1.11.1.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/prettify.js"></script>
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-135626598-1');
+    </script>
+
+  </body>
+</html>

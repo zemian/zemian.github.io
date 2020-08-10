@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Zemian's Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/asciidoctor.css" rel="stylesheet">
+    <link href="../css/base.css" rel="stylesheet">
+    <link href="../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../about.html">About</a></li>
+            <li><a href="../archive.html">Archive</a></li>
+            <li><a href="..//tags">Tags</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">
+  			<a href="blog/2012/09/improving-java-util-properties.html"><h1>Improving java.util.Properties</h1></a>
+  			<p>07 September 2012, tags: 
+			    <a href="../tags/java.html">java</a> 
+  			</p>
+  			<p><p>The Java built-in <code>java.util.Properties</code> class could really use some love. I have written a slightly improved version called<br />
+<a href="https://bitbucket.org/timemachine/scheduler/src/15f066cc6dad/timemachine-scheduler/src/main/java/timemachine/scheduler/support/Props.java">timemachine.scheduler.support.Props</a>, and below are some features that I use often.</p>
+<h1>You can use it as a &quot;String Map&quot; of properties</h1>
+<pre><code>Props props1 = new Props();
+props1.put(&quot;foo&quot;, &quot;bar&quot;);
+
+// It can load from/to the Java Properties
+Props props2 = new Props(System.getProperties());
+java.util.Properties javaProps = props3.toProperties();
+
+// It can load from/to a basic java.util.Map
+Props props3 = new Props(System.getenv());
+
+// Props is a HashMap&lt;String, String&gt;, so no need to convert. Just use it
+for(Map.Entry&lt;String, String&gt; entry : props3.entrySet())
+    System.our.println(entry.getKey() + &quot;: &quot; + entry.getValue());
+</code></pre>
+<h1>You can load from a file in a single line</h1>
+<pre><code>Props props1 = new Props(&quot;config.properties&quot;);
+Props props2 = new Props(&quot;/path/to/config.properties&quot;);
+Props props3 = new Props(new java.net.URL(&quot;http://myhost/config/config.properties&quot;));
+Props props4 = new Props(ClasspathURLStreamHandler.createURL(&quot;classpath://config/config.properties&quot;));
+
+// You can re-load on top of existing instance to override values
+props4.load(&quot;config2.properties&quot;);
+</code></pre>
+<p>NOTE: The <code>ClasspathURLStreamHandler</code> is a utility class from the same package under <code>timemachine.scheduler.support</code> that can load any resources that's in the classpath.</p>
+<h1>You can get many basic types conversion</h1>
+<pre><code>Props props = new Props();
+props.put(&quot;str&quot;, &quot;foo&quot;);
+props.put(&quot;num&quot;, &quot;123&quot;);
+props.put(&quot;dec&quot;, &quot;99.99&quot;);
+props.put(&quot;flag&quot;, &quot;true&quot;);
+
+String str = props.getString(&quot;str&quot;);
+int num = props.getInt(&quot;num&quot;);
+double dec = props.getDouble(&quot;dec&quot;);
+boolean flag = props.getBoolean(&quot;flag&quot;);
+
+// You can even get default value when key is not found too
+int num2 = props.getInt(&quot;num2&quot;, -1);
+</code></pre>
+<h1>You can auto expand ${variable} from any existing properties</h1>
+<pre><code>Props props = new Props(System.getProperties());
+props.put(&quot;configDir&quot;, &quot;${user.home}/myapp/config&quot;);
+props.expandVariables();
+
+// The ${user.home} should be expanded to actual user home dir value.
+File dir = new File(props.get(&quot;configDir&quot;));
+</code></pre>
+<p>There you have it. You see more code than words in this post, but I believe simple code speak louder than words and docs. I find these features very convenient and practical<br />
+for many Java applications to use. I wish the JDK would provide these out of the box, and make the <code>java.util.Properties</code> more<br />
+developer friendly.</p>
+</p>
+  			<a href="blog/2012/09/how-to-write-better-pojo-services.html"><h1>How to write better POJO Services</h1></a>
+  			<p>01 September 2012, tags: 
+			    <a href="../tags/java.html">java</a> 
+  			</p>
+  			<p><p>In Java, you can easily implement some business logic in Plain Old Java Object (POJO) classes, and then able to run them in a fancy<br />
+server or framework without much hassle. There many server/frameworks, such as JBossAS, Spring or Camel etc, that<br />
+would allow you to deploy POJO without even hardcoding to their API. Obviously you would get advance features if you willing to couple to<br />
+their API specifics, but even if you do, you can keep these to minimal by encapsulating your own POJO and their API in a wrapper.<br />
+By writing and designing your own application as simple POJO as possible, you will have the most flexible ways in choose a framework or server to<br />
+deploy and run your application. One effective way to write your business logic in these environments is to use <em>Service</em> component.<br />
+In this article I will share few things I learned in writing <em>Services</em>.</p>
+<h1>What is a Service?</h1>
+<p>The word <em>Service</em> is overly used today, and it could mean many things to different people. When I say <em>Service</em>, my definition is a software<br />
+component that has minimal of life-cycles such as <code>init</code>, <code>start</code>, <code>stop</code>, and <code>destroy</code>. You may not need all these<br />
+stages of life-cycles in every service you write, but you can simply ignore ones that don't apply. When writing large application that<br />
+intended for long running such as a server component, definining these life-cycles and ensure they are excuted in proper order is crucial!</p>
+<p>I will be walking you through a Java demo project that I have prepared. It's very basic and it should run as stand-alone. The only dependency it has is<br />
+the <a href="http://www.slf4j.org">SLF4J</a> logger. If you don't know how to use logger, then simply replace them with <code>System.out.println</code>. However I would strongly<br />
+encourage you to learn how to use logger effectively during application development though. Also if you want to try out the<br />
+<a href="http://www.springsource.org/spring-framework">Spring</a> related demos, then obviously you would need their jars as well.</p>
+<h1>Writing basic POJO service</h1>
+<p>You can quickly define a contract of a Service with life-cycles as below in an interface.</p>
+<pre><code>package servicedemo;
+
+public interface Service {
+    void init();
+    void start();
+    void stop();
+    void destroy();
+    boolean isInited();
+    boolean isStarted();
+}
+</code></pre>
+<p>Developers are free to do what they want in their Service implementation, but you might want to give them an adapter class so that<br />
+they don't have to re-write same basic logic on each Service. I would provide an abstract service like this:</p>
+<pre><code>package servicedemo;
+
+import java.util.concurrent.atomic.*;
+import org.slf4j.*;
+public abstract class AbstractService implements Service {
+    protected Logger logger = LoggerFactory.getLogger(getClass());
+    protected AtomicBoolean started = new AtomicBoolean(false);
+    protected AtomicBoolean inited = new AtomicBoolean(false);
+
+    public void init() {
+        if (!inited.get()) {
+            initService();
+            inited.set(true);
+            logger.debug(&quot;{} initialized.&quot;, this);
+        }
+    }
+
+    public void start() {
+        // Init service if it has not done so.
+        if (!inited.get()) {
+            init();
+        }
+        // Start service now.
+        if (!started.get()) {
+            startService();
+            started.set(true);
+            logger.debug(&quot;{} started.&quot;, this);
+        }
+    }
+
+    public void stop() {
+        if (started.get()) {
+            stopService();
+            started.set(false);
+            logger.debug(&quot;{} stopped.&quot;, this);
+        }
+    }
+
+    public void destroy() {
+        // Stop service if it is still running.
+        if (started.get()) {
+            stop();
+        }
+        // Destroy service now.
+        if (inited.get()) {
+            destroyService();
+            inited.set(false);
+            logger.debug(&quot;{} destroyed.&quot;, this);
+        }
+    }
+
+    public boolean isStarted() {
+        return started.get();
+    }
+
+    public boolean isInited() {
+        return inited.get();
+    }
+
+    @Override
+    public String toString() {
+            return getClass().getSimpleName() + &quot;[id=&quot; + System.identityHashCode(this) + &quot;]&quot;;
+    }
+
+    protected void initService() {
+    }
+
+    protected void startService() {
+    }
+
+    protected void stopService() {
+    }
+
+    protected void destroyService() {
+    }
+}
+</code></pre>
+<p>This abstract class provide the basic of most services needs. It has a logger and states to keep track of the life-cycles. It then delegate new<br />
+sets of life-cycle methods so subclass can choose to override. Notice that the <code>start()</code> method is checking auto calling <code>init()</code> if it hasn't<br />
+already done so. Same is done in <code>destroy()</code> method to the <code>stop()</code> method. This is important if we're to use it in a container that only have<br />
+two stages life-cycles invocation. In this case, we can simply invoke <code>start()</code> and <code>destroy()</code> to match to our service's life-cycles.</p>
+<p>Some frameworks might go even further and create separate interfaces for each stage of the life-cycles, such as <code>InitableService</code> or<br />
+<code>StartableService</code> etc. But I think that would be too much in a typical app. In most of the cases, you want something simple, so I like it just<br />
+one interface. User may choose to ignore methods they don't want, or simply use an adaptor class.</p>
+<p>Before we end this section, I would throw in a silly Hello world service that can be used in our demo later.</p>
+<pre><code>package servicedemo;
+
+public class HelloService extends AbstractService {
+    public void initService() {
+        logger.info(this + &quot; inited.&quot;);
+    }
+    public void startService() {
+        logger.info(this + &quot; started.&quot;);
+    }
+    public void stopService() {
+        logger.info(this + &quot; stopped.&quot;);
+    }
+    public void destroyService() {
+        logger.info(this + &quot; destroyed.&quot;);
+    }
+}
+</code></pre>
+<h1>Managing multiple POJO Services with a container</h1>
+<p>Now we have the basic of <em>Service</em> definition defined, your development team may start writing business logic code! Before long, you will have<br />
+a library of your own services to re-use. To be able group and control these services into an effetive way, we want also provide a container<br />
+to manage them. The idea is that we typically want to control and manage multiple services with a container as a group in a higher level. Here<br />
+is a simple implementation for you to get started:</p>
+<pre><code>package servicedemo;
+
+import java.util.*;
+public class ServiceContainer extends AbstractService {
+    private List&lt;Service&gt; services = new ArrayList&lt;Service&gt;();
+
+    public void setServices(List&lt;Service&gt; services) {
+        this.services = services;
+    }
+    public void addService(Service service) {
+        this.services.add(service);
+    }
+
+    public void initService() {
+        logger.debug(&quot;Initializing &quot; + this + &quot; with &quot; + services.size() + &quot; services.&quot;);
+        for (Service service : services) {
+            logger.debug(&quot;Initializing &quot; + service);
+            service.init();
+        }
+        logger.info(this + &quot; inited.&quot;);
+    }
+    public void startService() {
+            logger.debug(&quot;Starting &quot; + this + &quot; with &quot; + services.size() + &quot; services.&quot;);
+            for (Service service : services) {
+                logger.debug(&quot;Starting &quot; + service);
+                service.start();
+            }
+            logger.info(this + &quot; started.&quot;);
+    }
+    public void stopService() {
+            int size = services.size();
+            logger.debug(&quot;Stopping &quot; + this + &quot; with &quot; + size + &quot; services in reverse order.&quot;);
+            for (int i = size - 1; i &gt;= 0; i--) {
+                Service service = services.get(i);
+                logger.debug(&quot;Stopping &quot; + service);
+                service.stop();
+            }
+            logger.info(this + &quot; stopped.&quot;);
+    }
+    public void destroyService() {
+            int size = services.size();
+            logger.debug(&quot;Destroying &quot; + this + &quot; with &quot; + size + &quot; services in reverse order.&quot;);
+            for (int i = size - 1; i &gt;= 0; i--) {
+                Service service = services.get(i);
+                logger.debug(&quot;Destroying &quot; + service);
+                service.destroy();
+            }
+            logger.info(this + &quot; destroyed.&quot;);
+    }
+}
+</code></pre>
+<p>From above code, you will notice few important things:</p>
+<ol>
+<li>We extends the AbstractService, so a container is a service itself.</li>
+<li>We would invoke all service's life-cycles before moving to next. No services will start unless all others are inited.</li>
+<li>We should stop and destroy services in reverse order for most general use cases.</li>
+</ol>
+<p>The above container implementation is simple and run in synchronized fashion. This mean, you start container, then all services<br />
+will start in order you added them. Stop should be same but in reverse order.</p>
+<p>I also hope you would able to see that there is plenty of room for you to improve this container as well. For example, you may<br />
+add thread pool to control the execution of the services in asynchronized fashion.</p>
+<h1>Running POJO Services</h1>
+<h2>Running services with a simple runner program.</h2>
+<p>In the simplest form, we can run our POJO services on our own without any fancy server or frameworks. Java programs start its life from a<br />
+static <code>main</code> method, so we surely can invoke <code>init</code> and <code>start</code> of our services in there. But we also need to address the <code>stop</code> and <code>destroy</code><br />
+life-cycles when user shuts down the program (usually by hitting <code>CTRL+C</code>.) For this, the Java has the <code>java.lang.Runtime#addShutdownHook()</code><br />
+facility. You can create a simple stand-alone server to bootstrap <em>Service</em> like this:</p>
+<pre><code>package servicedemo;
+
+import org.slf4j.*;
+public class ServiceRunner {
+    private static Logger logger = LoggerFactory.getLogger(ServiceRunner.class);
+
+    public static void main(String[] args) {
+        ServiceRunner main = new ServiceRunner();
+        main.run(args);
+    }
+
+    public void run(String[] args) {
+        if (args.length &lt; 1)
+            throw new RuntimeException(&quot;Missing service class name as argument.&quot;);
+
+        String serviceClassName = args[0];
+        try {
+            logger.debug(&quot;Creating &quot; + serviceClassName);
+            Class&lt;?&gt; serviceClass = Class.forName(serviceClassName);
+            if (!Service.class.isAssignableFrom(serviceClass)) {
+                throw new RuntimeException(&quot;Service class &quot; + serviceClassName + &quot; did not implements &quot; + Service.class.getName());
+            }
+            Object serviceObject = serviceClass.newInstance();
+            Service service = (Service)serviceObject;
+
+            registerShutdownHook(service);
+
+            logger.debug(&quot;Starting service &quot; + service);
+            service.init();
+            service.start();
+            logger.info(service + &quot; started.&quot;);
+
+            synchronized(this) {
+                this.wait();
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(&quot;Failed to create and run &quot; + serviceClassName, e);
+        }
+    }
+
+    private void registerShutdownHook(final Service service) {
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            public void run() {
+                logger.debug(&quot;Stopping service &quot; + service);
+                service.stop();
+                service.destroy();
+                logger.info(service + &quot; stopped.&quot;);
+            }
+        });
+    }
+}
+</code></pre>
+<p>With abover runner, you should able to run it with this command:</p>
+<pre><code>$ java demo.ServiceRunner servicedemo.HelloService
+</code></pre>
+<p>Look carefully, and you'll see that you have many options to run multiple services with above runner. Let me highlight couple:</p>
+<ol>
+<li>Improve above runner directly and make all <code>args</code> for each new service class name, instead of just first element.</li>
+<li>Or write a <code>MultiLoaderService</code> that will load multiple services you want. You may control argument passing using System Properties.</li>
+</ol>
+<p>Can you think of other ways to improve this runner?</p>
+<h2>Running services with Spring</h2>
+<p>The Spring framework is an IoC container, and it's well known to be easy to work POJO, and Spring lets you wire your application<br />
+together. This would be a perfect fit to use in our POJO services. However, with all the features Spring brings, it missed a easy<br />
+to use, out of box <em>main</em> program to bootstrap spring config xml context files. But with what we built so far, this is actually an<br />
+easy thing to do. Let's write one of our POJO <em>Service</em> to bootstrap a spring context file.</p>
+<pre><code>package servicedemo;
+
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.support.FileSystemXmlApplicationContext;
+
+public class SpringService extends AbstractService {
+    private ConfigurableApplicationContext springContext;
+
+    public void startService() {
+        String springConfig = System.getProperty(&quot;springContext&quot;, &quot;spring.xml);
+        springContext = new FileSystemXmlApplicationContext(springConfig);
+        logger.info(this + &quot; started.&quot;);
+    }
+    public void stopService() {
+        springContext.close();
+        logger.info(this + &quot; stopped.&quot;);
+    }
+}
+</code></pre>
+<p>With that simple <code>SpringService</code> you can run and load any spring xml file. For example try this:</p>
+<pre><code>$ java -DspringContext=config/service-demo-spring.xml demo.ServiceRunner servicedemo.SpringService
+</code></pre>
+<p>Inside the <code>config/service-demo-spring.xml</code> file, you can easily create our container that hosts one or more service in Spring beans.</p>
+<pre><code>&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+     xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+     xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd&quot;&gt;
+
+    &lt;bean id=&quot;helloService&quot; class=&quot;servicedemo.HelloService&quot;&gt;
+    &lt;/bean&gt;
+
+    &lt;bean id=&quot;serviceContainer&quot; class=&quot;servicedemo.ServiceContainer&quot; init-method=&quot;start&quot; destroy-method=&quot;destroy&quot;&gt;
+        &lt;property name=&quot;services&quot;&gt;
+            &lt;list&gt;
+                &lt;ref bean=&quot;helloService&quot;/&gt;
+            &lt;/list&gt;
+        &lt;/property&gt;
+    &lt;/bean&gt;
+
+&lt;/beans&gt;
+</code></pre>
+<p>Notice that I only need to setup <code>init-method</code> and <code>destroy-method</code> once on the <code>serviceContainer</code> bean. You can then add one or more<br />
+other service such as the <code>helloService</code> as much as you want. They will all be started, managed, and then shutdown when you close the<br />
+Spring context.</p>
+<p>Note that Spring context container did not explicitly have the same life-cycles as our services. The Spring context will automatically<br />
+instanciate all your dependency beans, and then invoke all beans who's <code>init-method</code> is set. All that is done inside the constructor<br />
+of <code>FileSystemXmlApplicationContext</code>. No explicit init method is called from user. However at the end, during stop of the service, Spring provide<br />
+the <code>springContext#close()</code> to clean things up. Again, they do not differentiate <code>stop</code> from <code>destroy</code>. Because of this, we must merge our<br />
+<code>init</code> and <code>start</code> into Spring's <code>init</code> state, and then merge <code>stop</code> and <code>destroy</code> into Spring's <code>close</code> state. Recall our<br />
+<code>AbstractService#destory</code> will auto invoke <code>stop</code> if it hasn't already done so. So this is trick that we need to understand<br />
+in order to use Spring effectively.</p>
+<h2>Running services with JEE app server</h2>
+<p>In a corporate env, we usually do not have the freedom to run what we want as a stand-alone program. Instead they usually have some<br />
+infrustructure and stricter standard technology stack in place already, such as using a JEE application server. In these situation, the most<br />
+portable way to run POJO services is in a <code>war</code> web application. In a Servlet web application, you can write a class that implements<br />
+<code>javax.servlet.ServletContextListener</code> and this will provide you the life-cycles hook via <code>contextInitialized</code> and <code>contextDestroyed</code>.<br />
+In there, you can instanciate your <code>ServiceContainer</code> object and call <code>start</code> and <code>destroy</code> methods accordingly.</p>
+<p>Here is an example that you can explore:</p>
+<pre><code>package servicedemo;
+import java.util.*;
+import javax.servlet.*;
+public class ServiceContainerListener implements ServletContextListener {
+    private static Logger logger = LoggerFactory.getLogger(ServiceContainerListener.class);
+    private ServiceContainer serviceContainer;
+
+    public void contextInitialized(ServletContextEvent sce) {
+        serviceContainer = new ServiceContainer();
+        List&lt;Service&gt; services = createServices();
+        serviceContainer.setServices(services);
+        serviceContainer.start();
+        logger.info(serviceContainer + &quot; started in web application.&quot;);
+    }
+
+    public void contextDestroyed(ServletContextEvent sce) {
+        serviceContainer.destroy();
+        logger.info(serviceContainer + &quot; destroyed in web application.&quot;);
+    }
+
+    private List&lt;Service&gt; createServices() {
+        List&lt;Service&gt; result = new ArrayList&lt;Service&gt;();
+        // populate services here.
+        return result;
+    }
+}
+</code></pre>
+<p>You may configure above in the <code>WEB-INF/web.xml</code> like this:</p>
+<pre><code>    &lt;listener&gt;
+        &lt;listener-class&gt;servicedemo.ServiceContainerListener&lt;/listener-class&gt;
+    &lt;/listener&gt;
+
+&lt;/web-app&gt;
+</code></pre>
+<p>The demo provided a placeholder that you must add your services in code. But you can easily make that configurable using the <code>web.xml</code> for<br />
+context parameters.</p>
+<p>If you were to use Spring inside a Servlet container, you may directly use their <code>org.springframework.web.context.ContextLoaderListener</code><br />
+class that does pretty much same as above, except they allow you to specify their xml configuration file using the<br />
+<code>contextConfigLocation</code> context parameter. That's how a typical Spring MVC based application is configure. Once you have this setup, you<br />
+can experiment our POJO service just as the Spring xml sample given above to test things out. You should see our service in action by<br />
+your logger output.</p>
+<p>PS: Actually what we described here are simply related to Servlet web application, and not JEE specific. So you can use Tomcat server just<br />
+fine as well.</p>
+<h1>The importance of Service's life-cycles and it's real world usage</h1>
+<p>All the information I presented here are not novelty, nor a killer design pattern. In fact they have been used in many popular open source projects.<br />
+However, in my past experience at work, folks always manage to make these extremely complicated, and worse case is that they completely disregard the<br />
+importance of life-cycles when writing services. It's true that not everything you going to write needs to be fitted into a service, but if you find<br />
+the need, please do pay attention to them, and take good care that they do invoked properly. The last thing you want is to exit JVM without clean up<br />
+in services that you allocated precious resources for. These would become more disastrous if you allow your application to be dynamically reloaded during<br />
+deployment without exiting JVM, in which will lead to system resources leakage.</p>
+<p>The above <em>Service</em> practice has been put into use in the <a href="https://bitbucket.org/timemachine/scheduler">TimeMachine</a> project. In fact, if you<br />
+look at the <code>timemachine.scheduler.service.SchedulerEngine</code>, it would just be a container of many <a href="https://bitbucket.org/timemachine/scheduler/src/15f066cc6dad/timemachine-scheduler/src/main/java/timemachine/scheduler/service">services</a><br />
+running together. And that's how user can extend the scheduler functionalities as well, by writing a <em>Service</em>. You can load these services dynamically by a simple properties file.</p>
+</p>
+  			<a href="blog/2012/08/how-to-manage-quartz-remotely.html"><h1>How to manage Quartz remotely</h1></a>
+  			<p>27 August 2012, tags: 
+			    <a href="../tags/quartz.html">quartz</a> 
+  			</p>
+  			<p><h2>Option 1: JMX</h2>
+<p>Many people asked can they manage Quartz via JMX, and that the documentation on this is not clear enough to help them get started. So, let me highlight couple ways you can do this.</p>
+<p>Yes you can enable JMX in quartz with the following in<br />
+<code>quartz.properties</code></p>
+<pre><code>org.quartz.scheduler.jmx.export = true
+</code></pre>
+<p>After this, you use standard JMX client such as <code>$JAVA_HOME/bin/jconsole</code> to connect and manage remotely.</p>
+<h2>Option 2: RMI</h2>
+<p>Another way to manage quartz remotely is to enable RMI in Quartz. If you use this, you basically run one instance of Quartz as RMI server, and then<br />
+you can create second Quartz instance as RMI client. These two can talk remotely via a TCP port.</p>
+<p>For server scheduler instance, you want to add these in <code>quartz.properties</code></p>
+<pre><code>org.quartz.scheduler.rmi.export = true
+org.quartz.scheduler.rmi.createRegistry = true
+org.quartz.scheduler.rmi.registryHost = localhost
+org.quartz.scheduler.rmi.registryPort = 1099
+org.quartz.scheduler.rmi.serverPort = 1100
+</code></pre>
+<p>And for client scheduler instance, you want to add these in <code>quartz.properties</code></p>
+<pre><code>org.quartz.scheduler.rmi.proxy = true
+org.quartz.scheduler.rmi.registryHost = localhost
+org.quartz.scheduler.rmi.registryPort = 1099
+</code></pre>
+<p>The RMI feature is mentioned in Quartz doc <a href="http://quartz-scheduler.org/documentation/quartz-2.x/configuration/ConfigRMI">here</a>. Quartz doesn't have<br />
+a <em>client</em> API, but use the same <code>org.quartz.Scheduler</code> for both server and client. It's just the configuration are different.<br />
+By different configuration, you get very different behavior. For server, your scheduler is running all the jobs, while for client, it's simply a<br />
+proxy. Your client scheduler instance will not run any jobs! You must be really careful when shutting down client because it does allow you to bring<br />
+down the server!</p>
+<p>These configurations have been highlighted in the <a href="http://code.google.com/p/myschedule">MySchedule</a> project. If you run the webapp, you should see<br />
+a screen like <a href="http://stormy-flower-6956.herokuapp.com/main/dashboard/create">this demo</a>, and you will see it provided many sample of quartz configurations<br />
+with these remote managment config properties.</p>
+<p>If configure with RMI option, you can actually still use MySchedule web UI to manage the Quartz as proxy. You can view and drill down jobs, and you can<br />
+even stop or shutdown remote server!</p>
+<p>Based on my experience, there is a down side of using Quartz RMI feature though. That is it creates a single point of failure. There is no fail over<br />
+if your RMI server port is down!</p>
+</p>
+  			<a href="blog/2012/08/taming-those-java-editors-on-macosx.html"><h1>Taming those Java editors on MacOSX</h1></a>
+  			<p>26 August 2012, tags: 
+			    <a href="../tags/editor.html">editor</a> 
+  			</p>
+  			<p><p>Today, I learned that you can open multiple Eclipse instances in MacOSX like this</p>
+<pre><code>$ open -n -a Eclipse
+</code></pre>
+<p>This comes pretty handy if you want a separate workspace per large project that has dozen or so modules (try importing the Camel or SpringFramework<br />
+project source and you will see what I mean!)</p>
+<p>The <code>-a</code> is for name of an application to open, and <code>-n</code> means to open with new instance.</p>
+<h1>Finding a programmer friendly text editor on MacOSX</h1>
+<p>Despite I use Eclipse for most of my large Java projects, I still often find myself the need of a plain text editor. I use plain text editor for most<br />
+of my scripting programming. I also use it for notes taking, text file browsing, or even writing Blog post in markdown format!</p>
+<p>I guess for most programmers, choosing an Editor is a very personally thing. So I am not here to convert anybody. However, for those who never heard of<br />
+<a href="http://www.jedit.org">jEdit</a>, you ought to give it a try. It's open source, full features, programmers friendly text editor that works<br />
+across many of OS systems consistenly. It works because it's Java based! If you use one of decent computer now a day, the performance<br />
+is excellent as well.</p>
+<p>However, for some strange reason, the jedit installer on MacOSX doesn't comes with a normal java command line script wrapper. The only thing<br />
+I can see is the actual binary under <code>/Applications/jEdit.app/Contents/MacOS/jedit</code>. We can certainly run this as full jedit command, but then<br />
+it always liter the console with strange GUI warnings. So a better way to run it is actually to use the <code>open</code> command.</p>
+<pre><code>$ open -a jedit $HOME/.bash_profile
+</code></pre>
+<p>Or you can add this in your <code>.bash_profile</code> file:</p>
+<pre><code>function jedit(){ open -a jedit &quot;$@&quot; ; }
+</code></pre>
+<p>Now you can use <code>jedit</code> command on the terminal.</p>
+<h2>Some of my favorite features of jEdit</h2>
+<ul>
+<li>It's open source and has very active community of users.</li>
+<li>It works across MacOSX, Windows and Linux Desktop.</li>
+<li>Support many common programming language syntax highlights.</li>
+<li>Support multi columns editing.</li>
+<li>Support rich feature search (reg ex, hyper-search, all buffers search, search and replace etc.)</li>
+<li>Support multi buffers tabs editing.</li>
+<li>Supports Macro recording and scripting.</li>
+<li>Support plugin extension and there are many external plugins available (eg: XML formater, Diff viewer, SFTP client/editing, etc).</li>
+</ul>
+<h1>Openning other stuff on MacOSX</h1>
+<p>The little <code>open</code> command can open not just application, but it can also open directories or files by extension associations. For<br />
+example, to configure any <code>.properties</code> files to be open by jEdit, try the the following.</p>
+<ol>
+<li>Use Finder to browse and find one of properties</li>
+<li>Right click, &quot;Open With&quot; &gt; &quot;Other...&quot;</li>
+<li>Choose &quot;jEdit&quot; under Applications folder.</li>
+<li>Enable &quot;Always Open With&quot;, then click Open button.</li>
+</ol>
+<p>This change should affect your Terminal <code>open</code> command as well, and if you run <code>open my.properties</code>, your jEdit should pop up.</p>
+<p>You can find more options by running it without any options, and it will print you full help page.</p>
+<pre><code>Usage: open [-e] [-t] [-f] [-W] [-R] [-n] [-g] [-h] [-b &lt;bundle identifier&gt;] [-a &lt;application&gt;] [filenames] [--args arguments]
+Help: Open opens files from a shell.
+      By default, opens each file using the default application for that file.  
+      If the file is in the form of a URL, the file will be opened as a URL.
+Options: 
+      -a                Opens with the specified application.
+      -b                Opens with the specified application bundle identifier.
+      -e                Opens with TextEdit.
+      -t                Opens with default text editor.
+      -f                Reads input from standard input and opens with TextEdit.
+      -F  --fresh       Launches the app fresh, that is, without restoring windows. Saved persistent state is lost, excluding Untitled documents.
+      -R, --reveal      Selects in the Finder instead of opening.
+      -W, --wait-apps   Blocks until the used applications are closed (even if they were already running).
+          --args        All remaining arguments are passed in argv to the application's main() function instead of opened.
+      -n, --new         Open a new instance of the application even if one is already running.
+      -j, --hide        Launches the app hidden.
+      -g, --background  Does not bring the application to the foreground.
+      -h, --header      Searches header file locations for headers matching the given filenames, and opens them.
+</code></pre>
+</p>
+  			<a href="blog/2012/08/myschedule-2-4-4-release.html"><h1>myschedule-2.4.4 is out!</h1></a>
+  			<p>20 August 2012, tags: 
+			    <a href="../tags/myschedule.html">myschedule</a> 
+  			</p>
+  			<p><p>For those of you who are using Quartz, you might find <a href="http://code.google.com/p/myschedule">http://code.google.com/p/myschedule</a>[MySchedule] useful. I've made another minor release to upgrade it to latest Quartz 2.1.6 and few minor fixes.</p>
+<p>Enjoy!</p>
+</p>
+  			<a href="blog/2012/08/getting-started-with-apache-camel-using-groovy.html"><h1>Getting started with Apache Camel using Groovy</h1></a>
+  			<p>18 August 2012, tags: 
+			    <a href="../tags/groovy.html">groovy</a> 
+
+			    <a href="../tags/camel.html">camel</a> 
+  			</p>
+  			<p><p>From their site, it says the <a href="http://camel.apache.org">Apache Camel</a> is a versatile open-source integration framework based on known Enterprise Integration Patterns. It might seem like a vague definition, but I want to tell you that this is a very productive Java library that can solve many of typical IT problems! You can think of it as a very light weight ESB framework with &quot;batteries&quot; included.</p>
+<p>In every jobs I've been to so far, folks are writing their own solutions in one way or another to solve many common problems (or they would buy some very expensive enterprisy ESB servers that takes months and months to learn, config, and maintain). Things that we commonly solve are integration (glue) code of existing business services together, process data in a certain workflow manner, or move and transform data from one place to another etc. These are very typical need in many IT environments. The Apache Camel can be used in cases like these; not only that, but also in a very productive and effective way!</p>
+<p>In this article, I will show you how to get started with Apache Camel along with just few lines of <a href="http://groovy.codehaus.org/">Groovy</a> script. You can certainly also start off with a full Java project to try out Camel, but I find Groovy will give you the shortest working example and learning curve.</p>
+<h1>Getting started with Apache Camel using Groovy</h1>
+<p>So let's begin. First let's see a hello world demo with Camel + Groovy.</p>
+<pre><code>@Grab('org.apache.camel:camel-core:2.10.0')
+@Grab('org.slf4j:slf4j-simple:1.6.6')
+import org.apache.camel.*
+import org.apache.camel.impl.*
+import org.apache.camel.builder.*
+
+def camelContext = new DefaultCamelContext()
+camelContext.addRoutes(new RouteBuilder() {
+    def void configure() {
+        from(&quot;timer://jdkTimer?period=3000&quot;)
+            .to(&quot;log://camelLogger?level=INFO&quot;)
+    }
+})
+camelContext.start()
+
+addShutdownHook{ camelContext.stop() }
+synchronized(this){ this.wait() }
+</code></pre>
+<p>Save above into a file named <code>helloCamel.groovy</code> and then run it like this:</p>
+<pre><code>$ groovy helloCamel.groovy
+388 [main] INFO org.apache.camel.impl.DefaultCamelContext - Apache Camel 2.10.0 (CamelContext: camel-1) is starting
+445 [main] INFO org.apache.camel.management.ManagementStrategyFactory - JMX enabled.
+447 [main] INFO org.apache.camel.management.DefaultManagementLifecycleStrategy - StatisticsLevel at All so enabling load performance statistics
+678 [main] INFO org.apache.camel.impl.converter.DefaultTypeConverter - Loaded 170 type converters
+882 [main] INFO org.apache.camel.impl.DefaultCamelContext - Route: route1 started and consuming from: Endpoint[timer://jdkTimer?period=3000]
+883 [main] INFO org.apache.camel.impl.DefaultCamelContext - Total 1 routes, of which 1 is started.
+887 [main] INFO org.apache.camel.impl.DefaultCamelContext - Apache Camel 2.10.0 (CamelContext: camel-1) started in 0.496 seconds
+898 [Camel (camel-1) thread #1 - timer://jdkTimer] INFO camelLogger - Exchange[ExchangePattern:InOnly, BodyType:null, Body:[Body is null]]
+3884 [Camel (camel-1) thread #1 - timer://jdkTimer] INFO camelLogger - Exchange[ExchangePattern:InOnly, BodyType:null, Body:[Body is null]]
+6884 [Camel (camel-1) thread #1 - timer://jdkTimer] INFO camelLogger - Exchange[ExchangePattern:InOnly, BodyType:null, Body:[Body is null]]
+...
+</code></pre>
+<p>The little script above is simple but it presented few key features of Camel Groovyness. The first and last section of the <code>helloCamel.groovy</code> script are just Groovy featuers. The <code>@Grab</code> annotation will automatically download the dependency jars you specify. We import Java packages to use its classes later. At the end we ensure to shutdown Camel before exiting JVM through the Java Shutdown Hook mechanism. The program will sit and wait until user press <code>CTRL+C</code>, just as a typical server process behavior.</p>
+<p>The middle section is where the Camel action is. You would always create a Camel context to begin (think of it as the server or manager for the process.) And then you would add a Camel route (think of it as a workflow or pipeflow) that you like to process data (Camel likes to call these data &quot;messages&quot;). The route consists of a &quot;from&quot; starting point (where data generated), and one or more &quot;to&quot; points (where data going to be processed). Camel calls these destination 'points' as 'Endpoints'. These endpoints can be expressed in simple URI string format such as <code>&quot;timer://jdkTimer?period=3000&quot;</code>. Here we are generating timer message in every 3 secs into the pipeflow, and then process by a logger URI, which will simply print to console output.</p>
+<p>After Camel context started, it will start processing data through the workflow, as you can observe from the output example above. Now try pressing <code>CTRL+C</code> to end its process. Notice how the Camel will shutdown everything very gracefully.</p>
+<pre><code>7312 [Thread-2] INFO org.apache.camel.impl.DefaultCamelContext - Apache Camel 2.10.0 (CamelContext: camel-1) is shutting down
+7312 [Thread-2] INFO org.apache.camel.impl.DefaultShutdownStrategy - Starting to graceful shutdown 1 routes (timeout 300 seconds)
+7317 [Camel (camel-1) thread #2 - ShutdownTask] INFO org.apache.camel.impl.DefaultShutdownStrategy - Route: route1 shutdown complete, was consuming from: Endpoint[timer://jdkTimer?period=3000]
+7317 [Thread-2] INFO org.apache.camel.impl.DefaultShutdownStrategy - Graceful shutdown of 1 routes completed in 0 seconds
+7321 [Thread-2] INFO org.apache.camel.impl.converter.DefaultTypeConverter - TypeConverterRegistry utilization[attempts=2, hits=2, misses=0, failures=0] mappings[total=170, misses=0]
+7322 [Thread-2] INFO org.apache.camel.impl.DefaultCamelContext - Apache Camel 2.10.0 (CamelContext: camel-1) is shutdown in 0.010 seconds. Uptime 7.053 seconds.
+</code></pre>
+<p>So that's our first taste of Camel ride! However, we titled this section as &quot;Hello World!&quot; demo, and yet we haven't seen any. But you might have also noticed that above script are mostly boiler plate code that we setup. No user logic has been added yet. Not even the logging the message part! We simply configuring the route.</p>
+<p>Now let's modify the script little bit so we will actually add our user logic to process the timer message.</p>
+<pre><code>@Grab('org.apache.camel:camel-core:2.10.0')
+@Grab('org.slf4j:slf4j-simple:1.6.6')
+import org.apache.camel.*
+import org.apache.camel.impl.*
+import org.apache.camel.builder.*
+
+def camelContext = new DefaultCamelContext()
+camelContext.addRoutes(new RouteBuilder() {
+    def void configure() {
+        from(&quot;timer://jdkTimer?period=3000&quot;)
+            .to(&quot;log://camelLogger?level=INFO&quot;)
+            .process(new Processor() {
+                def void process(Exchange exchange) {
+                    println(&quot;Hello World!&quot;)
+                }
+            })
+    }
+})
+camelContext.start()
+
+addShutdownHook{ camelContext.stop() }
+synchronized(this){ this.wait() }
+</code></pre>
+<p>Notice how I can simply append the process code part right after the <code>to(&quot;log...&quot;)</code> line. I have added a &quot;processor&quot; code block to process the timer message. The logic is simple: we greet the world on each tick.</p>
+<h1>Making Camel route more concise and practical</h1>
+<p>Now, do I have you at Hello yet? If not, then I hope you will be patient and continue to follow along for few more practical features of Camel. First, if you were to put Camel in real use, I would recommend you setup your business logic separately from the workflow route definition. This is so that you can clearly express and see your entire pipeflow of route at a glance. To do this, you want to move the &quot;processor&quot;, into a service bean.</p>
+<pre><code>@Grab('org.apache.camel:camel-core:2.10.0')
+@Grab('org.slf4j:slf4j-simple:1.6.6')
+import org.apache.camel.*
+import org.apache.camel.impl.*
+import org.apache.camel.builder.*
+import org.apache.camel.util.jndi.*
+
+class SystemInfoService {
+    def void run() {
+        println(&quot;Hello World!&quot;)
+    }
+}
+def jndiContext = new JndiContext();
+jndiContext.bind(&quot;systemInfoPoller&quot;, new SystemInfoService())
+
+def camelContext = new DefaultCamelContext(jndiContext)
+camelContext.addRoutes(new RouteBuilder() {
+    def void configure() {
+        from(&quot;timer://jdkTimer?period=3000&quot;)
+            .to(&quot;log://camelLogger?level=INFO&quot;)
+            .to(&quot;bean://systemInfoPoller?method=run&quot;)
+    }
+})
+camelContext.start()
+
+addShutdownHook{ camelContext.stop() }
+synchronized(this){ this.wait() }
+</code></pre>
+<p>Now, see how compact this workflow route has become? The Camel's Java DSL such as <code>&quot;from().to().to()&quot;</code> for defining route are so clean and simple to use. You can even show this code snip to your Business Analysts, and they would likely be able to verify your business flow easily! Wouldn't that alone worth a million dollars?</p>
+<h1>How about another demo: FilePoller Processing</h1>
+<p>File polling processing is a very common and effective way to solve many business problems. If you work for commercial companies long enough, you might have written one before. A typical file poller would process incoming files from a directory and then process the content, and then move the file into a output directory. Let's make a Camel route to do just that.</p>
+<pre><code>@Grab('org.apache.camel:camel-core:2.10.0')
+@Grab('org.slf4j:slf4j-simple:1.6.6')
+import org.apache.camel.*
+import org.apache.camel.impl.*
+import org.apache.camel.builder.*
+import org.apache.camel.util.jndi.*
+
+class UpperCaseTextService {
+    def String transform(String text) {
+        return text.toUpperCase()
+    }
+}
+def jndiContext = new JndiContext();
+jndiContext.bind(&quot;upperCaseTextService&quot;, new UpperCaseTextService())
+
+def dataDir = &quot;/${System.properties['user.home']}/test/file-poller-demo&quot;
+def camelContext = new DefaultCamelContext(jndiContext)
+camelContext.addRoutes(new RouteBuilder() {
+    def void configure() {
+        from(&quot;file://${dataDir}/in&quot;)
+            .to(&quot;log://camelLogger&quot;)
+            .to(&quot;bean://upperCaseTextService?method=transform&quot;)
+            .to(&quot;file://${dataDir}/out&quot;)
+    }
+})
+camelContext.start()
+
+addShutdownHook{ camelContext.stop() }
+synchronized(this){ this.wait() }
+</code></pre>
+<p>Here you see I defined a route to poll a <code>$HOME/test/file-poller-demo/in</code> directory for text files. Once it's found it will log it to console, and then process by a service that transform the content text into upper case. After this, it will send the file into <code>$HOME/test/file-poller-demo/out</code> directory. My goodness, reading the Camel route above probably express what I wrote down just as effective. Do you see the benefits here?</p>
+<h1>What's the &quot;batteries&quot; included part.</h1>
+<p>If you've used Python programming before, you might have heard the pharase that they claim often: Python has &quot;batteries&quot; included. This means their interpreter comes with a rich of libaries for most of the common programming need. You can often write python program without have to download separated external libraries.</p>
+<p>I am making similar analogies here with Apache Camel. The Camel project comes with so many ready to use <a href="http://camel.apache.org/components.html">components</a> that you can find just about any transport protocals that can carry data. These Camel &quot;components&quot; are ones that support different 'Endpoint URI' that we have seen in our demos above. We have simply shown you <code>timer</code>, <code>log</code>, <code>bean</code>, and <code>file</code> components, but there are over 120 more. You will find <code>jms</code>, <code>http</code>, <code>ftp</code>, <code>cfx</code>, or <code>tcp</code>  just to name a few.</p>
+<p>The Camel project also has an option for you to define route in <a href="http://camel.apache.org/spring.html">declarative xml format</a>. The xml is just an extension of a Spring xml config with Camel's namespace handler added on top. Spring is optional in Camel, but you can use it together in a very powerful way.</p>
+</p>
+  			<a href="blog/2012/08/how-to-integrate-timemachine-scheduler-in-spring-based-application.html"><h1>How to integrate TimeMachine Scheduler in Spring based application</h1></a>
+  			<p>17 August 2012, tags: 
+			    <a href="../tags/timemachine.html">timemachine</a> 
+
+			    <a href="../tags/spring.html">spring</a> 
+  			</p>
+  			<p><p>One of the goals for <a href="https://bitbucket.org/timemachine/scheduler">TimeMachine Scheduler</a> is to make use of POJO as friendly as possible so that we can integrate into any IoC container easily. I've prepared a demo that will show you how to integrate TimeMachine with <a href="http://www.springsource.org/">Spring</a> based application.</p>
+<p>We will mainly focus on the Spring xml config part in this article, so if you don't feel like checking out the  <a href="https://bitbucket.org/timemachine/scheduler-demo/src/fab518eb64ce/scheduler-spring">demo project source code</a> in details, then simply grab the binary package of the  <a href="https://bitbucket.org/timemachine/scheduler-demo/downloads">timemachine-spring-demo.zip</a> and follow along.</p>
+<h1>Introducing a tiny Spring Server</h1>
+<p>If you don't already have a Spring project going, then take a look at my little Spring server. It can bootstrap any spring configuration xml file and then sits and wait for a <code>CTRL+C</code> to end. Unzip the demo and try it out like this.</p>
+<pre><code>$ cd timemachine-spring-demo
+$ bin/run-spring config/hello-spring.xml
+</code></pre>
+<p>You should see a &quot;Hello World!&quot; message printed. Hit <code>CTRL+C</code> to end it. The xml just declares a simple <code>HelloService</code> bean like this.</p>
+<pre><code>&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+     xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+     xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd&quot;&gt;
+
+    &lt;bean id=&quot;helloService&quot; class=&quot;timemachine.spring.HelloService&quot; init-method=&quot;run&quot;&gt;
+        &lt;property name=&quot;name&quot; value=&quot;World&quot;&gt;&lt;/property&gt;
+    &lt;/bean&gt;
+
+&lt;/beans&gt;
+</code></pre>
+<p>That's your typical Spring declaration file. With this tiny Spring server, you can quickly experiment any POJOs wired up in any way you wish and put them in action.</p>
+<h1>Setting up TimeMachine Scheduler beans</h1>
+<p>In Java code, you can easily create an instance of the TimeMachine scheduler as follow:</p>
+<pre><code>SchedulerFactory schedulerFactory = new SchedulerFactory(&quot;config/scheduler.properties&quot;);
+Scheduler scheduler = schedulerFactory.createScheduler();
+scheduler.start();
+// Then we would also need to call scheduler.destroy() before we exit the Java program. (eg: in shutdownHook)
+</code></pre>
+<p>You can easily translate that into Spring xml config like in <code>config/timemachine-pojo-spring.xml</code>:</p>
+<pre><code>&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+     xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+     xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd&quot;&gt;
+
+    &lt;bean id=&quot;schedulerFactory&quot; class=&quot;timemachine.scheduler.SchedulerFactory&quot;&gt;
+        &lt;constructor-arg value=&quot;config/scheduler.properties&quot;&gt;&lt;/constructor-arg&gt;
+    &lt;/bean&gt;
+    &lt;bean id=&quot;scheduler&quot; class=&quot;timemachine.scheduler.Scheduler&quot; 
+        factory-bean=&quot;schedulerFactory&quot; factory-method=&quot;createScheduler&quot;
+        init-method=&quot;start&quot; destroy-method=&quot;destroy&quot;&gt;
+    &lt;/bean&gt;
+
+&lt;/beans&gt;
+</code></pre>
+<p>The benefit of using Spring xml is that your scheduler lifecycles would be automatically taken care of without setting any shutdown hook. Running above should give you a plain scheduler started, and pressing <code>CTRL+C</code> should shutdown gracefully.</p>
+<h1>Going further with a custom SchedulerFactoryBean</h1>
+<p>Now above is not much excitement using Spring since you would still configure the scheduler through <code>config/scheduler.properties</code>. You certainly can load jobs and add custom services there. But if we are going to use Spring, we might as well take full advantage of it to create the Job Definition and Schedule inside the xml config! To do this, I created a simple <code>timemachine.scheduler.spring.SchedulerFactoryBean</code> in my demo project, and you can try it out like this:</p>
+<pre><code>&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+     xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+     xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd&quot;&gt;
+
+    &lt;bean id=&quot;scheduler&quot; class=&quot;timemachine.scheduler.spring.SchedulerFactoryBean&quot;&gt;
+        &lt;property name=&quot;configPropsUrl&quot; value=&quot;config/scheduler.properties&quot;&gt;&lt;/property&gt;
+        &lt;property name=&quot;autoStart&quot; value=&quot;true&quot;&gt;&lt;/property&gt;
+        &lt;property name=&quot;autoAddJobDef&quot; value=&quot;true&quot;&gt;&lt;/property&gt;
+    &lt;/bean&gt;
+    &lt;bean id=&quot;jobDef01&quot; class=&quot;timemachine.scheduler.JobDef&quot;&gt;
+        &lt;property name=&quot;jobTaskClassName&quot; value=&quot;timemachine.scheduler.jobtask.ScriptingJobTask&quot;&gt;&lt;/property&gt;
+        &lt;property name=&quot;props&quot;&gt;
+            &lt;map&gt;
+                &lt;entry key=&quot;scriptEngineName&quot; value=&quot;Groovy&quot;&gt;&lt;/entry&gt;
+                &lt;entry key=&quot;scriptText&quot; value=&quot;println('Hello World.')&quot;&gt;&lt;/entry&gt;
+            &lt;/map&gt;
+        &lt;/property&gt;
+        &lt;property name=&quot;schedules&quot;&gt;
+            &lt;list&gt;              
+                &lt;bean class=&quot;timemachine.scheduler.schedule.CronSchedule&quot;&gt;
+                    &lt;property name=&quot;expression&quot; value=&quot;0/3 * * * * ?&quot;&gt;&lt;/property&gt;
+                &lt;/bean&gt;
+            &lt;/list&gt;
+        &lt;/property&gt;
+    &lt;/bean&gt;
+
+&lt;/beans&gt;
+</code></pre>
+<p>Above will create not only the scheduler but also auto manage the lifecycles for you without you explicitly declare it. The factory bean will also auto detect any JobDef and Schedule bean types and add them into the scheduler instance. This would make your scheduler config all in the Spring xml, and it's well integrated.</p>
+<p>There is also another similar sample in <code>config/timemachine-spring.xml</code> you may try. It will invoke an external groovy script instead of inline text.</p>
+<h1>Going extra mile on exposing TimeMachine Scheduler through JMX</h1>
+<p>The TimeMachine doesn't support any JMX instrumentation, however when running with the Spring, you can easily expose any Java interface to the local MBean Server Platform using Spring's MBeanExporter. For example in <code>config/timemachine-jmx-spring.xml</code> you will see:</p>
+<pre><code>&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+     xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+     xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd&quot;&gt;
+
+    &lt;bean id=&quot;scheduler&quot; class=&quot;timemachine.scheduler.spring.SchedulerFactoryBean&quot;&gt;
+        &lt;property name=&quot;configPropsUrl&quot; value=&quot;config/scheduler.properties&quot;/&gt;
+    &lt;/bean&gt; 
+    &lt;bean id=&quot;exporter&quot; class=&quot;org.springframework.jmx.export.MBeanExporter&quot;&gt;
+        &lt;property name=&quot;assembler&quot;&gt;
+            &lt;bean class=&quot;org.springframework.jmx.export.assembler.InterfaceBasedMBeanInfoAssembler&quot;&gt;
+                &lt;property name=&quot;managedInterfaces&quot;&gt;
+                    &lt;list&gt;
+                        &lt;value&gt;timemachine.scheduler.Scheduler&lt;/value&gt;
+                    &lt;/list&gt;
+                &lt;/property&gt;
+            &lt;/bean&gt;
+        &lt;/property&gt;
+        &lt;property name=&quot;beans&quot;&gt;
+            &lt;map&gt;
+                &lt;entry key=&quot;timemachine.scheduler:name=Scheduler&quot; value-ref=&quot;scheduler&quot;/&gt;
+            &lt;/map&gt;
+        &lt;/property&gt;
+    &lt;/bean&gt;
+
+&lt;/beans&gt;
+</code></pre>
+<p>Above will start an empty scheduler, and expose the <code>timemachine.scheduler.Scheduler</code> interface to the JMX local server. You may use <code>$JAVA_HOME/bin/jconsole</code> to connect and will see all the methods automatically exposed. There few methods that contains custom java objects that exporter will not able to convert properly, but at least you will get all the lifecycles and some simple getters that available to you.</p>
+</p>
+  			<a href="blog/2012/08/how-to-make-an-executable-war-file.html"><h1>How to make an executable WAR file</h1></a>
+  			<p>14 August 2012, tags: 
+			    <a href="../tags/maven.html">maven</a> 
+  			</p>
+  			<p><p>If you ever used <a href="http://jenkins-ci.org">Jenkin</a> CI server, you have probably seen their super easy one-line instruction to get started: <code>java -jar jenkins.war</code>. Now that's one awesome way to get your users to try out your product!</p>
+<p>In this article, I will show you how to make a WAR file self executable just like above. Before I do that, let me tell you a little web app that I made, and then I will show how I converted it into runnable <code>war</code>.</p>
+<h2>The Requirement: Taking Notes Efficiently</h2>
+<p>I tend take a lot of notes when I do my work. Instead of using the crapy Windows Notepad.exe, I would setup my cygwin <code>.bash_profile</code> like this:</p>
+<pre><code>function e() { /cygdrive/C/apps/notepad++.exe $(cygpath -w &quot;$@&quot;) ; }
+function n() { F=&quot;$HOME/notes/$(date &quot;+%Y%m%d-%H%M%S&quot;).markdown&quot;; touch $F; e $F; }
+</code></pre>
+<p>I happen to have <a href="http://notepad-plus-plus.org">Notepad++</a> installed, but you can use just about any text editor you like. With that setup, then anywhere in my terminal I can simply type <code>n</code> to have a GUI editor pop open, and I will have my note file ready to record notes. The file name would have a timestamp date, and I like to record them with simple <code>Markdown</code> syntax for easy viewing later. Since I write them in plain text, it's easy and fast to search using <code>grep MYSTUFF ~/notes/*</code>. Once I found it, I can quickly edit it by <code>e ~/notes/20120814-000000.markdown</code>.</p>
+<p>This method of taking notes is fast and portable between my Linux and Windows systems (well, I have to choose a different editor between OS but not big deal). Now since I already recorded my notes in markdown, there is no way I can see the pretty result unless I use an <a href="http://daringfireball.net/projects/markdown/dingus">online converter</a>. So I thought it would be awesome if I can have a web app that let me record these notes, and yet give me a nice quick <code>Markdown</code> to html view.</p>
+<h2>Introducing the webnotepad.war</h2>
+<p>To improve my notes taking, I created little web app called <a href="https://bitbucket.org/saltnlight5/sandbox/downloads">webnotepad.war</a>. It's really simply one page web app that record notes in Markdown syntax, preview it, and allow you to search it. It also let you edit old notes too. The whole thing is just a Servlet class, and it doesn't even use JSP.</p>
+<p>However, after I have this little web app, it bothers me that I would always need an app server to run it. (I can run <code>mvn tomcat7:run</code> directly from my source project, but it would require me be online to satisfy initial Maven build.) So here is a perfectly example use case that would be super nice to make this war file self executable. In fact I have succeeded in this little experiement. You can download it and try it out yourself with <code>java -jar webnotepad.war</code>, and then browse <code>http://localhost:8080</code>. If you get port conflict, try <code>--httpPort=8081</code>.</p>
+<p>Of course you continue to deploy <code>webnotepad.war</code> into any app server too.</p>
+<h2>Making war file executable</h2>
+<p>Before you want to make war executable, you want to build and package your normal web application first. The trick to make the war file runnable is that you want additionally add a Main-Class in the <code>META-INF/MANIFEST.MF</code> in the war file. And from this we need to load and run an embedded Servlet server with the self war file deployed. I noticed Jenkins uses one called <a href="winstone.sourceforge.net">Winstone</a> container server. I was amazed to find that this server only has 300K in size! It support full Servlet 2.5 spec! It can optionally support JSP with Jasper which will cost you up to 3MB in size. That's still a very small price to pay compare to any Servlet container out there!</p>
+<p>Making a Main-Class <a href="https://bitbucket.org/saltnlight5/sandbox/src/4e80e4b4114e/webnotepad/src/main/winstone/WinstoneMain.java">WinstoneMain.java</a> is not hard. However making Maven to package everything is pretty tricky. Now my <code>webnotepad.war</code> doesn't need Jasper, but if you do, you specially want these jars outside of <code>WEB-INF/lib</code> because you don't want your normal app server to load these! Else you will get very odd errors.</p>
+<p>In my example I added into <code>WEB-INF/lib-winstone</code>, and then the <code>WinstoneMain</code> would extract these and then load the <code>winstone.Launcher</code> using a custom class loader. Also, we need to use some Winstone options to start a web server properly. I use this <a href="https://bitbucket.org/saltnlight5/sandbox/src/4e80e4b4114e/webnotepad/pom.xml">webnotepad/pom.xml</a> to package it all up the war file. You can easily use my example because I have create them under a separate <code>profile</code> and you just need add to your web module/pom.xml. In my project demo you would run <code>mvn package -Pdist</code> to generate the executable war file.</p>
+<p>NOTE: I noticed Winstone project didn't show much activity since last release since 2008. But I was happy to find that there is a fork project on <a href="http://code.google.com/p/winstone/">GoogleCode Winstone</a> that shows activities. I didn't use this for my demo, but it looks promising.</p>
+</p>
+  			<a href="blog/2012/08/checking-db-connection-using-java.html"><h1>Checking DB Connection using Java</h1></a>
+  			<p>11 August 2012, tags: 
+			    <a href="../tags/java.html">java</a> 
+  			</p>
+  			<p><p>For complete sake, here is a Java version of the <a href="http://saltnlight5.blogspot.com/2012/12/checking-db-connection-using-groovy.html">http://saltnlight5.blogspot.com/2012/12/checking-db-connection-using-groovy.html</a>[Groovy post] to test your Oracle Database connection.</p>
+<pre><code>package atest;
+import java.sql.*;
+/**
+ * Run arguments sample:
+ * jdbc:oracle:thin:@localhost:1521:XE system mypassword123 oracle.jdbc.driver.OracleDriver
+ */
+public class DbConn {
+    public static void main(String[] args) throws Exception {
+        String url = args[0];
+        String username = args[1];
+        String password = args[2];
+        String driver = args[3];
+
+        Class.forName(driver);
+        Connection conn = DriverManager.getConnection(url, username, password);
+        try {
+            Statement statement = conn.createStatement();
+            ResultSet rs = statement.executeQuery(&quot;SELECT SYSDATE FROM DUAL&quot;);
+            while(rs.next()) {
+                System.out.println(rs.getObject(1));
+            }
+        } finally {
+            conn.close();
+        }
+    }
+}
+</code></pre>
+</p>
+  			<a href="blog/2012/08/how-to-generate-redmine-war-application-to-run-with-java.html"><h1>How to generate Redmine WAR application to run with Java</h1></a>
+  			<p>06 August 2012, tags: 
+			    <a href="../tags/jruby.html">jruby</a> 
+
+			    <a href="../tags/redmine.html">redmine</a> 
+
+			    <a href="../tags/issue-tracker.html">issue-tracker</a> 
+  			</p>
+  			<p><p>If you survey around Java open source land, it's really disappointing in not able to  find a decent project management web app that we can use. The Java war file deployment in an app server is easy to use, and it would give us good performance. Especially if we already in a Java shop, having a project management tool that deploys in an existing app server would be easier to maintain.</p>
+<p>I have found the Ruby's <a href="http://www.redmine.org">Redmine</a> to be a very good ONE-STOP-SHOP for most of your project development need. It has nice clean web interface, and the features are loaded: projects, users, issue tracking, wiki, source control viewer, documents, and it even has time tracking.</p>
+<p>Altough the application is written in Ruby on Rails, you can run this with the JRuby perfectly fine on any Java app server. I've just done this and able to run it on JBossAS7.1.0 with jruby-1.6.7.2 and redmine-2.03.</p>
+<p>For the impatients, you can actually grab my generated <code>redmine-2.0.3.war</code> from <a href="https://bitbucket.org/saltnlight5/sandbox/downloads">my sandbox</a>. I even provided an MySQL sql dump for you to get started without have to go through the building the war file. If you want to change the DB or any other settings, you can simply unpack the war file and edit the config files, then re-jar the war backup. This is still easier than building the war from scratch.</p>
+<p>Here is how I build the war file. First step is setup a database. I picked MySQL.</p>
+<pre><code>mysql&gt; create database redmine character set utf8;
+mysql&gt; create user 'redmine'@'localhost' identified by 'redmine123';
+mysql&gt; grant all privileges on redmine.* to 'redmine'@'localhost';
+</code></pre>
+<p>Then prepare the Redmine with JRuby. Download the <code>redmine-2.0.3.zip</code> and unzip and then cd into this directory. Then run the following:</p>
+<pre><code>$ $JRUBY_HOME/bin/gem install bundler
+$ $JRUBY_HOME/bin/bundle install --without development test rmagick postgresql sqlite
+$ cp config/database.yml.example config/database.yml
+$ # edit config/database.yml
+$ # type in your database connection info for &quot;production&quot; env.
+$ $JRUBY_HOME/bin/rake generate_secret_token
+$ RAILS_ENV=production $JRUBY_HOME/bin/rake db:migrate
+$ RAILS_ENV=production $JRUBY_HOME/bin/rake redmine:load_default_data
+</code></pre>
+<p>Now create the war file.</p>
+<pre><code>$ $JRUBY_HOME/bin/gem install warbler
+$ $JRUBY_HOME/bin/warble config
+$ # edit config/warble.rb
+$ # replace: config.dirs = %w(app config lib log vendor tmp extra files)
+$ # add: config.gems += [&quot;activerecord-jdbcmysql-adapter&quot;, &quot;jruby-openssl&quot;, &quot;i18n&quot;, &quot;rack&quot;]
+$ $JRUBY_HOME/bin/warble
+</code></pre>
+<p>After this, you will see <code>redmine-2.0.3.war</code> in the directory. Now you can drop it into any app server and you may kick start any projects!</p>
+</p>
+
+	<hr />
+
+	<ul class="pager">
+		<li class="previous"><a href="https://zemian.github.io/23">Previous</a></li>
+		<li>Page: 24/29</li>
+		<li class="next"><a href="https://zemian.github.io/25">Next</a></li>
+	</ul>
+
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">&copy; 2011 - 2019 Zemian Deng All Rights Reserved | Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.5</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../js/jquery-1.11.1.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/prettify.js"></script>
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-135626598-1');
+    </script>
+
+  </body>
+</html>

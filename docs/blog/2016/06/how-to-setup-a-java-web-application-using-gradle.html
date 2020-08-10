@@ -40,7 +40,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -48,7 +48,6 @@
             <li><a href="../../../about.html">About</a></li>
             <li><a href="../../../archive.html">Archive</a></li>
             <li><a href="../../..//tags">Tags</a></li>
-            <li><a href="../../../feed.xml">Subscribe</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -62,145 +61,119 @@
 	    <a href="../../../tags/gradle.html">gradle</a> 
 	</p>
 
-	<p>For basic java and Gradle, it's really simple. All you need is one line in <span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">build.gradle</span>&nbsp;file and you can start compiling Java source under <span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">src/main/java</span> folder.<br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><br /></span>
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">apply plugin: 'java'</span><br />
-<br />
-But to setup a useful web application, &nbsp;you would need little more. Here I have another example of Gradle 2.7 script file for building a Java web application. I also have noted few things I have discovered in the comments.<br />
-<br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"># A Java web app project</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"># There should be a src/main/webapp as web content directory</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">apply plugin: 'war'</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">apply plugin: 'jetty'</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><br /></span>
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"># Change jetty default port from 8080</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">httpPort = 9000</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><br /></span>
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"># A repository must be given to fetch dependencies below.</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">repositories {</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp; mavenCentral()</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">}</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><br /></span>
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"># Library dependencies</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">dependencies {</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp; // JDK lang support</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp; // Ouch! Gradle does not support 'provided' scope! Let's use compile for now.</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp; //provided 'org.projectlombok:lombok:1.16.6'</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp;&nbsp;compile&nbsp;</span><span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">'org.projectlombok:lombok:1.16.6'</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><br /></span>
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp; // Testing</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp; testCompile 'junit:junit:4.12',</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp; &nbsp; &nbsp; 'org.hamcrest:hamcrest-library:1.3'</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><br /></span>
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp; // Database</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp; runtime 'mysql:mysql-connector-java:5.1.37' &nbsp;&nbsp;</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><br /></span>
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp; // Scripting</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp; //runtime 'org.codehaus.groovy:groovy-all:2.4.5'</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp; /*</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp; NOTE: Error if you include groovy with gradle+jetty!!!</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><span class="Apple-tab-span" style="white-space: pre;"> </span> &nbsp; &nbsp;java.lang.ExceptionInInitializerError:</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><span class="Apple-tab-span" style="white-space: pre;">  </span>groovy.lang.GroovyRuntimeException: Conflicting module versions. Module [groovy-all is loaded in version 2.3.10 and you are trying to load version 2.4.5</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp; &nbsp;// Verify your groovy version using the following:</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><span class="Apple-tab-span" style="white-space: pre;"> </span>import javax.script.*</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><span class="Apple-tab-span" style="white-space: pre;"> </span>out.println(new ScriptEngineManager().getEngineFactories())</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><span class="Apple-tab-span" style="white-space: pre;"> </span>out.println(org.codehaus.groovy.jsr223.GroovyScriptEngineFactory.class.getProtectionDomain().getCodeSource().getLocation())</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp; &nbsp; */&nbsp;</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">}</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><br /></span>
-<span style="font-family: inherit;">I also have this JSP in</span><span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp;</span><span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">src/main/webapp/script.jsp </span><span style="font-family: inherit;">folder</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><br /></span>
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&lt;%@ page import="javax.script.*, java.io.*" %&gt;</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><br /></span>
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&lt;%</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">// Initialize parameters</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">String engineName = request.getParameter("engine");</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">if (engineName == null) engineName = "Groovy";</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">String code = request.getParameter("code");</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">if (code == null) code = "";</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">%&gt;</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><br /></span>
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&lt;!-- form: Script input code --&gt;</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&lt;h1&gt;Scripting&lt;/h1&gt;</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&lt;form method="POST"&gt;</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&lt;textarea name="code" cols="120" rows="25"&gt;&lt;%= code %&gt;&lt;/textarea&gt;</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&lt;p/&gt;&lt;input type="submit" value="Submit"/&gt;</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&lt;/form&gt;</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><br /></span>
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&lt;pre&gt;</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&lt;%</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">if (request.getMethod().equals("POST")) {</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><span class="Apple-tab-span" style="white-space: pre;"> </span>// Process form and evaluate script code</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><span class="Apple-tab-span" style="white-space: pre;"> </span>ScriptEngine se = new ScriptEngineManager().getEngineByName(engineName);</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><span class="Apple-tab-span" style="white-space: pre;"> </span>if (se == null) {</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><span class="Apple-tab-span" style="white-space: pre;">  </span>out.println("ERROR: " + engineName + " engine not found! Use 'engine' parameter to change it.");</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><span class="Apple-tab-span" style="white-space: pre;"> </span>} else {</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><span class="Apple-tab-span" style="white-space: pre;">  </span>try {</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><span class="Apple-tab-span" style="white-space: pre;">   </span>Bindings b = se.createBindings();</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><span class="Apple-tab-span" style="white-space: pre;">   </span>b.put("request", request);</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><span class="Apple-tab-span" style="white-space: pre;">   </span>b.put("out", out);</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><span class="Apple-tab-span" style="white-space: pre;">   </span>Object result = se.eval(code, b);</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><br /></span>
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><span class="Apple-tab-span" style="white-space: pre;">   </span>out.println(engineName + " script result:");</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><span class="Apple-tab-span" style="white-space: pre;">   </span>out.println("" + result);</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><span class="Apple-tab-span" style="white-space: pre;">  </span>} catch (Exception e) {</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><span class="Apple-tab-span" style="white-space: pre;">   </span>out.println("ERROR: " + engineName + " script failed to evaluate!");</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><span class="Apple-tab-span" style="white-space: pre;">   </span>e.printStackTrace(new PrintWriter(out));</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><span class="Apple-tab-span" style="white-space: pre;">  </span>}</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><span class="Apple-tab-span" style="white-space: pre;"> </span>}</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">}</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">%&gt;</span><br />
-<br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&lt;/pre&gt;</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><br /></span>
-<span style="font-family: inherit;">With this</span><span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"> script.jsp</span><span style="font-family: inherit;">, you can write something like this to test out your db connection.</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><br /></span>
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">// Groovy script:</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">import java.sql*</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">conn = DriverManager.getConnection('jdbc:mysql://localhost/test', 'dev', 'dev123')</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">out.println("conn=" + conn)</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">conn.close()</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><br /></span>
-<span style="font-family: inherit;">And just for fun, I have created a data class using ProjectLombok generator</span><span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&nbsp;in src/main/java/myjava/MyData.java</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><br /></span>
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">package myjava;</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">import java.util.*;</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><br /></span>
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">@lombok.Data</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">public class MyData {</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><span class="Apple-tab-span" style="white-space: pre;"> </span>private Integer id;</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><span class="Apple-tab-span" style="white-space: pre;"> </span>private String name;</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><span class="Apple-tab-span" style="white-space: pre;"> </span>private Date createdDate;</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><span class="Apple-tab-span" style="white-space: pre;"> </span>private List&lt;MyData&gt; dataList;</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><span class="Apple-tab-span" style="white-space: pre;"> </span>private Map&lt;String, MyData&gt; dataMap;</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"></span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">}</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><br /></span>
-<span style="font-family: inherit;">I also have a unit test in</span><span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"> src/test/java/myjava/MyDataTest.java</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><br /></span>
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">package myjava;</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><br /></span>
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">import org.junit.Test;</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">import static org.junit.Assert.assertThat;</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">import static org.hamcrest.Matchers.*;</span><br />
-<br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">public class MyDataTest {</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><span class="Apple-tab-span" style="white-space: pre;"> </span>@Test</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><span class="Apple-tab-span" style="white-space: pre;"> </span>public void tesGeneratedGetterSettersAndToString() {</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><span class="Apple-tab-span" style="white-space: pre;">  </span>MyData d = new MyData();</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><span class="Apple-tab-span" style="white-space: pre;">  </span>d.setId(12345);</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><span class="Apple-tab-span" style="white-space: pre;">  </span>d.setName("foo");</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><span class="Apple-tab-span" style="white-space: pre;">  </span>assertThat(d.getId(), is(12345));</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><span class="Apple-tab-span" style="white-space: pre;">  </span>assertThat(d.getName(), is("foo"));</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><span class="Apple-tab-span" style="white-space: pre;">  </span>assertThat(d.toString(), is("MyData(id=12345, name=foo, createdDate=null, dataList=null, dataMap=null)"));</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><span class="Apple-tab-span" style="white-space: pre;"> </span>}</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"></span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">}</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><br /></span>
-To compile code, type command:&nbsp;<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">gradle compileJava</span><br />
-To run test, type command:&nbsp;<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">gradle test</span>(A nice feature of Gradle is that it auto generate test reports! Look for them in your <span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">build/reports</span> folder.)<br />
-To run web app, type command:&nbsp;<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">gradle jettyRun</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><br /></span>
+	<p><p>For basic java and Gradle, it's really simple. All you need is one line in build.gradle file and you can start compiling Java source under src/main/java folder.</p>
+<p>apply plugin: 'java'</p>
+<p>But to setup a useful web application,  you would need little more. Here I have another example of Gradle 2.7 script file for building a Java web application. I also have noted few things I have discovered in the comments.</p>
+<h1>A Java web app project</h1>
+<h1>There should be a src/main/webapp as web content directory</h1>
+<p>apply plugin: 'war'<br />
+apply plugin: 'jetty'</p>
+<h1>Change jetty default port from 8080</h1>
+<p>httpPort = 9000</p>
+<h1>A repository must be given to fetch dependencies below.</h1>
+<p>repositories {<br />
+mavenCentral()<br />
+}</p>
+<h1>Library dependencies</h1>
+<p>dependencies {<br />
+// JDK lang support<br />
+// Ouch! Gradle does not support 'provided' scope! Let's use compile for now.<br />
+//provided 'org.projectlombok:lombok:1.16.6'<br />
+compile 'org.projectlombok:lombok:1.16.6'</p>
+<pre><code>// Testing
+testCompile 'junit:junit:4.12',
+    'org.hamcrest:hamcrest-library:1.3'
+
+// Database
+runtime 'mysql:mysql-connector-java:5.1.37'   
+
+// Scripting
+//runtime 'org.codehaus.groovy:groovy-all:2.4.5'
+/*
+NOTE: Error if you include groovy with gradle+jetty!!!
+java.lang.ExceptionInInitializerError:
+</code></pre>
+<p>groovy.lang.GroovyRuntimeException: Conflicting module versions. Module [groovy-all is loaded in version 2.3.10 and you are trying to load version 2.4.5<br />
+// Verify your groovy version using the following:<br />
+import javax.script.*<br />
+out.println(new ScriptEngineManager().getEngineFactories())<br />
+out.println(org.codehaus.groovy.jsr223.GroovyScriptEngineFactory.class.getProtectionDomain().getCodeSource().getLocation())<br />
+*/<br />
+}</p>
+<p>I also have this JSP in src/main/webapp/script.jsp folder</p>
+<p>&lt;%@ page import=&quot;javax.script.<em>, java.io.</em>&quot; %&gt;</p>
+<p>&lt;%<br />
+// Initialize parameters<br />
+String engineName = request.getParameter(&quot;engine&quot;);<br />
+if (engineName == null) engineName = &quot;Groovy&quot;;<br />
+String code = request.getParameter(&quot;code&quot;);<br />
+if (code == null) code = &quot;&quot;;<br />
+%&gt;</p>
+<!-- form: Script input code -->
+<h1>Scripting</h1>
+<form method="POST">
+<textarea name="code" cols="120" rows="25"><%= code %></textarea>
+<p/><input type="submit" value="Submit"/>
+</form>
+<pre>
+<%
+if (request.getMethod().equals("POST")) {
+// Process form and evaluate script code
+ScriptEngine se = new ScriptEngineManager().getEngineByName(engineName);
+if (se == null) {
+out.println("ERROR: " + engineName + " engine not found! Use 'engine' parameter to change it.");
+} else {
+try {
+Bindings b = se.createBindings();
+b.put("request", request);
+b.put("out", out);
+Object result = se.eval(code, b);
+<p>out.println(engineName + &quot; script result:&quot;);<br />
+out.println(&quot;&quot; + result);<br />
+} catch (Exception e) {<br />
+out.println(&quot;ERROR: &quot; + engineName + &quot; script failed to evaluate!&quot;);<br />
+e.printStackTrace(new PrintWriter(out));<br />
+}<br />
+}<br />
+}<br />
+%&gt;</p>
+</pre>
+<p>With this script.jsp, you can write something like this to test out your db connection.</p>
+<p>// Groovy script:<br />
+import java.sql*<br />
+conn = DriverManager.getConnection('jdbc:<a href="mysql://localhost/test">mysql://localhost/test</a>', 'dev', 'dev123')<br />
+out.println(&quot;conn=&quot; + conn)<br />
+conn.close()</p>
+<p>And just for fun, I have created a data class using ProjectLombok generator in src/main/java/myjava/MyData.java</p>
+<p>package myjava;<br />
+import java.util.*;</p>
+<p>@lombok.Data<br />
+public class MyData {<br />
+private Integer id;<br />
+private String name;<br />
+private Date createdDate;<br />
+private List<MyData> dataList;<br />
+private Map&lt;String, MyData&gt; dataMap;</p>
+<p>}</p>
+<p>I also have a unit test in src/test/java/myjava/MyDataTest.java</p>
+<p>package myjava;</p>
+<p>import org.junit.Test;<br />
+import static org.junit.Assert.assertThat;<br />
+import static org.hamcrest.Matchers.*;</p>
+<p>public class MyDataTest {<br />
+@Test<br />
+public void tesGeneratedGetterSettersAndToString() {<br />
+MyData d = new MyData();<br />
+d.setId(12345);<br />
+d.setName(&quot;foo&quot;);<br />
+assertThat(d.getId(), is(12345));<br />
+assertThat(d.getName(), is(&quot;foo&quot;));<br />
+assertThat(d.toString(), is(&quot;MyData(id=12345, name=foo, createdDate=null, dataList=null, dataMap=null)&quot;));<br />
+}</p>
+<p>}</p>
+<p>To compile code, type command: gradle compileJava</p>
+<p>To run test, type command: gradle test(A nice feature of Gradle is that it auto generate test reports! Look for them in your build/reports folder.)</p>
+<p>To run web app, type command: gradle jettyRun</p>
 </p>
 
 	<hr />

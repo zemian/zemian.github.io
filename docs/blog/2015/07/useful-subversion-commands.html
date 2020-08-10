@@ -40,7 +40,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -48,7 +48,6 @@
             <li><a href="../../../about.html">About</a></li>
             <li><a href="../../../archive.html">Archive</a></li>
             <li><a href="../../..//tags">Tags</a></li>
-            <li><a href="../../../feed.xml">Subscribe</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -62,19 +61,17 @@
 	    <a href="../../../tags/svn.html">svn</a> 
 	</p>
 
-	<p># shell alias and utilities for Subversion<br />
-function svnremovenew {<br />
-<span class="Apple-tab-span" style="white-space: pre;"> </span># svn st | grep '^?' | perl -ane 'print "$F[1]\n"' | xargs rm -rf {}<br />
-<span class="Apple-tab-span" style="white-space: pre;"> </span>svn st | grep '^?' | perl -pe 's/\\/\//g' | perl -ane 'print "$F[1]\n"' | xargs rm -rf {}<br />
-}<br />
-function svnrevertmod {<br />
-<span class="Apple-tab-span" style="white-space: pre;"> </span>svn revert `svn st | grep '^M' | perl -pe 's/\\/\//g' | perl -ane 'print "$F[1] "'`<br />
-}<br />
-alias svnrevertall='svn revert -R .'<br />
-<div>
-alias svnup='svn update --accept mine-full'</div>
-alias svnupreset='svnup&nbsp;&amp;&amp; svnrevertall &amp;&amp; svnremovenew'<br />
-<br />
+	<p><h1>shell alias and utilities for Subversion</h1>
+<p>function svnremovenew {</p>
+<h1>svn st | grep '^?' | perl -ane 'print &quot;$F[1]\n&quot;' | xargs rm -rf {}</h1>
+<p>svn st | grep '^?' | perl -pe 's/\///g' | perl -ane 'print &quot;$F[1]\n&quot;' | xargs rm -rf {}</p>
+<p>}</p>
+<p>function svnrevertmod {<br />
+svn revert <code>svn st | grep '^M' | perl -pe 's/\\/\//g' | perl -ane 'print &quot;$F[1] &quot;'</code></p>
+<p>}</p>
+<p>alias svnrevertall='svn revert -R .'</p>
+<p>alias svnup='svn update --accept mine-full'</p>
+<p>alias svnupreset='svnup &amp;&amp; svnrevertall &amp;&amp; svnremovenew'</p>
 </p>
 
 	<hr />

@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Zemian's Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/asciidoctor.css" rel="stylesheet">
+    <link href="../css/base.css" rel="stylesheet">
+    <link href="../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../about.html">About</a></li>
+            <li><a href="../archive.html">Archive</a></li>
+            <li><a href="..//tags">Tags</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">
+  			<a href="blog/2014/06/using-crontab-to-startup-service.html"><h1>Using crontab to startup service</h1></a>
+  			<p>08 June 2014, tags: 
+			    <a href="../tags/crontab.html">crontab</a> 
+  			</p>
+  			<p><p>Did you know that crontab service has the &quot;@reboot&quot; schedule that would start a script during your system startup time? This is handy if you want something to run right after your system has stared. Try this:</p>
+<h1>crontab -e</h1>
+<p>@reboot $HOME/crontab/runcmd.sh /apps/start-myapp.sh</p>
+<p>The disadvantage of this vs the rc.d scripts are you do not have control on when the system shutdown(&quot;stop&quot;) state. So if your app doens't need to clean up during shutdown, but only care to start when during reboot, this would be an easy option.</p>
+</p>
+  			<a href="blog/2014/06/a-simple-cron-wrapper-script-with-logging.html"><h1>A simple cron wrapper script with logging</h1></a>
+  			<p>04 June 2014, tags: 
+			    <a href="../tags/crontab.html">crontab</a> 
+  			</p>
+  			<p><p>When working with crontab service, one thing I often need is to capture the ouput of the job. Having the job script aware of this output and logging is tedious, and often make the script harder to read. So I wrote a shell wrapper that will redirect all job script's STDOUT into a log file. This way I can inspect it when a job has run and the job script can just focus on the task itself.</p>
+<h1>file: runcmd.sh</h1>
+<h1>Helper/wrapper script to run any command in the crontab env. This script will ensure</h1>
+<h1>user profile script is loaded and to log any command output into log files. It also</h1>
+<h1>ensure not to print anything to STDOUT to avoid crontab system mail alert.</h1>
+<h1></h1>
+<h1>NOTE: be sure to pass in absolute path of the command to be run so it can be found.</h1>
+<h1></h1>
+<h1>Usage:</h1>
+<h1>./runcmd.sh find $HOME/crontab/test.sh            # Simple use case</h1>
+<h1>LOG_NAME=mytest ./runcmd.sh $HOME/crontab/test.sh # Change the log name to something specific</h1>
+<h1></h1>
+<h1>Options</h1>
+<p>DIR=<code>dirname $0</code><br />
+CMD=&quot;$@&quot;<br />
+CMD_NAME=<code>basename $1</code><br />
+LOG_NAME=${LOG_NAME:=$CMD_NAME}<br />
+LOG=&quot;$DIR/logs/$LOG_NAME.log<code>date +%s</code>&quot;</p>
+<h1>Ensure logs dir exists</h1>
+<p>if [[ ! -e $DIR/logs ]]; then<br />
+mkdir -p $DIR/logs<br />
+fi</p>
+<h1>Run cron command</h1>
+<p>source $HOME/.bash_profile<br />
+echo &quot;<code>date</code> Started cron cmd=$CMD, logname=$LOG_NAME&quot; &gt;&gt; $LOG 2&gt;&amp;1<br />
+$CMD &gt;&gt; $LOG 2&gt;&amp;1<br />
+echo &quot;<code>date</code> Cron cmd is done.&quot; &gt;&gt; $LOG 2&gt;&amp;1</p>
+<p>With this wrapper, you can run any shell script and their output will be recorded. For example this job script below will clean up the logs accumulated in our logs folder.</p>
+<p>Note that the wrapper will also auto source the &quot;.bash_profile&quot;. Often this this is needed if your job script expect all the env variables you already have setup in your login shell scripts.</p>
+<h1>file: remove-crontab-logs.sh</h1>
+<p>DIR=<code>dirname $0</code>/logs<br />
+echo &quot;Checking and removing logs in $DIR&quot;<br />
+find $DIR -type f -mtime +31 -print -delete<br />
+echo &quot;Done&quot;</p>
+<p>Now in the crontab file, you may run the job script like this:</p>
+<h1>Clean up crontab logs</h1>
+<p>@montly $HOME/crontab/runcmd.sh $HOME/crontab/remove-crontab-logs.sh</p>
+</p>
+  			<a href="blog/2014/06/a-simple-mysql-daily-backup-script.html"><h1>A simple MySQL daily backup script</h1></a>
+  			<p>03 June 2014, tags: 
+			    <a href="../tags/mysql.html">mysql</a> 
+
+			    <a href="../tags/backup.html">backup</a> 
+  			</p>
+  			<p><p>Using the MySQL export script I've showed from <a href="http://saltnlight5.blogspot.com/2014/05/how-to-export-and-import-mysql-database.html">last post</a> (assume you saved it in a file named &quot;$HOME/database-export.sh&quot;), you may now perform a daily backup with your crontab service like this.</p>
+<h1>file: mysql-backups.sh</h1>
+<p>DIR=<code>dirname $0</code><br />
+echo &quot;Backup DB with export script.&quot;<br />
+$DIR/database-export.sh</p>
+<p>echo &quot;Moving exported files into backup dir.&quot;<br />
+DB_BAK_DIR=$HOME/mysql-backups/<code>date +%a</code><br />
+echo &quot;Removing old file (if exists) and saving new backup into $DB_BAK_DIR&quot;<br />
+if [[ -e $DB_BAK_DIR ]]; then<br />
+rm -fv $DB_BAK_DIR/*<br />
+else<br />
+mkdir -p $DB_BAK_DIR<br />
+fi<br />
+cp -v $DIR/*.sql $DB_BAK_DIR</p>
+<p>This script should create a daily folder under your home directory, for example like &quot;$HOME/mysql-backups/Mon&quot;, &quot;Tue&quot;, &quot;Wed&quot; etc. It should save up to 7 days in a week if you run this with a daily cron job.</p>
+<h1>crontab -e</h1>
+<p>@daily $HOME/mysql-backups.sh &gt; /dev/null 2&gt;&amp;1</p>
+<p>This is not the most robust way of backing up your DB, but it's a simple solution if you just want something quick up and running without worry too much.</p>
+</p>
+  			<a href="blog/2014/05/how-to-export-and-import-mysql-database.html"><h1>How to export and import MySQL database</h1></a>
+  			<p>30 May 2014, tags: 
+			    <a href="../tags/mysql.html">mysql</a> 
+  			</p>
+  			<p><p>You can export the MySQL database with schema table definitions and data separated. Here is a simple bash shell script that will export an database.</p>
+<h1>file: database-export.sh</h1>
+<p>DB_NAME=mydb<br />
+DB_SCHEMA_FILE=mydb.sql<br />
+DB_DATA_FILE=mydb-data.sql<br />
+DB_USERNAME=root<br />
+DB_PASSWORD=secret</p>
+<h1>export schema only from mysql</h1>
+<p>echo &quot;<code>date</code> Exporting database $DB_NAME schema to $DB_SCHEMA_FILE&quot;<br />
+mysqldump --no-data --routines -u $DB_USERNAME -p$DB_PASSWORD $DB_NAME &gt; $DB_SCHEMA_FILE</p>
+<h1>export data only from mysql</h1>
+<p>echo &quot;<code>date</code> Exporting database $DB_NAME data to $DB_DATA_FILE&quot;<br />
+mysqldump --single-transaction --quick --no-autocommit --no-create-info --extended-insert=false -u $DB_USERNAME -p$DB_PASSWORD $DB_NAME &gt; $DB_DATA_FILE</p>
+<p>echo &quot;<code>date</code> Done.&quot;</p>
+<p>The schema export with &quot;--routines&quot; will export stored proc as well. When exporitng data you have to be little more careful. The &quot;--single-transaction&quot; will ensure your data is good. The &quot;--no-autocommit&quot; can really speed up your import later on certain OS.</p>
+<p>Now to import these files back, you can create an empty database and then run the following.</p>
+<h1>file: database-import.sh</h1>
+<h1>import schema and data into mysql</h1>
+<p>echo &quot;<code>date</code> Importing Schema $DB_SCHEMA_FILE into $DB_NAME&quot;<br />
+mysql -f -u $DB_USERNAME -p$DB_PASSWORD $DB_NAME &lt; $DB_SCHEMA_FILE<br />
+echo &quot;<code>date</code> Importing DATA $DB_DATA_FILE into $DB_NAME&quot;<br />
+mysql -f -u $DB_USERNAME -p$DB_PASSWORD $DB_NAME &lt; $DB_DATA_FILE</p>
+<p>echo &quot;<code>date</code> Done.&quot;</p>
+<p>The import with &quot;-f&quot; option will allow you to continue even if you already have duplicated data in the tables; it will simply ignore and continue.</p>
+<p>These two combo commands will allow you to quicly backup and restore a MySQL database.</p>
+<p>Enjoy.</p>
+<p>PS: I have come to learn that &quot;mysqldump&quot; with procedures will insert an extra line like &quot;DEFINER 'user'@'hostname'&quot;, and it may create problem if you use different users to export/import or even run the application! Unfortunately there is no exclude from the &quot;mysqldump&quot; tool. So you have to manually strip that off if that's creating a problem for you.</p>
+<p>mysqldump --no-data --routines -u $DB_USERNAME -p$DB_PASSWORD $DB_NAME | perl -pi -e 's/DEFINER=&quot;\w+&quot;@&quot;\w+&quot; //g' &gt; $DB_SCHEMA_FILE</p>
+<p>You can vote the issue here: <a href="http://bugs.mysql.com/bug.php?id=24680">http://bugs.mysql.com/bug.php?id=24680</a></p>
+</p>
+  			<a href="blog/2014/04/how-to-enable-mysql-query-monitoring.html"><h1>How to enable MySQL query monitoring</h1></a>
+  			<p>16 April 2014, tags: 
+			    <a href="../tags/mysql.html">mysql</a> 
+  			</p>
+  			<p><p>Do you need to monitor any SQL statements passing through your MySQL server? You would need to turn on the server logging. Edit your my.cnf file and add these:</p>
+<p>log-output=FILE<br />
+general-log=1<br />
+general_log_file=mysql-general.log</p>
+<p>You also need to restart the database server after these changes.</p>
+</p>
+  			<a href="blog/2014/04/be-careful-with-java-path-endswithstring-usage.html"><h1>Be careful with Java Path.endsWith(String) usage</h1></a>
+  			<p>15 April 2014, tags: 
+			    <a href="../tags/java.html">java</a> 
+  			</p>
+  			<p><p>If you need to compare the java.io.file.Path object, be aware that Path.endsWith(String) will ONLY match another sub-element of Path object in your original path, not the path name string portion! If you want to match the string name portion, you would need to call the Path.toString() first. For example</p>
+<p>// Match all jar files.<br />
+Files.walk(dir).forEach(path -&gt; {<br />
+if (path.toString().endsWith(&quot;.jar&quot;))<br />
+System.out.println(path);<br />
+});</p>
+<p>With out the &quot;toString()&quot; you will spend many fruitless hours wonder why your program didn't work.</p>
+</p>
+  			<a href="blog/2014/04/how-to-disable-mysql-case-sensitive-with-table-names-in-queries.html"><h1>How to disable MySQL case sensitive with table names in queries</h1></a>
+  			<p>13 April 2014, tags: 
+			    <a href="../tags/mysql.html">mysql</a> 
+  			</p>
+  			<p><p>My latest install of MySQL 5.16 on Windows 7 is case sensitive with table names. I much prefer it's case in-sensitive for faster typing and adhoc queries. To do that, I need to edit the my.cnf file (Try running &quot;mysql --help&quot; and it will tell you where it is.)</p>
+<p>At the end of the file, add this line:</p>
+<p>lower_case_table_names = 1</p>
+</p>
+  			<a href="blog/2014/04/how-to-setup-remote-debug-with-weblogic-server-and-eclipse.html"><h1>How to setup remote debug with WebLogic Server and Eclipse</h1></a>
+  			<p>07 April 2014, tags: 
+			    <a href="../tags/weblogic.html">weblogic</a> 
+  			</p>
+  			<p><p>Here is how I enable remote debugging with WebLogic Server (11g) and Eclipse IDE. (Actually the java option is for any JVM, just the instruction here is WLS specific.)</p>
+<ol>
+<li>Edit &lt;my_domain&gt;/bin/setDomainEnv.sh file and add this on top:</li>
+</ol>
+<p>JAVA_OPTIONS=&quot;$JAVA_OPTIONS -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n&quot;</p>
+<p>The suspend=n will start your server without wait for you to connect with IDE. Server usually started with bunch of waiting threads and you can connect with an IDE any any time. You then try to place a break point and fetch a new HTTP request etc to initiate a thread to go into the code breakponit. If you don't want the WLS to wait before fully started, then set it to suspend=y instead.</p>
+<ol>
+<li>
+<p>Start/restart your WLS with &lt;my_domain&gt;/bin/startWebLogic.sh</p>
+</li>
+<li>
+<p>Once WLS is running, you may connect to it using Eclipse IDE. Go to Menu: Run &gt; Debug Configuration ... &gt; Remote Java Application and create a new entry. Ensure your port number is matching to what you used above.</p>
+</li>
+</ol>
+<p>Read more java debugging option here: <a href="http://www.oracle.com/technetwork/java/javase/tech/vmoptions-jsp-140102.html#DebuggingOptions">http://www.oracle.com/technetwork/java/javase/tech/vmoptions-jsp-140102.html#DebuggingOptions</a></p>
+<p>Now on the IDE Eclipse side, you can connect to your WLS server with the following instruction:</p>
+<ol>
+<li>
+<p>In Eclipse menu, select Run &gt; Debug Configuration ...</p>
+</li>
+<li>
+<p>On left side, select Remote Java Application, and then press the + button to create a new configuration.</p>
+</li>
+<li>
+<p>On the right side you can fill in the server info such as hostname and port number.</p>
+</li>
+<li>
+<p>Click Debug button</p>
+</li>
+</ol>
+<p>UPDATE (10/30/14):</p>
+<p>Remember each remote debug setup is per JVM and requires a unique port. So how to set each WebLogic Managed Server with unique debug port? You can easily do this by updating your line above to this:</p>
+<p>DEBUG_PORT=${DEBUG_PORT:=8000}<br />
+JAVA_OPTIONS=&quot;$JAVA_OPTIONS -Xrunjdwp:transport=dt_socket,address=$DEBUG_PORT,server=y,suspend=n&quot;</p>
+<p>Now you can start managed server like this to change the port in a Bash shell by change to your domain directory first, then run:</p>
+<p>bash&gt;DEBUG_PORT=8001 bin/startManagedWeblogic.sh my_server_name</p>
+</p>
+  			<a href="blog/2014/04/try-java8-online.html"><h1>Try Java8 online!</h1></a>
+  			<p>06 April 2014, tags: 
+			    <a href="../tags/java.html">java</a> 
+  			</p>
+  			<p><div class="paragraph">
+<p>This is pretty cool!  href="http://www.tryjava8.com/</p>
+</div></p>
+  			<a href="blog/2014/04/creating-your-own-loop-structure-in-java-8-lambda.html"><h1>Creating your own loop structure in Java 8 lambda</h1></a>
+  			<p>04 April 2014, tags: 
+			    <a href="../tags/java.html">java</a> 
+  			</p>
+  			<p><p>Java doesn't have an easy construct of repeat something N number of times. We can make a for loop of course, but many times we don't even care about the variable that we created in the loop. We just want repeat N times of some code and that's it. With the lambda available in Java 8, you may attempt something like this:</p>
+<p>public class RepeatDemo {<br />
+public static void main(String[] args) {<br />
+// One liner repeat<br />
+repeat(10, () -&gt; System.out.println(&quot;HELLO&quot;));</p>
+<pre><code>    // Multi-liners repeat
+    repeat(10, () -&gt; {
+        System.out.println(&quot;HELLO&quot;);
+        System.out.println(&quot;WORLD&quot;);
+    });
+}
+
+static void repeat(int n, Runnable r) {
+    for (int i = 0; i &lt; n; i++)
+        r.run();
+}
+</code></pre>
+<p>}</p>
+<p>Probably not as eye pleasing or straight forward as the good fashion for-loop, but you do get rid of the unnecessary loop variable. Only if Java 8 would go extra mile and treat the lambda argument in method  with sugar syntax, then we could have it something like the Scala/Groovy style, which makes code more smoother. For example:</p>
+<pre><code>    // Wouldn't this be nice to have in Java?
+    repeat(10) {
+        System.out.println(&quot;HELLO&quot;);
+        System.out.println(&quot;WORLD&quot;);
+    }
+</code></pre>
+<p>Hum....</p>
+</p>
+
+	<hr />
+
+	<ul class="pager">
+		<li class="previous"><a href="https://zemian.github.io/15">Previous</a></li>
+		<li>Page: 16/29</li>
+		<li class="next"><a href="https://zemian.github.io/17">Next</a></li>
+	</ul>
+
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">&copy; 2011 - 2019 Zemian Deng All Rights Reserved | Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.5</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../js/jquery-1.11.1.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/prettify.js"></script>
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-135626598-1');
+    </script>
+
+  </body>
+</html>

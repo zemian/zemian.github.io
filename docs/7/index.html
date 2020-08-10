@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Zemian's Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/asciidoctor.css" rel="stylesheet">
+    <link href="../css/base.css" rel="stylesheet">
+    <link href="../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../about.html">About</a></li>
+            <li><a href="../archive.html">Archive</a></li>
+            <li><a href="..//tags">Tags</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">
+  			<a href="blog/2018/02/customizing-httpd-conf-with-special-request-header-and-filter.html"><h1>Customizing httpd conf with special request header and filter</h1></a>
+  			<p>26 February 2018, tags: 
+			    <a href="../tags/httpd.html">httpd</a> 
+
+			    <a href="../tags/proxy.html">proxy</a> 
+
+			    <a href="../tags/filter.html">filter</a> 
+  			</p>
+  			<p><div class="sect1">
+<h2 id="_how_to_setup_httpd_reverse_proxy_for_tomcat">How to setup httpd reverse proxy for Tomcat</h2>
+<div class="sectionbody">
+<div class="literalblock">
+<div class="title">Enable modules</div>
+<div class="content">
+<pre># NOTE: If you are using Cygwin, these module requires cygserver to run!
+#       else you get the following error:
+#
+#[Mon Feb 26 09:26:50.308620 2018] [proxy:crit] [pid 7564] (88)Function not implemented: AH02478: #failed to create proxy mutex
+#AH00016: Configuration Failed
+#
+LoadModule proxy_module modules/mod_proxy.so
+LoadModule proxy_http_module modules/mod_proxy_http.so</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="title">Setup reverse proxy</div>
+<div class="content">
+<pre># Reverse Proxy Setup
+# NOTE: The ending slash '/' is important!
+&lt;IfModule proxy_module&gt;
+ProxyPass "/"  "http://localhost:8080/"
+ProxyPassReverse "/"  "http://localhost/"
+&lt;/IfModule&gt;</pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_how_to_add_custom_headers_to_requests">How to add custom headers to requests</h2>
+<div class="sectionbody">
+<div class="literalblock">
+<div class="title">Enable modules</div>
+<div class="content">
+<pre>LoadModule headers_module modules/mod_headers.so</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="title">Add headers to all requests</div>
+<div class="content">
+<pre>&lt;Location "/"&gt;
+	# Add custom headers
+	RequestHeader set appuser "test"
+	# Or add custom headers based on env variables exist
+	RequestHeader set appuser2 "%{APPUSER}e" env=APPUSER
+&lt;/Location&gt;</pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_how_to_setup_httpd_filter">How to setup Httpd Filter</h2>
+<div class="sectionbody">
+<div class="literalblock">
+<div class="title">Enable modules</div>
+<div class="content">
+<pre>LoadModule ext_filter_module modules/mod_ext_filter.so
+LoadModule request_module modules/mod_request.so</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="title">Windows Example</div>
+<div class="content">
+<pre># Setup external script to run request filter
+ExtFilterDefine my-filter mode=input \
+	cmd="C:/Python36/pythonw.exe C:/Apache24/cgi-bin/my-filter.py"
+&lt;Directory  "cgi-bin"&gt;
+	SetInputFilter my-filter
+&lt;/Directory&gt;</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="title">Cygwin Example</div>
+<div class="content">
+<pre># Setup external script to run request filter
+ExtFilterDefine my-filter mode=input \
+	cmd="/usr/bin/python3 /srv/www/cgi-bin/my-filter/my-filter.py"
+&lt;Directory  "/srv/www/cgi-bin/my-filter"&gt;
+	SetInputFilter my-filter
+&lt;/Directory&gt;</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="title">File my-filter.py</div>
+<div class="content">
+<pre>#!/usr/bin/python3
+import datetime
+log = '/var/log/httpd/my-filter.log'
+with open(log, 'a') as file:
+	file.write(f'{datetime.datetime.now()} hello filter\n')</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="title">File my-filter2.py</div>
+<div class="content">
+<pre>#!/usr/bin/python3
+import datetime, sys, os
+log = '/var/log/httpd/my-filter.log'
+with open(log, 'a') as file:
+	file.write(f'== {datetime.datetime.now()} hello filter\n')
+	file.write(f'arguments: {sys.argv}\n')
+	file.write(f'STDOIUT:\n')
+	for line in sys.stdin:
+		file.write(f'{line}\n')
+	file.write(f'os.environments:\n')
+	for k,v in os.environ.items():
+			file.write(f'os.env: {k} = {v}\n')</pre>
+</div>
+</div>
+</div>
+</div></p>
+  			<a href="blog/2018/02/how-to-turn-off-intellij-autoformat-on-a-block-of-code.html"><h1>How to turn off IntelliJ autoformat on a block of code</h1></a>
+  			<p>23 February 2018, tags: 
+			    <a href="../tags/intellij.html">intellij</a> 
+  			</p>
+  			<p><div class="paragraph">
+<p>When doing bug fix on old codes, you want least possible change set as possible. The IntelliJ IDE by default will auto reformat your code upon a <code>}</code> character you type. (Example: when you add a try/finally block to an existing block of code, then it will reformat that block of code base on IDE&#8217;s Code Style you configured.) If you have legacy code, they&#8217;re most likely formatted differently than your IDE style, and it will make unnessary changes. This is not what you want during bug fix. So to turn it off, you can do this:</p>
+</div>
+<div class="paragraph">
+<p>For, IntelliJ 2017.3, go to Menu <code>File &gt; Settings &gt; Editor &gt; General &gt; Smark Keys</code>, then uncheck <code>Reformat block  on typing '}'</code> item.</p>
+</div></p>
+  			<a href="blog/2018/02/starting-postgres-server-on-cygwin.html"><h1>Starting postgres server on Cygwin</h1></a>
+  			<p>20 February 2018, tags: 
+			    <a href="../tags/postgres.html">postgres</a> 
+
+			    <a href="../tags/cygwin.html">cygwin</a> 
+  			</p>
+  			<p><div class="paragraph">
+<p>To run postgres database server on Cygwin, you need first run the <code>cygserver</code>. If not, you will get error similar to this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>export PGDATA=/cygdrive/c/Users/zemian/my-pgdata
+pg_ctl init
+...
+running bootstrap script ... FATAL:  could not create shared memory segment: Function not implemented
+DETAIL:  Failed system call was shmget(key=1, size=56, 03600).
+child process exited with exit code 1
+initdb: removing contents of data directory "/cygdrive/c/Users/zemian/my-pgdata"
+pg_ctl: database system initialization failed</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To resolve this, you first start <code>cygserver</code>. Even if you do not have admin rights to install as Windows service, you can still run it per shell session. This is needed for <strong>shared memory</strong> need.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre># For the first time, you need config
+/usr/bin/cygserver-config
+
+# Now run it
+cygserver &amp;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>After above then you can start postgres</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>pg_ctrl init
+pg_ctrl start</pre>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_postgres_windows_installation">Postgres Windows Installation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The official download is provided by EnterpriseDB (EDB)
+You can get a zip package from:</p>
+</div>
+<div class="paragraph">
+<p><a href="https://www.enterprisedb.com/download-postgresql-binaries" class="bare">https://www.enterprisedb.com/download-postgresql-binaries</a></p>
+</div>
+<div class="paragraph">
+<p>To install, just unzip it.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>mkdir $HOME/apps/postgresql-10.3-2
+cd $HOME/apps/postgresql-10.3-2
+unzip postgresql-10.3-2-windows-x64-binaries.zip</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Server can be started manually like this in cmd.exe prompt:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>bin\pg_ctl -D data -o "--encoding=UTF8 --auth=trust" initdb
+mkdir logs
+bin\pg_ctl -D data -l logs\postgres.log start</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>bin\createdb %USERNAME%
+chcp 1252
+bin\psql</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>zemian=# select version();
+                          version
+------------------------------------------------------------
+ PostgreSQL 10.3, compiled by Visual C++ build 1800, 64-bit
+(1 row)</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>By default inidb will create a "postgres" database, but
+user is your Windows login name, and it will not match. It&#8217;s
+more convient to create a database that match your username,
+and use that as default.</p>
+</div>
+<div class="paragraph">
+<p>You should be careful with "--auth=trust", which can get
+you started quickly but not very secure.</p>
+</div>
+</div>
+</div></p>
+  			<a href="blog/2018/02/intellij-highlight-out-println-in-jsp-as-red-error.html"><h1>IntelliJ highlight &quot;out.println&quot; in JSP as red error</h1></a>
+  			<p>17 February 2018, tags: 
+			    <a href="../tags/intellij.html">intellij</a> 
+
+			    <a href="../tags/jsp.html">jsp</a> 
+  			</p>
+  			<p><div class="paragraph">
+<p>Some times you might have a Maven web application that deployes without problem into a Tomcat server, but when open in IntelliJ IDE, you will notice some of your JSP files have red error marks on lines such as <code>out.println("test");</code>. This problem can occur if your project <code>pom.xml</code> did not include <code>jsp-api</code> as provided dependency to your project! So ensure it contains these in your <code>pom.xml</code> file.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>        &lt;!-- Web --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;javax.servlet.jsp&lt;/groupId&gt;
+            &lt;artifactId&gt;javax.servlet.jsp-api&lt;/artifactId&gt;
+            &lt;version&gt;2.3.1&lt;/version&gt;
+            &lt;scope&gt;provided&lt;/scope&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
+            &lt;artifactId&gt;javax.servlet-api&lt;/artifactId&gt;
+            &lt;version&gt;3.1.0&lt;/version&gt;
+            &lt;scope&gt;provided&lt;/scope&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
+            &lt;artifactId&gt;jstl&lt;/artifactId&gt;
+            &lt;version&gt;1.2&lt;/version&gt;
+        &lt;/dependency&gt;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Note that for Tomcat, you must include the <code>JSTL</code> tag library as dependency, and it is NOT provided by server if you want to use the core JSTL tags!</p>
+</div></p>
+  			<a href="blog/2018/02/intellij-displays-servers-certificate-is-not-trusted-pop-up.html"><h1>IntelliJ displays Server&apos;s Certificate is not trusted pop-up</h1></a>
+  			<p>11 February 2018, tags: 
+			    <a href="../tags/intellij.html">intellij</a> 
+  			</p>
+  			<p><div class="paragraph">
+<p>I get this "Server&#8217;s Certificate is not trusted" pop-up window once in a while when I am in different network. If you know your IDE is already working fine, then you can get rid of it by go to below location.</p>
+</div>
+<div class="paragraph">
+<p><code>File | Settings | Tools | Server Certificates for Windows and Linux</code></p>
+</div>
+<div class="paragraph">
+<p>Then click on "Accept non-trusted certificates automatically".</p>
+</div></p>
+  			<a href="blog/2018/01/walk-resource-tree-as-directory-in-classpath.html"><h1>Walk resource tree as directory in classpath</h1></a>
+  			<p>27 January 2018, tags: 
+			    <a href="../tags/java.html">java</a> 
+
+			    <a href="../tags/classpath.html">classpath</a> 
+  			</p>
+  			<p><div class="paragraph">
+<p>The two most frequent type of classpath URL we get when get it through <code>ClassLoader#getResource(resourceName)</code> is either <code>file</code> or <code>jar</code> entries. If we want to walk a resources that are stored in a directory, then we need to parse these differently. For <code>file</code>, it&#8217;s easy to do since we have <code>java.io.File</code>. As for <code>jar</code>, we would use <code>JarFile</code>. Here is a implementation.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>public static void walkClasspathResDir(ClassLoader cl, String resDir, ConsumerEx&lt;FileStream&gt; fileConsumer) {
+        // NOTE: JarEntry.isDirectory() used below requires input to ends with slash.
+        if (!resDir.endsWith("/")) {
+            resDir = resDir + "/";
+        }
+
+        URL url = cl.getResource(resDir);
+        if (url == null) {
+            throw new AppException("Resource directory " + resDir + " not found in classpath.");
+        } else if ("file".equals(url.getProtocol())) {
+            File dir = new File(url.getPath());
+            if (!dir.isDirectory()) {
+                throw new AppException("Resource is not a directory: " + resDir);
+            }
+            walkFileDir(dir, fileConsumer);
+        } else if ("jar".equals(url.getProtocol())) {
+            try {
+                JarURLConnection conn = (JarURLConnection) url.openConnection();
+                if (!(conn.getJarEntry().isDirectory())) {
+                    throw new AppException("Resource is not a directory: " + resDir);
+                }
+                walkJarEntryDir(conn.getJarFile(), resDir, fileConsumer);
+            } catch (Exception e) {
+                throw new AppException("Unable to read resource: " + url, e);
+            }
+        } else {
+            throw new AppException("Unsupported protocol " + url.getProtocol() + " for checking resource directory.");
+        }
+    }
+
+    public static void walkFileDir(File dir, ConsumerEx&lt;FileStream&gt; fileConsumer) {
+        try {
+            Files.walkFileTree(dir.toPath(), new SimpleFileVisitor&lt;Path&gt;() {
+                @Override
+                public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                    try (FileInputStream stream = new FileInputStream(file.toFile())) {
+                        try {
+                            String shortPath = file.toFile().getPath().substring(dir.getPath().length());
+                            // Always convert path separator to Unix
+                            shortPath = FilenameUtils.separatorsToUnix(shortPath);
+                            // Remove leading '/' if there is any
+                            if (shortPath.startsWith("/")) {
+                                shortPath = shortPath.substring(1);
+                            }
+                            fileConsumer.accept(new FileStream(shortPath, stream));
+                        } catch (Exception e) {
+                            throw new AppException("Failed to process file: " + file, e);
+                        }
+                    }
+                    return FileVisitResult.CONTINUE;
+                }
+            });
+        } catch (IOException e) {
+            throw new AppException("Failed to walk directory: " + dir, e);
+        }
+    }
+
+    public static void walkJarEntryDir(JarFile jarFile, String entryName, ConsumerEx&lt;FileStream&gt; fileConsumer) {
+        try {
+            Enumeration&lt;JarEntry&gt; entries = jarFile.entries();
+            while (entries.hasMoreElements()) {
+                JarEntry jarEntry = entries.nextElement();
+                if (jarEntry.getName().startsWith(entryName)) {
+                    if (!jarEntry.isDirectory()) {
+                        try (InputStream stream = jarFile.getInputStream(jarEntry)) {
+                            try {
+                                String shortPath = jarEntry.getName().substring(entryName.length());
+                                fileConsumer.accept(new FileStream(shortPath, stream));
+                            } catch (Exception e) {
+                                throw new AppException("Failed to process jar entry: " + jarEntry.getName(), e);
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (IOException e) {
+            throw new AppException("Failed to walk jar directory entry: " + entryName, e);
+        }
+    }</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Here the <code>FileStream</code> is just a POJO that holds a resource path name and the stream that points to it. One tricky part to above code is noted in comment:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>// NOTE: JarEntry.isDirectory() used below requires input to ends with slash.</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now, here is how we can use it:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>        ClassLoader cl = Thread.currentThread().getContextClassLoader();
+        walkClasspathResDir(cl, "toolbox/templates/javaapp", (fileStream) -&gt; {
+            System.out.println(fileStream.getPath() + " " + fileStream.getStream());
+        });
+        System.out.println();</pre>
+</div>
+</div></p>
+  			<a href="blog/2018/01/using-java8-localdatetime-with-freemarker.html"><h1>Using Java8 LocalDateTime with FreeMarker</h1></a>
+  			<p>27 January 2018, tags: 
+			    <a href="../tags/freemarker.html">freemarker</a> 
+  			</p>
+  			<p><div class="paragraph">
+<p>It&#8217;s unfortunate that even latest FreeMarker 2.3.27 still does not support <code>java.time.LocalDateTime</code> as data model natively. If you want to use this in your template, you would either have to write your own, or use this friendly library:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>        &lt;!-- Web View: FTL Template Engine --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.freemarker&lt;/groupId&gt;
+            &lt;artifactId&gt;freemarker&lt;/artifactId&gt;
+            &lt;version&gt;2.3.27-incubating&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;no.api.freemarker&lt;/groupId&gt;
+            &lt;artifactId&gt;freemarker-java8&lt;/artifactId&gt;
+            &lt;version&gt;1.1.5&lt;/version&gt;
+        &lt;/dependency&gt;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>With this, you may format the java8 date model in template like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>Today date is ${todayDate.format()}
+
+Or use custom date formatter: ${todayDate.format('yyyy-MM-dd HH:mm')}</pre>
+</div>
+</div></p>
+  			<a href="blog/2018/01/how-to-fix-intellij-outofmemoryerror.html"><h1>How to fix IntelliJ OutOfMemoryError</h1></a>
+  			<p>19 January 2018, tags: 
+			    <a href="../tags/intellij.html">intellij</a> 
+  			</p>
+  			<p><div class="paragraph">
+<p>If you have a large project, you might get this error when trying to do a full build</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>Error:java: OutOfMemoryError: insufficient memory</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can fix this by increase memory in two places in the IDE. For example, let says you want to increase to 2GB of memory:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Update the <code>idea64.exe.vmoptions</code> file with <code>-Xmx2048m</code> to increase Java max heap memory size for  your IDE. (Require IDE restart)</p>
+</li>
+<li>
+<p>Go to IDE menu: File &gt; Settings &#8230;&#8203; &gt; Build, Execution, Deployment &gt; Compiler &gt; "Build process heap size (Mbytes):" and increase it to <code>2000</code>.</p>
+</li>
+</ol>
+</div></p>
+  			<a href="blog/2017/08/how-to-run-nginx-and-setup-reverse-proxy-to-tomcat.html"><h1>How to run nginx and setup reverse proxy to Tomcat</h1></a>
+  			<p>04 August 2017, tags: 
+			    <a href="../tags/nginx.html">nginx</a> 
+
+			    <a href="../tags/tomcat.html">tomcat</a> 
+  			</p>
+  			<p><div class="listingblock">
+<div class="content">
+<pre># start
+cd ~/apps/nginx-1.13.7
+./nginx -c conf/nginx.conf
+
+# stop
+./nginx -c conf/nginx.conf -s stop</pre>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_how_to_setup_nginx_reverse_proxy_to_tomcat">How to setup nginx reverse proxy to Tomcat</h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre># nginx.conf
+	server {
+		listen       80;
+		server_name  localhost;
+
+		location / {
+			proxy_pass http://localhost:8080;
+			proxy_set_header X-Forwarded-Host $host;
+			proxy_set_header X-Forwarded-Server $host;
+		}
+	}</pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_setup_to_setup_nginx_ssl_and_reverse_proxy_to_tomcat">Setup to setup nginx ssl and reverse proxy to Tomcat</h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre># ssl setup
+cd ~/apps/nginx-1.13.7/conf
+openssl req -x509 -nodes -newkey rsa:2048 -keyout cert.key -out cert.crt
+
+# nginx.conf
+    server {
+        listen       443 ssl;
+        server_name  localhost;
+
+        ssl_certificate      cert.crt;
+        ssl_certificate_key  cert.key;
+
+        ssl_session_cache    shared:SSL:1m;
+        ssl_session_timeout  5m;
+
+        ssl_ciphers  HIGH:!aNULL:!MD5;
+        ssl_prefer_server_ciphers  on;
+
+        location / {
+			proxy_pass http://localhost:8080;
+			proxy_set_header X-Forwarded-Host $host;
+			proxy_set_header X-Forwarded-Server $host;
+			proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+		}
+    }</pre>
+</div>
+</div>
+</div>
+</div></p>
+  			<a href="blog/2017/07/creating-postgresql-db-users-to-match-linux-users.html"><h1>Creating PostgreSQL db users to match Linux users</h1></a>
+  			<p>07 July 2017, tags: 
+			    <a href="../tags/postgres.html">postgres</a> 
+  			</p>
+  			<p><div class="paragraph">
+<p>By default the <code>posgresql-server</code> install will create a <code>postgres</code> Linux user account and the server will run under that user. And also PostgreSQL server will default have a DB user named <code>postgres</code> as well, and this DB user does not have a password! There is a distinction between Linux user vs PostgreSQL database user, and mostly you need to work with DB user only. After the install, you may change the password for DB <code>postgres</code> like this:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>bash&gt; sudo -u postgres psql
+
+postgres=# \password postgres
+
+# It should prompt you to enter password for `postgres` DB user.</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>When developing application, I like to create a dedicated DB user to match my login account and create database there instead of using the default <code>postgres</code> user. You may create a new DB user that match to your current Linux account user (eg: <code>zemian</code>)  like this:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>bash&gt; sudo -u postgres createdb -s -P zemian
+# It should prompt you to enter password for `zemian` DB user. The `-s` option is to for superuser privileges.</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now that you have a DB user <code>zemian</code>, you may create a default database for it.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>bash&gt; createdb --username=zemian zemian</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now you may invoke <code>psql</code> under <code>zemian</code> Linux user session without any parameters and it should log you in!</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>bash&gt; psql
+
+zemian=# CREATE TABLE test(id serial, name VARCHAR(20), message VARCHAR(500));
+NOTICE:  CREATE TABLE will create implicit sequence "test_id_seq" for serial column "test.id"
+CREATE TABLE
+
+zemian=# \d test
+                                 Table "public.test"
+ Column  |          Type          |                     Modifiers
+---------+------------------------+---------------------------------------------------
+ id      | integer                | not null default nextval('test_id_seq'::regclass)
+ name    | character varying(20)  |
+ message | character varying(500) |
+
+zemian=# INSERT INTO test(name, message) VALUES('Hello', 'World');
+INSERT 0 1
+zemian=# INSERT INTO test(name, message) VALUES('Hello2', 'World2');
+INSERT 0 1
+zemian=# SELECT * FROM test;
+ id |  name  | message
+----+--------+---------
+  1 | Hello  | World
+  2 | Hello2 | World2
+(2 rows)</pre>
+</div>
+</div></p>
+
+	<hr />
+
+	<ul class="pager">
+		<li class="previous"><a href="https://zemian.github.io/6">Previous</a></li>
+		<li>Page: 7/29</li>
+		<li class="next"><a href="https://zemian.github.io/8">Next</a></li>
+	</ul>
+
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">&copy; 2011 - 2019 Zemian Deng All Rights Reserved | Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.5</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../js/jquery-1.11.1.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/prettify.js"></script>
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-135626598-1');
+    </script>
+
+  </body>
+</html>

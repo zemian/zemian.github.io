@@ -40,7 +40,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -48,7 +48,6 @@
             <li><a href="../../../about.html">About</a></li>
             <li><a href="../../../archive.html">Archive</a></li>
             <li><a href="../../..//tags">Tags</a></li>
-            <li><a href="../../../feed.xml">Subscribe</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -62,46 +61,48 @@
 	    <a href="../../../tags/python.html">python</a> 
 	</p>
 
-	<p>If you want to experiment some python code as CGI script to serve by a HTTP server,
-you can get started by these steps:<br />
+	<p><p>If you want to experiment some python code as CGI script to serve by a HTTP server,<br />
+you can get started by these steps:</p>
 <ol>
 <li>Create a <code>cgi-bin</code> directory.</li>
 <li>Ready!</li>
 </ol>
-No, really, it's that simple! Try these CGI scripts out.<br />
-<h2>
-Example 1: <code>cgi-bin/hello.py</code></h2>
+<p>No, really, it's that simple! Try these CGI scripts out.</p>
+<h2></h2>
+<p>Example 1: <code>cgi-bin/hello.py</code></p>
 <pre><code>#!/usr/bin/env python3
 
-localvars_table = '<table>'
+localvars_table = ''
 for x in dir():
-  localvars_table += '<tr><td>%s</td></tr>' % x
-localvars_table += '</table>'
+  localvars_table += '%s' % x
+localvars_table += ''
 
-print("Content-type: text/html")
-print("")
-print("""<html><body>
-<p>Hello World! Your custom CGI script is working. Here are your current Python local variables.</p>
+print(&quot;Content-type: text/html&quot;)
+print(&quot;&quot;)
+print(&quot;&quot;&quot;
+Hello World! Your custom CGI script is working. Here are your current Python local variables.
+
 %s
-<p>NOTE: If you want to write useful CGI script, try the Python 'cgi' module. See cgitest.py script.</p>
-</body></html>""" % (localvars_table))
+
+NOTE: If you want to write useful CGI script, try the Python 'cgi' module. See cgitest.py script.
+&quot;&quot;&quot; % (localvars_table))
 </code></pre>
-To test and run this, you simply invoke these couple commands:<br />
-<pre><code>bash> chmod a+x cgi-bin/hello.py
-bash> python3 -m http.server --cgi
+<p>To test and run this, you simply invoke these couple commands:</p>
+<pre><code>bash&gt; chmod a+x cgi-bin/hello.py
+bash&gt; python3 -m http.server --cgi
 </code></pre>
-You may now test it on your browser with <a href="http://localhost:8000/cgi-bin/hello.py">http://localhost:8000/cgi-bin/hello.py</a>. Hit <code>CTRL+C</code> to stop the server.<br />
-If you want to do more with fancy CGI scripts, try the Python's <code>cgi</code> module. Here is another example.<br />
-<h2>
-Example 2: <code>cgi-bin/cgitest.py</code></h2>
+<p>You may now test it on your browser with <a href="http://localhost:8000/cgi-bin/hello.py">http://localhost:8000/cgi-bin/hello.py</a>. Hit <code>CTRL+C</code> to stop the server.</p>
+<p>If you want to do more with fancy CGI scripts, try the Python's <code>cgi</code> module. Here is another example.</p>
+<h2></h2>
+<p>Example 2: <code>cgi-bin/cgitest.py</code></p>
 <pre><code>#!/usr/bin/env python3
 
 import cgi
 cgi.test()
 </code></pre>
-Again <code>chmod</code> your <code>cgitest.py</code> script and visit <a href="http://localhost:8000/cgi-bin/cgitest.py">http://localhost:8000/cgi-bin/cgitest.py</a>. You will see all the
-HTTP related data as expected when working with a CGI script. See <a href="https://docs.python.org/3/library/cgi.html">https://docs.python.org/3/library/cgi.html</a>
-for more details.
+<p>Again <code>chmod</code> your <code>cgitest.py</code> script and visit <a href="http://localhost:8000/cgi-bin/cgitest.py">http://localhost:8000/cgi-bin/cgitest.py</a>. You will see all the<br />
+HTTP related data as expected when working with a CGI script. See <a href="https://docs.python.org/3/library/cgi.html">https://docs.python.org/3/library/cgi.html</a><br />
+for more details.</p>
 </p>
 
 	<hr />

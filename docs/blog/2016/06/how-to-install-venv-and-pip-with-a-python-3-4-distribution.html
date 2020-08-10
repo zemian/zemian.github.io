@@ -40,7 +40,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -48,7 +48,6 @@
             <li><a href="../../../about.html">About</a></li>
             <li><a href="../../../archive.html">Archive</a></li>
             <li><a href="../../..//tags">Tags</a></li>
-            <li><a href="../../../feed.xml">Subscribe</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -62,21 +61,19 @@
 	    <a href="../../../tags/python.html">python</a> 
 	</p>
 
-	<p>If you are unfortunate enough to have stuck with a Python 3.4 distribution and you want to setup a virtual env, then likely you will get the ensurepip module not found error:<br />
-<br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">bash&gt; python3.4 -m venv mypy<br />Error: Command '['/home/zedeng/py-dev/mypy/bin/python3.4', '-Im', 'ensurepip', '--upgrade', '--default-pip']' returned non-zero exit status 1</span><br />
-<br />
-I found someone posted a nice solution [1] to this. So first remove the dir first.<br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">bash&gt; rm -r mypy</span><br />
-<br />
-Now do it again like this:<br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">bash&gt; python</span><span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">3.4</span> -m venv mypy --without-pip<br />bash&gt; . mypy/bin/activate<br />&nbsp;</span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">mypy&gt; wget https://bootstrap.pypa.io/get-pip.py<br />mypy&gt; python get-pip.py </span><br />
-<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">mypy&gt; pip list&nbsp;</span><br />
-<br />
-Now the problem is solved. I believe this problem is gone if you upgrade to Python 3.5<br />
-<br />
-[1] http://www.thefourtheye.in/2014/12/Python-venv-problem-with-ensurepip-in-Ubuntu.html 
+	<p><p>If you are unfortunate enough to have stuck with a Python 3.4 distribution and you want to setup a virtual env, then likely you will get the ensurepip module not found error:</p>
+<p>bash&gt; python3.4 -m venv mypy<br />
+Error: Command '['/home/zedeng/py-dev/mypy/bin/python3.4', '-Im', 'ensurepip', '--upgrade', '--default-pip']' returned non-zero exit status 1</p>
+<p>I found someone posted a nice solution [1] to this. So first remove the dir first.<br />
+bash&gt; rm -r mypy</p>
+<p>Now do it again like this:<br />
+bash&gt; python3.4 -m venv mypy --without-pip<br />
+bash&gt; . mypy/bin/activate</p>
+<p>mypy&gt; wget <a href="https://bootstrap.pypa.io/get-pip.py">https://bootstrap.pypa.io/get-pip.py</a><br />
+mypy&gt; python get-pip.py<br />
+mypy&gt; pip list</p>
+<p>Now the problem is solved. I believe this problem is gone if you upgrade to Python 3.5</p>
+<p>[1] <a href="http://www.thefourtheye.in/2014/12/Python-venv-problem-with-ensurepip-in-Ubuntu.html">http://www.thefourtheye.in/2014/12/Python-venv-problem-with-ensurepip-in-Ubuntu.html</a></p>
 </p>
 
 	<hr />

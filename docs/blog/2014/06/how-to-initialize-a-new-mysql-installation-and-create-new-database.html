@@ -40,7 +40,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -48,7 +48,6 @@
             <li><a href="../../../about.html">About</a></li>
             <li><a href="../../../archive.html">Archive</a></li>
             <li><a href="../../..//tags">Tags</a></li>
-            <li><a href="../../../feed.xml">Subscribe</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -62,38 +61,50 @@
 	    <a href="../../../tags/mysql.html">mysql</a> 
 	</p>
 
-	<p><pre class="bki-pre">&nbsp;</pre>
-<div class="bki-pre">
-For a freshly installed MySQL server, you would need to initialize the system tables and data directory like this:</div>
-<pre class="bki-pre">&nbsp;</pre>
-<pre class="bki-pre"><span style="font-family: &quot;Courier New&quot;,Courier,monospace;">cd mysql-&lt;version&gt; </span></pre>
-<pre class="bki-pre"><span style="font-family: &quot;Courier New&quot;,Courier,monospace;">scripts/mysql_install_db --basedir=. --datadir=data
-bin/mysqld_safe --defaults-file=my.cnf &amp;</span></pre>
-<pre class="bki-pre">&nbsp;</pre>
-<div class="bki-pre">
-Before MySQL 5.6, this will setup a "root" with empty password that you can immediately login. For MySQL 5.7 however, it creates a random password for "root" user now. The password is generated under $HOME/.mysql_secret. You need to login and run "SET PASSWORD = PASSWORD('secret')" to change it.</div>
-<div class="bki-pre">
-<br /></div>
-<div class="bki-pre">
-After above, you may login using "root" and start creating your own database and users. For example:</div>
-<div class="bki-pre">
-<br /></div>
-<div class="bki-pre">
-<span style="font-family: &quot;Courier New&quot;,Courier,monospace;">&nbsp;&nbsp;&nbsp; CREATE DATABASE mydb;<br />&nbsp;&nbsp;&nbsp; GRANT ALL PRIVILEGES ON mydb.* TO 'myuser'@'%' IDENTIFIED BY 'secret';<br />&nbsp;&nbsp;&nbsp; GRANT ALL PRIVILEGES ON mydb.* TO 'myuser'@'localhost' IDENTIFIED BY 'secret';</span></div>
-<div class="bki-pre">
-<br />
-UPDATE 2015-01-26 <br />
-Here are more notes to replace/upgrade existing mysql server and install to init.d to auto start by OS.<br />
-<span style="font-family: &quot;Courier New&quot;,Courier,monospace;"><br />= Install and Setup new MySQL into an exiting Linux.<br /><br />== To remove/dislable old existing mysqld init.d (one usually defualt installed under /usr/mysql)<br />sudo /sbin/chkconfig --del mysqld<br /><br />== Install new mysql server (5.6.16)<br />&nbsp;&nbsp;&nbsp; * Ensure mysql user exists and installation files are owned by this user<br /># Setup and initial the new mysql server </span><br />
-<span style="font-family: &quot;Courier New&quot;,Courier,monospace;">groupadd mysql<br />useradd -r -g mysql mysql </span><br />
-<span style="font-family: &quot;Courier New&quot;,Courier,monospace;">cd /apps/mysql<br />sudo chown -R mysql:mysql .<br />sudo scripts/mysql_install_db --basedir=/apps/mysql --datadir=/apps/mysql/data --user=mysql</span><br />
-<span style="font-family: &quot;Courier New&quot;,Courier,monospace;"><br /></span>
-<span style="font-family: &quot;Courier New&quot;,Courier,monospace;"># Optional: Manually start the server and see if it works<br /># sudo bin/mysqld_safe --defaults-file=/apps/mysql/my.cnf --user=mysql<br /># sudo bin/mysqladmin shutdown -u root</span><br />
-<span style="font-family: &quot;Courier New&quot;,Courier,monospace;"><br /># Install the init.d script to start server upon system reboot </span><br />
-<span style="font-family: &quot;Courier New&quot;,Courier,monospace;">sudo ln -s support-file/mysql.server /etc/init.d/mysql.server<br />sudo vim support-file/mysql.server<br />&nbsp;&nbsp;&nbsp; * Ensure these vars are set correctly in your env<br />basedir=/apps/mysql<br />datadir=/apps/mysql/data<br />cnffile=/apps/mysql/my.cnf<br />user=mysql<br />&nbsp;&nbsp;&nbsp; * modify the mysqld_safe command line to add (ENSURE --user option comes last!)<br />&nbsp;&nbsp;&nbsp; --defaults-file=$cnffile --user=$user<br />&nbsp;&nbsp;&nbsp; <br />sudo /sbin/chkconfig --add mysql.server<br />sudo /sbin/service mysql.server start<br />&nbsp;&nbsp;&nbsp; <br />== Change MySQL root password<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;sudo bin/mysqladmin password 'new_password'</span> <br />
-<span style="font-family: &quot;Courier New&quot;,Courier,monospace;"><br /></span>
-<span style="font-family: inherit;">Ref:</span><br />
-<span style="font-family: inherit;"><a href="https://dev.mysql.com/doc/refman/5.6/en/binary-installation.html">https://dev.mysql.com/doc/refman/5.6/en/binary-installation.html</a></span></div>
+	<p><p>For a freshly installed MySQL server, you would need to initialize the system tables and data directory like this:</p>
+<pre><code>cd mysql-&lt;version&gt; 
+
+scripts/mysql_install_db --basedir=. --datadir=data
+bin/mysqld_safe --defaults-file=my.cnf &amp;
+</code></pre>
+<p>Before MySQL 5.6, this will setup a &quot;root&quot; with empty password that you can immediately login. For MySQL 5.7 however, it creates a random password for &quot;root&quot; user now. The password is generated under $HOME/.mysql_secret. You need to login and run &quot;SET PASSWORD = PASSWORD('secret')&quot; to change it.</p>
+<p>After above, you may login using &quot;root&quot; and start creating your own database and users. For example:</p>
+<pre><code>CREATE DATABASE mydb;
+GRANT ALL PRIVILEGES ON mydb.* TO 'myuser'@'%' IDENTIFIED BY 'secret';
+GRANT ALL PRIVILEGES ON mydb.* TO 'myuser'@'localhost' IDENTIFIED BY 'secret';
+</code></pre>
+<p>UPDATE 2015-01-26</p>
+<p>Here are more notes to replace/upgrade existing mysql server and install to init.d to auto start by OS.</p>
+<p>= Install and Setup new MySQL into an exiting Linux.</p>
+<p>== To remove/dislable old existing mysqld init.d (one usually defualt installed under /usr/mysql)<br />
+sudo /sbin/chkconfig --del mysqld</p>
+<p>== Install new mysql server (5.6.16)<br />
+* Ensure mysql user exists and installation files are owned by this user</p>
+<h1>Setup and initial the new mysql server</h1>
+<p>groupadd mysql<br />
+useradd -r -g mysql mysql<br />
+cd /apps/mysql<br />
+sudo chown -R mysql:mysql .<br />
+sudo scripts/mysql_install_db --basedir=/apps/mysql --datadir=/apps/mysql/data --user=mysql</p>
+<h1>Optional: Manually start the server and see if it works</h1>
+<h1>sudo bin/mysqld_safe --defaults-file=/apps/mysql/my.cnf --user=mysql</h1>
+<h1>sudo bin/mysqladmin shutdown -u root</h1>
+<h1>Install the init.d script to start server upon system reboot</h1>
+<p>sudo ln -s support-file/mysql.server /etc/init.d/mysql.server<br />
+sudo vim support-file/mysql.server<br />
+* Ensure these vars are set correctly in your env<br />
+basedir=/apps/mysql<br />
+datadir=/apps/mysql/data<br />
+cnffile=/apps/mysql/my.cnf<br />
+user=mysql<br />
+* modify the mysqld_safe command line to add (ENSURE --user option comes last!)<br />
+--defaults-file=$cnffile --user=$user</p>
+<p>sudo /sbin/chkconfig --add mysql.server<br />
+sudo /sbin/service mysql.server start</p>
+<p>== Change MySQL root password<br />
+sudo bin/mysqladmin password 'new_password'</p>
+<p>Ref:<br />
+<a href="https://dev.mysql.com/doc/refman/5.6/en/binary-installation.html">https://dev.mysql.com/doc/refman/5.6/en/binary-installation.html</a></p>
 </p>
 
 	<hr />

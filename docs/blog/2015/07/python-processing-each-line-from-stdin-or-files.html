@@ -40,7 +40,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -48,7 +48,6 @@
             <li><a href="../../../about.html">About</a></li>
             <li><a href="../../../archive.html">Archive</a></li>
             <li><a href="../../..//tags">Tags</a></li>
-            <li><a href="../../../feed.xml">Subscribe</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -62,12 +61,12 @@
 	    <a href="../../../tags/python.html">python</a> 
 	</p>
 
-	<p><span style="font-family: Courier New, Courier, monospace;">import fileinput,re</span><br />
-<span style="font-family: Courier New, Courier, monospace;">for line in fileinput.input():</span><br />
-<span style="font-family: Courier New, Courier, monospace;"><span class="Apple-tab-span" style="white-space: pre;"> </span>line=line.rstrip()</span><br />
-<span style="font-family: Courier New, Courier, monospace;"><span class="Apple-tab-span" style="white-space: pre;"> </span>line=line.replace('\\', '/')</span><br />
-<span style="font-family: Courier New, Courier, monospace;"><span class="Apple-tab-span" style="white-space: pre;"> </span>a,b,*_=re.split('\s+', line)</span><br />
-<span style="font-family: Courier New, Courier, monospace;"><span class="Apple-tab-span" style="white-space: pre;"> </span>print(b)</span>
+	<p><p>import fileinput,re<br />
+for line in fileinput.input():<br />
+line=line.rstrip()<br />
+line=line.replace('\', '/')<br />
+a,b,*_=re.split('\s+', line)<br />
+print(b)</p>
 </p>
 
 	<hr />

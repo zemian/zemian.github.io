@@ -28,3 +28,20 @@ tags=blog
 
 1. Run `jbake -b jbake docs`
 2. Git commit and push
+
+## Converting `asciidoc` to `markdown`
+
+Ref: https://tinyapps.org/blog/201701240700_convert_asciidoc_to_markdown.html
+```
+brew install pandoc asciidoc
+asciidoc -b docbook foo.adoc
+pandoc -f docbook -t markdown_strict foo.xml -o foo.md
+```
+
+NOTE: For our blog posts, we need to strip off the front metadata first.
+
+## Converting `html` to `markdown`
+
+```
+pandoc -f html -t markdown
+```

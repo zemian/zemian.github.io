@@ -40,7 +40,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -48,7 +48,6 @@
             <li><a href="../../../about.html">About</a></li>
             <li><a href="../../../archive.html">Archive</a></li>
             <li><a href="../../..//tags">Tags</a></li>
-            <li><a href="../../../feed.xml">Subscribe</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -62,34 +61,18 @@
 	    <a href="../../../tags/groovy.html">groovy</a> 
 	</p>
 
-	<p><div class="paragraph">
-<p>Here is how you can convert <code>asciidoc</code> text using Groovy script:</p>
-</div>
-<div class="listingblock">
-
-<div class="content monospaced">
-<pre>// filename: RunAsciidoc.groovy
+	<p><p>Here is how you can convert <code>asciidoc</code> text using Groovy script:</p>
+<pre><code>// filename: RunAsciidoc.groovy
 @Grab('org.asciidoctor:asciidoctor-java-integration:0.1.3')
 import org.asciidoctor.*
 def asciidoctor = Asciidoctor.Factory.create()
 def output = asciidoctor.renderFile(new File(args[0]),  [:])
-println(output);</pre>
-</div>
-</div>
-<div class="paragraph">
+println(output);
+</code></pre>
 <p>Now you may run it</p>
-</div>
-<div class="literalblock">
-
-<div class="content monospaced">
-<pre>groovy RunAsciidoc.groovy myarticle.txt</pre>
-</div>
-</div>
-<div class="paragraph">
+<pre><code>groovy RunAsciidoc.groovy myarticle.txt
+</code></pre>
 <p>Many thanks to the <code>asciidoctor.org</code> project!</p>
-</div>
-
-
 </p>
 
 	<hr />

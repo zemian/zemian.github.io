@@ -40,7 +40,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -48,7 +48,6 @@
             <li><a href="../../../about.html">About</a></li>
             <li><a href="../../../archive.html">Archive</a></li>
             <li><a href="../../..//tags">Tags</a></li>
-            <li><a href="../../../feed.xml">Subscribe</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -62,21 +61,15 @@
 	    <a href="../../../tags/myschedule.html">myschedule</a> 
 	</p>
 
-	<p><p>First snapshot of <a href="https://code.google.com/p/myschedule/downloads/list">myschedule-3.0.0</a> with brand new UI is ready to be try out! 
-
-<p>It's been a long time since I made a release for MySchedule project, and I have been busy!
-
-<p>Well, for starter, I have been exploring the Vaaddin library for a new UI design for the project, and it's working really nice! I love to have full Java code for UI layout and widget controls and yet it runs on browser. It's a perfect fit for MySchedule. As you will see from the snapshot, the UI is still pretty bare, but for me, as backend developer, and be able to have such clean UI code is super exciting. (on other hand, working with JavaScript, even with such nice library as jQuery can still feel like a hack at times. ^_^) You should checkout the latest MySchedule source to take a look yourself. All that GUI is less than handful of UI classes. Vaaddin is pretty sweet!
-
-<p>As MySchedule jumped to 3.x version, I've taken the opportunity to clean up few areas in the "quartz-extra" module as well. Also to support Vaadin, the web layer needed a rework. The new code is easy to follow and ready to support more UI features in the future.
-
-<p>I also improved on the project packaging. Now getting started with is even more easier. Get the single zip file, and try any of these simple steps:
-
-<pre>
-## Web application usage (option 1: power up a self-contained servlet server!)
+	<p><p>First snapshot of <a href="https://code.google.com/p/myschedule/downloads/list">myschedule-3.0.0</a> with brand new UI is ready to be try out!</p>
+<p>It's been a long time since I made a release for MySchedule project, and I have been busy!</p>
+<p>Well, for starter, I have been exploring the Vaaddin library for a new UI design for the project, and it's working really nice! I love to have full Java code for UI layout and widget controls and yet it runs on browser. It's a perfect fit for MySchedule. As you will see from the snapshot, the UI is still pretty bare, but for me, as backend developer, and be able to have such clean UI code is super exciting. (on other hand, working with JavaScript, even with such nice library as jQuery can still feel like a hack at times. ^_^) You should checkout the latest MySchedule source to take a look yourself. All that GUI is less than handful of UI classes. Vaaddin is pretty sweet!</p>
+<p>As MySchedule jumped to 3.x version, I've taken the opportunity to clean up few areas in the &quot;quartz-extra&quot; module as well. Also to support Vaadin, the web layer needed a rework. The new code is easy to follow and ready to support more UI features in the future.</p>
+<p>I also improved on the project packaging. Now getting started with is even more easier. Get the single zip file, and try any of these simple steps:</p>
+<pre><code>## Web application usage (option 1: power up a self-contained servlet server!)
  
- bash> cd myschedule-3.*
- bash> bin/myschedule-ui.sh --httpPort=8081
+ bash&gt; cd myschedule-3.*
+ bash&gt; bin/myschedule-ui.sh --httpPort=8081
 
 Now open a browser and visit http://localhost:8081
 
@@ -86,11 +79,10 @@ Simply copy the myschedule-3.*/war/myschedule.war file into your Servlet contain
 
 ## Command line usage (option 3: quickly test your quartz config)
 
- bash> cd myschedule-3.*
- bash> bin/myschedule.sh bin/quartz.properties
-</pre>
-
-<p>Note that not all MySchedule-2.x features are in the 3.0 snapshot yet. For now, you would need to use the ScripConsole window to enter jobs into the scheduler. There are now new templates UI available for you to choose and start working quickly. I am still working on allowing users to save their own templates and edit them. This should give users more rich experience in using the UI manager.
+ bash&gt; cd myschedule-3.*
+ bash&gt; bin/myschedule.sh bin/quartz.properties
+</code></pre>
+<p>Note that not all MySchedule-2.x features are in the 3.0 snapshot yet. For now, you would need to use the ScripConsole window to enter jobs into the scheduler. There are now new templates UI available for you to choose and start working quickly. I am still working on allowing users to save their own templates and edit them. This should give users more rich experience in using the UI manager.</p>
 </p>
 
 	<hr />

@@ -40,7 +40,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -48,7 +48,6 @@
             <li><a href="../../../about.html">About</a></li>
             <li><a href="../../../archive.html">Archive</a></li>
             <li><a href="../../..//tags">Tags</a></li>
-            <li><a href="../../../feed.xml">Subscribe</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -64,22 +63,15 @@
 	    <a href="../../../tags/junit.html">junit</a> 
 	</p>
 
-	<p><p>It's awesome that <a href="http://www.junit.org/">JUnit</a> is recognizing the usefulness of <a href="http://code.google.com/p/hamcrest/">Hamcrest</a>, because I use these two a lot. However, I find JUnit packaging of their dependencies odd, and can cause class loading problem if you are not careful. </p>
-
+	<p><p>It's awesome that <a href="http://www.junit.org/">JUnit</a> is recognizing the usefulness of <a href="http://code.google.com/p/hamcrest/">Hamcrest</a>, because I use these two a lot. However, I find JUnit packaging of their dependencies odd, and can cause class loading problem if you are not careful.</p>
 <p>Let's take a closer look. If you look at <code>junit:junit:4.10</code> from Maven Central, you will see that it has this dependencies graph:</p>
-
 <pre><code>+- junit:junit:jar:4.10:test
     |  - org.hamcrest:hamcrest-core:jar:1.1:test
-</pre></code>
-
-<p>This is great, except that inside the <code>junit-4.10.jar</code>, you will also find the <code>hamcrest-core-1.1.jar</code> content are <em>embedded</em>! </p>
-
+</code></pre>
+<p>This is great, except that inside the <code>junit-4.10.jar</code>, you will also find the <code>hamcrest-core-1.1.jar</code> content are <em>embedded</em>!</p>
 <p>But <strong>why???</strong></p>
-
 <p>I suppose it's a convenient for folks who use Ant, so that they save one jar to package in their <code>lib</code> folder, but it's not very Maven friendly. And you also expect classloading trouble if you want to upgrade Hamcrest or use extra Hamcrest modules.</p>
-
 <p>Now if you use Hamcrest long enough, you know that most of their goodies are in the second module named <code>hamcrest-library</code>, but this JUnit didn't package in. JUnit however chose to include some JUnit+Hamcrest extension of their own. Now including duplicated classes in jar are very trouble maker, so JUnit has a separated module <code>junit-dep</code> that doesn't include Hamcrest core package and help you avoid this issue. So if you are using Maven project, you should use this instead.</p>
-
 <pre><code>&lt;dependency&gt;
     &lt;groupId&gt;junit&lt;/groupId&gt;
     &lt;artifactId&gt;junit-dep&lt;/artifactId&gt;
@@ -99,11 +91,8 @@
     &lt;scope&gt;test&lt;/scope&gt;
 &lt;/dependency&gt;
 </code></pre>
-
-<p>Notice that's a <code>junit-dep</code>, and also on how I have to exclude hamcrest from it. This is needed if you want <code>hamcrest-library</code> that has higher version than the one JUnit comes with, which is <code>1.1</code>. </p>
-
+<p>Notice that's a <code>junit-dep</code>, and also on how I have to exclude hamcrest from it. This is needed if you want <code>hamcrest-library</code> that has higher version than the one JUnit comes with, which is <code>1.1</code>.</p>
 <p>Interesting enough, Maven's dependencies in pom is order sensitive when it comes to auto resolving conflicting versions dependencies. Actually it would just pick the first one found and ignore the rest. So you can shorten above without exclusion if, only if, you place the Hamcrest bofore JUnit like this:</p>
-
 <pre><code>&lt;dependency&gt;
     &lt;groupId&gt;org.hamcrest&lt;/groupId&gt;
     &lt;artifactId&gt;hamcrest-library&lt;/artifactId&gt;
@@ -117,18 +106,13 @@
     &lt;scope&gt;test&lt;/scope&gt;
 &lt;/dependency&gt;
 </code></pre>
-
 <p>This should make Maven use the following dependencies:</p>
-
 <pre><code>+- org.hamcrest:hamcrest-library:jar:1.2.1:test
 |  \- org.hamcrest:hamcrest-core:jar:1.2.1:test
 +- junit:junit-dep:jar:4.10:test
 </code></pre>
-
 <p>However I think using the exclusion tag would probably give you more stable build and not rely on Maven implicit ordering rule. And it avoid easy mistake for Maven beginer users. However I wish JUnit would do a better job at packaging and remove duplicated classes in jar. I personally think it's more productive for JUnit to also include <code>hamcrest-libray</code> instead of just the <code>hamcrest-core</code> jar.</p>
-
 <p>What do you think?</p>
-              
 </p>
 
 	<hr />

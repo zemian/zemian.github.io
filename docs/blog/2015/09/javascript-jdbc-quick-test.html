@@ -40,7 +40,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -48,7 +48,6 @@
             <li><a href="../../../about.html">About</a></li>
             <li><a href="../../../archive.html">Archive</a></li>
             <li><a href="../../..//tags">Tags</a></li>
-            <li><a href="../../../feed.xml">Subscribe</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -64,47 +63,42 @@
 	    <a href="../../../tags/jdbc.html">jdbc</a> 
 	</p>
 
-	<p><span style="font-family: Courier New, Courier, monospace;">importPackage(java.sql)</span><br />
-<span style="font-family: Courier New, Courier, monospace;">url = "jdbc:mysql://localhost/test";</span><br />
-<span style="font-family: Courier New, Courier, monospace;">username = "test";</span><br />
-<span style="font-family: Courier New, Courier, monospace;">password = "test123";</span><br />
-<span style="font-family: Courier New, Courier, monospace;"><br /></span>
-<span style="font-family: Courier New, Courier, monospace;">// Util for nice print of result</span><br />
-<span style="font-family: Courier New, Courier, monospace;">function printResultSet(rs) {</span><br />
-<span style="font-family: Courier New, Courier, monospace;"><span class="Apple-tab-span" style="white-space: pre;"> </span>colCount = rs.getMetaData().getColumnCount();</span><br />
-<span style="font-family: Courier New, Courier, monospace;"><span class="Apple-tab-span" style="white-space: pre;"> </span>while (rs.next()) {</span><br />
-<span style="font-family: Courier New, Courier, monospace;"><span class="Apple-tab-span" style="white-space: pre;">  </span>for (i=1; i &lt;= colCount; i++) {</span><br />
-<span style="font-family: Courier New, Courier, monospace;"><span class="Apple-tab-span" style="white-space: pre;">   </span>printf("%s\t", rs.getObject(i));</span><br />
-<span style="font-family: Courier New, Courier, monospace;"><span class="Apple-tab-span" style="white-space: pre;">  </span>}</span><br />
-<span style="font-family: Courier New, Courier, monospace;"><span class="Apple-tab-span" style="white-space: pre;">  </span>println();</span><br />
-<span style="font-family: Courier New, Courier, monospace;"><span class="Apple-tab-span" style="white-space: pre;"> </span>}</span><br />
-<span style="font-family: Courier New, Courier, monospace;">}</span><br />
-<span style="font-family: Courier New, Courier, monospace;"><br /></span>
-<span style="font-family: Courier New, Courier, monospace;">// Get a DB conn</span><br />
-<span style="font-family: Courier New, Courier, monospace;">sql = "SELECT * FROM ztest_issues";</span><br />
-<span style="font-family: Courier New, Courier, monospace;">conn = DriverManager.getConnection(url, username, password);</span><br />
-<span style="font-family: Courier New, Courier, monospace;"><br /></span>
-<span style="font-family: Courier New, Courier, monospace;">// Example of simple query</span><br />
-<span style="font-family: Courier New, Courier, monospace;">st = conn.createStatement();</span><br />
-<span style="font-family: Courier New, Courier, monospace;">rs = st.executeQuery(sql);</span><br />
-<span style="font-family: Courier New, Courier, monospace;">while (rs.next()) {</span><br />
-<span style="font-family: Courier New, Courier, monospace;"><span class="Apple-tab-span" style="white-space: pre;"> </span>for (i=1; i &lt;= 4; i++) {</span><br />
-<span style="font-family: Courier New, Courier, monospace;"><span class="Apple-tab-span" style="white-space: pre;">  </span>printf("%s\t", rs.getObject(i));</span><br />
-<span style="font-family: Courier New, Courier, monospace;"><span class="Apple-tab-span" style="white-space: pre;"> </span>}</span><br />
-<span style="font-family: Courier New, Courier, monospace;"><span class="Apple-tab-span" style="white-space: pre;"> </span>println();</span><br />
-<span style="font-family: Courier New, Courier, monospace;">}</span><br />
-<span style="font-family: Courier New, Courier, monospace;">st.close();</span><br />
-<span style="font-family: Courier New, Courier, monospace;"><br /></span>
-<span style="font-family: Courier New, Courier, monospace;">// Example of prepared statment with binding params</span><br />
-<span style="font-family: Courier New, Courier, monospace;">sql = "SELECT * FROM ztest_issues WHERE title=?";</span><br />
-<span style="font-family: Courier New, Courier, monospace;">st = conn.prepareStatement(sql);</span><br />
-<span style="font-family: Courier New, Courier, monospace;">st.setObject(1, "test");</span><br />
-<span style="font-family: Courier New, Courier, monospace;">rs = st.executeQuery();</span><br />
-<span style="font-family: Courier New, Courier, monospace;">printResultSet(rs);</span><br />
-<span style="font-family: Courier New, Courier, monospace;">st.close();</span><br />
-<span style="font-family: Courier New, Courier, monospace;"><br /></span>
-<span style="font-family: Courier New, Courier, monospace;">// Close DB conn</span><br />
-<span style="font-family: Courier New, Courier, monospace;">conn.close();</span>
+	<p><p>importPackage(java.sql)<br />
+url = &quot;jdbc:<a href="mysql://localhost/test">mysql://localhost/test</a>&quot;;<br />
+username = &quot;test&quot;;<br />
+password = &quot;test123&quot;;</p>
+<p>// Util for nice print of result<br />
+function printResultSet(rs) {<br />
+colCount = rs.getMetaData().getColumnCount();<br />
+while (rs.next()) {<br />
+for (i=1; i &lt;= colCount; i++) {<br />
+printf(&quot;%s\t&quot;, rs.getObject(i));<br />
+}<br />
+println();<br />
+}<br />
+}</p>
+<p>// Get a DB conn<br />
+sql = &quot;SELECT * FROM ztest_issues&quot;;<br />
+conn = DriverManager.getConnection(url, username, password);</p>
+<p>// Example of simple query<br />
+st = conn.createStatement();<br />
+rs = st.executeQuery(sql);<br />
+while (rs.next()) {<br />
+for (i=1; i &lt;= 4; i++) {<br />
+printf(&quot;%s\t&quot;, rs.getObject(i));<br />
+}<br />
+println();<br />
+}<br />
+st.close();</p>
+<p>// Example of prepared statment with binding params<br />
+sql = &quot;SELECT * FROM ztest_issues WHERE title=?&quot;;<br />
+st = conn.prepareStatement(sql);<br />
+st.setObject(1, &quot;test&quot;);<br />
+rs = st.executeQuery();<br />
+printResultSet(rs);<br />
+st.close();</p>
+<p>// Close DB conn<br />
+conn.close();</p>
 </p>
 
 	<hr />

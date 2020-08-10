@@ -40,7 +40,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -48,7 +48,6 @@
             <li><a href="../../../about.html">About</a></li>
             <li><a href="../../../archive.html">Archive</a></li>
             <li><a href="../../..//tags">Tags</a></li>
-            <li><a href="../../../feed.xml">Subscribe</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -62,38 +61,35 @@
 	    <a href="../../../tags/mysql.html">mysql</a> 
 	</p>
 
-	<p>You can export the MySQL database with schema table definitions and data separated. Here is a simple bash shell script that will export an database.<br />
-<br />
-<span style="font-family: &quot;Courier New&quot;,Courier,monospace;"># file: </span><span style="font-family: &quot;Courier New&quot;,Courier,monospace;">database-export.sh</span><br />
-<span style="font-family: &quot;Courier New&quot;,Courier,monospace;">DB_NAME=mydb</span><br />
-<span style="font-family: &quot;Courier New&quot;,Courier,monospace;">DB_SCHEMA_FILE=mydb.sql</span><br />
-<span style="font-family: &quot;Courier New&quot;,Courier,monospace;">DB_DATA_FILE=mydb-data.sql</span><br />
-<span style="font-family: &quot;Courier New&quot;,Courier,monospace;">DB_USERNAME=root</span><br />
-<span style="font-family: &quot;Courier New&quot;,Courier,monospace;">DB_PASSWORD=secret</span><br />
-<span style="font-family: &quot;Courier New&quot;,Courier,monospace;"><span style="font-family: &quot;Courier New&quot;,Courier,monospace;"><br /># export schema only from mysql</span>&nbsp;</span><br />
-<span style="font-family: &quot;Courier New&quot;,Courier,monospace;">echo "`date` Exporting database $DB_NAME schema to $DB_SCHEMA_FILE"<br />mysqldump --no-data --routines -u $DB_USERNAME -p$DB_PASSWORD $DB_NAME &gt; $DB_SCHEMA_FILE<br /><br /># export data only from mysql<br />echo "`date` Exporting database $DB_NAME data to $DB_DATA_FILE"<br />mysqldump --single-transaction --quick --no-autocommit --no-create-info --extended-insert=false -u $DB_USERNAME -p$DB_PASSWORD $DB_NAME &gt; $DB_DATA_FILE</span><br />
-<span style="font-family: &quot;Courier New&quot;,Courier,monospace;"><br />echo "`date` Done."</span><br />
-<br />
-The schema export with "--routines" will export stored proc as well. When exporitng data you have to be little more careful. The "--single-transaction" will ensure your data is good. The "--no-autocommit" can really speed up your import later on certain OS.<br />
-<br />
-Now to import these files back, you can create an empty database and then run the following.<br />
-<br />
-<span style="font-family: &quot;Courier New&quot;,Courier,monospace;"># file: </span><span style="font-family: &quot;Courier New&quot;,Courier,monospace;">database-import.sh </span><br />
-<span style="font-family: &quot;Courier New&quot;,Courier,monospace;"># import schema and data into mysql</span><br />
-<span style="font-family: &quot;Courier New&quot;,Courier,monospace;">echo "`date` Importing Schema $DB_SCHEMA_FILE into $DB_NAME"</span><br />
-<span style="font-family: &quot;Courier New&quot;,Courier,monospace;">mysql -f -u $DB_USERNAME -p$DB_PASSWORD $DB_NAME &lt; $DB_SCHEMA_FILE<br />echo "`date` Importing DATA $DB_DATA_FILE into $DB_NAME"<br />mysql -f -u $DB_USERNAME -p$DB_PASSWORD $DB_NAME &lt; $DB_DATA_FILE<br /><br />echo "`date` Done."</span><br />
-<br />
-The import with "-f" option will allow you to continue even if you already have duplicated data in the tables; it will simply ignore and continue.<br />
-<br />
-These two combo commands will allow you to quicly backup and restore a MySQL database.<br />
-<br />
-Enjoy.<br />
-<br />
-PS: I have come to learn that "mysqldump" with procedures will insert an extra line like "<span style="font-family: &quot;Courier New&quot;,Courier,monospace;">DEFINER 'user'@'hostname'</span>", and it may create problem if you use different users to export/import or even run the application! Unfortunately there is no exclude from the "mysqldump" tool. So you have to manually strip that off if that's creating a problem for you.<br />
-<br />
-<span style="font-family: &quot;Courier New&quot;,Courier,monospace;">mysqldump --no-data --routines -u $DB_USERNAME -p$DB_PASSWORD $DB_NAME | perl -pi -e 's/DEFINER="\w+"@"\w+" //g' &gt; $DB_SCHEMA_FILE</span><span style="font-family: &quot;Courier New&quot;,Courier,monospace;"></span><br />
-<br />
-You can vote the issue here: <a href="http://bugs.mysql.com/bug.php?id=24680">http://bugs.mysql.com/bug.php?id=24680</a> 
+	<p><p>You can export the MySQL database with schema table definitions and data separated. Here is a simple bash shell script that will export an database.</p>
+<h1>file: database-export.sh</h1>
+<p>DB_NAME=mydb<br />
+DB_SCHEMA_FILE=mydb.sql<br />
+DB_DATA_FILE=mydb-data.sql<br />
+DB_USERNAME=root<br />
+DB_PASSWORD=secret</p>
+<h1>export schema only from mysql</h1>
+<p>echo &quot;<code>date</code> Exporting database $DB_NAME schema to $DB_SCHEMA_FILE&quot;<br />
+mysqldump --no-data --routines -u $DB_USERNAME -p$DB_PASSWORD $DB_NAME &gt; $DB_SCHEMA_FILE</p>
+<h1>export data only from mysql</h1>
+<p>echo &quot;<code>date</code> Exporting database $DB_NAME data to $DB_DATA_FILE&quot;<br />
+mysqldump --single-transaction --quick --no-autocommit --no-create-info --extended-insert=false -u $DB_USERNAME -p$DB_PASSWORD $DB_NAME &gt; $DB_DATA_FILE</p>
+<p>echo &quot;<code>date</code> Done.&quot;</p>
+<p>The schema export with &quot;--routines&quot; will export stored proc as well. When exporitng data you have to be little more careful. The &quot;--single-transaction&quot; will ensure your data is good. The &quot;--no-autocommit&quot; can really speed up your import later on certain OS.</p>
+<p>Now to import these files back, you can create an empty database and then run the following.</p>
+<h1>file: database-import.sh</h1>
+<h1>import schema and data into mysql</h1>
+<p>echo &quot;<code>date</code> Importing Schema $DB_SCHEMA_FILE into $DB_NAME&quot;<br />
+mysql -f -u $DB_USERNAME -p$DB_PASSWORD $DB_NAME &lt; $DB_SCHEMA_FILE<br />
+echo &quot;<code>date</code> Importing DATA $DB_DATA_FILE into $DB_NAME&quot;<br />
+mysql -f -u $DB_USERNAME -p$DB_PASSWORD $DB_NAME &lt; $DB_DATA_FILE</p>
+<p>echo &quot;<code>date</code> Done.&quot;</p>
+<p>The import with &quot;-f&quot; option will allow you to continue even if you already have duplicated data in the tables; it will simply ignore and continue.</p>
+<p>These two combo commands will allow you to quicly backup and restore a MySQL database.</p>
+<p>Enjoy.</p>
+<p>PS: I have come to learn that &quot;mysqldump&quot; with procedures will insert an extra line like &quot;DEFINER 'user'@'hostname'&quot;, and it may create problem if you use different users to export/import or even run the application! Unfortunately there is no exclude from the &quot;mysqldump&quot; tool. So you have to manually strip that off if that's creating a problem for you.</p>
+<p>mysqldump --no-data --routines -u $DB_USERNAME -p$DB_PASSWORD $DB_NAME | perl -pi -e 's/DEFINER=&quot;\w+&quot;@&quot;\w+&quot; //g' &gt; $DB_SCHEMA_FILE</p>
+<p>You can vote the issue here: <a href="http://bugs.mysql.com/bug.php?id=24680">http://bugs.mysql.com/bug.php?id=24680</a></p>
 </p>
 
 	<hr />

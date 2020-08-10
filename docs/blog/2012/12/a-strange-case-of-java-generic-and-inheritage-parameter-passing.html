@@ -40,7 +40,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -48,7 +48,6 @@
             <li><a href="../../../about.html">About</a></li>
             <li><a href="../../../archive.html">Archive</a></li>
             <li><a href="../../..//tags">Tags</a></li>
-            <li><a href="../../../feed.xml">Subscribe</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -63,7 +62,6 @@
 	</p>
 
 	<p><p>I came a cross some strange Java code and I would like to share it here. Take a look few of classes I have here:</p>
-
 <pre><code>// file: AFoo.java
 package atest.deng;
 public abstract class AFoo&lt;T&gt; {
@@ -93,9 +91,7 @@ public class FooMain {
 bash&gt; mvn compile
 bash&gt; [INFO] BUILD SUCCESS
 </code></pre>
-
 <p>I tried this with JDK6 + Maven and it compiles without problem. But try to remove the <code>&lt;T&gt;</code> part from <code>FooProcessor</code> and it will fail to compile!</p>
-
 <pre><code>// file: FooProcessor.java
 package atest.deng;
 public class FooProcessor {
@@ -107,11 +103,8 @@ public class FooProcessor {
 bash&gt; mvn clean compile
 bash&gt; [ERROR] java-demo\src\main\java test\deng\FooMain.java:[4,26] process(java.lang.Class&lt;atest.deng.AFoo&lt;?&gt;&gt;) in atest.deng.FooProcessor cannot be applied to (java.lang.Class&lt;atest.deng.Foo&gt;)
 </code></pre>
-
 <p>Without the <code>&lt;T&gt;</code> the code won't compile, and yet we are not even using it in this case. How and why <code>&lt;T&gt;</code> affects the method parameters invocation?</p>
-
-<p><p>Now, we can improve the <code>FooProcessor</code> in this way so that the presence of <code>&lt;T&gt;</code> doesn't have any affect.</p>
-
+<p>Now, we can improve the <code>FooProcessor</code> in this way so that the presence of <code>&lt;T&gt;</code> doesn't have any affect.</p>
 <pre><code>package atest.deng;
 public class FooProcessor {
     public void process(Class&lt;? extends AFoo&lt;?&gt;&gt; cls) {
@@ -119,9 +112,7 @@ public class FooProcessor {
     }
 }
 </code></pre>
-
 <p>That's a more proper way to write the generic parameter anyway. But despite a better solution, the puzzle is that the original code compiled under the compiler, but only with the <code>&lt;T&gt;</code> presented, and yet it's not used. Wouldn't you consider this as a Java compiler bug?</p>
-
 </p>
 
 	<hr />

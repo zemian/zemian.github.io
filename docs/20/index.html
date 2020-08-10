@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Zemian's Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/asciidoctor.css" rel="stylesheet">
+    <link href="../css/base.css" rel="stylesheet">
+    <link href="../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../about.html">About</a></li>
+            <li><a href="../archive.html">Archive</a></li>
+            <li><a href="..//tags">Tags</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">
+  			<a href="blog/2013/08/getting-started-with-apache-camel-using-java.html"><h1>Getting started with Apache Camel using Java</h1></a>
+  			<p>20 August 2013, tags: 
+			    <a href="../tags/camel.html">camel</a> 
+  			</p>
+  			<p><p>Apache Camel is a very useful library that helps you process events or messages<br />
+from many different sources. You may move these messages through many different<br />
+protocols such as between VM, HTTP, FTP, JMS, or even DIRECTORY/FILE, and yet<br />
+still keep your processing code free of transport logic. This allows you to<br />
+concentrate on digesting the content of the messages instead.</p>
+<p>Here I will provide a tutorial on how you can get started with Apache Camel using<br />
+Java.</p>
+<p>Let’s start by creating a Maven project <code>pom.xml</code> file first.</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+    xsi:schemaLocation=&quot;
+        http://maven.apache.org/POM/4.0.0
+        http://maven.apache.org/maven-v4_0_0.xsd&quot;&gt;
+
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;groupId&gt;camel-spring-demo&lt;/groupId&gt;
+    &lt;artifactId&gt;camel-spring-demo&lt;/artifactId&gt;
+    &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+    &lt;packaging&gt;jar&lt;/packaging&gt;
+
+    &lt;properties&gt;
+        &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+        &lt;camel.version&gt;2.11.1&lt;/camel.version&gt;
+    &lt;/properties&gt;
+
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.apache.camel&lt;/groupId&gt;
+            &lt;artifactId&gt;camel-core&lt;/artifactId&gt;
+            &lt;version&gt;${camel.version}&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.slf4j&lt;/groupId&gt;
+            &lt;artifactId&gt;slf4j-simple&lt;/artifactId&gt;
+            &lt;version&gt;1.7.5&lt;/version&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+
+&lt;/project&gt;
+</code></pre>
+<p>We are only going to explore the <code>camel-core</code>, which actually contains quite of few useful<br />
+components that you may use. Also for logging purpose, I have added a <code>slf4j-simple</code> as<br />
+<a href="http://saltnlight5.blogspot.com/2013/08/how-to-configure-slf4j-with-different.html">a logger implementation</a><br />
+so we may see output on console.</p>
+<p>Next you just need a class to construct an <code>Route</code>. A <code>Route</code> is like a instruction<br />
+definition to Camel on how to move your messages from one point to another. We are<br />
+going to create <code>src/main/java/camelcoredemo/TimerRouteBuilder.java</code> file that<br />
+will generate a timer message on every second, and then pass to a processor<br />
+that simply logs it.</p>
+<pre><code>package camelcoredemo;
+
+import org.slf4j.*;
+import org.apache.camel.*;
+import org.apache.camel.builder.*;
+
+public class TimerRouteBuilder extends RouteBuilder {
+    static Logger LOG = LoggerFactory.getLogger(TimerRouteBuilder.class);
+    public void configure() {
+        from(&quot;timer://timer1?period=1000&quot;)
+        .process(new Processor() {
+            public void process(Exchange msg) {
+                LOG.info(&quot;Processing {}&quot;, msg);
+            }
+        });
+    }
+}
+</code></pre>
+<p>That’s all you needed to get started. Now you may build and run this simple<br />
+demo.</p>
+<pre><code>bash&gt; mvn compile
+bash&gt; mvn exec:java -Dexec.mainClass=org.apache.camel.main.Main -Dexec.args='-r camelcoredemo.TimerRouteBuilder'
+</code></pre>
+<p>Notice that we didn’t even write a Java <strong>main</strong> class, but simply use the<br />
+<code>org.apache.camel.main.Main</code> option to accepts a <code>RouteBuilder</code> class<br />
+name as parameter. Then it will load and create the route automatically.</p>
+<h2>Controlling the <code>CamelContext</code></h2>
+<p>When you start Camel, it creates a <code>CamelContext</code> object that holds<br />
+many information on how to run it, including the definition of the<br />
+<code>Route</code> we created. Now if you want to have more control over this<br />
+<code>CamelContext</code>, then you would need to write your own <code>Main</code> class.<br />
+I will show you a simple one here.</p>
+<pre><code>package camelcoredemo;
+
+import org.slf4j.*;
+import org.apache.camel.*;
+import org.apache.camel.impl.*;
+import org.apache.camel.builder.*;
+
+public class TimerMain {
+    static Logger LOG = LoggerFactory.getLogger(TimerMain.class);
+    public static void main(String[] args) throws Exception {
+        new TimerMain().run();
+    }
+    void run() throws Exception {
+        final CamelContext camelContext = new DefaultCamelContext();
+        camelContext.addRoutes(createRouteBuilder());
+        camelContext.setTracing(true);
+        camelContext.start();
+
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            public void run() {
+                try {
+                    camelContext.stop();
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+
+        waitForStop();
+    }
+    RouteBuilder createRouteBuilder() {
+        return new TimerRouteBuilder();
+    }
+    void waitForStop() {
+        while (true) {
+            try {
+                Thread.sleep(Long.MAX_VALUE);
+            } catch (InterruptedException e) {
+                break;
+            }
+        }
+    }
+}
+</code></pre>
+<p>As you can see, we re-used the existing <code>TimerRouteBuilder</code> class inside<br />
+<code>createRouteBuilder()</code> method. Our <code>Main</code> class now have full control<br />
+when to create, start and stop the<br />
+<a href="http://camel.apache.org/maven/current/camel-core/apidocs/org/apache/camel/CamelContext.html"><code>CamelContext</code></a>.<br />
+This context allow you to have control on how to configure Camel<br />
+globally rather than on <code>Route</code> level. The javadoc link gives all the setter<br />
+methods that you can explore on what it can do.</p>
+<p>Noticed that we also need to provide few setup codes in our <code>Main</code> class.<br />
+First we need to handle graceful shutdown, so we added a Java shutdown hook<br />
+to invoke the context <code>stop()</code>. Secondly we need to add a thread block after<br />
+context has started. The reason for this is that the <code>CamelContext#start()</code><br />
+method is non-blocking! If you don’t block your <code>Main</code> thread after<br />
+start, then it will simply exit right after it, which will have not<br />
+much use. You want to run Camel as a service (like a server) until<br />
+you explicitly press <code>CTRL+C</code> to terminate the process.</p>
+<h2>Improving the <code>Main</code> class to start <code>CamelContext</code></h2>
+<p>If you don’t want to deal with much of the <code>Main</code> class setup<br />
+code such as above, then you may simply extends the <code>org.apache.camel.main.Main</code><br />
+class provided by <code>camel-core</code> intead. By piggy-back on this class, you will<br />
+only not have your Context auto setup, but you will get all the additional<br />
+command line features such as controlling how long to run the<br />
+process for, enabling tracing, loading custom route class etc.</p>
+<p>Refactoring previous example, here is how it look like.</p>
+<pre><code>package camelcoredemo;
+
+import org.slf4j.*;
+import org.apache.camel.builder.*;
+import org.apache.camel.main.Main;
+
+public class TimerMain2 extends Main {
+    static Logger LOG = LoggerFactory.getLogger(TimerMain2.class);
+    public static void main(String[] args) throws Exception {
+        TimerMain2 main = new TimerMain2();
+        main.enableHangupSupport();
+        main.addRouteBuilder(createRouteBuilder());
+        main.run(args);
+    }
+    static RouteBuilder createRouteBuilder() {
+        return new TimerRouteBuilder();
+    }
+}
+</code></pre>
+<p>Now our <code>TimerMain2</code> is much shorter, and you may try it out and it should<br />
+function the same as before.</p>
+<pre><code>bash&gt; mvn compile
+bash&gt; mvn exec:java -Dexec.mainClass=camelcoredemo.TimerMain2 -Dexec.args='-t'
+</code></pre>
+<p>Notice that we have given <code>-t</code> option and it will dump <code>Route</code> tracing. Use <code>-h</code><br />
+and you will see all the available options.</p>
+<h2>Adding bean to the Camel <code>Registry</code></h2>
+<p>In the <code>TimerRouteBuilder</code> example above, we have created a <code>Processor</code> on<br />
+the fly. Now if you were to combine few different <code>Processor</code> together, it<br />
+would be nicer to minimize the noise. Camel allow you to do this by registering<br />
+processing beans in their registry space, and then you simply reference them in<br />
+your route as <code>bean</code> component. Here is how I can convert above example into<br />
+beans processing.</p>
+<pre><code>package camelcoredemo;
+
+import org.slf4j.*;
+import org.apache.camel.*;
+import org.apache.camel.builder.*;
+import org.apache.camel.main.Main;
+
+public class TimerBeansMain extends Main {
+    static Logger LOG = LoggerFactory.getLogger(TimerBeansMain.class);
+    public static void main(String[] args) throws Exception {
+        TimerBeansMain main = new TimerBeansMain();
+        main.enableHangupSupport();
+        main.bind(&quot;processByBean1&quot;, new Bean1());
+        main.bind(&quot;processAgainByBean2&quot;, new Bean2());
+        main.addRouteBuilder(createRouteBuilder());
+        main.run(args);
+    }
+    static RouteBuilder createRouteBuilder() {
+        return new RouteBuilder() {
+                public void configure() {
+                    from(&quot;timer://timer1?period=1000&quot;)
+                    .to(&quot;bean:processByBean1&quot;)
+                    .to(&quot;bean:processAgainByBean2&quot;);
+                }
+            };
+    }
+
+    // Processor beans
+    static class Bean1 implements Processor {
+        public void process(Exchange msg) {
+            LOG.info(&quot;First process {}&quot;, msg);
+        }
+    }
+    static class Bean2 implements Processor {
+        public void process(Exchange msg) {
+            LOG.info(&quot;Second process {}&quot;, msg);
+        }
+    }
+}
+</code></pre>
+<p>Now you see my <code>Route</code> is very slim and without noise clutter; and I have<br />
+refactored my processing code into individual classes. This promotes better<br />
+code management and testing as you write more complex <code>Route</code> to address<br />
+business logic. It let you build LEGO like block of re-usable POJO beans.<br />
+Besides just processing beans, Camel use this registry space for many other<br />
+services as well. For example you may customize many other component endpoints<br />
+with additional features and or configurations. Or thing such as thread<br />
+pool strategy implementation replacement etc.</p>
+<p>The <code>Route</code> in example above is constructed using what’s called Java DSL.<br />
+The route is very readable, and yet you’ll get full IDE support to browse all the methods available to use for your route.</p>
+<p>I hope this article has helped you jump start your Camel ride. Besides the<br />
+<code>timer</code> component mentioned, the <code>camel-core</code> also comes with the following<br />
+components out of it’s core jar.</p>
+<ul>
+<li></li>
+</ul>
+<p><a href="http://camel.apache.org/bean.html">bean component</a></p>
+<ul>
+<li></li>
+</ul>
+<p><a href="http://camel.apache.org/browse.html">browse component</a></p>
+<ul>
+<li></li>
+</ul>
+<p><a href="http://camel.apache.org/dataset.html">dataset component</a></p>
+<ul>
+<li></li>
+</ul>
+<p><a href="http://camel.apache.org/direct.html">direct component</a></p>
+<ul>
+<li></li>
+</ul>
+<p><a href="http://camel.apache.org/file.html">file component</a></p>
+<ul>
+<li></li>
+</ul>
+<p><a href="http://camel.apache.org/log.html">log component</a></p>
+<ul>
+<li></li>
+</ul>
+<p><a href="http://camel.apache.org/mock.html">mock component</a></p>
+<ul>
+<li></li>
+</ul>
+<p><a href="http://camel.apache.org/properties.html">properties component</a></p>
+<ul>
+<li></li>
+</ul>
+<p><a href="http://camel.apache.org/seda.html">seda component</a></p>
+<ul>
+<li></li>
+</ul>
+<p><a href="http://camel.apache.org/test.html">test component</a></p>
+<ul>
+<li></li>
+</ul>
+<p><a href="http://camel.apache.org/timer.html">timer component</a></p>
+<ul>
+<li></li>
+</ul>
+<p><a href="http://camel.apache.org/stub.html">stub component</a></p>
+<ul>
+<li></li>
+</ul>
+<p><a href="http://camel.apache.org/validation.html">validator component</a></p>
+<ul>
+<li></li>
+</ul>
+<p><a href="http://camel.apache.org/vm.html">vm component</a></p>
+<ul>
+<li></li>
+</ul>
+<p><a href="http://camel.apache.org/xslt.html">xslt component</a></p>
+<p>Have fun!</p>
+</p>
+  			<a href="blog/2013/08/how-to-configure-slf4j-with-different-logger-implementations.html"><h1>How to configure SLF4J with different logger implementations</h1></a>
+  			<p>18 August 2013, tags: 
+			    <a href="../tags/slf4j.html">slf4j</a> 
+
+			    <a href="../tags/logging.html">logging</a> 
+  			</p>
+  			<p><p>There are many good benefits in using <code>slf4j</code> library as your Java<br />
+application logging API layer. Here I will show few examples on how<br />
+to use and configure it with different loggers.</p>
+<p>You can think of <code>slf4j</code> as an Java interface, and then you would<br />
+need an implementation (ONLY ONE) at runtime to provide the actual<br />
+logging details, such as writing to STDOUT or to a file etc. Each<br />
+logging implementation (or called binding) would obviously have their<br />
+own way of configuring the log output, but your application will remain<br />
+agnostic and always use the same <code>org.slf4j.Logger</code> API. Lets see how<br />
+this works in practice.</p>
+<h2></h2>
+<p>Using <code>slf4j</code> with Simple logger</p>
+<p>Create a Maven based project and this in your <code>pom.xml</code>.</p>
+<pre><code>    &lt;dependency&gt;
+        &lt;groupId&gt;org.slf4j&lt;/groupId&gt;
+        &lt;artifactId&gt;slf4j-api&lt;/artifactId&gt;
+        &lt;version&gt;1.7.5&lt;/version&gt;
+    &lt;/dependency&gt;
+</code></pre>
+<p>Now you may use <code>Logger</code> in your Java code like this.</p>
+<pre><code>package deng;
+import org.slf4j.*;
+public class Hello {
+    static Logger LOGGER = LoggerFactory.getLogger(Hello.class);
+    public static void main(String[] args) {
+        for (int i = 0; i &lt; 10; i++)
+            if (i % 2 == 0)
+                LOGGER.info(&quot;Hello {}&quot;, i);
+            else
+                LOGGER.debug(&quot;I am on index {}&quot;, i);
+    }
+}
+</code></pre>
+<p>The above will get your program compiled, but when you run it, you will see these output.</p>
+<pre><code>bash&gt; java deng.Hello
+SLF4J: Failed to load class &quot;org.slf4j.impl.StaticLoggerBinder&quot;.
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+</code></pre>
+<p>What its saying is that at runtime, you are missing the logging &quot;implementation&quot; (or the<br />
+logger binding), so <code>slf4j</code> simply use a &quot;NOP&quot; implmentation, which does nothing. In order<br />
+to see the output properly, you may try use an simple implementation that does not require<br />
+any configuration at all! Just go back to your <code>pom.xml</code> and add the following:</p>
+<pre><code>    &lt;dependency&gt;
+        &lt;groupId&gt;org.slf4j&lt;/groupId&gt;
+        &lt;artifactId&gt;slf4j-simple&lt;/artifactId&gt;
+        &lt;version&gt;1.7.5&lt;/version&gt;
+    &lt;/dependency&gt;
+</code></pre>
+<p>Now you see logging output on STDOUT with INFO level. This simple logger will default<br />
+show any INFO level message or higher. In order to see DEBUG messages, you would<br />
+need to pass in this System Property <code>-Dorg.slf4j.simpleLogger.defaultLogLevel=DEBUG</code><br />
+at your Java startup.</p>
+<h2></h2>
+<p>Using <code>slf4j</code> with Log4j logger</p>
+<p>Now we can experiment and swap different logger implementations, but your application code<br />
+can remain the same. All we need is to replace <code>slf4j-simple</code> with another popular logger<br />
+implementation, such as the Log4j.</p>
+<pre><code>    &lt;dependency&gt;
+        &lt;groupId&gt;org.slf4j&lt;/groupId&gt;
+        &lt;artifactId&gt;slf4j-log4j12&lt;/artifactId&gt;
+        &lt;version&gt;1.7.5&lt;/version&gt;
+    &lt;/dependency&gt;
+</code></pre>
+<p>Again, we must configure logging per implementation that we picked.<br />
+In this case, we need an <code>src/main/resources/log4j.properties</code> file.</p>
+<pre><code>    log4j.rootLogger=DEBUG, STDOUT
+    log4j.logger.deng=INFO
+    log4j.appender.STDOUT=org.apache.log4j.ConsoleAppender
+    log4j.appender.STDOUT.layout=org.apache.log4j.PatternLayout
+    log4j.appender.STDOUT.layout.ConversionPattern=%5p [%t] (%F:%L) - %m%n
+</code></pre>
+<p>Re-run your program, and you should see similar output.</p>
+<h2></h2>
+<p>Using <code>slf4j</code> with JDK logger</p>
+<p>The JDK actually comes with a logger package, and you can replace <code>pom.xml</code><br />
+with this logger implementation.</p>
+<pre><code>    &lt;dependency&gt;
+        &lt;groupId&gt;org.slf4j&lt;/groupId&gt;
+        &lt;artifactId&gt;slf4j-jdk14&lt;/artifactId&gt;
+        &lt;version&gt;1.7.5&lt;/version&gt;
+    &lt;/dependency&gt;
+</code></pre>
+<p>Now the configuration for JDK logging is a bit difficult to work with. Not only need a<br />
+config file, such as <code>src/main/resources/logging.properties</code>, but you would also need<br />
+to add a System properties <code>-Djava.util.logging.config.file=logging.properties</code><br />
+in order to have it pick it up. Here is an example to get you started:</p>
+<pre><code>.level=INFO
+
+handlers=java.util.logging.ConsoleHandler
+java.util.logging.ConsoleHandler.level=FINEST
+deng.level=FINEST
+</code></pre>
+<h2></h2>
+<p>Using <code>slf4j</code> with Logback logger</p>
+<p>The logback logger implementation is a super dupa quality implementation. If you intend<br />
+to write serious code that go into production, you may want to evaluate this option. Again<br />
+modify your <code>pom.xml</code> to replace with this:</p>
+<pre><code>    &lt;dependency&gt;
+        &lt;groupId&gt;ch.qos.logback&lt;/groupId&gt;
+        &lt;artifactId&gt;logback-classic&lt;/artifactId&gt;
+        &lt;version&gt;1.0.13&lt;/version&gt;
+    &lt;/dependency&gt;
+</code></pre>
+<p>Here is a sample of configuration <code>src/main/resources/logback.xml</code> to get things started.</p>
+<pre><code>&lt;configuration&gt;
+  &lt;appender name=&quot;STDOUT&quot; class=&quot;ch.qos.logback.core.ConsoleAppender&quot;&gt;
+    &lt;encoder&gt;
+      &lt;pattern&gt;%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n&lt;/pattern&gt;
+    &lt;/encoder&gt;
+  &lt;/appender&gt;
+
+  &lt;logger name=&quot;deng&quot; level=&quot;DEBUG&quot;/&gt;
+
+  &lt;root level=&quot;INFO&quot;&gt;
+    &lt;appender-ref ref=&quot;STDOUT&quot; /&gt;
+  &lt;/root&gt;
+&lt;/configuration&gt;
+</code></pre>
+<h2></h2>
+<p>Writing your own library with <code>slf4j</code> logger</p>
+<p>If you are providing an Java library for large end users consumption, its good idea to<br />
+set your project to depend on <code>slf4j-api</code> only, and then let your user choose any<br />
+logger implementation at their development or runtime environment. As end users, they<br />
+may quickly select one of option above and take advatage of their own favorite logging<br />
+implementation features.</p>
+<h2></h2>
+<p>References</p>
+<ul>
+<li>
+<p><a href="http://slf4j.org/">http://slf4j.org/</a></p>
+</li>
+<li>
+<p><a href="http://logging.apache.org/log4j/1.2/">http://logging.apache.org/log4j/1.2/</a></p>
+</li>
+<li>
+<p><a href="http://docs.oracle.com/javase/7/docs/technotes/guides/logging/">http://docs.oracle.com/javase/7/docs/technotes/guides/logging/</a></p>
+</li>
+<li>
+<p><a href="http://logback.qos.ch/">http://logback.qos.ch/</a></p>
+</li>
+</ul>
+</p>
+  			<a href="blog/2013/08/how-to-convert-asciidoc-text-to-html-using-groovy.html"><h1>How to convert asciidoc text to html using Groovy</h1></a>
+  			<p>17 August 2013, tags: 
+			    <a href="../tags/groovy.html">groovy</a> 
+  			</p>
+  			<p><p>Here is how you can convert <code>asciidoc</code> text using Groovy script:</p>
+<pre><code>// filename: RunAsciidoc.groovy
+@Grab('org.asciidoctor:asciidoctor-java-integration:0.1.3')
+import org.asciidoctor.*
+def asciidoctor = Asciidoctor.Factory.create()
+def output = asciidoctor.renderFile(new File(args[0]),  [:])
+println(output);
+</code></pre>
+<p>Now you may run it</p>
+<pre><code>groovy RunAsciidoc.groovy myarticle.txt
+</code></pre>
+<p>Many thanks to the <code>asciidoctor.org</code> project!</p>
+</p>
+  			<a href="blog/2013/06/how-to-manage-maven-third-party-jars.html"><h1>How to manage Maven third party jars</h1></a>
+  			<p>23 June 2013, tags: 
+			    <a href="../tags/maven.html">maven</a> 
+  			</p>
+  			<p><h2>How to manage Maven third party jars</h2>
+<p>When you find yourself the need to load third party jars into Maven repository,<br />
+there are few steps you normally do to test it out. You first install them<br />
+locally into <code>$HOME/.m2/repository</code>, and then create your project pom that<br />
+list those dependency. When things look good, then you deploy into your own<br />
+hosted repository. The following scripts will help you perform these tasks.</p>
+<p>Tip</p>
+<p>If you have lot’s of jars under a group, it’s more conveninent to create<br />
+an extra pom that list these dependency and install/deploy it into the repository<br />
+as well. And then your project would only need to include one dependency<br />
+with <code>&lt;type&gt;pom&lt;/type&gt;</code>.</p>
+<p>bin/mvn-install.sh</p>
+<pre><code>#!/usr/bin/env bash
+#
+# Install local jar files into Maven repository. The artifact name would be same
+# as the filename minus the extension.
+# :Author: Zemian Deng
+# :Date: 2013/06/17
+#
+# Usage:
+#   # Print as maven dependency used in pom file
+#   mvn-install.sh mygroup 1.0.0 lib/*.jar
+#
+#   # Install jar files into local maven repo
+#   RUN_TYPE=install mvn-install.sh mygroup 1.0.0 lib/*.jar
+#
+#   # Deploy jar files into remote maven repo
+#   export REPO_URL=http://localhost/nexus/content/repositories/thirdparty
+#   RUN_TYPE=deploy mvn-install.sh mygroup 1.0.0 lib/*.jar
+#
+
+# Capture command arguments and options
+GROUP=$1
+shift
+VERSION=$1
+shift
+FILES=&quot;$@&quot;
+if [[ &quot;$GROUP&quot; == &quot;&quot; || &quot;$VERSION&quot; == &quot;&quot; || &quot;$FILES&quot; == &quot;&quot; ]]; then
+ printf &quot;ERROR: invalid arguments: GROUP VERSION FILES...\n&quot;
+ exit 1
+fi
+
+RUN_TYPE=${RUN_TYPE:=&quot;print&quot;} # values: print|install|deploy
+REPO_ID=${REPO_ID:=&quot;nexus-server&quot;} # Id defined in user's settings.xml for authentication
+REPO_URL=${REPO_URL:=&quot;http://localhost/nexus/content/repositories/thirdparty&quot;}
+
+# For each file, perform action based on run type.
+for FILE in $FILES; do
+ ARTIFACT=`basename $FILE '.jar'`
+ if [[ &quot;$RUN_TYPE&quot; == &quot;deploy&quot; ]]; then
+  printf &quot;Deploying file=$FILE as artifact=$ARTIFACT to repo=$REPO_URL\n&quot;
+  mvn deploy:deploy-file \
+   -DrepositoryId=$REPO_ID -Durl=$REPO_URL \
+   -DgroupId=$GROUP -DartifactId=$ARTIFACT -Dversion=$VERSION -Dpackaging=jar \
+   -Dfile=$FILE
+ elif [[ &quot;$RUN_TYPE&quot; == &quot;install&quot; ]]; then
+  printf &quot;Installing file=$FILE as artifact=$ARTIFACT\n&quot;
+  mvn install:install-file \
+   -DgroupId=$GROUP -DartifactId=$ARTIFACT -Dversion=$VERSION -Dpackaging=jar \
+   -Dfile=$FILE
+ elif [[ &quot;$RUN_TYPE&quot; == &quot;print&quot; ]]; then
+  printf &quot;        &lt;dependency&gt;\n&quot;
+  printf &quot;            &lt;groupId&gt;$GROUP&lt;/groupId&gt;\n&quot;
+  printf &quot;            &lt;artifactId&gt;$ARTIFACT&lt;/artifactId&gt;\n&quot;
+  printf &quot;            &lt;version&gt;$VERSION&lt;/version&gt;\n&quot;
+  printf &quot;        &lt;/dependency&gt;\n&quot;
+ fi
+done
+</code></pre>
+<p>Last updated 2013-06-18 19:14:37 EDT</p>
+</p>
+  			<a href="blog/2013/06/how-to-zip-up-a-release-from-a-hg-repository.html"><h1>How to zip up a release from a hg repository</h1></a>
+  			<p>17 June 2013, tags: 
+			    <a href="../tags/hg.html">hg</a> 
+  			</p>
+  			<p><h2>How to zip up a release from a hg repository</h2>
+<p>Did you know <code>hg archive</code> command can quickly zip up your project by given a revision or release<br />
+name? This is very handy to package up a distribution and share with other who is refusing to use<br />
+the same client.</p>
+<p>I wrote a simple bash script to do this with couple extras. It will create a zip file with a nice<br />
+basename so it’s easy for unzipping. It also auto generate and append the given revision or tag<br />
+name into the RELEASE.txt file, so you know what’s been released.</p>
+<p>Just add the following file into any root of your <code>hg</code> based project’s <code>bin</code> directory and it’s<br />
+ready to use.</p>
+<p>Note</p>
+<p>This script will not tag your repository. It assumed you already have tagged. It simply<br />
+will package up a release into a nice little zip file.</p>
+<p>bin/zip-release.sh</p>
+<pre><code>#!/usr/bin/env bash
+#
+# Package a release or snapshot from Hg repository for distribution.
+# :Author: Zemian Deng
+# :Date: 2013/02/01
+#
+# Usage example:
+#   # release a specific tag
+#   cd /path/to/project
+#   bin/zip-release.sh 1.0.1
+#
+#   # release a snapshot
+#   bin/zip-release.sh
+#
+
+# Command line arguments and options
+# Assume this script is in bin, which one directory up.
+APP_HOME=`cd $(dirname $0)/.. &amp;&amp; pwd`
+if [[ `command -v realpath` != &quot;&quot; ]]; then
+	# resolve symbolic link if possible.
+    APP_HOME=`realpath $APP_HOME`
+fi
+HG_REVISION=`hg id -i`
+REL_VERSION=$1
+if [[ &quot;$REL_VERSION&quot; == &quot;&quot; ]]; then
+    REL_VERSION=$HG_REVISION
+fi
+REL_NAME=&quot;`basename $APP_HOME`-$REL_VERSION&quot;
+REL_DIR=$APP_HOME/target/$REL_NAME
+REL_ZIPFILE=$REL_DIR/../$REL_NAME.zip
+
+# Generate the zip package
+printf &quot;Generating $REL_NAME in directory=`pwd`\n&quot;
+mkdir -p $REL_DIR
+hg archive -r $REL_VERSION $REL_ZIPFILE
+
+# Auto append revision id to release file.
+if [[ -e $APP_HOME/RELEASE.txt ]]; then
+	cp $APP_HOME/RELEASE.txt $REL_DIR/RELEASE.txt
+fi
+printf &quot;$REL_NAME revsion=$HG_REVISION date=`date`\n&quot; &gt;&gt; $REL_DIR/RELEASE.txt
+zip -u $REL_ZIPFILE $REL_DIR/RELEASE.txt
+
+# Clean up the tmp rel dir.
+rm -r $REL_DIR
+
+printf &quot;$REL_ZIPFILE created.\n&quot;
+</code></pre>
+<p>Last updated 2013-06-18 19:18:48 EDT</p>
+</p>
+  			<a href="blog/2013/06/how-to-install-awestruct-on-cygwin.html"><h1>How to install awestruct on Cygwin</h1></a>
+  			<p>14 June 2013, tags: 
+			    <a href="../tags/cygwin.html">cygwin</a> 
+  			</p>
+  			<p><p>How to install <code>awestruct</code> on Cygwin</p>
+<h2>How to install <code>awestruct</code> on Cygwin</h2>
+<p>I tried installing <code>awestruct</code> on Cygwin today, but it failed with following:</p>
+<pre><code>gem install awestruct
+Building native extensions.  This could take a while...
+ERROR:  Error installing awestruct:
+        ERROR: Failed to build gem native extension.
+
+        /usr/bin/ruby.exe extconf.rb
+checking for libxml/parser.h... *** extconf.rb failed ***
+Could not create Makefile due to some reason, probably lack of
+necessary libraries and/or headers.  Check the mkmf.log file for more
+details.  You may need configuration options.
+</code></pre>
+<p>I am running Windows 7 with Cygwin 1.7.20 and ruby 1.9.3p392</p>
+<p>After looking at the log and googling around, I've found that the <code>awestruct</code> depends on <code>nokogiri</code>, and in<br />
+turns depends on <code>libxslt</code>, <code>libxslt</code> and <code>iconv</code> native lib. I have the last three<br />
+already installed in Cygwin with default paths, but the problem is they are installed<br />
+under <code>/usr</code> and not <code>/usr/local</code>. Because of this, I have to install the <code>awestruct</code><br />
+with extra parameters like this:</p>
+<pre><code>gem install awestruct -- --with-xml2-include=/usr/include/libxml2 \
+                        --with-xml2-lib=/usr/lib \
+                        --with-xslt-dir=/usr/include/libxslt \
+                        --with-iconv-include=/usr/include \
+                        --with-iconv-lib=/usr/lib
+</code></pre>
+<p>Now I am awestruct!</p>
+<p>Last updated 2013-06-15 21:51:49 EDT</p>
+</p>
+  			<a href="blog/2013/06/taming-the-jmx-on-weblogic-server.html"><h1>Taming the JMX on WebLogic Server</h1></a>
+  			<p>11 June 2013, tags: 
+			    <a href="../tags/weblogic.html">weblogic</a> 
+
+			    <a href="../tags/jmx.html">jmx</a> 
+  			</p>
+  			<p><p>Taming the JMX on WebLogic Server</p>
+<h1>Taming the JMX on WebLogic Server</h1>
+<p>Let assume couple things first:</p>
+<p>1) I assume you have heard of Java’s JMX features and familiar what it does (expose and manage your service remotely). You ought to know that default JVM will have a Platform MBeanServer instance that you can register MBean. And you may view them using the <code>jconsole</code> command from the JDK.</p>
+<p>2) As of today, I think by far the easiest way you can expose any services in your application to a JMX MBeanServer is using Spring’s exporter. You will do something like this:</p>
+<pre><code>    &lt;bean class=&quot;org.springframework.jmx.export.MBeanExporter&quot;&gt;
+        &lt;property name=&quot;assembler&quot;&gt;
+              &lt;bean class=&quot;org.springframework.jmx.export.assembler.InterfaceBasedMBeanInfoAssembler&quot;&gt;
+                &lt;property name=&quot;managedInterfaces&quot;&gt;
+                    &lt;list&gt;
+                        &lt;!-- Expose any java interface you like to see under JMX as MBean --&gt;
+                        &lt;value&gt;myproject.services.Service&lt;/value&gt;
+                    &lt;/list&gt;
+                &lt;/property&gt;
+              &lt;/bean&gt;
+        &lt;/property&gt;
+        &lt;property name=&quot;beans&quot;&gt;
+          &lt;map&gt;
+            &lt;entry key=&quot;myproject.services:name=MyCoolService&quot; value-ref=&quot;myCoolService&quot;/&gt;
+          &lt;/map&gt;
+        &lt;/property&gt;
+    &lt;/bean&gt;
+    &lt;!-- This service must implements the interface used above --&gt;
+    &lt;bean id=&quot;myCoolService&quot; class=&quot;myproject.services.MyCoolService&quot;&gt;
+    &lt;/bean&gt;
+</code></pre>
+<p>Above should get you standalone application with JMX enabled.</p>
+<p>Now if you want to do similar on WebLogic Server, then I have few goodies and notes that might help you. Read on…</p>
+<h2>WebLogic Server’s (WLS) MBeanServer</h2>
+<h3>The JConsole trick</h3>
+<p>The WLS, like many other EE server will have it’s own MBeanServer. However, to see the MBean’s you would need to do little extra with <code>jconsole</code>. Assume you have a default config WLS started on localhost, then you can connect to it like this.</p>
+<pre><code>jconsole -J-Djava.class.path=&quot;$JAVA_HOME/lib/jconsole.jar:$MW_HOME/wlserver/server/lib/wljmxclient.jar&quot; -J-Djmx.remote.protocol.provider.pkgs=weblogic.management.remote
+</code></pre>
+<p>Then when prompted to login, enter the following:</p>
+<pre><code>Remote Process: service:jmx:iiop://localhost:7001/jndi/weblogic.management.mbeanservers.runtime
+User: &lt;same userid you used setup WLS to their console app.&gt;
+Password: &lt;same password you used setup WLS to their console app.&gt;
+</code></pre>
+<p>Now you should see all the MBeans that WLS already exposed to you as a EE server. You may add your own service there.</p>
+<h3>Programming with JMX connection</h3>
+<p>You may connect to the WLS MBeanServer remotely inside your standalone application. Here is a typical connection code you would need</p>
+<pre><code>        String serviceName = &quot;com.bea:Name=DomainRuntimeService,Type=weblogic.management.mbeanservers.domainruntime.DomainRuntimeServiceMBean&quot;;
+        try {
+            ObjectName service = new ObjectName(serviceName);
+        } catch (MalformedObjectNameException e) {
+            throw new RuntimeException(&quot;Not able to create JMX ObjectName: &quot; + serviceName);
+        }
+
+        String protocol = &quot;t3&quot;;
+        String jndiroot = &quot;/jndi/&quot;;
+        String mserver = &quot;weblogic.management.mbeanservers.runtime&quot;;
+        try {
+            JMXServiceURL serviceURL = new JMXServiceURL(protocol, &quot;localhost&quot;, 7001, jndiroot + mserver);
+
+            Hashtable h = new Hashtable();
+            h.put(Context.SECURITY_PRINCIPAL, username);
+            h.put(Context.SECURITY_CREDENTIALS, password);
+            h.put(JMXConnectorFactory.PROTOCOL_PROVIDER_PACKAGES,
+                    &quot;weblogic.management.remote&quot;);
+            h.put(&quot;jmx.remote.x.request.waiting.timeout&quot;, new Long(10000));
+            JMXConnector connector = JMXConnectorFactory.connect(serviceURL, h);
+            MBeanServerConnection remoteMBeanServer = connector.getMBeanServerConnection();
+
+            // TODO: Do what you need with remoteMBeanServer here.
+        } catch (Exception e) {
+            throw new RuntimeException(&quot;Not able to initiate MBeanServer protocol= &quot; + protocol +
+                    &quot;, jndiroot= &quot; + jndiroot + &quot;, mserver= &quot; + mserver);
+        }
+</code></pre>
+<p>That’s a mouthful of boiler code just to get a remote MBeanServer connection! Fortunately there is another easier way though. Read on…</p>
+<h3>The JNDI trick</h3>
+<p>The WLS MBeanServer service is also available through JNDI lookup. Again Spring can help you with their JNDI lookup and you simply need to inject it to other services that need it. For example:</p>
+<pre><code>    &lt;bean id=&quot;jmxServerRuntime&quot; class=&quot;org.springframework.jndi.JndiObjectFactoryBean&quot;&gt;
+        &lt;property name=&quot;jndiName&quot; value=&quot;java:comp/env/jmx/runtime&quot;/&gt;
+    &lt;/bean&gt;
+    &lt;bean id=&quot;exporter&quot; class=&quot;org.springframework.jmx.export.MBeanExporter&quot;&gt;
+        &lt;property name=&quot;beans&quot;&gt;
+            &lt;map&gt;
+                &lt;entry key=&quot;myproject.services:name=MyCoolService&quot; value-ref=&quot;myCoolService&quot;/&gt;
+            &lt;/map&gt;
+        &lt;/property&gt;
+        &lt;property name=&quot;server&quot; ref=&quot;jmxServerRuntime&quot;/&gt;
+    &lt;/bean&gt;
+</code></pre>
+<p>Notice that we have injetcted the &quot;server&quot; property with one we looked up from WLS JNDI service. If you use that in your WAR application and deploy it onto a WLS instance, and whola, you got yourself exposed service onto WLS JMX!</p>
+<p>Note</p>
+<p>above will only works if your Spring xml config is part of the WAR/JAR/EAR that’s deployed in same server where JNDI lives! If you are not, you need to use this JNDI name without the &quot;env&quot; part instead, like &quot;java:comp/env/jmx/runtime&quot;.</p>
+<p>For more details on how to work with JMX and WLS, see their docs here:<br />
+<a href="http://docs.oracle.com/cd/E12839_01/web.1111/e13728/accesswls.htm#i1119556">http://docs.oracle.com/cd/E12839_01/web.1111/e13728/accesswls.htm#i1119556</a></p>
+<p>Last updated 2013-06-12 23:52:42 EDT</p>
+</p>
+  			<a href="blog/2013/06/myschedule-3-2-0-0-final-is-released.html"><h1>MySchedule 3.2.0.0 FINAL is released</h1></a>
+  			<p>07 June 2013, tags: 
+			    <a href="../tags/myschedule.html">myschedule</a> 
+  			</p>
+  			<p><p>Hi folks,</p>
+<p>I have tagged the 3.2.0.0 release of the MySchedule project today. This is the first stable release of the version 3 branch line of the project. In this release we bring you the latest Vaadin UI experience. You may expect all the good stuff from old release, plus few new features added.</p>
+<ul>
+<li>You may now save your own Templates in scheduler configurations, scripting text or even XML for job loader.</li>
+<li>You may interrupt a running job.</li>
+<li>More Scheduler runtime information are displayed.</li>
+<li>New table display of all plugins used.</li>
+<li>Added an embedded web server for quick self running UI server.</li>
+<li>Single convenient package download.</li>
+<li>New release format: 3.2.x.y is used for MySchedule3 using Quartz 2.x library.</li>
+<li>New <a href="http://demo-myschedule.rhcloud.com">online demo</a> setup on OpenShift platform</li>
+</ul>
+<p>Get it and try it out here <a href="http://code.google.com/p/myschedule">http://code.google.com/p/myschedule</a></p>
+</p>
+  			<a href="blog/2013/05/choosing-technology-stack-to-build-a-common-platform.html"><h1>Choosing Technology Stack to build a common platform</h1></a>
+  			<p>29 May 2013, tags: 
+			    <a href="../tags/architecture.html">architecture</a> 
+  			</p>
+  			<p><p>There are many talks in Java community about Spring vs Java EE, and how one group would argue you should use one and not other etc. When I see this, I can't help but to think why can't we use them both together? In fact I think using them both effectively would create a great technology stack for building an infrastructure for large company who like to provide a common platform that may host and run many different applications and projects.</p>
+<h1>Why combine Spring and Java EE together?</h1>
+<p>When writing software, we create and build libraries/framework that can be reuse and help us get things done faster. Spring is such a swiss-army knife like library that allows application to be build in an un-intrusive way and with many easier wrappers and helpers classes. This is what I call developer friendliness library.</p>
+<p>However many people don't realize is that Spring is just a library and wrappers to many things that ease the development. Spring has a web framework layer to let you write MVC web app, but you still need a Servlet Container (server). Spring provides data layer that mostly wraps other JPA/Hibernate/JDBC that integrate well in their IoC container, but the actual ORM implementation is outside of Spring (eg: Hibernate). Spring wraps JMS or even JNDI for development, but you still need a JMS server or JNDI provider. Spring has a Transaction Manager Abstract layer, but it's just a wrapper (for single DB, it's the database vendor that actually provided the ACID attributes of your transaction guarantee, not Spring). If you want to atomic transaction on multiple resources (such as JMS and Database, or multiple databases) you still need a &quot;real&quot; Transaction Manager (JTA)!</p>
+<p>So now you see, in order to build a successful enterprise application, you need Spring on top of many vendor provided features. If you are not careful, you could be lock into many proprietary services that's hard to integrate and deploy. This is where Java EE comes in. It's a spec layout that vendor must provide most of those services in a standard manner. Hence any JEE compliance server would provide services with standard API that suppose to works the similar way.</p>
+<p>Now there must be balance to make. From my experience, the more standards you enforce, then less &quot;developer friendliness&quot; it will get. But at the same time, without standard, it's hard to provide common infrastructure such as API, runtime server and/or even OS environment for deployment. This is the reason I would argue that combining Spring with Java EE would bring most practical and effective platform to IT.</p>
+<h1>Choosing the Technology Stack</h1>
+<p>Not every project is created equals and their needs are different. So providing a common technology stack that will satisfy all projects is impossible. But we can certainly try to create a common one that satisfy most of projects need. Also choosing a concrete library/stack is very opinionated, and no matter which actual implementation is selected, there are always going to be pro and cons. With this in mind, I will try to layout my own personal choices of a technology stack that I think it will provide the most flexible platform to host majority projects and applications. Specially in a big corporate environment.</p>
+<p>I will choose a Java EE application server as common platform. From this, I will choose some &quot;developer friendliness&quot; libraries that replace (or add on-top) few existing EE standards to gain productivity. I think EE has come a long way and getting better through each spec iteration, but I still feel it is more flexibility in using Spring as IoC container verse using CDI when wiring POJO services together. Plus the Spring comes with a very flexible MVC framework layer that's effective and easy to development in compare to plain Servlet API. Once these are combined and available as a common platform, I think it can support many kind of applications in various IT environment.</p>
+<p>Starting Java EE 6, there are two profiles a server must provide now. So let's start exploring the stack from these two views.</p>
+<h1>JEE Web profile - Lighter web based driven application</h1>
+<ul>
+<li>Use Spring MVC (controller, form, validation, ModelAndView and IoC configurations) instead of plain Servlet API programming.</li>
+<li>Write backend business service logic as POJO as possible and use Spring IoC to wire them. Do not abuse this. I personally think Spring IoC is more flexible and easier to use in compare to CDI.</li>
+<li>Use JPA for data service layer instead of JDBC API programming.</li>
+<li>Use JSON data exchange format. From experience, JSON is much more efficient and easier to work in comparison to XML.</li>
+<li>Views options:</li>
+<li>
+<p>Use well formed xhtml/Bootstraps/jquery/AJAX -&gt; If you need just static pages and some client side interactive</p>
+</li>
+<li>Freemarker (or Thymeleaf) -&gt; If you need a lot of dynamic content to generate, use an template engine! This is better than JSP alone.</li>
+<li>Vaadin -&gt; If you need desktop application behavior like on web browser side. This is easier in compare to JSF.</li>
+<li>
+<p>Servlet 3.0 now support asynchronous requests. This solve many challenging problems in web domain. Take advantage of it if needed! (Latest Spring MVC has support for this already.)</p>
+</li>
+</ul>
+<h1>JEE 6 Full profile - Full EE features application</h1>
+<ul>
+<li>On top of everything mentioned above in Web Profile.</li>
+<li>Use JMS for any messaging need that fall into Point-To-Point or Publish/Subscribe domain.</li>
+<li>Use JTA when you need atomic transaction for multiple databases and/or JMS delivery.</li>
+<li>Use standard JAX-RS (RESTful web service API) for exposing external services. Use JSON data exchange format.</li>
+<li>Use consistent Spring IoC for services injection. It's more flexible and easier to work with in compare to CDI.</li>
+<li>Use POJO services and wire by Spring instead of EJB if possible. I found them more easier to test and development.</li>
+<li>Plus whatever else EE spec somes with that it supports such as (JavaMail and JCA etc. usually Spring will have a easier wrapper for these API as well.)</li>
+</ul>
+<h1>Apache Camel - Light Weight ESB</h1>
+<p>The Camel project is not an EE standard, however from my experience is that many common IT work can be easily done with simple Camel route/workflow. The development and style of Camel is simple to understand and easy to test. It can be run as stand alone application/service or as part of a web application. I believe it's a great value to add on top of a common platform with above. You would use it whenever you need the following:</p>
+<ul>
+<li>For any integration pattern like work flow process (eg: bridge a file poller to a web service to a JMS queue to database etc.)</li>
+<li>For creating business workflow process.</li>
+<li>For any ETL workflow process.</li>
+<li>For easy mapping of business requirement workflow to code logic process</li>
+</ul>
+<h1>Which EE application server to use</h1>
+<p>I think this is subjective as well, but we need to choose one that's fit for business need. I personally favor JBoss because it's open source, and yet they provide commercial backed version of their application server. Being an open source based product, it gives developers greater flexibility in learning and exploring the platform. I also see many benefits in their in house projects such as testing tools and libraries are open and benefit to developers.</p>
+<h2>What about Tomcat server?</h2>
+<p>Tomcat is a very well known Servlet server. However it is only a Web container that support Servlet/JSP application. It does not provide JMS or JTA features that provided by a Java EE server. It's a fact that many web application requirements can be satisfy with simple Tomcat server. However in a large IT env, you will often you need other services that provided by Java EE server. In many cases, people will simply run Tomcat webapp and bridge to other Java EE server when needed.</p>
+<p>Well, this is reason I would select a Java EE server in the first place. Specially with JEE6, it provided Web Profile that stripped down to mostly Web Container features, then should make the server faster to start-up and less extra services loaded. However, in case when application needed EE features, the platform we provide will able to support it.</p>
+</p>
+  			<a href="blog/2013/05/carry-your-sword-and-dagger-programmers.html"><h1>Carry your sword and dagger programmers!</h1></a>
+  			<p>03 May 2013  			</p>
+  			<p><div class="paragraph">
+<p>A knight would for sure carry his sword proudly and ready for any battles. But then he
+can not use such a heavy weapon for daily tasks such as peeling an apple. Sometimes I think the same with ourself as programmers. We need a stable, strong and static typed programming language that can get us
+the heavy job (large project, and enterprise system) done in more manageable way. But yet, we face many smaller daily tasks (eg: parse a text file for a search value, or generate sample data etc) that is better fitted to use a lighter,  dynamic language because they are faster to write; and the code need not go through heavier process as the main project.</p>
+</div>
+<div class="paragraph">
+<p>Through out my career, I have been keeping two languages (one strong typed and one dynamic typed) pair very up to date. I would learn it and be proficient with it enough to write code without flipping through a book. I started with C++ with Perl and then switched to Python. And then later with Java and Jython, and later with Groovy. These are my strongest languages that I used the most, especially with Java. Of course I never stop learning other languages as well, such as Scala and Ruby etc. I personally think Ruby is very nice and good language to learn and use. I just not have had a chance to use it that extensively yet. Mastering a full static language such as Java would take much longer time, but one can learn a dynamic language fairly quickly.</p>
+</div>
+<div class="paragraph">
+<p>Any rate, if you a programmer, I strongly encourage you to learn at least two languages, and learn it well. As I said, prefer one static and one dynamic language. This pair of combination will boost your productivity to next level.</p>
+</div></p>
+
+	<hr />
+
+	<ul class="pager">
+		<li class="previous"><a href="https://zemian.github.io/19">Previous</a></li>
+		<li>Page: 20/29</li>
+		<li class="next"><a href="https://zemian.github.io/21">Next</a></li>
+	</ul>
+
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">&copy; 2011 - 2019 Zemian Deng All Rights Reserved | Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.5</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../js/jquery-1.11.1.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/prettify.js"></script>
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-135626598-1');
+    </script>
+
+  </body>
+</html>

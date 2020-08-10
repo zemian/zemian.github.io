@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Zemian's Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/asciidoctor.css" rel="stylesheet">
+    <link href="../css/base.css" rel="stylesheet">
+    <link href="../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../about.html">About</a></li>
+            <li><a href="../archive.html">Archive</a></li>
+            <li><a href="..//tags">Tags</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">
+  			<a href="blog/2012/06/timemachine-scheduler-tour-part1.html"><h1>TimeMachine Scheduler Tour: Part1</h1></a>
+  			<p>06 June 2012, tags: 
+			    <a href="../tags/timemachine.html">timemachine</a> 
+  			</p>
+  			<p><p>This is part 1 of 7 in a series of articles that will give you a tour of the <a href="https://bitbucket.org/timemachine/scheduler/wiki/Home">TimeMachine Scheduler</a> project. These articles will introduce you to the scheduler, how to load jobs and schedules, and explore some of its advanced features. For the most current and accurate instructions, please visit the ReferenceManual from the project site.</p>
+<h2></h2>
+<p>What is TimeMachine Scheduler</p>
+<p>TimeMachine is a Java scheduler that can scale and run high volume of jobs with many different types of schedules, such as repeating on fixed interval or based on CRON expressions. The scheduler may control the job executions with thread pools, and it can persist job data into different storage. Users may use the built-in scheduler server with easy configuration file, or developers may use it as a library to extend the scheduler and write custom jobs, schedules, or user services.</p>
+<h2></h2>
+<p>Getting started<br />
+First step is to download the latest scheduler distribution and uznip it into your system. Then fire up the scheduler with some sample jobs.</p>
+<p>We will be printing commands and its output running on a MacOSX terminal. If you have a Microsoft Windows, then running a Cygwin terminal would also work. Or if you are Linux user then you just use a Terminal.</p>
+<p>(NOTE: If you don't feel like downloading software, you may try our <a href="http://tmschedulerdemo-zdeng.rhcloud.com/scheduler-demo/job-list">online demo</a>. You may edit the scheduler configuration directly in a web form, and it will restart the scheduler immediately upon Save.)</p>
+<p>If you have downloaded the zip file under an &quot;apps&quot; directory in your HOME folder, then follow these steps to get a scheduler instance running:</p>
+<p>$ cd $HOME/apps<br />
+$ unzip timemachine-scheduler-1.1.1.zip<br />
+$ cd timemachine-scheduler-1.1.1<br />
+$ bin/scheduler.sh config/scheduler.properties</p>
+<p>You should see some log output on the terminal console screen like this</p>
+<p>22:57:08 main INFO| TimeScheduler system services initialized: [<br />
+scheduler: SchedulerData[id=1, name=TimeMachineScheduler],<br />
+schedulerNode: SchedulerNode[nodeId=1, name=ZEMIANs-iMac.local, ip=192.168.1.130],<br />
+configProps: config/scheduler.properties,<br />
+dataStore: MemoryDataStore[name=386981384],<br />
+scheduleRunner: PollingScheduleRunner[name=1186906970],<br />
+classLoader: SimpleClassLoaderService[name=1363910379],<br />
+jobTaskFactory: SimpleJobTaskFactory[name=621450213],<br />
+jobTaskPoolNameResolver: SimpleJobTaskPoolNameResolver[name=1945442111],<br />
+jobTaskThreadPool: DynamicThreadPool[name=jobTaskThreadPool.DEFAULT],<br />
+]<br />
+22:57:08 main INFO| Scheduler[id=1, nodeId=1, nodeIp=192.168.1.130] initialized. Version=1.1.1.062720122255<br />
+22:57:08 main INFO| Scheduler[id=1, nodeId=1, nodeIp=192.168.1.130] started.</p>
+<p>You may hit CTRL+C to exit the scheduler. The above config/scheduler.properties configuration file would not do much other than load an empty scheduler. To see more in action, try the config/crontab.properties config instead. It should look something like this:</p>
+<p>timemachine.scheduler.userservice.crontabService.class = timemachine.scheduler.userservice.CrontabService<br />
+CrontabService.01 = 0 0 * * * ?        | sh -c echo &quot;Hourly task begins.&quot;<br />
+CrontabService.02 = 0/5 * * * * ?      | sh -c echo &quot;Heart beat.&quot;<br />
+CrontabService.03 = 0 0/5 * * * ?      | sh -c echo &quot;Five minutes job.&quot;<br />
+CrontabService.04 = 0 0 12 * JAN,JUN ? | sh -c echo &quot;We should clean up every 6 months.&quot;<br />
+CrontabService.05 = 0 0 8 ? * 1-5      | sh -c echo &quot;Every workday at 8AM.&quot;</p>
+<p>The above configuration will make the scheduler to work similar to the Unix crontab service. It let you input a <a href="http://tmschedulersite-zdeng.rhcloud.com/scheduler-site/timemachine-scheduler/target/site-deploy/timemachine-scheduler/apidocs/index.html">CRON expression</a>, and then follow by a OS executable command to be run. Go ahead, try to replace the &quot;echo&quot; command in the config file with any other commands that you know of (ping for example), and then restart the scheduler. Our default log settings should display all the external command's output as it execute.</p>
+<p>There are few more configuration entries that you may add to customize the scheduler. Here are few we will examine closely. For example:</p>
+<p>timemachine.scheduler.schedulerName = TimeMachineScheduler<br />
+timemachine.scheduler.nodeName = ZEMIANs-iMac.local<br />
+timemachine.scheduler.dataStore.class = timemachine.scheduler.service.MemoryDataStore<br />
+timemachine.scheduler.jobTaskThreadPool.DEFAULT.class = timemachine.scheduler.service.DynamicThreadPool<br />
+timemachine.scheduler.jobTaskThreadPool.DEFAULT.minSize = 0<br />
+timemachine.scheduler.jobTaskThreadPool.DEFAULT.maxSize = 4<br />
+timemachine.scheduler.jobTaskThreadPool.DEFAULT.threadNamePrefix = ${timemachine.scheduler.schedulerName}-JobTask-Thread-</p>
+<p>You are free to change the scheduler name. Both the schedulerName and nodeName together will form a unique name for this instance of scheduler. These are printed as you start the scheduler so you can verify and identify them.</p>
+<p>We allow you to switch to different datastore, and we are using a in-memory store in this case. We also  provide a HibernateDataStore that you may use to persist the data into a database of your choice. We will cover this later in the tour, but for now we will focus on the simple in-memory store.</p>
+<p>One benefit of using our scheduler over a typical Unix cron is that you may control the thread pool to execute your jobs. You see the last few lines of configuration that defined a dynamic thread pool (it will not create the threads if your scheduler is idle without jobs to run.) You may change the min and max pool size, and you may even change the thread name. You may see the thread name in any JDK management tool such as jvisualvm.</p>
+<p>Notice one feature of our scheduler configuration, it allow you to substitude an existing value with ${key}format! We use this to set our thread name that reuse the value you already set as schedulerName.</p>
+<p>End of part 1. You may continue <a href="http://saltnlight5.blogspot.com/2012/06/timemachine-scheduler-tour-part2.html">next tour</a>.</p>
+</p>
+  			<a href="blog/2012/05/intro-to-timemachine-scheduler-1-0-0.html"><h1>Intro to TimeMachine Scheduler 1.0.0</h1></a>
+  			<p>28 May 2012, tags: 
+			    <a href="../tags/timemachine.html">timemachine</a> 
+  			</p>
+  			<p><p>Hello developers,</p>
+<p>I am happy to annouce the first release of TimeMachine Scheduler is available for you to download here:</p>
+<p><a href="https://bitbucket.org/timemachine/scheduler/downloads">https://bitbucket.org/timemachine/scheduler/downloads</a></p>
+<p>Our first release of the scheduler comes with many features ready to use already. I will briefly describe<br />
+them here.</p>
+<p>Out of the box, you can use it as an Unix Crontab system replacement. Since it's Java based, you can run it in Windows as well.You may pass a config file that loos like this and kick of the scheduler server to execute any OS commands or scripts you wish:<br />
+timemachine.scheduler.userservice.crontab.class = timemachine.scheduler.userservice.CrontabService<br />
+CrontabService.01 = 0 0 * * * ?        | sh -c echo &quot;Hourly task begins.&quot;<br />
+CrontabService.02 = 0/5 * * * * ?      | sh -c echo &quot;Heart beat.&quot;</p>
+<p>The scheduler has flexible configuration and allow full control on the job executions settings. For example you may configure the job task thread pool to be dynamic, so that it only creates threads when there are jobs to be run, else the pool size will shrink. Or you can even create multiple thread pools and match your jobs, effectively separated them in running Queues.</p>
+<p>Besides using external native commands, the scheduler also let you write your own job tasks. You can write new job task in either Java, JavaScript or Groovy scripting language. We package the optional Groovy engine in our distribution so it can be more convenient to write your own job, without even the need to re-compile source files, nor restart the scheduler instance!</p>
+<p>The scheduler comes with 3 built-in Schedule implementations that you may use to configure how often a job task runs. There is a RepeatSchedule that runs job in a fixed interval manner; a CronSchedule that uses a Unix CRON expression; and we have the DateListSchedule that simply let you use any arbituray dates to run.</p>
+<p>For this initial release, we only provide a in-memory data store implementation for persisting job and scheduling data. Our goal is to support other type of data store persistance such as using a database in the future. But even with this release, we've designed our API to support multiple scheduler nodes that run under a single logic scheduler. You can even do this with our in-memory data store!</p>
+<p>The TimeMachien Scheduler is designed to run with high volumes of jobs, and to give you flexible<br />
+control on time scheduling, threads executions and data storage. You can learn more on our project site <a href="https://bitbucket.org/timemachine/scheduler/wiki">https://bitbucket.org/timemachine/scheduler/wiki</a></p>
+<p>Enjoy,</p>
+<p>Zemian Deng</p>
+</p>
+  			<a href="blog/2012/05/changing-oracle-xe-apex-webapp-port.html"><h1>Changing Oracle XE apex webapp port</h1></a>
+  			<p>11 May 2012, tags: 
+			    <a href="../tags/oracle_xe.html">oracle_xe</a> 
+  			</p>
+  			<p><p>If you use Oracle XE for development, then you know it has a simple web interface through <a href="http://localhost:8080/apex">http://localhost:8080/apex</a>. Now port 8080 is a common port used by Tomcat server, so letting Oracle XE permanently have taken it is not convenient. But you can change it like this:</p>
+<pre><code> sql&gt; select dbms_xdb.gethttpport from dual;
+ sql&gt; exec dbms_xdb.sethttpport('8081');
+ sql&gt; commit;
+
+ bash&gt; open http://localhost:8081/apex
+</code></pre>
+<p>Also, if you ever deleted the HR sample database on the XE installation, you can restore it like this:</p>
+<pre><code> bash&gt; cd /c/oraclexe/app/oracle/product/10.2.0/server/demo/schema/human_resources
+ bash&gt; sqlplus system &lt; hr_main.sql
+</code></pre>
+</p>
+  			<a href="blog/2012/04/timemachine-scheduler-demo.html"><h1>TimeMachine Scheduler Demo</h1></a>
+  			<p>28 April 2012, tags: 
+			    <a href="../tags/timemachine.html">timemachine</a> 
+  			</p>
+  			<p><p>I just put out a scheduler demo live on <a href="https://bitbucket.org/timemachine/scheduler/wiki/SchedulerWebDemo">https://bitbucket.org/timemachine/scheduler/wiki/SchedulerWebDemo</a></p>
+<p>You can poke around the scheduler using Groovy scripting on this quick demo. The bad thing is that everyone in public has access and can add/delete and modify the scheduler! But it's a good way for you to explore around. Check it out and let me know what you think!</p>
+</p>
+  			<a href="blog/2012/04/tryout-timemachine-scheduler.html"><h1>Tryout TimeMachine Scheduler</h1></a>
+  			<p>25 April 2012, tags: 
+			    <a href="../tags/timemachine.html">timemachine</a> 
+  			</p>
+  			<p><p>There are few updates with TimeMachine Scheduler project:</p>
+<ol>
+<li>The project has a new home:<br />
+<a href="https://bitbucket.org/timemachine/scheduler/wiki/Home">https://bitbucket.org/timemachine/scheduler/wiki/Home</a></li>
+<li>I've been updating with SNAPSHOT downloads frequently lately, and the zip file binary distribution is fairly stable now. We are close to making the first official release.</li>
+<li>I've been working hard to update the ReferenceManual under wiki so users can get started and use it effectively.</li>
+</ol>
+<p>Give the project a try and let me know what you think!</p>
+</p>
+  			<a href="blog/2012/04/inspecting-your-oracle-database.html"><h1>Inspecting your Oracle database</h1></a>
+  			<p>11 April 2012, tags: 
+			    <a href="../tags/oracle.html">oracle</a> 
+  			</p>
+  			<p><p>Some quick tips on how to inspect what you have in your Oracle database.</p>
+<pre><code>-- show all schemas
+select distinct owner from dba_segments where owner in
+     (select username from dba_users where default_tablespace not in ('SYSTEM','SYSAUX'));
+
+-- show all tables from a schema/owner
+select * from all_tables where owner = 'HR';
+
+-- show table description
+desc HR.EMPLOYEES;
+
+-- show all users
+select * from all_users;
+select username, * from dba_users;
+
+
+-- See who is taking up a DB lock
+select c.*, b.* from v$lock a, dba_locks b, v$session c 
+  where a.id1 = b.lock_id1 and b.session_id = c.sid
+
+-- See internal SQL id
+select * from v$sql
+
+-- See Oracle latches:
+select * from v$latch
+
+-- See Library Cache of SGA (System Global Area) like buffer cache size:
+select * from v$sgastat
+
+-- See tx locks (TX) and DML locks (TM):
+select * from v$lock where type in ('TX', 'TM')
+select * from dba_locks where lock_type in ('Transaction', 'DML')
+</code></pre>
+</p>
+  			<a href="blog/2012/03/how-to-get-jaxb-xjc-to-work-on-maven.html"><h1>How to get JAXB (xjc) to work on Maven</h1></a>
+  			<p>11 March 2012, tags: 
+			    <a href="../tags/java.html">java</a> 
+
+			    <a href="../tags/maven.html">maven</a> 
+  			</p>
+  			<p><p>I got it working by using the following</p>
+<pre><code>    &lt;build&gt;
+        &lt;plugins&gt;
+            &lt;!-- Generate JAXB Java source files from an XSD file --&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.codehaus.mojo&lt;/groupId&gt;
+                &lt;artifactId&gt;jaxb2-maven-plugin&lt;/artifactId&gt;
+                &lt;version&gt;1.3.1&lt;/version&gt;
+                &lt;executions&gt;
+                    &lt;execution&gt;
+                        &lt;goals&gt;
+                            &lt;goal&gt;xjc&lt;/goal&gt;
+                        &lt;/goals&gt;
+                    &lt;/execution&gt;
+                &lt;/executions&gt;
+                &lt;configuration&gt;
+                    &lt;packageName&gt;my.jaxb.data&lt;/packageName&gt;
+                    &lt;outputDirectory&gt;${project.build.directory}/generated-source/jaxb&lt;/outputDirectory&gt;
+                    &lt;schemaDirectory&gt;${basedir}/src/main/resources&lt;/schemaDirectory&gt;
+                    &lt;schemaFiles&gt;mydata.xsd&lt;/schemaFiles&gt;
+                &lt;/configuration&gt;
+            &lt;/plugin&gt;
+
+            &lt;!-- Build helper plugin adds the sources generated by the JAXB to the compile path --&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.codehaus.mojo&lt;/groupId&gt;
+                &lt;artifactId&gt;build-helper-maven-plugin&lt;/artifactId&gt;
+                &lt;version&gt;1.7&lt;/version&gt;
+                &lt;executions&gt;      
+                    &lt;execution&gt; 
+                        &lt;phase&gt;process-sources&lt;/phase&gt;
+                        &lt;configuration&gt;
+                            &lt;sources&gt;
+                                &lt;source&gt;${project.build.directory}/generated-sources/jaxb&lt;/source&gt;
+                            &lt;/sources&gt;
+                        &lt;/configuration&gt;
+                        &lt;goals&gt;
+                            &lt;goal&gt;add-source&lt;/goal&gt;
+                        &lt;/goals&gt;
+                    &lt;/execution&gt;
+                &lt;/executions&gt;
+            &lt;/plugin&gt;
+        &lt;/plugins&gt;
+    &lt;/build&gt;
+</code></pre>
+</p>
+  			<a href="blog/2012/03/first-snapshot-of-timemachine-scheduler-is-ready.html"><h1>First snapshot of TimeMachine scheduler is ready</h1></a>
+  			<p>09 March 2012, tags: 
+			    <a href="../tags/timemachine.html">timemachine</a> 
+  			</p>
+  			<p><p>The first snapshot of TimeMachine, a new open source Java Scheduler library, is aviable to download. Check it out at <a href="https://bitbucket.org/saltnlight5/timemachine-scheduler/downloads">https://bitbucket.org/saltnlight5/timemachine-scheduler/downloads</a> and let me know what you think!</p>
+</p>
+  			<a href="blog/2012/02/timemachine-scheduler.html"><h1>TimeMachine Scheduler</h1></a>
+  			<p>28 February 2012, tags: 
+			    <a href="../tags/timemachine.html">timemachine</a> 
+  			</p>
+  			<p><p>Wanna contribute to an opensource project? Check out <a href="https://bitbucket.org/saltnlight5/timemachine-scheduler/wiki/Home">https://bitbucket.org/saltnlight5/timemachine-scheduler/wiki/Home</a></p>
+</p>
+  			<a href="blog/2012/02/myschedule-2-4-0-release.html"><h1>MySchedule-2.4.0 release</h1></a>
+  			<p>27 February 2012, tags: 
+			    <a href="../tags/myschedule.html">myschedule</a> 
+
+			    <a href="../tags/quartz.html">quartz</a> 
+  			</p>
+  			<p><p>I have released version 2.4.0 of MySchedule project, and you may get it here: <a href="http://code.google.com/p/myschedule/downloads/list">http://code.google.com/p/myschedule/downloads/list</a></p>
+<p>In this release, I have added these:</p>
+<ul>
+<li>Quartz is running on Heroku! Check it out: <a href="http://stormy-flower-6956.herokuapp.com/">http://stormy-flower-6956.herokuapp.com</a>
+<ul>
+<li>
+<p>Added JdbcSchedulerHistoryPlugin that will record job history in DB.</p>
+</li>
+<li>
+<p>Added Cron Tool expression validation on web page.</p>
+</li>
+<li>
+<p>Added AppConfig configurable by a Properties file.</p>
+</li>
+<li>
+<p>Upgraded to quartz-2.1.1</p>
+</li>
+<li>
+<p>Fixed trigger display page.</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>Enjoy!</p>
+</p>
+
+	<hr />
+
+	<ul class="pager">
+		<li class="previous"><a href="https://zemian.github.io/26">Previous</a></li>
+		<li>Page: 27/29</li>
+		<li class="next"><a href="https://zemian.github.io/28">Next</a></li>
+	</ul>
+
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">&copy; 2011 - 2019 Zemian Deng All Rights Reserved | Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.5</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../js/jquery-1.11.1.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/prettify.js"></script>
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-135626598-1');
+    </script>
+
+  </body>
+</html>

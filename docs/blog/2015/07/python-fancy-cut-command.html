@@ -40,7 +40,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../">Zemian's Blog</a>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -48,7 +48,6 @@
             <li><a href="../../../about.html">About</a></li>
             <li><a href="../../../archive.html">Archive</a></li>
             <li><a href="../../..//tags">Tags</a></li>
-            <li><a href="../../../feed.xml">Subscribe</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -62,21 +61,21 @@
 	    <a href="../../../tags/python.html">python</a> 
 	</p>
 
-	<p># file: cut.py<br />
-#<br />
-# Python port of the following perl command (fancy cut command)<br />
-# &nbsp; ls -l | tail -n +2 | perl -F'/\s+/' -ane 'print "$F[-1]\n"'<br />
-# but it works better with python index slicer and split by full regex delimiter.<br />
-#<br />
-# Examples:<br />
-# &nbsp; ls -l | tail -n +2 | python cut.py ':'<br />
-# &nbsp; ls -l | tail -n +2 | python cut.py '2:3'<div>
-<br />import sys,fileinput,re<br />
-indexes = sys.argv[1]<br />
-files = sys.argv[2:]<br />
-for line in fileinput.input(files):<br />
-<span class="Apple-tab-span" style="white-space: pre;"> </span>words = re.split("\s+", line.strip())<br />
-<span class="Apple-tab-span" style="white-space: pre;"> </span>print(eval("words[" + indexes + "]"))</div>
+	<p><h1>file: cut.py</h1>
+<h1></h1>
+<h1>Python port of the following perl command (fancy cut command)</h1>
+<h1>ls -l | tail -n +2 | perl -F'/\s+/' -ane 'print &quot;$F[-1]\n&quot;'</h1>
+<h1>but it works better with python index slicer and split by full regex delimiter.</h1>
+<h1></h1>
+<h1>Examples:</h1>
+<h1>ls -l | tail -n +2 | python cut.py ':'</h1>
+<h1>ls -l | tail -n +2 | python cut.py '2:3'</h1>
+<p>import sys,fileinput,re</p>
+<p>indexes = sys.argv[1]</p>
+<p>files = sys.argv[2:]</p>
+<p>for line in fileinput.input(files):<br />
+words = re.split(&quot;\s+&quot;, line.strip())<br />
+print(eval(&quot;words[&quot; + indexes + &quot;]&quot;))</p>
 </p>
 
 	<hr />
