@@ -298,84 +298,6 @@ major version: 54 = Java 10</pre>
 <div class="paragraph">
 <p>Ref: <a href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html" class="bare">https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html</a></p>
 </div></p>
-  			<a href="blog/2018/03/switching-different-jdk-in-cygwin.html"><h1>Switching Different JDK in Cygwin</h1></a>
-  			<p>24 March 2018, tags: 
-			    <a href="../tags/cygwin-jdk.html">cygwin-jdk</a> 
-  			</p>
-  			<p><div class="paragraph">
-<p>I love to use bash shell terminal. It&#8217;s a much more powerful terminal to do everyday tasks. Even in Windows, I can get most of what I need using Cygwin. Unfortunately Java executable are native to OS only, and for Windows, it would still work under Cygwin, but all the file system paths are still native. Java can understand the mixed-path though, and it has made somewhat easier than the Windows native backward slash path like typing. This means we can define <code>JAVA_HOME</code> variable using mixed path mode. In Cygwin, I define my <code>.bashrc</code> like this:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>export JAVA_HOME=C:/Users/zemian/apps/jdk-8u161
-PATH=$HOME/apps/jdk-8u161/bin:$PATH</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>I sometimes work with different version of JDK for various application testing. In this case, I need a way to quicly switch JDK version in my shell env. To make it easier, I have installed all of my JDK in a <code>$HOME/apps</code> directory, and created symbolic links to each JDKs like this:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>cd $HOME/apps
-ls -ld jdk*
-
-drwx------+ 1 zemian staff 0 Mar 24 16:58 jdk-8u161
-drwx------+ 1 zemian staff 0 Mar 24 10:57 jdk-9.0.4
-drwx------+ 1 zemian staff 0 Mar 24 10:48 jdk-10
-
-lrwxrwxrwx  1 zemian staff 9 Mar 24 16:55 jdk8 -&gt; jdk-8u161
-lrwxrwxrwx  1 zemian staff 9 Mar 24 11:02 jdk9 -&gt; jdk-9.0.4
-lrwxrwxrwx  1 zemian staff 6 Mar 24 11:00 jdk10 -&gt; jdk-10</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Now that each JDK has a nice consistent version number in path, then I create a shell function like this to switch between them:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre># Switching Multiple JDK
-switchjava() {
-	JDK="jdk$1"
-	if [[ ! -d $APPS_DIR/$JDK ]]; then
-		echo "ERROR: JDK path not found: $APPS_DIR/$JDK"
-		return
-	fi
-	export JAVA_HOME=`cygpath -wm $APPS_DIR/$JDK`
-	export PATH=$APPS_DIR/$JDK/bin:$PATH
-
-	# Verifying java
-	echo "Switched JAVA_HOME to $JAVA_HOME"
-	echo "Java Path:"
-	which java
-	echo "Java Version:"
-	java -version
-}</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>To put it in use, it looks like this:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>$ switchjava 9
-Switched JAVA_HOME to C:/Users/zemian/apps/jdk-9.0.4
-Java Path:
-/home/zemian/apps/jdk9/bin/java
-Java Version:
-openjdk version "9.0.4"
-OpenJDK Runtime Environment (build 9.0.4+11)
-OpenJDK 64-Bit Server VM (build 9.0.4+11, mixed mode)
-
-$ switchjava 8
-Switched JAVA_HOME to C:/Users/zemian/apps/jdk-8u161
-Java Path:
-/home/zemian/apps/jdk8/bin/java
-Java Version:
-java version "1.8.0_161"
-Java(TM) SE Runtime Environment (build 1.8.0_161-b12)
-Java HotSpot(TM) 64-Bit Server VM (build 25.161-b12, mixed mode)</pre>
-</div>
-</div></p>
   			<a href="blog/2018/03/compare-multiple-jdk-versions-startup-time.html"><h1>Compare Multiple JDK Versions Startup Time</h1></a>
   			<p>24 March 2018, tags: 
 			    <a href="../tags/jdk-startup-time.html">jdk-startup-time</a> 
@@ -474,6 +396,84 @@ binary package that simply untar/unzip into a directory without need of installe
 <a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">Java SE JDK</a>.
 These JDK packages has different licenses for usage, and are built with different
 installer format. Users usually require local Admin Rights to install it.</p>
+</div></p>
+  			<a href="blog/2018/03/switching-different-jdk-in-cygwin.html"><h1>Switching Different JDK in Cygwin</h1></a>
+  			<p>24 March 2018, tags: 
+			    <a href="../tags/cygwin-jdk.html">cygwin-jdk</a> 
+  			</p>
+  			<p><div class="paragraph">
+<p>I love to use bash shell terminal. It&#8217;s a much more powerful terminal to do everyday tasks. Even in Windows, I can get most of what I need using Cygwin. Unfortunately Java executable are native to OS only, and for Windows, it would still work under Cygwin, but all the file system paths are still native. Java can understand the mixed-path though, and it has made somewhat easier than the Windows native backward slash path like typing. This means we can define <code>JAVA_HOME</code> variable using mixed path mode. In Cygwin, I define my <code>.bashrc</code> like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>export JAVA_HOME=C:/Users/zemian/apps/jdk-8u161
+PATH=$HOME/apps/jdk-8u161/bin:$PATH</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>I sometimes work with different version of JDK for various application testing. In this case, I need a way to quicly switch JDK version in my shell env. To make it easier, I have installed all of my JDK in a <code>$HOME/apps</code> directory, and created symbolic links to each JDKs like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>cd $HOME/apps
+ls -ld jdk*
+
+drwx------+ 1 zemian staff 0 Mar 24 16:58 jdk-8u161
+drwx------+ 1 zemian staff 0 Mar 24 10:57 jdk-9.0.4
+drwx------+ 1 zemian staff 0 Mar 24 10:48 jdk-10
+
+lrwxrwxrwx  1 zemian staff 9 Mar 24 16:55 jdk8 -&gt; jdk-8u161
+lrwxrwxrwx  1 zemian staff 9 Mar 24 11:02 jdk9 -&gt; jdk-9.0.4
+lrwxrwxrwx  1 zemian staff 6 Mar 24 11:00 jdk10 -&gt; jdk-10</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now that each JDK has a nice consistent version number in path, then I create a shell function like this to switch between them:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre># Switching Multiple JDK
+switchjava() {
+	JDK="jdk$1"
+	if [[ ! -d $APPS_DIR/$JDK ]]; then
+		echo "ERROR: JDK path not found: $APPS_DIR/$JDK"
+		return
+	fi
+	export JAVA_HOME=`cygpath -wm $APPS_DIR/$JDK`
+	export PATH=$APPS_DIR/$JDK/bin:$PATH
+
+	# Verifying java
+	echo "Switched JAVA_HOME to $JAVA_HOME"
+	echo "Java Path:"
+	which java
+	echo "Java Version:"
+	java -version
+}</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To put it in use, it looks like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>$ switchjava 9
+Switched JAVA_HOME to C:/Users/zemian/apps/jdk-9.0.4
+Java Path:
+/home/zemian/apps/jdk9/bin/java
+Java Version:
+openjdk version "9.0.4"
+OpenJDK Runtime Environment (build 9.0.4+11)
+OpenJDK 64-Bit Server VM (build 9.0.4+11, mixed mode)
+
+$ switchjava 8
+Switched JAVA_HOME to C:/Users/zemian/apps/jdk-8u161
+Java Path:
+/home/zemian/apps/jdk8/bin/java
+Java Version:
+java version "1.8.0_161"
+Java(TM) SE Runtime Environment (build 1.8.0_161-b12)
+Java HotSpot(TM) 64-Bit Server VM (build 25.161-b12, mixed mode)</pre>
+</div>
 </div></p>
   			<a href="blog/2018/03/install-windows-jdk-without-admin-rights.html"><h1>Install Windows JDK Without Admin Rights</h1></a>
   			<p>23 March 2018, tags: 
@@ -661,7 +661,7 @@ print(f"Lib={paths}")</pre>
     
     <div id="footer">
       <div class="container">
-        <p class="muted credit">&copy; 2011 - 2019 Zemian Deng All Rights Reserved | Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.5</a></p>
+        <p class="muted credit">&copy; 2011 - Present Zemian Deng All Rights Reserved | Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.5</a></p>
       </div>
     </div>
     

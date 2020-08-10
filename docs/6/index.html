@@ -53,47 +53,79 @@
       </div>
     </div>
     <div class="container">
-  			<a href="blog/2018/03/reduce-recent-project-list-size-in-intellij.html"><h1>Reduce recent project list size in IntelliJ</h1></a>
+  			<a href="blog/2018/03/compling-apache-httpd-web-server-on-macosx.html"><h1>Compling Apache HTTPD Web Server on MacOSX</h1></a>
   			<p>07 March 2018, tags: 
-			    <a href="../tags/intellij.html">intellij</a> 
-  			</p>
-  			<p><div class="paragraph">
-<p>When opening a project from IntelliJ IDE, it will give you a list of menu that contains your recent projects. This list however has default of 50 items max, and sometimes I find it stretched the menu popup too long and covered some of IDE the status line (which I need to verify the project path to be open). It&#8217;s a pity that there is obvious normal IDE Settings to change this, but today I found a post that shows how you can do it this:</p>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>Go to menu: <code>Help&#8594;Find Action&#8594;Registry</code></p>
-</li>
-<li>
-<p>In the diablog table, find the "ide.max.recent.projects" key entry and change the value to your liking (eg: <code>10</code>)</p>
-</li>
-</ol>
-</div>
-<div class="paragraph">
-<p>Ref: <a href="https://intellij-support.jetbrains.com/hc/en-us/community/posts/207089089-SOLVED-Where-do-I-set-the-maximum-number-of-recent-projects-to-be-shown-in-the-File-Open-Recent-list-" class="bare">https://intellij-support.jetbrains.com/hc/en-us/community/posts/207089089-SOLVED-Where-do-I-set-the-maximum-number-of-recent-projects-to-be-shown-in-the-File-Open-Recent-list-</a></p>
-</div></p>
-  			<a href="blog/2018/03/package-manager-for-macosx.html"><h1>Package manager for MacOSX</h1></a>
-  			<p>05 March 2018, tags: 
 			    <a href="../tags/macosx.html">macosx</a> 
 
-			    <a href="../tags/package-manager.html">package-manager</a> 
-
-			    <a href="../tags/brew.html">brew</a> 
+			    <a href="../tags/httpd.html">httpd</a> 
   			</p>
-  			<p><div class="listingblock">
+  			<p><div class="paragraph">
+<p>Before you begin, you should know that the HTTPD server is very likely already comes with your MacOSX! For example, here is how my server looks like:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>$ apachectl -t -D DUMP_INCLUDES
+Included configuration files:
+  (*) /private/etc/apache2/httpd.conf
+    (498) /private/etc/apache2/extra/httpd-mpm.conf
+    (504) /private/etc/apache2/extra/httpd-autoindex.conf
+    (544) /private/etc/apache2/other/php7.conf</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You would want to compile and buid your own HTTPD server if you like to customize your own build or doing modules development. In that case, read on.</p>
+</div>
+<div class="listingblock">
 <div class="content">
 <pre>#
-# Install package manager for macosx called brew from https://brew.sh
+# Requirement:
+#  MacOSX Version:
+#    Darwin myhost 17.4.0 Darwin Kernel Version 17.4.0: Sun Dec 17 09:19:54 PST 2017; root:xnu-4570.41.2~1/RELEASE_X86_64 x86_64
+#  HTTPD version 2.4.9
 #
-# Install
-$ /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
-# If your brew installation have problem with error writing to /usr/local
+# Install xcode that comes with C compiler
+xcode-select --install
+
+# Install package manager for macosx
+# install brew from https://brew.sh
+
+#
+# NOTE: If your brew installation have probblem with error writing to /usr/local
 # then try to uninstall then install brew again.
 #
 # Uninstall
-$ /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/uninstall)"</pre>
+# /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/uninstall)"
+#
+# Install
+# /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+#
+
+# Install make tools and required libraries
+brew install autoconf automake libtool pcre
+
+git clone git://git.apache.org/httpd.git
+cd httpd
+git checkout 2.4.9
+
+# You also need to get the required library sources
+cd srclib
+git clone git://git.apache.org/apr.git
+cd apr
+git checkout 1.6.3
+cd ../
+git clone git://git.apache.org/apr-util.git
+cd apr-util
+git checkout 1.6.1
+cd ../../
+
+./buildconf
+./configure
+
+make
+sudo make install
+
+# When completed successful, the HTTPD server will be in /usr/local/apache2</pre>
 </div>
 </div></p>
   			<a href="blog/2018/03/installing-c-compiler-on-macosx.html"><h1>Installing C compiler on MacOSX</h1></a>
@@ -227,6 +259,29 @@ ProxyPassReverse "/jspwebapp2" "http://localhost/jspwebapp2"
 &lt;/Location&gt;</pre>
 </div>
 </div></p>
+  			<a href="blog/2018/03/package-manager-for-macosx.html"><h1>Package manager for MacOSX</h1></a>
+  			<p>05 March 2018, tags: 
+			    <a href="../tags/macosx.html">macosx</a> 
+
+			    <a href="../tags/package-manager.html">package-manager</a> 
+
+			    <a href="../tags/brew.html">brew</a> 
+  			</p>
+  			<p><div class="listingblock">
+<div class="content">
+<pre>#
+# Install package manager for macosx called brew from https://brew.sh
+#
+# Install
+$ /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+
+# If your brew installation have problem with error writing to /usr/local
+# then try to uninstall then install brew again.
+#
+# Uninstall
+$ /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/uninstall)"</pre>
+</div>
+</div></p>
   			<a href="blog/2018/03/fetching-data-from-postgresql-using-python-psycopg2.html"><h1>Fetching Data From PostgreSQL Using Python psycopg2</h1></a>
   			<p>04 March 2018, tags: 
 			    <a href="../tags/python.html">python</a> 
@@ -337,137 +392,6 @@ Included configuration files:
     (498) /private/etc/apache2/extra/httpd-mpm.conf
     (504) /private/etc/apache2/extra/httpd-autoindex.conf
     (544) /private/etc/apache2/other/php7.conf</pre>
-</div>
-</div></p>
-  			<a href="blog/2018/02/how-to-setup-httpd-form-authentication-and-user-session-loginlogout.html"><h1>How to setup httpd form authentication and user session login/logout</h1></a>
-  			<p>27 February 2018, tags: 
-			    <a href="../tags/httpd.html">httpd</a> 
-
-			    <a href="../tags/authentication.html">authentication</a> 
-
-			    <a href="../tags/session.html">session</a> 
-  			</p>
-  			<p><div class="sect1">
-<h2 id="_configuration_setup_for_httpd_conf">Configuration setup for <code>httpd.conf</code></h2>
-<div class="sectionbody">
-<div class="literalblock">
-<div class="title">Enable modules</div>
-<div class="content">
-<pre>LoadModule auth_form_module modules/mod_auth_form.so
-LoadModule auth_digest_module modules/mod_auth_digest.so
-LoadModule session_module modules/mod_session.so
-LoadModule session_cookie_module modules/mod_session_cookie.so</pre>
-</div>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Note</div>
-</td>
-<td class="content">
-This configuration is only for tutorial purpose and not secured by default! Using Cookies session store is NOT secured! It&#8217;s recommend you use <code>mod_session_crypto</code> to further secure data, or use server side session data store.
-</td>
-</tr>
-</table>
-</div>
-<div class="literalblock">
-<div class="title">Setup users</div>
-<div class="content">
-<pre># First user and new file
-htpasswd -c /etc/httpd/passwd/passwords test
-# Update/add more user
-htpasswd /etc/httpd/passwd/passwords zemian</pre>
-</div>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Note</div>
-</td>
-<td class="content">
-You need <code>httpd-tool</code> package from Cygwin to find <code>htpasswd</code> command.
-</td>
-</tr>
-</table>
-</div>
-<div class="listingblock">
-<div class="title">Example of Digest login</div>
-<div class="content">
-<pre># Digest Login
-&lt;Location "/secured"&gt;
-	AuthType Basic
-	AuthName "Restricted Files"
-	AuthBasicProvider file
-	AuthUserFile "/etc/httpd/passwd/passwords"
-	Require valid-user
-&lt;/Location&gt;</pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="title">Example of form login</div>
-<div class="content">
-<pre># Form Login/logout process
-&lt;LocationMatch "(/secured|/cgi-bin/secured)"&gt;
-	Require valid-user
-	AuthName "SecuredArea"
-	AuthFormProvider file
-	AuthUserFile "/etc/httpd/passwd/passwords"
-    AuthType form
-	AuthFormLoginRequiredLocation "/login.html"
-
-	Session On
-	SessionCookieName session path=/
-	SessionMaxAge 30
-	SessionEnv On
-	SessionHeader X-Replace-Session
-&lt;/LocationMatch&gt;
-&lt;Location "/login"&gt;
-	SetHandler form-login-handler
-	AuthName "SecuredArea"
-	AuthFormProvider file
-	AuthUserFile "/etc/httpd/passwd/passwords"
-    AuthType form
-	AuthFormLoginRequiredLocation "/login.html"
-    AuthFormLoginSuccessLocation "/secured/index.html"
-
-	Session On
-	SessionCookieName session path=/
-&lt;/Location&gt;
-&lt;Location "/logout"&gt;
-	SetHandler form-logout-handler
-	AuthName "SecuredArea"
-	AuthFormLogoutLocation "http://localhost/logout.html"
-
-	Session On
-	SessionCookieName session path=/
-	SessionMaxAge 1
-&lt;/Location&gt;</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="title">Login page <code>htdocs/login.html</code></div>
-<div class="content">
-<pre>&lt;form method="POST" action="/login"&gt;
-  Username: &lt;input type="text" name="httpd_username" value="" /&gt;
-  Password: &lt;input type="password" name="httpd_password" value="" /&gt;
-  &lt;input type="submit" name="login" value="Login" /&gt;
-&lt;/form&gt;</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="title">Logout page <code>htdocs/logout.html</code></div>
-<div class="content">
-<pre>&lt;p&gt;You have been logged out.&lt;/p&gt;</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="title">Secured page <code>htdocs/secured/index.html</code></div>
-<div class="content">
-<pre>&lt;p&gt;This is secured area&lt;/p&gt;</pre>
-</div>
-</div>
 </div>
 </div></p>
   			<a href="blog/2018/02/getting-started-with-apache-httpd-web-server-on-windows.html"><h1>Getting started with Apache HTTPD Web Server on Windows</h1></a>
@@ -664,6 +588,137 @@ cgi.test()</pre>
 </div>
 </div>
 </div></p>
+  			<a href="blog/2018/02/how-to-setup-httpd-form-authentication-and-user-session-loginlogout.html"><h1>How to setup httpd form authentication and user session login/logout</h1></a>
+  			<p>27 February 2018, tags: 
+			    <a href="../tags/httpd.html">httpd</a> 
+
+			    <a href="../tags/authentication.html">authentication</a> 
+
+			    <a href="../tags/session.html">session</a> 
+  			</p>
+  			<p><div class="sect1">
+<h2 id="_configuration_setup_for_httpd_conf">Configuration setup for <code>httpd.conf</code></h2>
+<div class="sectionbody">
+<div class="literalblock">
+<div class="title">Enable modules</div>
+<div class="content">
+<pre>LoadModule auth_form_module modules/mod_auth_form.so
+LoadModule auth_digest_module modules/mod_auth_digest.so
+LoadModule session_module modules/mod_session.so
+LoadModule session_cookie_module modules/mod_session_cookie.so</pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+This configuration is only for tutorial purpose and not secured by default! Using Cookies session store is NOT secured! It&#8217;s recommend you use <code>mod_session_crypto</code> to further secure data, or use server side session data store.
+</td>
+</tr>
+</table>
+</div>
+<div class="literalblock">
+<div class="title">Setup users</div>
+<div class="content">
+<pre># First user and new file
+htpasswd -c /etc/httpd/passwd/passwords test
+# Update/add more user
+htpasswd /etc/httpd/passwd/passwords zemian</pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+You need <code>httpd-tool</code> package from Cygwin to find <code>htpasswd</code> command.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="title">Example of Digest login</div>
+<div class="content">
+<pre># Digest Login
+&lt;Location "/secured"&gt;
+	AuthType Basic
+	AuthName "Restricted Files"
+	AuthBasicProvider file
+	AuthUserFile "/etc/httpd/passwd/passwords"
+	Require valid-user
+&lt;/Location&gt;</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Example of form login</div>
+<div class="content">
+<pre># Form Login/logout process
+&lt;LocationMatch "(/secured|/cgi-bin/secured)"&gt;
+	Require valid-user
+	AuthName "SecuredArea"
+	AuthFormProvider file
+	AuthUserFile "/etc/httpd/passwd/passwords"
+    AuthType form
+	AuthFormLoginRequiredLocation "/login.html"
+
+	Session On
+	SessionCookieName session path=/
+	SessionMaxAge 30
+	SessionEnv On
+	SessionHeader X-Replace-Session
+&lt;/LocationMatch&gt;
+&lt;Location "/login"&gt;
+	SetHandler form-login-handler
+	AuthName "SecuredArea"
+	AuthFormProvider file
+	AuthUserFile "/etc/httpd/passwd/passwords"
+    AuthType form
+	AuthFormLoginRequiredLocation "/login.html"
+    AuthFormLoginSuccessLocation "/secured/index.html"
+
+	Session On
+	SessionCookieName session path=/
+&lt;/Location&gt;
+&lt;Location "/logout"&gt;
+	SetHandler form-logout-handler
+	AuthName "SecuredArea"
+	AuthFormLogoutLocation "http://localhost/logout.html"
+
+	Session On
+	SessionCookieName session path=/
+	SessionMaxAge 1
+&lt;/Location&gt;</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="title">Login page <code>htdocs/login.html</code></div>
+<div class="content">
+<pre>&lt;form method="POST" action="/login"&gt;
+  Username: &lt;input type="text" name="httpd_username" value="" /&gt;
+  Password: &lt;input type="password" name="httpd_password" value="" /&gt;
+  &lt;input type="submit" name="login" value="Login" /&gt;
+&lt;/form&gt;</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="title">Logout page <code>htdocs/logout.html</code></div>
+<div class="content">
+<pre>&lt;p&gt;You have been logged out.&lt;/p&gt;</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="title">Secured page <code>htdocs/secured/index.html</code></div>
+<div class="content">
+<pre>&lt;p&gt;This is secured area&lt;/p&gt;</pre>
+</div>
+</div>
+</div>
+</div></p>
 
 	<hr />
 
@@ -679,7 +734,7 @@ cgi.test()</pre>
     
     <div id="footer">
       <div class="container">
-        <p class="muted credit">&copy; 2011 - 2019 Zemian Deng All Rights Reserved | Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.5</a></p>
+        <p class="muted credit">&copy; 2011 - Present Zemian Deng All Rights Reserved | Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.5</a></p>
       </div>
     </div>
     

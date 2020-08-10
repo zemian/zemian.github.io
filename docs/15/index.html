@@ -53,89 +53,6 @@
       </div>
     </div>
     <div class="container">
-  			<a href="blog/2014/10/how-to-setup-custom-sslsocketfactorys-trustmanager-per-each-url-connection.html"><h1>How to setup custom SSLSocketFactory&apos;s TrustManager per each URL connection</h1></a>
-  			<p>28 October 2014, tags: 
-			    <a href="../tags/ssh.html">ssh</a> 
-
-			    <a href="../tags/java.html">java</a> 
-  			</p>
-  			<p><p>We can see from javadoc that javax.net.ssl.HttpsURLConnection provided a static method to override with setDefaultSSLSocketFory() method. This allow you to supply a custom javax.net.ssl.TrustManager that may verify your own  CA certs handshake and validation etc. But this will override the default for all &quot;https&quot; URLs per your JVM!</p>
-<p>So how can we override just a single https URL? Looking at javax.net.ssl.HttpsURLConnection again we see instance method for setSSLSocketFactory(), but we can't instantiate HttpsURLConnection object directly! It took me some digging to realized that the java.net.URL is actually an factory class for its implementation! One can get an instance like this using new URL(&quot;<a href="https://localhost">https://localhost</a>&quot;).openConnection()</p>
-<p>To complete this article, I will provide a simple working example that demonstrate this.</p>
-<p>package zemian;</p>
-<p>import java.io.BufferedReader;</p>
-<p>import java.io.InputStream;</p>
-<p>import java.io.InputStreamReader;</p>
-<p>import java.net.URL;</p>
-<p>import java.net.URLConnection;</p>
-<p>import java.security.SecureRandom;</p>
-<p>import java.security.cert.X509Certificate;</p>
-<p>import javax.net.ssl.HttpsURLConnection;</p>
-<p>import javax.net.ssl.SSLContext;</p>
-<p>import javax.net.ssl.SSLSocketFactory;</p>
-<p>import javax.net.ssl.TrustManager;</p>
-<p>import javax.net.ssl.X509TrustManager;</p>
-<p>public class WGetText {</p>
-<pre><code>public static void main(String[] args) throws Exception {
-
-    String urlString = System.getProperty(&quot;url&quot;, &quot;https://google.com&quot;);
-
-    URL url = new URL(urlString);
-
-    URLConnection urlConnection = url.openConnection();
-
-    HttpsURLConnection httpsUrlConnection = (HttpsURLConnection) urlConnection;
-
-    SSLSocketFactory sslSocketFactory = createTrustAllSslSocketFactory();
-
-    httpsUrlConnection.setSSLSocketFactory(sslSocketFactory);
-
-    try (InputStream inputStream = httpsUrlConnection.getInputStream()) {
-
-        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-
-        String line = null;
-
-        while ((line = reader.readLine()) != null) {
-
-            System.out.println(line);
-
-        }
-
-    }
-
-}
-
-private static SSLSocketFactory createTrustAllSslSocketFactory() throws Exception {
-
-    TrustManager[] byPassTrustManagers = new TrustManager[] { new X509TrustManager() {
-
-        public X509Certificate[] getAcceptedIssuers() {
-
-            return new X509Certificate[0];
-
-        }
-
-        public void checkClientTrusted(X509Certificate[] chain, String authType) {
-
-        }
-
-        public void checkServerTrusted(X509Certificate[] chain, String authType) {
-
-        }
-
-    } };
-
-    SSLContext sslContext = SSLContext.getInstance(&quot;TLS&quot;);
-
-    sslContext.init(null, byPassTrustManagers, new SecureRandom());
-
-    return sslContext.getSocketFactory();
-
-}
-</code></pre>
-<p>}</p>
-</p>
   			<a href="blog/2014/10/how-servlet-and-jsp-create-sessions.html"><h1>How Servlet and JSP create sessions</h1></a>
   			<p>26 October 2014, tags: 
 			    <a href="../tags/servlet.html">servlet</a> 
@@ -495,6 +412,15 @@ sudo bin/mysqladmin password 'new_password'</p>
 <p>Ref:<br />
 <a href="https://dev.mysql.com/doc/refman/5.6/en/binary-installation.html">https://dev.mysql.com/doc/refman/5.6/en/binary-installation.html</a></p>
 </p>
+  			<a href="blog/2014/06/using-crontab-to-startup-service.html"><h1>Using crontab to startup service</h1></a>
+  			<p>08 June 2014, tags: 
+			    <a href="../tags/crontab.html">crontab</a> 
+  			</p>
+  			<p><p>Did you know that crontab service has the &quot;@reboot&quot; schedule that would start a script during your system startup time? This is handy if you want something to run right after your system has stared. Try this:</p>
+<h1>crontab -e</h1>
+<p>@reboot $HOME/crontab/runcmd.sh /apps/start-myapp.sh</p>
+<p>The disadvantage of this vs the rc.d scripts are you do not have control on when the system shutdown(&quot;stop&quot;) state. So if your app doens't need to clean up during shutdown, but only care to start when during reboot, this would be an easy option.</p>
+</p>
 
 	<hr />
 
@@ -510,7 +436,7 @@ sudo bin/mysqladmin password 'new_password'</p>
     
     <div id="footer">
       <div class="container">
-        <p class="muted credit">&copy; 2011 - 2019 Zemian Deng All Rights Reserved | Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.5</a></p>
+        <p class="muted credit">&copy; 2011 - Present Zemian Deng All Rights Reserved | Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.5</a></p>
       </div>
     </div>
     
