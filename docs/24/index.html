@@ -53,6 +53,64 @@
       </div>
     </div>
     <div class="container">
+  			<a href="blog/2012/09/improving-java-util-properties.html"><h1>Improving java.util.Properties</h1></a>
+  			<p>07 September 2012, tags: 
+			    <a href="../tags/java.html">java</a> 
+  			</p>
+  			<p><p>The Java built-in <code>java.util.Properties</code> class could really use some love. I have written a slightly improved version called<br />
+<a href="https://bitbucket.org/timemachine/scheduler/src/15f066cc6dad/timemachine-scheduler/src/main/java/timemachine/scheduler/support/Props.java">timemachine.scheduler.support.Props</a>, and below are some features that I use often.</p>
+<h1>You can use it as a &quot;String Map&quot; of properties</h1>
+<pre><code>Props props1 = new Props();
+props1.put(&quot;foo&quot;, &quot;bar&quot;);
+
+// It can load from/to the Java Properties
+Props props2 = new Props(System.getProperties());
+java.util.Properties javaProps = props3.toProperties();
+
+// It can load from/to a basic java.util.Map
+Props props3 = new Props(System.getenv());
+
+// Props is a HashMap&lt;String, String&gt;, so no need to convert. Just use it
+for(Map.Entry&lt;String, String&gt; entry : props3.entrySet())
+    System.our.println(entry.getKey() + &quot;: &quot; + entry.getValue());
+</code></pre>
+<h1>You can load from a file in a single line</h1>
+<pre><code>Props props1 = new Props(&quot;config.properties&quot;);
+Props props2 = new Props(&quot;/path/to/config.properties&quot;);
+Props props3 = new Props(new java.net.URL(&quot;http://myhost/config/config.properties&quot;));
+Props props4 = new Props(ClasspathURLStreamHandler.createURL(&quot;classpath://config/config.properties&quot;));
+
+// You can re-load on top of existing instance to override values
+props4.load(&quot;config2.properties&quot;);
+</code></pre>
+<p>NOTE: The <code>ClasspathURLStreamHandler</code> is a utility class from the same package under <code>timemachine.scheduler.support</code> that can load any resources that's in the classpath.</p>
+<h1>You can get many basic types conversion</h1>
+<pre><code>Props props = new Props();
+props.put(&quot;str&quot;, &quot;foo&quot;);
+props.put(&quot;num&quot;, &quot;123&quot;);
+props.put(&quot;dec&quot;, &quot;99.99&quot;);
+props.put(&quot;flag&quot;, &quot;true&quot;);
+
+String str = props.getString(&quot;str&quot;);
+int num = props.getInt(&quot;num&quot;);
+double dec = props.getDouble(&quot;dec&quot;);
+boolean flag = props.getBoolean(&quot;flag&quot;);
+
+// You can even get default value when key is not found too
+int num2 = props.getInt(&quot;num2&quot;, -1);
+</code></pre>
+<h1>You can auto expand ${variable} from any existing properties</h1>
+<pre><code>Props props = new Props(System.getProperties());
+props.put(&quot;configDir&quot;, &quot;${user.home}/myapp/config&quot;);
+props.expandVariables();
+
+// The ${user.home} should be expanded to actual user home dir value.
+File dir = new File(props.get(&quot;configDir&quot;));
+</code></pre>
+<p>There you have it. You see more code than words in this post, but I believe simple code speak louder than words and docs. I find these features very convenient and practical<br />
+for many Java applications to use. I wish the JDK would provide these out of the box, and make the <code>java.util.Properties</code> more<br />
+developer friendly.</p>
+</p>
   			<a href="blog/2012/09/how-to-write-better-pojo-services.html"><h1>How to write better POJO Services</h1></a>
   			<p>01 September 2012, tags: 
 			    <a href="../tags/java.html">java</a> 
@@ -907,45 +965,6 @@ $ # add: config.gems += [&quot;activerecord-jdbcmysql-adapter&quot;, &quot;jruby
 $ $JRUBY_HOME/bin/warble
 </code></pre>
 <p>After this, you will see <code>redmine-2.0.3.war</code> in the directory. Now you can drop it into any app server and you may kick start any projects!</p>
-</p>
-  			<a href="blog/2012/08/timemachine-jars-size-and-dependencies.html"><h1>TimeMachine jars size and dependencies</h1></a>
-  			<p>03 August 2012, tags: 
-			    <a href="../tags/timemachine.html">timemachine</a> 
-  			</p>
-  			<p><p>From the <a href="https://bitbucket.org/timemachine/scheduler/downloads">TimeMachine Scheduler</a> download page you will see that the latest 1.2.1 release zip package size is around 13M. It may seem large for a scheduler application, but let's examine it closely to see what's in there. Here is how the zip package looks like inside</p>
-<pre><code>timemachine-scheduler-1.2.1
-+-- bin
-+-- lib
-+-- config
-</code></pre>
-<p>The <code>config</code> directory contains many sample configurations and scripts to help new users get started. The <code>bin</code> contains few startup wrapper scripts that let you start the scheduler. The <code>lib</code> contains the libraries for the scheduler application. I want to go into more details on these.</p>
-<pre><code>+-- lib
--rw-r--r--@  1 zemian  staff   445288 Jun 20 23:20 antlr-2.7.7.jar
--rw-r--r--@  1 zemian  staff   610790 Jun 20 23:26 c3p0-0.9.1.2.jar
--rw-r--r--@  1 zemian  staff   109043 Jun 20 23:20 commons-io-1.4.jar
--rw-r--r--@  1 zemian  staff   279193 Jun 20 23:20 commons-lang-2.5.jar
--rw-r--r--@  1 zemian  staff   313898 Jun 20 23:26 dom4j-1.6.1.jar
--rw-r--r--@  1 zemian  staff  6156866 Aug  2 22:05 groovy-all-2.0.0.jar
--rw-r--r--@  1 zemian  staff  1267149 Jun 20 23:26 h2-1.3.163.jar
--rw-r--r--@  1 zemian  staff    81271 Jun 20 23:26 hibernate-commons-annotations-4.0.1.Final.jar
--rw-r--r--@  1 zemian  staff  4407494 Jun 20 23:26 hibernate-core-4.1.3.Final.jar
--rw-r--r--@  1 zemian  staff   102661 Jun 20 23:26 hibernate-jpa-2.0-api-1.0.1.Final.jar
--rw-r--r--@  1 zemian  staff   648253 Jun 20 23:26 javassist-3.15.0-GA.jar
--rw-r--r--@  1 zemian  staff    60768 Jun 20 23:26 jboss-logging-3.1.0.GA.jar
--rw-r--r--@  1 zemian  staff    11209 Jun 20 23:26 jboss-transaction-api_1.1_spec-1.0.0.Final.jar
--rw-r--r--@  1 zemian  staff   481535 Jun 20 23:20 log4j-1.2.16.jar
--rw-r--r--@  1 zemian  staff    25496 Jun 20 23:20 slf4j-api-1.6.1.jar
--rw-r--r--@  1 zemian  staff     9753 Jun 20 23:20 slf4j-log4j12-1.6.1.jar
--rw-r--r--@  1 zemian  staff    46885 Aug  2 22:37 timemachine-hibernate-1.2.1.jar
--rw-r--r--@  1 zemian  staff   154925 Aug  2 22:36 timemachine-scheduler-1.2.1.jar
-</code></pre>
-<p>The core of the scheduler <code>timemachine-scheduler-1.2.1.jar</code> would only need <code>slf4j-api-1.6.1.jar</code>, <code>commons-io-1.4.jar</code> and <code>commons-lang-2.5.jar</code> to run. These would support full scheduler with in memory data store. As you can see these add up to only about 500K!</p>
-<p>To be able to see useful logging output, you need an SLF4j impl. You may use built-in JDK's logger if you choose, or you may use <code>slf4j-log4j12-1.6.1.jar</code> and <code>log4j-1.2.16.jar</code>. I personally think the JDK logger is horrible to use and configure, so I package up log4j as option for you.</p>
-<p>A Java scripting engine is only optional in TimeMachine, and JDK already comes with JavaScript. To be practical, I also package the Groovy engine <code>groovy-all-2.0.0.jar</code>. It's much more easy to use. But the full groovy engine is costing us 6M in size!</p>
-<p>The TimeMachine allows you to switch data store service. We provided the <code>HibernateDataService</code> service in <code>timemachine-scheduler-1.2.1.jar</code>. This service would require the Hibernate dependencies, which is pretty heavy. They are: <code>hibernate-*.jar</code>, <code>jboss-*.jar</code>, <code>javassist-3.15.0-GA.jar</code>, <code>antlr-2.7.7.jar</code>, and <code>dom4j-1.6.1.jar</code>. These can add up to another 5M in size!</p>
-<p>Now with the Hibernate data service, you would also need a database driver that match to your database. I have included a H2Database, a Java database that provides full SQL database service including its driver in <code>h2-1.3.163.jar</code>. This alone is about 1.2M in size.</p>
-<p>When you working with Hibernate and Database, you should always use a Database connection pool. I packaged the <code>c3p0-0.9.1.2.jar</code> implementation which Hibernate can automatically detects.</p>
-<p>I hope these information can help you decide what to remove or add in case you want to customize your scheduler to fit into your application. You may also visit the project to see the Maven site dependencies report that has all the details. This also means that if you use Maven to bring in TimeMachine scheduler as dependency, you will automatically gets the minimal because I have carefully set all the optional items not to be included with the proper Maven scopes.</p>
 </p>
 
 	<hr />

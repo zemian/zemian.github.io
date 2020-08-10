@@ -138,6 +138,42 @@ mypy&gt; pip list</p>
 <p>Now the problem is solved. I believe this problem is gone if you upgrade to Python 3.5</p>
 <p>[1] <a href="http://www.thefourtheye.in/2014/12/Python-venv-problem-with-ensurepip-in-Ubuntu.html">http://www.thefourtheye.in/2014/12/Python-venv-problem-with-ensurepip-in-Ubuntu.html</a></p>
 </p>
+  			<a href="blog/2016/06/getting-started-with-postgresql-database.html"><h1>Getting started with PostgreSQL database</h1></a>
+  			<p>26 June 2016, tags: 
+			    <a href="../tags/postgres.html">postgres</a> 
+  			</p>
+  			<p><p>I have been learning and using PostgreSQL recently for a Django app, and I have to say it's really GOOD! I have used quite a bit of MySQL and Oracle DB in my workplace, so I didn't find good reason to learn PostgreSQL in the past. Now I finally get a chance to start another new project with Django, so I decided to give it a try, and I wasn't disappointed. I will write up a brief getting started guide here for those impatient to get things moving.</p>
+<p>Installing. If you are running on a Mac, the easiest way to try it out is just get the <a href="http://postgresapp.com">http://postgresapp.com</a>, you just start the App, and your DB is running! No config needed!</p>
+<p>After you have the database installed and running, you can either connect to the default &quot;postgres&quot; public database by (psql command), or create your own database. To create your own database, you run this command:</p>
+<p>bash&gt; PATH=/Applications/Postgres.app/Contents/Versions/latest/bin:$PATH<br />
+bash&gt; createdb mydb</p>
+<p>Now you can connect to the new database</p>
+<p>bash&gt; psql -d mydb</p>
+<p>Once you connected to database, you may run SQL to create/insert/select a table:<br />
+mydb-# create table test(id serial, name varchar(200));<br />
+mydb-# insert into test(name) values('Hello');<br />
+mydb-# select * from test;</p>
+<p>To inspect your  table columns:<br />
+mydb-# \d test;</p>
+<p>To see all tables available:<br />
+mydb-# \dt;</p>
+<p>To see all database available:<br />
+mydb-# \l;</p>
+<p>To switch to another database:<br />
+mydb-# \c mydb2;</p>
+<p>To see more help (check out \d options! it's super flexible and useful.):<br />
+mydb-# ?;</p>
+<p>To quit the psql shell:<br />
+mydb-# \q;</p>
+<p>To create a database user and set up password, you can do it on bash shell as well:</p>
+<p>bash&gt; echo &quot;CREATE ROLE mydbuser1 WITH CREATEDB LOGIN PASSWORD 'Welcome1'&quot; | psql</p>
+<p>bash&gt; echo &quot;GRANT ALL PRIVILEGES ON DATABASE mydb TO mydbuser1&quot; | psql</p>
+<p>Now you may relogin again with the user. It should prompt you for password.</p>
+<p>bash&gt; psql -U mydbuser1 -W</p>
+<p>Once you connected to your database again, you may check your user privileges:</p>
+<p>mydb-# \dp;</p>
+<p>These examples should be enough to get you setup a database for app development. The rest are just normal SQL access to database. The PostgresSQL documentation is excellent reference for all that you need: <a href="https://www.postgresql.org/docs/9.5/static/index.html">https://www.postgresql.org/docs/9.5/static/index.html</a></p>
+</p>
   			<a href="blog/2016/06/how-to-fix-add-a-non-nullable-field-without-a-default-error.html"><h1>How to fix &apos;add a non-nullable field ... without a default&apos; error</h1></a>
   			<p>26 June 2016, tags: 
 			    <a href="../tags/django.html">django</a> 
@@ -202,42 +238,6 @@ bash&gt; sudo yum install &lt;package_name.rpm&gt;</p>
 bash&gt; sudo yum --nogpgcheck localinstall &lt;package_name.rpm&gt;</p>
 <p>To verify what's in the rpm:<br />
 bash&gt; rpm -qlp &lt;package_name.rpm&gt;</p>
-</p>
-  			<a href="blog/2016/06/getting-started-with-postgresql-database.html"><h1>Getting started with PostgreSQL database</h1></a>
-  			<p>26 June 2016, tags: 
-			    <a href="../tags/postgres.html">postgres</a> 
-  			</p>
-  			<p><p>I have been learning and using PostgreSQL recently for a Django app, and I have to say it's really GOOD! I have used quite a bit of MySQL and Oracle DB in my workplace, so I didn't find good reason to learn PostgreSQL in the past. Now I finally get a chance to start another new project with Django, so I decided to give it a try, and I wasn't disappointed. I will write up a brief getting started guide here for those impatient to get things moving.</p>
-<p>Installing. If you are running on a Mac, the easiest way to try it out is just get the <a href="http://postgresapp.com">http://postgresapp.com</a>, you just start the App, and your DB is running! No config needed!</p>
-<p>After you have the database installed and running, you can either connect to the default &quot;postgres&quot; public database by (psql command), or create your own database. To create your own database, you run this command:</p>
-<p>bash&gt; PATH=/Applications/Postgres.app/Contents/Versions/latest/bin:$PATH<br />
-bash&gt; createdb mydb</p>
-<p>Now you can connect to the new database</p>
-<p>bash&gt; psql -d mydb</p>
-<p>Once you connected to database, you may run SQL to create/insert/select a table:<br />
-mydb-# create table test(id serial, name varchar(200));<br />
-mydb-# insert into test(name) values('Hello');<br />
-mydb-# select * from test;</p>
-<p>To inspect your  table columns:<br />
-mydb-# \d test;</p>
-<p>To see all tables available:<br />
-mydb-# \dt;</p>
-<p>To see all database available:<br />
-mydb-# \l;</p>
-<p>To switch to another database:<br />
-mydb-# \c mydb2;</p>
-<p>To see more help (check out \d options! it's super flexible and useful.):<br />
-mydb-# ?;</p>
-<p>To quit the psql shell:<br />
-mydb-# \q;</p>
-<p>To create a database user and set up password, you can do it on bash shell as well:</p>
-<p>bash&gt; echo &quot;CREATE ROLE mydbuser1 WITH CREATEDB LOGIN PASSWORD 'Welcome1'&quot; | psql</p>
-<p>bash&gt; echo &quot;GRANT ALL PRIVILEGES ON DATABASE mydb TO mydbuser1&quot; | psql</p>
-<p>Now you may relogin again with the user. It should prompt you for password.</p>
-<p>bash&gt; psql -U mydbuser1 -W</p>
-<p>Once you connected to your database again, you may check your user privileges:</p>
-<p>mydb-# \dp;</p>
-<p>These examples should be enough to get you setup a database for app development. The rest are just normal SQL access to database. The PostgresSQL documentation is excellent reference for all that you need: <a href="https://www.postgresql.org/docs/9.5/static/index.html">https://www.postgresql.org/docs/9.5/static/index.html</a></p>
 </p>
   			<a href="blog/2016/06/how-to-install-zoom-conference-on-ubuntu-14-04-lts.html"><h1>How to install Zoom conference on Ubuntu 14.04 LTS</h1></a>
   			<p>17 June 2016, tags: 

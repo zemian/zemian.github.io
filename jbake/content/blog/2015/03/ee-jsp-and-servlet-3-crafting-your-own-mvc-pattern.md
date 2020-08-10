@@ -1,3 +1,10 @@
+title=EE JSP and Servlet 3: Crafting Your Own MVC Pattern
+date=2015-03-13
+type=post
+tags=jsp, servlet
+status=published
+~~~~~~
+
 The combination of JSP and Servlet allows you to develope MVC pattern
 web application easily. The main focus of MVC pattern is that we want to
 write a Controller logic that can produce data Model, and then let the

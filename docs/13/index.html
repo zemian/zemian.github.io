@@ -199,6 +199,28 @@ netbeans.exe --userdir C:\MyOtherUserdir --cachedir &quot;%HOME%\Locale Settings
 </ul>
 <p>Ref: <a href="http://wiki.netbeans.org/FaqAlternateUserdir">http://wiki.netbeans.org/FaqAlternateUserdir</a></p>
 </p>
+  			<a href="blog/2015/03/ee-jsp-and-servlet-3-crafting-your-own-mvc-pattern.html"><h1>EE JSP and Servlet 3: Crafting Your Own MVC Pattern</h1></a>
+  			<p>13 March 2015, tags: 
+			    <a href="../tags/jsp.html">jsp</a> 
+
+			    <a href="../tags/servlet.html">servlet</a> 
+  			</p>
+  			<p><p>The combination of JSP and Servlet allows you to develope MVC pattern<br />
+web application easily. The main focus of MVC pattern is that we want to<br />
+write a Controller logic that can produce data Model, and then let the<br />
+View to display these data and generate the desired HTML output. These<br />
+are done so we may separate the concern on each layer, and makes<br />
+developing larger application easier. In EE, we can map a Servlet to a<br />
+URL and let the Servlet becomes the Contoller, and when all data model<br />
+are gathered and stored in request, session or application scope, we can<br />
+then forward to a JSP for rendering output.</p>
+<p>Now the last part is CONTROLLER, which can be verbose and a bit raw feel<br />
+if you were to write a Servlet class per each. So we can improve this<br />
+part and define a simplier interface to let developer write controller<br />
+easier. Here I will show you how a simple MVC style of code can look<br />
+like.</p>
+<p><a href="https://github.com/saltnlight5/java-ee6-examples/tree/master/mvc-example">mvc-example</a></p>
+</p>
   			<a href="blog/2015/02/ee-cdi-better-backend-service-management-through-automatic-service-injection.html"><h1>EE CDI: Better Backend Service Management through Automatic Service Injection</h1></a>
   			<p>09 February 2015, tags: 
 			    <a href="../tags/cdi.html">cdi</a> 
@@ -445,177 +467,6 @@ public void init() {
 <p>JSP can be seen as a template language in the web application. It helps generate the &quot;VIEW&quot; part of the application. It let you or the authoring in your team to focus on the HTML and look and feel of the content. It can help building larger web application much easier. Be careful about using excessive and complex logic Java code inside your JSP files though, as it will make it harder to debug and read; especially if you have a Java statement that throws an exception. The line number from the stacktrace would be harder to track and match to your Scriptlet code. Also imagine if you start to have JavaScript code inside JSP files, then it can get really messy. Better to keep these in separate files. If you must embed Java code in JSP, try to wrap it in a single line of Java invocation call. Better yet, try to process request using Servlet code, and generate all the data you need to display in JSP by insert them into the request scope space, and then forward to a JSP file for rendering. With this pattern, you can actually limit usage of scriptlet<br />
 in JSP, and only use EL and JSP tags.</p>
 <p>You can find above code in my <a href="https://github.com/saltnlight5/java-ee6-examples/tree/master/jsp-example">jsp-example</a> in GitHub.</p>
-</p>
-  			<a href="blog/2015/01/ee-servlet-3-developing-user-login-with-session-and-filter.html"><h1>EE Servlet 3: Developing User Login with Session and Filter</h1></a>
-  			<p>16 January 2015, tags: 
-			    <a href="../tags/servlet.html">servlet</a> 
-  			</p>
-  			<p><p>I have introduced the Application class in my previous post where you can setup backend services. One example service I added is the UserService. This service will load a Java users properties file that contains username and password sets; and it's used later to authenticate users to login into the web application. Now I will show how the login part is done using standard Servlet API along with this backend service.</p>
-<p>At a high level, what we want is to restrict some web resources (this means certain URLs provided by Servlets such as &quot;/sysprops&quot;, or &quot;/user&quot;) to only client users who are known in our users properties file. Users may identify themself with the matching password. This is typically done with a user login form, authenticate it, then insert a login token into Http Session scope space. This login token then can be used to verify whether to allow users to access the restricted resources or not. We only interested in a single authorization (no roles are defined, and any logged in user may access any protected URLs.)</p>
-<p>You have already seen an example that mapped to &quot;/sysprops&quot; URL in one of my previous post provided by the SysPropsServlet, which it simply generate a HTML table of System information. These are sensitive information, so we want to protect this URL. We would need to create a class that implements javax.servlet.Filter interface, and then add the &quot;/sysprops&quot; URL with this filter so it can pre-process the request before the actual Servlet does. This filter gives us a place to inspect the HTTP request object and abort the request if needed to, thus restricting the access.</p>
-<p>package zemian.servlet3example.web;</p>
-<p>import java.io.IOException;<br />
-import javax.servlet.Filter;<br />
-import javax.servlet.FilterChain;<br />
-import javax.servlet.FilterConfig;<br />
-import javax.servlet.ServletException;<br />
-import javax.servlet.ServletRequest;<br />
-import javax.servlet.ServletResponse;<br />
-import javax.servlet.annotation.WebFilter;<br />
-import javax.servlet.http.HttpServletRequest;<br />
-import zemian.service.logging.Logger;</p>
-<p>@WebFilter(urlPatterns={&quot;/sys-props&quot;, &quot;/user&quot;})<br />
-public class LoginRequiredFilter implements Filter {<br />
-private static final Logger LOGGER = new Logger(LoginRequiredFilter.class);<br />
-public static final String LOGIN_REDIRECT = &quot;LOGIN_REDIRECT&quot;;</p>
-<pre><code>@Override
-public void init(FilterConfig filterConfig) throws ServletException {
-}
-
-@Override
-public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-    if (request instanceof HttpServletRequest) {
-        HttpServletRequest req = (HttpServletRequest) request;
-        LOGGER.trace(&quot;Checking LoginSession token for uri=%s&quot;, req.getRequestURI());
-        LoginSession loginSession = LoginServlet.getOptionalLoginSession(req);
-        if (loginSession == null) {
-            LOGGER.debug(&quot;No LoginSession token found; forwarding request to login page.&quot;);
-            // We need to save the old URI so we can auto redirect after login.
-            req.setAttribute(LOGIN_REDIRECT, req.getRequestURI());
-            req.getRequestDispatcher(&quot;/login&quot;).forward(request, response);
-            return;
-        } else {
-            LOGGER.debug(&quot;Request allowed using LoginSession token=%s&quot;, loginSession.getId());
-        }
-    }
-    chain.doFilter(request, response);
-}
-
-@Override
-public void destroy() {
-}
-</code></pre>
-<p>}</p>
-<p>Notice that you can configure this filter to match more than one URL that you want to protect. You can even use wildcard pattern such as &quot;/*&quot; and it will protect every URLs in your application! The filter simply looks into the Http Session space for a LoginSession object that we will create later. If it's found then it let the request through, otherwise it will redirect to a Login form page, which is served by LoginServlet class (notice the RETURN statement for early exit of the filter method without calling the filter chain!).</p>
-<p>The LoginServlet class is a form processing Servlet that will prompt user for username and password. If it succeed, then we will insert the LoginSession token object into the HttpSession space space, which is what the filter above is looking for. Here is the processing Servlet code.</p>
-<p>package zemian.servlet3example.web;</p>
-<p>import java.io.IOException;<br />
-import javax.servlet.ServletException;<br />
-import javax.servlet.annotation.WebServlet;<br />
-import javax.servlet.http.HttpServletRequest;<br />
-import javax.servlet.http.HttpServletResponse;<br />
-import javax.servlet.http.HttpSession;<br />
-import zemian.service.logging.Logger;<br />
-import zemian.servlet3example.service.Application;<br />
-import zemian.servlet3example.service.UserService;</p>
-<p>@WebServlet(&quot;/login&quot;)<br />
-public class LoginServlet  extends HtmlWriterServlet {<br />
-private static final Logger LOGGER = new Logger(LoginServlet.class);</p>
-<pre><code>@Override
-protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-    HtmlWriter html = createHtmlWriter(req, resp); 
-    String message;
-    
-    // Check to see if we are doing logout or not.
-    LoginSession loginSession = getOptionalLoginSession(req);
-    if (loginSession != null &amp;&amp; req.getParameter(&quot;logout&quot;) != null) {
-        logout(req);
-        message = &quot;Your have successfully logged out.&quot;;
-    } else {    
-        message = (String)req.getAttribute(&quot;message&quot;);
-        if (message == null)
-            message = &quot;&quot;;
-    }   
-    
-    // Show a login form
-    String redirectUri = (String)req.getAttribute(LoginRequiredFilter.LOGIN_REDIRECT);
-    String redirectHtmlTag = &quot;&quot;;
-    if (redirectUri != null) {
-        redirectHtmlTag = &quot;&lt;input type='hidden' name='redirectUri' value='&quot; + redirectUri + &quot;'/&gt;&quot;;
-    }
-    html.header()
-        .h(1, &quot;Please Login&quot;)
-        .p(message)
-        .println(&quot;&lt;form method='post' action='login'&gt;&quot;)
-        .println(redirectHtmlTag)
-        .println(&quot;&lt;p/&gt;Username: &lt;input type='text' name='username'/&gt;&quot;)
-        .println(&quot;&lt;p/&gt;Password: &lt;input type='password' name='password'/&gt;&quot;)
-        .println(&quot;&lt;p/&gt;&lt;input type='submit' value='Submit'/&gt;&quot;)
-        .println(&quot;&lt;/form&gt;&quot;)
-        .footer();
-}
-
-@Override
-protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-    LOGGER.debug(&quot;Processing login form.&quot;);
-    if (login(req)) {
-        // Login succeed, we should auto redirect user if exists.
-        String redirectUri = req.getParameter(&quot;redirectUri&quot;);
-        if (redirectUri != null) {
-            LOGGER.debug(&quot;Redirect after login to: %s&quot;, redirectUri);
-            resp.sendRedirect(redirectUri);
-            return;
-        }
-    }
-    
-    // Show the form again in case login failed or user didn't provide a redirect
-    doGet(req, resp);
-}    
-   
-protected LoginSession createLoginSession(HttpServletRequest req, String username) {
-    LoginSession result = new LoginSession(username);
-    req.getSession(true).setAttribute(LoginSession.LOGIN_SESSION_KEY, result);
-    return result;
-}
-
-protected void removeLoginSession(HttpServletRequest req) {
-    HttpSession session = req.getSession(false);
-    if (session != null) {
-        session.removeAttribute(LoginSession.LOGIN_SESSION_KEY);
-    }
-}
-
-private boolean login(HttpServletRequest req) throws IOException {
-    String username = req.getParameter(&quot;username&quot;);
-    String password = req.getParameter(&quot;password&quot;);
-    
-    UserService userService = Application.getInstance().getUserService();
-    if (userService.validate(username, password)) {
-        LOGGER.info(&quot;User %s logged in successfully.&quot;, username);
-        // Create Session Data here after successful authenticated.
-        LoginSession loginsession = getOptionalLoginSession(req);
-        if (loginsession == null) {
-            createLoginSession(req, username);
-            req.setAttribute(&quot;message&quot;, &quot;You have successfully logged in.&quot;);
-        } else {
-            req.setAttribute(&quot;message&quot;, &quot;You already have logged in.&quot;);             
-        }
-    } else {
-        LOGGER.info(&quot;User %s failed to login.&quot;, username);
-        req.setAttribute(&quot;message&quot;, &quot;Invalid login.&quot;);
-    }
-    return true;
-}
-
-/** Return LoginSession if found in HttpSession scope, else return NULL value. */
-public static LoginSession getOptionalLoginSession(HttpServletRequest req) {
-    LoginSession result = null;
-    HttpSession session = req.getSession(false);
-    if (session != null)
-        result = (LoginSession)session.getAttribute(LoginSession.LOGIN_SESSION_KEY);
-    return result;
-}
-</code></pre>
-<p>}</p>
-<p>Inside LoginServlet class is where we use the UserService service to validate username and password. We display the login form with a GET request, and then process the login with a POST action. Once username and password are checked, we create the LoginSession object. This is just a simple POJO to represent a session token; and you can hold any user information you want. I won't list here, but you can browse it on GitHub. Note that you should make it serializable though, because any data stored in HttpSession may be subject to be serialize/deserialize by your application server.</p>
-<p>Notice also that I have implemented the Logout functionality into the LoginServlet class<br />
-as well. You simply pass &quot;logout&quot; query parameter, and it will be<br />
-detected and remove the login token from the session. Ensure you invalid<br />
-the HttpSession itself when you do this, just to be in clean side. I<br />
-also exposed a static helper getOptionalLoginSession</p>
-<p>that is used between few of the classes to check whether user has logged in or not.</p>
-<p>These few classes are simple but yet demonstrated the use of Servlet Filter and Servlet on how to manage Session data. This programming pattern allows users to have their own browsing session and privacy through the application.</p>
-<p>If you are to run my <a href="https://github.com/saltnlight5/java-ee6-examples/tree/master/servlet3-example">servlet3-example</a>  in a GlassFish server, you may login using any users listed in <a href="https://github.com/saltnlight5/java-ee6-examples/blob/master/servlet3-example/src/main/resources/zemian/servlet3example/service/users.properties">here</a>.</p>
 </p>
 
 	<hr />

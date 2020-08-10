@@ -138,6 +138,73 @@ for line in fileinput.input(args.files):
 <pre><code>parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 </code></pre>
 </p>
+  			<a href="blog/2015/07/how-to-find-text-entries-in-mulitple-jar-files.html"><h1>How to find text entries in mulitple jar files</h1></a>
+  			<p>22 July 2015, tags: 
+			    <a href="../tags/java.html">java</a> 
+  			</p>
+  			<p><p>Similar to <a href="http://saltnlight5.blogspot.com/2012/07/how-to-print-text-file-content-inside.html">printjar</a>utility, here is a findjar util that can comes in handy to verify whether a class exists or not among a pile of jar files.</p>
+<p>JavaScript (run with jrunscript command)<br />
+pattern = arguments[arguments.length -1];<br />
+for (i=0; i &lt; arguments.length - 1; i++) {<br />
+path = arguments[i];<br />
+jar = new java.util.jar.JarFile(path)<br />
+entries = jar.entries();<br />
+while(entries.hasMoreElements()) {<br />
+jarEntry = entries.nextElement();<br />
+if (jarEntry.toString().search(pattern) != -1) {<br />
+println(jarEntry + &quot; : &quot; + path);<br />
+}<br />
+}<br />
+jar.close();<br />
+}</p>
+<p>Jython<br />
+import sys, glob, re<br />
+from java.util.jar import JarFile<br />
+pattern = sys.argv[-1]<br />
+for name in sys.argv[1: -2]:<br />
+for path in glob.glob(name):<br />
+jar = JarFile(path)<br />
+for e in jar.entries():<br />
+if re.search(pattern, str(e)):<br />
+print &quot;%s %s&quot; % (str(e), path)<br />
+jar.close()</p>
+<p>Java version (The search argument input is at position one in this example)<br />
+import java.io.File;<br />
+import java.util.Enumeration;<br />
+import java.util.jar.JarEntry;<br />
+import java.util.jar.JarFile;</p>
+<p>public class findjar {<br />
+public static void main(String[] args) throws Exception {<br />
+String searchText = args[0];<br />
+if (searchText.contains(&quot;.&quot;))<br />
+searchText = searchText.replaceAll(&quot;\.&quot;, &quot;/&quot;);<br />
+String dir = args[1];<br />
+System.out.println(&quot;Searching &quot; + searchText + &quot; in &quot; + dir);<br />
+search(searchText, new File(dir));<br />
+System.out.println(&quot;Done.&quot;);<br />
+}</p>
+<pre><code>private static void search(String searchText, File dir) throws Exception {
+    File[] files = dir.listFiles();
+    for (File file : files) {
+        if (file.isFile() &amp;&amp; file.getName().endsWith(&quot;.jar&quot;)) {
+            JarFile jarFile = new JarFile(file);
+            Enumeration&lt;JarEntry&gt; entries = jarFile.entries();
+            while(entries.hasMoreElements()) {
+                JarEntry e = entries.nextElement();
+                String name = e.getName();
+                if (name.indexOf(searchText) &gt;= 0) {
+                    System.out.println(&quot;Found: &quot; + name + &quot; in &quot; + jarFile.getName());
+                }
+            }
+            jarFile.close();
+        } else if (file.isDirectory()){
+            search(searchText, file);
+        }
+    }
+}
+</code></pre>
+<p>}</p>
+</p>
   			<a href="blog/2015/07/how-to-manage-sql-statements-more-effectively-with-java.html"><h1>How to manage SQL statements more effectively with Java</h1></a>
   			<p>22 July 2015, tags: 
 			    <a href="../tags/java.html">java</a> 
@@ -208,73 +275,6 @@ public static SqlMap load(String name) throws Exception {
     </entry>
 </properties>
 <p>Both of these are built-in from your JDK!</p>
-</p>
-  			<a href="blog/2015/07/how-to-find-text-entries-in-mulitple-jar-files.html"><h1>How to find text entries in mulitple jar files</h1></a>
-  			<p>22 July 2015, tags: 
-			    <a href="../tags/java.html">java</a> 
-  			</p>
-  			<p><p>Similar to <a href="http://saltnlight5.blogspot.com/2012/07/how-to-print-text-file-content-inside.html">printjar</a>utility, here is a findjar util that can comes in handy to verify whether a class exists or not among a pile of jar files.</p>
-<p>JavaScript (run with jrunscript command)<br />
-pattern = arguments[arguments.length -1];<br />
-for (i=0; i &lt; arguments.length - 1; i++) {<br />
-path = arguments[i];<br />
-jar = new java.util.jar.JarFile(path)<br />
-entries = jar.entries();<br />
-while(entries.hasMoreElements()) {<br />
-jarEntry = entries.nextElement();<br />
-if (jarEntry.toString().search(pattern) != -1) {<br />
-println(jarEntry + &quot; : &quot; + path);<br />
-}<br />
-}<br />
-jar.close();<br />
-}</p>
-<p>Jython<br />
-import sys, glob, re<br />
-from java.util.jar import JarFile<br />
-pattern = sys.argv[-1]<br />
-for name in sys.argv[1: -2]:<br />
-for path in glob.glob(name):<br />
-jar = JarFile(path)<br />
-for e in jar.entries():<br />
-if re.search(pattern, str(e)):<br />
-print &quot;%s %s&quot; % (str(e), path)<br />
-jar.close()</p>
-<p>Java version (The search argument input is at position one in this example)<br />
-import java.io.File;<br />
-import java.util.Enumeration;<br />
-import java.util.jar.JarEntry;<br />
-import java.util.jar.JarFile;</p>
-<p>public class findjar {<br />
-public static void main(String[] args) throws Exception {<br />
-String searchText = args[0];<br />
-if (searchText.contains(&quot;.&quot;))<br />
-searchText = searchText.replaceAll(&quot;\.&quot;, &quot;/&quot;);<br />
-String dir = args[1];<br />
-System.out.println(&quot;Searching &quot; + searchText + &quot; in &quot; + dir);<br />
-search(searchText, new File(dir));<br />
-System.out.println(&quot;Done.&quot;);<br />
-}</p>
-<pre><code>private static void search(String searchText, File dir) throws Exception {
-    File[] files = dir.listFiles();
-    for (File file : files) {
-        if (file.isFile() &amp;&amp; file.getName().endsWith(&quot;.jar&quot;)) {
-            JarFile jarFile = new JarFile(file);
-            Enumeration&lt;JarEntry&gt; entries = jarFile.entries();
-            while(entries.hasMoreElements()) {
-                JarEntry e = entries.nextElement();
-                String name = e.getName();
-                if (name.indexOf(searchText) &gt;= 0) {
-                    System.out.println(&quot;Found: &quot; + name + &quot; in &quot; + jarFile.getName());
-                }
-            }
-            jarFile.close();
-        } else if (file.isDirectory()){
-            search(searchText, file);
-        }
-    }
-}
-</code></pre>
-<p>}</p>
 </p>
   			<a href="blog/2015/07/python-one-liner.html"><h1>Python one-liner</h1></a>
   			<p>19 July 2015, tags: 

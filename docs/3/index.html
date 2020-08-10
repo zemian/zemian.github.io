@@ -970,33 +970,6 @@ keytool -keystore cacerts -storepasswd changeit -list</pre>
 <pre>java -cp "target/extra-classes:target/webapp-runner.jar" webapp.runner.launch.Main target/adocblog.war</pre>
 </div>
 </div></p>
-  			<a href="blog/2018/06/python-argparse-with-multiple-occurance-of-an-option.html"><h1>Python argparse with multiple occurance of an option</h1></a>
-  			<p>06 June 2018, tags: 
-			    <a href="../tags/python-argparse.html">python-argparse</a> 
-  			</p>
-  			<p><div class="listingblock">
-<div class="title">test.py</div>
-<div class="content">
-<pre>import argparse
-parser = argparse.ArgumentParser()
-parser.add_argument("prog_args", nargs='*')
-parser.add_argument("-e", action='append')
-args = parser.parse_args()
-prog_args = args.prog_args
-env = dict([e.split('=') for e in args.e])
-
-print(f"Program args: {prog_args}")
-print(f"Env options: {env}")</pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="title">Example</div>
-<div class="content">
-<pre>$ python3 test.py one two three -ek1=1 -e k2=foo
-Program args: ['one', 'two', 'three']
-Env options: {'k1': '1', 'k2': 'foo'}</pre>
-</div>
-</div></p>
   			<a href="blog/2018/06/installing-python-on-windows-without-admin-rights.html"><h1>Installing Python on Windows Without Admin Rights</h1></a>
   			<p>06 June 2018, tags: 
 			    <a href="../tags/python-install.html">python-install</a> 
@@ -1034,6 +1007,33 @@ Starting Python 3.5 the official downloads site already has "Windows x86-64 embe
 </div>
 <div class="paragraph">
 <p>Ref: <a href="https://stackoverflow.com/questions/2678702/install-python-2-6-without-using-installer-on-win32" class="bare">https://stackoverflow.com/questions/2678702/install-python-2-6-without-using-installer-on-win32</a></p>
+</div></p>
+  			<a href="blog/2018/06/python-argparse-with-multiple-occurance-of-an-option.html"><h1>Python argparse with multiple occurance of an option</h1></a>
+  			<p>06 June 2018, tags: 
+			    <a href="../tags/python-argparse.html">python-argparse</a> 
+  			</p>
+  			<p><div class="listingblock">
+<div class="title">test.py</div>
+<div class="content">
+<pre>import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument("prog_args", nargs='*')
+parser.add_argument("-e", action='append')
+args = parser.parse_args()
+prog_args = args.prog_args
+env = dict([e.split('=') for e in args.e])
+
+print(f"Program args: {prog_args}")
+print(f"Env options: {env}")</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Example</div>
+<div class="content">
+<pre>$ python3 test.py one two three -ek1=1 -e k2=foo
+Program args: ['one', 'two', 'three']
+Env options: {'k1': '1', 'k2': 'foo'}</pre>
+</div>
 </div></p>
 
 	<hr />

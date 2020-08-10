@@ -53,6 +53,126 @@
       </div>
     </div>
     <div class="container">
+  			<a href="blog/2012/10/exploring-different-scheduling-types-with-quartz-2.html"><h1>Exploring different scheduling types with Quartz 2</h1></a>
+  			<p>22 October 2012, tags: 
+			    <a href="../tags/quartz.html">quartz</a> 
+  			</p>
+  			<p><p>We often think of Cron when we want to schedule a job. Cron is very flexible in expressing an repeating occurance of an event/job in a very compact expression. However it's not answer for everything, as I often see people are asking for help in the Quartz user forum. Did you know that the popular <a href="http://quartz-scheduler.org">Quartz 2</a> library provide many other schedule types (called Trigger) besides cron? I will show you each of the Quartz 2 built-in schedule types here within a complete, standalone Groovy script that you can run and test it out. Let's start with a simple one.</p>
+<pre><code>@Grab('org.quartz-scheduler:quartz:2.1.6')
+@Grab('org.slf4j:slf4j-simple:1.7.1')
+import org.quartz.*
+import org.quartz.impl.*
+import org.quartz.jobs.*
+
+import static org.quartz.DateBuilder.*
+import static org.quartz.JobBuilder.*
+import static org.quartz.TriggerBuilder.*
+import static org.quartz.SimpleScheduleBuilder.*
+
+def trigger = newTrigger()
+    .withSchedule(
+        simpleSchedule()
+        .withIntervalInSeconds(3)
+        .repeatForever())
+    .startNow()
+    .build()
+dates = TriggerUtils.computeFireTimes(trigger, null, 20)
+dates.each{ println it }
+</code></pre>
+<p>This is the Quartz's <code>SimpleTrigger</code>, and it allows you to create a fixed rate repeating job. You can even limit to certain number of count if you like. I have imported all the nessary classes the script needs, and I use the latest Quartz 2.x builder API to create an instance of the trigger.</p>
+<p>The quickest way to explore and test out whether a scheduling fits your need is to print out its future execution times. Hence you see me using <code>TriggerUtils.computeFireTimes</code> in the script. Run the above and you should get the datetimes as scheduled to be run, in this case every 3 seconds.</p>
+<pre><code>bash&gt; $ groovy simpleTrigger.groovy
+    Tue Oct 23 20:28:01 EDT 2012
+    Tue Oct 23 20:28:04 EDT 2012
+    Tue Oct 23 20:28:07 EDT 2012
+    Tue Oct 23 20:28:10 EDT 2012
+    Tue Oct 23 20:28:13 EDT 2012
+    Tue Oct 23 20:28:16 EDT 2012
+    Tue Oct 23 20:28:19 EDT 2012
+    Tue Oct 23 20:28:22 EDT 2012
+    Tue Oct 23 20:28:25 EDT 2012
+    Tue Oct 23 20:28:28 EDT 2012
+    Tue Oct 23 20:28:31 EDT 2012
+    Tue Oct 23 20:28:34 EDT 2012
+    Tue Oct 23 20:28:37 EDT 2012
+    Tue Oct 23 20:28:40 EDT 2012
+    Tue Oct 23 20:28:43 EDT 2012
+    Tue Oct 23 20:28:46 EDT 2012
+    Tue Oct 23 20:28:49 EDT 2012
+    Tue Oct 23 20:28:52 EDT 2012
+    Tue Oct 23 20:28:55 EDT 2012
+    Tue Oct 23 20:28:58 EDT 2012
+</code></pre>
+<p>The most frequent used scheduling type is the <code>CronTrigger</code>, and you can test it out in similar way.</p>
+<pre><code>@Grab('org.quartz-scheduler:quartz:2.1.6')
+@Grab('org.slf4j:slf4j-simple:1.7.1')
+import org.quartz.*
+import org.quartz.impl.*
+import org.quartz.jobs.*
+
+import static org.quartz.DateBuilder.*
+import static org.quartz.JobBuilder.*
+import static org.quartz.TriggerBuilder.*
+import static org.quartz.CronScheduleBuilder.*
+
+def trigger = newTrigger()
+    .withSchedule(cronSchedule(&quot;0 30 08 * * ?&quot;))
+    .startNow()
+    .build()
+dates = TriggerUtils.computeFireTimes(trigger, null, 20)
+dates.each{ println it }
+</code></pre>
+<p>The javadoc for <a href="http://quartz-scheduler.org/api/2.1.5/org/quartz/CronExpression.html">CronExpression</a> is very good and you should definately read it throughly to use it effectively. With the script, you can explore all the combination you want easily and verify future fire times before your job is invoked.</p>
+<p>Now, if you have some odd scheduling needs such as run a job every 30 mins from MON to FRI and only between 8:00AM to 10:00AM, then don't try to cramp all that into the Cron expression. The Quartz 2.x has a dedicated trigger type just for this use, and it's<br />
+called <code>DailyTimeIntervalTrigger</code>! Check this out:</p>
+<pre><code>@Grab('org.quartz-scheduler:quartz:2.1.6')
+@Grab('org.slf4j:slf4j-simple:1.7.1')
+import org.quartz.*
+import org.quartz.impl.*
+import org.quartz.jobs.*
+
+import static org.quartz.DateBuilder.*
+import static org.quartz.JobBuilder.*
+import static org.quartz.TriggerBuilder.*
+import static org.quartz.DailyTimeIntervalScheduleBuilder.*
+import static java.util.Calendar.*
+
+def trigger = newTrigger()
+    .withSchedule(
+        dailyTimeIntervalSchedule()
+        .startingDailyAt(TimeOfDay.hourMinuteAndSecondOfDay(8, 0, 0))
+        .endingDailyAt(TimeOfDay.hourMinuteAndSecondOfDay(10, 0, 0))
+        .onDaysOfTheWeek(MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY)
+        .withInterval(10, IntervalUnit.MINUTE))
+    .startNow()
+    .build()
+dates = TriggerUtils.computeFireTimes(trigger, null, 20)
+dates.each{ println it }
+</code></pre>
+<p>Another hidden Trigger type from Quartz is <code>CalendarIntervalTrigger</code>, and you would use this if you need to repeat job that's in every interval of a calendar period, such as every year or month etc, where the interval is not fixed, but calendar specific. Here is a test script for that.</p>
+<pre><code>@Grab('org.quartz-scheduler:quartz:2.1.6')
+@Grab('org.slf4j:slf4j-simple:1.7.1')
+import org.quartz.*
+import org.quartz.impl.*
+import org.quartz.jobs.*
+
+import static org.quartz.DateBuilder.*
+import static org.quartz.JobBuilder.*
+import static org.quartz.TriggerBuilder.*
+import static org.quartz.CalendarIntervalScheduleBuilder.*
+import static java.util.Calendar.*
+
+def trigger = newTrigger()
+    .withSchedule(
+        calendarIntervalSchedule()
+        .withInterval(2, IntervalUnit.MONTH))
+    .startAt(futureDate(10, IntervalUnit.MINUTE))
+    .build()
+dates = TriggerUtils.computeFireTimes(trigger, null, 20)
+dates.each{ println it }
+</code></pre>
+<p>I hope these will help you get started on most of your scheduling need with Quartz 2. Try these out and see your future fire times before even scheduling a job into the scheduler should save you some times and troubles.</p>
+</p>
   			<a href="blog/2012/10/a-very-lean-war-file-for-myschedule.html"><h1>A very lean war file for MySchedule</h1></a>
   			<p>22 October 2012, tags: 
 			    <a href="../tags/myschedule.html">myschedule</a> 
@@ -1046,64 +1166,6 @@ be instantaneously.</p>
 <li>Select menu &quot;Tool &gt; Build System &gt; GroovyNailGunClient&quot;</li>
 <li>Press <code>CTRL+B</code> to run any groovy file in your editor.</li>
 </ol>
-</p>
-  			<a href="blog/2012/09/improving-java-util-properties.html"><h1>Improving java.util.Properties</h1></a>
-  			<p>07 September 2012, tags: 
-			    <a href="../tags/java.html">java</a> 
-  			</p>
-  			<p><p>The Java built-in <code>java.util.Properties</code> class could really use some love. I have written a slightly improved version called<br />
-<a href="https://bitbucket.org/timemachine/scheduler/src/15f066cc6dad/timemachine-scheduler/src/main/java/timemachine/scheduler/support/Props.java">timemachine.scheduler.support.Props</a>, and below are some features that I use often.</p>
-<h1>You can use it as a &quot;String Map&quot; of properties</h1>
-<pre><code>Props props1 = new Props();
-props1.put(&quot;foo&quot;, &quot;bar&quot;);
-
-// It can load from/to the Java Properties
-Props props2 = new Props(System.getProperties());
-java.util.Properties javaProps = props3.toProperties();
-
-// It can load from/to a basic java.util.Map
-Props props3 = new Props(System.getenv());
-
-// Props is a HashMap&lt;String, String&gt;, so no need to convert. Just use it
-for(Map.Entry&lt;String, String&gt; entry : props3.entrySet())
-    System.our.println(entry.getKey() + &quot;: &quot; + entry.getValue());
-</code></pre>
-<h1>You can load from a file in a single line</h1>
-<pre><code>Props props1 = new Props(&quot;config.properties&quot;);
-Props props2 = new Props(&quot;/path/to/config.properties&quot;);
-Props props3 = new Props(new java.net.URL(&quot;http://myhost/config/config.properties&quot;));
-Props props4 = new Props(ClasspathURLStreamHandler.createURL(&quot;classpath://config/config.properties&quot;));
-
-// You can re-load on top of existing instance to override values
-props4.load(&quot;config2.properties&quot;);
-</code></pre>
-<p>NOTE: The <code>ClasspathURLStreamHandler</code> is a utility class from the same package under <code>timemachine.scheduler.support</code> that can load any resources that's in the classpath.</p>
-<h1>You can get many basic types conversion</h1>
-<pre><code>Props props = new Props();
-props.put(&quot;str&quot;, &quot;foo&quot;);
-props.put(&quot;num&quot;, &quot;123&quot;);
-props.put(&quot;dec&quot;, &quot;99.99&quot;);
-props.put(&quot;flag&quot;, &quot;true&quot;);
-
-String str = props.getString(&quot;str&quot;);
-int num = props.getInt(&quot;num&quot;);
-double dec = props.getDouble(&quot;dec&quot;);
-boolean flag = props.getBoolean(&quot;flag&quot;);
-
-// You can even get default value when key is not found too
-int num2 = props.getInt(&quot;num2&quot;, -1);
-</code></pre>
-<h1>You can auto expand ${variable} from any existing properties</h1>
-<pre><code>Props props = new Props(System.getProperties());
-props.put(&quot;configDir&quot;, &quot;${user.home}/myapp/config&quot;);
-props.expandVariables();
-
-// The ${user.home} should be expanded to actual user home dir value.
-File dir = new File(props.get(&quot;configDir&quot;));
-</code></pre>
-<p>There you have it. You see more code than words in this post, but I believe simple code speak louder than words and docs. I find these features very convenient and practical<br />
-for many Java applications to use. I wish the JDK would provide these out of the box, and make the <code>java.util.Properties</code> more<br />
-developer friendly.</p>
 </p>
 
 	<hr />

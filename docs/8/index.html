@@ -353,6 +353,23 @@ was only setup just to run applications (eg: <code>postgres</code>, <code>mysql<
 case, you might not even know what the real password is. Above<br />
 trick should get you switch into that target user account.</p>
 </p>
+  			<a href="blog/2016/07/migrating-django-1-6-to-1-9.html"><h1>Migrating Django 1.6 to 1.9</h1></a>
+  			<p>06 July 2016, tags: 
+			    <a href="../tags/django.html">django</a> 
+  			</p>
+  			<p><div class="paragraph">
+<p>Couple years ago, I wrote a simple Events and Signin management app using django 1.6. It was fun to write and it worked really well. Just recently I have to write another quick simple CRM webapp and I decided to use Django again, but they current release is 1.9 now and I quickly found few differences.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The <code>INSTALLED_APPS</code> now takes <code>AppCofig</code> instead of package name. And there is a new <code>apps.py</code> file for it.</p>
+</li>
+<li>
+<p>There is now <code>makemigration</code> and <code>migrate</code> command to create database table.</p>
+</li>
+</ul>
+</div></p>
   			<a href="blog/2016/07/login-to-remote-host-without-password.html"><h1>Login to remote host without password</h1></a>
   			<p>06 July 2016, tags: 
 			    <a href="../tags/linux.html">linux</a> 
@@ -381,23 +398,6 @@ xxxyyyzzz zemian@myhost
 <p>The cool thing about this is that it affects all <code>ssh</code> related commands, such as <code>scp</code> will now work without prompting you for password!</p>
 <p>Have a productive day!</p>
 </p>
-  			<a href="blog/2016/07/migrating-django-1-6-to-1-9.html"><h1>Migrating Django 1.6 to 1.9</h1></a>
-  			<p>06 July 2016, tags: 
-			    <a href="../tags/django.html">django</a> 
-  			</p>
-  			<p><div class="paragraph">
-<p>Couple years ago, I wrote a simple Events and Signin management app using django 1.6. It was fun to write and it worked really well. Just recently I have to write another quick simple CRM webapp and I decided to use Django again, but they current release is 1.9 now and I quickly found few differences.</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>The <code>INSTALLED_APPS</code> now takes <code>AppCofig</code> instead of package name. And there is a new <code>apps.py</code> file for it.</p>
-</li>
-<li>
-<p>There is now <code>makemigration</code> and <code>migrate</code> command to create database table.</p>
-</li>
-</ul>
-</div></p>
   			<a href="blog/2016/07/how-to-import-ssl-cert-into-wls-demotrust-jks-keystore-file.html"><h1>How to import SSL cert into WLS DemoTrust.jks keystore file</h1></a>
   			<p>05 July 2016, tags: 
 			    <a href="../tags/weblogic.html">weblogic</a> 

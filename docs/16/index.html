@@ -53,6 +53,15 @@
       </div>
     </div>
     <div class="container">
+  			<a href="blog/2014/06/using-crontab-to-startup-service.html"><h1>Using crontab to startup service</h1></a>
+  			<p>08 June 2014, tags: 
+			    <a href="../tags/crontab.html">crontab</a> 
+  			</p>
+  			<p><p>Did you know that crontab service has the &quot;@reboot&quot; schedule that would start a script during your system startup time? This is handy if you want something to run right after your system has stared. Try this:</p>
+<h1>crontab -e</h1>
+<p>@reboot $HOME/crontab/runcmd.sh /apps/start-myapp.sh</p>
+<p>The disadvantage of this vs the rc.d scripts are you do not have control on when the system shutdown(&quot;stop&quot;) state. So if your app doens't need to clean up during shutdown, but only care to start when during reboot, this would be an easy option.</p>
+</p>
   			<a href="blog/2014/06/a-simple-cron-wrapper-script-with-logging.html"><h1>A simple cron wrapper script with logging</h1></a>
   			<p>04 June 2014, tags: 
 			    <a href="../tags/crontab.html">crontab</a> 
@@ -262,22 +271,6 @@ static void repeat(int n, Runnable r) {
     }
 </code></pre>
 <p>Hum....</p>
-</p>
-  			<a href="blog/2014/04/how-to-reset-weblogic-admin-server-password.html"><h1>How to reset WebLogic admin server password</h1></a>
-  			<p>02 April 2014, tags: 
-			    <a href="../tags/weblogic.html">weblogic</a> 
-  			</p>
-  			<p><pre><code>If you forgot your admin user password for WebLogic, you can reset it this way. Ensure you are in the domain directory first! 
-
- 
-
-source $WL_HOME/server/bin/setWLSEnv.sh 
-
-cd mydomain
-mv security/DefaultAuthenticatorInit.ldift security/DefaultAuthenticatorInit.ldift.bak
-
-java weblogic.security.utils.AdminAccount &lt;admin_username&gt; &lt;new_password&gt; security
-</code></pre>
 </p>
 
 	<hr />

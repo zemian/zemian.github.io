@@ -330,38 +330,6 @@ you started quickly but not very secure.</p>
 <div class="paragraph">
 <p>Then click on "Accept non-trusted certificates automatically".</p>
 </div></p>
-  			<a href="blog/2018/01/using-java8-localdatetime-with-freemarker.html"><h1>Using Java8 LocalDateTime with FreeMarker</h1></a>
-  			<p>27 January 2018, tags: 
-			    <a href="../tags/freemarker.html">freemarker</a> 
-  			</p>
-  			<p><div class="paragraph">
-<p>It&#8217;s unfortunate that even latest FreeMarker 2.3.27 still does not support <code>java.time.LocalDateTime</code> as data model natively. If you want to use this in your template, you would either have to write your own, or use this friendly library:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>        &lt;!-- Web View: FTL Template Engine --&gt;
-        &lt;dependency&gt;
-            &lt;groupId&gt;org.freemarker&lt;/groupId&gt;
-            &lt;artifactId&gt;freemarker&lt;/artifactId&gt;
-            &lt;version&gt;2.3.27-incubating&lt;/version&gt;
-        &lt;/dependency&gt;
-        &lt;dependency&gt;
-            &lt;groupId&gt;no.api.freemarker&lt;/groupId&gt;
-            &lt;artifactId&gt;freemarker-java8&lt;/artifactId&gt;
-            &lt;version&gt;1.1.5&lt;/version&gt;
-        &lt;/dependency&gt;</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>With this, you may format the java8 date model in template like this:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>Today date is ${todayDate.format()}
-
-Or use custom date formatter: ${todayDate.format('yyyy-MM-dd HH:mm')}</pre>
-</div>
-</div></p>
   			<a href="blog/2018/01/walk-resource-tree-as-directory-in-classpath.html"><h1>Walk resource tree as directory in classpath</h1></a>
   			<p>27 January 2018, tags: 
 			    <a href="../tags/java.html">java</a> 
@@ -472,6 +440,38 @@ Or use custom date formatter: ${todayDate.format('yyyy-MM-dd HH:mm')}</pre>
             System.out.println(fileStream.getPath() + " " + fileStream.getStream());
         });
         System.out.println();</pre>
+</div>
+</div></p>
+  			<a href="blog/2018/01/using-java8-localdatetime-with-freemarker.html"><h1>Using Java8 LocalDateTime with FreeMarker</h1></a>
+  			<p>27 January 2018, tags: 
+			    <a href="../tags/freemarker.html">freemarker</a> 
+  			</p>
+  			<p><div class="paragraph">
+<p>It&#8217;s unfortunate that even latest FreeMarker 2.3.27 still does not support <code>java.time.LocalDateTime</code> as data model natively. If you want to use this in your template, you would either have to write your own, or use this friendly library:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>        &lt;!-- Web View: FTL Template Engine --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.freemarker&lt;/groupId&gt;
+            &lt;artifactId&gt;freemarker&lt;/artifactId&gt;
+            &lt;version&gt;2.3.27-incubating&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;no.api.freemarker&lt;/groupId&gt;
+            &lt;artifactId&gt;freemarker-java8&lt;/artifactId&gt;
+            &lt;version&gt;1.1.5&lt;/version&gt;
+        &lt;/dependency&gt;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>With this, you may format the java8 date model in template like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>Today date is ${todayDate.format()}
+
+Or use custom date formatter: ${todayDate.format('yyyy-MM-dd HH:mm')}</pre>
 </div>
 </div></p>
   			<a href="blog/2018/01/how-to-fix-intellij-outofmemoryerror.html"><h1>How to fix IntelliJ OutOfMemoryError</h1></a>
