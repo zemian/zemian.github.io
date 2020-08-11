@@ -1,8 +1,0 @@
-= Setup Quartz DB With Liquibase
-Zemian Deng
-2019-02-15
-:jbake-type: post
-:jbake-tags: quartz
-:jbake-status: published
-
-There is a http://www.liquibase.org/[Liquibase] init file now in Quartz that you may use to setup your database. I have added instructions on how to run this https://github.com/quartz-scheduler/quartz/wiki/How-to-Setup-Databases#using-liquibase-tool[on Quartz WIKI here].
