@@ -23,6 +23,11 @@ for (let file of process.argv.slice(2)) {
 		continue;
 	}
 
+	if (bname[0].endsWith("-")) {
+		console.log("BAD (ends with -)", file);
+		continue;
+	}
+
 	if (!fileCount[bname[1]])
 		fileCount[bname[1]] = 0
 	fileCount[bname[1]] ++;
