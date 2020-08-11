@@ -53,116 +53,17 @@
       </div>
     </div>
     <div class="container">
-  			<a href="blog/2016/10/git-branch-name-with-slash.html"><h1>Git Branch name with &apos;slash&apos;</h1></a>
-  			<p>09 October 2016, tags: 
-			    <a href="../tags/git.html">git</a> 
-  			</p>
-  			<p><div class="paragraph">
-<p>Git allows you to use '/' slash in your branch name. It&#8217;s useful for grouping branches. However, you need
-to be careful that once a slashy branch name is created, you can&#8217;t use its name as the "base" for another
-new nested slash name! For example:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre># this is fine
-git branch foo/bar
-git branch foo/bar2
-
-# but this fails
-git branch foo/bar/cool
-fatal: cannot lock ref 'refs/heads/foo/bar/cool': 'refs/heads/foo/bar' exists; cannot create 'refs/heads/foo/bar/cool'
-
-# So to use two level of slashes, you must first start a branch with two slashes!
-git branch foo2/bar/cool
-git branch foo2/bar/cool2
-git branch foo2/bar2/cool
-git branch foo2/bar2/cool2</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Here is a more concrete example. Let&#8217;s say you worked on an issue-123 branch, and now you are done but want to rename under a subcategory 'closed/issue-123'. If you were to create a branch 'closed' first, then the rename will fail! You have to first ensure 'closed' branch does not exist. In fact reate a 'closed/zkeepme' first, then you can always move your completed branch into that sub category!</p>
-</div></p>
-  			<a href="blog/2016/10/my-quick-git-reference.html"><h1>My Quick Git Reference</h1></a>
-  			<p>04 October 2016, tags: 
-			    <a href="../tags/git.html">git</a> 
-  			</p>
-  			<p><div class="paragraph">
-<p>I have started using git and here are some of my frequently used commands.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>git clone http://path/to/repo.git  # Retrieve a repo for work (auto checkout master branch into WorkingDir)
-git init                           # Create new repository for work (auto checkout master branch into WorkingDir)
-git init --bare                    # Create new repository without WorkingDir  - bare repo for server share only
-
-git status             # Print current status of the repo
-git branch -a          # List of all branches (including remote branches)
-git tag                # List of all tags
-git log -3                                      # Show last 3 commits
-git log -30 --oneline                           # Show last 30 commits one per line
-git log --decorate --graph --format='%h %an %s' # Show all log messages one per line in a graph
-git log --reverse |head                         # Show first commit message
-git show --stat &lt;sha1&gt; # Show what files changed on a commit
-git diff               # Show diff all files between Index and WorkingDir
-git diff readme.md     # Show diff of a file against Index
-git diff master..topic # Show diff between two branches
-
-git checkout -b topic               # Create a new topic branch and set as current branch
-                                      (New branch starts from previous checkout branch)
-git checkout -b topic origin/topic  # Create a new topic branch and set as current branch
-                                      (New branch starts from origin/topic "remote" branch)
-git branch --move topicA topicB     # Rename a branch
-git branch -d topic                 # Delete a branch (use -D to force it)
-git checkout master                 # Switch to master branch and set as current branch
-git merge topic                     # Merge changes from topic branch onto current branch
-
-git add .                        # Add files to Index
-git add readme.md                # Add one file to Index
-git add -A                       # Add everything to Index
-git commit -m 'topic: my change' # Commit Index changes
-
-git mv oldfile.md newfile.md     # Rename a file
-git rm outdated.md               # Remove a file from Index and WorkingDir
-git rm --cached outdated.md      # Remove a file from Index only (leave it in WorkingDir)
-
-git remote add origin http://path/to/repo.git     # Setup remote repository
-git remote set-url origin http://path/to/repo.git # Update remote repository
-git remote -v                                     # List remote repositories
-
-git push --set-upstream origin topic              # Push branch to remote first time
-git push                                          # Push branch to remote second time
-git push --all                                    # Push all the branches to remote!
-git push origin :topic                            # Push and DELETE the remote branch!
-
-git pull   # Fetch and merge the "auto tracked remote" branch onto current branch
-git fetch  # Fetch only the "auto tracked remote" branch onto current branch
-
-git checkout              # Restore WorkingDir from Index (will not override local modified files!)
-git checkout -- readme.md # Restore a single WorkingDir file from Index
-
-git reset          # Reset the HEAD and Index (same as --mixed)
-git reset --soft   # Reset the HEAD only
-git reset --hard   # Reset the HEAD, Index and WorkingDir!
-
-git reflog         # Inpect any recent transactions and can be use to recover lost (unnamed) commits
-
-git stash          # Put away all pending changes
-git stash pop      # Bring back all pending changes
-git stash list     # List all stashes</pre>
-</div>
-</div></p>
   			<a href="blog/2016/07/how-to-install-cx-oracle-module-on-linux.html"><h1>How to install cx_Oracle module on Linux</h1></a>
   			<p>23 July 2016, tags: 
 			    <a href="../tags/python.html">python</a> 
 
 			    <a href="../tags/oracle.html">oracle</a> 
   			</p>
-  			<p><div id="preamble">
-<div class="sectionbody">
-<div class="paragraph">
-<p>Here are my notes on installing <a href="http://cx-oracle.sourceforge.net/"><code>cx_Oracle</code> python module</a> to access Oracle Database 12c. First, you need to download these two packages from <a href="http://www.oracle.com/technetwork/database/features/instant-client">Oracle Instant Client</a> site.</p>
-</div>
-<div class="ulist">
+  			<p><p>Here are my notes on installing <a href="http://cx-oracle.sourceforge.net/"><code>cx_Oracle</code> python<br />
+module</a> to access Oracle Database<br />
+12c. First, you need to download these two packages from <a href="http://www.oracle.com/technetwork/database/features/instant-client">Oracle Instant<br />
+Client</a><br />
+site.</p>
 <ul>
 <li>
 <p>Instant Client Package - Basic</p>
@@ -171,89 +72,45 @@ git stash list     # List all stashes</pre>
 <p>Instant Client Package - SDK</p>
 </li>
 </ul>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Note</div>
-</td>
-<td class="content">
-I&#8217;ve tried their <code>.rpm</code> packages and it did not work for me on Linux, so I would suggest you use the <code>.zip</code> packages instead.
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>Once you downloaded these two, unzip them into a single directory (eg: <code>$HOME/apps/instantclient</code>). You then need to follow these instructions to install the module itself.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>cd $HOME/apps/instantclient
+<p>I’ve tried their <code>.rpm</code> packages and it did not work for me on Linux, so<br />
+I would suggest you use the <code>.zip</code> packages instead.</p>
+<p>Once you downloaded these two, unzip them into a single directory (eg:<br />
+<code>$HOME/apps/instantclient</code>). You then need to follow these instructions<br />
+to install the module itself.</p>
+<pre><code>cd $HOME/apps/instantclient
 ln -s libclntsh.so.12.1 libclntsh.so
 export ORACLE_HOME=$HOME/apps/instantclient
 export LD_LIBRARY_PATH=$ORACLE_HOME:$LD_LIBRARY_PATH
 
-pip install cx_Oracle</pre>
-</div>
-</div>
-<div class="paragraph">
+pip install cx_Oracle
+</code></pre>
 <p>Here are some quick python test code to verify <code>cx_Oracle</code> is working.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight"><code data-lang="python">import cx_Oracle as db
+<pre><code>import cx_Oracle as db
 dsn='(DESCRIPTION=(ADDRESS=(HOST=myhost)(PORT=1521)(PROTOCOL=TCP))(CONNECT_DATA=(SERVER=DEDICATED)(SID=orcl)))'
 conn = db.connect('zemian', 'Welcome1', dsn)
 cur = conn.cursor()
 cur.execute('SELECT 1+1')
 print(cur.fetchone()[0])
 cur.close()
-conn.close()</code></pre>
-</div>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Note</div>
-</td>
-<td class="content">
-Using the <code>dsn</code> form above can connect directly to database without the need to setup further entry in Oracle&#8217;s <code>tnsnames.ora</code> file.
-</td>
-</tr>
-</table>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_optionally_installing_sqlplus_client">Optionally installing sqlplus client</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>The <code>sqlplus</code> is a classic client you may use to connect to the Oracle database. You may install this to perform adhoc query and verify your data. Download the following from the same download site above.</p>
-</div>
-<div class="ulist">
+conn.close()
+</code></pre>
+<p>Using the <code>dsn</code> form above can connect directly to database without the<br />
+need to setup further entry in Oracle’s <code>tnsnames.ora</code> file.</p>
+<h1>Optionally installing sqlplus client</h1>
+<p>The <code>sqlplus</code> is a classic client you may use to connect to the Oracle<br />
+database. You may install this to perform adhoc query and verify your<br />
+data. Download the following from the same download site above.</p>
 <ul>
-<li>
-<p>Instant Client Package - SQL*Plus</p>
-</li>
+<li>Instant Client Package - SQL*Plus</li>
 </ul>
-</div>
-<div class="paragraph">
 <p>Unzip and then add the following to your <code>PATH</code></p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>export $ORACLE_HOME/bin:$PATH
+<pre><code>export $ORACLE_HOME/bin:$PATH
 
-sqlplus mydbuser@(DESCRIPTION=(ADDRESS=(HOST=myhost)(PORT=1521)(PROTOCOL=TCP))(CONNECT_DATA=(SERVER=DEDICATED)(SID=orcl)))</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>For more information, see <a href="https://docs.oracle.com/database/121/SQPUG/toc.htm"><code>sqlplus</code> doc</a></p>
-</div>
-</div>
-</div></p>
+sqlplus mydbuser@(DESCRIPTION=(ADDRESS=(HOST=myhost)(PORT=1521)(PROTOCOL=TCP))(CONNECT_DATA=(SERVER=DEDICATED)(SID=orcl)))
+</code></pre>
+<p>For more information, see <a href="https://docs.oracle.com/database/121/SQPUG/toc.htm"><code>sqlplus</code><br />
+doc</a></p>
+</p>
   			<a href="blog/2016/07/simple-http-server-with-cgi-scripts-enabled.html"><h1>Simple http server with CGI scripts enabled</h1></a>
   			<p>14 July 2016, tags: 
 			    <a href="../tags/python.html">python</a> 
@@ -357,19 +214,22 @@ trick should get you switch into that target user account.</p>
   			<p>06 July 2016, tags: 
 			    <a href="../tags/django.html">django</a> 
   			</p>
-  			<p><div class="paragraph">
-<p>Couple years ago, I wrote a simple Events and Signin management app using django 1.6. It was fun to write and it worked really well. Just recently I have to write another quick simple CRM webapp and I decided to use Django again, but they current release is 1.9 now and I quickly found few differences.</p>
-</div>
-<div class="ulist">
+  			<p><p>Couple years ago, I wrote a simple Events and Signin management app<br />
+using django 1.6. It was fun to write and it worked really well. Just<br />
+recently I have to write another quick simple CRM webapp and I decided<br />
+to use Django again, but they current release is 1.9 now and I quickly<br />
+found few differences.</p>
 <ul>
 <li>
-<p>The <code>INSTALLED_APPS</code> now takes <code>AppCofig</code> instead of package name. And there is a new <code>apps.py</code> file for it.</p>
+<p>The <code>INSTALLED_APPS</code> now takes <code>AppCofig</code> instead of package name.<br />
+And there is a new <code>apps.py</code> file for it.</p>
 </li>
 <li>
-<p>There is now <code>makemigration</code> and <code>migrate</code> command to create database table.</p>
+<p>There is now <code>makemigration</code> and <code>migrate</code> command to create<br />
+database table.</p>
 </li>
 </ul>
-</div></p>
+</p>
   			<a href="blog/2016/07/login-to-remote-host-without-password.html"><h1>Login to remote host without password</h1></a>
   			<p>06 July 2016, tags: 
 			    <a href="../tags/linux.html">linux</a> 
@@ -440,59 +300,114 @@ bash&gt; keytool -keystore DemoTrust.jks -storepass DemoTrustKeyStorePassPhrase 
   			<p>05 July 2016, tags: 
 			    <a href="../tags/kotlin.html">kotlin</a> 
   			</p>
-  			<p><div class="listingblock">
-<div class="content">
-<pre>// Filename: conn.kts
+  			<p><pre><code>// Filename: conn.kts
 // Usage: kotlinc -cp /home/zedeng/Downloads/ojdbc7.jar -script conn.kts
 
 import java.sql.*
 
-Class.forName("oracle.jdbc.driver.OracleDriver")
-val conn = DriverManager.getConnection("jdbc:oracle:thin:@myremotehost:1521:MYDB", "system", "mypassword123")
+Class.forName(&quot;oracle.jdbc.driver.OracleDriver&quot;)
+val conn = DriverManager.getConnection(&quot;jdbc:oracle:thin:@myremotehost:1521:MYDB&quot;, &quot;system&quot;, &quot;mypassword123&quot;)
 
-println("Database connection established $conn")
-println("Database Default Catalog: ${conn.getCatalog()}")
-println("Database Default Schema: ${conn.getSchema()}")
+println(&quot;Database connection established $conn&quot;)
+println(&quot;Database Default Catalog: ${conn.getCatalog()}&quot;)
+println(&quot;Database Default Schema: ${conn.getSchema()}&quot;)
 
 val m = conn.getMetaData()
-println("${m.getDatabaseProductName()} ${m.getDatabaseMajorVersion()} ${m.getDatabaseMinorVersion()}")
+println(&quot;${m.getDatabaseProductName()} ${m.getDatabaseMajorVersion()} ${m.getDatabaseMinorVersion()}&quot;)
 
-println("List of Schemas")
+println(&quot;List of Schemas&quot;)
 var rs: ResultSet
 rs = m.getSchemas()
 while(rs.next()) {
-    println("  ${rs.getObject(1)}")
+    println(&quot;  ${rs.getObject(1)}&quot;)
 }
 rs.close()
 
 val listSchemaName = conn.getSchema()
-println("List of Tables for ${listSchemaName}")
+println(&quot;List of Tables for ${listSchemaName}&quot;)
 rs = m.getTables(conn.getCatalog(), listSchemaName, null, null)
 while(rs.next()) {
-    val name = rs.getObject("TABLE_NAME")
-    println("  $name")
+    val name = rs.getObject(&quot;TABLE_NAME&quot;)
+    println(&quot;  $name&quot;)
 }
 rs.close()
 
-println("Execute query:")
+println(&quot;Execute query:&quot;)
 val stmt = conn.createStatement()
-rs = stmt.executeQuery("SELECT 1+1 FROM DUAL")
+rs = stmt.executeQuery(&quot;SELECT 1+1 FROM DUAL&quot;)
 while(rs.next()) {
     val v = rs.getObject(1)
-    println("  1 + 1 from DB=$v")
+    println(&quot;  1 + 1 from DB=$v&quot;)
 }
 rs.close()
 stmt.close()
 
-conn.close()</pre>
-</div>
-</div></p>
+conn.close()
+</code></pre>
+</p>
+  			<a href="blog/2016/06/some-of-my-old-projects.html"><h1>Some of my old projects</h1></a>
+  			<p>30 June 2016  			</p>
+  			<p><p>Here are some of interesting side projects I have worked on in the past</p>
+<h1>Django Developer at SHIFT Ministry</h1>
+<p>Orlando, FL Feb 2013 to Present</p>
+<p>Eventful web application</p>
+<ul>
+<li>Technologies used: Python 2.7, Django 1.6, Bootstrap, JQuery,<br />
+SublimeText, MySQL, Mercurial(hg).</li>
+</ul>
+<p>Simple CRM web application</p>
+<ul>
+<li>Technologies used: Python 3.5, Django 1.9, PyCharm, PostgreSQL,<br />
+Mercurial(hg).</li>
+</ul>
+<h1>Quartz Scheduler</h1>
+<p><a href="http://quartz-scheduler.org">http://quartz-scheduler.org</a></p>
+<p>I am a committer for Quartz Scheduler project, and I often help users on<br />
+their forums. I have fixed many bug issues and implemented new features<br />
+during the quartz 2.1 release. You may find my commits with svn username<br />
+id <code>light5</code> in their repository, or <code>zemian</code> after they moved to<br />
+github.com.</p>
+<h1>MySchedule</h1>
+<p><a href="https://github.com/zemian/myschedule">https://github.com/zemian/myschedule</a></p>
+<p>I have written a UI front-end web application to managing quartz<br />
+schedulers. I am the owner of this project, and I have done build,<br />
+release, and written full documentation on how to use the application.<br />
+There are several thousands of downloads since the first release.</p>
+<h1>TimeMachine Scheduler</h1>
+<p><a href="https://bitbucket.org/zemian/timemachine-scheduler">https://bitbucket.org/zemian/timemachine-scheduler</a> (Inactive!)</p>
+<p>Ive created a Java scheduler project that is fully scalable for<br />
+enterprise use. Its a scheduler application that has easy job<br />
+configuration and flexible scheduling with plugable data storage.</p>
+<h1>SweetScala Web Framework</h1>
+<p><a href="https://code.google.com/archive/p/sweetscala">https://code.google.com/archive/p/sweetscala</a> (Inactive!)</p>
+<p>Sweet is a MVC based web application framework for building dynamic web<br />
+applications. The framework is made with Scala, an Object Oriented and<br />
+Functional programming language that runs on JVM.</p>
+</p>
+  			<a href="blog/2016/06/how-to-install-venv-and-pip-with-a-python-3-4-distribution.html"><h1>How to install venv and pip with a python 3.4 distribution</h1></a>
+  			<p>27 June 2016, tags: 
+			    <a href="../tags/python.html">python</a> 
+  			</p>
+  			<p><p>If you are unfortunate enough to have stuck with a Python 3.4 distribution and you want to setup a virtual env, then likely you will get the ensurepip module not found error:</p>
+<p>bash&gt; python3.4 -m venv mypy<br />
+Error: Command '['/home/zedeng/py-dev/mypy/bin/python3.4', '-Im', 'ensurepip', '--upgrade', '--default-pip']' returned non-zero exit status 1</p>
+<p>I found someone posted a nice solution [1] to this. So first remove the dir first.<br />
+bash&gt; rm -r mypy</p>
+<p>Now do it again like this:<br />
+bash&gt; python3.4 -m venv mypy --without-pip<br />
+bash&gt; . mypy/bin/activate</p>
+<p>mypy&gt; wget <a href="https://bootstrap.pypa.io/get-pip.py">https://bootstrap.pypa.io/get-pip.py</a><br />
+mypy&gt; python get-pip.py<br />
+mypy&gt; pip list</p>
+<p>Now the problem is solved. I believe this problem is gone if you upgrade to Python 3.5</p>
+<p>[1] <a href="http://www.thefourtheye.in/2014/12/Python-venv-problem-with-ensurepip-in-Ubuntu.html">http://www.thefourtheye.in/2014/12/Python-venv-problem-with-ensurepip-in-Ubuntu.html</a></p>
+</p>
 
 	<hr />
 
 	<ul class="pager">
 		<li class="previous"><a href="https://zemian.github.io/7">Previous</a></li>
-		<li>Page: 8/29</li>
+		<li>Page: 8/28</li>
 		<li class="next"><a href="https://zemian.github.io/9">Next</a></li>
 	</ul>
 

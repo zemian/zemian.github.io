@@ -63,62 +63,39 @@
 	    <a href="../../../tags/groovy.html">groovy</a> 
 	</p>
 
-	<p><div class="paragraph">
-<p>The easiest way to get started with Spring is to setup SpringBoot
-with their CLI tool. You can bootstrap a web application with a
-single Groovy script!</p>
-</div>
-<div class="paragraph">
-<p>Download the CLI from <a href="https://docs.spring.io/spring-boot/docs/current/reference/html/getting-started-installing-spring-boot.html#getting-started-installing-the-cli" class="bare">https://docs.spring.io/spring-boot/docs/current/reference/html/getting-started-installing-spring-boot.html#getting-started-installing-the-cli</a></p>
-</div>
-<div class="paragraph">
+	<p><p>The easiest way to get started with Spring is to setup SpringBoot with<br />
+their CLI tool. You can bootstrap a web application with a single Groovy<br />
+script!</p>
+<p>Download the CLI from<br />
+<a href="https://docs.spring.io/spring-boot/docs/current/reference/html/getting-started-installing-spring-boot.html#getting-started-installing-the-cli">https://docs.spring.io/spring-boot/docs/current/reference/html/getting-started-installing-spring-boot.html#getting-started-installing-the-cli</a></p>
 <p>Now unzip and setup PATH to use the <code>spring</code> command.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>unzip spring-boot-cli-2.0.5.RELEASE-bin.zip
-export PATH=`pwd`/spring-2.0.5.RELEASE/bin:$PATH</pre>
-</div>
-</div>
-<div class="paragraph">
+<pre><code>unzip spring-boot-cli-2.0.5.RELEASE-bin.zip
+export PATH=`pwd`/spring-2.0.5.RELEASE/bin:$PATH
+</code></pre>
 <p>Create a simple groovy app script</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>// file: app.groovy
+<pre><code>// file: app.groovy
 @RestController
 class HelloApp {
-    @RequestMapping("/")
+    @RequestMapping(&quot;/&quot;)
     String home() {
-        return "Hello World!"
+        return &quot;Hello World!&quot;
     }
-}</pre>
-</div>
-</div>
-<div class="paragraph">
+}
+</code></pre>
 <p>Now run it and test it with a browser:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>spring run app.groovy
-open http://localhost:8080</pre>
-</div>
-</div>
-<div class="paragraph">
+<pre><code>spring run app.groovy
+open http://localhost:8080
+</code></pre>
 <p>Or you can create a full SpringBoot project with Maven build:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre># Or create a new project
+<pre><code># Or create a new project
 spring init -d=web -x --package-name zemian.springbootstarter.hello hello-spring-boot
 cd hello-spring-boot
 ./mvnw spring-boot:run
-open http://localhost:8080</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>You can learn more from my starter project: <a href="https://github.com/zemian/spring-boot-starter" class="bare">https://github.com/zemian/spring-boot-starter</a></p>
-</div></p>
+open http://localhost:8080
+</code></pre>
+<p>You can learn more from my starter project:<br />
+<a href="https://github.com/zemian/spring-boot-starter">https://github.com/zemian/spring-boot-starter</a></p>
+</p>
 
 	<hr />
 

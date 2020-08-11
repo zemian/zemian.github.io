@@ -63,12 +63,10 @@
 	    <a href="../../../tags/jdbc.html">jdbc</a> 
 	</p>
 
-	<p><div class="paragraph">
-<p>With Java8, we can create simple and thin Jdbc service that&#8217;s productive and easy to use. This service implementation is inspired by Spring&#8217;s JdbcTemplate, but much lighter and has zero dependency.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>package zemian.jdbc;
+	<p><p>With Java8, we can create simple and thin Jdbc service that’s productive<br />
+and easy to use. This service implementation is inspired by Spring’s<br />
+JdbcTemplate, but much lighter and has zero dependency.</p>
+<pre><code>package zemian.jdbc;
 
 import javax.sql.DataSource;
 import java.io.IOException;
@@ -112,27 +110,27 @@ public class Jdbc {
         try (InputStream ins = propsUrl.openStream()) {
             props.load(ins);
         } catch (IOException e) {
-            throw new RuntimeException("Unable to open properties from resource: " + propsResourceName, e);
+            throw new RuntimeException(&quot;Unable to open properties from resource: &quot; + propsResourceName, e);
         }
         withJdbc(props, task);
     }
 
     public static void withJdbc(String url, String user, String password, JdbcAction task) {
         Properties props = new Properties();
-        props.setProperty("url", url);
-        props.setProperty("user", user);
-        props.setProperty("password", password);
+        props.setProperty(&quot;url&quot;, url);
+        props.setProperty(&quot;user&quot;, user);
+        props.setProperty(&quot;password&quot;, password);
         withJdbc(props, task);
     }
 
     public static void withJdbc(Properties jdbcProps, JdbcAction task) {
-        try (Connection conn = DriverManager.getConnection(jdbcProps.getProperty("url"), jdbcProps)) {
+        try (Connection conn = DriverManager.getConnection(jdbcProps.getProperty(&quot;url&quot;), jdbcProps)) {
             Jdbc jdbc = new Jdbc(conn);
             task.runJdbc(jdbc);
         } catch (Exception e) {
             if (e instanceof RuntimeException)
                 throw (RuntimeException) e;
-            throw new RuntimeException("Failed to process Jdbc", e);
+            throw new RuntimeException(&quot;Failed to process Jdbc&quot;, e);
         }
     }
 
@@ -193,7 +191,7 @@ public class Jdbc {
         }
         @Override
         public String toString() {
-            return "Record" + super.toString();
+            return &quot;Record&quot; + super.toString();
         }
     }
 
@@ -223,7 +221,7 @@ public class Jdbc {
         } catch (Exception e) {
             if (e instanceof RuntimeException)
                 throw (RuntimeException) e;
-            throw new RuntimeException("Failed to process DB conn", e);
+            throw new RuntimeException(&quot;Failed to process DB conn&quot;, e);
         }
     }
 
@@ -249,7 +247,7 @@ public class Jdbc {
                     }
                 }
             }
-            throw new RuntimeException("There is no unique record from query.");
+            throw new RuntimeException(&quot;There is no unique record from query.&quot;);
         });
     }
 
@@ -299,9 +297,9 @@ public class Jdbc {
     }
 
     public int insert(String table, Record record, List&lt;String&gt; insertFields) {
-        String fields = insertFields.stream().collect(Collectors.joining(", "));
-        String qMarks = insertFields.stream().map(e -&gt; "?").collect(Collectors.joining(", "));
-        String sql = "INSERT INTO " + table + "(" + fields + ") VALUES (" + qMarks + ")";
+        String fields = insertFields.stream().collect(Collectors.joining(&quot;, &quot;));
+        String qMarks = insertFields.stream().map(e -&gt; &quot;?&quot;).collect(Collectors.joining(&quot;, &quot;));
+        String sql = &quot;INSERT INTO &quot; + table + &quot;(&quot; + fields + &quot;) VALUES (&quot; + qMarks + &quot;)&quot;;
         List&lt;Object&gt; params = insertFields.stream().map(e -&gt; record.get(e)).collect(Collectors.toList());
         return withConn(conn -&gt; {
             try (PreparedStatement st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -331,9 +329,9 @@ public class Jdbc {
     }
 
     public int update(String table, Record record, List&lt;String&gt; updateFields, List&lt;String&gt; keyFields) {
-        String updateFieldsNames = updateFields.stream().map(e -&gt; e + " = ?").collect(Collectors.joining(", "));
-        String keyFieldsNames = keyFields.stream().map(e -&gt; e + " = ?").collect(Collectors.joining(", "));
-        String sql = "UPDATE " + table + " SET " + updateFieldsNames + " WHERE " + keyFieldsNames;
+        String updateFieldsNames = updateFields.stream().map(e -&gt; e + &quot; = ?&quot;).collect(Collectors.joining(&quot;, &quot;));
+        String keyFieldsNames = keyFields.stream().map(e -&gt; e + &quot; = ?&quot;).collect(Collectors.joining(&quot;, &quot;));
+        String sql = &quot;UPDATE &quot; + table + &quot; SET &quot; + updateFieldsNames + &quot; WHERE &quot; + keyFieldsNames;
         List&lt;Object&gt; params = updateFields.stream().map(e -&gt; record.get(e)).collect(Collectors.toList());
         for (String key : keyFields)
             params.add(record.get(key));
@@ -342,9 +340,9 @@ public class Jdbc {
 
     // Test Jdbc with Postgres DB
     public static void main(String[] args) {
-        String url = System.getProperty("url", "jdbc:postgresql://localhost:5432/postgres");
-        String user = System.getProperty("user", "postgres");
-        String password = System.getProperty("password", "");
+        String url = System.getProperty(&quot;url&quot;, &quot;jdbc:postgresql://localhost:5432/postgres&quot;);
+        String user = System.getProperty(&quot;user&quot;, &quot;postgres&quot;);
+        String password = System.getProperty(&quot;password&quot;, &quot;&quot;);
 
         Jdbc.withJdbc(url, user, password, jdbc -&gt; {
             jdbc.withConnNoRet(conn -&gt; System.out.println(conn));
@@ -352,45 +350,45 @@ public class Jdbc {
 
         Jdbc.withJdbc(url, user, password, jdbc -&gt; {
             // Execute
-            jdbc.execute("create temp table test(id varchar(10) primary key, seq serial, amount numeric(19,4))");
-            int uc = jdbc.execute("insert into test(id, amount) values(?, ?)", "T01", 0.01);
-            System.out.println("test record inserted: uc=" + uc);
+            jdbc.execute(&quot;create temp table test(id varchar(10) primary key, seq serial, amount numeric(19,4))&quot;);
+            int uc = jdbc.execute(&quot;insert into test(id, amount) values(?, ?)&quot;, &quot;T01&quot;, 0.01);
+            System.out.println(&quot;test record inserted: uc=&quot; + uc);
 
-            Record record = jdbc.getRecord("select * from test where id = ?", "T01");
+            Record record = jdbc.getRecord(&quot;select * from test where id = ?&quot;, &quot;T01&quot;);
             System.out.println(record);
 
             // Get
-            Integer seq = jdbc.get("select seq from test where id = ?", "T01");
-            System.out.println("seq = " + seq);
+            Integer seq = jdbc.get(&quot;select seq from test where id = ?&quot;, &quot;T01&quot;);
+            System.out.println(&quot;seq = &quot; + seq);
 
-            java.math.BigDecimal amount = jdbc.get("select amount from test where id = ?", "T01");
-            System.out.println("amount = " + amount);
+            java.math.BigDecimal amount = jdbc.get(&quot;select amount from test where id = ?&quot;, &quot;T01&quot;);
+            System.out.println(&quot;amount = &quot; + amount);
 
             // Update
-            record.put("amount", amount.doubleValue() + 0.20);
-            System.out.println("amount to be updated: " + record.getValue("amount"));
-            uc = jdbc.update("test", record, "id");
-            System.out.println("amount udpated. uc=" + uc);
+            record.put(&quot;amount&quot;, amount.doubleValue() + 0.20);
+            System.out.println(&quot;amount to be updated: &quot; + record.getValue(&quot;amount&quot;));
+            uc = jdbc.update(&quot;test&quot;, record, &quot;id&quot;);
+            System.out.println(&quot;amount udpated. uc=&quot; + uc);
 
-            amount = jdbc.get("select amount from test where id = ?", "T01");
-            System.out.println("after update from db: amount = " + amount);
+            amount = jdbc.get(&quot;select amount from test where id = ?&quot;, &quot;T01&quot;);
+            System.out.println(&quot;after update from db: amount = &quot; + amount);
 
             // Insert
-            record = new Record("id", "T02", "amount", 0.30);
-            jdbc.insert("test", record);
-            int newSeq = (Integer) record.get("seq");
-            System.out.println("generated column seq=" + newSeq);
-            Record record2 = jdbc.getRecord("select * from test where id = ?", "T02");
+            record = new Record(&quot;id&quot;, &quot;T02&quot;, &quot;amount&quot;, 0.30);
+            jdbc.insert(&quot;test&quot;, record);
+            int newSeq = (Integer) record.get(&quot;seq&quot;);
+            System.out.println(&quot;generated column seq=&quot; + newSeq);
+            Record record2 = jdbc.getRecord(&quot;select * from test where id = ?&quot;, &quot;T02&quot;);
             System.out.println(record2);
 
             // Query
-            List&lt;Record&gt; records = jdbc.query("select * from test order by id");
+            List&lt;Record&gt; records = jdbc.query(&quot;select * from test order by id&quot;);
             System.out.println(records);
         });
     }
-}</pre>
-</div>
-</div></p>
+}
+</code></pre>
+</p>
 
 	<hr />
 

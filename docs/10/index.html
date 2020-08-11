@@ -53,170 +53,14 @@
       </div>
     </div>
     <div class="container">
-  			<a href="blog/2016/06/how-to-setup-hg-repository-on-a-remote-server.html"><h1>How to setup hg repository on a remote server</h1></a>
-  			<p>14 June 2016, tags: 
-			    <a href="../tags/hg.html">hg</a> 
-  			</p>
-  			<p><p>I love using mercurial source control! It's easy to use and it works as I expected everytime I need to do something with my source repository. Here is how you can quickly create a remote repository to push your existing project into it. (use this as backup of your project or share among your team etc)</p>
-<ol>
-<li>
-<p>SSH into your remote server and create an empty repository.<br />
-ssh remote_hostname<br />
-bash&gt; cd $HOME<br />
-bash&gt; mkdir -p hg-repos/myproject<br />
-bash&gt; cd hg-repos/myproject<br />
-bash&gt; hg init</p>
-</li>
-<li>
-<p>Back on your local machine and in your existing hg project, edit the .hg/hgrc file with the following:</p>
-</li>
-</ol>
-<p>[paths]<br />
-default=<a href="ssh://remote_hostname/hg-repos/myproject">ssh://remote_hostname/hg-repos/myproject</a><br />
-[ui]<br />
-remotecmd=/usr/local/bin/hg</p>
-<p>That's it! You don't even need hg server running in remote host to make this work! Now you may perofrm &quot;hg push&quot; command inside your local project to sync up to remote host</p>
-<p>NOTE 1: This setup rely on your SSH into remote host. If you want to avoid user password promt everytime you perform &quot;hg push&quot;, then setup Key-Based SSH login.</p>
-<p>NOTE 2: You only need &quot;remotecmd&quot; part if your remote_hostname does not have a standard hg installed. Then you can specified your custom location here.</p>
-<p>NOTE 3: If you want to use abolute path for &quot;default&quot; path instead, then you can use double slash after the &quot;remote_hostname&quot;. Else the single slash is relative to your $HOME directory.</p>
-</p>
-  			<a href="blog/2015/11/java-jdbc-test-for-utf8-and-default-value-for-timestamp.html"><h1>Java Jdbc Test for UTF8 and Default Value for TIMESTAMP</h1></a>
-  			<p>02 November 2015, tags: 
-			    <a href="../tags/java.html">java</a> 
-
-			    <a href="../tags/jdbc.html">jdbc</a> 
-  			</p>
-  			<p><p>Just a quick MySQL test on how to use UTF8 encoding with JDBC connection string. Also a test on how to set TIMESTAMP default values.</p>
-<pre><code>package zemian.jdbc;
-
-import org.junit.Test;
-
-import java.sql.*;
-import java.util.*;
-import java.util.Date;
-
-/**
-
- -- drop table ztest_issues;
- CREATE TABLE ztest_issues(
- id INT NOT NULL AUTO_INCREMENT PRIMARY KEY
- , title VARCHAR(64) NOT NULL
- , summary TEXT NULL
- , priority INT NOT NULL DEFAULT 5
- , cdate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
- );
-
- INSERT INTO ztest_issues(title) VALUES('test');
- INSERT INTO ztest_issues(title, summary) VALUES('test2', 'Just a test');
- INSERT INTO ztest_issues(title, summary, priority) VALUES('test2', 'Just a test', 1);
- INSERT INTO ztest_issues(title, summary, priority, cdate) VALUES('test2', 'Just a test', 1, '2010-12-31 08:00:00');
-
- --INSERT INTO ztest_issues(title, summary) VALUES('locale test1', LOAD_FILE('C:/data/tmp/test.xml'));
- --INSERT INTO ztest_issues(title, summary) VALUES('locale test2', LOAD_FILE('C:/data/tmp/test2.xml'));
- --INSERT INTO ztest_issues(title, summary) VALUES('locale test3', LOAD_FILE('C:/data/tmp/test3.xml'));
-
- SELECT * FROM ztest_issues;
-
- NOTE:
- CURRENT_TIMESTAMP is version specific and is now allowed for DATETIME columns as of version 5.6 http://dev.mysql.com/doc/refman/5.6/en/timestamp-initialization.html
-
- For 5.6 &lt;, use TIMESTAMP for cdate field instead.
-
- cdate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
- cdate DATETIME NULL
-
- NOTE2:
- cdate DATETIME NOT NULL DEFAULT 0
-
- If you were to use default to ZERO, then you would need this properties in conn string. Else you will fail to get ZERO date value into Java.
-
- You need to tell the JDBC driver to convert them to NULL. This is done by passing a connection property name zeroDateTimeBehavior with the value convertToNull
-
- For more details see the manual: http://dev.mysql.com/doc/refman/4.1/en/connector-j-installing-upgrading.html
-
- */
-public class ZtestIssuesJdbcTest {
-//    String url = &quot;jdbc:mysql://localhost/test&quot;;
-//    String url = &quot;jdbc:mysql://localhost/test?zeroDateTimeBehavior=convertToNull&quot;;
-    String url = &quot;jdbc:mysql://localhost/test?useUnicode=true&amp;characterEncoding=UTF-8&amp;connectionCollation=utf8_general_ci&amp;zeroDateTimeBehavior=convertToNull&quot;;
-    String username = &quot;test&quot;;
-    String password = &quot;test123&quot;;
-
-    @Test
-    public void testShowTableLocale() throws Exception {
-        try (Connection conn = DriverManager.getConnection(url, username, password)) {
-            String sql = &quot;SHOW VARIABLES LIKE 'char%'&quot;;
-            System.out.println(&quot;Sql:&quot; + sql);
-            Statement sm = conn.createStatement();
-            ResultSet rs = sm.executeQuery(sql);
-            while (rs.next()) {
-                System.out.printf(&quot;%s\t%s\n&quot;, rs.getObject(1), rs.getObject(2));
-            }
-
-            sql = &quot;SHOW CREATE TABLE ztest_issues&quot;;
-            System.out.println(&quot;Sql:&quot; + sql);
-            sm = conn.createStatement();
-            rs = sm.executeQuery(sql);
-            while (rs.next()) {
-                System.out.printf(&quot;%s\t%s\n&quot;, rs.getObject(1), rs.getObject(2));
-            }
-        }
-    }
-
-    @Test
-    public void testQuery() throws Exception {
-        try (Connection conn = DriverManager.getConnection(url, username, password)) {
-            String sql = &quot;SELECT id, cdate, title, summary FROM ztest_issues&quot;;
-            System.out.println(&quot;Sql:&quot; + sql);
-            Statement sm = conn.createStatement();
-            ResultSet rs = sm.executeQuery(sql);
-            while (rs.next()) {
-                System.out.printf(&quot;%d\t%s\t%s\t%s\n&quot;, rs.getObject(1), rs.getObject(2), rs.getObject(3), rs.getObject(4));
-            }
-        }
-    }
-
-    @Test
-    public void testInsert() throws Exception {
-        try (Connection conn = DriverManager.getConnection(url, username, password)) {
-            String sql = &quot;INSERT INTO ztest_issues(title, summary, cdate) VALUES(?, ?, ?)&quot;;
-            System.out.println(&quot;Sql: &quot; + sql);
-            PreparedStatement ps = conn.prepareStatement(sql);
-
-            String testId = &quot;&quot; + System.currentTimeMillis();
-
-            ps.setObject(1, &quot;English Locale &quot; + testId);
-            ps.setObject(2, &quot;Just a test&quot;);
-            ps.setObject(3, new Date());
-            int result = ps.executeUpdate();
-            System.out.println(&quot;Insert Result: &quot; + result);
-
-            ps.setObject(1, &quot;Chinese Locale &quot; + testId);
-            ps.setObject(2, &quot;&amp;#21482;&amp;#26159;&amp;#19968;&amp;#20491;&amp;#28204;&amp;#35430;&quot;);
-            ps.setObject(3, new Date());
-            result = ps.executeUpdate();
-            System.out.println(&quot;Insert Result: &quot; + result);
-
-            ps.setObject(1, &quot;Spanish Locale &quot; + testId);
-            ps.setObject(2, &quot;Sólo una prueba&quot;);
-            ps.setObject(3, new Date());
-            result = ps.executeUpdate();
-            System.out.println(&quot;Insert Result: &quot; + result);
-        }
-    }
-}
-</code></pre>
-</p>
   			<a href="blog/2015/11/conemu-a-terminal-windows-or-tab-manager.html"><h1>ConEmu - a Terminal Windows or Tab Manager</h1></a>
   			<p>01 November 2015, tags: 
 			    <a href="../tags/shell.html">shell</a> 
   			</p>
-  			<p><div class="paragraph">
-<p>Just learned about ConEmu project at <a href="https://conemu.github.io" class="bare">https://conemu.github.io</a> and it&#8217;s pretty awesome!</p>
-</div>
-<div class="paragraph">
+  			<p><p>Just learned about ConEmu project at <a href="https://conemu.github.io">https://conemu.github.io</a> and it’s<br />
+pretty awesome!</p>
 <p>Thanks Onur for the tips!</p>
-</div></p>
+</p>
   			<a href="blog/2015/10/how-to-view-unix-man-pages-with-browser.html"><h1>How to view Unix man pages with browser</h1></a>
   			<p>24 October 2015, tags: 
 			    <a href="../tags/mac.html">mac</a> 
@@ -356,9 +200,12 @@ bash&gt; source mypy3/bin/activate<br />
   			<p>10 October 2015, tags: 
 			    <a href="../tags/mac.html">mac</a> 
   			</p>
-  			<p><div class="paragraph">
-<p>For odd reason that I don&#8217;t see scrollbar shows up on Finder in MacBook Air when I have a long list of files. Can&#8217;t scroll down with my trackpad, but I can do it with <code>Fn + Down Arrow</code> key though. To fix this, I have to go into System Preference, General and set "Show scroll bar" to "Always".</p>
-</div></p>
+  			<p><p>For odd reason that I don’t see scrollbar shows up on Finder in MacBook<br />
+Air when I have a long list of files. Can’t scroll down with my<br />
+trackpad, but I can do it with <code>Fn + Down Arrow</code> key though. To fix<br />
+this, I have to go into System Preference, General and set &quot;Show scroll<br />
+bar&quot; to &quot;Always&quot;.</p>
+</p>
   			<a href="blog/2015/10/checking-mysql-database-connection-with-mysql-connector-python.html"><h1>Checking MySQL database connection with mysql-connector-python</h1></a>
   			<p>09 October 2015, tags: 
 			    <a href="../tags/python.html">python</a> 
@@ -375,12 +222,94 @@ cur.execute('select 1+1')<br />
 for row in cur:<br />
 print(row)</p>
 </p>
+  			<a href="blog/2015/10/setup-mysql-datasource-on-wls.html"><h1>Setup MySQL DataSource on WLS</h1></a>
+  			<p>04 October 2015, tags: 
+			    <a href="../tags/weblogic.html">weblogic</a> 
+
+			    <a href="../tags/mysql.html">mysql</a> 
+  			</p>
+  			<p><p>Here is a WLST script to setup MySQL DataSource in WebLogic server after you have created a domain. The script will also assign this DataSource to one or more servers you pass in at the end of arguments.</p>
+<h1>Update an existing domain to setup a DataSource and assign it to servers</h1>
+<h1>Example</h1>
+<h1>wlst.cmd setupDataSource.py C:\data\wls11g_domains\dev MYTESTDB jdbc/MYTESTDB com.mysql.jdbc.Driver jdbc:<a href="mysql://localhost/mytestdb">mysql://localhost/mytestdb</a> test test123 AdminServer</h1>
+<p>import os, sys, os.path<br />
+(domain_home, ds_name, jndi_name, driver_name, url, user, password) = sys.argv[1:8]<br />
+servers = sys.argv[8:]</p>
+<p>domain_home = os.path.abspath(domain_home)</p>
+<p>readDomain(domain_home)</p>
+<p>print(&quot;Setting up WLS DataSource: %s&quot; % ds_name)<br />
+create(ds_name, 'JDBCSystemResource')<br />
+cd('/JDBCSystemResource/%s/JdbcResource/%s' %(ds_name, ds_name))<br />
+create('myJdbcDriverParams','JDBCDriverParams')<br />
+cd('JDBCDriverParams/NO_NAME_0')<br />
+set('DriverName',driver_name)<br />
+set('URL', url)<br />
+set('PasswordEncrypted', password)<br />
+set('UseXADataSourceInterface', 'false')<br />
+create('myProps','Properties')<br />
+cd('Properties/NO_NAME_0')<br />
+create('user', 'Property')<br />
+create('characterEncoding', 'Property')<br />
+create('connectionCollation', 'Property')<br />
+create('useUnicode', 'Property')<br />
+cd('Property/user')<br />
+cmo.setValue(user)<br />
+cd('../characterEncoding')<br />
+cmo.setValue('utf-8')<br />
+cd('../connectionCollation')<br />
+cmo.setValue('utf8_general_ci')<br />
+cd('../useUnicode')<br />
+cmo.setValue('true')</p>
+<p>cd('/JDBCSystemResource/%s/JdbcResource/%s' %(ds_name, ds_name))<br />
+create('myJdbcDataSourceParams','JDBCDataSourceParams')<br />
+cd('JDBCDataSourceParams/NO_NAME_0')<br />
+set('JNDIName', java.lang.String(jndi_name))</p>
+<p>cd('/')<br />
+for server in servers:<br />
+print(&quot;Assigning DS to server: %s&quot; % server)<br />
+assign('JDBCSystemResource', ds_name, 'Target', server)</p>
+<p>updateDomain()<br />
+exit()</p>
+</p>
+  			<a href="blog/2015/10/creating-new-weblogic-domain-using-wlst-script.html"><h1>Creating new WebLogic domain using WLST script</h1></a>
+  			<p>02 October 2015, tags: 
+			    <a href="../tags/weblogic.html">weblogic</a> 
+  			</p>
+  			<p><p>Here is how to creating new WebLogic domain using WLST script without starting up a WebLogic server instance. The default AdminServer console login username is 'weblogic', and the script allow you to change its password and a port number for the AdminServer instance.</p>
+<h1>Usage: wlst.cmd createDomain.py &lt;domain_home&gt; <port> <password></h1>
+<h1>Example:</h1>
+<h1>cd D:\apps\wls1036_dev\wlserver\common\bin</h1>
+<h1>wlst.cmd scripts\createDomain.py C:\data\wls11g_domains\dev 7001 weblogic1</h1>
+<p>import os, sys, os.path<br />
+domain_home, port_s, password = sys.argv[1:]</p>
+<p>port = int(port_s)<br />
+domain_home = os.path.abspath(domain_home)<br />
+domain_name = os.path.basename(os.path.normpath(domain_home))<br />
+template = &quot;%s/wlserver/common/templates/domains/wls.jar&quot; % os.environ['MW_HOME']</p>
+<p>print(&quot;Creating WLS domain: %s&quot; % domain_name)</p>
+<h1>MW_HOME should be auto set by wlst.cmd script</h1>
+<p>readTemplate(template)</p>
+<h1>Set domain name</h1>
+<p>set('Name', domain_name)</p>
+<h1>Set AdminServer port</h1>
+<p>cd('Servers/AdminServer')<br />
+set('ListenAddress','')<br />
+set('ListenPort', port)</p>
+<h1>Set weblogic password</h1>
+<p>cd('/Security/%s/User/weblogic' % domain_name)<br />
+cmo.setPassword(password)</p>
+<h1>Write domain</h1>
+<h1>setOption('OverwriteDomain', 'true')</h1>
+<p>writeDomain(domain_home)<br />
+closeTemplate()<br />
+exit()</p>
+</p>
 
 	<hr />
 
 	<ul class="pager">
 		<li class="previous"><a href="https://zemian.github.io/9">Previous</a></li>
-		<li>Page: 10/29</li>
+		<li>Page: 10/28</li>
 		<li class="next"><a href="https://zemian.github.io/11">Next</a></li>
 	</ul>
 

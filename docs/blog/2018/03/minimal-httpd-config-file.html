@@ -61,14 +61,12 @@
 	    <a href="../../../tags/httpd.html">httpd</a> 
 	</p>
 
-	<p><div class="paragraph">
-<p>If you are looking for small set of httpd config file, here is one I come up with based on original <a href="https://wiki.apache.org/httpd/Minimal_Config">httpd wiki</a>:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre># Apache httpd v2.4 minimal configuration
+	<p><p>If you are looking for small set of httpd config file, here is one I<br />
+come up with based on original <a href="https://wiki.apache.org/httpd/Minimal_Config">httpd<br />
+wiki</a>:</p>
+<pre><code># Apache httpd v2.4 minimal configuration
 ServerName localhost
-ServerRoot "/usr/local/apache2"
+ServerRoot &quot;/usr/local/apache2&quot;
 Listen 80
 
 User daemon
@@ -93,11 +91,11 @@ LoadModule filter_module modules/mod_filter.so
 
 DirectoryIndex index.html
 ErrorLog logs/error.log
-LogFormat "%h %l %u %t \"%r\" %&gt;s %b" common
+LogFormat &quot;%h %l %u %t \&quot;%r\&quot; %&gt;s %b&quot; common
 CustomLog logs/access.log common
 
-DocumentRoot "htdocs"
-&lt;Directory "htdocs"&gt;
+DocumentRoot &quot;htdocs&quot;
+&lt;Directory &quot;htdocs&quot;&gt;
   Options Indexes FollowSymLinks
   AllowOverride None
   Require all granted
@@ -105,14 +103,14 @@ DocumentRoot "htdocs"
 
 # Enable CGI support
 LoadModule cgid_module modules/mod_cgid.so
-ScriptAlias /cgi-bin/ "cgi-bin/"
-&lt;Directory "cgi-bin"&gt;
+ScriptAlias /cgi-bin/ &quot;cgi-bin/&quot;
+&lt;Directory &quot;cgi-bin&quot;&gt;
     AllowOverride None
     Options None
     Require all granted
-&lt;/Directory&gt;</pre>
-</div>
-</div></p>
+&lt;/Directory&gt;
+</code></pre>
+</p>
 
 	<hr />
 

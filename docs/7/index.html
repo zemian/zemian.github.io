@@ -53,248 +53,79 @@
       </div>
     </div>
     <div class="container">
-  			<a href="blog/2018/02/customizing-httpd-conf-with-special-request-header-and-filter.html"><h1>Customizing httpd conf with special request header and filter</h1></a>
-  			<p>26 February 2018, tags: 
-			    <a href="../tags/httpd.html">httpd</a> 
-
-			    <a href="../tags/proxy.html">proxy</a> 
-
-			    <a href="../tags/filter.html">filter</a> 
-  			</p>
-  			<p><div class="sect1">
-<h2 id="_how_to_setup_httpd_reverse_proxy_for_tomcat">How to setup httpd reverse proxy for Tomcat</h2>
-<div class="sectionbody">
-<div class="literalblock">
-<div class="title">Enable modules</div>
-<div class="content">
-<pre># NOTE: If you are using Cygwin, these module requires cygserver to run!
-#       else you get the following error:
-#
-#[Mon Feb 26 09:26:50.308620 2018] [proxy:crit] [pid 7564] (88)Function not implemented: AH02478: #failed to create proxy mutex
-#AH00016: Configuration Failed
-#
-LoadModule proxy_module modules/mod_proxy.so
-LoadModule proxy_http_module modules/mod_proxy_http.so</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="title">Setup reverse proxy</div>
-<div class="content">
-<pre># Reverse Proxy Setup
-# NOTE: The ending slash '/' is important!
-&lt;IfModule proxy_module&gt;
-ProxyPass "/"  "http://localhost:8080/"
-ProxyPassReverse "/"  "http://localhost/"
-&lt;/IfModule&gt;</pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_how_to_add_custom_headers_to_requests">How to add custom headers to requests</h2>
-<div class="sectionbody">
-<div class="literalblock">
-<div class="title">Enable modules</div>
-<div class="content">
-<pre>LoadModule headers_module modules/mod_headers.so</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="title">Add headers to all requests</div>
-<div class="content">
-<pre>&lt;Location "/"&gt;
-	# Add custom headers
-	RequestHeader set appuser "test"
-	# Or add custom headers based on env variables exist
-	RequestHeader set appuser2 "%{APPUSER}e" env=APPUSER
-&lt;/Location&gt;</pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_how_to_setup_httpd_filter">How to setup Httpd Filter</h2>
-<div class="sectionbody">
-<div class="literalblock">
-<div class="title">Enable modules</div>
-<div class="content">
-<pre>LoadModule ext_filter_module modules/mod_ext_filter.so
-LoadModule request_module modules/mod_request.so</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="title">Windows Example</div>
-<div class="content">
-<pre># Setup external script to run request filter
-ExtFilterDefine my-filter mode=input \
-	cmd="C:/Python36/pythonw.exe C:/Apache24/cgi-bin/my-filter.py"
-&lt;Directory  "cgi-bin"&gt;
-	SetInputFilter my-filter
-&lt;/Directory&gt;</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="title">Cygwin Example</div>
-<div class="content">
-<pre># Setup external script to run request filter
-ExtFilterDefine my-filter mode=input \
-	cmd="/usr/bin/python3 /srv/www/cgi-bin/my-filter/my-filter.py"
-&lt;Directory  "/srv/www/cgi-bin/my-filter"&gt;
-	SetInputFilter my-filter
-&lt;/Directory&gt;</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="title">File my-filter.py</div>
-<div class="content">
-<pre>#!/usr/bin/python3
-import datetime
-log = '/var/log/httpd/my-filter.log'
-with open(log, 'a') as file:
-	file.write(f'{datetime.datetime.now()} hello filter\n')</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="title">File my-filter2.py</div>
-<div class="content">
-<pre>#!/usr/bin/python3
-import datetime, sys, os
-log = '/var/log/httpd/my-filter.log'
-with open(log, 'a') as file:
-	file.write(f'== {datetime.datetime.now()} hello filter\n')
-	file.write(f'arguments: {sys.argv}\n')
-	file.write(f'STDOIUT:\n')
-	for line in sys.stdin:
-		file.write(f'{line}\n')
-	file.write(f'os.environments:\n')
-	for k,v in os.environ.items():
-			file.write(f'os.env: {k} = {v}\n')</pre>
-</div>
-</div>
-</div>
-</div></p>
-  			<a href="blog/2018/02/how-to-turn-off-intellij-autoformat-on-a-block-of-code.html"><h1>How to turn off IntelliJ autoformat on a block of code</h1></a>
-  			<p>23 February 2018, tags: 
-			    <a href="../tags/intellij.html">intellij</a> 
-  			</p>
-  			<p><div class="paragraph">
-<p>When doing bug fix on old codes, you want least possible change set as possible. The IntelliJ IDE by default will auto reformat your code upon a <code>}</code> character you type. (Example: when you add a try/finally block to an existing block of code, then it will reformat that block of code base on IDE&#8217;s Code Style you configured.) If you have legacy code, they&#8217;re most likely formatted differently than your IDE style, and it will make unnessary changes. This is not what you want during bug fix. So to turn it off, you can do this:</p>
-</div>
-<div class="paragraph">
-<p>For, IntelliJ 2017.3, go to Menu <code>File &gt; Settings &gt; Editor &gt; General &gt; Smark Keys</code>, then uncheck <code>Reformat block  on typing '}'</code> item.</p>
-</div></p>
   			<a href="blog/2018/02/starting-postgres-server-on-cygwin.html"><h1>Starting postgres server on Cygwin</h1></a>
   			<p>20 February 2018, tags: 
 			    <a href="../tags/postgres.html">postgres</a> 
 
 			    <a href="../tags/cygwin.html">cygwin</a> 
   			</p>
-  			<p><div class="paragraph">
-<p>To run postgres database server on Cygwin, you need first run the <code>cygserver</code>. If not, you will get error similar to this:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>export PGDATA=/cygdrive/c/Users/zemian/my-pgdata
+  			<p><p>To run postgres database server on Cygwin, you need first run the<br />
+<code>cygserver</code>. If not, you will get error similar to this:</p>
+<pre><code>export PGDATA=/cygdrive/c/Users/zemian/my-pgdata
 pg_ctl init
 ...
 running bootstrap script ... FATAL:  could not create shared memory segment: Function not implemented
 DETAIL:  Failed system call was shmget(key=1, size=56, 03600).
 child process exited with exit code 1
-initdb: removing contents of data directory "/cygdrive/c/Users/zemian/my-pgdata"
-pg_ctl: database system initialization failed</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>To resolve this, you first start <code>cygserver</code>. Even if you do not have admin rights to install as Windows service, you can still run it per shell session. This is needed for <strong>shared memory</strong> need.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre># For the first time, you need config
+initdb: removing contents of data directory &quot;/cygdrive/c/Users/zemian/my-pgdata&quot;
+pg_ctl: database system initialization failed
+</code></pre>
+<p>To resolve this, you first start <code>cygserver</code>. Even if you do not have<br />
+admin rights to install as Windows service, you can still run it per<br />
+shell session. This is needed for <strong>shared memory</strong> need.</p>
+<pre><code># For the first time, you need config
 /usr/bin/cygserver-config
 
 # Now run it
-cygserver &amp;</pre>
-</div>
-</div>
-<div class="paragraph">
+cygserver &amp;
+</code></pre>
 <p>After above then you can start postgres</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>pg_ctrl init
-pg_ctrl start</pre>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_postgres_windows_installation">Postgres Windows Installation</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>The official download is provided by EnterpriseDB (EDB)
-You can get a zip package from:</p>
-</div>
-<div class="paragraph">
-<p><a href="https://www.enterprisedb.com/download-postgresql-binaries" class="bare">https://www.enterprisedb.com/download-postgresql-binaries</a></p>
-</div>
-<div class="paragraph">
+<pre><code>pg_ctrl init
+pg_ctrl start
+</code></pre>
+<h1>Postgres Windows Installation</h1>
+<p>The official download is provided by EnterpriseDB (EDB) You can get a<br />
+zip package from:</p>
+<p><a href="https://www.enterprisedb.com/download-postgresql-binaries">https://www.enterprisedb.com/download-postgresql-binaries</a></p>
 <p>To install, just unzip it.</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>mkdir $HOME/apps/postgresql-10.3-2
+<pre><code>mkdir $HOME/apps/postgresql-10.3-2
 cd $HOME/apps/postgresql-10.3-2
-unzip postgresql-10.3-2-windows-x64-binaries.zip</pre>
-</div>
-</div>
-<div class="paragraph">
+unzip postgresql-10.3-2-windows-x64-binaries.zip
+</code></pre>
 <p>Server can be started manually like this in cmd.exe prompt:</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>bin\pg_ctl -D data -o "--encoding=UTF8 --auth=trust" initdb
+<pre><code>bin\pg_ctl -D data -o &quot;--encoding=UTF8 --auth=trust&quot; initdb
 mkdir logs
-bin\pg_ctl -D data -l logs\postgres.log start</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>bin\createdb %USERNAME%
+bin\pg_ctl -D data -l logs\postgres.log start
+
+bin\createdb %USERNAME%
 chcp 1252
-bin\psql</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>zemian=# select version();
+bin\psql
+
+zemian=# select version();
                           version
 ------------------------------------------------------------
  PostgreSQL 10.3, compiled by Visual C++ build 1800, 64-bit
-(1 row)</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>By default inidb will create a "postgres" database, but
-user is your Windows login name, and it will not match. It&#8217;s
-more convient to create a database that match your username,
-and use that as default.</p>
-</div>
-<div class="paragraph">
-<p>You should be careful with "--auth=trust", which can get
-you started quickly but not very secure.</p>
-</div>
-</div>
-</div></p>
+(1 row)
+</code></pre>
+<p>By default inidb will create a &quot;postgres&quot; database, but user is your<br />
+Windows login name, and it will not match. It’s more convient to create<br />
+a database that match your username, and use that as default.</p>
+<p>You should be careful with &quot;--auth=trust&quot;, which can get you started<br />
+quickly but not very secure.</p>
+</p>
   			<a href="blog/2018/02/intellij-highlight-out-println-in-jsp-as-red-error.html"><h1>IntelliJ highlight &quot;out.println&quot; in JSP as red error</h1></a>
   			<p>17 February 2018, tags: 
 			    <a href="../tags/intellij.html">intellij</a> 
 
 			    <a href="../tags/jsp.html">jsp</a> 
   			</p>
-  			<p><div class="paragraph">
-<p>Some times you might have a Maven web application that deployes without problem into a Tomcat server, but when open in IntelliJ IDE, you will notice some of your JSP files have red error marks on lines such as <code>out.println("test");</code>. This problem can occur if your project <code>pom.xml</code> did not include <code>jsp-api</code> as provided dependency to your project! So ensure it contains these in your <code>pom.xml</code> file.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>        &lt;!-- Web --&gt;
+  			<p><p>Some times you might have a Maven web application that deployes without<br />
+problem into a Tomcat server, but when open in IntelliJ IDE, you will<br />
+notice some of your JSP files have red error marks on lines such as<br />
+<code>out.println(&quot;test&quot;);</code>. This problem can occur if your project <code>pom.xml</code><br />
+did not include <code>jsp-api</code> as provided dependency to your project! So<br />
+ensure it contains these in your <code>pom.xml</code> file.</p>
+<pre><code>        &lt;!-- Web --&gt;
         &lt;dependency&gt;
             &lt;groupId&gt;javax.servlet.jsp&lt;/groupId&gt;
             &lt;artifactId&gt;javax.servlet.jsp-api&lt;/artifactId&gt;
@@ -311,63 +142,61 @@ you started quickly but not very secure.</p>
             &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
             &lt;artifactId&gt;jstl&lt;/artifactId&gt;
             &lt;version&gt;1.2&lt;/version&gt;
-        &lt;/dependency&gt;</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Note that for Tomcat, you must include the <code>JSTL</code> tag library as dependency, and it is NOT provided by server if you want to use the core JSTL tags!</p>
-</div></p>
+        &lt;/dependency&gt;
+</code></pre>
+<p>Note that for Tomcat, you must include the <code>JSTL</code> tag library as<br />
+dependency, and it is NOT provided by server if you want to use the core<br />
+JSTL tags!</p>
+</p>
   			<a href="blog/2018/02/intellij-displays-servers-certificate-is-not-trusted-pop-up.html"><h1>IntelliJ displays Server&apos;s Certificate is not trusted pop-up</h1></a>
   			<p>11 February 2018, tags: 
 			    <a href="../tags/intellij.html">intellij</a> 
   			</p>
-  			<p><div class="paragraph">
-<p>I get this "Server&#8217;s Certificate is not trusted" pop-up window once in a while when I am in different network. If you know your IDE is already working fine, then you can get rid of it by go to below location.</p>
-</div>
-<div class="paragraph">
+  			<p><p>I get this &quot;Server’s Certificate is not trusted&quot; pop-up window once in a<br />
+while when I am in different network. If you know your IDE is already<br />
+working fine, then you can get rid of it by go to below location.</p>
 <p><code>File | Settings | Tools | Server Certificates for Windows and Linux</code></p>
-</div>
-<div class="paragraph">
-<p>Then click on "Accept non-trusted certificates automatically".</p>
-</div></p>
+<p>Then click on &quot;Accept non-trusted certificates automatically&quot;.</p>
+</p>
   			<a href="blog/2018/01/walk-resource-tree-as-directory-in-classpath.html"><h1>Walk resource tree as directory in classpath</h1></a>
   			<p>27 January 2018, tags: 
 			    <a href="../tags/java.html">java</a> 
 
 			    <a href="../tags/classpath.html">classpath</a> 
   			</p>
-  			<p><div class="paragraph">
-<p>The two most frequent type of classpath URL we get when get it through <code>ClassLoader#getResource(resourceName)</code> is either <code>file</code> or <code>jar</code> entries. If we want to walk a resources that are stored in a directory, then we need to parse these differently. For <code>file</code>, it&#8217;s easy to do since we have <code>java.io.File</code>. As for <code>jar</code>, we would use <code>JarFile</code>. Here is a implementation.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>public static void walkClasspathResDir(ClassLoader cl, String resDir, ConsumerEx&lt;FileStream&gt; fileConsumer) {
+  			<p><p>The two most frequent type of classpath URL we get when get it through<br />
+<code>ClassLoader#getResource(resourceName)</code> is either <code>file</code> or <code>jar</code><br />
+entries. If we want to walk a resources that are stored in a directory,<br />
+then we need to parse these differently. For <code>file</code>, it’s easy to do<br />
+since we have <code>java.io.File</code>. As for <code>jar</code>, we would use <code>JarFile</code>. Here<br />
+is a implementation.</p>
+<pre><code>public static void walkClasspathResDir(ClassLoader cl, String resDir, ConsumerEx&lt;FileStream&gt; fileConsumer) {
         // NOTE: JarEntry.isDirectory() used below requires input to ends with slash.
-        if (!resDir.endsWith("/")) {
-            resDir = resDir + "/";
+        if (!resDir.endsWith(&quot;/&quot;)) {
+            resDir = resDir + &quot;/&quot;;
         }
 
         URL url = cl.getResource(resDir);
         if (url == null) {
-            throw new AppException("Resource directory " + resDir + " not found in classpath.");
-        } else if ("file".equals(url.getProtocol())) {
+            throw new AppException(&quot;Resource directory &quot; + resDir + &quot; not found in classpath.&quot;);
+        } else if (&quot;file&quot;.equals(url.getProtocol())) {
             File dir = new File(url.getPath());
             if (!dir.isDirectory()) {
-                throw new AppException("Resource is not a directory: " + resDir);
+                throw new AppException(&quot;Resource is not a directory: &quot; + resDir);
             }
             walkFileDir(dir, fileConsumer);
-        } else if ("jar".equals(url.getProtocol())) {
+        } else if (&quot;jar&quot;.equals(url.getProtocol())) {
             try {
                 JarURLConnection conn = (JarURLConnection) url.openConnection();
                 if (!(conn.getJarEntry().isDirectory())) {
-                    throw new AppException("Resource is not a directory: " + resDir);
+                    throw new AppException(&quot;Resource is not a directory: &quot; + resDir);
                 }
                 walkJarEntryDir(conn.getJarFile(), resDir, fileConsumer);
             } catch (Exception e) {
-                throw new AppException("Unable to read resource: " + url, e);
+                throw new AppException(&quot;Unable to read resource: &quot; + url, e);
             }
         } else {
-            throw new AppException("Unsupported protocol " + url.getProtocol() + " for checking resource directory.");
+            throw new AppException(&quot;Unsupported protocol &quot; + url.getProtocol() + &quot; for checking resource directory.&quot;);
         }
     }
 
@@ -382,19 +211,19 @@ you started quickly but not very secure.</p>
                             // Always convert path separator to Unix
                             shortPath = FilenameUtils.separatorsToUnix(shortPath);
                             // Remove leading '/' if there is any
-                            if (shortPath.startsWith("/")) {
+                            if (shortPath.startsWith(&quot;/&quot;)) {
                                 shortPath = shortPath.substring(1);
                             }
                             fileConsumer.accept(new FileStream(shortPath, stream));
                         } catch (Exception e) {
-                            throw new AppException("Failed to process file: " + file, e);
+                            throw new AppException(&quot;Failed to process file: &quot; + file, e);
                         }
                     }
                     return FileVisitResult.CONTINUE;
                 }
             });
         } catch (IOException e) {
-            throw new AppException("Failed to walk directory: " + dir, e);
+            throw new AppException(&quot;Failed to walk directory: &quot; + dir, e);
         }
     }
 
@@ -410,48 +239,39 @@ you started quickly but not very secure.</p>
                                 String shortPath = jarEntry.getName().substring(entryName.length());
                                 fileConsumer.accept(new FileStream(shortPath, stream));
                             } catch (Exception e) {
-                                throw new AppException("Failed to process jar entry: " + jarEntry.getName(), e);
+                                throw new AppException(&quot;Failed to process jar entry: &quot; + jarEntry.getName(), e);
                             }
                         }
                     }
                 }
             }
         } catch (IOException e) {
-            throw new AppException("Failed to walk jar directory entry: " + entryName, e);
+            throw new AppException(&quot;Failed to walk jar directory entry: &quot; + entryName, e);
         }
-    }</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Here the <code>FileStream</code> is just a POJO that holds a resource path name and the stream that points to it. One tricky part to above code is noted in comment:</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>// NOTE: JarEntry.isDirectory() used below requires input to ends with slash.</pre>
-</div>
-</div>
-<div class="paragraph">
+    }
+</code></pre>
+<p>Here the <code>FileStream</code> is just a POJO that holds a resource path name and<br />
+the stream that points to it. One tricky part to above code is noted in<br />
+comment:</p>
+<pre><code>// NOTE: JarEntry.isDirectory() used below requires input to ends with slash.
+</code></pre>
 <p>Now, here is how we can use it:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>        ClassLoader cl = Thread.currentThread().getContextClassLoader();
-        walkClasspathResDir(cl, "toolbox/templates/javaapp", (fileStream) -&gt; {
-            System.out.println(fileStream.getPath() + " " + fileStream.getStream());
+<pre><code>        ClassLoader cl = Thread.currentThread().getContextClassLoader();
+        walkClasspathResDir(cl, &quot;toolbox/templates/javaapp&quot;, (fileStream) -&gt; {
+            System.out.println(fileStream.getPath() + &quot; &quot; + fileStream.getStream());
         });
-        System.out.println();</pre>
-</div>
-</div></p>
+        System.out.println();
+</code></pre>
+</p>
   			<a href="blog/2018/01/using-java8-localdatetime-with-freemarker.html"><h1>Using Java8 LocalDateTime with FreeMarker</h1></a>
   			<p>27 January 2018, tags: 
 			    <a href="../tags/freemarker.html">freemarker</a> 
   			</p>
-  			<p><div class="paragraph">
-<p>It&#8217;s unfortunate that even latest FreeMarker 2.3.27 still does not support <code>java.time.LocalDateTime</code> as data model natively. If you want to use this in your template, you would either have to write your own, or use this friendly library:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>        &lt;!-- Web View: FTL Template Engine --&gt;
+  			<p><p>It’s unfortunate that even latest FreeMarker 2.3.27 still does not<br />
+support <code>java.time.LocalDateTime</code> as data model natively. If you want to<br />
+use this in your template, you would either have to write your own, or<br />
+use this friendly library:</p>
+<pre><code>        &lt;!-- Web View: FTL Template Engine --&gt;
         &lt;dependency&gt;
             &lt;groupId&gt;org.freemarker&lt;/groupId&gt;
             &lt;artifactId&gt;freemarker&lt;/artifactId&gt;
@@ -461,86 +281,64 @@ you started quickly but not very secure.</p>
             &lt;groupId&gt;no.api.freemarker&lt;/groupId&gt;
             &lt;artifactId&gt;freemarker-java8&lt;/artifactId&gt;
             &lt;version&gt;1.1.5&lt;/version&gt;
-        &lt;/dependency&gt;</pre>
-</div>
-</div>
-<div class="paragraph">
+        &lt;/dependency&gt;
+</code></pre>
 <p>With this, you may format the java8 date model in template like this:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>Today date is ${todayDate.format()}
+<pre><code>Today date is ${todayDate.format()}
 
-Or use custom date formatter: ${todayDate.format('yyyy-MM-dd HH:mm')}</pre>
-</div>
-</div></p>
+Or use custom date formatter: ${todayDate.format('yyyy-MM-dd HH:mm')}
+</code></pre>
+</p>
   			<a href="blog/2018/01/how-to-fix-intellij-outofmemoryerror.html"><h1>How to fix IntelliJ OutOfMemoryError</h1></a>
   			<p>19 January 2018, tags: 
 			    <a href="../tags/intellij.html">intellij</a> 
   			</p>
-  			<p><div class="paragraph">
-<p>If you have a large project, you might get this error when trying to do a full build</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>Error:java: OutOfMemoryError: insufficient memory</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>You can fix this by increase memory in two places in the IDE. For example, let says you want to increase to 2GB of memory:</p>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
+  			<p><p>If you have a large project, you might get this error when trying to do<br />
+a full build</p>
+<pre><code>Error:java: OutOfMemoryError: insufficient memory
+</code></pre>
+<p>You can fix this by increase memory in two places in the IDE. For<br />
+example, let says you want to increase to 2GB of memory:</p>
+<ol>
 <li>
-<p>Update the <code>idea64.exe.vmoptions</code> file with <code>-Xmx2048m</code> to increase Java max heap memory size for  your IDE. (Require IDE restart)</p>
+<p>Update the <code>idea64.exe.vmoptions</code> file with <code>-Xmx2048m</code> to increase<br />
+Java max heap memory size for your IDE. (Require IDE restart)</p>
 </li>
 <li>
-<p>Go to IDE menu: File &gt; Settings &#8230;&#8203; &gt; Build, Execution, Deployment &gt; Compiler &gt; "Build process heap size (Mbytes):" and increase it to <code>2000</code>.</p>
+<p>Go to IDE menu: File &gt; Settings … &gt; Build, Execution,<br />
+Deployment &gt; Compiler &gt; &quot;Build process heap size (Mbytes):&quot;<br />
+and increase it to <code>2000</code>.</p>
 </li>
 </ol>
-</div></p>
+</p>
   			<a href="blog/2017/08/how-to-run-nginx-and-setup-reverse-proxy-to-tomcat.html"><h1>How to run nginx and setup reverse proxy to Tomcat</h1></a>
   			<p>04 August 2017, tags: 
 			    <a href="../tags/nginx.html">nginx</a> 
 
 			    <a href="../tags/tomcat.html">tomcat</a> 
   			</p>
-  			<p><div class="listingblock">
-<div class="content">
-<pre># start
+  			<p><pre><code># start
 cd ~/apps/nginx-1.13.7
 ./nginx -c conf/nginx.conf
 
 # stop
-./nginx -c conf/nginx.conf -s stop</pre>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_how_to_setup_nginx_reverse_proxy_to_tomcat">How to setup nginx reverse proxy to Tomcat</h2>
-<div class="sectionbody">
-<div class="listingblock">
-<div class="content">
-<pre># nginx.conf
-	server {
-		listen       80;
-		server_name  localhost;
+./nginx -c conf/nginx.conf -s stop
+</code></pre>
+<h1>How to setup nginx reverse proxy to Tomcat</h1>
+<pre><code># nginx.conf
+        server {
+                listen       80;
+                server_name  localhost;
 
-		location / {
-			proxy_pass http://localhost:8080;
-			proxy_set_header X-Forwarded-Host $host;
-			proxy_set_header X-Forwarded-Server $host;
-		}
-	}</pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_setup_to_setup_nginx_ssl_and_reverse_proxy_to_tomcat">Setup to setup nginx ssl and reverse proxy to Tomcat</h2>
-<div class="sectionbody">
-<div class="listingblock">
-<div class="content">
-<pre># ssl setup
+                location / {
+                        proxy_pass http://localhost:8080;
+                        proxy_set_header X-Forwarded-Host $host;
+                        proxy_set_header X-Forwarded-Server $host;
+                }
+        }
+</code></pre>
+<h1>Setup to setup nginx ssl and reverse proxy to Tomcat</h1>
+<pre><code># ssl setup
 cd ~/apps/nginx-1.13.7/conf
 openssl req -x509 -nodes -newkey rsa:2048 -keyout cert.key -out cert.crt
 
@@ -559,62 +357,52 @@ openssl req -x509 -nodes -newkey rsa:2048 -keyout cert.key -out cert.crt
         ssl_prefer_server_ciphers  on;
 
         location / {
-			proxy_pass http://localhost:8080;
-			proxy_set_header X-Forwarded-Host $host;
-			proxy_set_header X-Forwarded-Server $host;
-			proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-		}
-    }</pre>
-</div>
-</div>
-</div>
-</div></p>
+                        proxy_pass http://localhost:8080;
+                        proxy_set_header X-Forwarded-Host $host;
+                        proxy_set_header X-Forwarded-Server $host;
+                        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                }
+    }
+</code></pre>
+</p>
   			<a href="blog/2017/07/creating-postgresql-db-users-to-match-linux-users.html"><h1>Creating PostgreSQL db users to match Linux users</h1></a>
   			<p>07 July 2017, tags: 
 			    <a href="../tags/postgres.html">postgres</a> 
   			</p>
-  			<p><div class="paragraph">
-<p>By default the <code>posgresql-server</code> install will create a <code>postgres</code> Linux user account and the server will run under that user. And also PostgreSQL server will default have a DB user named <code>postgres</code> as well, and this DB user does not have a password! There is a distinction between Linux user vs PostgreSQL database user, and mostly you need to work with DB user only. After the install, you may change the password for DB <code>postgres</code> like this:</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>bash&gt; sudo -u postgres psql
+  			<p><p>By default the <code>posgresql-server</code> install will create a <code>postgres</code> Linux<br />
+user account and the server will run under that user. And also<br />
+PostgreSQL server will default have a DB user named <code>postgres</code> as well,<br />
+and this DB user does not have a password! There is a distinction<br />
+between Linux user vs PostgreSQL database user, and mostly you need to<br />
+work with DB user only. After the install, you may change the password<br />
+for DB <code>postgres</code> like this:</p>
+<pre><code>bash&gt; sudo -u postgres psql
 
 postgres=# \password postgres
 
-# It should prompt you to enter password for `postgres` DB user.</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>When developing application, I like to create a dedicated DB user to match my login account and create database there instead of using the default <code>postgres</code> user. You may create a new DB user that match to your current Linux account user (eg: <code>zemian</code>)  like this:</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>bash&gt; sudo -u postgres createdb -s -P zemian
-# It should prompt you to enter password for `zemian` DB user. The `-s` option is to for superuser privileges.</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Now that you have a DB user <code>zemian</code>, you may create a default database for it.</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>bash&gt; createdb --username=zemian zemian</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Now you may invoke <code>psql</code> under <code>zemian</code> Linux user session without any parameters and it should log you in!</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>bash&gt; psql
+# It should prompt you to enter password for `postgres` DB user.
+</code></pre>
+<p>When developing application, I like to create a dedicated DB user to<br />
+match my login account and create database there instead of using the<br />
+default <code>postgres</code> user. You may create a new DB user that match to your<br />
+current Linux account user (eg: <code>zemian</code>) like this:</p>
+<pre><code>bash&gt; sudo -u postgres createdb -s -P zemian
+# It should prompt you to enter password for `zemian` DB user. The `-s` option is to for superuser privileges.
+</code></pre>
+<p>Now that you have a DB user <code>zemian</code>, you may create a default database<br />
+for it.</p>
+<pre><code>bash&gt; createdb --username=zemian zemian
+</code></pre>
+<p>Now you may invoke <code>psql</code> under <code>zemian</code> Linux user session without any<br />
+parameters and it should log you in!</p>
+<pre><code>bash&gt; psql
 
 zemian=# CREATE TABLE test(id serial, name VARCHAR(20), message VARCHAR(500));
-NOTICE:  CREATE TABLE will create implicit sequence "test_id_seq" for serial column "test.id"
+NOTICE:  CREATE TABLE will create implicit sequence &quot;test_id_seq&quot; for serial column &quot;test.id&quot;
 CREATE TABLE
 
 zemian=# \d test
-                                 Table "public.test"
+                                 Table &quot;public.test&quot;
  Column  |          Type          |                     Modifiers
 ---------+------------------------+---------------------------------------------------
  id      | integer                | not null default nextval('test_id_seq'::regclass)
@@ -630,15 +418,110 @@ zemian=# SELECT * FROM test;
 ----+--------+---------
   1 | Hello  | World
   2 | Hello2 | World2
-(2 rows)</pre>
-</div>
-</div></p>
+(2 rows)
+</code></pre>
+</p>
+  			<a href="blog/2016/10/git-branch-name-with-slash.html"><h1>Git Branch name with &apos;slash&apos;</h1></a>
+  			<p>09 October 2016, tags: 
+			    <a href="../tags/git.html">git</a> 
+  			</p>
+  			<p><p>Git allows you to use <em>/</em> slash in your branch name. It’s useful for<br />
+grouping branches. However, you need to be careful that once a slashy<br />
+branch name is created, you can’t use its name as the &quot;base&quot; for another<br />
+new nested slash name! For example:</p>
+<pre><code># this is fine
+git branch foo/bar
+git branch foo/bar2
+
+# but this fails
+git branch foo/bar/cool
+fatal: cannot lock ref 'refs/heads/foo/bar/cool': 'refs/heads/foo/bar' exists; cannot create 'refs/heads/foo/bar/cool'
+
+# So to use two level of slashes, you must first start a branch with two slashes!
+git branch foo2/bar/cool
+git branch foo2/bar/cool2
+git branch foo2/bar2/cool
+git branch foo2/bar2/cool2
+</code></pre>
+<p>Here is a more concrete example. Let’s say you worked on an issue-123<br />
+branch, and now you are done but want to rename under a subcategory<br />
+<em>closed/issue-123</em>. If you were to create a branch <em>closed</em> first, then<br />
+the rename will fail! You have to first ensure <em>closed</em> branch does not<br />
+exist. In fact reate a <em>closed/zkeepme</em> first, then you can always move<br />
+your completed branch into that sub category!</p>
+</p>
+  			<a href="blog/2016/10/my-quick-git-reference.html"><h1>My Quick Git Reference</h1></a>
+  			<p>04 October 2016, tags: 
+			    <a href="../tags/git.html">git</a> 
+  			</p>
+  			<p><p>I have started using git and here are some of my frequently used<br />
+commands.</p>
+<pre><code>git clone http://path/to/repo.git  # Retrieve a repo for work (auto checkout master branch into WorkingDir)
+git init                           # Create new repository for work (auto checkout master branch into WorkingDir)
+git init --bare                    # Create new repository without WorkingDir  - bare repo for server share only
+
+git status             # Print current status of the repo
+git branch -a          # List of all branches (including remote branches)
+git tag                # List of all tags
+git log -3                                      # Show last 3 commits
+git log -30 --oneline                           # Show last 30 commits one per line
+git log --decorate --graph --format='%h %an %s' # Show all log messages one per line in a graph
+git log --reverse |head                         # Show first commit message
+git show --stat &lt;sha1&gt; # Show what files changed on a commit
+git diff               # Show diff all files between Index and WorkingDir
+git diff readme.md     # Show diff of a file against Index
+git diff master..topic # Show diff between two branches
+
+git checkout -b topic               # Create a new topic branch and set as current branch
+                                      (New branch starts from previous checkout branch)
+git checkout -b topic origin/topic  # Create a new topic branch and set as current branch
+                                      (New branch starts from origin/topic &quot;remote&quot; branch)
+git branch --move topicA topicB     # Rename a branch
+git branch -d topic                 # Delete a branch (use -D to force it)
+git checkout master                 # Switch to master branch and set as current branch
+git merge topic                     # Merge changes from topic branch onto current branch
+
+git add .                        # Add files to Index
+git add readme.md                # Add one file to Index
+git add -A                       # Add everything to Index
+git commit -m 'topic: my change' # Commit Index changes
+
+git mv oldfile.md newfile.md     # Rename a file
+git rm outdated.md               # Remove a file from Index and WorkingDir
+git rm --cached outdated.md      # Remove a file from Index only (leave it in WorkingDir)
+
+git remote add origin http://path/to/repo.git     # Setup remote repository
+git remote set-url origin http://path/to/repo.git # Update remote repository
+git remote -v                                     # List remote repositories
+
+git push --set-upstream origin topic              # Push branch to remote first time
+git push                                          # Push branch to remote second time
+git push --all                                    # Push all the branches to remote!
+git push origin :topic                            # Push and DELETE the remote branch!
+
+git pull   # Fetch and merge the &quot;auto tracked remote&quot; branch onto current branch
+git fetch  # Fetch only the &quot;auto tracked remote&quot; branch onto current branch
+
+git checkout              # Restore WorkingDir from Index (will not override local modified files!)
+git checkout -- readme.md # Restore a single WorkingDir file from Index
+
+git reset          # Reset the HEAD and Index (same as --mixed)
+git reset --soft   # Reset the HEAD only
+git reset --hard   # Reset the HEAD, Index and WorkingDir!
+
+git reflog         # Inpect any recent transactions and can be use to recover lost (unnamed) commits
+
+git stash          # Put away all pending changes
+git stash pop      # Bring back all pending changes
+git stash list     # List all stashes
+</code></pre>
+</p>
 
 	<hr />
 
 	<ul class="pager">
 		<li class="previous"><a href="https://zemian.github.io/6">Previous</a></li>
-		<li>Page: 7/29</li>
+		<li>Page: 7/28</li>
 		<li class="next"><a href="https://zemian.github.io/8">Next</a></li>
 	</ul>
 

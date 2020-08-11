@@ -59,25 +59,16 @@
 
 	<p><em>03 March 2018</em>	</p>
 
-	<p><div class="paragraph">
-<p>Problem:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>git clone https://github.com/notepad-plus-plus/notepad-plus-plus
+	<p><p>Problem:</p>
+<pre><code>git clone https://github.com/notepad-plus-plus/notepad-plus-plus
 Cloning into 'notepad-plus-plus'...
-fatal: unable to access 'https://github.com/notepad-plus-plus/notepad-plus-plus/': SSL certificate problem: unable to get local issuer certificate</pre>
-</div>
-</div>
-<div class="paragraph">
+fatal: unable to access 'https://github.com/notepad-plus-plus/notepad-plus-plus/': SSL certificate problem: unable to get local issuer certificate
+</code></pre>
 <p>Solution:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>git config --global http.sslVerify false
-# then retry above command</pre>
-</div>
-</div></p>
+<pre><code>git config --global http.sslVerify false
+# then retry above command
+</code></pre>
+</p>
 
 	<hr />
 

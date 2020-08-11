@@ -61,12 +61,9 @@
 	    <a href="../../../tags/git.html">git</a> 
 	</p>
 
-	<p><div class="paragraph">
-<p>I have started using git and here are some of my frequently used commands.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>git clone http://path/to/repo.git  # Retrieve a repo for work (auto checkout master branch into WorkingDir)
+	<p><p>I have started using git and here are some of my frequently used<br />
+commands.</p>
+<pre><code>git clone http://path/to/repo.git  # Retrieve a repo for work (auto checkout master branch into WorkingDir)
 git init                           # Create new repository for work (auto checkout master branch into WorkingDir)
 git init --bare                    # Create new repository without WorkingDir  - bare repo for server share only
 
@@ -85,7 +82,7 @@ git diff master..topic # Show diff between two branches
 git checkout -b topic               # Create a new topic branch and set as current branch
                                       (New branch starts from previous checkout branch)
 git checkout -b topic origin/topic  # Create a new topic branch and set as current branch
-                                      (New branch starts from origin/topic "remote" branch)
+                                      (New branch starts from origin/topic &quot;remote&quot; branch)
 git branch --move topicA topicB     # Rename a branch
 git branch -d topic                 # Delete a branch (use -D to force it)
 git checkout master                 # Switch to master branch and set as current branch
@@ -109,8 +106,8 @@ git push                                          # Push branch to remote second
 git push --all                                    # Push all the branches to remote!
 git push origin :topic                            # Push and DELETE the remote branch!
 
-git pull   # Fetch and merge the "auto tracked remote" branch onto current branch
-git fetch  # Fetch only the "auto tracked remote" branch onto current branch
+git pull   # Fetch and merge the &quot;auto tracked remote&quot; branch onto current branch
+git fetch  # Fetch only the &quot;auto tracked remote&quot; branch onto current branch
 
 git checkout              # Restore WorkingDir from Index (will not override local modified files!)
 git checkout -- readme.md # Restore a single WorkingDir file from Index
@@ -123,9 +120,9 @@ git reflog         # Inpect any recent transactions and can be use to recover lo
 
 git stash          # Put away all pending changes
 git stash pop      # Bring back all pending changes
-git stash list     # List all stashes</pre>
-</div>
-</div></p>
+git stash list     # List all stashes
+</code></pre>
+</p>
 
 	<hr />
 

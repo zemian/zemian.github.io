@@ -61,12 +61,11 @@
 	    <a href="../../../tags/freemarker.html">freemarker</a> 
 	</p>
 
-	<p><div class="paragraph">
-<p>It&#8217;s unfortunate that even latest FreeMarker 2.3.27 still does not support <code>java.time.LocalDateTime</code> as data model natively. If you want to use this in your template, you would either have to write your own, or use this friendly library:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>        &lt;!-- Web View: FTL Template Engine --&gt;
+	<p><p>It’s unfortunate that even latest FreeMarker 2.3.27 still does not<br />
+support <code>java.time.LocalDateTime</code> as data model natively. If you want to<br />
+use this in your template, you would either have to write your own, or<br />
+use this friendly library:</p>
+<pre><code>        &lt;!-- Web View: FTL Template Engine --&gt;
         &lt;dependency&gt;
             &lt;groupId&gt;org.freemarker&lt;/groupId&gt;
             &lt;artifactId&gt;freemarker&lt;/artifactId&gt;
@@ -76,19 +75,14 @@
             &lt;groupId&gt;no.api.freemarker&lt;/groupId&gt;
             &lt;artifactId&gt;freemarker-java8&lt;/artifactId&gt;
             &lt;version&gt;1.1.5&lt;/version&gt;
-        &lt;/dependency&gt;</pre>
-</div>
-</div>
-<div class="paragraph">
+        &lt;/dependency&gt;
+</code></pre>
 <p>With this, you may format the java8 date model in template like this:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>Today date is ${todayDate.format()}
+<pre><code>Today date is ${todayDate.format()}
 
-Or use custom date formatter: ${todayDate.format('yyyy-MM-dd HH:mm')}</pre>
-</div>
-</div></p>
+Or use custom date formatter: ${todayDate.format('yyyy-MM-dd HH:mm')}
+</code></pre>
+</p>
 
 	<hr />
 

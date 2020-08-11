@@ -61,23 +61,15 @@
 	    <a href="../../../tags/postgres.html">postgres</a> 
 	</p>
 
-	<p><div class="sect1">
-<h2 id="_run_postgres_server">Run Postgres Server</h2>
-<div class="sectionbody">
-<div class="listingblock">
-<div class="content">
-<pre># Start /usr/sbin/cygserver first if you haven't already done so
+	<p><h1>Run Postgres Server</h1>
+<pre><code># Start /usr/sbin/cygserver first if you haven't already done so
 mkdir /srv/pgdata
 export PGDATA=/srv/pgdata
 pg_ctl init
-pg_ctl start</pre>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_test_posgres_using_client">Test Posgres Using Client</h3>
-<div class="listingblock">
-<div class="content">
-<pre>psql postgres
+pg_ctl start
+</code></pre>
+<h2>Test Posgres Using Client</h2>
+<pre><code>psql postgres
 
 postgres=# create table test_ratings(username varchar(200), rating int);
 postgres=# insert into test_ratings values('tester1', 5), ('tester2', 4);
@@ -85,90 +77,51 @@ postgres=# select * from test_ratings;
  username | rating
 ----------+--------
  tester1  |      5
- tester2  |      4</pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_test_connectivity_using_python">Test connectivity using Python</h3>
-<div class="paragraph">
-<p>Run <code>pip install psycopg2</code> if you haven&#8217;t already install the driver.</p>
-</div>
-<div class="listingblock">
-<div class="title"><code>testdb.py</code></div>
-<div class="content">
-<pre>import psycopg2
+ tester2  |      4
+</code></pre>
+<h2>Test connectivity using Python</h2>
+<p>Run <code>pip install psycopg2</code> if you haven’t already install the driver.</p>
+<p><strong><code>testdb.py</code>.</strong></p>
+<pre><code>import psycopg2
 with psycopg2.connect('dbname=postgres') as conn:
-	with conn.cursor() as cur:
-		cur.execute('select * from test_ratings')
-		while True:
-			row = cur.fetchmany()
-			if len(row) == 0:
-				break
-			print(row)</pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_postgres_windows_installation">Postgres Windows Installation</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>The official download is provided by EnterpriseDB (EDB)
-You can get a zip package from:</p>
-</div>
-<div class="paragraph">
-<p><a href="https://www.enterprisedb.com/download-postgresql-binaries" class="bare">https://www.enterprisedb.com/download-postgresql-binaries</a></p>
-</div>
-<div class="paragraph">
+        with conn.cursor() as cur:
+                cur.execute('select * from test_ratings')
+                while True:
+                        row = cur.fetchmany()
+                        if len(row) == 0:
+                                break
+                        print(row)
+</code></pre>
+<h1>Postgres Windows Installation</h1>
+<p>The official download is provided by EnterpriseDB (EDB) You can get a<br />
+zip package from:</p>
+<p><a href="https://www.enterprisedb.com/download-postgresql-binaries">https://www.enterprisedb.com/download-postgresql-binaries</a></p>
 <p>To install, just unzip it.</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>mkdir $HOME/apps/postgresql-10.3-2
+<pre><code>mkdir $HOME/apps/postgresql-10.3-2
 cd $HOME/apps/postgresql-10.3-2
-unzip postgresql-10.3-2-windows-x64-binaries.zip</pre>
-</div>
-</div>
-<div class="paragraph">
+unzip postgresql-10.3-2-windows-x64-binaries.zip
+</code></pre>
 <p>Server can be started manually like this in cmd.exe prompt:</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>bin\pg_ctl -D data -o "--encoding=UTF8 --auth=trust" initdb
+<pre><code>bin\pg_ctl -D data -o &quot;--encoding=UTF8 --auth=trust&quot; initdb
 mkdir logs
-bin\pg_ctl -D data -l logs\postgres.log start</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>bin\createdb %USERNAME%
+bin\pg_ctl -D data -l logs\postgres.log start
+
+bin\createdb %USERNAME%
 chcp 1252
-bin\psql</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>zemian=# select version();
+bin\psql
+
+zemian=# select version();
                           version
 ------------------------------------------------------------
  PostgreSQL 10.3, compiled by Visual C++ build 1800, 64-bit
-(1 row)</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>By default inidb will create a "postgres" database, but
-user is your Windows login name, and it will not match. It&#8217;s
-more convient to create a database that match your username,
-and use that as default.</p>
-</div>
-<div class="paragraph">
-<p>You should be careful with "--auth=trust", which can get
-you started quickly but not very secure.</p>
-</div>
-</div>
-</div></p>
+(1 row)
+</code></pre>
+<p>By default inidb will create a &quot;postgres&quot; database, but user is your<br />
+Windows login name, and it will not match. It’s more convient to create<br />
+a database that match your username, and use that as default.</p>
+<p>You should be careful with &quot;--auth=trust&quot;, which can get you started<br />
+quickly but not very secure.</p>
+</p>
 
 	<hr />
 

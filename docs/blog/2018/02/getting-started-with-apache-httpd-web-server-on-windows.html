@@ -63,13 +63,11 @@
 	    <a href="../../../tags/cygwin.html">cygwin</a> 
 	</p>
 
-	<p><div class="sect1">
-<h2 id="_using_native_windows_binary_without_admin_rights">Using native Windows Binary (without admin rights)</h2>
-<div class="sectionbody">
-<div class="olist arabic">
-<ol class="arabic">
+	<p><h1>Using native Windows Binary (without admin rights)</h1>
+<ol>
 <li>
-<p>Download one of binary from <a href="https://httpd.apache.org/docs/current/platform/windows.html#down" class="bare">https://httpd.apache.org/docs/current/platform/windows.html#down</a></p>
+<p>Download one of binary from<br />
+<a href="https://httpd.apache.org/docs/current/platform/windows.html#down">https://httpd.apache.org/docs/current/platform/windows.html#down</a></p>
 </li>
 <li>
 <p>Unzip a portable version (zip file) into <code>C:\Apache24</code></p>
@@ -78,68 +76,29 @@
 <p>cd <code>C:\Apache24\bin</code> and run httpd.exe</p>
 </li>
 <li>
-<p>Open browser to <a href="http://localhost" class="bare">http://localhost</a></p>
+<p>Open browser to <a href="http://localhost">http://localhost</a></p>
 </li>
 </ol>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Note</div>
-</td>
-<td class="content">
-Press <code>CTRL+C</code> to stop the server.
-</td>
-</tr>
-</table>
-</div>
-<div class="sect2">
-<h3 id="_where_is_the_httpd_conf">Where is the <code>httpd.conf</code>?</h3>
-<div class="paragraph">
+<p>Press <code>CTRL+C</code> to stop the server.</p>
+<h2>Where is the <code>httpd.conf</code>?</h2>
 <p>The web server config file is located at <code>C:\Apache24\conf\httpd.conf</code></p>
-</div>
-<div class="paragraph">
 <p>The default document root should be at <code>C:\Apache24\htdocs</code></p>
-</div>
-<div class="paragraph">
 <p>The default error log file is at <code>C:\Apache24\logs\error.log</code></p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_how_to_enable_cgi_bin_scripts">How to enable cgi-bin scripts</h3>
-<div class="paragraph">
-<p>There is a default <code>perl</code> test script under <code>C:\Apache24\cgi-bin\printenv.pl</code>,
-and if you have native Windows Perl installed, you need to modify the first
-line in the script. Example: <code>#!/C:/perl5/perl.exe</code></p>
-</div>
-<div class="paragraph">
-<p>Now test it on <a href="http://localhost/cgi-bin/printenv.pl" class="bare">http://localhost/cgi-bin/printenv.pl</a></p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_using_python_as_cgi_bin_test_script">Using Python as <code>cgi-bin</code> test script</h3>
-<div class="paragraph">
+<h2>How to enable cgi-bin scripts</h2>
+<p>There is a default <code>perl</code> test script under<br />
+<code>C:\Apache24\cgi-bin\printenv.pl</code>, and if you have native Windows Perl<br />
+installed, you need to modify the first line in the script. Example:<br />
+<code>#!/C:/perl5/perl.exe</code></p>
+<p>Now test it on <a href="http://localhost/cgi-bin/printenv.pl">http://localhost/cgi-bin/printenv.pl</a></p>
+<h2>Using Python as <code>cgi-bin</code> test script</h2>
 <p>Create <code>C:\Apache24\cgi-bin\printenv.py</code> script:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>#!C:/Python36/python.exe
+<pre><code>#!C:/Python36/python.exe
 import cgi
-cgi.test()</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Test it on <a href="http://localhost/cgi-bin/printenv.py" class="bare">http://localhost/cgi-bin/printenv.py</a></p>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_using_cygwin_for_windows">Using Cygwin for Windows</h2>
-<div class="sectionbody">
-<div class="olist arabic">
-<ol class="arabic">
+cgi.test()
+</code></pre>
+<p>Test it on <a href="http://localhost/cgi-bin/printenv.py">http://localhost/cgi-bin/printenv.py</a></p>
+<h1>Using Cygwin for Windows</h1>
+<ol>
 <li>
 <p>Install <code>httpd</code> and <code>httpd-tool</code> packages in your cygwin</p>
 </li>
@@ -150,107 +109,49 @@ cgi.test()</pre>
 <p>Run <code>apachectl -k start</code></p>
 </li>
 <li>
-<p>Open browser to <a href="http://localhost" class="bare">http://localhost</a></p>
+<p>Open browser to <a href="http://localhost">http://localhost</a></p>
 </li>
 </ol>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Note</div>
-</td>
-<td class="content">
-Run <code>apachectl -k stop</code> to stop the server.
-</td>
-</tr>
-</table>
-</div>
-<div class="sect2">
-<h3 id="_where_is_the_httpd_conf_2">Where is the <code>httpd.conf</code> ?</h3>
-<div class="paragraph">
+<p>Run <code>apachectl -k stop</code> to stop the server.</p>
+<h2>Where is the <code>httpd.conf</code> ?</h2>
 <p>The web server config file is located at <code>/etc/httpd/conf/httpd.conf</code></p>
-</div>
-<div class="paragraph">
 <p>The default document root should be at <code>/srv/www/htdocs</code></p>
-</div>
-<div class="paragraph">
 <p>The default error log file is at <code>/var/log/httpd/error_log</code></p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_how_to_enable_cgi_bin_scripts_2">How to enable cgi-bin scripts</h3>
-<div class="olist arabic">
-<ol class="arabic">
+<h2>How to enable cgi-bin scripts</h2>
+<ol>
 <li>
 <p>Ensure you have installed <code>perl</code> package in Cygwin.</p>
 </li>
 <li>
-<p>Modify <code>/srv/www/cgi-bin/printenv</code> file first line with <code>#!/usr/bin/perl</code></p>
+<p>Modify <code>/srv/www/cgi-bin/printenv</code> file first line with<br />
+<code>#!/usr/bin/perl</code></p>
 </li>
 <li>
 <p>Run <code>chmod a+x</code></p>
 </li>
 <li>
 <p>Modify <code>httpd.conf</code> to enable <code>mod_cgi</code>:</p>
-<div class="literalblock">
-<div class="content">
-<pre>&lt;IfModule mpm_prefork_module&gt;
-	LoadModule cgi_module modules/mod_cgi.so
-&lt;/IfModule&gt;</pre>
-</div>
-</div>
+<pre><code>&lt;IfModule mpm_prefork_module&gt;
+        LoadModule cgi_module modules/mod_cgi.so
+&lt;/IfModule&gt;
+</code></pre>
 </li>
 <li>
 <p>Restart httpd server</p>
 </li>
 </ol>
-</div>
-<div class="paragraph">
-<p>Now test it on <a href="http://localhost/cgi-bin/printenv" class="bare">http://localhost/cgi-bin/printenv</a></p>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Note</div>
-</td>
-<td class="content">
-You can also test the <code>/srv/www/cgi-bin/test-cgi</code> script, but
-it uses <code>#!/usr/bin/sh</code> instead of <code>perl</code>!
-</td>
-</tr>
-</table>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Note</div>
-</td>
-<td class="content">
-If you use default <code>cgi-bin</code> folder that are setup with <code>ScriptAlias</code>, then you do not need to add <code>Options +ExecCGI</code> line to
-the conf file.
-</td>
-</tr>
-</table>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_using_python_as_cgi_bin_test_script_2">Using Python as <code>cgi-bin</code> test script</h3>
-<div class="paragraph">
+<p>Now test it on <a href="http://localhost/cgi-bin/printenv">http://localhost/cgi-bin/printenv</a></p>
+<p>You can also test the <code>/srv/www/cgi-bin/test-cgi</code> script, but it uses<br />
+<code>#!/usr/bin/sh</code> instead of <code>perl</code>!</p>
+<p>If you use default <code>cgi-bin</code> folder that are setup with <code>ScriptAlias</code>,<br />
+then you do not need to add <code>Options +ExecCGI</code> line to the conf file.</p>
+<h2>Using Python as <code>cgi-bin</code> test script</h2>
 <p>Create <code>/srv/www/cgi-bin/printenv.py</code> script:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>#!/usr/bin/python3
+<pre><code>#!/usr/bin/python3
 import cgi
-cgi.test()</pre>
-</div>
-</div>
-</div>
-</div>
-</div></p>
+cgi.test()
+</code></pre>
+</p>
 
 	<hr />
 

@@ -53,111 +53,6 @@
       </div>
     </div>
     <div class="container">
-  			<a href="blog/2013/09/the-apache-camel-2-12-0-has-been-released.html"><h1>The Apache Camel 2.12.0 has been released!</h1></a>
-  			<p>10 September 2013, tags: 
-			    <a href="../tags/camel.html">camel</a> 
-  			</p>
-  			<p><p>The Apache Camel 2.12.0 has been released! Yeh!</p>
-<p>This is a special release to me mainly because I have help fixed few   <a href="https://issues.apache.org/jira/issues/?jql=project%20%3D%20CAMEL%20AND%20status%20in%20(Resolved%2C%20Closed)%20AND%20text%20~%20%22Zemian%22">Jira Issues</a>. :-P</p>
-<p>Among these, I have helped ported the old <code>quartz</code> component into <a href="http://camel.apache.org/quartz2.html">quartz2</a> using the new Quartz 2.0 API. As far as for Camel users concern, it should work just as old one, except it will now use the <code>quartz2://</code> URL prefix instead. But the implementation uses Quartz2 library that's not backward compatible with old Quartz1.8, which is very old. In addition, the <code>quartz2</code> component now has a new option <code>deleteJob=false</code> that will allow you to NOT delete the job created by Camel on shutdown, and it will also reuse existing job found with the same name in the Quartz scheduler if it exists during startup.</p>
-<p>Obviously my contribution seems tiny compare to what the <a href="http://camel.apache.org/camel-2120-release.html">full release</a> brings you, but it’s a start in helping out the project. I am glad the Camel folks accepted these patches and found it into their release.</p>
-<p>Try out the latest Camel and see what you think.</p>
-<p>Happing programming!</p>
-</p>
-  			<a href="blog/2013/09/exploring-apache-camel-core-seda-component.html"><h1>Exploring Apache Camel Core - Seda Component</h1></a>
-  			<p>08 September 2013, tags: 
-			    <a href="../tags/camel.html">camel</a> 
-  			</p>
-  			<p><p>The <code>seda</code> component in Apache Camel is very similar to the <code>direct</code> component that I’ve presented in previous blog, but in a asynchronous manner. To do this, it uses a <code>java.util.concurrent.BlockingQueue</code> as default implementation to queue up messages and disconnect from your main <code>Route</code> thread and then processing the messages in a separated thread. Because of this <code>BlockingQueue</code>, you need to be aware of the usage and config option.</p>
-<p>One option needs to be aware of asynchronous processing is the it default to queue size is unbound, meaning it will grow as much as your memory allowed. To cap this, set <code>size=1000</code>. Let’s see an example.</p>
-<pre><code>package camelcoredemo;
-
-import org.slf4j.*;
-import org.apache.camel.*;
-import org.apache.camel.builder.*;
-import org.apache.camel.main.Main;
-import java.io.*;
-
-public class SedaDemoCamel extends Main {
-    static Logger LOG = LoggerFactory.getLogger(SedaDemoCamel.class);
-    public static void main(String[] args) throws Exception {
-        SedaDemoCamel main = new SedaDemoCamel();
-        main.enableHangupSupport();
-        main.addRouteBuilder(createRouteBuilder1());
-        main.addRouteBuilder(createRouteBuilder2());
-        main.addRouteBuilder(createRouteBuilder3());
-        main.run(args);
-    }
-    // The file poller route
-    static RouteBuilder createRouteBuilder1() {
-        return new RouteBuilder() {
-            public void configure() {
-                from(&quot;file://target/input?preMove=staging&amp;move=.processed&quot;)
-                .process(new Processor() {
-                    public void process(Exchange msg) {
-                        CamelContext camelContext = msg.getContext();
-                        ProducerTemplate producer = camelContext.createProducerTemplate();
-                        String text = msg.getIn().getBody(String.class);
-                        String fileName = (String)msg.getIn().getHeader(&quot;CamelFileName&quot;);
-                        boolean specialFile = fileName.endsWith(&quot;_SPECIAL.dat&quot;);
-                        if (specialFile)
-                            producer.sendBody(&quot;seda:specialRoute&quot;, text);
-                        else
-                            producer.sendBody(&quot;seda:normalRoute&quot;, text);
-                    }
-                });
-            }
-        };
-    }
-    // The special file processing route
-    static RouteBuilder createRouteBuilder2() {
-        return new RouteBuilder() {
-            public void configure() {
-                from(&quot;seda:specialRoute&quot;)
-                .process(new Processor() {
-                    public void process(Exchange msg) {
-                        LOG.info(&quot;Processing special file: &quot; + msg);
-                    }
-                });
-            }
-        };
-    }
-    // The normal file processing route
-    static RouteBuilder createRouteBuilder3() {
-        return new RouteBuilder() {
-            public void configure() {
-                from(&quot;seda:normalRoute&quot;)
-                .process(new Processor() {
-                    public void process(Exchange msg) {
-                        LOG.info(&quot;Processing normal file: &quot; + msg);
-                    }
-                });
-            }
-        };
-    }
-}
-</code></pre>
-<p>You will notice that this demo code is very similar to the <code>direct</code> component demo, with few differences. First, we use <code>seda</code> endpoints. Second, in file poller, we read in the entire file content text. We do this because we are now passing to an asynchronous <code>Route</code> that will runs on separate threads. The poller is configured to move the processed file into different folder right after the first <code>Route</code> has ended. So we must ensure the processing <code>Route</code> is not depended on the path of the File, hence we will load entire text in instead.</p>
-<p>Another interesting <code>seda</code> option is you may set the number of concurrent threads to receive the messages to process them! Let’s say if your <strong>normal</strong> files are heavy in traffic, then you can configure to use more threads on that part (default is just one thread.)</p>
-<pre><code>from(&quot;seda:normalRoute?concurrentConsumers=10&quot;)
-.process(new Processor() {
-    public void process(Exchange msg) {
-        LOG.info(&quot;Processing normal file: &quot; + msg);
-    }
-});
-</code></pre>
-<p>To verify that your are running concurrently, you can easily configure your logger to display thread name. For<br />
-example with <code>log4j</code>, you can use this pattern:</p>
-<pre><code>log4j.rootLogger=INFO, stdout
-log4j.appender.stdout=org.apache.log4j.ConsoleAppender
-log4j.appender.stdout.layout=org.apache.log4j.PatternLayout
-log4j.appender.stdout.layout.ConversionPattern=%d %p %t [%c] - %m%n
-</code></pre>
-<p>There are more options availabe from <a href="http://camel.apache.org/seda.html">Seda</a> component<br />
-that you may explore.<br />
-<a href="http://saltnlight5.blogspot.com/2013/08/getting-started-with-apache-camel-using.html">Try it out with a Route</a><br />
-and see it for yourself.</p>
-</p>
   			<a href="blog/2013/09/exploring-apache-camel-core-direct-component.html"><h1>Exploring Apache Camel Core - Direct Component</h1></a>
   			<p>07 September 2013, tags: 
 			    <a href="../tags/camel.html">camel</a> 
@@ -716,12 +611,462 @@ issues:</p>
 </ul>
 <p>Get it here: <a href="https://code.google.com/p/myschedule/downloads/list">https://code.google.com/p/myschedule/downloads/list</a></p>
 </p>
+  			<a href="blog/2013/08/getting-started-with-apache-camel-using-java.html"><h1>Getting started with Apache Camel using Java</h1></a>
+  			<p>20 August 2013, tags: 
+			    <a href="../tags/camel.html">camel</a> 
+  			</p>
+  			<p><p>Apache Camel is a very useful library that helps you process events or messages<br />
+from many different sources. You may move these messages through many different<br />
+protocols such as between VM, HTTP, FTP, JMS, or even DIRECTORY/FILE, and yet<br />
+still keep your processing code free of transport logic. This allows you to<br />
+concentrate on digesting the content of the messages instead.</p>
+<p>Here I will provide a tutorial on how you can get started with Apache Camel using<br />
+Java.</p>
+<p>Let’s start by creating a Maven project <code>pom.xml</code> file first.</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+    xsi:schemaLocation=&quot;
+        http://maven.apache.org/POM/4.0.0
+        http://maven.apache.org/maven-v4_0_0.xsd&quot;&gt;
+
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;groupId&gt;camel-spring-demo&lt;/groupId&gt;
+    &lt;artifactId&gt;camel-spring-demo&lt;/artifactId&gt;
+    &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+    &lt;packaging&gt;jar&lt;/packaging&gt;
+
+    &lt;properties&gt;
+        &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+        &lt;camel.version&gt;2.11.1&lt;/camel.version&gt;
+    &lt;/properties&gt;
+
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.apache.camel&lt;/groupId&gt;
+            &lt;artifactId&gt;camel-core&lt;/artifactId&gt;
+            &lt;version&gt;${camel.version}&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.slf4j&lt;/groupId&gt;
+            &lt;artifactId&gt;slf4j-simple&lt;/artifactId&gt;
+            &lt;version&gt;1.7.5&lt;/version&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+
+&lt;/project&gt;
+</code></pre>
+<p>We are only going to explore the <code>camel-core</code>, which actually contains quite of few useful<br />
+components that you may use. Also for logging purpose, I have added a <code>slf4j-simple</code> as<br />
+<a href="http://saltnlight5.blogspot.com/2013/08/how-to-configure-slf4j-with-different.html">a logger implementation</a><br />
+so we may see output on console.</p>
+<p>Next you just need a class to construct an <code>Route</code>. A <code>Route</code> is like a instruction<br />
+definition to Camel on how to move your messages from one point to another. We are<br />
+going to create <code>src/main/java/camelcoredemo/TimerRouteBuilder.java</code> file that<br />
+will generate a timer message on every second, and then pass to a processor<br />
+that simply logs it.</p>
+<pre><code>package camelcoredemo;
+
+import org.slf4j.*;
+import org.apache.camel.*;
+import org.apache.camel.builder.*;
+
+public class TimerRouteBuilder extends RouteBuilder {
+    static Logger LOG = LoggerFactory.getLogger(TimerRouteBuilder.class);
+    public void configure() {
+        from(&quot;timer://timer1?period=1000&quot;)
+        .process(new Processor() {
+            public void process(Exchange msg) {
+                LOG.info(&quot;Processing {}&quot;, msg);
+            }
+        });
+    }
+}
+</code></pre>
+<p>That’s all you needed to get started. Now you may build and run this simple<br />
+demo.</p>
+<pre><code>bash&gt; mvn compile
+bash&gt; mvn exec:java -Dexec.mainClass=org.apache.camel.main.Main -Dexec.args='-r camelcoredemo.TimerRouteBuilder'
+</code></pre>
+<p>Notice that we didn’t even write a Java <strong>main</strong> class, but simply use the<br />
+<code>org.apache.camel.main.Main</code> option to accepts a <code>RouteBuilder</code> class<br />
+name as parameter. Then it will load and create the route automatically.</p>
+<h2>Controlling the <code>CamelContext</code></h2>
+<p>When you start Camel, it creates a <code>CamelContext</code> object that holds<br />
+many information on how to run it, including the definition of the<br />
+<code>Route</code> we created. Now if you want to have more control over this<br />
+<code>CamelContext</code>, then you would need to write your own <code>Main</code> class.<br />
+I will show you a simple one here.</p>
+<pre><code>package camelcoredemo;
+
+import org.slf4j.*;
+import org.apache.camel.*;
+import org.apache.camel.impl.*;
+import org.apache.camel.builder.*;
+
+public class TimerMain {
+    static Logger LOG = LoggerFactory.getLogger(TimerMain.class);
+    public static void main(String[] args) throws Exception {
+        new TimerMain().run();
+    }
+    void run() throws Exception {
+        final CamelContext camelContext = new DefaultCamelContext();
+        camelContext.addRoutes(createRouteBuilder());
+        camelContext.setTracing(true);
+        camelContext.start();
+
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            public void run() {
+                try {
+                    camelContext.stop();
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+
+        waitForStop();
+    }
+    RouteBuilder createRouteBuilder() {
+        return new TimerRouteBuilder();
+    }
+    void waitForStop() {
+        while (true) {
+            try {
+                Thread.sleep(Long.MAX_VALUE);
+            } catch (InterruptedException e) {
+                break;
+            }
+        }
+    }
+}
+</code></pre>
+<p>As you can see, we re-used the existing <code>TimerRouteBuilder</code> class inside<br />
+<code>createRouteBuilder()</code> method. Our <code>Main</code> class now have full control<br />
+when to create, start and stop the<br />
+<a href="http://camel.apache.org/maven/current/camel-core/apidocs/org/apache/camel/CamelContext.html"><code>CamelContext</code></a>.<br />
+This context allow you to have control on how to configure Camel<br />
+globally rather than on <code>Route</code> level. The javadoc link gives all the setter<br />
+methods that you can explore on what it can do.</p>
+<p>Noticed that we also need to provide few setup codes in our <code>Main</code> class.<br />
+First we need to handle graceful shutdown, so we added a Java shutdown hook<br />
+to invoke the context <code>stop()</code>. Secondly we need to add a thread block after<br />
+context has started. The reason for this is that the <code>CamelContext#start()</code><br />
+method is non-blocking! If you don’t block your <code>Main</code> thread after<br />
+start, then it will simply exit right after it, which will have not<br />
+much use. You want to run Camel as a service (like a server) until<br />
+you explicitly press <code>CTRL+C</code> to terminate the process.</p>
+<h2>Improving the <code>Main</code> class to start <code>CamelContext</code></h2>
+<p>If you don’t want to deal with much of the <code>Main</code> class setup<br />
+code such as above, then you may simply extends the <code>org.apache.camel.main.Main</code><br />
+class provided by <code>camel-core</code> intead. By piggy-back on this class, you will<br />
+only not have your Context auto setup, but you will get all the additional<br />
+command line features such as controlling how long to run the<br />
+process for, enabling tracing, loading custom route class etc.</p>
+<p>Refactoring previous example, here is how it look like.</p>
+<pre><code>package camelcoredemo;
+
+import org.slf4j.*;
+import org.apache.camel.builder.*;
+import org.apache.camel.main.Main;
+
+public class TimerMain2 extends Main {
+    static Logger LOG = LoggerFactory.getLogger(TimerMain2.class);
+    public static void main(String[] args) throws Exception {
+        TimerMain2 main = new TimerMain2();
+        main.enableHangupSupport();
+        main.addRouteBuilder(createRouteBuilder());
+        main.run(args);
+    }
+    static RouteBuilder createRouteBuilder() {
+        return new TimerRouteBuilder();
+    }
+}
+</code></pre>
+<p>Now our <code>TimerMain2</code> is much shorter, and you may try it out and it should<br />
+function the same as before.</p>
+<pre><code>bash&gt; mvn compile
+bash&gt; mvn exec:java -Dexec.mainClass=camelcoredemo.TimerMain2 -Dexec.args='-t'
+</code></pre>
+<p>Notice that we have given <code>-t</code> option and it will dump <code>Route</code> tracing. Use <code>-h</code><br />
+and you will see all the available options.</p>
+<h2>Adding bean to the Camel <code>Registry</code></h2>
+<p>In the <code>TimerRouteBuilder</code> example above, we have created a <code>Processor</code> on<br />
+the fly. Now if you were to combine few different <code>Processor</code> together, it<br />
+would be nicer to minimize the noise. Camel allow you to do this by registering<br />
+processing beans in their registry space, and then you simply reference them in<br />
+your route as <code>bean</code> component. Here is how I can convert above example into<br />
+beans processing.</p>
+<pre><code>package camelcoredemo;
+
+import org.slf4j.*;
+import org.apache.camel.*;
+import org.apache.camel.builder.*;
+import org.apache.camel.main.Main;
+
+public class TimerBeansMain extends Main {
+    static Logger LOG = LoggerFactory.getLogger(TimerBeansMain.class);
+    public static void main(String[] args) throws Exception {
+        TimerBeansMain main = new TimerBeansMain();
+        main.enableHangupSupport();
+        main.bind(&quot;processByBean1&quot;, new Bean1());
+        main.bind(&quot;processAgainByBean2&quot;, new Bean2());
+        main.addRouteBuilder(createRouteBuilder());
+        main.run(args);
+    }
+    static RouteBuilder createRouteBuilder() {
+        return new RouteBuilder() {
+                public void configure() {
+                    from(&quot;timer://timer1?period=1000&quot;)
+                    .to(&quot;bean:processByBean1&quot;)
+                    .to(&quot;bean:processAgainByBean2&quot;);
+                }
+            };
+    }
+
+    // Processor beans
+    static class Bean1 implements Processor {
+        public void process(Exchange msg) {
+            LOG.info(&quot;First process {}&quot;, msg);
+        }
+    }
+    static class Bean2 implements Processor {
+        public void process(Exchange msg) {
+            LOG.info(&quot;Second process {}&quot;, msg);
+        }
+    }
+}
+</code></pre>
+<p>Now you see my <code>Route</code> is very slim and without noise clutter; and I have<br />
+refactored my processing code into individual classes. This promotes better<br />
+code management and testing as you write more complex <code>Route</code> to address<br />
+business logic. It let you build LEGO like block of re-usable POJO beans.<br />
+Besides just processing beans, Camel use this registry space for many other<br />
+services as well. For example you may customize many other component endpoints<br />
+with additional features and or configurations. Or thing such as thread<br />
+pool strategy implementation replacement etc.</p>
+<p>The <code>Route</code> in example above is constructed using what’s called Java DSL.<br />
+The route is very readable, and yet you’ll get full IDE support to browse all the methods available to use for your route.</p>
+<p>I hope this article has helped you jump start your Camel ride. Besides the<br />
+<code>timer</code> component mentioned, the <code>camel-core</code> also comes with the following<br />
+components out of it’s core jar.</p>
+<ul>
+<li></li>
+</ul>
+<p><a href="http://camel.apache.org/bean.html">bean component</a></p>
+<ul>
+<li></li>
+</ul>
+<p><a href="http://camel.apache.org/browse.html">browse component</a></p>
+<ul>
+<li></li>
+</ul>
+<p><a href="http://camel.apache.org/dataset.html">dataset component</a></p>
+<ul>
+<li></li>
+</ul>
+<p><a href="http://camel.apache.org/direct.html">direct component</a></p>
+<ul>
+<li></li>
+</ul>
+<p><a href="http://camel.apache.org/file.html">file component</a></p>
+<ul>
+<li></li>
+</ul>
+<p><a href="http://camel.apache.org/log.html">log component</a></p>
+<ul>
+<li></li>
+</ul>
+<p><a href="http://camel.apache.org/mock.html">mock component</a></p>
+<ul>
+<li></li>
+</ul>
+<p><a href="http://camel.apache.org/properties.html">properties component</a></p>
+<ul>
+<li></li>
+</ul>
+<p><a href="http://camel.apache.org/seda.html">seda component</a></p>
+<ul>
+<li></li>
+</ul>
+<p><a href="http://camel.apache.org/test.html">test component</a></p>
+<ul>
+<li></li>
+</ul>
+<p><a href="http://camel.apache.org/timer.html">timer component</a></p>
+<ul>
+<li></li>
+</ul>
+<p><a href="http://camel.apache.org/stub.html">stub component</a></p>
+<ul>
+<li></li>
+</ul>
+<p><a href="http://camel.apache.org/validation.html">validator component</a></p>
+<ul>
+<li></li>
+</ul>
+<p><a href="http://camel.apache.org/vm.html">vm component</a></p>
+<ul>
+<li></li>
+</ul>
+<p><a href="http://camel.apache.org/xslt.html">xslt component</a></p>
+<p>Have fun!</p>
+</p>
+  			<a href="blog/2013/08/how-to-configure-slf4j-with-different-logger-implementations.html"><h1>How to configure SLF4J with different logger implementations</h1></a>
+  			<p>18 August 2013, tags: 
+			    <a href="../tags/slf4j.html">slf4j</a> 
+
+			    <a href="../tags/logging.html">logging</a> 
+  			</p>
+  			<p><p>There are many good benefits in using <code>slf4j</code> library as your Java<br />
+application logging API layer. Here I will show few examples on how<br />
+to use and configure it with different loggers.</p>
+<p>You can think of <code>slf4j</code> as an Java interface, and then you would<br />
+need an implementation (ONLY ONE) at runtime to provide the actual<br />
+logging details, such as writing to STDOUT or to a file etc. Each<br />
+logging implementation (or called binding) would obviously have their<br />
+own way of configuring the log output, but your application will remain<br />
+agnostic and always use the same <code>org.slf4j.Logger</code> API. Lets see how<br />
+this works in practice.</p>
+<h2></h2>
+<p>Using <code>slf4j</code> with Simple logger</p>
+<p>Create a Maven based project and this in your <code>pom.xml</code>.</p>
+<pre><code>    &lt;dependency&gt;
+        &lt;groupId&gt;org.slf4j&lt;/groupId&gt;
+        &lt;artifactId&gt;slf4j-api&lt;/artifactId&gt;
+        &lt;version&gt;1.7.5&lt;/version&gt;
+    &lt;/dependency&gt;
+</code></pre>
+<p>Now you may use <code>Logger</code> in your Java code like this.</p>
+<pre><code>package deng;
+import org.slf4j.*;
+public class Hello {
+    static Logger LOGGER = LoggerFactory.getLogger(Hello.class);
+    public static void main(String[] args) {
+        for (int i = 0; i &lt; 10; i++)
+            if (i % 2 == 0)
+                LOGGER.info(&quot;Hello {}&quot;, i);
+            else
+                LOGGER.debug(&quot;I am on index {}&quot;, i);
+    }
+}
+</code></pre>
+<p>The above will get your program compiled, but when you run it, you will see these output.</p>
+<pre><code>bash&gt; java deng.Hello
+SLF4J: Failed to load class &quot;org.slf4j.impl.StaticLoggerBinder&quot;.
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+</code></pre>
+<p>What its saying is that at runtime, you are missing the logging &quot;implementation&quot; (or the<br />
+logger binding), so <code>slf4j</code> simply use a &quot;NOP&quot; implmentation, which does nothing. In order<br />
+to see the output properly, you may try use an simple implementation that does not require<br />
+any configuration at all! Just go back to your <code>pom.xml</code> and add the following:</p>
+<pre><code>    &lt;dependency&gt;
+        &lt;groupId&gt;org.slf4j&lt;/groupId&gt;
+        &lt;artifactId&gt;slf4j-simple&lt;/artifactId&gt;
+        &lt;version&gt;1.7.5&lt;/version&gt;
+    &lt;/dependency&gt;
+</code></pre>
+<p>Now you see logging output on STDOUT with INFO level. This simple logger will default<br />
+show any INFO level message or higher. In order to see DEBUG messages, you would<br />
+need to pass in this System Property <code>-Dorg.slf4j.simpleLogger.defaultLogLevel=DEBUG</code><br />
+at your Java startup.</p>
+<h2></h2>
+<p>Using <code>slf4j</code> with Log4j logger</p>
+<p>Now we can experiment and swap different logger implementations, but your application code<br />
+can remain the same. All we need is to replace <code>slf4j-simple</code> with another popular logger<br />
+implementation, such as the Log4j.</p>
+<pre><code>    &lt;dependency&gt;
+        &lt;groupId&gt;org.slf4j&lt;/groupId&gt;
+        &lt;artifactId&gt;slf4j-log4j12&lt;/artifactId&gt;
+        &lt;version&gt;1.7.5&lt;/version&gt;
+    &lt;/dependency&gt;
+</code></pre>
+<p>Again, we must configure logging per implementation that we picked.<br />
+In this case, we need an <code>src/main/resources/log4j.properties</code> file.</p>
+<pre><code>    log4j.rootLogger=DEBUG, STDOUT
+    log4j.logger.deng=INFO
+    log4j.appender.STDOUT=org.apache.log4j.ConsoleAppender
+    log4j.appender.STDOUT.layout=org.apache.log4j.PatternLayout
+    log4j.appender.STDOUT.layout.ConversionPattern=%5p [%t] (%F:%L) - %m%n
+</code></pre>
+<p>Re-run your program, and you should see similar output.</p>
+<h2></h2>
+<p>Using <code>slf4j</code> with JDK logger</p>
+<p>The JDK actually comes with a logger package, and you can replace <code>pom.xml</code><br />
+with this logger implementation.</p>
+<pre><code>    &lt;dependency&gt;
+        &lt;groupId&gt;org.slf4j&lt;/groupId&gt;
+        &lt;artifactId&gt;slf4j-jdk14&lt;/artifactId&gt;
+        &lt;version&gt;1.7.5&lt;/version&gt;
+    &lt;/dependency&gt;
+</code></pre>
+<p>Now the configuration for JDK logging is a bit difficult to work with. Not only need a<br />
+config file, such as <code>src/main/resources/logging.properties</code>, but you would also need<br />
+to add a System properties <code>-Djava.util.logging.config.file=logging.properties</code><br />
+in order to have it pick it up. Here is an example to get you started:</p>
+<pre><code>.level=INFO
+
+handlers=java.util.logging.ConsoleHandler
+java.util.logging.ConsoleHandler.level=FINEST
+deng.level=FINEST
+</code></pre>
+<h2></h2>
+<p>Using <code>slf4j</code> with Logback logger</p>
+<p>The logback logger implementation is a super dupa quality implementation. If you intend<br />
+to write serious code that go into production, you may want to evaluate this option. Again<br />
+modify your <code>pom.xml</code> to replace with this:</p>
+<pre><code>    &lt;dependency&gt;
+        &lt;groupId&gt;ch.qos.logback&lt;/groupId&gt;
+        &lt;artifactId&gt;logback-classic&lt;/artifactId&gt;
+        &lt;version&gt;1.0.13&lt;/version&gt;
+    &lt;/dependency&gt;
+</code></pre>
+<p>Here is a sample of configuration <code>src/main/resources/logback.xml</code> to get things started.</p>
+<pre><code>&lt;configuration&gt;
+  &lt;appender name=&quot;STDOUT&quot; class=&quot;ch.qos.logback.core.ConsoleAppender&quot;&gt;
+    &lt;encoder&gt;
+      &lt;pattern&gt;%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n&lt;/pattern&gt;
+    &lt;/encoder&gt;
+  &lt;/appender&gt;
+
+  &lt;logger name=&quot;deng&quot; level=&quot;DEBUG&quot;/&gt;
+
+  &lt;root level=&quot;INFO&quot;&gt;
+    &lt;appender-ref ref=&quot;STDOUT&quot; /&gt;
+  &lt;/root&gt;
+&lt;/configuration&gt;
+</code></pre>
+<h2></h2>
+<p>Writing your own library with <code>slf4j</code> logger</p>
+<p>If you are providing an Java library for large end users consumption, its good idea to<br />
+set your project to depend on <code>slf4j-api</code> only, and then let your user choose any<br />
+logger implementation at their development or runtime environment. As end users, they<br />
+may quickly select one of option above and take advatage of their own favorite logging<br />
+implementation features.</p>
+<h2></h2>
+<p>References</p>
+<ul>
+<li>
+<p><a href="http://slf4j.org/">http://slf4j.org/</a></p>
+</li>
+<li>
+<p><a href="http://logging.apache.org/log4j/1.2/">http://logging.apache.org/log4j/1.2/</a></p>
+</li>
+<li>
+<p><a href="http://docs.oracle.com/javase/7/docs/technotes/guides/logging/">http://docs.oracle.com/javase/7/docs/technotes/guides/logging/</a></p>
+</li>
+<li>
+<p><a href="http://logback.qos.ch/">http://logback.qos.ch/</a></p>
+</li>
+</ul>
+</p>
 
 	<hr />
 
 	<ul class="pager">
 		<li class="previous"><a href="https://zemian.github.io/18">Previous</a></li>
-		<li>Page: 19/29</li>
+		<li>Page: 19/28</li>
 		<li class="next"><a href="https://zemian.github.io/20">Next</a></li>
 	</ul>
 

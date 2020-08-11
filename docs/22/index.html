@@ -53,254 +53,6 @@
       </div>
     </div>
     <div class="container">
-  			<a href="blog/2012/12/a-simple-groovy-issue-tracker-using-file-system.html"><h1>A simple Groovy issue tracker using file system</h1></a>
-  			<p>18 December 2012, tags: 
-			    <a href="../tags/groovy.html">groovy</a> 
-  			</p>
-  			<p><p>It will be a chaos not to track bugs and feature requests when you developing software. Having a simple issue tracker would make managing the project much more successful. Now I like simple stuff, and I think for small project, having this tracker right inside the source control (especially with DSVC like Mercurial/Git etc) repository is not only doable, but very convenient as well. You don't have to go crazy with all the fancy features, but just enough to track issues are fine. I would like to propose this layout for you.</p>
-<p>Let's say you have a project that looks like this</p>
-<pre><code>project
- +- src/main/java/Hello.java
- +- issues/issue-001.md
- +- pom.xml
-</code></pre>
-<p>All I need is a simple directory <code>issues</code> to get going. Now I have a place to track my issue! First issue <code>issue-000.md</code> should be what your project is about. For example:</p>
-<pre><code>/id=issue-001
-/createdon=2012-12-16 18:07:08
-/type=bug
-/status=new
-/resolution=
-/from=Zemian
-/to=
-/found=
-/fixed=
-/subject=A simple Java Hello program
-
-# Updated on 2012-12-16 18:07:08
-
-We want to create a Maven based Hello world program. It should print &quot;Hello World.&quot;
-</code></pre>
-<p>I choose <code>.md</code> as file extension for intending to write comments in Markdown format. Since it's a text file, you do what you want. To be more structured, I have added some headers metadata for issue tracking. Let's define some here. I would propose to use these and formatting:</p>
-<pre><code> /id=issue-&lt;NUM&gt;
- /createdon=&lt;TIMESTAMP&gt;
- /type=feature|bug|question
- /status=new|reviewing|working|onhold|testing|resolved
- /resolution=fixed|rejected|duplicated
- /from=&lt;REPORTER_FROM_NAME&gt;
- /to=&lt;ASSIGNEE_TO_NAME&gt;
- /found=&lt;VERSION_FOUND&gt;
- /fixed=&lt;VERSION_FIXED&gt;
-</code></pre>
-<p>That should cover most of the bug and feature development issues. It's not cool to write software without a history of changes, including these issues created. So let's use a source control. I highly recommend you to use Mercurial <code>hg</code>. You can create and initialize a new repository like this.</p>
-<pre><code>bash&gt; cd project
-bash&gt; hg init
-bash&gt; hg add
-bash&gt; hg commit -m &quot;My hello world project&quot;
-</code></pre>
-<p>Now your project is created and we have a place to track your issues. Now it's simple text file, so use your favorite text editor and edit away. However, creating new issue with those header tags is boring. It will be nice to have a script that manage it a little. I have a Groovy script <code>issue.groovy</code> (see at the end of this article) that let you run reports and create new issues. You can add this script into your <code>project/issues</code> directory and you can instantly creating new issue and querying reports! Here is an example output on my PC:</p>
-<pre><code>bash&gt; cd project
-bash&gt; groovy scripts/issue.groovy
-
-Searching for issues with /status!=resolved
-Issue: /id=issue-001 /status=new /subject=A simple Java Hello program
-1 issues found.
-
-bash&gt; groovy scripts/issue.groovy --new /type=feature /subject='Add a unit test.'
-
-project/issues/issue-002.md created.
-/id=issue-002
-/createdon=2012-12-16 19:10:00
-/type=feature
-/status=new
-/resolution=
-/from=Zemian
-/to=
-/found=
-/fixed=
-/subject=Add a unit test.
-
-bash&gt; groovy scripts/issue.groovy
-
-Searching for issues with /status!=resolved
-Issue: /id=issue-000 /status=new /subject=A simple Java Hello program
-Issue: /id=issue-002 /status=new /subject=Add a unit test.
-2 issues found.
-
-bash&gt; groovy scripts/issue.groovy --details /id=002
-
-Searching for issues with /id=002
-Issue: /id=issue-002
-  /createdon=2012-12-16 19:10:00 /found= /from=Zemian /resolution= /status=new /type=feature
-  /subject=Add a unit test.
-1 issues found.
-
-bash&gt; groovy scripts/issue.groovy --update /id=001 /status=resolved /resolution=fixed 'I fixed this thang.'
-Updating issue /id=issue-001
-Updating /status=resolved
-Updating /resolution=fixed
-
-Update issue-001 completed.
-</code></pre>
-<p>The script give you some quick and consistent way to create/update/search issues. But they are just plain text files! You can just as well fire up your favorite text editor and change any any thing you want. Save and even commit it into your source repository. All will not lost.</p>
-<p>I hope this issue tracking script can get your next project started quickly. Let me know what you do you think!</p>
-<p>Enjoy!</p>
-<p>Zemian</p>
-<p>And here is my <code>issue.groovy</code> script.</p>
-<hr />
-<p>Oh, and of course I eat my own *dog food. Here are few issues that I started to track the <code>issue.grooy</code> itself.</p>
-<ul>
-<li>
-<p>v1.0.0 (2012/12/19)</p>
-</li>
-<li>
-<p><a href="https://bitbucket.org/saltnlight5/sandbox/src/tip/scripts/issue-001.md">issue-001</a></p>
-</li>
-<li>
-<p>v1.0.1 (2012/12/20)</p>
-</li>
-<li>
-<p><a href="https://bitbucket.org/saltnlight5/sandbox/src/tip/scripts/issue-002.md">issue-002</a></p>
-</li>
-<li><a href="https://bitbucket.org/saltnlight5/sandbox/src/tip/scripts/issue-003.md">issue-003</a></li>
-</ul>
-</p>
-  			<a href="blog/2012/12/getting-started-with-quartz-scheduler-on-mysql-database.html"><h1>Getting started with Quartz Scheduler on MySQL database</h1></a>
-  			<p>14 December 2012, tags: 
-			    <a href="../tags/quartz.html">quartz</a> 
-  			</p>
-  			<p><p>Here are some simple steps to get you fully started with Quartz Scheduler on MySQL database using Groovy. The script below will allow you to quickly experiment different Quartz configuration settings using an external file.</p>
-<p>First step is to setup the database with tables. Assuming you already have installed MySQL and have access to create database and tables.</p>
-<pre><code>bash&gt; mysql -u root -p
-
-sql&gt; create database quartz2;
-sql&gt; create user 'quartz2'@'localhost' identified by 'quartz2123';
-sql&gt; grant all privileges on quartz2.* to 'quartz2'@'localhost';
-sql&gt; exit;
-
-bash&gt; mysql -u root -p quartz2 &lt; /path/to/quartz-dist/docs/dbTables/tables_mysql.sql
-</code></pre>
-<p>The <code>tables_mysql.sql</code> can be found from Quartz distribution download, or directly from their source <a href="http://svn.terracotta.org/svn/quartz/tags/quartz-2.1.6/docs/dbTables">here</a>.</p>
-<p>Once the database is up, you need to write some code to start up the Quartz Scheduler. Here is a simply Groovy script <code>quartzServer.groovy</code> that will run as a tiny scheduler server.</p>
-<pre><code>// Run Quartz Scheduler as a server
-// Author: Author: Zemian Deng, Date: 2012-12-15_16:46:09
-@GrabConfig(systemClassLoader=true)
-@Grab('mysql:mysql-connector-java:5.1.22')
-@Grab('org.slf4j:slf4j-simple:1.7.1')
-@Grab('org.quartz-scheduler:quartz:2.1.6')
-import org.quartz.*
-import org.quartz.impl.*
-import org.quartz.jobs.*
-
-config = args.length &gt; 0 ? args[0] : &quot;quartz.properties&quot;
-scheduler = new StdSchedulerFactory(config).getScheduler()
-scheduler.start()
-
-// Register shutdown
-addShutdownHook {
-  scheduler.shutdown()
-}
-
-// Quartz has its own thread, so now put this script thread to sleep until
-// user hit CTRL+C
-while (!scheduler.isShutdown()) {
- Thread.sleep(Long.MAX_VALUE)
-}
-</code></pre>
-<p>And now you just need a config file <code>quartz-mysql.properties</code> that looks like this:</p>
-<pre><code># Main Quartz configuration
-org.quartz.scheduler.skipUpdateCheck = true
-org.quartz.scheduler.instanceName = DatabaseScheduler
-org.quartz.scheduler.instanceId = NON_CLUSTERED
-org.quartz.scheduler.jobFactory.class = org.quartz.simpl.SimpleJobFactory
-org.quartz.jobStore.class = org.quartz.impl.jdbcjobstore.JobStoreTX
-org.quartz.jobStore.driverDelegateClass = org.quartz.impl.jdbcjobstore.StdJDBCDelegate
-org.quartz.jobStore.dataSource = quartzDataSource
-org.quartz.jobStore.tablePrefix = QRTZ_
-org.quartz.threadPool.class = org.quartz.simpl.SimpleThreadPool
-org.quartz.threadPool.threadCount = 5
-
-# JobStore: JDBC jobStoreTX
-org.quartz.dataSource.quartzDataSource.driver = com.mysql.jdbc.Driver
-org.quartz.dataSource.quartzDataSource.URL = jdbc:mysql://localhost:3306/quartz2
-org.quartz.dataSource.quartzDataSource.user = quartz2
-org.quartz.dataSource.quartzDataSource.password = quartz2123
-org.quartz.dataSource.quartzDataSource.maxConnections = 8
-</code></pre>
-<p>You can run the Groovy script as usual</p>
-<pre><code>bash&gt; groovy quartzServer.groovy quartz-mysql.properties
-Dec 15, 2012 6:20:26 PM com.mchange.v2.log.MLog 
-INFO: MLog clients using java 1.4+ standard logging.
-Dec 15, 2012 6:20:27 PM com.mchange.v2.c3p0.C3P0Registry banner
-INFO: Initializing c3p0-0.9.1.1 [built 15-March-2007 01:32:31; debug? true; trace:10]
-[main] INFO org.quartz.impl.StdSchedulerFactory - Using default implementation for ThreadExecutor
-[main] INFO org.quartz.core.SchedulerSignalerImpl - Initialized Scheduler Signaller of type: class org.quartz.core.SchedulerSignalerImpl
-[main] INFO org.quartz.core.QuartzScheduler - Quartz Scheduler v.2.1.6 created.
-[main] INFO org.quartz.core.QuartzScheduler - JobFactory set to: org.quartz.simpl.SimpleJobFactory@1a40247
-[main] INFO org.quartz.impl.jdbcjobstore.JobStoreTX - Using thread monitor-based data access locking (synchronization).
-[main] INFO org.quartz.impl.jdbcjobstore.JobStoreTX - JobStoreTX initialized.
-[main] INFO org.quartz.core.QuartzScheduler - Scheduler meta-data: Quartz Scheduler (v2.1.6) 'DatabaseScheduler' with instanceId 'NON_CLUSTERED'
-  Scheduler class: 'org.quartz.core.QuartzScheduler' - running locally.
-  NOT STARTED.
-  Currently in standby mode.
-  Number of jobs executed: 0
-  Using thread pool 'org.quartz.simpl.SimpleThreadPool' - with 5 threads.
-  Using job-store 'org.quartz.impl.jdbcjobstore.JobStoreTX' - which supports persistence. and is not clustered.
-
-[main] INFO org.quartz.impl.StdSchedulerFactory - Quartz scheduler 'DatabaseScheduler' initialized from the specified file : 'quartz-mysql.properties' from the class resource path.
-[main] INFO org.quartz.impl.StdSchedulerFactory - Quartz scheduler version: 2.1.6
-Dec 15, 2012 6:20:27 PM com.mchange.v2.c3p0.impl.AbstractPoolBackedDataSource getPoolManager
-INFO: Initializing c3p0 pool... com.mchange.v2.c3p0.ComboPooledDataSource [ acquireIncrement -&gt; 3, acquireRetryAttempts
--&gt; 30, acquireRetryDelay -&gt; 1000, autoCommitOnClose -&gt; false, automaticTestTable -&gt; null, breakAfterAcquireFailure -&gt; false, checkoutTimeout -&gt; 0, connectionCustomizerClassName -&gt; null, connectionTesterClassName -&gt; com.mchange.v2.c3p0.impl.DefaultConnectionTester, dataSourceName -&gt; 1hge16k8r18mveoq1iqtotg|1486306, debugUnreturnedConnectionStackTraces -&gt; fals
-e, description -&gt; null, driverClass -&gt; com.mysql.jdbc.Driver, factoryClassLocation -&gt; null, forceIgnoreUnresolvedTransactions -&gt; false, identityToken -&gt; 1hge16k8r18mveoq1iqtotg|1486306, idleConnectionTestPeriod -&gt; 0, initialPoolSize -&gt; 3, jdbcUrl -&gt; jdbc:mysql://localhost:3306/quartz2, lastAcquisitionFailureDefaultUser -&gt; null, maxAdministrativeTaskTime -&gt; 0
-, maxConnectionAge -&gt; 0, maxIdleTime -&gt; 0, maxIdleTimeExcessConnections -&gt; 0, maxPoolSize -&gt; 8, maxStatements -&gt; 0, maxStatementsPerConnection -&gt; 120, minPoolSize -&gt; 1, numHelperThreads -&gt; 3, numThreadsAwaitingCheckoutDefaultUser -&gt; 0, pref
-erredTestQuery -&gt; null, properties -&gt; {user=******, password=******}, propertyCycle -&gt; 0, testConnectionOnCheckin -&gt; false, testConnectionOnCheckout -&gt; false, unreturnedConnectionTimeout -&gt; 0, usesTraditionalReflectiveProxies -&gt; false ]
-[main] INFO org.quartz.impl.jdbcjobstore.JobStoreTX - Freed 0 triggers from 'acquired' / 'blocked' state.[main] INFO org.quartz.impl.jdbcjobstore.JobStoreTX - Recovering 0 jobs that were in-progress at the time of the last shut-down.
-[main] INFO org.quartz.impl.jdbcjobstore.JobStoreTX - Recovery complete.
-[main] INFO org.quartz.impl.jdbcjobstore.JobStoreTX - Removed 0 'complete' triggers.
-[main] INFO org.quartz.impl.jdbcjobstore.JobStoreTX - Removed 0 stale fired job entries.
-[main] INFO org.quartz.core.QuartzScheduler - Scheduler DatabaseScheduler_$_NON_CLUSTERED started.
-
-
-... CTRL+C
-[Thread-6] INFO org.quartz.core.QuartzScheduler - Scheduler DatabaseScheduler_$_NON_CLUSTERED shutting down.
-[Thread-6] INFO org.quartz.core.QuartzScheduler - Scheduler DatabaseScheduler_$_NON_CLUSTERED paused.
-[Thread-6] INFO org.quartz.core.QuartzScheduler - Scheduler DatabaseScheduler_$_NON_CLUSTERED shutdown complete.
-</code></pre>
-<p>That's a full run of above setup. Go ahead and play with different config. Read <a href="http://quartz-scheduler.org/documentation/quartz-2.1.x/configuration/">http://quartz-scheduler.org/documentation/quartz-2.1.x/configuration</a> for more details.</p>
-<hr />
-<p>Here I will post couple more easy config that will get you started in a commonly used config set.</p>
-<p>A MySQL cluster enabled configuration. With this, you can start one or more shell terminal and run different instance of <code>quartzServer.groovy</code> with the same config. All the quartz scheduler instances should cluster themselve and distribute your jobs evenly.</p>
-<pre><code># Main Quartz configuration
-org.quartz.scheduler.skipUpdateCheck = true
-org.quartz.scheduler.instanceName = DatabaseClusteredScheduler
-org.quartz.scheduler.instanceId = AUTO
-org.quartz.scheduler.jobFactory.class = org.quartz.simpl.SimpleJobFactory
-org.quartz.jobStore.class = org.quartz.impl.jdbcjobstore.JobStoreTX
-org.quartz.jobStore.driverDelegateClass = org.quartz.impl.jdbcjobstore.StdJDBCDelegate
-org.quartz.jobStore.dataSource = quartzDataSource
-org.quartz.jobStore.tablePrefix = QRTZ_
-org.quartz.jobStore.isClustered = true
-org.quartz.threadPool.class = org.quartz.simpl.SimpleThreadPool
-org.quartz.threadPool.threadCount = 5
-
-# JobStore: JDBC jobStoreTX
-org.quartz.dataSource.quartzDataSource.driver = com.mysql.jdbc.Driver
-org.quartz.dataSource.quartzDataSource.URL = jdbc:mysql://localhost:3306/quartz2
-org.quartz.dataSource.quartzDataSource.user = quartz2
-org.quartz.dataSource.quartzDataSource.password = quartz2123
-org.quartz.dataSource.quartzDataSource.maxConnections = 8
-</code></pre>
-<p>Here is another config set for a simple in-memory scheduler.</p>
-<pre><code># Main Quartz configuration
-org.quartz.scheduler.skipUpdateCheck = true
-org.quartz.scheduler.instanceName = InMemoryScheduler
-org.quartz.scheduler.jobFactory.class = org.quartz.simpl.SimpleJobFactory
-org.quartz.threadPool.class = org.quartz.simpl.SimpleThreadPool
-org.quartz.threadPool.threadCount = 5
-</code></pre>
-<p>Now, if you need more fancy UI management of Quartz, give <a href="http://code.google.com/p/myschedule">MySchedule</a> a try.</p>
-<p>Happy scheduling!</p>
-</p>
   			<a href="blog/2012/12/cygwin-tips-open-anything-with-cygstart.html"><h1>Cygwin tips: open anything with cygstart</h1></a>
   			<p>13 December 2012, tags: 
 			    <a href="../tags/cygwin.html">cygwin</a> 
@@ -325,20 +77,18 @@ bash&gt; open /cygdrive/c/my.docx
   			<p>12 December 2012, tags: 
 			    <a href="../tags/cmd.html">cmd</a> 
   			</p>
-  			<p><div class="paragraph">
-<p>If you work in a Corp env and having a Laptop, you will likely go home with it still running and it must has all the network drives still mapped. And then later when you are at home and try to use your Laptop, you will see considerable delay. The Windows Explore and many Windows application that access File Browser dialog will try relentlessly in reconnecting those drives without sucess. This also affect your Cygwin shell too.</p>
-</div>
-<div class="paragraph">
+  			<p><p>If you work in a Corp env and having a Laptop, you will likely go home<br />
+with it still running and it must has all the network drives still<br />
+mapped. And then later when you are at home and try to use your Laptop,<br />
+you will see considerable delay. The Windows Explore and many Windows<br />
+application that access File Browser dialog will try relentlessly in<br />
+reconnecting those drives without sucess. This also affect your Cygwin<br />
+shell too.</p>
 <p>Here is a DOS command to remove them all.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>C:&gt; net use * /delete /y</pre>
-</div>
-</div>
-<div class="paragraph">
+<pre><code>C:&gt; net use * /delete /y
+</code></pre>
 <p>If you are in Cygwin bash, then you must quote the <code>'*'</code>.</p>
-</div></p>
+</p>
   			<a href="blog/2012/12/intellij-idea-is-pretty-awesome.html"><h1>Intellij IDEA is pretty awesome!</h1></a>
   			<p>11 December 2012, tags: 
 			    <a href="../tags/intellij.html">intellij</a> 
@@ -636,12 +386,156 @@ assert result == [
 </code></pre>
 <p>The output should print nothing, as it passed the test. What do you think?</p>
 </p>
+  			<a href="blog/2012/10/exploring-different-scheduling-types-with-quartz-2.html"><h1>Exploring different scheduling types with Quartz 2</h1></a>
+  			<p>22 October 2012, tags: 
+			    <a href="../tags/quartz.html">quartz</a> 
+  			</p>
+  			<p><p>We often think of Cron when we want to schedule a job. Cron is very flexible in expressing an repeating occurance of an event/job in a very compact expression. However it's not answer for everything, as I often see people are asking for help in the Quartz user forum. Did you know that the popular <a href="http://quartz-scheduler.org">Quartz 2</a> library provide many other schedule types (called Trigger) besides cron? I will show you each of the Quartz 2 built-in schedule types here within a complete, standalone Groovy script that you can run and test it out. Let's start with a simple one.</p>
+<pre><code>@Grab('org.quartz-scheduler:quartz:2.1.6')
+@Grab('org.slf4j:slf4j-simple:1.7.1')
+import org.quartz.*
+import org.quartz.impl.*
+import org.quartz.jobs.*
+
+import static org.quartz.DateBuilder.*
+import static org.quartz.JobBuilder.*
+import static org.quartz.TriggerBuilder.*
+import static org.quartz.SimpleScheduleBuilder.*
+
+def trigger = newTrigger()
+    .withSchedule(
+        simpleSchedule()
+        .withIntervalInSeconds(3)
+        .repeatForever())
+    .startNow()
+    .build()
+dates = TriggerUtils.computeFireTimes(trigger, null, 20)
+dates.each{ println it }
+</code></pre>
+<p>This is the Quartz's <code>SimpleTrigger</code>, and it allows you to create a fixed rate repeating job. You can even limit to certain number of count if you like. I have imported all the nessary classes the script needs, and I use the latest Quartz 2.x builder API to create an instance of the trigger.</p>
+<p>The quickest way to explore and test out whether a scheduling fits your need is to print out its future execution times. Hence you see me using <code>TriggerUtils.computeFireTimes</code> in the script. Run the above and you should get the datetimes as scheduled to be run, in this case every 3 seconds.</p>
+<pre><code>bash&gt; $ groovy simpleTrigger.groovy
+    Tue Oct 23 20:28:01 EDT 2012
+    Tue Oct 23 20:28:04 EDT 2012
+    Tue Oct 23 20:28:07 EDT 2012
+    Tue Oct 23 20:28:10 EDT 2012
+    Tue Oct 23 20:28:13 EDT 2012
+    Tue Oct 23 20:28:16 EDT 2012
+    Tue Oct 23 20:28:19 EDT 2012
+    Tue Oct 23 20:28:22 EDT 2012
+    Tue Oct 23 20:28:25 EDT 2012
+    Tue Oct 23 20:28:28 EDT 2012
+    Tue Oct 23 20:28:31 EDT 2012
+    Tue Oct 23 20:28:34 EDT 2012
+    Tue Oct 23 20:28:37 EDT 2012
+    Tue Oct 23 20:28:40 EDT 2012
+    Tue Oct 23 20:28:43 EDT 2012
+    Tue Oct 23 20:28:46 EDT 2012
+    Tue Oct 23 20:28:49 EDT 2012
+    Tue Oct 23 20:28:52 EDT 2012
+    Tue Oct 23 20:28:55 EDT 2012
+    Tue Oct 23 20:28:58 EDT 2012
+</code></pre>
+<p>The most frequent used scheduling type is the <code>CronTrigger</code>, and you can test it out in similar way.</p>
+<pre><code>@Grab('org.quartz-scheduler:quartz:2.1.6')
+@Grab('org.slf4j:slf4j-simple:1.7.1')
+import org.quartz.*
+import org.quartz.impl.*
+import org.quartz.jobs.*
+
+import static org.quartz.DateBuilder.*
+import static org.quartz.JobBuilder.*
+import static org.quartz.TriggerBuilder.*
+import static org.quartz.CronScheduleBuilder.*
+
+def trigger = newTrigger()
+    .withSchedule(cronSchedule(&quot;0 30 08 * * ?&quot;))
+    .startNow()
+    .build()
+dates = TriggerUtils.computeFireTimes(trigger, null, 20)
+dates.each{ println it }
+</code></pre>
+<p>The javadoc for <a href="http://quartz-scheduler.org/api/2.1.5/org/quartz/CronExpression.html">CronExpression</a> is very good and you should definately read it throughly to use it effectively. With the script, you can explore all the combination you want easily and verify future fire times before your job is invoked.</p>
+<p>Now, if you have some odd scheduling needs such as run a job every 30 mins from MON to FRI and only between 8:00AM to 10:00AM, then don't try to cramp all that into the Cron expression. The Quartz 2.x has a dedicated trigger type just for this use, and it's<br />
+called <code>DailyTimeIntervalTrigger</code>! Check this out:</p>
+<pre><code>@Grab('org.quartz-scheduler:quartz:2.1.6')
+@Grab('org.slf4j:slf4j-simple:1.7.1')
+import org.quartz.*
+import org.quartz.impl.*
+import org.quartz.jobs.*
+
+import static org.quartz.DateBuilder.*
+import static org.quartz.JobBuilder.*
+import static org.quartz.TriggerBuilder.*
+import static org.quartz.DailyTimeIntervalScheduleBuilder.*
+import static java.util.Calendar.*
+
+def trigger = newTrigger()
+    .withSchedule(
+        dailyTimeIntervalSchedule()
+        .startingDailyAt(TimeOfDay.hourMinuteAndSecondOfDay(8, 0, 0))
+        .endingDailyAt(TimeOfDay.hourMinuteAndSecondOfDay(10, 0, 0))
+        .onDaysOfTheWeek(MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY)
+        .withInterval(10, IntervalUnit.MINUTE))
+    .startNow()
+    .build()
+dates = TriggerUtils.computeFireTimes(trigger, null, 20)
+dates.each{ println it }
+</code></pre>
+<p>Another hidden Trigger type from Quartz is <code>CalendarIntervalTrigger</code>, and you would use this if you need to repeat job that's in every interval of a calendar period, such as every year or month etc, where the interval is not fixed, but calendar specific. Here is a test script for that.</p>
+<pre><code>@Grab('org.quartz-scheduler:quartz:2.1.6')
+@Grab('org.slf4j:slf4j-simple:1.7.1')
+import org.quartz.*
+import org.quartz.impl.*
+import org.quartz.jobs.*
+
+import static org.quartz.DateBuilder.*
+import static org.quartz.JobBuilder.*
+import static org.quartz.TriggerBuilder.*
+import static org.quartz.CalendarIntervalScheduleBuilder.*
+import static java.util.Calendar.*
+
+def trigger = newTrigger()
+    .withSchedule(
+        calendarIntervalSchedule()
+        .withInterval(2, IntervalUnit.MONTH))
+    .startAt(futureDate(10, IntervalUnit.MINUTE))
+    .build()
+dates = TriggerUtils.computeFireTimes(trigger, null, 20)
+dates.each{ println it }
+</code></pre>
+<p>I hope these will help you get started on most of your scheduling need with Quartz 2. Try these out and see your future fire times before even scheduling a job into the scheduler should save you some times and troubles.</p>
+</p>
+  			<a href="blog/2012/10/a-very-lean-war-file-for-myschedule.html"><h1>A very lean war file for MySchedule</h1></a>
+  			<p>22 October 2012, tags: 
+			    <a href="../tags/myschedule.html">myschedule</a> 
+
+			    <a href="../tags/quartz.html">quartz</a> 
+  			</p>
+  			<p><p>On the next coming MySchedule release, I've been working on removing few dependencies in the project to improve its size, but yet still keeping all the original functionality.</p>
+<p>The <a href="http://code.google.com/p/myschedule/downloads/list">result</a> is about 70% reduction in war file size!</p>
+<p>There are few things that I removed that resulted in a much smaller webapp.</p>
+<ol>
+<li>
+<p>Removed MySQL jdbc driver. Not every one uses Quartz with this DB, so including it in distribution is not necessary. You can easily add it into a server classpath without modifying the war.</p>
+</li>
+<li>
+<p>Removed Groovy. I've improved the UI and the ScriptingJob component so that it works with any Java standard script engine. The JDK comes with JavaScript engine built-in! So now Groovy can be optional, and yet user can still use it by simply add it to the server classpath, and they can select the language in MySchedule UI. Without it, MySchedule will just default to JavaScript for scripting.</p>
+</li>
+<li>
+<p>Removed Spring (MVC) Framework. Now this is a big task because MySchedule uses Spring annotations, controllers and service beans in IoC config to bootstrap the entire webapp. I've replaced it with a simple static <a href="http://code.google.com/p/myschedule/source/browse/myschedule-web/src/main/java/myschedule/web/AppConfig.java">AppConfig</a> that wired my services together, and then used the plain Servlet API to process all http requests.</p>
+</li>
+</ol>
+<p>So why remove Spring? Don't get me wrong, I like working with Spring, and I think it's awesome framework. I have been working with Spring based projects for a long time, and I even have my own set of <a href="http://code.google.com/p/zemiandeng/source/browse/springmvc-project-template">SpringMVC template</a> to<br />
+start any web application quickly. I know where things are configured and where to add new code to make a Spring app works, and it's flexibility are fantastic for development, especially for larger projects.  But in MySchedule case, it is just a small webapp that has it's focus is on Quartz. I wanted to remove Spring to create less confusion for any one who want to look at the code. The Spring bundled with Quartz in its core, and I want to avoid (I didn't use any of that any way.) I also want to shrink the war file size. And lastly, just to challenge of myself that, yes there is life outside of Spring, and it still can be maintainable. :-P</p>
+<p>So in replacing Spring, but kept very much of same coding style, I have created my tiny little web request processing library. It only has few classes, and it will allow me to use single Servlet controller to map and process all URL actions through many smaller unit of code, which I called action handler. Now MySchedule can be easily configured through one <a href="http://code.google.com/p/myschedule/source/browse/myschedule-web/src/main/java/myschedule/web/servlet/app/MainServlet.java">MainServlet</a>class. Not bad!</p>
+</p>
 
 	<hr />
 
 	<ul class="pager">
 		<li class="previous"><a href="https://zemian.github.io/21">Previous</a></li>
-		<li>Page: 22/29</li>
+		<li>Page: 22/28</li>
 		<li class="next"><a href="https://zemian.github.io/23">Next</a></li>
 	</ul>
 

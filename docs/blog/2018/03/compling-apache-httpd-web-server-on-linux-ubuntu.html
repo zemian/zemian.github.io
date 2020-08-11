@@ -63,9 +63,7 @@
 	    <a href="../../../tags/linux.html">linux</a> 
 	</p>
 
-	<p><div class="listingblock">
-<div class="content">
-<pre>sudo apt install autoconf automake libtool libtool-bin libpcre3-dev libexpat1-dev libexpat1-dev libexpat1-dev
+	<p><pre><code>sudo apt install autoconf automake libtool libtool-bin libpcre3-dev libexpat1-dev libexpat1-dev libexpat1-dev
 mkdir ossdev
 cd ossdev
 git clone git://git.apache.org/httpd.git
@@ -82,9 +80,9 @@ cd ../../
 ./configure --enable-mpms-shared --with-pmp=worker --enable-mods-shared=most
 make
 sudo make install
-sudo /usr/local/apache2/bin/apachectl -k start</pre>
-</div>
-</div></p>
+sudo /usr/local/apache2/bin/apachectl -k start
+</code></pre>
+</p>
 
 	<hr />
 

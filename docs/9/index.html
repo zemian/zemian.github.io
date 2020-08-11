@@ -53,91 +53,6 @@
       </div>
     </div>
     <div class="container">
-  			<a href="blog/2016/06/some-of-my-old-projects.html"><h1>Some of my old projects</h1></a>
-  			<p>30 June 2016  			</p>
-  			<p><div class="paragraph">
-<p>Here are some of interesting side projects I have worked on in the past</p>
-</div>
-<div class="sect2">
-<h3 id="_django_developer_at_shift_ministry">Django Developer at SHIFT Ministry</h3>
-<div class="paragraph">
-<p>Orlando, FL Feb 2013 to Present</p>
-</div>
-<div class="paragraph">
-<p>Eventful web application</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Technologies used: Python 2.7, Django 1.6, Bootstrap, JQuery, SublimeText, MySQL, Mercurial(hg).</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>Simple CRM web application</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Technologies used: Python 3.5, Django 1.9, PyCharm, PostgreSQL, Mercurial(hg).</p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_quartz_scheduler">Quartz Scheduler</h3>
-<div class="paragraph">
-<p><a href="http://quartz-scheduler.org" class="bare">http://quartz-scheduler.org</a></p>
-</div>
-<div class="paragraph">
-<p>I am a committer for Quartz Scheduler project, and I often help users on their forums. I have fixed many bug issues and implemented new features during the quartz 2.1 release. You may find my commits with svn username id <code>light5</code> in their repository, or <code>zemian</code> after they moved to github.com.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_myschedule">MySchedule</h3>
-<div class="paragraph">
-<p><a href="https://github.com/zemian/myschedule" class="bare">https://github.com/zemian/myschedule</a></p>
-</div>
-<div class="paragraph">
-<p>I have written a UI front-end web application to managing quartz schedulers. I am the owner of this project, and I have done build, release, and written full documentation on how to use the application. There are several thousands of downloads since the first release.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_timemachine_scheduler">TimeMachine Scheduler</h3>
-<div class="paragraph">
-<p><a href="https://bitbucket.org/zemian/timemachine-scheduler" class="bare">https://bitbucket.org/zemian/timemachine-scheduler</a> (Inactive!)</p>
-</div>
-<div class="paragraph">
-<p>Ive created a Java scheduler project that is fully scalable for enterprise use. Its a scheduler application that has easy job configuration and flexible scheduling with plugable data storage.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_sweetscala_web_framework">SweetScala Web Framework</h3>
-<div class="paragraph">
-<p><a href="https://code.google.com/archive/p/sweetscala" class="bare">https://code.google.com/archive/p/sweetscala</a> (Inactive!)</p>
-</div>
-<div class="paragraph">
-<p>Sweet is a MVC based web application framework for building dynamic web applications. The framework is made with Scala, an Object Oriented and Functional programming language that runs on JVM.</p>
-</div>
-</div></p>
-  			<a href="blog/2016/06/how-to-install-venv-and-pip-with-a-python-3-4-distribution.html"><h1>How to install venv and pip with a python 3.4 distribution</h1></a>
-  			<p>27 June 2016, tags: 
-			    <a href="../tags/python.html">python</a> 
-  			</p>
-  			<p><p>If you are unfortunate enough to have stuck with a Python 3.4 distribution and you want to setup a virtual env, then likely you will get the ensurepip module not found error:</p>
-<p>bash&gt; python3.4 -m venv mypy<br />
-Error: Command '['/home/zedeng/py-dev/mypy/bin/python3.4', '-Im', 'ensurepip', '--upgrade', '--default-pip']' returned non-zero exit status 1</p>
-<p>I found someone posted a nice solution [1] to this. So first remove the dir first.<br />
-bash&gt; rm -r mypy</p>
-<p>Now do it again like this:<br />
-bash&gt; python3.4 -m venv mypy --without-pip<br />
-bash&gt; . mypy/bin/activate</p>
-<p>mypy&gt; wget <a href="https://bootstrap.pypa.io/get-pip.py">https://bootstrap.pypa.io/get-pip.py</a><br />
-mypy&gt; python get-pip.py<br />
-mypy&gt; pip list</p>
-<p>Now the problem is solved. I believe this problem is gone if you upgrade to Python 3.5</p>
-<p>[1] <a href="http://www.thefourtheye.in/2014/12/Python-venv-problem-with-ensurepip-in-Ubuntu.html">http://www.thefourtheye.in/2014/12/Python-venv-problem-with-ensurepip-in-Ubuntu.html</a></p>
-</p>
   			<a href="blog/2016/06/getting-started-with-postgresql-database.html"><h1>Getting started with PostgreSQL database</h1></a>
   			<p>26 June 2016, tags: 
 			    <a href="../tags/postgres.html">postgres</a> 
@@ -145,34 +60,47 @@ mypy&gt; pip list</p>
   			<p><p>I have been learning and using PostgreSQL recently for a Django app, and I have to say it's really GOOD! I have used quite a bit of MySQL and Oracle DB in my workplace, so I didn't find good reason to learn PostgreSQL in the past. Now I finally get a chance to start another new project with Django, so I decided to give it a try, and I wasn't disappointed. I will write up a brief getting started guide here for those impatient to get things moving.</p>
 <p>Installing. If you are running on a Mac, the easiest way to try it out is just get the <a href="http://postgresapp.com">http://postgresapp.com</a>, you just start the App, and your DB is running! No config needed!</p>
 <p>After you have the database installed and running, you can either connect to the default &quot;postgres&quot; public database by (psql command), or create your own database. To create your own database, you run this command:</p>
-<p>bash&gt; PATH=/Applications/Postgres.app/Contents/Versions/latest/bin:$PATH<br />
-bash&gt; createdb mydb</p>
+<pre><code>bash&gt; PATH=/Applications/Postgres.app/Contents/Versions/latest/bin:$PATH
+bash&gt; createdb mydb
+</code></pre>
 <p>Now you can connect to the new database</p>
-<p>bash&gt; psql -d mydb</p>
-<p>Once you connected to database, you may run SQL to create/insert/select a table:<br />
-mydb-# create table test(id serial, name varchar(200));<br />
-mydb-# insert into test(name) values('Hello');<br />
-mydb-# select * from test;</p>
-<p>To inspect your  table columns:<br />
-mydb-# \d test;</p>
-<p>To see all tables available:<br />
-mydb-# \dt;</p>
-<p>To see all database available:<br />
-mydb-# \l;</p>
-<p>To switch to another database:<br />
-mydb-# \c mydb2;</p>
-<p>To see more help (check out \d options! it's super flexible and useful.):<br />
-mydb-# ?;</p>
-<p>To quit the psql shell:<br />
-mydb-# \q;</p>
+<pre><code>bash&gt; psql -d mydb
+</code></pre>
+<p>Once you connected to database, you may run SQL to create/insert/select a table:</p>
+<pre><code>mydb-# create table test(id serial, name varchar(200));
+mydb-# insert into test(name) values('Hello');
+mydb-# select * from test; 
+
+To inspect your  table columns:
+mydb-# \d test;
+
+To see all tables available:
+mydb-# \dt;
+
+To see all database available:
+mydb-# \l;
+
+To switch to another database:
+mydb-# \c mydb2;
+
+To see more help (check out \d options! it's super flexible and useful.):
+mydb-# \?;
+
+To quit the psql shell:
+mydb-# \q;
+</code></pre>
 <p>To create a database user and set up password, you can do it on bash shell as well:</p>
-<p>bash&gt; echo &quot;CREATE ROLE mydbuser1 WITH CREATEDB LOGIN PASSWORD 'Welcome1'&quot; | psql</p>
-<p>bash&gt; echo &quot;GRANT ALL PRIVILEGES ON DATABASE mydb TO mydbuser1&quot; | psql</p>
+<pre><code>bash&gt; echo &quot;CREATE ROLE mydbuser1 WITH CREATEDB LOGIN PASSWORD 'Welcome1'&quot; | psql
+
+bash&gt; echo &quot;GRANT ALL PRIVILEGES ON DATABASE mydb TO mydbuser1&quot; | psql
+</code></pre>
 <p>Now you may relogin again with the user. It should prompt you for password.</p>
-<p>bash&gt; psql -U mydbuser1 -W</p>
+<pre><code>bash&gt; psql -U mydbuser1 -W
+</code></pre>
 <p>Once you connected to your database again, you may check your user privileges:</p>
-<p>mydb-# \dp;</p>
-<p>These examples should be enough to get you setup a database for app development. The rest are just normal SQL access to database. The PostgresSQL documentation is excellent reference for all that you need: <a href="https://www.postgresql.org/docs/9.5/static/index.html">https://www.postgresql.org/docs/9.5/static/index.html</a></p>
+<pre><code>mydb-# \dp;
+</code></pre>
+<p>These examples should be enough to get you setup a database for app development. The rest are just normal SQL access to database. The <a href="https://www.postgresql.org/docs/9.5/static/index.html">PostgresSQL documentation</a> is an excellent reference for all that you need.</p>
 </p>
   			<a href="blog/2016/06/how-to-fix-add-a-non-nullable-field-without-a-default-error.html"><h1>How to fix &apos;add a non-nullable field ... without a default&apos; error</h1></a>
   			<p>26 June 2016, tags: 
@@ -267,29 +195,31 @@ bash&gt; dpkg -l |grep zoom</p>
   			<p>16 June 2016, tags: 
 			    <a href="../tags/weblogic.html">weblogic</a> 
   			</p>
-  			<p><div class="paragraph">
-<p>When you creating new DataSource in WLS, it allows you to test the connectivity. However after you have created it, the test button is kinda hidden in a non-obvious way. This is how I get to it and test an existing DataSource that have targeted a server.</p>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
+  			<p><p>When you creating new DataSource in WLS, it allows you to test the<br />
+connectivity. However after you have created it, the test button is<br />
+kinda hidden in a non-obvious way. This is how I get to it and test an<br />
+existing DataSource that have targeted a server.</p>
+<ol>
 <li>
-<p>Login to Admin Console (eg: <a href="http://localhost:7100/console" class="bare">http://localhost:7100/console</a>)</p>
+<p>Login to Admin Console (eg: <a href="http://localhost:7100/console">http://localhost:7100/console</a>)</p>
 </li>
 <li>
-<p>On the Domain Structure left panel, click:
-&nbsp;&nbsp;&nbsp; &lt;my_domain_name&gt; (eg: DefaultDomain) &gt; Services &gt; Data Sources</p>
+<p>On the Domain Structure left panel, click:    <br />
+&lt;my_domain_name&gt; (eg: DefaultDomain) &gt; Services &gt; Data<br />
+Sources</p>
 </li>
 <li>
 <p>On the right, Click on the DataSource name you want to test.</p>
 </li>
 <li>
-<p>Click the "Monitoring" tab &gt; "Testing" tab.</p>
+<p>Click the &quot;Monitoring&quot; tab &gt; &quot;Testing&quot; tab.</p>
 </li>
 <li>
-<p>Select the server the DataSource has targeted to and then press "Test Data Source" button.</p>
+<p>Select the server the DataSource has targeted to and then press<br />
+&quot;Test Data Source&quot; button.</p>
 </li>
 </ol>
-</div></p>
+</p>
   			<a href="blog/2016/06/how-to-setup-a-java-web-application-using-gradle.html"><h1>How to setup a Java web application using Gradle</h1></a>
   			<p>14 June 2016, tags: 
 			    <a href="../tags/gradle.html">gradle</a> 
@@ -408,12 +338,166 @@ assertThat(d.toString(), is(&quot;MyData(id=12345, name=foo, createdDate=null, d
 <p>To run test, type command: gradle test(A nice feature of Gradle is that it auto generate test reports! Look for them in your build/reports folder.)</p>
 <p>To run web app, type command: gradle jettyRun</p>
 </p>
+  			<a href="blog/2016/06/how-to-setup-hg-repository-on-a-remote-server.html"><h1>How to setup hg repository on a remote server</h1></a>
+  			<p>14 June 2016, tags: 
+			    <a href="../tags/hg.html">hg</a> 
+  			</p>
+  			<p><p>I love using mercurial source control! It's easy to use and it works as I expected everytime I need to do something with my source repository. Here is how you can quickly create a remote repository to push your existing project into it. (use this as backup of your project or share among your team etc)</p>
+<ol>
+<li>
+<p>SSH into your remote server and create an empty repository.<br />
+ssh remote_hostname<br />
+bash&gt; cd $HOME<br />
+bash&gt; mkdir -p hg-repos/myproject<br />
+bash&gt; cd hg-repos/myproject<br />
+bash&gt; hg init</p>
+</li>
+<li>
+<p>Back on your local machine and in your existing hg project, edit the .hg/hgrc file with the following:</p>
+</li>
+</ol>
+<p>[paths]<br />
+default=<a href="ssh://remote_hostname/hg-repos/myproject">ssh://remote_hostname/hg-repos/myproject</a><br />
+[ui]<br />
+remotecmd=/usr/local/bin/hg</p>
+<p>That's it! You don't even need hg server running in remote host to make this work! Now you may perofrm &quot;hg push&quot; command inside your local project to sync up to remote host</p>
+<p>NOTE 1: This setup rely on your SSH into remote host. If you want to avoid user password promt everytime you perform &quot;hg push&quot;, then setup Key-Based SSH login.</p>
+<p>NOTE 2: You only need &quot;remotecmd&quot; part if your remote_hostname does not have a standard hg installed. Then you can specified your custom location here.</p>
+<p>NOTE 3: If you want to use abolute path for &quot;default&quot; path instead, then you can use double slash after the &quot;remote_hostname&quot;. Else the single slash is relative to your $HOME directory.</p>
+</p>
+  			<a href="blog/2015/11/java-jdbc-test-for-utf8-and-default-value-for-timestamp.html"><h1>Java Jdbc Test for UTF8 and Default Value for TIMESTAMP</h1></a>
+  			<p>02 November 2015, tags: 
+			    <a href="../tags/java.html">java</a> 
+
+			    <a href="../tags/jdbc.html">jdbc</a> 
+  			</p>
+  			<p><p>Just a quick MySQL test on how to use UTF8 encoding with JDBC connection string. Also a test on how to set TIMESTAMP default values.</p>
+<pre><code>package zemian.jdbc;
+
+import org.junit.Test;
+
+import java.sql.*;
+import java.util.*;
+import java.util.Date;
+
+/**
+
+ -- drop table ztest_issues;
+ CREATE TABLE ztest_issues(
+ id INT NOT NULL AUTO_INCREMENT PRIMARY KEY
+ , title VARCHAR(64) NOT NULL
+ , summary TEXT NULL
+ , priority INT NOT NULL DEFAULT 5
+ , cdate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+ );
+
+ INSERT INTO ztest_issues(title) VALUES('test');
+ INSERT INTO ztest_issues(title, summary) VALUES('test2', 'Just a test');
+ INSERT INTO ztest_issues(title, summary, priority) VALUES('test2', 'Just a test', 1);
+ INSERT INTO ztest_issues(title, summary, priority, cdate) VALUES('test2', 'Just a test', 1, '2010-12-31 08:00:00');
+
+ --INSERT INTO ztest_issues(title, summary) VALUES('locale test1', LOAD_FILE('C:/data/tmp/test.xml'));
+ --INSERT INTO ztest_issues(title, summary) VALUES('locale test2', LOAD_FILE('C:/data/tmp/test2.xml'));
+ --INSERT INTO ztest_issues(title, summary) VALUES('locale test3', LOAD_FILE('C:/data/tmp/test3.xml'));
+
+ SELECT * FROM ztest_issues;
+
+ NOTE:
+ CURRENT_TIMESTAMP is version specific and is now allowed for DATETIME columns as of version 5.6 http://dev.mysql.com/doc/refman/5.6/en/timestamp-initialization.html
+
+ For 5.6 &lt;, use TIMESTAMP for cdate field instead.
+
+ cdate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+ cdate DATETIME NULL
+
+ NOTE2:
+ cdate DATETIME NOT NULL DEFAULT 0
+
+ If you were to use default to ZERO, then you would need this properties in conn string. Else you will fail to get ZERO date value into Java.
+
+ You need to tell the JDBC driver to convert them to NULL. This is done by passing a connection property name zeroDateTimeBehavior with the value convertToNull
+
+ For more details see the manual: http://dev.mysql.com/doc/refman/4.1/en/connector-j-installing-upgrading.html
+
+ */
+public class ZtestIssuesJdbcTest {
+//    String url = &quot;jdbc:mysql://localhost/test&quot;;
+//    String url = &quot;jdbc:mysql://localhost/test?zeroDateTimeBehavior=convertToNull&quot;;
+    String url = &quot;jdbc:mysql://localhost/test?useUnicode=true&amp;characterEncoding=UTF-8&amp;connectionCollation=utf8_general_ci&amp;zeroDateTimeBehavior=convertToNull&quot;;
+    String username = &quot;test&quot;;
+    String password = &quot;test123&quot;;
+
+    @Test
+    public void testShowTableLocale() throws Exception {
+        try (Connection conn = DriverManager.getConnection(url, username, password)) {
+            String sql = &quot;SHOW VARIABLES LIKE 'char%'&quot;;
+            System.out.println(&quot;Sql:&quot; + sql);
+            Statement sm = conn.createStatement();
+            ResultSet rs = sm.executeQuery(sql);
+            while (rs.next()) {
+                System.out.printf(&quot;%s\t%s\n&quot;, rs.getObject(1), rs.getObject(2));
+            }
+
+            sql = &quot;SHOW CREATE TABLE ztest_issues&quot;;
+            System.out.println(&quot;Sql:&quot; + sql);
+            sm = conn.createStatement();
+            rs = sm.executeQuery(sql);
+            while (rs.next()) {
+                System.out.printf(&quot;%s\t%s\n&quot;, rs.getObject(1), rs.getObject(2));
+            }
+        }
+    }
+
+    @Test
+    public void testQuery() throws Exception {
+        try (Connection conn = DriverManager.getConnection(url, username, password)) {
+            String sql = &quot;SELECT id, cdate, title, summary FROM ztest_issues&quot;;
+            System.out.println(&quot;Sql:&quot; + sql);
+            Statement sm = conn.createStatement();
+            ResultSet rs = sm.executeQuery(sql);
+            while (rs.next()) {
+                System.out.printf(&quot;%d\t%s\t%s\t%s\n&quot;, rs.getObject(1), rs.getObject(2), rs.getObject(3), rs.getObject(4));
+            }
+        }
+    }
+
+    @Test
+    public void testInsert() throws Exception {
+        try (Connection conn = DriverManager.getConnection(url, username, password)) {
+            String sql = &quot;INSERT INTO ztest_issues(title, summary, cdate) VALUES(?, ?, ?)&quot;;
+            System.out.println(&quot;Sql: &quot; + sql);
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            String testId = &quot;&quot; + System.currentTimeMillis();
+
+            ps.setObject(1, &quot;English Locale &quot; + testId);
+            ps.setObject(2, &quot;Just a test&quot;);
+            ps.setObject(3, new Date());
+            int result = ps.executeUpdate();
+            System.out.println(&quot;Insert Result: &quot; + result);
+
+            ps.setObject(1, &quot;Chinese Locale &quot; + testId);
+            ps.setObject(2, &quot;&amp;#21482;&amp;#26159;&amp;#19968;&amp;#20491;&amp;#28204;&amp;#35430;&quot;);
+            ps.setObject(3, new Date());
+            result = ps.executeUpdate();
+            System.out.println(&quot;Insert Result: &quot; + result);
+
+            ps.setObject(1, &quot;Spanish Locale &quot; + testId);
+            ps.setObject(2, &quot;Sólo una prueba&quot;);
+            ps.setObject(3, new Date());
+            result = ps.executeUpdate();
+            System.out.println(&quot;Insert Result: &quot; + result);
+        }
+    }
+}
+</code></pre>
+</p>
 
 	<hr />
 
 	<ul class="pager">
 		<li class="previous"><a href="https://zemian.github.io/8">Previous</a></li>
-		<li>Page: 9/29</li>
+		<li>Page: 9/28</li>
 		<li class="next"><a href="https://zemian.github.io/10">Next</a></li>
 	</ul>
 

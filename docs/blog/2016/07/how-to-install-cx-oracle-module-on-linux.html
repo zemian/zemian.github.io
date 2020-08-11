@@ -63,12 +63,11 @@
 	    <a href="../../../tags/oracle.html">oracle</a> 
 	</p>
 
-	<p><div id="preamble">
-<div class="sectionbody">
-<div class="paragraph">
-<p>Here are my notes on installing <a href="http://cx-oracle.sourceforge.net/"><code>cx_Oracle</code> python module</a> to access Oracle Database 12c. First, you need to download these two packages from <a href="http://www.oracle.com/technetwork/database/features/instant-client">Oracle Instant Client</a> site.</p>
-</div>
-<div class="ulist">
+	<p><p>Here are my notes on installing <a href="http://cx-oracle.sourceforge.net/"><code>cx_Oracle</code> python<br />
+module</a> to access Oracle Database<br />
+12c. First, you need to download these two packages from <a href="http://www.oracle.com/technetwork/database/features/instant-client">Oracle Instant<br />
+Client</a><br />
+site.</p>
 <ul>
 <li>
 <p>Instant Client Package - Basic</p>
@@ -77,89 +76,45 @@
 <p>Instant Client Package - SDK</p>
 </li>
 </ul>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Note</div>
-</td>
-<td class="content">
-I&#8217;ve tried their <code>.rpm</code> packages and it did not work for me on Linux, so I would suggest you use the <code>.zip</code> packages instead.
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>Once you downloaded these two, unzip them into a single directory (eg: <code>$HOME/apps/instantclient</code>). You then need to follow these instructions to install the module itself.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>cd $HOME/apps/instantclient
+<p>I’ve tried their <code>.rpm</code> packages and it did not work for me on Linux, so<br />
+I would suggest you use the <code>.zip</code> packages instead.</p>
+<p>Once you downloaded these two, unzip them into a single directory (eg:<br />
+<code>$HOME/apps/instantclient</code>). You then need to follow these instructions<br />
+to install the module itself.</p>
+<pre><code>cd $HOME/apps/instantclient
 ln -s libclntsh.so.12.1 libclntsh.so
 export ORACLE_HOME=$HOME/apps/instantclient
 export LD_LIBRARY_PATH=$ORACLE_HOME:$LD_LIBRARY_PATH
 
-pip install cx_Oracle</pre>
-</div>
-</div>
-<div class="paragraph">
+pip install cx_Oracle
+</code></pre>
 <p>Here are some quick python test code to verify <code>cx_Oracle</code> is working.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight"><code data-lang="python">import cx_Oracle as db
+<pre><code>import cx_Oracle as db
 dsn='(DESCRIPTION=(ADDRESS=(HOST=myhost)(PORT=1521)(PROTOCOL=TCP))(CONNECT_DATA=(SERVER=DEDICATED)(SID=orcl)))'
 conn = db.connect('zemian', 'Welcome1', dsn)
 cur = conn.cursor()
 cur.execute('SELECT 1+1')
 print(cur.fetchone()[0])
 cur.close()
-conn.close()</code></pre>
-</div>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Note</div>
-</td>
-<td class="content">
-Using the <code>dsn</code> form above can connect directly to database without the need to setup further entry in Oracle&#8217;s <code>tnsnames.ora</code> file.
-</td>
-</tr>
-</table>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_optionally_installing_sqlplus_client">Optionally installing sqlplus client</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>The <code>sqlplus</code> is a classic client you may use to connect to the Oracle database. You may install this to perform adhoc query and verify your data. Download the following from the same download site above.</p>
-</div>
-<div class="ulist">
+conn.close()
+</code></pre>
+<p>Using the <code>dsn</code> form above can connect directly to database without the<br />
+need to setup further entry in Oracle’s <code>tnsnames.ora</code> file.</p>
+<h1>Optionally installing sqlplus client</h1>
+<p>The <code>sqlplus</code> is a classic client you may use to connect to the Oracle<br />
+database. You may install this to perform adhoc query and verify your<br />
+data. Download the following from the same download site above.</p>
 <ul>
-<li>
-<p>Instant Client Package - SQL*Plus</p>
-</li>
+<li>Instant Client Package - SQL*Plus</li>
 </ul>
-</div>
-<div class="paragraph">
 <p>Unzip and then add the following to your <code>PATH</code></p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>export $ORACLE_HOME/bin:$PATH
+<pre><code>export $ORACLE_HOME/bin:$PATH
 
-sqlplus mydbuser@(DESCRIPTION=(ADDRESS=(HOST=myhost)(PORT=1521)(PROTOCOL=TCP))(CONNECT_DATA=(SERVER=DEDICATED)(SID=orcl)))</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>For more information, see <a href="https://docs.oracle.com/database/121/SQPUG/toc.htm"><code>sqlplus</code> doc</a></p>
-</div>
-</div>
-</div></p>
+sqlplus mydbuser@(DESCRIPTION=(ADDRESS=(HOST=myhost)(PORT=1521)(PROTOCOL=TCP))(CONNECT_DATA=(SERVER=DEDICATED)(SID=orcl)))
+</code></pre>
+<p>For more information, see <a href="https://docs.oracle.com/database/121/SQPUG/toc.htm"><code>sqlplus</code><br />
+doc</a></p>
+</p>
 
 	<hr />
 

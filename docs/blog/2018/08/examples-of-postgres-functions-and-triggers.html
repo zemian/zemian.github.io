@@ -65,9 +65,7 @@
 	    <a href="../../../tags/trigger.html">trigger</a> 
 	</p>
 
-	<p><div class="listingblock">
-<div class="content">
-<pre>-- Simple Function
+	<p><pre><code>-- Simple Function
 create or replace function rand_range(a int, b int) returns int
 as $$
   -- return a random range of int between a and b, both inclusive!;
@@ -134,9 +132,9 @@ create trigger test_logging_trigger
 insert into test(f1) values(0.10), (0.20), (0.30);
 update test set f1 = 3.5 where id = 1;
 select * from test;
-select * from log;</pre>
-</div>
-</div></p>
+select * from log;
+</code></pre>
+</p>
 
 	<hr />
 

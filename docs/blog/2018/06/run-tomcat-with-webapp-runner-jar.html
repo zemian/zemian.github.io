@@ -63,25 +63,16 @@
 	    <a href="../../../tags/webapp-runner.html">webapp-runner</a> 
 	</p>
 
-	<p><div class="paragraph">
-<p>I have used <a href="https://github.com/jsimone/webapp-runner" class="bare">https://github.com/jsimone/webapp-runner</a> in several projects now, and I find it really useful.</p>
-</div>
-<div class="paragraph">
+	<p><p>I have used <a href="https://github.com/jsimone/webapp-runner">https://github.com/jsimone/webapp-runner</a> in several<br />
+projects now, and I find it really useful.</p>
 <p>You can start a Tomcat instance as simple as this:</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>java -jar target/webapp-runner.jar target/adocblog.war</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>However if you need to run it with extra classpath entries, then you would need to use the <code>-cp</code> instead of <code>-jar</code> Java option. Like this:</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>java -cp "target/extra-classes:target/webapp-runner.jar" webapp.runner.launch.Main target/adocblog.war</pre>
-</div>
-</div></p>
+<pre><code>java -jar target/webapp-runner.jar target/adocblog.war
+</code></pre>
+<p>However if you need to run it with extra classpath entries, then you<br />
+would need to use the <code>-cp</code> instead of <code>-jar</code> Java option. Like this:</p>
+<pre><code>java -cp &quot;target/extra-classes:target/webapp-runner.jar&quot; webapp.runner.launch.Main target/adocblog.war
+</code></pre>
+</p>
 
 	<hr />
 

@@ -63,42 +63,28 @@
 	    <a href="../../../tags/tomcat.html">tomcat</a> 
 	</p>
 
-	<p><div class="listingblock">
-<div class="content">
-<pre># start
+	<p><pre><code># start
 cd ~/apps/nginx-1.13.7
 ./nginx -c conf/nginx.conf
 
 # stop
-./nginx -c conf/nginx.conf -s stop</pre>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_how_to_setup_nginx_reverse_proxy_to_tomcat">How to setup nginx reverse proxy to Tomcat</h2>
-<div class="sectionbody">
-<div class="listingblock">
-<div class="content">
-<pre># nginx.conf
-	server {
-		listen       80;
-		server_name  localhost;
+./nginx -c conf/nginx.conf -s stop
+</code></pre>
+<h1>How to setup nginx reverse proxy to Tomcat</h1>
+<pre><code># nginx.conf
+        server {
+                listen       80;
+                server_name  localhost;
 
-		location / {
-			proxy_pass http://localhost:8080;
-			proxy_set_header X-Forwarded-Host $host;
-			proxy_set_header X-Forwarded-Server $host;
-		}
-	}</pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_setup_to_setup_nginx_ssl_and_reverse_proxy_to_tomcat">Setup to setup nginx ssl and reverse proxy to Tomcat</h2>
-<div class="sectionbody">
-<div class="listingblock">
-<div class="content">
-<pre># ssl setup
+                location / {
+                        proxy_pass http://localhost:8080;
+                        proxy_set_header X-Forwarded-Host $host;
+                        proxy_set_header X-Forwarded-Server $host;
+                }
+        }
+</code></pre>
+<h1>Setup to setup nginx ssl and reverse proxy to Tomcat</h1>
+<pre><code># ssl setup
 cd ~/apps/nginx-1.13.7/conf
 openssl req -x509 -nodes -newkey rsa:2048 -keyout cert.key -out cert.crt
 
@@ -117,16 +103,14 @@ openssl req -x509 -nodes -newkey rsa:2048 -keyout cert.key -out cert.crt
         ssl_prefer_server_ciphers  on;
 
         location / {
-			proxy_pass http://localhost:8080;
-			proxy_set_header X-Forwarded-Host $host;
-			proxy_set_header X-Forwarded-Server $host;
-			proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-		}
-    }</pre>
-</div>
-</div>
-</div>
-</div></p>
+                        proxy_pass http://localhost:8080;
+                        proxy_set_header X-Forwarded-Host $host;
+                        proxy_set_header X-Forwarded-Server $host;
+                        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                }
+    }
+</code></pre>
+</p>
 
 	<hr />
 

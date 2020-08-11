@@ -53,82 +53,6 @@
       </div>
     </div>
     <div class="container">
-  			<a href="blog/2012/06/timemachine-scheduler-tour-part1.html"><h1>TimeMachine Scheduler Tour: Part1</h1></a>
-  			<p>06 June 2012, tags: 
-			    <a href="../tags/timemachine.html">timemachine</a> 
-  			</p>
-  			<p><p>This is part 1 of 7 in a series of articles that will give you a tour of the <a href="https://bitbucket.org/timemachine/scheduler/wiki/Home">TimeMachine Scheduler</a> project. These articles will introduce you to the scheduler, how to load jobs and schedules, and explore some of its advanced features. For the most current and accurate instructions, please visit the ReferenceManual from the project site.</p>
-<h2></h2>
-<p>What is TimeMachine Scheduler</p>
-<p>TimeMachine is a Java scheduler that can scale and run high volume of jobs with many different types of schedules, such as repeating on fixed interval or based on CRON expressions. The scheduler may control the job executions with thread pools, and it can persist job data into different storage. Users may use the built-in scheduler server with easy configuration file, or developers may use it as a library to extend the scheduler and write custom jobs, schedules, or user services.</p>
-<h2></h2>
-<p>Getting started<br />
-First step is to download the latest scheduler distribution and uznip it into your system. Then fire up the scheduler with some sample jobs.</p>
-<p>We will be printing commands and its output running on a MacOSX terminal. If you have a Microsoft Windows, then running a Cygwin terminal would also work. Or if you are Linux user then you just use a Terminal.</p>
-<p>(NOTE: If you don't feel like downloading software, you may try our <a href="http://tmschedulerdemo-zdeng.rhcloud.com/scheduler-demo/job-list">online demo</a>. You may edit the scheduler configuration directly in a web form, and it will restart the scheduler immediately upon Save.)</p>
-<p>If you have downloaded the zip file under an &quot;apps&quot; directory in your HOME folder, then follow these steps to get a scheduler instance running:</p>
-<p>$ cd $HOME/apps<br />
-$ unzip timemachine-scheduler-1.1.1.zip<br />
-$ cd timemachine-scheduler-1.1.1<br />
-$ bin/scheduler.sh config/scheduler.properties</p>
-<p>You should see some log output on the terminal console screen like this</p>
-<p>22:57:08 main INFO| TimeScheduler system services initialized: [<br />
-scheduler: SchedulerData[id=1, name=TimeMachineScheduler],<br />
-schedulerNode: SchedulerNode[nodeId=1, name=ZEMIANs-iMac.local, ip=192.168.1.130],<br />
-configProps: config/scheduler.properties,<br />
-dataStore: MemoryDataStore[name=386981384],<br />
-scheduleRunner: PollingScheduleRunner[name=1186906970],<br />
-classLoader: SimpleClassLoaderService[name=1363910379],<br />
-jobTaskFactory: SimpleJobTaskFactory[name=621450213],<br />
-jobTaskPoolNameResolver: SimpleJobTaskPoolNameResolver[name=1945442111],<br />
-jobTaskThreadPool: DynamicThreadPool[name=jobTaskThreadPool.DEFAULT],<br />
-]<br />
-22:57:08 main INFO| Scheduler[id=1, nodeId=1, nodeIp=192.168.1.130] initialized. Version=1.1.1.062720122255<br />
-22:57:08 main INFO| Scheduler[id=1, nodeId=1, nodeIp=192.168.1.130] started.</p>
-<p>You may hit CTRL+C to exit the scheduler. The above config/scheduler.properties configuration file would not do much other than load an empty scheduler. To see more in action, try the config/crontab.properties config instead. It should look something like this:</p>
-<p>timemachine.scheduler.userservice.crontabService.class = timemachine.scheduler.userservice.CrontabService<br />
-CrontabService.01 = 0 0 * * * ?        | sh -c echo &quot;Hourly task begins.&quot;<br />
-CrontabService.02 = 0/5 * * * * ?      | sh -c echo &quot;Heart beat.&quot;<br />
-CrontabService.03 = 0 0/5 * * * ?      | sh -c echo &quot;Five minutes job.&quot;<br />
-CrontabService.04 = 0 0 12 * JAN,JUN ? | sh -c echo &quot;We should clean up every 6 months.&quot;<br />
-CrontabService.05 = 0 0 8 ? * 1-5      | sh -c echo &quot;Every workday at 8AM.&quot;</p>
-<p>The above configuration will make the scheduler to work similar to the Unix crontab service. It let you input a <a href="http://tmschedulersite-zdeng.rhcloud.com/scheduler-site/timemachine-scheduler/target/site-deploy/timemachine-scheduler/apidocs/index.html">CRON expression</a>, and then follow by a OS executable command to be run. Go ahead, try to replace the &quot;echo&quot; command in the config file with any other commands that you know of (ping for example), and then restart the scheduler. Our default log settings should display all the external command's output as it execute.</p>
-<p>There are few more configuration entries that you may add to customize the scheduler. Here are few we will examine closely. For example:</p>
-<p>timemachine.scheduler.schedulerName = TimeMachineScheduler<br />
-timemachine.scheduler.nodeName = ZEMIANs-iMac.local<br />
-timemachine.scheduler.dataStore.class = timemachine.scheduler.service.MemoryDataStore<br />
-timemachine.scheduler.jobTaskThreadPool.DEFAULT.class = timemachine.scheduler.service.DynamicThreadPool<br />
-timemachine.scheduler.jobTaskThreadPool.DEFAULT.minSize = 0<br />
-timemachine.scheduler.jobTaskThreadPool.DEFAULT.maxSize = 4<br />
-timemachine.scheduler.jobTaskThreadPool.DEFAULT.threadNamePrefix = ${timemachine.scheduler.schedulerName}-JobTask-Thread-</p>
-<p>You are free to change the scheduler name. Both the schedulerName and nodeName together will form a unique name for this instance of scheduler. These are printed as you start the scheduler so you can verify and identify them.</p>
-<p>We allow you to switch to different datastore, and we are using a in-memory store in this case. We also  provide a HibernateDataStore that you may use to persist the data into a database of your choice. We will cover this later in the tour, but for now we will focus on the simple in-memory store.</p>
-<p>One benefit of using our scheduler over a typical Unix cron is that you may control the thread pool to execute your jobs. You see the last few lines of configuration that defined a dynamic thread pool (it will not create the threads if your scheduler is idle without jobs to run.) You may change the min and max pool size, and you may even change the thread name. You may see the thread name in any JDK management tool such as jvisualvm.</p>
-<p>Notice one feature of our scheduler configuration, it allow you to substitude an existing value with ${key}format! We use this to set our thread name that reuse the value you already set as schedulerName.</p>
-<p>End of part 1. You may continue <a href="http://saltnlight5.blogspot.com/2012/06/timemachine-scheduler-tour-part2.html">next tour</a>.</p>
-</p>
-  			<a href="blog/2012/05/intro-to-timemachine-scheduler-1-0-0.html"><h1>Intro to TimeMachine Scheduler 1.0.0</h1></a>
-  			<p>28 May 2012, tags: 
-			    <a href="../tags/timemachine.html">timemachine</a> 
-  			</p>
-  			<p><p>Hello developers,</p>
-<p>I am happy to annouce the first release of TimeMachine Scheduler is available for you to download here:</p>
-<p><a href="https://bitbucket.org/timemachine/scheduler/downloads">https://bitbucket.org/timemachine/scheduler/downloads</a></p>
-<p>Our first release of the scheduler comes with many features ready to use already. I will briefly describe<br />
-them here.</p>
-<p>Out of the box, you can use it as an Unix Crontab system replacement. Since it's Java based, you can run it in Windows as well.You may pass a config file that loos like this and kick of the scheduler server to execute any OS commands or scripts you wish:<br />
-timemachine.scheduler.userservice.crontab.class = timemachine.scheduler.userservice.CrontabService<br />
-CrontabService.01 = 0 0 * * * ?        | sh -c echo &quot;Hourly task begins.&quot;<br />
-CrontabService.02 = 0/5 * * * * ?      | sh -c echo &quot;Heart beat.&quot;</p>
-<p>The scheduler has flexible configuration and allow full control on the job executions settings. For example you may configure the job task thread pool to be dynamic, so that it only creates threads when there are jobs to be run, else the pool size will shrink. Or you can even create multiple thread pools and match your jobs, effectively separated them in running Queues.</p>
-<p>Besides using external native commands, the scheduler also let you write your own job tasks. You can write new job task in either Java, JavaScript or Groovy scripting language. We package the optional Groovy engine in our distribution so it can be more convenient to write your own job, without even the need to re-compile source files, nor restart the scheduler instance!</p>
-<p>The scheduler comes with 3 built-in Schedule implementations that you may use to configure how often a job task runs. There is a RepeatSchedule that runs job in a fixed interval manner; a CronSchedule that uses a Unix CRON expression; and we have the DateListSchedule that simply let you use any arbituray dates to run.</p>
-<p>For this initial release, we only provide a in-memory data store implementation for persisting job and scheduling data. Our goal is to support other type of data store persistance such as using a database in the future. But even with this release, we've designed our API to support multiple scheduler nodes that run under a single logic scheduler. You can even do this with our in-memory data store!</p>
-<p>The TimeMachien Scheduler is designed to run with high volumes of jobs, and to give you flexible<br />
-control on time scheduling, threads executions and data storage. You can learn more on our project site <a href="https://bitbucket.org/timemachine/scheduler/wiki">https://bitbucket.org/timemachine/scheduler/wiki</a></p>
-<p>Enjoy,</p>
-<p>Zemian Deng</p>
-</p>
   			<a href="blog/2012/05/changing-oracle-xe-apex-webapp-port.html"><h1>Changing Oracle XE apex webapp port</h1></a>
   			<p>11 May 2012, tags: 
 			    <a href="../tags/oracle_xe.html">oracle_xe</a> 
@@ -298,12 +222,65 @@ select * from dba_locks where lock_type in ('Transaction', 'DML')
 </ul>
 <p>Enjoy!</p>
 </p>
+  			<a href="blog/2012/02/working-on-quartz-queue-job-feature.html"><h1>Working on Quartz Queue Job Feature</h1></a>
+  			<p>17 February 2012, tags: 
+			    <a href="../tags/quartz.html">quartz</a> 
+  			</p>
+  			<p><p>My job at Bank of New York Mellon has been keeping me fairly busy lately. It's hard to juggle with Church, a family, a full time job, and time for open source projects. But it seems God has blessed me with not many skills nor hobbies other than programming, which I enjoy the most. So I tend to endup writing more code on weekend when the kids are asleep!</p>
+<p>I haven't able to put much time into <a href="http://code.google.com/p/myschedule">MySchedule</a>other than fixed couple of urgent issues recently. If you are using this app, you should get the latest download now.</p>
+<p>However, I did spent time helping out on <a href="http://quartz-scheduler.org/">Quartz</a>development on their next major feature: <a href="http://svn.terracotta.org/fisheye/browse/Quartz/branches/quartz-2.2-prototype">Queue Jobs</a>. I got most of the initial ground work done. I need to think more about how the concurrent issues with database row locking etc. This feature would allow you to add jobs into a queue structure that the quartz system will process without a trigger (meaning they are process immediatly.) These queue jobs would have a priority value that sorted by the queue as they are processed. We hope this feature would give some users to use the Quartz system to process jobs more effectively.</p>
+<p>More of these to come in the future, so stay tuned.</p>
+</p>
+  			<a href="blog/2011/11/how-to-build-ruby-on-cygwin-and-setup-heroku.html"><h1>How to build Ruby on Cygwin and setup Heroku</h1></a>
+  			<p>19 November 2011, tags: 
+			    <a href="../tags/ruby.html">ruby</a> 
+
+			    <a href="../tags/cygwin.html">cygwin</a> 
+  			</p>
+  			<p><p>I like to use ruby that comes with Cygwin instead of the RubyInstaller for Windows, because the path it handles are more consistenly in Linux form. But the current Cygwin only comes with ruby-1.8.7, so to use ruby-1.9.3, I have to built it on Cygwin on my own. And when building ruby from source on Cygwin, you would also have to install gem on your own as well. Turns out there are few issues that you have to fix too. Here are the steps I got it working:</p>
+<ol>
+<li>
+<p>Ensure you have the typical Cygwin/Linux build tools (gcc, make, autoconf, libiconv, openssl and etc.)</p>
+</li>
+<li>
+<p>Download source for the following:</p>
+</li>
+</ol>
+<p>a) LibYAML 0.1.4 from <a href="http://pyyaml.org/wiki/LibYAML">http://pyyaml.org/wiki/LibYAML</a></p>
+<p>b) ruby-1.9.3-p0 source from <a href="http://ruby-lang.org">http://ruby-lang.org</a></p>
+<p>c) rubygems-1.8.11 from <a href="http://rubygems.org">http://rubygems.org</a></p>
+<ol>
+<li>Unzip/tar them all in /tmp</li>
+</ol>
+<p>a) $ cd /tmp/yaml-0.1.4</p>
+<pre><code> $ ./configure &amp;&amp; make &amp;&amp; make install
+</code></pre>
+<p>b) $ cd /tmp/ruby-1.9.3-p0/ext/openssl</p>
+<pre><code> $ ruby extconf.rb
+
+ $ make &amp;&amp; make install
+</code></pre>
+<p>c) $ cd /tmp/ruby-1.9.3-p0</p>
+<pre><code> $ export CPPFLAGS=-I/usr/local/include
+
+ $ export LDFLAGS=-L/usr/local/lib     
+
+ $ ./configure &amp;&amp; make &amp;&amp; make install
+</code></pre>
+<p>e) $ cd /tmp/rubygems-1.8.11</p>
+<pre><code> $ ruby setup.rb
+</code></pre>
+<p>With these completed, you may now install Heroku client tool as ruby gem:</p>
+<p>c) $ gem install heroku</p>
+<p>You would also need Git to successful push and deploy application to Heroku, but you can get Cygwin 'git' package if you haven't already done so.</p>
+<p>NOTE: FYI, all the user built applications are usually install into /usr/local directory, while those system (comes with cygwin packages) are in /usr.</p>
+</p>
 
 	<hr />
 
 	<ul class="pager">
 		<li class="previous"><a href="https://zemian.github.io/26">Previous</a></li>
-		<li>Page: 27/29</li>
+		<li>Page: 27/28</li>
 		<li class="next"><a href="https://zemian.github.io/28">Next</a></li>
 	</ul>
 

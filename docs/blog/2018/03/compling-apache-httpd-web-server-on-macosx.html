@@ -63,25 +63,20 @@
 	    <a href="../../../tags/httpd.html">httpd</a> 
 	</p>
 
-	<p><div class="paragraph">
-<p>Before you begin, you should know that the HTTPD server is very likely already comes with your MacOSX! For example, here is how my server looks like:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>$ apachectl -t -D DUMP_INCLUDES
+	<p><p>Before you begin, you should know that the HTTPD server is very likely<br />
+already comes with your MacOSX! For example, here is how my server looks<br />
+like:</p>
+<pre><code>$ apachectl -t -D DUMP_INCLUDES
 Included configuration files:
   (*) /private/etc/apache2/httpd.conf
     (498) /private/etc/apache2/extra/httpd-mpm.conf
     (504) /private/etc/apache2/extra/httpd-autoindex.conf
-    (544) /private/etc/apache2/other/php7.conf</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>You would want to compile and buid your own HTTPD server if you like to customize your own build or doing modules development. In that case, read on.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>#
+    (544) /private/etc/apache2/other/php7.conf
+</code></pre>
+<p>You would want to compile and buid your own HTTPD server if you like to<br />
+customize your own build or doing modules development. In that case,<br />
+read on.</p>
+<pre><code>#
 # Requirement:
 #  MacOSX Version:
 #    Darwin myhost 17.4.0 Darwin Kernel Version 17.4.0: Sun Dec 17 09:19:54 PST 2017; root:xnu-4570.41.2~1/RELEASE_X86_64 x86_64
@@ -99,10 +94,10 @@ xcode-select --install
 # then try to uninstall then install brew again.
 #
 # Uninstall
-# /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/uninstall)"
+# /usr/bin/ruby -e &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/uninstall)&quot;
 #
 # Install
-# /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+# /usr/bin/ruby -e &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&quot;
 #
 
 # Install make tools and required libraries
@@ -129,9 +124,9 @@ cd ../../
 make
 sudo make install
 
-# When completed successful, the HTTPD server will be in /usr/local/apache2</pre>
-</div>
-</div></p>
+# When completed successful, the HTTPD server will be in /usr/local/apache2
+</code></pre>
+</p>
 
 	<hr />
 

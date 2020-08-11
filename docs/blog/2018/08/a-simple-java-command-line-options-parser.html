@@ -61,19 +61,17 @@
 	    <a href="../../../tags/commandline_parser.html">commandline_parser</a> 
 	</p>
 
-	<p><div class="listingblock">
-<div class="content">
-<pre>package com.zemian.hellojava;
+	<p><pre><code>package com.zemian.hellojava;
 
 import java.util.*;
 
 /**
- * A simple command line arguments and options parser in the format of "--optionName=optionValue" or
- * "-optionName=optionValue".
+ * A simple command line arguments and options parser in the format of &quot;--optionName=optionValue&quot; or
+ * &quot;-optionName=optionValue&quot;.
  *
  * The optionName can be one ore more characters. The equals sign must be used when providing optionValue;
- * else it will be treated as program arguments instead! If you ommit the "=optionValue" part, then it
- * will default to "=true" for that optionName. The optionValue must be a single string. Any other argument
+ * else it will be treated as program arguments instead! If you ommit the &quot;=optionValue&quot; part, then it
+ * will default to &quot;=true&quot; for that optionName. The optionValue must be a single string. Any other argument
  * that are not part of options are store in a new args list.
  *
  * The constructor will immediately parse the input arguments, and it should not throw any exceptions. In case
@@ -87,11 +85,11 @@ import java.util.*;
  * public class Hello {}
  *     public static void main(String[] args) {
  *         CmdOpts opts = new CmdOpts(args);
- *         if (opts.hasOpt("help"))
- *           System.out.println("You need help");
- *         int num = opts.getIntOpt("num", 0);
- *         System.out.println("Using num=" + num);
- *         System.out.println("Using new args=" + opts.getArgs());
+ *         if (opts.hasOpt(&quot;help&quot;))
+ *           System.out.println(&quot;You need help&quot;);
+ *         int num = opts.getIntOpt(&quot;num&quot;, 0);
+ *         System.out.println(&quot;Using num=&quot; + num);
+ *         System.out.println(&quot;Using new args=&quot; + opts.getArgs());
  *     }
  * }
  * ----
@@ -108,9 +106,9 @@ public class CmdOpts {
 
     private void parse(String[] arguments) {
         for (String arg : arguments) {
-            if (arg.startsWith("--")) {
+            if (arg.startsWith(&quot;--&quot;)) {
                 addOpt(arg.substring(2));
-            } else if (arg.startsWith("-")) {
+            } else if (arg.startsWith(&quot;-&quot;)) {
                 addOpt(arg.substring(1));
             } else {
                 args.add(arg);
@@ -120,10 +118,10 @@ public class CmdOpts {
     }
 
     private void addOpt(String option) {
-        if (option != null &amp;&amp; !"".equals(option)) {
-            String[] options = option.split("=", 2);
+        if (option != null &amp;&amp; !&quot;&quot;.equals(option)) {
+            String[] options = option.split(&quot;=&quot;, 2);
             String optionName = options[0];
-            String optionValue = "true";
+            String optionValue = &quot;true&quot;;
             if (options.length == 2) {
                 optionValue = options[1];
             }
@@ -255,15 +253,15 @@ public class CmdOpts {
     /** A test class to try out CmdOpts. */
     public static void main(String[] args) {
         CmdOpts opts = new CmdOpts(args);
-        if (opts.hasOpt("help"))
-            System.out.println("You need help");
-        int num = opts.getIntOpt("num", 0);
-        System.out.println("Using num=" + num);
-        System.out.println("Using new args=" + opts.getArgs());
+        if (opts.hasOpt(&quot;help&quot;))
+            System.out.println(&quot;You need help&quot;);
+        int num = opts.getIntOpt(&quot;num&quot;, 0);
+        System.out.println(&quot;Using num=&quot; + num);
+        System.out.println(&quot;Using new args=&quot; + opts.getArgs());
     }
-}</pre>
-</div>
-</div></p>
+}
+</code></pre>
+</p>
 
 	<hr />
 

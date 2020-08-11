@@ -53,83 +53,6 @@
       </div>
     </div>
     <div class="container">
-  			<a href="blog/2012/08/timemachine-jars-size-and-dependencies.html"><h1>TimeMachine jars size and dependencies</h1></a>
-  			<p>03 August 2012, tags: 
-			    <a href="../tags/timemachine.html">timemachine</a> 
-  			</p>
-  			<p><p>From the <a href="https://bitbucket.org/timemachine/scheduler/downloads">TimeMachine Scheduler</a> download page you will see that the latest 1.2.1 release zip package size is around 13M. It may seem large for a scheduler application, but let's examine it closely to see what's in there. Here is how the zip package looks like inside</p>
-<pre><code>timemachine-scheduler-1.2.1
-+-- bin
-+-- lib
-+-- config
-</code></pre>
-<p>The <code>config</code> directory contains many sample configurations and scripts to help new users get started. The <code>bin</code> contains few startup wrapper scripts that let you start the scheduler. The <code>lib</code> contains the libraries for the scheduler application. I want to go into more details on these.</p>
-<pre><code>+-- lib
--rw-r--r--@  1 zemian  staff   445288 Jun 20 23:20 antlr-2.7.7.jar
--rw-r--r--@  1 zemian  staff   610790 Jun 20 23:26 c3p0-0.9.1.2.jar
--rw-r--r--@  1 zemian  staff   109043 Jun 20 23:20 commons-io-1.4.jar
--rw-r--r--@  1 zemian  staff   279193 Jun 20 23:20 commons-lang-2.5.jar
--rw-r--r--@  1 zemian  staff   313898 Jun 20 23:26 dom4j-1.6.1.jar
--rw-r--r--@  1 zemian  staff  6156866 Aug  2 22:05 groovy-all-2.0.0.jar
--rw-r--r--@  1 zemian  staff  1267149 Jun 20 23:26 h2-1.3.163.jar
--rw-r--r--@  1 zemian  staff    81271 Jun 20 23:26 hibernate-commons-annotations-4.0.1.Final.jar
--rw-r--r--@  1 zemian  staff  4407494 Jun 20 23:26 hibernate-core-4.1.3.Final.jar
--rw-r--r--@  1 zemian  staff   102661 Jun 20 23:26 hibernate-jpa-2.0-api-1.0.1.Final.jar
--rw-r--r--@  1 zemian  staff   648253 Jun 20 23:26 javassist-3.15.0-GA.jar
--rw-r--r--@  1 zemian  staff    60768 Jun 20 23:26 jboss-logging-3.1.0.GA.jar
--rw-r--r--@  1 zemian  staff    11209 Jun 20 23:26 jboss-transaction-api_1.1_spec-1.0.0.Final.jar
--rw-r--r--@  1 zemian  staff   481535 Jun 20 23:20 log4j-1.2.16.jar
--rw-r--r--@  1 zemian  staff    25496 Jun 20 23:20 slf4j-api-1.6.1.jar
--rw-r--r--@  1 zemian  staff     9753 Jun 20 23:20 slf4j-log4j12-1.6.1.jar
--rw-r--r--@  1 zemian  staff    46885 Aug  2 22:37 timemachine-hibernate-1.2.1.jar
--rw-r--r--@  1 zemian  staff   154925 Aug  2 22:36 timemachine-scheduler-1.2.1.jar
-</code></pre>
-<p>The core of the scheduler <code>timemachine-scheduler-1.2.1.jar</code> would only need <code>slf4j-api-1.6.1.jar</code>, <code>commons-io-1.4.jar</code> and <code>commons-lang-2.5.jar</code> to run. These would support full scheduler with in memory data store. As you can see these add up to only about 500K!</p>
-<p>To be able to see useful logging output, you need an SLF4j impl. You may use built-in JDK's logger if you choose, or you may use <code>slf4j-log4j12-1.6.1.jar</code> and <code>log4j-1.2.16.jar</code>. I personally think the JDK logger is horrible to use and configure, so I package up log4j as option for you.</p>
-<p>A Java scripting engine is only optional in TimeMachine, and JDK already comes with JavaScript. To be practical, I also package the Groovy engine <code>groovy-all-2.0.0.jar</code>. It's much more easy to use. But the full groovy engine is costing us 6M in size!</p>
-<p>The TimeMachine allows you to switch data store service. We provided the <code>HibernateDataService</code> service in <code>timemachine-scheduler-1.2.1.jar</code>. This service would require the Hibernate dependencies, which is pretty heavy. They are: <code>hibernate-*.jar</code>, <code>jboss-*.jar</code>, <code>javassist-3.15.0-GA.jar</code>, <code>antlr-2.7.7.jar</code>, and <code>dom4j-1.6.1.jar</code>. These can add up to another 5M in size!</p>
-<p>Now with the Hibernate data service, you would also need a database driver that match to your database. I have included a H2Database, a Java database that provides full SQL database service including its driver in <code>h2-1.3.163.jar</code>. This alone is about 1.2M in size.</p>
-<p>When you working with Hibernate and Database, you should always use a Database connection pool. I packaged the <code>c3p0-0.9.1.2.jar</code> implementation which Hibernate can automatically detects.</p>
-<p>I hope these information can help you decide what to remove or add in case you want to customize your scheduler to fit into your application. You may also visit the project to see the Maven site dependencies report that has all the details. This also means that if you use Maven to bring in TimeMachine scheduler as dependency, you will automatically gets the minimal because I have carefully set all the optional items not to be included with the proper Maven scopes.</p>
-</p>
-  			<a href="blog/2012/08/a-better-java-shell-script-wrapper.html"><h1>A better java shell script wrapper</h1></a>
-  			<p>01 August 2012, tags: 
-			    <a href="../tags/java.html">java</a> 
-
-			    <a href="../tags/bash.html">bash</a> 
-
-			    <a href="../tags/shell.html">shell</a> 
-  			</p>
-  			<p><p>In many Java projects, you often see wrapper shell script to invoke the <code>java</code> command with its custom application parameters. For example, <code>$ANT_HOME/bin/ant</code>, <code>$GROOVY_HOME/bin/groovy</code>, or even in our <a href="http://bitbucket.org/timemachine/scheduler">TimeMachine Scheduler</a> you will see <code>$TIMEMACHINE_HOME/bin/scheduler.sh</code>.</p>
-<p>Writing these wrapper script is boring and error prone. Most of the problems come from setting the correct classpath for the application. If you're working on an in-house project for a company, then you can get away with hardcoding paths and your environment vars. But for open source projects, folks have to make the wrapper more flexible and generic. Most of them even provide a <code>.bat</code> version of it. Windows DOS is really a brutal and limited terminal to script away your project need. For this reason, I often encourage others to use Cygwin as much as they can. It at least has a real bash shell to work with. Another common problem with these wrappers is it can quickly get out of hand and have too many duplication of similar scripts liter every where in your project.</p>
-<p>In this post, I will show you a Java wrapper script that I've written. It's simple to use and very flexible for running just about any Java program. Let's see how it's used first, and then I will print its content at the bottom of the post.</p>
-<h2>Introducing the <code>run-java</code> wrapper script</h2>
-<p>If you take a look at <code>$TIMEMACHINE_HOME/bin/scheduler.sh</code>, you will see that it in turns calls a <code>run-java</code> script that comes in the same directory.</p>
-<pre><code>DIR=$(dirname $0)
-SCHEDULER_HOME=$DIR/..
-$DIR/run-java -Dscheduler.home=&quot;$SCHEDULER_HOME&quot; timemachine.scheduler.tool.SchedulerServer &quot;$@&quot;
-</code></pre>
-<p>As you can see, our <code>run-java</code> can take <code>-D</code> options. Not only this, it can also take <code>-cp</code> option as well! What's more is that you can specify these options even <strong>after</strong> the main class! This makes the <code>run-java</code> re-wrappable by other script, and still be able to add additional system properties and classpath.</p>
-<p>For examples, the TimeMachine comes with Groovy library, so instead of downloading it's full distribution again, you can simply invoke the groovy like this</p>
-<pre><code>$TIMEMACHINE_HOME/bin/run-java groovy.ui.GroovyMain test.groovy
-</code></pre>
-<p>You can use <code>run-java</code> in any directory you're in, so it's convenient. It will resolve it's own directory and load any jars in the <code>lib</code> directory automatically. Now if you want Groovy to run with more additional jars, you can use the <code>-cp</code> option like this:</p>
-<pre><code>$TIMEMACHINE_HOME/bin/run-java -cp &quot;$HOME/apps/my-app/lib/*&quot; groovy.ui.GroovyMain test.groovy
-</code></pre>
-<p>Often times things will go wrong if you are not careful with Java classpath, but with <code>run-java</code> script you can perform a dry run first:</p>
-<pre><code>RUN_JAVA_DRY=1 $TIMEMACHINE_HOME/bin/run-java -cp &quot;$HOME/apps/my-app/lib/*&quot; groovy.ui.GroovyMain test.groovy
-</code></pre>
-<p>You would run the above all in single line on a command prompt. It should print out your full java command with all options and arguments for you to inspect.</p>
-<p>There are many more options to the script, which you can find out more by reading the comments in it. The current script will work on any Linux bash or on a Windows Cygwin terminal.</p>
-<h2>Using <code>run-java</code> during development with Maven</h2>
-<p>Above examples are assuming you are in a released project structure such as this:</p>
-<pre><code>$TIMEMACHINE_HOME
-  +- bin/run-java
-  +- lib/*.jar
-</code></pre>
-<p>But what about during development? A frequent use case is that you want to be able to run your latest compiled classes under <code>target/classes</code> without have to package up or release the entire project. You can use our <code>run-java</code> in these scenario as well. First, simply add <code>bin/run-java</code> in your project, then you run <code>mvn compile dependency:copy-dependencies</code> that will generate all the <code>jar</code> files into <code>target/dependency</code>. That's all. The <code>run-java</code> will automatically detect these directories and create the correct classpath to run your main class.</p>
-<p>If you use Eclipse IDE for development, then your <code>target/classes</code> will be always up-to-date, and the <code>run-java</code> can be a great gem to have in your project even for development.</p>
-</p>
   			<a href="blog/2012/07/how-to-print-text-file-content-inside-a-jar-file.html"><h1>How to print text file content inside a jar file</h1></a>
   			<p>30 July 2012, tags: 
 			    <a href="../tags/java.html">java</a> 
@@ -277,9 +200,10 @@ at org.jboss.as.cli.impl.CliLauncher.initCommandContext(CliLauncher.java:227)
 
 			    <a href="../tags/timemachine.html">timemachine</a> 
   			</p>
-  			<p><div class="paragraph">
-<p>I&#8217;ve written an article for MasterTheBoss.com on integrating <a href="http://mastertheboss.com/jboss-quartz/using-timemachine-scheduler-on-jbossas-7">TimeMachine Scheduler on JBossAS7</a></p>
-</div></p>
+  			<p><p>I’ve written an article for MasterTheBoss.com on integrating<br />
+<a href="http://mastertheboss.com/jboss-quartz/using-timemachine-scheduler-on-jbossas-7">TimeMachine Scheduler on<br />
+JBossAS7</a></p>
+</p>
   			<a href="blog/2012/07/script-console-tool-for-any-war-application.html"><h1>Script Console Tool for any WAR application</h1></a>
   			<p>21 July 2012, tags: 
 			    <a href="../tags/java.html">java</a> 
@@ -403,12 +327,56 @@ sql&gt; /
 </code></pre>
 <p>I let the database compile a Java source directly, but there is also the <code>java class</code> PL/SQL that you can load Java binary <code>.class</code> file as well. I am sure your DBA will fight all their might to prevent you doing stuff like this. But it's cool to see that this option is available.</p>
 </p>
+  			<a href="blog/2012/07/minimal-java-webapp-with-maven.html"><h1>Minimal Java webapp with Maven</h1></a>
+  			<p>10 July 2012, tags: 
+			    <a href="../tags/maven.html">maven</a> 
+
+			    <a href="../tags/java.html">java</a> 
+  			</p>
+  			<p><p>Below are the shortest steps I know that would get you the smallest Java web application ready in Maven.</p>
+<pre><code>$ mkdir -p webapp/src/main/webapp/WEB-INF/classes
+$ echo '&lt;web-app&gt;&lt;/web-app&gt;' &gt; webapp/src/main/webapp/WEB-INF/web.xml
+$ echo '&lt;html&gt;Hello World.&lt;/html&gt;' &gt; webapp/src/main/webapp/index.jsp
+$ echo '&lt;project&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;groupId&gt;atest&lt;/groupId&gt;
+    &lt;artifactId&gt;webapp&lt;/artifactId&gt;
+    &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+    &lt;packaging&gt;war&lt;/packaging&gt;
+&lt;/project&gt;' &gt; webapp/pom.xml
+$ cd webapp
+$ mvn org.apache.tomcat.maven:tomcat7-maven-plugin:2.0-beta-1:run
+</code></pre>
+<p>You should able to visit <a href="http://localhost:8080/webapp">http://localhost:8080/webapp</a> after that. Editing any JSP files should auto refresh by the server, and you don't need to restart it. This is a fast way to prototype and test out your ideas.</p>
+<p>(Yes, I am aware that maven has the archetype for webapp, but it above do give you the bare minimal and you see each lines what go into your project.)</p>
+</p>
+  			<a href="blog/2012/07/kickstart-timemachine-scheduler-with-a-quick-groovy-script.html"><h1>Kickstart TimeMachine Scheduler with a quick Groovy script</h1></a>
+  			<p>09 July 2012, tags: 
+			    <a href="../tags/groovy.html">groovy</a> 
+
+			    <a href="../tags/timemachine.html">timemachine</a> 
+  			</p>
+  			<p><p>If you have <a href="http://groovy.codehaus.org/">Groovy</a>installed, you can kick start a <a href="https://bitbucket.org/timemachine/scheduler">TimeMachine Scheduler</a> job without any setup! Try this out:</p>
+<p>// Create a repeating schedule job that runs every 3 seconds.<br />
+@Grab('org.slf4j:slf4j-simple:1.6.6')<br />
+@Grab('org.bitbucket.timemachine:timemachine-scheduler:1.2.2')<br />
+import timemachine.scheduler.*<br />
+scheduler = new SchedulerFactory().createScheduler()<br />
+scheduler.init()<br />
+jobDef = JobDefs.groovyJobDef('''<br />
+println(&quot;Hello World.&quot;)<br />
+''')<br />
+jobDef.addSchedule(Schedules.secondly(3))<br />
+scheduler.schedule(jobDef)<br />
+scheduler.start()<br />
+addShutdownHook{ scheduler.destroy() }</p>
+</p>
 
 	<hr />
 
 	<ul class="pager">
 		<li class="previous"><a href="https://zemian.github.io/24">Previous</a></li>
-		<li>Page: 25/29</li>
+		<li>Page: 25/28</li>
 		<li class="next"><a href="https://zemian.github.io/26">Next</a></li>
 	</ul>
 

@@ -53,103 +53,6 @@
       </div>
     </div>
     <div class="container">
-  			<a href="blog/2014/10/how-to-setup-custom-sslsocketfactorys-trustmanager-per-each-url-connection.html"><h1>How to setup custom SSLSocketFactory&apos;s TrustManager per each URL connection</h1></a>
-  			<p>28 October 2014, tags: 
-			    <a href="../tags/ssh.html">ssh</a> 
-
-			    <a href="../tags/java.html">java</a> 
-  			</p>
-  			<p><p>We can see from javadoc that javax.net.ssl.HttpsURLConnection provided a static method to override with setDefaultSSLSocketFory() method. This allow you to supply a custom javax.net.ssl.TrustManager that may verify your own  CA certs handshake and validation etc. But this will override the default for all &quot;https&quot; URLs per your JVM!</p>
-<p>So how can we override just a single https URL? Looking at javax.net.ssl.HttpsURLConnection again we see instance method for setSSLSocketFactory(), but we can't instantiate HttpsURLConnection object directly! It took me some digging to realized that the java.net.URL is actually an factory class for its implementation! One can get an instance like this using new URL(&quot;<a href="https://localhost">https://localhost</a>&quot;).openConnection()</p>
-<p>To complete this article, I will provide a simple working example that demonstrate this.</p>
-<p>package zemian;</p>
-<p>import java.io.BufferedReader;</p>
-<p>import java.io.InputStream;</p>
-<p>import java.io.InputStreamReader;</p>
-<p>import java.net.URL;</p>
-<p>import java.net.URLConnection;</p>
-<p>import java.security.SecureRandom;</p>
-<p>import java.security.cert.X509Certificate;</p>
-<p>import javax.net.ssl.HttpsURLConnection;</p>
-<p>import javax.net.ssl.SSLContext;</p>
-<p>import javax.net.ssl.SSLSocketFactory;</p>
-<p>import javax.net.ssl.TrustManager;</p>
-<p>import javax.net.ssl.X509TrustManager;</p>
-<p>public class WGetText {</p>
-<pre><code>public static void main(String[] args) throws Exception {
-
-    String urlString = System.getProperty(&quot;url&quot;, &quot;https://google.com&quot;);
-
-    URL url = new URL(urlString);
-
-    URLConnection urlConnection = url.openConnection();
-
-    HttpsURLConnection httpsUrlConnection = (HttpsURLConnection) urlConnection;
-
-    SSLSocketFactory sslSocketFactory = createTrustAllSslSocketFactory();
-
-    httpsUrlConnection.setSSLSocketFactory(sslSocketFactory);
-
-    try (InputStream inputStream = httpsUrlConnection.getInputStream()) {
-
-        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-
-        String line = null;
-
-        while ((line = reader.readLine()) != null) {
-
-            System.out.println(line);
-
-        }
-
-    }
-
-}
-
-private static SSLSocketFactory createTrustAllSslSocketFactory() throws Exception {
-
-    TrustManager[] byPassTrustManagers = new TrustManager[] { new X509TrustManager() {
-
-        public X509Certificate[] getAcceptedIssuers() {
-
-            return new X509Certificate[0];
-
-        }
-
-        public void checkClientTrusted(X509Certificate[] chain, String authType) {
-
-        }
-
-        public void checkServerTrusted(X509Certificate[] chain, String authType) {
-
-        }
-
-    } };
-
-    SSLContext sslContext = SSLContext.getInstance(&quot;TLS&quot;);
-
-    sslContext.init(null, byPassTrustManagers, new SecureRandom());
-
-    return sslContext.getSocketFactory();
-
-}
-</code></pre>
-<p>}</p>
-</p>
-  			<a href="blog/2014/10/how-servlet-and-jsp-create-sessions.html"><h1>How Servlet and JSP create sessions</h1></a>
-  			<p>26 October 2014, tags: 
-			    <a href="../tags/servlet.html">servlet</a> 
-  			</p>
-  			<p><p>In Servlet, you may get the Session object by &quot;httpServletRequest.getSession(true)&quot;. The &quot;true&quot; flag will create the session if it doesn't already exist, else it gets the existing session.</p>
-<p>Now if you want to check whether you have the session exists or not (without have to create one if doesn't exist), you need to pass in &quot;false&quot; and then check for &quot;null&quot;.</p>
-<p>Session session = httpServletRequest.getSession(false);<br />
-if (session == null) {<br />
-// do something without creating session object.<br />
-}</p>
-<p>Now comes the trick party. If you run above code and then dispatch the request to render a JSP page, you might quickly come to find out that the container will create a new Session object still! It turns out that by default JSP will create new Session object if you do not have one! To disable this, you need to set this explicitly on top of the JSP page:</p>
-<p>&lt;% page session=&quot;false&quot; %&gt;</p>
-<p>Only with this you will able to actually prevent creation of unnecessary Session object if you were to use JSP for output! Something to watch out for when debugging session based application.</p>
-</p>
   			<a href="blog/2014/10/poking-around-your-rest-application-with-a-scriptable-endpoint.html"><h1>Poking around your REST application with a scriptable endpoint</h1></a>
   			<p>17 October 2014, tags: 
 			    <a href="../tags/restful.html">restful</a> 
@@ -495,12 +398,63 @@ sudo bin/mysqladmin password 'new_password'</p>
 <p>Ref:<br />
 <a href="https://dev.mysql.com/doc/refman/5.6/en/binary-installation.html">https://dev.mysql.com/doc/refman/5.6/en/binary-installation.html</a></p>
 </p>
+  			<a href="blog/2014/06/using-crontab-to-startup-service.html"><h1>Using crontab to startup service</h1></a>
+  			<p>08 June 2014, tags: 
+			    <a href="../tags/crontab.html">crontab</a> 
+  			</p>
+  			<p><p>Did you know that crontab service has the &quot;@reboot&quot; schedule that would start a script during your system startup time? This is handy if you want something to run right after your system has stared. Try this:</p>
+<h1>crontab -e</h1>
+<p>@reboot $HOME/crontab/runcmd.sh /apps/start-myapp.sh</p>
+<p>The disadvantage of this vs the rc.d scripts are you do not have control on when the system shutdown(&quot;stop&quot;) state. So if your app doens't need to clean up during shutdown, but only care to start when during reboot, this would be an easy option.</p>
+</p>
+  			<a href="blog/2014/06/a-simple-cron-wrapper-script-with-logging.html"><h1>A simple cron wrapper script with logging</h1></a>
+  			<p>04 June 2014, tags: 
+			    <a href="../tags/crontab.html">crontab</a> 
+  			</p>
+  			<p><p>When working with crontab service, one thing I often need is to capture the ouput of the job. Having the job script aware of this output and logging is tedious, and often make the script harder to read. So I wrote a shell wrapper that will redirect all job script's STDOUT into a log file. This way I can inspect it when a job has run and the job script can just focus on the task itself.</p>
+<h1>file: runcmd.sh</h1>
+<h1>Helper/wrapper script to run any command in the crontab env. This script will ensure</h1>
+<h1>user profile script is loaded and to log any command output into log files. It also</h1>
+<h1>ensure not to print anything to STDOUT to avoid crontab system mail alert.</h1>
+<h1></h1>
+<h1>NOTE: be sure to pass in absolute path of the command to be run so it can be found.</h1>
+<h1></h1>
+<h1>Usage:</h1>
+<h1>./runcmd.sh find $HOME/crontab/test.sh            # Simple use case</h1>
+<h1>LOG_NAME=mytest ./runcmd.sh $HOME/crontab/test.sh # Change the log name to something specific</h1>
+<h1></h1>
+<h1>Options</h1>
+<p>DIR=<code>dirname $0</code><br />
+CMD=&quot;$@&quot;<br />
+CMD_NAME=<code>basename $1</code><br />
+LOG_NAME=${LOG_NAME:=$CMD_NAME}<br />
+LOG=&quot;$DIR/logs/$LOG_NAME.log<code>date +%s</code>&quot;</p>
+<h1>Ensure logs dir exists</h1>
+<p>if [[ ! -e $DIR/logs ]]; then<br />
+mkdir -p $DIR/logs<br />
+fi</p>
+<h1>Run cron command</h1>
+<p>source $HOME/.bash_profile<br />
+echo &quot;<code>date</code> Started cron cmd=$CMD, logname=$LOG_NAME&quot; &gt;&gt; $LOG 2&gt;&amp;1<br />
+$CMD &gt;&gt; $LOG 2&gt;&amp;1<br />
+echo &quot;<code>date</code> Cron cmd is done.&quot; &gt;&gt; $LOG 2&gt;&amp;1</p>
+<p>With this wrapper, you can run any shell script and their output will be recorded. For example this job script below will clean up the logs accumulated in our logs folder.</p>
+<p>Note that the wrapper will also auto source the &quot;.bash_profile&quot;. Often this this is needed if your job script expect all the env variables you already have setup in your login shell scripts.</p>
+<h1>file: remove-crontab-logs.sh</h1>
+<p>DIR=<code>dirname $0</code>/logs<br />
+echo &quot;Checking and removing logs in $DIR&quot;<br />
+find $DIR -type f -mtime +31 -print -delete<br />
+echo &quot;Done&quot;</p>
+<p>Now in the crontab file, you may run the job script like this:</p>
+<h1>Clean up crontab logs</h1>
+<p>@montly $HOME/crontab/runcmd.sh $HOME/crontab/remove-crontab-logs.sh</p>
+</p>
 
 	<hr />
 
 	<ul class="pager">
 		<li class="previous"><a href="https://zemian.github.io/14">Previous</a></li>
-		<li>Page: 15/29</li>
+		<li>Page: 15/28</li>
 		<li class="next"><a href="https://zemian.github.io/16">Next</a></li>
 	</ul>
 

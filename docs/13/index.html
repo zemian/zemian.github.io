@@ -53,84 +53,6 @@
       </div>
     </div>
     <div class="container">
-  			<a href="blog/2015/05/how-to-setup-intellij-ide-war-exploded-artifact-with-multiple-cdi-dependent-projects.html"><h1>How to setup Intellij IDE war exploded artifact with multiple CDI dependent projects</h1></a>
-  			<p>29 May 2015, tags: 
-			    <a href="../tags/intellij.html">intellij</a> 
-  			</p>
-  			<p><p>I have a large Java project with many sub modules, and they have simple top down dependencies like this:</p>
-<p>ProjectX<br />
-+-ModuleLibA<br />
-+-ModuleLibB<br />
-+-ModuleCdiLibC<br />
-+-ModuleCdiLibC2<br />
-+-ModuleLibD<br />
-+-ModuleCdiLibE<br />
-+-ModuleCdiLibE2<br />
-+-ModuleCdiLibE3<br />
-+-ModuleLibF<br />
-+-ModuleLibG<br />
-+-ModuleWebAppX</p>
-<p>Each of these modules has their own third party dependency jars. When I say top down, it simply means Module from bottom have all the one above sub module and its third party dependencies as well. The project is large, and with many files, but the structure is straight forward. It does have large amount of third party jars though. At the end, the webapp would have over 100 jars packaged in WEB-INF/lib folder!</p>
-<p>When you create this project structure in IntelliJ IDE (no I do not have the luxury of using Maven in this case), all the third party dependencies are nicely exported and managed from one Module to another as I create my Project with existing source and third parties jars. I do not need to re-define any redudant jars libraries definitions between Modules. When it come to define ModuleWebAppX at the end, all I have to do is to add ModuleLibG as a project dependency, and it brings all the other &quot;transitives&quot; dependent jars in! This is all done by IntelliJ IDE, which is very nice!</p>
-<p>IntelliJ IDE also let you setup Artifacts from your project to prepare for package and deployment that can run inside your IDE servers. By default, any web application will have an option to create a war:exploded artifact definition, and the IDE will automatically copy and update your project build artifacts into this output folder, and it can be deploy/redeploy into any EE server as exploded mode nicely.</p>
-<p>All these work really smoothly, until there is one problem that hit hard! The way IntelliJ IDE package default war:exploded artifact is that it will copy all the .class files generated from each Modules into a single &quot;out/artifact/ProjectX_war_exploded&quot; output folder. This works most of the time when our Java package and classes are unique, but not so with resource files that's not unique! My project uses several dependent CDI based modules. As you might know, each CDI module suppose to define their own, one and single location at META-INF/beans.xml to enable it and to customize CDI behavior. But becuase IntelliJ IDE flatten everything into a single output directory, I've lost the unique beans.xml file per each Module!</p>
-<p>This problem is hard to troubleshoot since it doesn't produce any error at first, nor it stops the web app from running. It just not able to load certain CDI beans that you have customized in the beans.xml!!!</p>
-<p>To resolve this, I have to make the IntelliJIDE artifact dependent modules to generate it's JAR instead of all copy into a single output. But we still want it to auto copy generated build files into the JAR archive automatically when we make a change. Lukcly IntelliJ has this feature. This is how I do it:</p>
-<ol>
-<li>
-<p>Open your project settings then select Artifacts on left.</p>
-</li>
-<li>
-<p>Choose your war:exploded artifacts and look to your right.</p>
-</li>
-<li>
-<p>Under OutputLayout tab, expand WEB-INF/lib, then right clik and &quot;Create Archive&quot; &gt; Enter your moduleX name.jar.</p>
-</li>
-<li>
-<p>Right click this newly created archive moduleX.jar name, then &quot;Add Copy of&quot; &gt; &quot;Module Output&quot; and select one of your dependent module.</p>
-</li>
-<li>
-<p>Repeat for each of the CDI based Modules!</p>
-</li>
-</ol>
-<p>I wish there is a easier way to do across all Modules for this, but at least this manual solution works!</p>
-</p>
-  			<a href="blog/2015/05/how-to-package-skinny-war-with-plain-maven-war-plugin.html"><h1>How to package skinny war with plain maven-war-plugin</h1></a>
-  			<p>22 May 2015, tags: 
-			    <a href="../tags/maven.html">maven</a> 
-  			</p>
-  			<p><p>If you are not using maven EAR plugin, then you can also use plain maven-war-plugin to package a Skinny war package like this:<br />
-<plugin><br />
-<groupId>org.apache.maven.plugins</groupId><br />
-<artifactId>maven-war-plugin</artifactId><br />
-<version>2.6</version><br />
-<configuration><br />
-<!--
-We want to package skinny war to avoid third party jars --><br />
-<packagingExcludes><br />
-WEB-INF/lib/*.jar<br />
-</packagingExcludes><br />
-<archiveClasses>true</archiveClasses><br />
-</configuration><br />
-</plugin></p>
-<p>However, if you ran into the problem I described in <a href="http://saltnlight5.blogspot.com/2015/05/getting-version-string-from-maven-based.html">last post</a>, then you want a Skinny war, but still want to include the jar it produced from your own web project. In this case, you can try this:</p>
-<pre><code>        &lt;plugin&gt;
-            &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
-            &lt;artifactId&gt;maven-war-plugin&lt;/artifactId&gt;
-            &lt;version&gt;2.6&lt;/version&gt;
-            &lt;configuration&gt;
-                &lt;!--
-                We want to package skinny war to avoid third party jars, but we do want the classes from
-                this project to be included --&gt;
-                &lt;packagingExcludes&gt;
-                    %regex[WEB-INF/lib/(?!my-project-artifact-name-.*\.jar).*\.jar]
-                &lt;/packagingExcludes&gt;
-                &lt;archiveClasses&gt;true&lt;/archiveClasses&gt;
-            &lt;/configuration&gt;
-        &lt;/plugin&gt;
-</code></pre>
-<p>The plugin would accept a REGEX expression for exclusion as well, but getting it to work might take you a few tries! If you need more than this, try this online Java REGEX testing tool: <a href="http://www.regexplanet.com/advanced/java/index.html">http://www.regexplanet.com/advanced/java/index.html</a></p>
-</p>
   			<a href="blog/2015/05/getting-version-string-from-a-maven-based-web-application.html"><h1>Getting version string from a Maven based web application</h1></a>
   			<p>20 May 2015, tags: 
 			    <a href="../tags/maven.html">maven</a> 
@@ -468,12 +390,232 @@ public void init() {
 in JSP, and only use EL and JSP tags.</p>
 <p>You can find above code in my <a href="https://github.com/saltnlight5/java-ee6-examples/tree/master/jsp-example">jsp-example</a> in GitHub.</p>
 </p>
+  			<a href="blog/2015/01/ee-servlet-3-developing-user-login-with-session-and-filter.html"><h1>EE Servlet 3: Developing User Login with Session and Filter</h1></a>
+  			<p>16 January 2015, tags: 
+			    <a href="../tags/servlet.html">servlet</a> 
+  			</p>
+  			<p><p>I have introduced the Application class in my previous post where you can setup backend services. One example service I added is the UserService. This service will load a Java users properties file that contains username and password sets; and it's used later to authenticate users to login into the web application. Now I will show how the login part is done using standard Servlet API along with this backend service.</p>
+<p>At a high level, what we want is to restrict some web resources (this means certain URLs provided by Servlets such as &quot;/sysprops&quot;, or &quot;/user&quot;) to only client users who are known in our users properties file. Users may identify themself with the matching password. This is typically done with a user login form, authenticate it, then insert a login token into Http Session scope space. This login token then can be used to verify whether to allow users to access the restricted resources or not. We only interested in a single authorization (no roles are defined, and any logged in user may access any protected URLs.)</p>
+<p>You have already seen an example that mapped to &quot;/sysprops&quot; URL in one of my previous post provided by the SysPropsServlet, which it simply generate a HTML table of System information. These are sensitive information, so we want to protect this URL. We would need to create a class that implements javax.servlet.Filter interface, and then add the &quot;/sysprops&quot; URL with this filter so it can pre-process the request before the actual Servlet does. This filter gives us a place to inspect the HTTP request object and abort the request if needed to, thus restricting the access.</p>
+<p>package zemian.servlet3example.web;</p>
+<p>import java.io.IOException;<br />
+import javax.servlet.Filter;<br />
+import javax.servlet.FilterChain;<br />
+import javax.servlet.FilterConfig;<br />
+import javax.servlet.ServletException;<br />
+import javax.servlet.ServletRequest;<br />
+import javax.servlet.ServletResponse;<br />
+import javax.servlet.annotation.WebFilter;<br />
+import javax.servlet.http.HttpServletRequest;<br />
+import zemian.service.logging.Logger;</p>
+<p>@WebFilter(urlPatterns={&quot;/sys-props&quot;, &quot;/user&quot;})<br />
+public class LoginRequiredFilter implements Filter {<br />
+private static final Logger LOGGER = new Logger(LoginRequiredFilter.class);<br />
+public static final String LOGIN_REDIRECT = &quot;LOGIN_REDIRECT&quot;;</p>
+<pre><code>@Override
+public void init(FilterConfig filterConfig) throws ServletException {
+}
+
+@Override
+public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+    if (request instanceof HttpServletRequest) {
+        HttpServletRequest req = (HttpServletRequest) request;
+        LOGGER.trace(&quot;Checking LoginSession token for uri=%s&quot;, req.getRequestURI());
+        LoginSession loginSession = LoginServlet.getOptionalLoginSession(req);
+        if (loginSession == null) {
+            LOGGER.debug(&quot;No LoginSession token found; forwarding request to login page.&quot;);
+            // We need to save the old URI so we can auto redirect after login.
+            req.setAttribute(LOGIN_REDIRECT, req.getRequestURI());
+            req.getRequestDispatcher(&quot;/login&quot;).forward(request, response);
+            return;
+        } else {
+            LOGGER.debug(&quot;Request allowed using LoginSession token=%s&quot;, loginSession.getId());
+        }
+    }
+    chain.doFilter(request, response);
+}
+
+@Override
+public void destroy() {
+}
+</code></pre>
+<p>}</p>
+<p>Notice that you can configure this filter to match more than one URL that you want to protect. You can even use wildcard pattern such as &quot;/*&quot; and it will protect every URLs in your application! The filter simply looks into the Http Session space for a LoginSession object that we will create later. If it's found then it let the request through, otherwise it will redirect to a Login form page, which is served by LoginServlet class (notice the RETURN statement for early exit of the filter method without calling the filter chain!).</p>
+<p>The LoginServlet class is a form processing Servlet that will prompt user for username and password. If it succeed, then we will insert the LoginSession token object into the HttpSession space space, which is what the filter above is looking for. Here is the processing Servlet code.</p>
+<p>package zemian.servlet3example.web;</p>
+<p>import java.io.IOException;<br />
+import javax.servlet.ServletException;<br />
+import javax.servlet.annotation.WebServlet;<br />
+import javax.servlet.http.HttpServletRequest;<br />
+import javax.servlet.http.HttpServletResponse;<br />
+import javax.servlet.http.HttpSession;<br />
+import zemian.service.logging.Logger;<br />
+import zemian.servlet3example.service.Application;<br />
+import zemian.servlet3example.service.UserService;</p>
+<p>@WebServlet(&quot;/login&quot;)<br />
+public class LoginServlet  extends HtmlWriterServlet {<br />
+private static final Logger LOGGER = new Logger(LoginServlet.class);</p>
+<pre><code>@Override
+protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    HtmlWriter html = createHtmlWriter(req, resp); 
+    String message;
+    
+    // Check to see if we are doing logout or not.
+    LoginSession loginSession = getOptionalLoginSession(req);
+    if (loginSession != null &amp;&amp; req.getParameter(&quot;logout&quot;) != null) {
+        logout(req);
+        message = &quot;Your have successfully logged out.&quot;;
+    } else {    
+        message = (String)req.getAttribute(&quot;message&quot;);
+        if (message == null)
+            message = &quot;&quot;;
+    }   
+    
+    // Show a login form
+    String redirectUri = (String)req.getAttribute(LoginRequiredFilter.LOGIN_REDIRECT);
+    String redirectHtmlTag = &quot;&quot;;
+    if (redirectUri != null) {
+        redirectHtmlTag = &quot;&lt;input type='hidden' name='redirectUri' value='&quot; + redirectUri + &quot;'/&gt;&quot;;
+    }
+    html.header()
+        .h(1, &quot;Please Login&quot;)
+        .p(message)
+        .println(&quot;&lt;form method='post' action='login'&gt;&quot;)
+        .println(redirectHtmlTag)
+        .println(&quot;&lt;p/&gt;Username: &lt;input type='text' name='username'/&gt;&quot;)
+        .println(&quot;&lt;p/&gt;Password: &lt;input type='password' name='password'/&gt;&quot;)
+        .println(&quot;&lt;p/&gt;&lt;input type='submit' value='Submit'/&gt;&quot;)
+        .println(&quot;&lt;/form&gt;&quot;)
+        .footer();
+}
+
+@Override
+protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    LOGGER.debug(&quot;Processing login form.&quot;);
+    if (login(req)) {
+        // Login succeed, we should auto redirect user if exists.
+        String redirectUri = req.getParameter(&quot;redirectUri&quot;);
+        if (redirectUri != null) {
+            LOGGER.debug(&quot;Redirect after login to: %s&quot;, redirectUri);
+            resp.sendRedirect(redirectUri);
+            return;
+        }
+    }
+    
+    // Show the form again in case login failed or user didn't provide a redirect
+    doGet(req, resp);
+}    
+   
+protected LoginSession createLoginSession(HttpServletRequest req, String username) {
+    LoginSession result = new LoginSession(username);
+    req.getSession(true).setAttribute(LoginSession.LOGIN_SESSION_KEY, result);
+    return result;
+}
+
+protected void removeLoginSession(HttpServletRequest req) {
+    HttpSession session = req.getSession(false);
+    if (session != null) {
+        session.removeAttribute(LoginSession.LOGIN_SESSION_KEY);
+    }
+}
+
+private boolean login(HttpServletRequest req) throws IOException {
+    String username = req.getParameter(&quot;username&quot;);
+    String password = req.getParameter(&quot;password&quot;);
+    
+    UserService userService = Application.getInstance().getUserService();
+    if (userService.validate(username, password)) {
+        LOGGER.info(&quot;User %s logged in successfully.&quot;, username);
+        // Create Session Data here after successful authenticated.
+        LoginSession loginsession = getOptionalLoginSession(req);
+        if (loginsession == null) {
+            createLoginSession(req, username);
+            req.setAttribute(&quot;message&quot;, &quot;You have successfully logged in.&quot;);
+        } else {
+            req.setAttribute(&quot;message&quot;, &quot;You already have logged in.&quot;);             
+        }
+    } else {
+        LOGGER.info(&quot;User %s failed to login.&quot;, username);
+        req.setAttribute(&quot;message&quot;, &quot;Invalid login.&quot;);
+    }
+    return true;
+}
+
+/** Return LoginSession if found in HttpSession scope, else return NULL value. */
+public static LoginSession getOptionalLoginSession(HttpServletRequest req) {
+    LoginSession result = null;
+    HttpSession session = req.getSession(false);
+    if (session != null)
+        result = (LoginSession)session.getAttribute(LoginSession.LOGIN_SESSION_KEY);
+    return result;
+}
+</code></pre>
+<p>}</p>
+<p>Inside LoginServlet class is where we use the UserService service to validate username and password. We display the login form with a GET request, and then process the login with a POST action. Once username and password are checked, we create the LoginSession object. This is just a simple POJO to represent a session token; and you can hold any user information you want. I won't list here, but you can browse it on GitHub. Note that you should make it serializable though, because any data stored in HttpSession may be subject to be serialize/deserialize by your application server.</p>
+<p>Notice also that I have implemented the Logout functionality into the LoginServlet class<br />
+as well. You simply pass &quot;logout&quot; query parameter, and it will be<br />
+detected and remove the login token from the session. Ensure you invalid<br />
+the HttpSession itself when you do this, just to be in clean side. I<br />
+also exposed a static helper getOptionalLoginSession</p>
+<p>that is used between few of the classes to check whether user has logged in or not.</p>
+<p>These few classes are simple but yet demonstrated the use of Servlet Filter and Servlet on how to manage Session data. This programming pattern allows users to have their own browsing session and privacy through the application.</p>
+<p>If you are to run my <a href="https://github.com/saltnlight5/java-ee6-examples/tree/master/servlet3-example">servlet3-example</a>  in a GlassFish server, you may login using any users listed in <a href="https://github.com/saltnlight5/java-ee6-examples/blob/master/servlet3-example/src/main/resources/zemian/servlet3example/service/users.properties">here</a>.</p>
+</p>
+  			<a href="blog/2015/01/ee-servlet-3-how-to-setup-backend-services-in-a-web-application.html"><h1>EE Servlet 3: How to Setup Backend Services in a Web Application</h1></a>
+  			<p>09 January 2015, tags: 
+			    <a href="../tags/servlet.html">servlet</a> 
+  			</p>
+  			<p><p>In a web application, providing user interfacing (UI) is often only half of the job. Many applications have requirements that's supported by backend services. Some example of backend services are scheduler process (batch processing), listen to a queue and respond when messages come in, or simple thing such as storing information for the entire application to use. These global data often needs to be shared between all Servlet (for each request processor) classes. Here I will show you how and where you should add such backend services in a Servlet based application.</p>
+<p>Before we begin though, I would like to explain how a Servlet application store data variables (after all backend services are just simply Java objects). There are 3 major areas where you can add and share data (we sometimes call these areas in different &quot;space&quot;, &quot;scope&quot; or &quot;context&quot;). You may also think of each of these area as a hash Map with unique keys and data values.</p>
+<ol>
+<li>Application scope - This is a global, application wide storage map space that's allocated for your instance of web application. Each web application will have its unique space. Even if you deploy the same WAR file into a a domain server, they each will get their own space. You can get a hold of this space by implementing javax.servlet.ServletContextListener interface. This interface also has two callback methods that will get invoked when your application is starting (init) or shutting down (destroy). In these method you can do your own one-time application or services setup and clean up logic. You can store any Java objects by using ServletContext#setAttribute(key, value) method. This storage is not persistent externally but only in server memory. So the more you add to it, the more memory you will need (usually you only want to hold the the references to your service objects, so typically don't have memory issue). This is the location where you should create backend services and initialize it, then add the instances to the space so you may retrieve it later.</li>
+</ol>
+<p>You may also use the Singleton Pattern to create a Application wide context area to hold your own business services as space, but you will still need ServletContextListener if you need to initialize it in a web application environment.</p>
+<ol>
+<li>Request scope - This is a single HTTP request process storage map space, exits only for a specific request, or tempory. This map space is also not persistent. You will have access to this space inside your Servlet code by handling one of the HTTP action method. You will add data by using HttpServletRequest#setAttribute(key, value) method. Usually these stored data is used to pass to a VIEW processing layer (such as JSP) to construct HTML output. You have already seen some of my preview post that uses this inside a Servlet component.</li>
+</ol>
+<p>Note also that inside a Servlet method that process a request, you will also have access to the Application space method above by using HttpServletRequest#getServletContext()#getAttribute(key) method.</p>
+<ol>
+<li>Session scope - This is a special space where you can track a specific user interacations to the applicatoin as a series of conversation requests, or so call a user session. Remember that a HTTP request is stateless, so you will need this space if you want to store some data to share between multiple requests, but they should be isolated for each client browser user. This is usually used when  implementing user login and resource restriction in an application. You can add to this space using the HttpServletRequest#getSession(true)#setAttribute(key, value) method in a Serlvet class. The application server will automatically return you the same session object or space everytime for that specific client user</li>
+</ol>
+<p>Handling user session can be tricky though, so you'll have to spend time and carefully designing your application to implement the proper solution for your need. I will write a seperate post on how to use Session scope in future, but for now I can show you an exmaple of how I initialize my web Application with custom services inside. You can find this code in my <a href="https://github.com/saltnlight5/java-ee6-examples/tree/master/servlet3-example">servlet3-example</a>.</p>
+<p>package zemian.servlet3example.web;</p>
+<p>import javax.servlet.ServletContext;<br />
+import zemian.servlet3example.service.Application;<br />
+import javax.servlet.ServletContextEvent;<br />
+import javax.servlet.ServletContextListener;<br />
+import javax.servlet.annotation.WebListener;<br />
+import zemian.service.logging.Logger;</p>
+<p>@WebListener<br />
+public class WebAppStartup implements ServletContextListener {<br />
+private static final Logger LOGGER = new Logger(WebAppStartup.class);</p>
+<pre><code>@Override
+public void contextInitialized(ServletContextEvent event) {
+    LOGGER.debug(&quot;WebApp is starting up.&quot;);
+    Application app = Application.getInstance();
+    app.init();
+            
+    // Store the app instances.        event.getServletContext().setAttribute(Application.SERVLET_CONTEXT_KEY, app);
+    LOGGER.info(&quot;WebApp initialized.&quot;);        
+}
+
+@Override
+public void contextDestroyed(ServletContextEvent event) {
+    Application app = Application.getInstance();
+    app.destroy();
+    LOGGER.info(&quot;WebApp destroyed.&quot;);
+}
+</code></pre>
+<p>}</p>
+<p>With this in place, I can easily add any custom business backend services inside the Application class, and and then have any of the Servlet code access it. Notice that I am using Servlet 3's @WebListener annotation so there is no config is needed. You simply package along your WAR application and it will be detected by your EE application server!</p>
+<p>NOTE: Try to use Application as holder class only and not place any logic in it. With EE 6, you can easily replace this with CDI bean injection as alternate solution.</p>
+</p>
 
 	<hr />
 
 	<ul class="pager">
 		<li class="previous"><a href="https://zemian.github.io/12">Previous</a></li>
-		<li>Page: 13/29</li>
+		<li>Page: 13/28</li>
 		<li class="next"><a href="https://zemian.github.io/14">Next</a></li>
 	</ul>
 

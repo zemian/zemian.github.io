@@ -65,129 +65,78 @@
 	    <a href="../../../tags/session.html">session</a> 
 	</p>
 
-	<p><div class="sect1">
-<h2 id="_configuration_setup_for_httpd_conf">Configuration setup for <code>httpd.conf</code></h2>
-<div class="sectionbody">
-<div class="literalblock">
-<div class="title">Enable modules</div>
-<div class="content">
-<pre>LoadModule auth_form_module modules/mod_auth_form.so
-LoadModule auth_digest_module modules/mod_auth_digest.so
-LoadModule session_module modules/mod_session.so
-LoadModule session_cookie_module modules/mod_session_cookie.so</pre>
-</div>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Note</div>
-</td>
-<td class="content">
-This configuration is only for tutorial purpose and not secured by default! Using Cookies session store is NOT secured! It&#8217;s recommend you use <code>mod_session_crypto</code> to further secure data, or use server side session data store.
-</td>
-</tr>
-</table>
-</div>
-<div class="literalblock">
-<div class="title">Setup users</div>
-<div class="content">
-<pre># First user and new file
-htpasswd -c /etc/httpd/passwd/passwords test
-# Update/add more user
-htpasswd /etc/httpd/passwd/passwords zemian</pre>
-</div>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Note</div>
-</td>
-<td class="content">
-You need <code>httpd-tool</code> package from Cygwin to find <code>htpasswd</code> command.
-</td>
-</tr>
-</table>
-</div>
-<div class="listingblock">
-<div class="title">Example of Digest login</div>
-<div class="content">
-<pre># Digest Login
-&lt;Location "/secured"&gt;
-	AuthType Basic
-	AuthName "Restricted Files"
-	AuthBasicProvider file
-	AuthUserFile "/etc/httpd/passwd/passwords"
-	Require valid-user
-&lt;/Location&gt;</pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="title">Example of form login</div>
-<div class="content">
-<pre># Form Login/logout process
-&lt;LocationMatch "(/secured|/cgi-bin/secured)"&gt;
-	Require valid-user
-	AuthName "SecuredArea"
-	AuthFormProvider file
-	AuthUserFile "/etc/httpd/passwd/passwords"
-    AuthType form
-	AuthFormLoginRequiredLocation "/login.html"
-
-	Session On
-	SessionCookieName session path=/
-	SessionMaxAge 30
-	SessionEnv On
-	SessionHeader X-Replace-Session
-&lt;/LocationMatch&gt;
-&lt;Location "/login"&gt;
-	SetHandler form-login-handler
-	AuthName "SecuredArea"
-	AuthFormProvider file
-	AuthUserFile "/etc/httpd/passwd/passwords"
-    AuthType form
-	AuthFormLoginRequiredLocation "/login.html"
-    AuthFormLoginSuccessLocation "/secured/index.html"
-
-	Session On
-	SessionCookieName session path=/
+	<p><h1>Configuration setup for <code>httpd.conf</code></h1>
+<p><strong>Enable modules.</strong></p>
+<p>LoadModule auth_form_module modules/mod_auth_form.so LoadModule<br />
+auth_digest_module modules/mod_auth_digest.so LoadModule<br />
+session_module modules/mod_session.so LoadModule<br />
+session_cookie_module modules/mod_session_cookie.so</p>
+<p>This configuration is only for tutorial purpose and not secured by<br />
+default! Using Cookies session store is NOT secured! It’s recommend you<br />
+use <code>mod_session_crypto</code> to further secure data, or use server side<br />
+session data store.</p>
+<p><strong>Setup users.</strong></p>
+<p># First user and new file htpasswd -c /etc/httpd/passwd/passwords test<br />
+# Update/add more user htpasswd /etc/httpd/passwd/passwords zemian</p>
+<p>You need <code>httpd-tool</code> package from Cygwin to find <code>htpasswd</code> command.</p>
+<p><strong>Example of Digest login.</strong></p>
+<pre><code># Digest Login
+&lt;Location &quot;/secured&quot;&gt;
+        AuthType Basic
+        AuthName &quot;Restricted Files&quot;
+        AuthBasicProvider file
+        AuthUserFile &quot;/etc/httpd/passwd/passwords&quot;
+        Require valid-user
 &lt;/Location&gt;
-&lt;Location "/logout"&gt;
-	SetHandler form-logout-handler
-	AuthName "SecuredArea"
-	AuthFormLogoutLocation "http://localhost/logout.html"
+</code></pre>
+<p><strong>Example of form login.</strong></p>
+<pre><code># Form Login/logout process
+&lt;LocationMatch &quot;(/secured|/cgi-bin/secured)&quot;&gt;
+        Require valid-user
+        AuthName &quot;SecuredArea&quot;
+        AuthFormProvider file
+        AuthUserFile &quot;/etc/httpd/passwd/passwords&quot;
+    AuthType form
+        AuthFormLoginRequiredLocation &quot;/login.html&quot;
 
-	Session On
-	SessionCookieName session path=/
-	SessionMaxAge 1
-&lt;/Location&gt;</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="title">Login page <code>htdocs/login.html</code></div>
-<div class="content">
-<pre>&lt;form method="POST" action="/login"&gt;
-  Username: &lt;input type="text" name="httpd_username" value="" /&gt;
-  Password: &lt;input type="password" name="httpd_password" value="" /&gt;
-  &lt;input type="submit" name="login" value="Login" /&gt;
-&lt;/form&gt;</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="title">Logout page <code>htdocs/logout.html</code></div>
-<div class="content">
-<pre>&lt;p&gt;You have been logged out.&lt;/p&gt;</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="title">Secured page <code>htdocs/secured/index.html</code></div>
-<div class="content">
-<pre>&lt;p&gt;This is secured area&lt;/p&gt;</pre>
-</div>
-</div>
-</div>
-</div></p>
+        Session On
+        SessionCookieName session path=/
+        SessionMaxAge 30
+        SessionEnv On
+        SessionHeader X-Replace-Session
+&lt;/LocationMatch&gt;
+&lt;Location &quot;/login&quot;&gt;
+        SetHandler form-login-handler
+        AuthName &quot;SecuredArea&quot;
+        AuthFormProvider file
+        AuthUserFile &quot;/etc/httpd/passwd/passwords&quot;
+    AuthType form
+        AuthFormLoginRequiredLocation &quot;/login.html&quot;
+    AuthFormLoginSuccessLocation &quot;/secured/index.html&quot;
+
+        Session On
+        SessionCookieName session path=/
+&lt;/Location&gt;
+&lt;Location &quot;/logout&quot;&gt;
+        SetHandler form-logout-handler
+        AuthName &quot;SecuredArea&quot;
+        AuthFormLogoutLocation &quot;http://localhost/logout.html&quot;
+
+        Session On
+        SessionCookieName session path=/
+        SessionMaxAge 1
+&lt;/Location&gt;
+</code></pre>
+<p><strong>Login page <code>htdocs/login.html</code>.</strong></p>
+<p>&lt;form method=&quot;POST&quot; action=&quot;/login&quot;&gt; Username: &lt;input<br />
+type=&quot;text&quot; name=&quot;httpd_username&quot; value=&quot;&quot; /&gt; Password: &lt;input<br />
+type=&quot;password&quot; name=&quot;httpd_password&quot; value=&quot;&quot; /&gt; &lt;input<br />
+type=&quot;submit&quot; name=&quot;login&quot; value=&quot;Login&quot; /&gt; &lt;/form&gt;</p>
+<p><strong>Logout page <code>htdocs/logout.html</code>.</strong></p>
+<p>&lt;p&gt;You have been logged out.&lt;/p&gt;</p>
+<p><strong>Secured page <code>htdocs/secured/index.html</code>.</strong></p>
+<p>&lt;p&gt;This is secured area&lt;/p&gt;</p>
+</p>
 
 	<hr />
 

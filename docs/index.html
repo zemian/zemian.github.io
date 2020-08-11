@@ -181,6 +181,31 @@ define(['mylib', function(mylib) {
   			<p><p>Wrote a <a href="https://raw.githack.com/zemian/html-starter/master/tools/js-to-json.html">tiny JSON converter</a> that you can check it out!</p>
 <p>The source is <a href="https://github.com/zemian/html-starter/blob/master/tools/js-to-json.html">here</a>.</p>
 </p>
+  			<a href="blog/2020/04/hello-requirejs.html"><h1>Hello VueJS</h1></a>
+  			<p>18 April 2020, tags: 
+			    <a href="tags/vue.html">vue</a> 
+  			</p>
+  			<p><p>I like <a href="http://vuejs.org/">VueJS</a> because it’s similar to <a href="hello-knockout.md">KnockoutJS</a> that I am familiar with. The VueJS has much more modern feel and the code is a lot more smoother compare to the KnockoutJS. One big difference is KO uses the Observable object to bind reactive properties, while in VueJS it can be treated as normal JS properties.</p>
+<p>Get started on <a href="https://vuejs.org/">VueJS</a> with single JS script.</p>
+<pre><code>&lt;div id=&quot;app&quot;&gt;
+    &lt;span v-text=&quot;message&quot;&gt;&lt;/span&gt;
+&lt;/div&gt;
+
+&lt;script src=&quot;https://unpkg.com/vue@2.6.11/dist/vue.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+    let app = new Vue({
+        data: {
+            message: &quot;Hello&quot;
+        }
+    });
+    app.$mount(&quot;#app&quot;);
+&lt;/script&gt;
+</code></pre>
+<p>If you run this in browser, you should see “Hello”. Then open the Developer Console and change the model like this:</p>
+<pre><code>app.message = &quot;Hello VueJS&quot;;
+</code></pre>
+<p>And the browser updates immediately!</p>
+</p>
   			<a href="blog/2020/04/hello-bulma.html"><h1>Hello BulmaCSS</h1></a>
   			<p>18 April 2020, tags: 
 			    <a href="tags/bulma.html">bulma</a> 
@@ -258,31 +283,6 @@ define(['mylib', function(mylib) {
   &lt;button class=&quot;button is-danger&quot;&gt;Danger&lt;/button&gt;
 &lt;/div&gt;
 </code></pre>
-</p>
-  			<a href="blog/2020/04/hello-requirejs.html"><h1>Hello VueJS</h1></a>
-  			<p>18 April 2020, tags: 
-			    <a href="tags/vue.html">vue</a> 
-  			</p>
-  			<p><p>I like <a href="http://vuejs.org/">VueJS</a> because it’s similar to <a href="hello-knockout.md">KnockoutJS</a> that I am familiar with. The VueJS has much more modern feel and the code is a lot more smoother compare to the KnockoutJS. One big difference is KO uses the Observable object to bind reactive properties, while in VueJS it can be treated as normal JS properties.</p>
-<p>Get started on <a href="https://vuejs.org/">VueJS</a> with single JS script.</p>
-<pre><code>&lt;div id=&quot;app&quot;&gt;
-    &lt;span v-text=&quot;message&quot;&gt;&lt;/span&gt;
-&lt;/div&gt;
-
-&lt;script src=&quot;https://unpkg.com/vue@2.6.11/dist/vue.js&quot;&gt;&lt;/script&gt;
-&lt;script&gt;
-    let app = new Vue({
-        data: {
-            message: &quot;Hello&quot;
-        }
-    });
-    app.$mount(&quot;#app&quot;);
-&lt;/script&gt;
-</code></pre>
-<p>If you run this in browser, you should see “Hello”. Then open the Developer Console and change the model like this:</p>
-<pre><code>app.message = &quot;Hello VueJS&quot;;
-</code></pre>
-<p>And the browser updates immediately!</p>
 </p>
   			<a href="blog/2020/04/public-cdn-for-ojet.html"><h1>Setup Oracle JET With Public CDN</h1></a>
   			<p>17 April 2020, tags: 
@@ -377,7 +377,7 @@ define(['mylib', function(mylib) {
 
 	<ul class="pager">
 		
-		<li>Page: 1/29</li>
+		<li>Page: 1/28</li>
 		<li class="next"><a href="https://zemian.github.io/2">Next</a></li>
 	</ul>
 

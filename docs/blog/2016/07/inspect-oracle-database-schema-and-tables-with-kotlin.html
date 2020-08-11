@@ -61,53 +61,51 @@
 	    <a href="../../../tags/kotlin.html">kotlin</a> 
 	</p>
 
-	<p><div class="listingblock">
-<div class="content">
-<pre>// Filename: conn.kts
+	<p><pre><code>// Filename: conn.kts
 // Usage: kotlinc -cp /home/zedeng/Downloads/ojdbc7.jar -script conn.kts
 
 import java.sql.*
 
-Class.forName("oracle.jdbc.driver.OracleDriver")
-val conn = DriverManager.getConnection("jdbc:oracle:thin:@myremotehost:1521:MYDB", "system", "mypassword123")
+Class.forName(&quot;oracle.jdbc.driver.OracleDriver&quot;)
+val conn = DriverManager.getConnection(&quot;jdbc:oracle:thin:@myremotehost:1521:MYDB&quot;, &quot;system&quot;, &quot;mypassword123&quot;)
 
-println("Database connection established $conn")
-println("Database Default Catalog: ${conn.getCatalog()}")
-println("Database Default Schema: ${conn.getSchema()}")
+println(&quot;Database connection established $conn&quot;)
+println(&quot;Database Default Catalog: ${conn.getCatalog()}&quot;)
+println(&quot;Database Default Schema: ${conn.getSchema()}&quot;)
 
 val m = conn.getMetaData()
-println("${m.getDatabaseProductName()} ${m.getDatabaseMajorVersion()} ${m.getDatabaseMinorVersion()}")
+println(&quot;${m.getDatabaseProductName()} ${m.getDatabaseMajorVersion()} ${m.getDatabaseMinorVersion()}&quot;)
 
-println("List of Schemas")
+println(&quot;List of Schemas&quot;)
 var rs: ResultSet
 rs = m.getSchemas()
 while(rs.next()) {
-    println("  ${rs.getObject(1)}")
+    println(&quot;  ${rs.getObject(1)}&quot;)
 }
 rs.close()
 
 val listSchemaName = conn.getSchema()
-println("List of Tables for ${listSchemaName}")
+println(&quot;List of Tables for ${listSchemaName}&quot;)
 rs = m.getTables(conn.getCatalog(), listSchemaName, null, null)
 while(rs.next()) {
-    val name = rs.getObject("TABLE_NAME")
-    println("  $name")
+    val name = rs.getObject(&quot;TABLE_NAME&quot;)
+    println(&quot;  $name&quot;)
 }
 rs.close()
 
-println("Execute query:")
+println(&quot;Execute query:&quot;)
 val stmt = conn.createStatement()
-rs = stmt.executeQuery("SELECT 1+1 FROM DUAL")
+rs = stmt.executeQuery(&quot;SELECT 1+1 FROM DUAL&quot;)
 while(rs.next()) {
     val v = rs.getObject(1)
-    println("  1 + 1 from DB=$v")
+    println(&quot;  1 + 1 from DB=$v&quot;)
 }
 rs.close()
 stmt.close()
 
-conn.close()</pre>
-</div>
-</div></p>
+conn.close()
+</code></pre>
+</p>
 
 	<hr />
 

@@ -61,29 +61,24 @@
 	    <a href="../../../tags/python-argparse.html">python-argparse</a> 
 	</p>
 
-	<p><div class="listingblock">
-<div class="title">test.py</div>
-<div class="content">
-<pre>import argparse
+	<p><p><strong>test.py.</strong></p>
+<pre><code>import argparse
 parser = argparse.ArgumentParser()
-parser.add_argument("prog_args", nargs='*')
-parser.add_argument("-e", action='append')
+parser.add_argument(&quot;prog_args&quot;, nargs='*')
+parser.add_argument(&quot;-e&quot;, action='append')
 args = parser.parse_args()
 prog_args = args.prog_args
 env = dict([e.split('=') for e in args.e])
 
-print(f"Program args: {prog_args}")
-print(f"Env options: {env}")</pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="title">Example</div>
-<div class="content">
-<pre>$ python3 test.py one two three -ek1=1 -e k2=foo
+print(f&quot;Program args: {prog_args}&quot;)
+print(f&quot;Env options: {env}&quot;)
+</code></pre>
+<p><strong>Example.</strong></p>
+<pre><code>$ python3 test.py one two three -ek1=1 -e k2=foo
 Program args: ['one', 'two', 'three']
-Env options: {'k1': '1', 'k2': 'foo'}</pre>
-</div>
-</div></p>
+Env options: {'k1': '1', 'k2': 'foo'}
+</code></pre>
+</p>
 
 	<hr />
 

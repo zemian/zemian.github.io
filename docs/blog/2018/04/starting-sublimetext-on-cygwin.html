@@ -61,19 +61,15 @@
 	    <a href="../../../tags/sublimetext-cygwin.html">sublimetext-cygwin</a> 
 	</p>
 
-	<p><div class="paragraph">
-<p>I edit files a lot from command line Cygwin, and I usually use an alias <code>e</code> to my favorite editor. For SublimeText, I found it more useful to start a new windows on files I pass in like this:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>function subl() { "/C/Users/zemian/apps/Sublime-Text-Build-3143-x64/subl.exe" --new-window $(cygpath -am "$@") ; }
-alias e=subl</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Now in terminal, I can edit any files by simply running this:
-  $ e ~/.bashrc</p>
-</div></p>
+	<p><p>I edit files a lot from command line Cygwin, and I usually use an alias<br />
+<code>e</code> to my favorite editor. For SublimeText, I found it more useful to<br />
+start a new windows on files I pass in like this:</p>
+<pre><code>function subl() { &quot;/C/Users/zemian/apps/Sublime-Text-Build-3143-x64/subl.exe&quot; --new-window $(cygpath -am &quot;$@&quot;) ; }
+alias e=subl
+</code></pre>
+<p>Now in terminal, I can edit any files by simply running this: $ e<br />
+~/.bashrc</p>
+</p>
 
 	<hr />
 

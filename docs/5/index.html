@@ -53,144 +53,12 @@
       </div>
     </div>
     <div class="container">
-  			<a href="blog/2018/03/init-and-start-postgresql-in-cygwin.html"><h1>Init and Start PostgreSQL in Cygwin</h1></a>
-  			<p>22 March 2018, tags: 
-			    <a href="../tags/postgres.html">postgres</a> 
-  			</p>
-  			<p><div class="sect1">
-<h2 id="_run_postgres_server">Run Postgres Server</h2>
-<div class="sectionbody">
-<div class="listingblock">
-<div class="content">
-<pre># Start /usr/sbin/cygserver first if you haven't already done so
-mkdir /srv/pgdata
-export PGDATA=/srv/pgdata
-pg_ctl init
-pg_ctl start</pre>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_test_posgres_using_client">Test Posgres Using Client</h3>
-<div class="listingblock">
-<div class="content">
-<pre>psql postgres
-
-postgres=# create table test_ratings(username varchar(200), rating int);
-postgres=# insert into test_ratings values('tester1', 5), ('tester2', 4);
-postgres=# select * from test_ratings;
- username | rating
-----------+--------
- tester1  |      5
- tester2  |      4</pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_test_connectivity_using_python">Test connectivity using Python</h3>
-<div class="paragraph">
-<p>Run <code>pip install psycopg2</code> if you haven&#8217;t already install the driver.</p>
-</div>
-<div class="listingblock">
-<div class="title"><code>testdb.py</code></div>
-<div class="content">
-<pre>import psycopg2
-with psycopg2.connect('dbname=postgres') as conn:
-	with conn.cursor() as cur:
-		cur.execute('select * from test_ratings')
-		while True:
-			row = cur.fetchmany()
-			if len(row) == 0:
-				break
-			print(row)</pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_postgres_windows_installation">Postgres Windows Installation</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>The official download is provided by EnterpriseDB (EDB)
-You can get a zip package from:</p>
-</div>
-<div class="paragraph">
-<p><a href="https://www.enterprisedb.com/download-postgresql-binaries" class="bare">https://www.enterprisedb.com/download-postgresql-binaries</a></p>
-</div>
-<div class="paragraph">
-<p>To install, just unzip it.</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>mkdir $HOME/apps/postgresql-10.3-2
-cd $HOME/apps/postgresql-10.3-2
-unzip postgresql-10.3-2-windows-x64-binaries.zip</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Server can be started manually like this in cmd.exe prompt:</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>bin\pg_ctl -D data -o "--encoding=UTF8 --auth=trust" initdb
-mkdir logs
-bin\pg_ctl -D data -l logs\postgres.log start</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>bin\createdb %USERNAME%
-chcp 1252
-bin\psql</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>zemian=# select version();
-                          version
-------------------------------------------------------------
- PostgreSQL 10.3, compiled by Visual C++ build 1800, 64-bit
-(1 row)</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>By default inidb will create a "postgres" database, but
-user is your Windows login name, and it will not match. It&#8217;s
-more convient to create a database that match your username,
-and use that as default.</p>
-</div>
-<div class="paragraph">
-<p>You should be careful with "--auth=trust", which can get
-you started quickly but not very secure.</p>
-</div>
-</div>
-</div></p>
-  			<a href="blog/2018/03/how-to-create-windows-context-menu-without-admin-rights.html"><h1>How To Create Windows Context Menu Without Admin Rights</h1></a>
-  			<p>16 March 2018, tags: 
-			    <a href="../tags/windows.html">windows</a> 
-  			</p>
-  			<p><div class="listingblock">
-<div class="content">
-<pre>@REM Base on tips here:
-@REM https://stackoverflow.com/questions/48138681/how-to-add-sublime-text-to-contextual-menu-without-admin-privileges-on-windows
-
-@reg add "HKEY_CURRENT_USER\Software\Classes\*\shell\Open with Sublime Text 3"         /t REG_SZ /v "" /d "Open with Sublime Text 3"   /f
-@reg add "HKEY_CURRENT_USER\Software\Classes\*\shell\Open with Sublime Text 3"         /t REG_EXPAND_SZ /v "Icon" /d "%st3Path%,0" /f
-@reg add "HKEY_CURRENT_USER\Software\Classes\*\shell\Open with Sublime Text 3\command" /t REG_SZ /v "" /d "C:\Users\zemian\apps\Sublime-Text-Build-3143-x64\sublime_text.exe \"%%1\"" /f
-
-@REM If you want to remove above
-@REM @reg delete  "HKEY_CURRENT_USER\Software\Classes\*\shell\Open with Sublime Text 3\command" /f &gt;nul 2&gt;&amp;1
-@REM @reg delete  "HKEY_CURRENT_USER\Software\Classes\*\shell\Open with Sublime Text 3" /f &gt;nul 2&gt;&amp;1</pre>
-</div>
-</div></p>
   			<a href="blog/2018/03/java-http-proxy-with-user-and-password.html"><h1>Java Http Proxy with User and Password</h1></a>
   			<p>16 March 2018, tags: 
 			    <a href="../tags/java-http-proxy.html">java-http-proxy</a> 
   			</p>
-  			<p><div class="listingblock">
-<div class="title">scratch_1.java</div>
-<div class="content">
-<pre>import java.io.BufferedReader;
+  			<p><p><strong>scratch_1.java.</strong></p>
+<pre><code>import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.Authenticator;
 import java.net.PasswordAuthentication;
@@ -198,27 +66,27 @@ import java.net.URL;
 
 public class scratch_1{
     public static void main(String[] args) throws Exception {
-        System.setProperty("java.util.logging.config.file", "java-logging.properties");
+        System.setProperty(&quot;java.util.logging.config.file&quot;, &quot;java-logging.properties&quot;);
 
-        System.setProperty("http.proxyHost", "proxy.mycompany.com");
-        System.setProperty("http.proxyPort", "8080");
-        System.setProperty("http.nonProxyHosts", "*.mycompany.com");
-        System.setProperty("https.proxyHost", "proxy.mycompany.com");
-        System.setProperty("https.proxyPort", "8080");
-        System.setProperty("https.nonProxyHosts", "*.mycompany.com");
+        System.setProperty(&quot;http.proxyHost&quot;, &quot;proxy.mycompany.com&quot;);
+        System.setProperty(&quot;http.proxyPort&quot;, &quot;8080&quot;);
+        System.setProperty(&quot;http.nonProxyHosts&quot;, &quot;*.mycompany.com&quot;);
+        System.setProperty(&quot;https.proxyHost&quot;, &quot;proxy.mycompany.com&quot;);
+        System.setProperty(&quot;https.proxyPort&quot;, &quot;8080&quot;);
+        System.setProperty(&quot;https.nonProxyHosts&quot;, &quot;*.mycompany.com&quot;);
 
         Authenticator.setDefault(
             new Authenticator() {
                 @Override
                 public PasswordAuthentication getPasswordAuthentication() {
-                    return new PasswordAuthentication("zemian", "test123".toCharArray());
+                    return new PasswordAuthentication(&quot;zemian&quot;, &quot;test123&quot;.toCharArray());
                 }
             }
         );
 
-        URL url = new URL("http://some.external.site.com");
-        //URL url = new URL("http://myapp.mycompany.com");
-        System.out.println("== WGET " + url);
+        URL url = new URL(&quot;http://some.external.site.com&quot;);
+        //URL url = new URL(&quot;http://myapp.mycompany.com&quot;);
+        System.out.println(&quot;== WGET &quot; + url);
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()))) {
             String line;
             while ((line = reader.readLine()) != null) {
@@ -226,125 +94,105 @@ public class scratch_1{
             }
         }
     }
-}</pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="title">java-logging.properties</div>
-<div class="content">
-<pre>handlers= java.util.logging.ConsoleHandler
+}
+</code></pre>
+<p><strong>java-logging.properties.</strong></p>
+<pre><code>handlers= java.util.logging.ConsoleHandler
 java.util.logging.ConsoleHandler.level = FINEST
-sun.net.www.protocol.http.HttpURLConnection.level = ALL</pre>
-</div>
-</div></p>
+sun.net.www.protocol.http.HttpURLConnection.level = ALL
+</code></pre>
+</p>
   			<a href="blog/2018/03/java-logging-properties.html"><h1>Java Logging Properties</h1></a>
   			<p>16 March 2018, tags: 
 			    <a href="../tags/java-logging.html">java-logging</a> 
   			</p>
-  			<p><div class="paragraph">
-<p>Example:</p>
-</div>
-<div class="paragraph">
+  			<p><p>Example:</p>
 <p><code>java -Djava.util.logging.config.file=java-logging.properties myapp.Hello</code></p>
-</div>
-<div class="listingblock">
-<div class="title">java-logging.properties</div>
-<div class="content">
-<pre>handlers= java.util.logging.ConsoleHandler
+<p><strong>java-logging.properties.</strong></p>
+<pre><code>handlers= java.util.logging.ConsoleHandler
 java.util.logging.ConsoleHandler.level = FINEST
 sun.net.www.protocol.http.HttpURLConnection.level = ALL
-myapp.Hello.level = ALL</pre>
-</div>
-</div></p>
+myapp.Hello.level = ALL
+</code></pre>
+</p>
   			<a href="blog/2018/03/getting-project-file-stats-with-python.html"><h1>Getting Project File Stats with Python</h1></a>
   			<p>14 March 2018, tags: 
 			    <a href="../tags/python.html">python</a> 
   			</p>
-  			<p><div class="listingblock">
-<div class="content">
-<pre>import os, sys
+  			<p><pre><code>import os, sys
 from collections import defaultdict
 if len(sys.argv) == 1:
-	path = '.'
+        path = '.'
 else:
-	path = sys.argv[1]
-print(f"Inspecting dir: {os.path.abspath(path)}")
+        path = sys.argv[1]
+print(f&quot;Inspecting dir: {os.path.abspath(path)}&quot;)
 dir_count, file_count, size_count = (0, 0, 0)
 file_type_counts = defaultdict(lambda: 0)
 for dirpath, dirnames, filenames in os.walk(path):
-	dir_count += len(dirnames)
-	file_count += len(filenames)
-	for f in filenames:
-		size_count += os.path.getsize(os.path.join(dirpath, f))
-		base, ext = os.path.splitext(f)
-		if ext == '':
-			file_type_counts[base] += 1
-		else:
-			file_type_counts[ext] += 1
+        dir_count += len(dirnames)
+        file_count += len(filenames)
+        for f in filenames:
+                size_count += os.path.getsize(os.path.join(dirpath, f))
+                base, ext = os.path.splitext(f)
+                if ext == '':
+                        file_type_counts[base] += 1
+                else:
+                        file_type_counts[ext] += 1
 
 # Sort file_type_counts by value then print
 file_size = round(size_count / (1024 * 1024))
-print(f"Total file count: {file_count}")
-print(f"Total dir size: {file_size} MB")
-print(f"Total dir count: {dir_count}")
-print(f"Top 10 file type counts:")
+print(f&quot;Total file count: {file_count}&quot;)
+print(f&quot;Total dir size: {file_size} MB&quot;)
+print(f&quot;Total dir count: {dir_count}&quot;)
+print(f&quot;Top 10 file type counts:&quot;)
 top_type_counts = sorted(file_type_counts, key=file_type_counts.get, reverse=True)[:10]
 for file_type in top_type_counts:
-	type_count = file_type_counts[file_type]
-	percentage = (type_count / file_count)
-	print(f"  {file_type:25} {type_count:&lt;10} {percentage:.1%}")</pre>
-</div>
-</div></p>
+        type_count = file_type_counts[file_type]
+        percentage = (type_count / file_count)
+        print(f&quot;  {file_type:25} {type_count:&lt;10} {percentage:.1%}&quot;)
+</code></pre>
+</p>
   			<a href="blog/2018/03/how-to-find-linux-standard-base-release-info.html"><h1>How to find Linux Standard Base release info</h1></a>
   			<p>11 March 2018, tags: 
 			    <a href="../tags/linux.html">linux</a> 
   			</p>
-  			<p><div class="listingblock">
-<div class="content">
-<pre>	zemian@zemian-VirtualBox:~$ lsb_release -a
-	No LSB modules are available.
-	Distributor ID:	Ubuntu
-	Description:	Ubuntu 16.04.3 LTS
-	Release:	16.04
-	Codename:	xenial</pre>
-</div>
-</div></p>
+  			<p><pre><code>        zemian@zemian-VirtualBox:~$ lsb_release -a
+        No LSB modules are available.
+        Distributor ID: Ubuntu
+        Description:    Ubuntu 16.04.3 LTS
+        Release:        16.04
+        Codename:       xenial
+</code></pre>
+</p>
   			<a href="blog/2018/03/linux-sublimetext-title-says-unregistered-despite-you-have-paid-license.html"><h1>Linux SublimeText title says &quot;Unregistered&quot; despite you have paid license</h1></a>
   			<p>11 March 2018, tags: 
 			    <a href="../tags/sublimetext.html">sublimetext</a> 
   			</p>
-  			<p><div class="paragraph">
-<p>Solution: Edit the "Name" line in <code>~/.local/share/applications/sublime_text.desktop</code> file.</p>
-</div>
-<div class="paragraph">
-<p>See
-<a href="https://askubuntu.com/questions/678133/sublime-text-3-says-unregistered-in-menu-title-bar" class="bare">https://askubuntu.com/questions/678133/sublime-text-3-says-unregistered-in-menu-title-bar</a></p>
-</div></p>
+  			<p><p>Solution: Edit the &quot;Name&quot; line in<br />
+<code>~/.local/share/applications/sublime_text.desktop</code> file.</p>
+<p>See<br />
+<a href="https://askubuntu.com/questions/678133/sublime-text-3-says-unregistered-in-menu-title-bar">https://askubuntu.com/questions/678133/sublime-text-3-says-unregistered-in-menu-title-bar</a></p>
+</p>
   			<a href="blog/2018/03/compling-apache-httpd-web-server-on-macosx.html"><h1>Compling Apache HTTPD Web Server on MacOSX</h1></a>
   			<p>07 March 2018, tags: 
 			    <a href="../tags/macosx.html">macosx</a> 
 
 			    <a href="../tags/httpd.html">httpd</a> 
   			</p>
-  			<p><div class="paragraph">
-<p>Before you begin, you should know that the HTTPD server is very likely already comes with your MacOSX! For example, here is how my server looks like:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>$ apachectl -t -D DUMP_INCLUDES
+  			<p><p>Before you begin, you should know that the HTTPD server is very likely<br />
+already comes with your MacOSX! For example, here is how my server looks<br />
+like:</p>
+<pre><code>$ apachectl -t -D DUMP_INCLUDES
 Included configuration files:
   (*) /private/etc/apache2/httpd.conf
     (498) /private/etc/apache2/extra/httpd-mpm.conf
     (504) /private/etc/apache2/extra/httpd-autoindex.conf
-    (544) /private/etc/apache2/other/php7.conf</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>You would want to compile and buid your own HTTPD server if you like to customize your own build or doing modules development. In that case, read on.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>#
+    (544) /private/etc/apache2/other/php7.conf
+</code></pre>
+<p>You would want to compile and buid your own HTTPD server if you like to<br />
+customize your own build or doing modules development. In that case,<br />
+read on.</p>
+<pre><code>#
 # Requirement:
 #  MacOSX Version:
 #    Darwin myhost 17.4.0 Darwin Kernel Version 17.4.0: Sun Dec 17 09:19:54 PST 2017; root:xnu-4570.41.2~1/RELEASE_X86_64 x86_64
@@ -362,10 +210,10 @@ xcode-select --install
 # then try to uninstall then install brew again.
 #
 # Uninstall
-# /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/uninstall)"
+# /usr/bin/ruby -e &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/uninstall)&quot;
 #
 # Install
-# /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+# /usr/bin/ruby -e &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&quot;
 #
 
 # Install make tools and required libraries
@@ -392,38 +240,32 @@ cd ../../
 make
 sudo make install
 
-# When completed successful, the HTTPD server will be in /usr/local/apache2</pre>
-</div>
-</div></p>
+# When completed successful, the HTTPD server will be in /usr/local/apache2
+</code></pre>
+</p>
   			<a href="blog/2018/03/compling-apache-httpd-web-server-on-cygwin.html"><h1>Compling Apache HTTPD Web Server on Cygwin</h1></a>
   			<p>07 March 2018, tags: 
 			    <a href="../tags/httpd.html">httpd</a> 
 
 			    <a href="../tags/cygwin.html">cygwin</a> 
   			</p>
-  			<p><div class="paragraph">
-<p>I have noted the instructions on how to build the HTTPD web server
-from scratch in a Cygwin platoform in a Windows 7 PC.</p>
-</div>
-<div class="paragraph">
-<p>Note that compiling full HTTPD on Cygwin is very slow compare to other system such as Linux or MacOSX! If you are looking to do full HTTPD server development, it&#8217;s recommend to use a real Linux env instead.</p>
-</div>
-<div class="sect1">
-<h2 id="_requirements">Requirements:</h2>
-<div class="sectionbody">
-<div class="ulist">
+  			<p><p>I have noted the instructions on how to build the HTTPD web server from<br />
+scratch in a Cygwin platoform in a Windows 7 PC.</p>
+<p>Note that compiling full HTTPD on Cygwin is very slow compare to other<br />
+system such as Linux or MacOSX! If you are looking to do full HTTPD<br />
+server development, it’s recommend to use a real Linux env instead.</p>
+<h1>Requirements:</h1>
 <ul>
 <li>
 <p>Apache HTTPD version 2.4.9</p>
 </li>
 <li>
-<p>CYGWIN_NT-6.1 L328BDS002096US 2.10.0(0.325/5/3) 2018-02-02 15:16 x86_64 Cygwin</p>
+<p>CYGWIN_NT-6.1 L328BDS002096US 2.10.0(0.325/5/3) 2018-02-02 15:16<br />
+x86_64 Cygwin</p>
 </li>
 <li>
 <p>Install the following cygwin packges:</p>
-<div class="literalblock">
-<div class="content">
-<pre>autoconf
+<pre><code>autoconf
 make
 automake
 m4
@@ -437,30 +279,17 @@ libaprutil1-devel
 libiconv-devel
 libpcre-devel
 libgdbm-devel
-openssl-devel</pre>
-</div>
-</div>
+openssl-devel
+</code></pre>
 </li>
 </ul>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_compiling_the_server">Compiling the server</h2>
-<div class="sectionbody">
-<div class="paragraph">
+<h1>Compiling the server</h1>
 <p>Step 1. Get the source:</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>git clone git://git.apache.org/httpd.git
+<pre><code>git clone git://git.apache.org/httpd.git
 cd httpd
-git checkout 2.4.9</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre># You also need to get the required library sources
+git checkout 2.4.9
+
+# You also need to get the required library sources
 cd srclib
 git clone git://git.apache.org/apr.git
 cd apr
@@ -469,85 +298,60 @@ cd ../
 git clone git://git.apache.org/apr-util.git
 cd apr-util
 git checkout 1.6.1
-cd ../../</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Note that unlike the source pre-package you download from Apache site, the <code>httpd</code>
-source repo does not have <code>configure</code> script, and you need to generate it with
-<code>buildconf</code>. See next step for further instruction.</p>
-</div>
-<div class="paragraph">
-<p>Note that the current <code>apr-util</code> repository is empty in master branch! This is
-because they moved the code to <code>apr</code> starting version 2.0 dev, but we
-still be using version 1.6.x, so we need to explicitly checkout the
-tag or branch.</p>
-</div>
-<div class="paragraph">
+cd ../../
+</code></pre>
+<p>Note that unlike the source pre-package you download from Apache site,<br />
+the <code>httpd</code> source repo does not have <code>configure</code> script, and you need<br />
+to generate it with <code>buildconf</code>. See next step for further instruction.</p>
+<p>Note that the current <code>apr-util</code> repository is empty in master branch!<br />
+This is because they moved the code to <code>apr</code> starting version 2.0 dev,<br />
+but we still be using version 1.6.x, so we need to explicitly checkout<br />
+the tag or branch.</p>
 <p>Step 2. Compiling</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>./buildconf
+<pre><code>./buildconf
 ./configure --prefix=/usr/local/apache2 \
-         --with-included-apr \
-         --enable-mpms-shared \
-         --with-mpm=worker \
-         --enable-mods-shared=most
+  --with-included-apr \
+  --enable-mpms-shared \
+  --with-mpm=worker \
+  --enable-mods-shared=most
 make
-make install</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>The option <code>--prefix=/usr/local/apache2</code> tells the build to install the software
-into a user specific location.</p>
-</div>
-<div class="paragraph">
-<p>The option <code>enable-mpms-shared</code> will make the mpm_module to be shared library
-so you can switch to different threading model if you want. Default to <code>worker</code> which
-should work nicely in Cygwin env.</p>
-</div>
-<div class="paragraph">
-<p>The option <code>enable-mods-shared</code> will make most of the modules as shared libraries. You can use <code>all</code> for full server.</p>
-</div>
-<div class="paragraph">
-<p>The option <code>--with-included-apr</code> tells the build to use the <code>srclib/apr</code> we have
-downloaded. Here you can use system installed <code>apr</code> if you like. For an example:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>./configure --prefix=/usr/local/apache2 \
+make install
+</code></pre>
+<p>The option <code>--prefix=/usr/local/apache2</code> tells the build to install the<br />
+software into a user specific location.</p>
+<p>The option <code>enable-mpms-shared</code> will make the mpm_module to be shared<br />
+library so you can switch to different threading model if you want.<br />
+Default to <code>worker</code> which should work nicely in Cygwin env.</p>
+<p>The option <code>enable-mods-shared</code> will make most of the modules as shared<br />
+libraries. You can use <code>all</code> for full server.</p>
+<p>The option <code>--with-included-apr</code> tells the build to use the <code>srclib/apr</code><br />
+we have downloaded. Here you can use system installed <code>apr</code> if you like.<br />
+For an example:</p>
+<pre><code>./configure --prefix=/usr/local/apache2 \
 --with-apr=/usr/bin/apr-1-config \
 --with-apr-util=/usr/bin/apu-1-config \
 --enable-mpms-shared \
 --with-mpm=worker \
---enable-mods-shared=most</pre>
-</div>
-</div>
-<div class="paragraph">
+--enable-mods-shared=most
+</code></pre>
 <p>For more details, see</p>
-</div>
-<div class="ulist">
 <ul>
 <li>
-<p><a href="http://httpd.apache.org/docs/2.4/install.html" class="bare">http://httpd.apache.org/docs/2.4/install.html</a> or the INSTALL file from source.</p>
+<p><a href="http://httpd.apache.org/docs/2.4/install.html">http://httpd.apache.org/docs/2.4/install.html</a> or the INSTALL file<br />
+from source.</p>
 </li>
 <li>
-<p><a href="https://httpd.apache.org/docs/2.4/programs/configure.html" class="bare">https://httpd.apache.org/docs/2.4/programs/configure.html</a></p>
+<p><a href="https://httpd.apache.org/docs/2.4/programs/configure.html">https://httpd.apache.org/docs/2.4/programs/configure.html</a></p>
 </li>
 </ul>
-</div>
-</div>
-</div></p>
+</p>
   			<a href="blog/2018/03/compling-apache-httpd-web-server-on-linux-ubuntu.html"><h1>Compling Apache HTTPD Web Server on Linux (Ubuntu)</h1></a>
   			<p>07 March 2018, tags: 
 			    <a href="../tags/httpd.html">httpd</a> 
 
 			    <a href="../tags/linux.html">linux</a> 
   			</p>
-  			<p><div class="listingblock">
-<div class="content">
-<pre>sudo apt install autoconf automake libtool libtool-bin libpcre3-dev libexpat1-dev libexpat1-dev libexpat1-dev
+  			<p><pre><code>sudo apt install autoconf automake libtool libtool-bin libpcre3-dev libexpat1-dev libexpat1-dev libexpat1-dev
 mkdir ossdev
 cd ossdev
 git clone git://git.apache.org/httpd.git
@@ -564,15 +368,59 @@ cd ../../
 ./configure --enable-mpms-shared --with-pmp=worker --enable-mods-shared=most
 make
 sudo make install
-sudo /usr/local/apache2/bin/apachectl -k start</pre>
-</div>
-</div></p>
+sudo /usr/local/apache2/bin/apachectl -k start
+</code></pre>
+</p>
+  			<a href="blog/2018/03/reduce-recent-project-list-size-in-intellij.html"><h1>Reduce recent project list size in IntelliJ</h1></a>
+  			<p>07 March 2018, tags: 
+			    <a href="../tags/intellij.html">intellij</a> 
+  			</p>
+  			<p><p>When opening a project from IntelliJ IDE, it will give you a list of<br />
+menu that contains your recent projects. This list however has default<br />
+of 50 items max, and sometimes I find it stretched the menu popup too<br />
+long and covered some of IDE the status line (which I need to verify the<br />
+project path to be open). It’s a pity that there is obvious normal IDE<br />
+Settings to change this, but today I found a post that shows how you can<br />
+do it this:</p>
+<ol>
+<li>
+<p>Go to menu: <code>Help-&gt;Find Action-&gt;Registry</code></p>
+</li>
+<li>
+<p>In the diablog table, find the &quot;ide.max.recent.projects&quot; key entry<br />
+and change the value to your liking (eg: <code>10</code>)</p>
+</li>
+</ol>
+<p>Ref:<br />
+<a href="https://intellij-support.jetbrains.com/hc/en-us/community/posts/207089089-SOLVED-Where-do-I-set-the-maximum-number-of-recent-projects-to-be-shown-in-the-File-Open-Recent-list">https://intellij-support.jetbrains.com/hc/en-us/community/posts/207089089-SOLVED-Where-do-I-set-the-maximum-number-of-recent-projects-to-be-shown-in-the-File-Open-Recent-list</a>-</p>
+</p>
+  			<a href="blog/2018/03/package-manager-for-macosx.html"><h1>Package manager for MacOSX</h1></a>
+  			<p>05 March 2018, tags: 
+			    <a href="../tags/macosx.html">macosx</a> 
+
+			    <a href="../tags/package-manager.html">package-manager</a> 
+
+			    <a href="../tags/brew.html">brew</a> 
+  			</p>
+  			<p><pre><code>#
+# Install package manager for macosx called brew from https://brew.sh
+#
+# Install
+$ /usr/bin/ruby -e &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&quot;
+
+# If your brew installation have problem with error writing to /usr/local
+# then try to uninstall then install brew again.
+#
+# Uninstall
+$ /usr/bin/ruby -e &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/uninstall)&quot;
+</code></pre>
+</p>
 
 	<hr />
 
 	<ul class="pager">
 		<li class="previous"><a href="https://zemian.github.io/4">Previous</a></li>
-		<li>Page: 5/29</li>
+		<li>Page: 5/28</li>
 		<li class="next"><a href="https://zemian.github.io/6">Next</a></li>
 	</ul>
 

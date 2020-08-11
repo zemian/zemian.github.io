@@ -63,23 +63,16 @@
 	    <a href="../../../tags/linux.html">linux</a> 
 	</p>
 
-	<p><div class="sect1">
-<h2 id="_how_to_setup_ssh_folder_permissions">How to setup .ssh folder permissions</h2>
-<div class="sectionbody">
-<div class="listingblock">
-<div class="content">
-<pre>chmod 700 ~/.ssh                # (drwx------)
+	<p><h1>How to setup .ssh folder permissions</h1>
+<pre><code>chmod 700 ~/.ssh                # (drwx------)
 chmod 600 ~/.ssh/authorized_key # (-rw-------)
 chmod 600 ~/.ssh/id_rsa         # (-rw-------)
 chmod 644 ~/.ssh/id_rsa.pub     # (-rw-r--r--)
-chmod 755 ~                     # (drwxr-xr-x)</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>ref: <a href="https://superuser.com/questions/215504/permissions-on-private-key-in-ssh-folder" class="bare">https://superuser.com/questions/215504/permissions-on-private-key-in-ssh-folder</a></p>
-</div>
-</div>
-</div></p>
+chmod 755 ~                     # (drwxr-xr-x)
+</code></pre>
+<p>ref:<br />
+<a href="https://superuser.com/questions/215504/permissions-on-private-key-in-ssh-folder">https://superuser.com/questions/215504/permissions-on-private-key-in-ssh-folder</a></p>
+</p>
 
 	<hr />
 

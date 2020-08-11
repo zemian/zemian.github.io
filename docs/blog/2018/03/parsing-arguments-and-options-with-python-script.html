@@ -61,23 +61,21 @@
 	    <a href="../../../tags/python-argparse.html">python-argparse</a> 
 	</p>
 
-	<p><div class="listingblock">
-<div class="content">
-<pre>import argparse
+	<p><pre><code>import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument('--file')
 parser.add_argument('--debug', action='store_true')
 args = parser.parse_args()
 
 if args.debug:
-	print(f"Options: {args}")
+        print(f&quot;Options: {args}&quot;)
 
 if args.file:
-	with open(args.file) as fh:
-		for line in fh:
-			print(line, end='')</pre>
-</div>
-</div></p>
+        with open(args.file) as fh:
+                for line in fh:
+                        print(line, end='')
+</code></pre>
+</p>
 
 	<hr />
 

@@ -53,456 +53,6 @@
       </div>
     </div>
     <div class="container">
-  			<a href="blog/2013/08/getting-started-with-apache-camel-using-java.html"><h1>Getting started with Apache Camel using Java</h1></a>
-  			<p>20 August 2013, tags: 
-			    <a href="../tags/camel.html">camel</a> 
-  			</p>
-  			<p><p>Apache Camel is a very useful library that helps you process events or messages<br />
-from many different sources. You may move these messages through many different<br />
-protocols such as between VM, HTTP, FTP, JMS, or even DIRECTORY/FILE, and yet<br />
-still keep your processing code free of transport logic. This allows you to<br />
-concentrate on digesting the content of the messages instead.</p>
-<p>Here I will provide a tutorial on how you can get started with Apache Camel using<br />
-Java.</p>
-<p>Let’s start by creating a Maven project <code>pom.xml</code> file first.</p>
-<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot;
-    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
-    xsi:schemaLocation=&quot;
-        http://maven.apache.org/POM/4.0.0
-        http://maven.apache.org/maven-v4_0_0.xsd&quot;&gt;
-
-    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
-    &lt;groupId&gt;camel-spring-demo&lt;/groupId&gt;
-    &lt;artifactId&gt;camel-spring-demo&lt;/artifactId&gt;
-    &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
-    &lt;packaging&gt;jar&lt;/packaging&gt;
-
-    &lt;properties&gt;
-        &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
-        &lt;camel.version&gt;2.11.1&lt;/camel.version&gt;
-    &lt;/properties&gt;
-
-    &lt;dependencies&gt;
-        &lt;dependency&gt;
-            &lt;groupId&gt;org.apache.camel&lt;/groupId&gt;
-            &lt;artifactId&gt;camel-core&lt;/artifactId&gt;
-            &lt;version&gt;${camel.version}&lt;/version&gt;
-        &lt;/dependency&gt;
-        &lt;dependency&gt;
-            &lt;groupId&gt;org.slf4j&lt;/groupId&gt;
-            &lt;artifactId&gt;slf4j-simple&lt;/artifactId&gt;
-            &lt;version&gt;1.7.5&lt;/version&gt;
-        &lt;/dependency&gt;
-    &lt;/dependencies&gt;
-
-&lt;/project&gt;
-</code></pre>
-<p>We are only going to explore the <code>camel-core</code>, which actually contains quite of few useful<br />
-components that you may use. Also for logging purpose, I have added a <code>slf4j-simple</code> as<br />
-<a href="http://saltnlight5.blogspot.com/2013/08/how-to-configure-slf4j-with-different.html">a logger implementation</a><br />
-so we may see output on console.</p>
-<p>Next you just need a class to construct an <code>Route</code>. A <code>Route</code> is like a instruction<br />
-definition to Camel on how to move your messages from one point to another. We are<br />
-going to create <code>src/main/java/camelcoredemo/TimerRouteBuilder.java</code> file that<br />
-will generate a timer message on every second, and then pass to a processor<br />
-that simply logs it.</p>
-<pre><code>package camelcoredemo;
-
-import org.slf4j.*;
-import org.apache.camel.*;
-import org.apache.camel.builder.*;
-
-public class TimerRouteBuilder extends RouteBuilder {
-    static Logger LOG = LoggerFactory.getLogger(TimerRouteBuilder.class);
-    public void configure() {
-        from(&quot;timer://timer1?period=1000&quot;)
-        .process(new Processor() {
-            public void process(Exchange msg) {
-                LOG.info(&quot;Processing {}&quot;, msg);
-            }
-        });
-    }
-}
-</code></pre>
-<p>That’s all you needed to get started. Now you may build and run this simple<br />
-demo.</p>
-<pre><code>bash&gt; mvn compile
-bash&gt; mvn exec:java -Dexec.mainClass=org.apache.camel.main.Main -Dexec.args='-r camelcoredemo.TimerRouteBuilder'
-</code></pre>
-<p>Notice that we didn’t even write a Java <strong>main</strong> class, but simply use the<br />
-<code>org.apache.camel.main.Main</code> option to accepts a <code>RouteBuilder</code> class<br />
-name as parameter. Then it will load and create the route automatically.</p>
-<h2>Controlling the <code>CamelContext</code></h2>
-<p>When you start Camel, it creates a <code>CamelContext</code> object that holds<br />
-many information on how to run it, including the definition of the<br />
-<code>Route</code> we created. Now if you want to have more control over this<br />
-<code>CamelContext</code>, then you would need to write your own <code>Main</code> class.<br />
-I will show you a simple one here.</p>
-<pre><code>package camelcoredemo;
-
-import org.slf4j.*;
-import org.apache.camel.*;
-import org.apache.camel.impl.*;
-import org.apache.camel.builder.*;
-
-public class TimerMain {
-    static Logger LOG = LoggerFactory.getLogger(TimerMain.class);
-    public static void main(String[] args) throws Exception {
-        new TimerMain().run();
-    }
-    void run() throws Exception {
-        final CamelContext camelContext = new DefaultCamelContext();
-        camelContext.addRoutes(createRouteBuilder());
-        camelContext.setTracing(true);
-        camelContext.start();
-
-        Runtime.getRuntime().addShutdownHook(new Thread() {
-            public void run() {
-                try {
-                    camelContext.stop();
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        });
-
-        waitForStop();
-    }
-    RouteBuilder createRouteBuilder() {
-        return new TimerRouteBuilder();
-    }
-    void waitForStop() {
-        while (true) {
-            try {
-                Thread.sleep(Long.MAX_VALUE);
-            } catch (InterruptedException e) {
-                break;
-            }
-        }
-    }
-}
-</code></pre>
-<p>As you can see, we re-used the existing <code>TimerRouteBuilder</code> class inside<br />
-<code>createRouteBuilder()</code> method. Our <code>Main</code> class now have full control<br />
-when to create, start and stop the<br />
-<a href="http://camel.apache.org/maven/current/camel-core/apidocs/org/apache/camel/CamelContext.html"><code>CamelContext</code></a>.<br />
-This context allow you to have control on how to configure Camel<br />
-globally rather than on <code>Route</code> level. The javadoc link gives all the setter<br />
-methods that you can explore on what it can do.</p>
-<p>Noticed that we also need to provide few setup codes in our <code>Main</code> class.<br />
-First we need to handle graceful shutdown, so we added a Java shutdown hook<br />
-to invoke the context <code>stop()</code>. Secondly we need to add a thread block after<br />
-context has started. The reason for this is that the <code>CamelContext#start()</code><br />
-method is non-blocking! If you don’t block your <code>Main</code> thread after<br />
-start, then it will simply exit right after it, which will have not<br />
-much use. You want to run Camel as a service (like a server) until<br />
-you explicitly press <code>CTRL+C</code> to terminate the process.</p>
-<h2>Improving the <code>Main</code> class to start <code>CamelContext</code></h2>
-<p>If you don’t want to deal with much of the <code>Main</code> class setup<br />
-code such as above, then you may simply extends the <code>org.apache.camel.main.Main</code><br />
-class provided by <code>camel-core</code> intead. By piggy-back on this class, you will<br />
-only not have your Context auto setup, but you will get all the additional<br />
-command line features such as controlling how long to run the<br />
-process for, enabling tracing, loading custom route class etc.</p>
-<p>Refactoring previous example, here is how it look like.</p>
-<pre><code>package camelcoredemo;
-
-import org.slf4j.*;
-import org.apache.camel.builder.*;
-import org.apache.camel.main.Main;
-
-public class TimerMain2 extends Main {
-    static Logger LOG = LoggerFactory.getLogger(TimerMain2.class);
-    public static void main(String[] args) throws Exception {
-        TimerMain2 main = new TimerMain2();
-        main.enableHangupSupport();
-        main.addRouteBuilder(createRouteBuilder());
-        main.run(args);
-    }
-    static RouteBuilder createRouteBuilder() {
-        return new TimerRouteBuilder();
-    }
-}
-</code></pre>
-<p>Now our <code>TimerMain2</code> is much shorter, and you may try it out and it should<br />
-function the same as before.</p>
-<pre><code>bash&gt; mvn compile
-bash&gt; mvn exec:java -Dexec.mainClass=camelcoredemo.TimerMain2 -Dexec.args='-t'
-</code></pre>
-<p>Notice that we have given <code>-t</code> option and it will dump <code>Route</code> tracing. Use <code>-h</code><br />
-and you will see all the available options.</p>
-<h2>Adding bean to the Camel <code>Registry</code></h2>
-<p>In the <code>TimerRouteBuilder</code> example above, we have created a <code>Processor</code> on<br />
-the fly. Now if you were to combine few different <code>Processor</code> together, it<br />
-would be nicer to minimize the noise. Camel allow you to do this by registering<br />
-processing beans in their registry space, and then you simply reference them in<br />
-your route as <code>bean</code> component. Here is how I can convert above example into<br />
-beans processing.</p>
-<pre><code>package camelcoredemo;
-
-import org.slf4j.*;
-import org.apache.camel.*;
-import org.apache.camel.builder.*;
-import org.apache.camel.main.Main;
-
-public class TimerBeansMain extends Main {
-    static Logger LOG = LoggerFactory.getLogger(TimerBeansMain.class);
-    public static void main(String[] args) throws Exception {
-        TimerBeansMain main = new TimerBeansMain();
-        main.enableHangupSupport();
-        main.bind(&quot;processByBean1&quot;, new Bean1());
-        main.bind(&quot;processAgainByBean2&quot;, new Bean2());
-        main.addRouteBuilder(createRouteBuilder());
-        main.run(args);
-    }
-    static RouteBuilder createRouteBuilder() {
-        return new RouteBuilder() {
-                public void configure() {
-                    from(&quot;timer://timer1?period=1000&quot;)
-                    .to(&quot;bean:processByBean1&quot;)
-                    .to(&quot;bean:processAgainByBean2&quot;);
-                }
-            };
-    }
-
-    // Processor beans
-    static class Bean1 implements Processor {
-        public void process(Exchange msg) {
-            LOG.info(&quot;First process {}&quot;, msg);
-        }
-    }
-    static class Bean2 implements Processor {
-        public void process(Exchange msg) {
-            LOG.info(&quot;Second process {}&quot;, msg);
-        }
-    }
-}
-</code></pre>
-<p>Now you see my <code>Route</code> is very slim and without noise clutter; and I have<br />
-refactored my processing code into individual classes. This promotes better<br />
-code management and testing as you write more complex <code>Route</code> to address<br />
-business logic. It let you build LEGO like block of re-usable POJO beans.<br />
-Besides just processing beans, Camel use this registry space for many other<br />
-services as well. For example you may customize many other component endpoints<br />
-with additional features and or configurations. Or thing such as thread<br />
-pool strategy implementation replacement etc.</p>
-<p>The <code>Route</code> in example above is constructed using what’s called Java DSL.<br />
-The route is very readable, and yet you’ll get full IDE support to browse all the methods available to use for your route.</p>
-<p>I hope this article has helped you jump start your Camel ride. Besides the<br />
-<code>timer</code> component mentioned, the <code>camel-core</code> also comes with the following<br />
-components out of it’s core jar.</p>
-<ul>
-<li></li>
-</ul>
-<p><a href="http://camel.apache.org/bean.html">bean component</a></p>
-<ul>
-<li></li>
-</ul>
-<p><a href="http://camel.apache.org/browse.html">browse component</a></p>
-<ul>
-<li></li>
-</ul>
-<p><a href="http://camel.apache.org/dataset.html">dataset component</a></p>
-<ul>
-<li></li>
-</ul>
-<p><a href="http://camel.apache.org/direct.html">direct component</a></p>
-<ul>
-<li></li>
-</ul>
-<p><a href="http://camel.apache.org/file.html">file component</a></p>
-<ul>
-<li></li>
-</ul>
-<p><a href="http://camel.apache.org/log.html">log component</a></p>
-<ul>
-<li></li>
-</ul>
-<p><a href="http://camel.apache.org/mock.html">mock component</a></p>
-<ul>
-<li></li>
-</ul>
-<p><a href="http://camel.apache.org/properties.html">properties component</a></p>
-<ul>
-<li></li>
-</ul>
-<p><a href="http://camel.apache.org/seda.html">seda component</a></p>
-<ul>
-<li></li>
-</ul>
-<p><a href="http://camel.apache.org/test.html">test component</a></p>
-<ul>
-<li></li>
-</ul>
-<p><a href="http://camel.apache.org/timer.html">timer component</a></p>
-<ul>
-<li></li>
-</ul>
-<p><a href="http://camel.apache.org/stub.html">stub component</a></p>
-<ul>
-<li></li>
-</ul>
-<p><a href="http://camel.apache.org/validation.html">validator component</a></p>
-<ul>
-<li></li>
-</ul>
-<p><a href="http://camel.apache.org/vm.html">vm component</a></p>
-<ul>
-<li></li>
-</ul>
-<p><a href="http://camel.apache.org/xslt.html">xslt component</a></p>
-<p>Have fun!</p>
-</p>
-  			<a href="blog/2013/08/how-to-configure-slf4j-with-different-logger-implementations.html"><h1>How to configure SLF4J with different logger implementations</h1></a>
-  			<p>18 August 2013, tags: 
-			    <a href="../tags/slf4j.html">slf4j</a> 
-
-			    <a href="../tags/logging.html">logging</a> 
-  			</p>
-  			<p><p>There are many good benefits in using <code>slf4j</code> library as your Java<br />
-application logging API layer. Here I will show few examples on how<br />
-to use and configure it with different loggers.</p>
-<p>You can think of <code>slf4j</code> as an Java interface, and then you would<br />
-need an implementation (ONLY ONE) at runtime to provide the actual<br />
-logging details, such as writing to STDOUT or to a file etc. Each<br />
-logging implementation (or called binding) would obviously have their<br />
-own way of configuring the log output, but your application will remain<br />
-agnostic and always use the same <code>org.slf4j.Logger</code> API. Lets see how<br />
-this works in practice.</p>
-<h2></h2>
-<p>Using <code>slf4j</code> with Simple logger</p>
-<p>Create a Maven based project and this in your <code>pom.xml</code>.</p>
-<pre><code>    &lt;dependency&gt;
-        &lt;groupId&gt;org.slf4j&lt;/groupId&gt;
-        &lt;artifactId&gt;slf4j-api&lt;/artifactId&gt;
-        &lt;version&gt;1.7.5&lt;/version&gt;
-    &lt;/dependency&gt;
-</code></pre>
-<p>Now you may use <code>Logger</code> in your Java code like this.</p>
-<pre><code>package deng;
-import org.slf4j.*;
-public class Hello {
-    static Logger LOGGER = LoggerFactory.getLogger(Hello.class);
-    public static void main(String[] args) {
-        for (int i = 0; i &lt; 10; i++)
-            if (i % 2 == 0)
-                LOGGER.info(&quot;Hello {}&quot;, i);
-            else
-                LOGGER.debug(&quot;I am on index {}&quot;, i);
-    }
-}
-</code></pre>
-<p>The above will get your program compiled, but when you run it, you will see these output.</p>
-<pre><code>bash&gt; java deng.Hello
-SLF4J: Failed to load class &quot;org.slf4j.impl.StaticLoggerBinder&quot;.
-SLF4J: Defaulting to no-operation (NOP) logger implementation
-SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
-</code></pre>
-<p>What its saying is that at runtime, you are missing the logging &quot;implementation&quot; (or the<br />
-logger binding), so <code>slf4j</code> simply use a &quot;NOP&quot; implmentation, which does nothing. In order<br />
-to see the output properly, you may try use an simple implementation that does not require<br />
-any configuration at all! Just go back to your <code>pom.xml</code> and add the following:</p>
-<pre><code>    &lt;dependency&gt;
-        &lt;groupId&gt;org.slf4j&lt;/groupId&gt;
-        &lt;artifactId&gt;slf4j-simple&lt;/artifactId&gt;
-        &lt;version&gt;1.7.5&lt;/version&gt;
-    &lt;/dependency&gt;
-</code></pre>
-<p>Now you see logging output on STDOUT with INFO level. This simple logger will default<br />
-show any INFO level message or higher. In order to see DEBUG messages, you would<br />
-need to pass in this System Property <code>-Dorg.slf4j.simpleLogger.defaultLogLevel=DEBUG</code><br />
-at your Java startup.</p>
-<h2></h2>
-<p>Using <code>slf4j</code> with Log4j logger</p>
-<p>Now we can experiment and swap different logger implementations, but your application code<br />
-can remain the same. All we need is to replace <code>slf4j-simple</code> with another popular logger<br />
-implementation, such as the Log4j.</p>
-<pre><code>    &lt;dependency&gt;
-        &lt;groupId&gt;org.slf4j&lt;/groupId&gt;
-        &lt;artifactId&gt;slf4j-log4j12&lt;/artifactId&gt;
-        &lt;version&gt;1.7.5&lt;/version&gt;
-    &lt;/dependency&gt;
-</code></pre>
-<p>Again, we must configure logging per implementation that we picked.<br />
-In this case, we need an <code>src/main/resources/log4j.properties</code> file.</p>
-<pre><code>    log4j.rootLogger=DEBUG, STDOUT
-    log4j.logger.deng=INFO
-    log4j.appender.STDOUT=org.apache.log4j.ConsoleAppender
-    log4j.appender.STDOUT.layout=org.apache.log4j.PatternLayout
-    log4j.appender.STDOUT.layout.ConversionPattern=%5p [%t] (%F:%L) - %m%n
-</code></pre>
-<p>Re-run your program, and you should see similar output.</p>
-<h2></h2>
-<p>Using <code>slf4j</code> with JDK logger</p>
-<p>The JDK actually comes with a logger package, and you can replace <code>pom.xml</code><br />
-with this logger implementation.</p>
-<pre><code>    &lt;dependency&gt;
-        &lt;groupId&gt;org.slf4j&lt;/groupId&gt;
-        &lt;artifactId&gt;slf4j-jdk14&lt;/artifactId&gt;
-        &lt;version&gt;1.7.5&lt;/version&gt;
-    &lt;/dependency&gt;
-</code></pre>
-<p>Now the configuration for JDK logging is a bit difficult to work with. Not only need a<br />
-config file, such as <code>src/main/resources/logging.properties</code>, but you would also need<br />
-to add a System properties <code>-Djava.util.logging.config.file=logging.properties</code><br />
-in order to have it pick it up. Here is an example to get you started:</p>
-<pre><code>.level=INFO
-
-handlers=java.util.logging.ConsoleHandler
-java.util.logging.ConsoleHandler.level=FINEST
-deng.level=FINEST
-</code></pre>
-<h2></h2>
-<p>Using <code>slf4j</code> with Logback logger</p>
-<p>The logback logger implementation is a super dupa quality implementation. If you intend<br />
-to write serious code that go into production, you may want to evaluate this option. Again<br />
-modify your <code>pom.xml</code> to replace with this:</p>
-<pre><code>    &lt;dependency&gt;
-        &lt;groupId&gt;ch.qos.logback&lt;/groupId&gt;
-        &lt;artifactId&gt;logback-classic&lt;/artifactId&gt;
-        &lt;version&gt;1.0.13&lt;/version&gt;
-    &lt;/dependency&gt;
-</code></pre>
-<p>Here is a sample of configuration <code>src/main/resources/logback.xml</code> to get things started.</p>
-<pre><code>&lt;configuration&gt;
-  &lt;appender name=&quot;STDOUT&quot; class=&quot;ch.qos.logback.core.ConsoleAppender&quot;&gt;
-    &lt;encoder&gt;
-      &lt;pattern&gt;%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n&lt;/pattern&gt;
-    &lt;/encoder&gt;
-  &lt;/appender&gt;
-
-  &lt;logger name=&quot;deng&quot; level=&quot;DEBUG&quot;/&gt;
-
-  &lt;root level=&quot;INFO&quot;&gt;
-    &lt;appender-ref ref=&quot;STDOUT&quot; /&gt;
-  &lt;/root&gt;
-&lt;/configuration&gt;
-</code></pre>
-<h2></h2>
-<p>Writing your own library with <code>slf4j</code> logger</p>
-<p>If you are providing an Java library for large end users consumption, its good idea to<br />
-set your project to depend on <code>slf4j-api</code> only, and then let your user choose any<br />
-logger implementation at their development or runtime environment. As end users, they<br />
-may quickly select one of option above and take advatage of their own favorite logging<br />
-implementation features.</p>
-<h2></h2>
-<p>References</p>
-<ul>
-<li>
-<p><a href="http://slf4j.org/">http://slf4j.org/</a></p>
-</li>
-<li>
-<p><a href="http://logging.apache.org/log4j/1.2/">http://logging.apache.org/log4j/1.2/</a></p>
-</li>
-<li>
-<p><a href="http://docs.oracle.com/javase/7/docs/technotes/guides/logging/">http://docs.oracle.com/javase/7/docs/technotes/guides/logging/</a></p>
-</li>
-<li>
-<p><a href="http://logback.qos.ch/">http://logback.qos.ch/</a></p>
-</li>
-</ul>
-</p>
   			<a href="blog/2013/08/how-to-convert-asciidoc-text-to-html-using-groovy.html"><h1>How to convert asciidoc text to html using Groovy</h1></a>
   			<p>17 August 2013, tags: 
 			    <a href="../tags/groovy.html">groovy</a> 
@@ -866,23 +416,200 @@ Password: &lt;same password you used setup WLS to their console app.&gt;
 </p>
   			<a href="blog/2013/05/carry-your-sword-and-dagger-programmers.html"><h1>Carry your sword and dagger programmers!</h1></a>
   			<p>03 May 2013  			</p>
-  			<p><div class="paragraph">
-<p>A knight would for sure carry his sword proudly and ready for any battles. But then he
-can not use such a heavy weapon for daily tasks such as peeling an apple. Sometimes I think the same with ourself as programmers. We need a stable, strong and static typed programming language that can get us
-the heavy job (large project, and enterprise system) done in more manageable way. But yet, we face many smaller daily tasks (eg: parse a text file for a search value, or generate sample data etc) that is better fitted to use a lighter,  dynamic language because they are faster to write; and the code need not go through heavier process as the main project.</p>
-</div>
-<div class="paragraph">
-<p>Through out my career, I have been keeping two languages (one strong typed and one dynamic typed) pair very up to date. I would learn it and be proficient with it enough to write code without flipping through a book. I started with C++ with Perl and then switched to Python. And then later with Java and Jython, and later with Groovy. These are my strongest languages that I used the most, especially with Java. Of course I never stop learning other languages as well, such as Scala and Ruby etc. I personally think Ruby is very nice and good language to learn and use. I just not have had a chance to use it that extensively yet. Mastering a full static language such as Java would take much longer time, but one can learn a dynamic language fairly quickly.</p>
-</div>
-<div class="paragraph">
-<p>Any rate, if you a programmer, I strongly encourage you to learn at least two languages, and learn it well. As I said, prefer one static and one dynamic language. This pair of combination will boost your productivity to next level.</p>
-</div></p>
+  			<p><p>A knight would for sure carry his sword proudly and ready for any<br />
+battles. But then he can not use such a heavy weapon for daily tasks<br />
+such as peeling an apple. Sometimes I think the same with ourself as<br />
+programmers. We need a stable, strong and static typed programming<br />
+language that can get us the heavy job (large project, and enterprise<br />
+system) done in more manageable way. But yet, we face many smaller daily<br />
+tasks (eg: parse a text file for a search value, or generate sample data<br />
+etc) that is better fitted to use a lighter, dynamic language because<br />
+they are faster to write; and the code need not go through heavier<br />
+process as the main project.</p>
+<p>Through out my career, I have been keeping two languages (one strong<br />
+typed and one dynamic typed) pair very up to date. I would learn it and<br />
+be proficient with it enough to write code without flipping through a<br />
+book. I started with C++ with Perl and then switched to Python. And then<br />
+later with Java and Jython, and later with Groovy. These are my<br />
+strongest languages that I used the most, especially with Java. Of<br />
+course I never stop learning other languages as well, such as Scala and<br />
+Ruby etc. I personally think Ruby is very nice and good language to<br />
+learn and use. I just not have had a chance to use it that extensively<br />
+yet. Mastering a full static language such as Java would take much<br />
+longer time, but one can learn a dynamic language fairly quickly.</p>
+<p>Any rate, if you a programmer, I strongly encourage you to learn at<br />
+least two languages, and learn it well. As I said, prefer one static and<br />
+one dynamic language. This pair of combination will boost your<br />
+productivity to next level.</p>
+</p>
+  			<a href="blog/2013/05/how-to-bring-pseudo-code-to-life.html"><h1>How to bring pseudo code to life</h1></a>
+  			<p>01 May 2013  			</p>
+  			<p><p>When designing a piece of software, I like to start with some pseudo code first, then work my way out. I tend to try mapping out the normal workflow (one that runs without any corner cases) with high level of actions as series of steps. Then the detailed implementation of the code can be filled in at later time.</p>
+<p>Now with Java, you can easily do this with pseudo code, bring it to life, and still make it very maintainable. Try this out.</p>
+<pre><code>package deng.javademo;
+
+/**
+ * @author Zemian Deng
+ */
+public class PseudoCodeToLife {
+    public static void main(String[] args) {
+        CreditCardProcessor creditCardProcessor = new CreditCardProcessor()
+                .step(webServiceRequest())
+                .step(validateCardNumber())
+                .step(validateSecurityCode())
+                .step(checkAvailableCredit())
+                .step(chargeCard())
+                .step(webServiceResponse());
+
+        creditCardProcessor.run();
+    }
+}
+</code></pre>
+<p>Now that's as high level as you can get, but it still let me fill in the implementation without losing the overall requirement flow. To implement such workflow, we need a contract that allow processor to move data from one step to another, and yet it needs to perform some action along the way. How about an interface like this.</p>
+<pre><code>package deng.javademo;
+
+/**
+ * @author Zemian Deng
+ */
+public interface StepAction {
+    public void onAction(Exchange exchange);
+}
+</code></pre>
+<p>Next is how to wire steps together. For now we can just do it inside <code>CreditCardProcessor</code>, but you can easily abstract that into a re-usable base class.</p>
+<pre><code>package deng.javademo;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * @author Zemian Deng
+ */
+public class CreditCardProcessor {
+    List&lt;StepAction&gt; steps = new ArrayList&lt;StepAction&gt;();
+
+    public CreditCardProcessor step(StepAction stepAction) {
+        steps.add(stepAction);
+        return this;
+    }
+
+    public void run() {
+        Exchange exchange = new Exchange();
+        for (StepAction step : steps) {
+            step.onAction(exchange);
+        }
+    }
+}
+</code></pre>
+<p>Pretty straight forward. Here I used an <code>Exchange</code> as message, passing between each steps to allow the workflow to exchange data. You can wrap just about any real payload and/or add a Map of header properties.</p>
+<p>Now what we are missing is just filling in each step of actions. Since we have an explicit step name when defining the workflow, we can just generate these method and fill in the actions per step required. I will add them all inside the <code>PseudoCodeToLife</code> and reprint it here.</p>
+<pre><code>package deng.javademo;
+
+/**
+ * @author Zemian Deng
+ */
+public class PseudoCodeToLife {
+    public static void main(String[] args) {
+        CreditCardProcessor creditCardProcessor = new CreditCardProcessor()
+                .step(webServiceRequest())
+                .step(validateCardNumber())
+                .step(validateSecurityCode())
+                .step(checkAvailableCredit())
+                .step(chargeCard())
+                .step(webServiceResponse());
+
+        creditCardProcessor.run();
+    }
+
+    private static StepAction webServiceRequest() {
+        return new StepAction() {
+            @Override
+            public void onAction(Exchange exchange) {
+                System.out.println(&quot;webServiceRequest step.&quot;);
+            }
+        };
+    }
+
+    private static StepAction validateCardNumber() {
+        return new StepAction() {
+            @Override
+            public void onAction(Exchange exchange) {
+                System.out.println(&quot;validateCardNumber step.&quot;);
+            }
+        };
+    }
+
+    private static StepAction validateSecurityCode() {
+        return new StepAction() {
+            @Override
+            public void onAction(Exchange exchange) {
+                System.out.println(&quot;validateSecurityCode step.&quot;);
+            }
+        };
+    }
+
+    private static StepAction checkAvailableCredit() {
+        return new StepAction() {
+            @Override
+            public void onAction(Exchange exchange) {
+                System.out.println(&quot;checkAvailableCredit step.&quot;);
+            }
+        };
+    }
+
+    private static StepAction chargeCard() {
+        return new StepAction() {
+            @Override
+            public void onAction(Exchange exchange) {
+                System.out.println(&quot;chargeCard step.&quot;);
+            }
+        };
+    }
+
+    private static StepAction webServiceResponse() {
+        return new StepAction() {
+            @Override
+            public void onAction(Exchange exchange) {
+                System.out.println(&quot;webServiceResponse step.&quot;);
+            }
+        };
+    }
+}
+</code></pre>
+<p>That's all to this. What do you think? I think it's a simple way to tackle business problems. Simple software make less bugs and easier to maintain.</p>
+</p>
+  			<a href="blog/2013/03/first-snapshot-of-myschedule-3-0-0-is-available.html"><h1>First snapshot of myschedule-3.0.0 is available</h1></a>
+  			<p>27 March 2013, tags: 
+			    <a href="../tags/myschedule.html">myschedule</a> 
+  			</p>
+  			<p><p>First snapshot of <a href="https://code.google.com/p/myschedule/downloads/list">myschedule-3.0.0</a> with brand new UI is ready to be try out!</p>
+<p>It's been a long time since I made a release for MySchedule project, and I have been busy!</p>
+<p>Well, for starter, I have been exploring the Vaaddin library for a new UI design for the project, and it's working really nice! I love to have full Java code for UI layout and widget controls and yet it runs on browser. It's a perfect fit for MySchedule. As you will see from the snapshot, the UI is still pretty bare, but for me, as backend developer, and be able to have such clean UI code is super exciting. (on other hand, working with JavaScript, even with such nice library as jQuery can still feel like a hack at times. ^_^) You should checkout the latest MySchedule source to take a look yourself. All that GUI is less than handful of UI classes. Vaaddin is pretty sweet!</p>
+<p>As MySchedule jumped to 3.x version, I've taken the opportunity to clean up few areas in the &quot;quartz-extra&quot; module as well. Also to support Vaadin, the web layer needed a rework. The new code is easy to follow and ready to support more UI features in the future.</p>
+<p>I also improved on the project packaging. Now getting started with is even more easier. Get the single zip file, and try any of these simple steps:</p>
+<pre><code>## Web application usage (option 1: power up a self-contained servlet server!)
+ 
+ bash&gt; cd myschedule-3.*
+ bash&gt; bin/myschedule-ui.sh --httpPort=8081
+
+Now open a browser and visit http://localhost:8081
+
+## Web application usage (option 2: use your own servelt server)
+
+Simply copy the myschedule-3.*/war/myschedule.war file into your Servlet container such as Tomcat.
+
+## Command line usage (option 3: quickly test your quartz config)
+
+ bash&gt; cd myschedule-3.*
+ bash&gt; bin/myschedule.sh bin/quartz.properties
+</code></pre>
+<p>Note that not all MySchedule-2.x features are in the 3.0 snapshot yet. For now, you would need to use the ScripConsole window to enter jobs into the scheduler. There are now new templates UI available for you to choose and start working quickly. I am still working on allowing users to save their own templates and edit them. This should give users more rich experience in using the UI manager.</p>
+</p>
 
 	<hr />
 
 	<ul class="pager">
 		<li class="previous"><a href="https://zemian.github.io/19">Previous</a></li>
-		<li>Page: 20/29</li>
+		<li>Page: 20/28</li>
 		<li class="next"><a href="https://zemian.github.io/21">Next</a></li>
 	</ul>
 

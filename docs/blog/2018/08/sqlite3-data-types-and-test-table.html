@@ -63,9 +63,7 @@
 	    <a href="../../../tags/sqlite3.html">sqlite3</a> 
 	</p>
 
-	<p><div class="listingblock">
-<div class="content">
-<pre>-- Notes for SQLite3 Database (3.24)
+	<p><pre><code>-- Notes for SQLite3 Database (3.24)
 -- https://www.sqlite.org/docs.html
 
 -- Data Types
@@ -85,7 +83,7 @@ REAL. The value is a floating point value, stored as an 8-byte IEEE floating poi
 TEXT. The value is a text string, stored using the database encoding (UTF-8, UTF-16BE or UTF-16LE).
 BLOB. The value is a blob of data, stored exactly as it was input.
 
-SQLite can conform to standard SQL types by mapping what's called "affinity" type.
+SQLite can conform to standard SQL types by mapping what's called &quot;affinity&quot; type.
 
 CHAR          Map to TEXT
 VARCHAR       Map to TEXT
@@ -101,7 +99,7 @@ NUMERIC       Map to INTEGER, REAL, TEXT or BLOB
 DATE          Map to INTEGER, REAL, TEXT or BLOB
 DATETIME      Map to INTEGER, REAL, TEXT or BLOB
 
-NOTE: Despite there is a "NUMERIC" affinity type, it's not a fixed-point type! SQLite
+NOTE: Despite there is a &quot;NUMERIC&quot; affinity type, it's not a fixed-point type! SQLite
 does not have native NUMERIC. It will dynamically choose a best fit storage class
 instead (REAL if it can keep 15 digits accuracy). If you need true fixed point data type,
 you may try to use TEXT data stored instead. Same as with DATETIME types. For example you
@@ -144,9 +142,8 @@ insert into test(cat, distx, disty) values ('test4', random(), random());
 insert into test(cat, distx, disty) values ('test4', random(), random());
 select sum(price) from test where cat = 'test';
 select * from test order by cat, ts desc;
-----</pre>
-</div>
-</div></p>
+</code></pre>
+</p>
 
 	<hr />
 

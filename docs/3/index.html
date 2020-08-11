@@ -53,157 +53,13 @@
       </div>
     </div>
     <div class="container">
-  			<a href="blog/2018/08/sybase-data-types-and-test-table-.html"><h1>Sybase Data Types and Test Table</h1></a>
-  			<p>19 August 2018, tags: 
-			    <a href="../tags/sql.html">sql</a> 
-
-			    <a href="../tags/sybase.html">sybase</a> 
-  			</p>
-  			<p><div class="listingblock">
-<div class="content">
-<pre>-- Notes for Sybase Database 16
--- http://infocenter.sybase.com/help/index.jsp?topic=/com.sybase.infocenter.dc70202.1570/html/quickref/title.htm
-
--- Data Types
--- http://infocenter.sybase.com/help/index.jsp?topic=/com.sybase.infocenter.dc32300.1600/doc/html/san1390612189202.html
-
-/*
-
-CHAR          Fixed length and space padded character string (sql: CHAR)
-VARCHAR       Variable length character string (sql: VARCHAR)
-UNIVARCHAR    Same as VARCHAR but with Unicode support
-TEXT          Variable length character large string (sql: TEXT)
-
-INT           Declare integer number (sql: INT 32 bits)
-SMALLINT      16 bits
-BIGINT        64 bits
-
-REAL             Declare floating-point number 32 bits
-DOUBLE PRECISION Declare floating-point number 64 bits
-
-NUMERIC(p,s)     Declare fixed-point number (sql: NUMERIC)
-
-DATE          Declare date
-TIME          Declare time
-DATETIME      Declare datetime with sub second precision
-
-BINARY        Binary data
-BINARY        Binary data
-BINARY        Binary data
-
- */
--- Test table
-create table test(
-  id    int identity primary key not null,
-  ts    datetime default getdate() not null,
-  cat   varchar(10) not null,
-
-  price    numeric(19,4) null,
-  qty      int null,
-
-  txtdata  text null,
-  bindata  binary null,
-
-  distx  real null,
-  disty  double precision null
-);
-insert into test(cat, price, qty) values ('test', 100000.10, 50000),
-                                         ('test', 100000.20, 0),
-                                         ('test', 100000.00, 1),
-                                         ('test', 9977000.3333, 179),
-                                         ('test', 104729.1129, 104729);
-insert into test(cat, bindata, txtdata) values ('test2', 0xCAFEBABE, 'CAFEBABE');
-insert into test(cat, bindata) values ('test3', convert(binary, rand()));
-insert into test(cat, bindata) values ('test3', convert(binary, rand()));
-insert into test(cat, bindata) values ('test3', convert(binary, rand()));
-insert into test(cat, distx, disty) values ('test4', rand(), rand());
-insert into test(cat, distx, disty) values ('test4', rand(), rand());
-insert into test(cat, distx, disty) values ('test4', rand(), rand());
-select sum(price) from test where cat = 'test';
-select * from test order by cat, ts desc;</pre>
-</div>
-</div></p>
-  			<a href="blog/2018/08/oracle-db-data-types-and-test-table-.html"><h1>Oracle DB Data Types and Test Table</h1></a>
-  			<p>18 August 2018, tags: 
-			    <a href="../tags/sql.html">sql</a> 
-
-			    <a href="../tags/oracle.html">oracle</a> 
-  			</p>
-  			<p><div class="listingblock">
-<div class="content">
-<pre>--
--- Notes on Oracle Database 12.2
--- https://docs.oracle.com/en/database/oracle/oracle-database/12.2/administration.html
-
--- DataTypes
--- https://docs.oracle.com/en/database/oracle/oracle-database/12.2/sqlrf/Data-Types.html
-
-/*
-CHAR          Fixed length and space padded character string (sql: CHAR)
-VARCHAR2      Variable length character string (sql: VARCHAR)
-              (Oracle discourage use of VARCHAR, even though it's same as VARCHAR2 as of now.)
-NVARCHAR2     Same as VARCHAR2 but with Unicode support
-CLOB          Variable length character large string (sql: TEXT)
-
-NUMBER(p)     Declare integer number (sql: INT)
-
-BINARY_FLOAT  Declare floating-point number (sql: REAL 32 bits)
-BINARY_DOUBLE Declare floating-point number (sql: DOUBLE PRECISION 64 bits)
-
-NUMBER        Declare floating-point number (like NUMERIC with max precision and scale. Values will be stored as exact, not binary.)
-NUMBER(p,s)   Declare fixed-point number (sql: NUMERIC)
-
-DATE          Declare datetime with no sub second precision (note: it includes time!)
-TIMESTAMP     Declare datetime with sub second precision
-TIMESTAMP WITH TIMEZONE
-              Declare datetime with sub second precision and timezone
-INTERVAL YEAR TO MONTH   Declare period of time difference
-INTERVAL DAY TO DECOND   Declare period of time difference
-
-BLOB          Binary data
- */
-
--- Test table
-create table test (
-  id    number(32) generated always as identity primary key,
-  ts    timestamp(6) default systimestamp not null,
-  cat   varchar2(10) not null,
-
-  price    number(19,4) null,
-  qty      int null,
-
-  txtdata  varchar2(1000) null,
-  bindata  blob null,
-
-  distx  binary_float null,
-  disty  binary_double null
-);
-insert into test(cat, price, qty) values ('test', 100000.10, 50000),
-                                         ('test', 100000.20, 0),
-                                         ('test', 100000.00, 1),
-                                         ('test', 9977000.3333, 179),
-                                         ('test', 104729.1129, 104729);
-insert into test(cat, bindata, txtdata) values ('test2', hextoraw('CAFEBABE'), 'CAFEBABE');
-insert into test(cat, bindata) values ('test3', hextoraw(to_char(floor(dbms_random.value(0,256)), 'XX')));
-insert into test(cat, bindata) values ('test3', hextoraw(to_char(floor(dbms_random.value(0,256)), 'XX')));
-insert into test(cat, bindata) values ('test3', hextoraw(to_char(floor(dbms_random.value(0,256)), 'XX')));
-update test set txtdata = rawtohex(bindata) where cat = 'test3';
-insert into test(cat, distx, disty) values ('test4', dbms_random.value(0.0, 1.0), dbms_random.value(0.0, 1.0));
-insert into test(cat, distx, disty) values ('test4', dbms_random.value(0.0, 1.0), dbms_random.value(0.0, 1.0));
-insert into test(cat, distx, disty) values ('test4', dbms_random.value(0.0, 1.0), dbms_random.value(0.0, 1.0));
-select sum(price) from test where cat = 'test';
-select * from test order by cat, ts desc;</pre>
-</div>
-</div></p>
-  			<a href="blog/2018/08/mysql-data-types-and-test-table-.html"><h1>MySQL Data Types and Test Table</h1></a>
+  			<a href="blog/2018/08/mysql-data-types-and-test-table.html"><h1>MySQL Data Types and Test Table</h1></a>
   			<p>17 August 2018, tags: 
 			    <a href="../tags/sql.html">sql</a> 
 
 			    <a href="../tags/mysql.html">mysql</a> 
   			</p>
-  			<p><div class="listingblock">
-<div class="content">
-<pre>-- Notes for MySQL (8)
+  			<p><pre><code>-- Notes for MySQL (8)
 -- https://dev.mysql.com/doc/refman/8.0/en/
 
 -- Data Types
@@ -263,26 +119,24 @@ insert into test(cat, distx, disty) values ('test4', rand(), rand());
 insert into test(cat, distx, disty) values ('test4', rand(), rand());
 insert into test(cat, distx, disty) values ('test4', rand(), rand());
 select sum(price) from test where cat = 'test';
-select * from test order by cat, ts desc;</pre>
-</div>
-</div></p>
+select * from test order by cat, ts desc;
+</code></pre>
+</p>
   			<a href="blog/2018/08/a-simple-java-command-line-options-parser.html"><h1>A simple Java command line options parser</h1></a>
   			<p>13 August 2018, tags: 
 			    <a href="../tags/commandline_parser.html">commandline_parser</a> 
   			</p>
-  			<p><div class="listingblock">
-<div class="content">
-<pre>package com.zemian.hellojava;
+  			<p><pre><code>package com.zemian.hellojava;
 
 import java.util.*;
 
 /**
- * A simple command line arguments and options parser in the format of "--optionName=optionValue" or
- * "-optionName=optionValue".
+ * A simple command line arguments and options parser in the format of &quot;--optionName=optionValue&quot; or
+ * &quot;-optionName=optionValue&quot;.
  *
  * The optionName can be one ore more characters. The equals sign must be used when providing optionValue;
- * else it will be treated as program arguments instead! If you ommit the "=optionValue" part, then it
- * will default to "=true" for that optionName. The optionValue must be a single string. Any other argument
+ * else it will be treated as program arguments instead! If you ommit the &quot;=optionValue&quot; part, then it
+ * will default to &quot;=true&quot; for that optionName. The optionValue must be a single string. Any other argument
  * that are not part of options are store in a new args list.
  *
  * The constructor will immediately parse the input arguments, and it should not throw any exceptions. In case
@@ -296,11 +150,11 @@ import java.util.*;
  * public class Hello {}
  *     public static void main(String[] args) {
  *         CmdOpts opts = new CmdOpts(args);
- *         if (opts.hasOpt("help"))
- *           System.out.println("You need help");
- *         int num = opts.getIntOpt("num", 0);
- *         System.out.println("Using num=" + num);
- *         System.out.println("Using new args=" + opts.getArgs());
+ *         if (opts.hasOpt(&quot;help&quot;))
+ *           System.out.println(&quot;You need help&quot;);
+ *         int num = opts.getIntOpt(&quot;num&quot;, 0);
+ *         System.out.println(&quot;Using num=&quot; + num);
+ *         System.out.println(&quot;Using new args=&quot; + opts.getArgs());
  *     }
  * }
  * ----
@@ -317,9 +171,9 @@ public class CmdOpts {
 
     private void parse(String[] arguments) {
         for (String arg : arguments) {
-            if (arg.startsWith("--")) {
+            if (arg.startsWith(&quot;--&quot;)) {
                 addOpt(arg.substring(2));
-            } else if (arg.startsWith("-")) {
+            } else if (arg.startsWith(&quot;-&quot;)) {
                 addOpt(arg.substring(1));
             } else {
                 args.add(arg);
@@ -329,10 +183,10 @@ public class CmdOpts {
     }
 
     private void addOpt(String option) {
-        if (option != null &amp;&amp; !"".equals(option)) {
-            String[] options = option.split("=", 2);
+        if (option != null &amp;&amp; !&quot;&quot;.equals(option)) {
+            String[] options = option.split(&quot;=&quot;, 2);
             String optionName = options[0];
-            String optionValue = "true";
+            String optionValue = &quot;true&quot;;
             if (options.length == 2) {
                 optionValue = options[1];
             }
@@ -464,15 +318,15 @@ public class CmdOpts {
     /** A test class to try out CmdOpts. */
     public static void main(String[] args) {
         CmdOpts opts = new CmdOpts(args);
-        if (opts.hasOpt("help"))
-            System.out.println("You need help");
-        int num = opts.getIntOpt("num", 0);
-        System.out.println("Using num=" + num);
-        System.out.println("Using new args=" + opts.getArgs());
+        if (opts.hasOpt(&quot;help&quot;))
+            System.out.println(&quot;You need help&quot;);
+        int num = opts.getIntOpt(&quot;num&quot;, 0);
+        System.out.println(&quot;Using num=&quot; + num);
+        System.out.println(&quot;Using new args=&quot; + opts.getArgs());
     }
-}</pre>
-</div>
-</div></p>
+}
+</code></pre>
+</p>
   			<a href="blog/2018/08/examples-of-postgres-functions-and-triggers.html"><h1>Examples of Postgres Functions and Triggers</h1></a>
   			<p>09 August 2018, tags: 
 			    <a href="../tags/postgres.html">postgres</a> 
@@ -481,9 +335,7 @@ public class CmdOpts {
 
 			    <a href="../tags/trigger.html">trigger</a> 
   			</p>
-  			<p><div class="listingblock">
-<div class="content">
-<pre>-- Simple Function
+  			<p><pre><code>-- Simple Function
 create or replace function rand_range(a int, b int) returns int
 as $$
   -- return a random range of int between a and b, both inclusive!;
@@ -550,21 +402,19 @@ create trigger test_logging_trigger
 insert into test(f1) values(0.10), (0.20), (0.30);
 update test set f1 = 3.5 where id = 1;
 select * from test;
-select * from log;</pre>
-</div>
-</div></p>
+select * from log;
+</code></pre>
+</p>
   			<a href="blog/2018/07/a-plain-and-simple-jdbc-service-for-java8.html"><h1>A plain and simple Jdbc service for Java8</h1></a>
   			<p>28 July 2018, tags: 
 			    <a href="../tags/java.html">java</a> 
 
 			    <a href="../tags/jdbc.html">jdbc</a> 
   			</p>
-  			<p><div class="paragraph">
-<p>With Java8, we can create simple and thin Jdbc service that&#8217;s productive and easy to use. This service implementation is inspired by Spring&#8217;s JdbcTemplate, but much lighter and has zero dependency.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>package zemian.jdbc;
+  			<p><p>With Java8, we can create simple and thin Jdbc service that’s productive<br />
+and easy to use. This service implementation is inspired by Spring’s<br />
+JdbcTemplate, but much lighter and has zero dependency.</p>
+<pre><code>package zemian.jdbc;
 
 import javax.sql.DataSource;
 import java.io.IOException;
@@ -608,27 +458,27 @@ public class Jdbc {
         try (InputStream ins = propsUrl.openStream()) {
             props.load(ins);
         } catch (IOException e) {
-            throw new RuntimeException("Unable to open properties from resource: " + propsResourceName, e);
+            throw new RuntimeException(&quot;Unable to open properties from resource: &quot; + propsResourceName, e);
         }
         withJdbc(props, task);
     }
 
     public static void withJdbc(String url, String user, String password, JdbcAction task) {
         Properties props = new Properties();
-        props.setProperty("url", url);
-        props.setProperty("user", user);
-        props.setProperty("password", password);
+        props.setProperty(&quot;url&quot;, url);
+        props.setProperty(&quot;user&quot;, user);
+        props.setProperty(&quot;password&quot;, password);
         withJdbc(props, task);
     }
 
     public static void withJdbc(Properties jdbcProps, JdbcAction task) {
-        try (Connection conn = DriverManager.getConnection(jdbcProps.getProperty("url"), jdbcProps)) {
+        try (Connection conn = DriverManager.getConnection(jdbcProps.getProperty(&quot;url&quot;), jdbcProps)) {
             Jdbc jdbc = new Jdbc(conn);
             task.runJdbc(jdbc);
         } catch (Exception e) {
             if (e instanceof RuntimeException)
                 throw (RuntimeException) e;
-            throw new RuntimeException("Failed to process Jdbc", e);
+            throw new RuntimeException(&quot;Failed to process Jdbc&quot;, e);
         }
     }
 
@@ -689,7 +539,7 @@ public class Jdbc {
         }
         @Override
         public String toString() {
-            return "Record" + super.toString();
+            return &quot;Record&quot; + super.toString();
         }
     }
 
@@ -719,7 +569,7 @@ public class Jdbc {
         } catch (Exception e) {
             if (e instanceof RuntimeException)
                 throw (RuntimeException) e;
-            throw new RuntimeException("Failed to process DB conn", e);
+            throw new RuntimeException(&quot;Failed to process DB conn&quot;, e);
         }
     }
 
@@ -745,7 +595,7 @@ public class Jdbc {
                     }
                 }
             }
-            throw new RuntimeException("There is no unique record from query.");
+            throw new RuntimeException(&quot;There is no unique record from query.&quot;);
         });
     }
 
@@ -795,9 +645,9 @@ public class Jdbc {
     }
 
     public int insert(String table, Record record, List&lt;String&gt; insertFields) {
-        String fields = insertFields.stream().collect(Collectors.joining(", "));
-        String qMarks = insertFields.stream().map(e -&gt; "?").collect(Collectors.joining(", "));
-        String sql = "INSERT INTO " + table + "(" + fields + ") VALUES (" + qMarks + ")";
+        String fields = insertFields.stream().collect(Collectors.joining(&quot;, &quot;));
+        String qMarks = insertFields.stream().map(e -&gt; &quot;?&quot;).collect(Collectors.joining(&quot;, &quot;));
+        String sql = &quot;INSERT INTO &quot; + table + &quot;(&quot; + fields + &quot;) VALUES (&quot; + qMarks + &quot;)&quot;;
         List&lt;Object&gt; params = insertFields.stream().map(e -&gt; record.get(e)).collect(Collectors.toList());
         return withConn(conn -&gt; {
             try (PreparedStatement st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -827,9 +677,9 @@ public class Jdbc {
     }
 
     public int update(String table, Record record, List&lt;String&gt; updateFields, List&lt;String&gt; keyFields) {
-        String updateFieldsNames = updateFields.stream().map(e -&gt; e + " = ?").collect(Collectors.joining(", "));
-        String keyFieldsNames = keyFields.stream().map(e -&gt; e + " = ?").collect(Collectors.joining(", "));
-        String sql = "UPDATE " + table + " SET " + updateFieldsNames + " WHERE " + keyFieldsNames;
+        String updateFieldsNames = updateFields.stream().map(e -&gt; e + &quot; = ?&quot;).collect(Collectors.joining(&quot;, &quot;));
+        String keyFieldsNames = keyFields.stream().map(e -&gt; e + &quot; = ?&quot;).collect(Collectors.joining(&quot;, &quot;));
+        String sql = &quot;UPDATE &quot; + table + &quot; SET &quot; + updateFieldsNames + &quot; WHERE &quot; + keyFieldsNames;
         List&lt;Object&gt; params = updateFields.stream().map(e -&gt; record.get(e)).collect(Collectors.toList());
         for (String key : keyFields)
             params.add(record.get(key));
@@ -838,9 +688,9 @@ public class Jdbc {
 
     // Test Jdbc with Postgres DB
     public static void main(String[] args) {
-        String url = System.getProperty("url", "jdbc:postgresql://localhost:5432/postgres");
-        String user = System.getProperty("user", "postgres");
-        String password = System.getProperty("password", "");
+        String url = System.getProperty(&quot;url&quot;, &quot;jdbc:postgresql://localhost:5432/postgres&quot;);
+        String user = System.getProperty(&quot;user&quot;, &quot;postgres&quot;);
+        String password = System.getProperty(&quot;password&quot;, &quot;&quot;);
 
         Jdbc.withJdbc(url, user, password, jdbc -&gt; {
             jdbc.withConnNoRet(conn -&gt; System.out.println(conn));
@@ -848,45 +698,45 @@ public class Jdbc {
 
         Jdbc.withJdbc(url, user, password, jdbc -&gt; {
             // Execute
-            jdbc.execute("create temp table test(id varchar(10) primary key, seq serial, amount numeric(19,4))");
-            int uc = jdbc.execute("insert into test(id, amount) values(?, ?)", "T01", 0.01);
-            System.out.println("test record inserted: uc=" + uc);
+            jdbc.execute(&quot;create temp table test(id varchar(10) primary key, seq serial, amount numeric(19,4))&quot;);
+            int uc = jdbc.execute(&quot;insert into test(id, amount) values(?, ?)&quot;, &quot;T01&quot;, 0.01);
+            System.out.println(&quot;test record inserted: uc=&quot; + uc);
 
-            Record record = jdbc.getRecord("select * from test where id = ?", "T01");
+            Record record = jdbc.getRecord(&quot;select * from test where id = ?&quot;, &quot;T01&quot;);
             System.out.println(record);
 
             // Get
-            Integer seq = jdbc.get("select seq from test where id = ?", "T01");
-            System.out.println("seq = " + seq);
+            Integer seq = jdbc.get(&quot;select seq from test where id = ?&quot;, &quot;T01&quot;);
+            System.out.println(&quot;seq = &quot; + seq);
 
-            java.math.BigDecimal amount = jdbc.get("select amount from test where id = ?", "T01");
-            System.out.println("amount = " + amount);
+            java.math.BigDecimal amount = jdbc.get(&quot;select amount from test where id = ?&quot;, &quot;T01&quot;);
+            System.out.println(&quot;amount = &quot; + amount);
 
             // Update
-            record.put("amount", amount.doubleValue() + 0.20);
-            System.out.println("amount to be updated: " + record.getValue("amount"));
-            uc = jdbc.update("test", record, "id");
-            System.out.println("amount udpated. uc=" + uc);
+            record.put(&quot;amount&quot;, amount.doubleValue() + 0.20);
+            System.out.println(&quot;amount to be updated: &quot; + record.getValue(&quot;amount&quot;));
+            uc = jdbc.update(&quot;test&quot;, record, &quot;id&quot;);
+            System.out.println(&quot;amount udpated. uc=&quot; + uc);
 
-            amount = jdbc.get("select amount from test where id = ?", "T01");
-            System.out.println("after update from db: amount = " + amount);
+            amount = jdbc.get(&quot;select amount from test where id = ?&quot;, &quot;T01&quot;);
+            System.out.println(&quot;after update from db: amount = &quot; + amount);
 
             // Insert
-            record = new Record("id", "T02", "amount", 0.30);
-            jdbc.insert("test", record);
-            int newSeq = (Integer) record.get("seq");
-            System.out.println("generated column seq=" + newSeq);
-            Record record2 = jdbc.getRecord("select * from test where id = ?", "T02");
+            record = new Record(&quot;id&quot;, &quot;T02&quot;, &quot;amount&quot;, 0.30);
+            jdbc.insert(&quot;test&quot;, record);
+            int newSeq = (Integer) record.get(&quot;seq&quot;);
+            System.out.println(&quot;generated column seq=&quot; + newSeq);
+            Record record2 = jdbc.getRecord(&quot;select * from test where id = ?&quot;, &quot;T02&quot;);
             System.out.println(record2);
 
             // Query
-            List&lt;Record&gt; records = jdbc.query("select * from test order by id");
+            List&lt;Record&gt; records = jdbc.query(&quot;select * from test order by id&quot;);
             System.out.println(records);
         });
     }
-}</pre>
-</div>
-</div></p>
+}
+</code></pre>
+</p>
   			<a href="blog/2018/07/adding-new-cacert-entry-into-adoptopenjdk.html"><h1>Adding new cacert entry into AdoptOpenJDK</h1></a>
   			<p>23 July 2018, tags: 
 			    <a href="../tags/cacert.html">cacert</a> 
@@ -895,152 +745,276 @@ public class Jdbc {
 
 			    <a href="../tags/openjdk.html">openjdk</a> 
   			</p>
-  			<p><div class="paragraph">
-<p>I downloaded latest Tomcat source and it failed to get the dependencies.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>  cd src/github/tomcat
+  			<p><p>I downloaded latest Tomcat source and it failed to get the dependencies.</p>
+<pre><code>  cd src/github/tomcat
   ant download-test-compile
         [get] Error getting https://repo.maven.apache.org/maven2/junit/junit/4.12/junit-4.12.jar to C:\Users\zemian\tomcat-build-libs\download-2000731528.tmp
 
 BUILD FAILED
 C:\Users\zemian\src\github\tomcat\build.xml:2705: The following error occurred while executing this line:
 C:\Users\zemian\src\github\tomcat\build.xml:3051: javax.net.ssl.SSLException: java.lang.RuntimeException: Unexpected error: java.security.InvalidAlgorithmParameterException: the trustAnchors parameter must be non-empty
-        at sun.security.ssl.Alerts.getSSLException(Alerts.java:208)</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>It turns out this error is caused by the OpenJDK 8 that I am using. The one I got is from <a href="https://adoptopenjdk.net/" class="bare">https://adoptopenjdk.net/</a>, and the $JAVA_HOME/jre/lib/security/cacert file has no entries for trusted CA certs!</p>
-</div>
-<div class="paragraph">
+        at sun.security.ssl.Alerts.getSSLException(Alerts.java:208)
+</code></pre>
+<p>It turns out this error is caused by the OpenJDK 8 that I am using. The<br />
+one I got is from <a href="https://adoptopenjdk.net/">https://adoptopenjdk.net/</a>, and the<br />
+$JAVA_HOME/jre/lib/security/cacert file has no entries for trusted CA<br />
+certs!</p>
 <p>So I found few solutions:</p>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
+<ol>
 <li>
 <p>Find a copy of OracleJDK and copy their <code>cacerts</code> over.</p>
 </li>
 <li>
-<p>If you are on Linux, you can try installing cacerts using tools the OS provided. (eg: Ubuntu can be done like here: <a href="https://stackoverflow.com/questions/6784463/error-trustanchors-parameter-must-be-non-empty" class="bare">https://stackoverflow.com/questions/6784463/error-trustanchors-parameter-must-be-non-empty</a>)</p>
+<p>If you are on Linux, you can try installing cacerts using tools the<br />
+OS provided. (eg: Ubuntu can be done like here:<br />
+<a href="https://stackoverflow.com/questions/6784463/error-trustanchors-parameter-must-be-non-empty">https://stackoverflow.com/questions/6784463/error-trustanchors-parameter-must-be-non-empty</a>)</p>
 </li>
 <li>
 <p>Upgrade OpenJDK to 10</p>
 </li>
 <li>
-<p>Or the quick way, go to the site that gives you problem, export their cert using the browser, and then import into to the <code>cacerts</code> file.</p>
+<p>Or the quick way, go to the site that gives you problem, export<br />
+their cert using the browser, and then import into to the <code>cacerts</code><br />
+file.</p>
 </li>
 </ol>
-</div>
-<div class="paragraph">
-<p>So for me, I went to <a href="https://repo.maven.apache.org/" class="bare">https://repo.maven.apache.org/</a> and exported <code>repomavenapacheorg.crt</code>, and then I ran the following:</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>cd $JAVA_HOME/jre/lib/security
+<p>So for me, I went to <a href="https://repo.maven.apache.org/">https://repo.maven.apache.org/</a> and exported<br />
+<code>repomavenapacheorg.crt</code>, and then I ran the following:</p>
+<pre><code>cd $JAVA_HOME/jre/lib/security
 keytool -keystore cacerts -storepasswd changeit -importcert -file 'Downloads/repomavenapacheorg.crt' -trustcacerts
-keytool -keystore cacerts -storepasswd changeit -list</pre>
-</div>
-</div>
-<div class="paragraph">
+keytool -keystore cacerts -storepasswd changeit -list
+</code></pre>
 <p>This fixed my problem.</p>
-</div></p>
+</p>
   			<a href="blog/2018/06/run-tomcat-with-webapp-runner-jar.html"><h1>Run Tomcat with webapp-runner.jar</h1></a>
   			<p>21 June 2018, tags: 
 			    <a href="../tags/tomcat.html">tomcat</a> 
 
 			    <a href="../tags/webapp-runner.html">webapp-runner</a> 
   			</p>
-  			<p><div class="paragraph">
-<p>I have used <a href="https://github.com/jsimone/webapp-runner" class="bare">https://github.com/jsimone/webapp-runner</a> in several projects now, and I find it really useful.</p>
-</div>
-<div class="paragraph">
+  			<p><p>I have used <a href="https://github.com/jsimone/webapp-runner">https://github.com/jsimone/webapp-runner</a> in several<br />
+projects now, and I find it really useful.</p>
 <p>You can start a Tomcat instance as simple as this:</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>java -jar target/webapp-runner.jar target/adocblog.war</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>However if you need to run it with extra classpath entries, then you would need to use the <code>-cp</code> instead of <code>-jar</code> Java option. Like this:</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>java -cp "target/extra-classes:target/webapp-runner.jar" webapp.runner.launch.Main target/adocblog.war</pre>
-</div>
-</div></p>
+<pre><code>java -jar target/webapp-runner.jar target/adocblog.war
+</code></pre>
+<p>However if you need to run it with extra classpath entries, then you<br />
+would need to use the <code>-cp</code> instead of <code>-jar</code> Java option. Like this:</p>
+<pre><code>java -cp &quot;target/extra-classes:target/webapp-runner.jar&quot; webapp.runner.launch.Main target/adocblog.war
+</code></pre>
+</p>
   			<a href="blog/2018/06/installing-python-on-windows-without-admin-rights.html"><h1>Installing Python on Windows Without Admin Rights</h1></a>
   			<p>06 June 2018, tags: 
 			    <a href="../tags/python-install.html">python-install</a> 
   			</p>
-  			<p><div class="paragraph">
-<p>To install Python on Windows without Admin Rights:</p>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
+  			<p><p>To install Python on Windows without Admin Rights:</p>
+<ol>
 <li>
-<p>Download binary from <a href="https://www.python.org/downloads/windows/" class="bare">https://www.python.org/downloads/windows/</a></p>
+<p>Download binary from <a href="https://www.python.org/downloads/windows/">https://www.python.org/downloads/windows/</a></p>
 </li>
 <li>
 <p>Run the following in <code>cmd.exe</code> terminal.</p>
-<div class="literalblock">
-<div class="content">
-<pre>mkdir %USERPROFILE%\apps\python-2.6.6
-msiexec /a python-2.6.6.amd64.msi /qb TARGETDIR=%USERPROFILE%\apps\python-2.6.6</pre>
-</div>
-</div>
+<pre><code>mkdir %USERPROFILE%\apps\python-2.6.6
+msiexec /a python-2.6.6.amd64.msi /qb TARGETDIR=%USERPROFILE%\apps\python-2.6.6
+</code></pre>
 </li>
 </ol>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Note</div>
-</td>
-<td class="content">
-Starting Python 3.5 the official downloads site already has "Windows x86-64 embeddable zip file" version you may download. This you may install without Admin Rights already.
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>Ref: <a href="https://stackoverflow.com/questions/2678702/install-python-2-6-without-using-installer-on-win32" class="bare">https://stackoverflow.com/questions/2678702/install-python-2-6-without-using-installer-on-win32</a></p>
-</div></p>
+<p>Starting Python 3.5 the official downloads site already has &quot;Windows<br />
+x86-64 embeddable zip file&quot; version you may download. This you may<br />
+install without Admin Rights already.</p>
+<p>Ref:<br />
+<a href="https://stackoverflow.com/questions/2678702/install-python-2-6-without-using-installer-on-win32">https://stackoverflow.com/questions/2678702/install-python-2-6-without-using-installer-on-win32</a></p>
+</p>
   			<a href="blog/2018/06/python-argparse-with-multiple-occurance-of-an-option.html"><h1>Python argparse with multiple occurance of an option</h1></a>
   			<p>06 June 2018, tags: 
 			    <a href="../tags/python-argparse.html">python-argparse</a> 
   			</p>
-  			<p><div class="listingblock">
-<div class="title">test.py</div>
-<div class="content">
-<pre>import argparse
+  			<p><p><strong>test.py.</strong></p>
+<pre><code>import argparse
 parser = argparse.ArgumentParser()
-parser.add_argument("prog_args", nargs='*')
-parser.add_argument("-e", action='append')
+parser.add_argument(&quot;prog_args&quot;, nargs='*')
+parser.add_argument(&quot;-e&quot;, action='append')
 args = parser.parse_args()
 prog_args = args.prog_args
 env = dict([e.split('=') for e in args.e])
 
-print(f"Program args: {prog_args}")
-print(f"Env options: {env}")</pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="title">Example</div>
-<div class="content">
-<pre>$ python3 test.py one two three -ek1=1 -e k2=foo
+print(f&quot;Program args: {prog_args}&quot;)
+print(f&quot;Env options: {env}&quot;)
+</code></pre>
+<p><strong>Example.</strong></p>
+<pre><code>$ python3 test.py one two three -ek1=1 -e k2=foo
 Program args: ['one', 'two', 'three']
-Env options: {'k1': '1', 'k2': 'foo'}</pre>
-</div>
-</div></p>
+Env options: {'k1': '1', 'k2': 'foo'}
+</code></pre>
+</p>
+  			<a href="blog/2018/05/how-to-setup-ssh-folder-permissions.html"><h1>How to setup .ssh folder permissions</h1></a>
+  			<p>24 May 2018, tags: 
+			    <a href="../tags/ssh.html">ssh</a> 
+
+			    <a href="../tags/linux.html">linux</a> 
+  			</p>
+  			<p><h1>How to setup .ssh folder permissions</h1>
+<pre><code>chmod 700 ~/.ssh                # (drwx------)
+chmod 600 ~/.ssh/authorized_key # (-rw-------)
+chmod 600 ~/.ssh/id_rsa         # (-rw-------)
+chmod 644 ~/.ssh/id_rsa.pub     # (-rw-r--r--)
+chmod 755 ~                     # (drwxr-xr-x)
+</code></pre>
+<p>ref:<br />
+<a href="https://superuser.com/questions/215504/permissions-on-private-key-in-ssh-folder">https://superuser.com/questions/215504/permissions-on-private-key-in-ssh-folder</a></p>
+</p>
+  			<a href="blog/2018/05/create-multiple-vms-using-vagrant.html"><h1>Create multiple VMs using Vagrant</h1></a>
+  			<p>19 May 2018, tags: 
+			    <a href="../tags/vagrant.html">vagrant</a> 
+
+			    <a href="../tags/virtualbox.html">virtualbox</a> 
+
+			    <a href="../tags/vm.html">vm</a> 
+
+			    <a href="../tags/ubuntu.html">ubuntu</a> 
+  			</p>
+  			<p><p>Vagrant is a great tool to automate and setup VMs. Here is a config file<br />
+that can setup multiple VMs in your own PC to simulate a<br />
+controller(admin), db, and app servers farm env. I will setup so that<br />
+it’s ready to install Ansible in a the control server, and ensure all<br />
+other servers is accessible by a private virtual IP with default python<br />
+executable.</p>
+<ol>
+<li>
+<p>Install VirtualBox and Vagrant in your development PC. (These two<br />
+requires elevated admin rights!)</p>
+</li>
+<li>
+<p>Now as normal user open a terminal and run the following:</p>
+<pre><code>$ mkdir vm-serversfarm
+$ vagrant init ubuntu/xenial64
+</code></pre>
+</li>
+</ol>
+<p>Now edit <code>Vagrantfile</code> with the following:</p>
+<pre><code># This file is to setup Ubuntu VM servers
+Vagrant.configure(&quot;2&quot;) do |config|
+  vm_box = &quot;ubuntu/xenial64&quot;
+  config.vm.define &quot;admin&quot; do |admin|
+    admin.vm.box = vm_box
+    admin.vm.hostname = 'ubuntu-xenial-admin'
+    admin.vm.network &quot;private_network&quot;, ip: &quot;192.168.56.200&quot;
+    admin.vm.provision &quot;shell&quot;, privileged: false,
+      inline: &lt;&lt;-SCRIPT_DOC
+        ssh-keygen -f ~vagrant/.ssh/id_rsa -t rsa -N ''
+        cp -v ~vagrant/.ssh/id_rsa.pub /vagrant/admin_id_rsa.pub
+      SCRIPT_DOC
+    admin.vm.provision &quot;shell&quot;,
+      inline: &lt;&lt;-SCRIPT_DOC
+        apt-get update
+        apt-get install -y ansible
+      SCRIPT_DOC
+  end
+
+  config.vm.define &quot;db1&quot; do |db1|
+    db1.vm.box = vm_box
+    db1.vm.hostname = 'ubuntu-xenial-db1'
+    db1.vm.network &quot;private_network&quot;, ip: &quot;192.168.56.211&quot;
+    db1.vm.provision &quot;shell&quot;, inline: &quot;cat /vagrant/admin_id_rsa.pub &gt;&gt; ~vagrant/.ssh/authorized_keys&quot;
+    db1.vm.provision &quot;shell&quot;,
+      inline: &lt;&lt;-SCRIPT_DOC
+        #apt-get update
+        apt-get install -y python
+        apt-get install -y postgresql
+      SCRIPT_DOC
+  end
+
+  config.vm.define &quot;app1&quot; do |app1|
+    app1.vm.box = vm_box
+    app1.vm.hostname = 'ubuntu-xenial-app1'
+    app1.vm.network &quot;private_network&quot;, ip: &quot;192.168.56.221&quot;
+    app1.vm.provision &quot;shell&quot;, inline: &quot;cat /vagrant/admin_id_rsa.pub &gt;&gt; ~vagrant/.ssh/authorized_keys&quot;
+    app1.vm.provision &quot;shell&quot;,
+      inline: &lt;&lt;-SCRIPT_DOC
+        #apt-get update
+        apt-get install -y python
+      SCRIPT_DOC
+  end
+
+  config.vm.define &quot;app2&quot; do |app2|
+    app2.vm.box = vm_box
+    app2.vm.hostname = 'ubuntu-xenial-app2'
+    app2.vm.network &quot;private_network&quot;, ip: &quot;192.168.56.222&quot;
+    app2.vm.provision &quot;shell&quot;, inline: &quot;cat /vagrant/admin_id_rsa.pub &gt;&gt; ~vagrant/.ssh/authorized_keys&quot;
+    app2.vm.provision &quot;shell&quot;,
+      inline: &lt;&lt;-SCRIPT_DOC
+        #apt-get update
+        apt-get install -y python
+      SCRIPT_DOC
+  end
+end
+</code></pre>
+<p>Now you can bring them up by running just this command:</p>
+<pre><code>$ vagrant up
+</code></pre>
+<p>When all is done, you may ssh into any box by their name like this</p>
+<pre><code>$ vagrant ssh admin
+$ # Or any of other boxes: db1, app1, app2
+</code></pre>
+<h1>Using CentOS VMs</h1>
+<pre><code># This file is to setup CentOS VM servers
+Vagrant.configure(&quot;2&quot;) do |config|
+  vm_box = &quot;generic/centos7&quot;
+
+  # Server app1 is the admin server. We will also host the DB server here.
+  config.vm.define &quot;app1&quot; do |app1|
+    app1.vm.box = vm_box
+    app1.vm.hostname = 'app1'
+    app1.vm.network &quot;private_network&quot;, ip: &quot;192.168.56.201&quot;
+    app1.vm.synced_folder &quot;.&quot;, &quot;/vagrant_data&quot;
+    app1.vm.provision &quot;shell&quot;, inline: &lt;&lt;-SCRIPT_DOC
+      yum install -y python-virtualenv python36 ansible postgresql
+    SCRIPT_DOC
+    app1.vm.provision &quot;shell&quot;, privileged: false, inline: &lt;&lt;-SCRIPT_DOC
+      ssh-keygen -f ~vagrant/.ssh/id_rsa -t rsa -N ''
+      cp -v ~vagrant/.ssh/id_rsa.pub /vagrant_data/app1_id_rsa.pub
+    SCRIPT_DOC
+  end
+
+  # Server app2 is a application workhorse server
+  config.vm.define &quot;app2&quot; do |app2|
+    app2.vm.box = vm_box
+    app2.vm.hostname = 'app2'
+    app2.vm.network &quot;private_network&quot;, ip: &quot;192.168.56.202&quot;
+    app2.vm.synced_folder &quot;.&quot;, &quot;/vagrant_data&quot;
+    app2.vm.provision &quot;shell&quot;, inline: &lt;&lt;-SCRIPT_DOC
+      yum install -y python36
+    SCRIPT_DOC
+    app2.vm.provision &quot;shell&quot;, privileged: false, inline: &lt;&lt;-SCRIPT_DOC
+      cat /vagrant_data/app1_id_rsa.pub &gt;&gt; ~vagrant/.ssh/authorized_keys
+      chmod 600 ~vagrant/.ssh/authorized_keys
+      chmod 700 ~vagrant/.ssh
+    SCRIPT_DOC
+  end
+
+  # Server app3 is a application workhorse server
+  config.vm.define &quot;app3&quot; do |app3|
+    app3.vm.box = vm_box
+    app3.vm.hostname = 'app3'
+    app3.vm.network &quot;private_network&quot;, ip: &quot;192.168.56.203&quot;
+    app3.vm.synced_folder &quot;.&quot;, &quot;/vagrant_data&quot;
+    app3.vm.provision &quot;shell&quot;, inline: &lt;&lt;-SCRIPT_DOC
+      yum install -y python36
+    SCRIPT_DOC
+    app3.vm.provision &quot;shell&quot;, privileged: false, inline: &lt;&lt;-SCRIPT_DOC
+      cat /vagrant_data/app1_id_rsa.pub &gt;&gt; ~vagrant/.ssh/authorized_keys
+      chmod 600 ~vagrant/.ssh/authorized_keys
+      chmod 700 ~vagrant/.ssh
+    SCRIPT_DOC
+  end
+end
+</code></pre>
+</p>
 
 	<hr />
 
 	<ul class="pager">
 		<li class="previous"><a href="https://zemian.github.io/2">Previous</a></li>
-		<li>Page: 3/29</li>
+		<li>Page: 3/28</li>
 		<li class="next"><a href="https://zemian.github.io/4">Next</a></li>
 	</ul>
 

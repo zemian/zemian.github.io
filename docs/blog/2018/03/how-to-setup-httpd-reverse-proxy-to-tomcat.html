@@ -67,20 +67,15 @@
 	    <a href="../../../tags/tomcat.html">tomcat</a> 
 	</p>
 
-	<p><div class="paragraph">
-<p>Here is an example on how to configure HTTPD server with reverse proxy into Tomcat, and adding the authenticated user as header and passing to Tocmat server.</p>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>Example of <code>httpd.conf</code> file</p>
-</li>
+	<p><p>Here is an example on how to configure HTTPD server with reverse proxy<br />
+into Tomcat, and adding the authenticated user as header and passing to<br />
+Tocmat server.</p>
+<ol>
+<li>Example of <code>httpd.conf</code> file</li>
 </ol>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre># Apache httpd v2.4 minimal configuration
-ServerRoot "/etc/httpd"
+<!-- -->
+<pre><code># Apache httpd v2.4 minimal configuration
+ServerRoot &quot;/etc/httpd&quot;
 Listen 80
 
 LoadModule mpm_prefork_module modules/mod_mpm_prefork.so
@@ -102,15 +97,15 @@ LoadModule ext_filter_module modules/mod_ext_filter.so
 
 DirectoryIndex index.html
 ErrorLog /var/log/httpd/error.log
-LogFormat "%h %l %u %t \"%r\" %&gt;s %b" common
+LogFormat &quot;%h %l %u %t \&quot;%r\&quot; %&gt;s %b&quot; common
 CustomLog /var/log/httpd/access.log common
 &lt;Directory /&gt;
   AllowOverride None
   Require all denied
 &lt;/Directory&gt;
 
-DocumentRoot "/srv/www/htdocs"
-&lt;Directory "/srv/www/htdocs"&gt;
+DocumentRoot &quot;/srv/www/htdocs&quot;
+&lt;Directory &quot;/srv/www/htdocs&quot;&gt;
   Require all granted
 &lt;/Directory&gt;
 
@@ -128,54 +123,54 @@ LoadModule authn_file_module modules/mod_authn_file.so
 LoadModule session_module modules/mod_session.so
 LoadModule session_cookie_module modules/mod_session_cookie.so
 
-ProxyPass "/jspwebapp" "http://localhost:8080/jspwebapp"
-ProxyPassReverse "/jspwebapp" "http://localhost/jspwebapp"
-ProxyPass "/jspwebapp2" "http://localhost:8080/jspwebapp2"
-ProxyPassReverse "/jspwebapp2" "http://localhost/jspwebapp2"
+ProxyPass &quot;/jspwebapp&quot; &quot;http://localhost:8080/jspwebapp&quot;
+ProxyPassReverse &quot;/jspwebapp&quot; &quot;http://localhost/jspwebapp&quot;
+ProxyPass &quot;/jspwebapp2&quot; &quot;http://localhost:8080/jspwebapp2&quot;
+ProxyPassReverse &quot;/jspwebapp2&quot; &quot;http://localhost/jspwebapp2&quot;
 
 # HTTPD Form Login/logout process
-&lt;LocationMatch "/(jspwebapp|jspwebapp2)"&gt;
-	Require valid-user
-	AuthName "SecuredArea"
-	AuthFormProvider file
-	AuthUserFile "/etc/httpd/passwd/passwords"
-	AuthType form
-	AuthFormLoginRequiredLocation "/login.html"
+&lt;LocationMatch &quot;/(jspwebapp|jspwebapp2)&quot;&gt;
+        Require valid-user
+        AuthName &quot;SecuredArea&quot;
+        AuthFormProvider file
+        AuthUserFile &quot;/etc/httpd/passwd/passwords&quot;
+        AuthType form
+        AuthFormLoginRequiredLocation &quot;/login.html&quot;
 
-	Session On
-	SessionCookieName session path=/
-	SessionMaxAge 1800
-	SessionEnv On
-	SessionHeader X-Replace-Session
+        Session On
+        SessionCookieName session path=/
+        SessionMaxAge 1800
+        SessionEnv On
+        SessionHeader X-Replace-Session
 
-	RewriteEngine On
-	RewriteRule .* - [env=X_REMOTE_USER:%{LA-U:REMOTE_USER}]
-	RequestHeader set appuser "%{X_REMOTE_USER}e"
+        RewriteEngine On
+        RewriteRule .* - [env=X_REMOTE_USER:%{LA-U:REMOTE_USER}]
+        RequestHeader set appuser &quot;%{X_REMOTE_USER}e&quot;
 &lt;/LocationMatch&gt;
-&lt;Location "/login"&gt;
-	SetHandler form-login-handler
-	AuthName "SecuredArea"
-	AuthFormProvider file
-	AuthUserFile "/etc/httpd/passwd/passwords"
-	AuthType form
-	AuthFormLoginRequiredLocation "/login.html"
-	AuthFormLoginSuccessLocation "/secured/index.html"
+&lt;Location &quot;/login&quot;&gt;
+        SetHandler form-login-handler
+        AuthName &quot;SecuredArea&quot;
+        AuthFormProvider file
+        AuthUserFile &quot;/etc/httpd/passwd/passwords&quot;
+        AuthType form
+        AuthFormLoginRequiredLocation &quot;/login.html&quot;
+        AuthFormLoginSuccessLocation &quot;/secured/index.html&quot;
 
-	Session On
-	SessionCookieName session path=/
-	SessionMaxAge 1800
+        Session On
+        SessionCookieName session path=/
+        SessionMaxAge 1800
 &lt;/Location&gt;
-&lt;Location "/logout"&gt;
-	SetHandler form-logout-handler
-	AuthName "SecuredArea"
-	AuthFormLogoutLocation "http://localhost/logout.html"
+&lt;Location &quot;/logout&quot;&gt;
+        SetHandler form-logout-handler
+        AuthName &quot;SecuredArea&quot;
+        AuthFormLogoutLocation &quot;http://localhost/logout.html&quot;
 
-	Session On
-	SessionCookieName session path=/
-	SessionMaxAge 1
-&lt;/Location&gt;</pre>
-</div>
-</div></p>
+        Session On
+        SessionCookieName session path=/
+        SessionMaxAge 1
+&lt;/Location&gt;
+</code></pre>
+</p>
 
 	<hr />
 

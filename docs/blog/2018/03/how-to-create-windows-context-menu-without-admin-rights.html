@@ -61,20 +61,18 @@
 	    <a href="../../../tags/windows.html">windows</a> 
 	</p>
 
-	<p><div class="listingblock">
-<div class="content">
-<pre>@REM Base on tips here:
+	<p><pre><code>@REM Base on tips here:
 @REM https://stackoverflow.com/questions/48138681/how-to-add-sublime-text-to-contextual-menu-without-admin-privileges-on-windows
 
-@reg add "HKEY_CURRENT_USER\Software\Classes\*\shell\Open with Sublime Text 3"         /t REG_SZ /v "" /d "Open with Sublime Text 3"   /f
-@reg add "HKEY_CURRENT_USER\Software\Classes\*\shell\Open with Sublime Text 3"         /t REG_EXPAND_SZ /v "Icon" /d "%st3Path%,0" /f
-@reg add "HKEY_CURRENT_USER\Software\Classes\*\shell\Open with Sublime Text 3\command" /t REG_SZ /v "" /d "C:\Users\zemian\apps\Sublime-Text-Build-3143-x64\sublime_text.exe \"%%1\"" /f
+@reg add &quot;HKEY_CURRENT_USER\Software\Classes\*\shell\Open with Sublime Text 3&quot;         /t REG_SZ /v &quot;&quot; /d &quot;Open with Sublime Text 3&quot;   /f
+@reg add &quot;HKEY_CURRENT_USER\Software\Classes\*\shell\Open with Sublime Text 3&quot;         /t REG_EXPAND_SZ /v &quot;Icon&quot; /d &quot;%st3Path%,0&quot; /f
+@reg add &quot;HKEY_CURRENT_USER\Software\Classes\*\shell\Open with Sublime Text 3\command&quot; /t REG_SZ /v &quot;&quot; /d &quot;C:\Users\zemian\apps\Sublime-Text-Build-3143-x64\sublime_text.exe \&quot;%%1\&quot;&quot; /f
 
 @REM If you want to remove above
-@REM @reg delete  "HKEY_CURRENT_USER\Software\Classes\*\shell\Open with Sublime Text 3\command" /f &gt;nul 2&gt;&amp;1
-@REM @reg delete  "HKEY_CURRENT_USER\Software\Classes\*\shell\Open with Sublime Text 3" /f &gt;nul 2&gt;&amp;1</pre>
-</div>
-</div></p>
+@REM @reg delete  &quot;HKEY_CURRENT_USER\Software\Classes\*\shell\Open with Sublime Text 3\command&quot; /f &gt;nul 2&gt;&amp;1
+@REM @reg delete  &quot;HKEY_CURRENT_USER\Software\Classes\*\shell\Open with Sublime Text 3&quot; /f &gt;nul 2&gt;&amp;1
+</code></pre>
+</p>
 
 	<hr />
 

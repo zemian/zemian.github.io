@@ -53,168 +53,6 @@
       </div>
     </div>
     <div class="container">
-  			<a href="blog/2013/05/how-to-bring-pseudo-code-to-life.html"><h1>How to bring pseudo code to life</h1></a>
-  			<p>01 May 2013  			</p>
-  			<p><p>When designing a piece of software, I like to start with some pseudo code first, then work my way out. I tend to try mapping out the normal workflow (one that runs without any corner cases) with high level of actions as series of steps. Then the detailed implementation of the code can be filled in at later time.</p>
-<p>Now with Java, you can easily do this with pseudo code, bring it to life, and still make it very maintainable. Try this out.</p>
-<pre><code>package deng.javademo;
-
-/**
- * @author Zemian Deng
- */
-public class PseudoCodeToLife {
-    public static void main(String[] args) {
-        CreditCardProcessor creditCardProcessor = new CreditCardProcessor()
-                .step(webServiceRequest())
-                .step(validateCardNumber())
-                .step(validateSecurityCode())
-                .step(checkAvailableCredit())
-                .step(chargeCard())
-                .step(webServiceResponse());
-
-        creditCardProcessor.run();
-    }
-}
-</code></pre>
-<p>Now that's as high level as you can get, but it still let me fill in the implementation without losing the overall requirement flow. To implement such workflow, we need a contract that allow processor to move data from one step to another, and yet it needs to perform some action along the way. How about an interface like this.</p>
-<pre><code>package deng.javademo;
-
-/**
- * @author Zemian Deng
- */
-public interface StepAction {
-    public void onAction(Exchange exchange);
-}
-</code></pre>
-<p>Next is how to wire steps together. For now we can just do it inside <code>CreditCardProcessor</code>, but you can easily abstract that into a re-usable base class.</p>
-<pre><code>package deng.javademo;
-
-import java.util.ArrayList;
-import java.util.List;
-
-/**
- * @author Zemian Deng
- */
-public class CreditCardProcessor {
-    List&lt;StepAction&gt; steps = new ArrayList&lt;StepAction&gt;();
-
-    public CreditCardProcessor step(StepAction stepAction) {
-        steps.add(stepAction);
-        return this;
-    }
-
-    public void run() {
-        Exchange exchange = new Exchange();
-        for (StepAction step : steps) {
-            step.onAction(exchange);
-        }
-    }
-}
-</code></pre>
-<p>Pretty straight forward. Here I used an <code>Exchange</code> as message, passing between each steps to allow the workflow to exchange data. You can wrap just about any real payload and/or add a Map of header properties.</p>
-<p>Now what we are missing is just filling in each step of actions. Since we have an explicit step name when defining the workflow, we can just generate these method and fill in the actions per step required. I will add them all inside the <code>PseudoCodeToLife</code> and reprint it here.</p>
-<pre><code>package deng.javademo;
-
-/**
- * @author Zemian Deng
- */
-public class PseudoCodeToLife {
-    public static void main(String[] args) {
-        CreditCardProcessor creditCardProcessor = new CreditCardProcessor()
-                .step(webServiceRequest())
-                .step(validateCardNumber())
-                .step(validateSecurityCode())
-                .step(checkAvailableCredit())
-                .step(chargeCard())
-                .step(webServiceResponse());
-
-        creditCardProcessor.run();
-    }
-
-    private static StepAction webServiceRequest() {
-        return new StepAction() {
-            @Override
-            public void onAction(Exchange exchange) {
-                System.out.println(&quot;webServiceRequest step.&quot;);
-            }
-        };
-    }
-
-    private static StepAction validateCardNumber() {
-        return new StepAction() {
-            @Override
-            public void onAction(Exchange exchange) {
-                System.out.println(&quot;validateCardNumber step.&quot;);
-            }
-        };
-    }
-
-    private static StepAction validateSecurityCode() {
-        return new StepAction() {
-            @Override
-            public void onAction(Exchange exchange) {
-                System.out.println(&quot;validateSecurityCode step.&quot;);
-            }
-        };
-    }
-
-    private static StepAction checkAvailableCredit() {
-        return new StepAction() {
-            @Override
-            public void onAction(Exchange exchange) {
-                System.out.println(&quot;checkAvailableCredit step.&quot;);
-            }
-        };
-    }
-
-    private static StepAction chargeCard() {
-        return new StepAction() {
-            @Override
-            public void onAction(Exchange exchange) {
-                System.out.println(&quot;chargeCard step.&quot;);
-            }
-        };
-    }
-
-    private static StepAction webServiceResponse() {
-        return new StepAction() {
-            @Override
-            public void onAction(Exchange exchange) {
-                System.out.println(&quot;webServiceResponse step.&quot;);
-            }
-        };
-    }
-}
-</code></pre>
-<p>That's all to this. What do you think? I think it's a simple way to tackle business problems. Simple software make less bugs and easier to maintain.</p>
-</p>
-  			<a href="blog/2013/03/first-snapshot-of-myschedule-3-0-0-is-available.html"><h1>First snapshot of myschedule-3.0.0 is available</h1></a>
-  			<p>27 March 2013, tags: 
-			    <a href="../tags/myschedule.html">myschedule</a> 
-  			</p>
-  			<p><p>First snapshot of <a href="https://code.google.com/p/myschedule/downloads/list">myschedule-3.0.0</a> with brand new UI is ready to be try out!</p>
-<p>It's been a long time since I made a release for MySchedule project, and I have been busy!</p>
-<p>Well, for starter, I have been exploring the Vaaddin library for a new UI design for the project, and it's working really nice! I love to have full Java code for UI layout and widget controls and yet it runs on browser. It's a perfect fit for MySchedule. As you will see from the snapshot, the UI is still pretty bare, but for me, as backend developer, and be able to have such clean UI code is super exciting. (on other hand, working with JavaScript, even with such nice library as jQuery can still feel like a hack at times. ^_^) You should checkout the latest MySchedule source to take a look yourself. All that GUI is less than handful of UI classes. Vaaddin is pretty sweet!</p>
-<p>As MySchedule jumped to 3.x version, I've taken the opportunity to clean up few areas in the &quot;quartz-extra&quot; module as well. Also to support Vaadin, the web layer needed a rework. The new code is easy to follow and ready to support more UI features in the future.</p>
-<p>I also improved on the project packaging. Now getting started with is even more easier. Get the single zip file, and try any of these simple steps:</p>
-<pre><code>## Web application usage (option 1: power up a self-contained servlet server!)
- 
- bash&gt; cd myschedule-3.*
- bash&gt; bin/myschedule-ui.sh --httpPort=8081
-
-Now open a browser and visit http://localhost:8081
-
-## Web application usage (option 2: use your own servelt server)
-
-Simply copy the myschedule-3.*/war/myschedule.war file into your Servlet container such as Tomcat.
-
-## Command line usage (option 3: quickly test your quartz config)
-
- bash&gt; cd myschedule-3.*
- bash&gt; bin/myschedule.sh bin/quartz.properties
-</code></pre>
-<p>Note that not all MySchedule-2.x features are in the 3.0 snapshot yet. For now, you would need to use the ScripConsole window to enter jobs into the scheduler. There are now new templates UI available for you to choose and start working quickly. I am still working on allowing users to save their own templates and edit them. This should give users more rich experience in using the UI manager.</p>
-</p>
   			<a href="blog/2013/02/hg-shortcuts-for-bash-profile.html"><h1>Hg shortcuts for bash .profile</h1></a>
   			<p>28 February 2013, tags: 
 			    <a href="../tags/bash.html">bash</a> 
@@ -510,12 +348,260 @@ public class FooProcessor {
 </code></pre>
 <p>That's a more proper way to write the generic parameter anyway. But despite a better solution, the puzzle is that the original code compiled under the compiler, but only with the <code>&lt;T&gt;</code> presented, and yet it's not used. Wouldn't you consider this as a Java compiler bug?</p>
 </p>
+  			<a href="blog/2012/12/a-simple-groovy-issue-tracker-using-file-system.html"><h1>A simple Groovy issue tracker using file system</h1></a>
+  			<p>18 December 2012, tags: 
+			    <a href="../tags/groovy.html">groovy</a> 
+  			</p>
+  			<p><p>It will be a chaos not to track bugs and feature requests when you developing software. Having a simple issue tracker would make managing the project much more successful. Now I like simple stuff, and I think for small project, having this tracker right inside the source control (especially with DSVC like Mercurial/Git etc) repository is not only doable, but very convenient as well. You don't have to go crazy with all the fancy features, but just enough to track issues are fine. I would like to propose this layout for you.</p>
+<p>Let's say you have a project that looks like this</p>
+<pre><code>project
+ +- src/main/java/Hello.java
+ +- issues/issue-001.md
+ +- pom.xml
+</code></pre>
+<p>All I need is a simple directory <code>issues</code> to get going. Now I have a place to track my issue! First issue <code>issue-000.md</code> should be what your project is about. For example:</p>
+<pre><code>/id=issue-001
+/createdon=2012-12-16 18:07:08
+/type=bug
+/status=new
+/resolution=
+/from=Zemian
+/to=
+/found=
+/fixed=
+/subject=A simple Java Hello program
+
+# Updated on 2012-12-16 18:07:08
+
+We want to create a Maven based Hello world program. It should print &quot;Hello World.&quot;
+</code></pre>
+<p>I choose <code>.md</code> as file extension for intending to write comments in Markdown format. Since it's a text file, you do what you want. To be more structured, I have added some headers metadata for issue tracking. Let's define some here. I would propose to use these and formatting:</p>
+<pre><code> /id=issue-&lt;NUM&gt;
+ /createdon=&lt;TIMESTAMP&gt;
+ /type=feature|bug|question
+ /status=new|reviewing|working|onhold|testing|resolved
+ /resolution=fixed|rejected|duplicated
+ /from=&lt;REPORTER_FROM_NAME&gt;
+ /to=&lt;ASSIGNEE_TO_NAME&gt;
+ /found=&lt;VERSION_FOUND&gt;
+ /fixed=&lt;VERSION_FIXED&gt;
+</code></pre>
+<p>That should cover most of the bug and feature development issues. It's not cool to write software without a history of changes, including these issues created. So let's use a source control. I highly recommend you to use Mercurial <code>hg</code>. You can create and initialize a new repository like this.</p>
+<pre><code>bash&gt; cd project
+bash&gt; hg init
+bash&gt; hg add
+bash&gt; hg commit -m &quot;My hello world project&quot;
+</code></pre>
+<p>Now your project is created and we have a place to track your issues. Now it's simple text file, so use your favorite text editor and edit away. However, creating new issue with those header tags is boring. It will be nice to have a script that manage it a little. I have a Groovy script <code>issue.groovy</code> (see at the end of this article) that let you run reports and create new issues. You can add this script into your <code>project/issues</code> directory and you can instantly creating new issue and querying reports! Here is an example output on my PC:</p>
+<pre><code>bash&gt; cd project
+bash&gt; groovy scripts/issue.groovy
+
+Searching for issues with /status!=resolved
+Issue: /id=issue-001 /status=new /subject=A simple Java Hello program
+1 issues found.
+
+bash&gt; groovy scripts/issue.groovy --new /type=feature /subject='Add a unit test.'
+
+project/issues/issue-002.md created.
+/id=issue-002
+/createdon=2012-12-16 19:10:00
+/type=feature
+/status=new
+/resolution=
+/from=Zemian
+/to=
+/found=
+/fixed=
+/subject=Add a unit test.
+
+bash&gt; groovy scripts/issue.groovy
+
+Searching for issues with /status!=resolved
+Issue: /id=issue-000 /status=new /subject=A simple Java Hello program
+Issue: /id=issue-002 /status=new /subject=Add a unit test.
+2 issues found.
+
+bash&gt; groovy scripts/issue.groovy --details /id=002
+
+Searching for issues with /id=002
+Issue: /id=issue-002
+  /createdon=2012-12-16 19:10:00 /found= /from=Zemian /resolution= /status=new /type=feature
+  /subject=Add a unit test.
+1 issues found.
+
+bash&gt; groovy scripts/issue.groovy --update /id=001 /status=resolved /resolution=fixed 'I fixed this thang.'
+Updating issue /id=issue-001
+Updating /status=resolved
+Updating /resolution=fixed
+
+Update issue-001 completed.
+</code></pre>
+<p>The script give you some quick and consistent way to create/update/search issues. But they are just plain text files! You can just as well fire up your favorite text editor and change any any thing you want. Save and even commit it into your source repository. All will not lost.</p>
+<p>I hope this issue tracking script can get your next project started quickly. Let me know what you do you think!</p>
+<p>Enjoy!</p>
+<p>Zemian</p>
+<p>And here is my <code>issue.groovy</code> script.</p>
+<hr />
+<p>Oh, and of course I eat my own *dog food. Here are few issues that I started to track the <code>issue.grooy</code> itself.</p>
+<ul>
+<li>
+<p>v1.0.0 (2012/12/19)</p>
+</li>
+<li>
+<p><a href="https://bitbucket.org/saltnlight5/sandbox/src/tip/scripts/issue-001.md">issue-001</a></p>
+</li>
+<li>
+<p>v1.0.1 (2012/12/20)</p>
+</li>
+<li>
+<p><a href="https://bitbucket.org/saltnlight5/sandbox/src/tip/scripts/issue-002.md">issue-002</a></p>
+</li>
+<li><a href="https://bitbucket.org/saltnlight5/sandbox/src/tip/scripts/issue-003.md">issue-003</a></li>
+</ul>
+</p>
+  			<a href="blog/2012/12/getting-started-with-quartz-scheduler-on-mysql-database.html"><h1>Getting started with Quartz Scheduler on MySQL database</h1></a>
+  			<p>14 December 2012, tags: 
+			    <a href="../tags/quartz.html">quartz</a> 
+  			</p>
+  			<p><p>Here are some simple steps to get you fully started with Quartz Scheduler on MySQL database using Groovy. The script below will allow you to quickly experiment different Quartz configuration settings using an external file.</p>
+<p>First step is to setup the database with tables. Assuming you already have installed MySQL and have access to create database and tables.</p>
+<pre><code>bash&gt; mysql -u root -p
+
+sql&gt; create database quartz2;
+sql&gt; create user 'quartz2'@'localhost' identified by 'quartz2123';
+sql&gt; grant all privileges on quartz2.* to 'quartz2'@'localhost';
+sql&gt; exit;
+
+bash&gt; mysql -u root -p quartz2 &lt; /path/to/quartz-dist/docs/dbTables/tables_mysql.sql
+</code></pre>
+<p>The <code>tables_mysql.sql</code> can be found from Quartz distribution download, or directly from their source <a href="http://svn.terracotta.org/svn/quartz/tags/quartz-2.1.6/docs/dbTables">here</a>.</p>
+<p>Once the database is up, you need to write some code to start up the Quartz Scheduler. Here is a simply Groovy script <code>quartzServer.groovy</code> that will run as a tiny scheduler server.</p>
+<pre><code>// Run Quartz Scheduler as a server
+// Author: Author: Zemian Deng, Date: 2012-12-15_16:46:09
+@GrabConfig(systemClassLoader=true)
+@Grab('mysql:mysql-connector-java:5.1.22')
+@Grab('org.slf4j:slf4j-simple:1.7.1')
+@Grab('org.quartz-scheduler:quartz:2.1.6')
+import org.quartz.*
+import org.quartz.impl.*
+import org.quartz.jobs.*
+
+config = args.length &gt; 0 ? args[0] : &quot;quartz.properties&quot;
+scheduler = new StdSchedulerFactory(config).getScheduler()
+scheduler.start()
+
+// Register shutdown
+addShutdownHook {
+  scheduler.shutdown()
+}
+
+// Quartz has its own thread, so now put this script thread to sleep until
+// user hit CTRL+C
+while (!scheduler.isShutdown()) {
+ Thread.sleep(Long.MAX_VALUE)
+}
+</code></pre>
+<p>And now you just need a config file <code>quartz-mysql.properties</code> that looks like this:</p>
+<pre><code># Main Quartz configuration
+org.quartz.scheduler.skipUpdateCheck = true
+org.quartz.scheduler.instanceName = DatabaseScheduler
+org.quartz.scheduler.instanceId = NON_CLUSTERED
+org.quartz.scheduler.jobFactory.class = org.quartz.simpl.SimpleJobFactory
+org.quartz.jobStore.class = org.quartz.impl.jdbcjobstore.JobStoreTX
+org.quartz.jobStore.driverDelegateClass = org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+org.quartz.jobStore.dataSource = quartzDataSource
+org.quartz.jobStore.tablePrefix = QRTZ_
+org.quartz.threadPool.class = org.quartz.simpl.SimpleThreadPool
+org.quartz.threadPool.threadCount = 5
+
+# JobStore: JDBC jobStoreTX
+org.quartz.dataSource.quartzDataSource.driver = com.mysql.jdbc.Driver
+org.quartz.dataSource.quartzDataSource.URL = jdbc:mysql://localhost:3306/quartz2
+org.quartz.dataSource.quartzDataSource.user = quartz2
+org.quartz.dataSource.quartzDataSource.password = quartz2123
+org.quartz.dataSource.quartzDataSource.maxConnections = 8
+</code></pre>
+<p>You can run the Groovy script as usual</p>
+<pre><code>bash&gt; groovy quartzServer.groovy quartz-mysql.properties
+Dec 15, 2012 6:20:26 PM com.mchange.v2.log.MLog 
+INFO: MLog clients using java 1.4+ standard logging.
+Dec 15, 2012 6:20:27 PM com.mchange.v2.c3p0.C3P0Registry banner
+INFO: Initializing c3p0-0.9.1.1 [built 15-March-2007 01:32:31; debug? true; trace:10]
+[main] INFO org.quartz.impl.StdSchedulerFactory - Using default implementation for ThreadExecutor
+[main] INFO org.quartz.core.SchedulerSignalerImpl - Initialized Scheduler Signaller of type: class org.quartz.core.SchedulerSignalerImpl
+[main] INFO org.quartz.core.QuartzScheduler - Quartz Scheduler v.2.1.6 created.
+[main] INFO org.quartz.core.QuartzScheduler - JobFactory set to: org.quartz.simpl.SimpleJobFactory@1a40247
+[main] INFO org.quartz.impl.jdbcjobstore.JobStoreTX - Using thread monitor-based data access locking (synchronization).
+[main] INFO org.quartz.impl.jdbcjobstore.JobStoreTX - JobStoreTX initialized.
+[main] INFO org.quartz.core.QuartzScheduler - Scheduler meta-data: Quartz Scheduler (v2.1.6) 'DatabaseScheduler' with instanceId 'NON_CLUSTERED'
+  Scheduler class: 'org.quartz.core.QuartzScheduler' - running locally.
+  NOT STARTED.
+  Currently in standby mode.
+  Number of jobs executed: 0
+  Using thread pool 'org.quartz.simpl.SimpleThreadPool' - with 5 threads.
+  Using job-store 'org.quartz.impl.jdbcjobstore.JobStoreTX' - which supports persistence. and is not clustered.
+
+[main] INFO org.quartz.impl.StdSchedulerFactory - Quartz scheduler 'DatabaseScheduler' initialized from the specified file : 'quartz-mysql.properties' from the class resource path.
+[main] INFO org.quartz.impl.StdSchedulerFactory - Quartz scheduler version: 2.1.6
+Dec 15, 2012 6:20:27 PM com.mchange.v2.c3p0.impl.AbstractPoolBackedDataSource getPoolManager
+INFO: Initializing c3p0 pool... com.mchange.v2.c3p0.ComboPooledDataSource [ acquireIncrement -&gt; 3, acquireRetryAttempts
+-&gt; 30, acquireRetryDelay -&gt; 1000, autoCommitOnClose -&gt; false, automaticTestTable -&gt; null, breakAfterAcquireFailure -&gt; false, checkoutTimeout -&gt; 0, connectionCustomizerClassName -&gt; null, connectionTesterClassName -&gt; com.mchange.v2.c3p0.impl.DefaultConnectionTester, dataSourceName -&gt; 1hge16k8r18mveoq1iqtotg|1486306, debugUnreturnedConnectionStackTraces -&gt; fals
+e, description -&gt; null, driverClass -&gt; com.mysql.jdbc.Driver, factoryClassLocation -&gt; null, forceIgnoreUnresolvedTransactions -&gt; false, identityToken -&gt; 1hge16k8r18mveoq1iqtotg|1486306, idleConnectionTestPeriod -&gt; 0, initialPoolSize -&gt; 3, jdbcUrl -&gt; jdbc:mysql://localhost:3306/quartz2, lastAcquisitionFailureDefaultUser -&gt; null, maxAdministrativeTaskTime -&gt; 0
+, maxConnectionAge -&gt; 0, maxIdleTime -&gt; 0, maxIdleTimeExcessConnections -&gt; 0, maxPoolSize -&gt; 8, maxStatements -&gt; 0, maxStatementsPerConnection -&gt; 120, minPoolSize -&gt; 1, numHelperThreads -&gt; 3, numThreadsAwaitingCheckoutDefaultUser -&gt; 0, pref
+erredTestQuery -&gt; null, properties -&gt; {user=******, password=******}, propertyCycle -&gt; 0, testConnectionOnCheckin -&gt; false, testConnectionOnCheckout -&gt; false, unreturnedConnectionTimeout -&gt; 0, usesTraditionalReflectiveProxies -&gt; false ]
+[main] INFO org.quartz.impl.jdbcjobstore.JobStoreTX - Freed 0 triggers from 'acquired' / 'blocked' state.[main] INFO org.quartz.impl.jdbcjobstore.JobStoreTX - Recovering 0 jobs that were in-progress at the time of the last shut-down.
+[main] INFO org.quartz.impl.jdbcjobstore.JobStoreTX - Recovery complete.
+[main] INFO org.quartz.impl.jdbcjobstore.JobStoreTX - Removed 0 'complete' triggers.
+[main] INFO org.quartz.impl.jdbcjobstore.JobStoreTX - Removed 0 stale fired job entries.
+[main] INFO org.quartz.core.QuartzScheduler - Scheduler DatabaseScheduler_$_NON_CLUSTERED started.
+
+
+... CTRL+C
+[Thread-6] INFO org.quartz.core.QuartzScheduler - Scheduler DatabaseScheduler_$_NON_CLUSTERED shutting down.
+[Thread-6] INFO org.quartz.core.QuartzScheduler - Scheduler DatabaseScheduler_$_NON_CLUSTERED paused.
+[Thread-6] INFO org.quartz.core.QuartzScheduler - Scheduler DatabaseScheduler_$_NON_CLUSTERED shutdown complete.
+</code></pre>
+<p>That's a full run of above setup. Go ahead and play with different config. Read <a href="http://quartz-scheduler.org/documentation/quartz-2.1.x/configuration/">http://quartz-scheduler.org/documentation/quartz-2.1.x/configuration</a> for more details.</p>
+<hr />
+<p>Here I will post couple more easy config that will get you started in a commonly used config set.</p>
+<p>A MySQL cluster enabled configuration. With this, you can start one or more shell terminal and run different instance of <code>quartzServer.groovy</code> with the same config. All the quartz scheduler instances should cluster themselve and distribute your jobs evenly.</p>
+<pre><code># Main Quartz configuration
+org.quartz.scheduler.skipUpdateCheck = true
+org.quartz.scheduler.instanceName = DatabaseClusteredScheduler
+org.quartz.scheduler.instanceId = AUTO
+org.quartz.scheduler.jobFactory.class = org.quartz.simpl.SimpleJobFactory
+org.quartz.jobStore.class = org.quartz.impl.jdbcjobstore.JobStoreTX
+org.quartz.jobStore.driverDelegateClass = org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+org.quartz.jobStore.dataSource = quartzDataSource
+org.quartz.jobStore.tablePrefix = QRTZ_
+org.quartz.jobStore.isClustered = true
+org.quartz.threadPool.class = org.quartz.simpl.SimpleThreadPool
+org.quartz.threadPool.threadCount = 5
+
+# JobStore: JDBC jobStoreTX
+org.quartz.dataSource.quartzDataSource.driver = com.mysql.jdbc.Driver
+org.quartz.dataSource.quartzDataSource.URL = jdbc:mysql://localhost:3306/quartz2
+org.quartz.dataSource.quartzDataSource.user = quartz2
+org.quartz.dataSource.quartzDataSource.password = quartz2123
+org.quartz.dataSource.quartzDataSource.maxConnections = 8
+</code></pre>
+<p>Here is another config set for a simple in-memory scheduler.</p>
+<pre><code># Main Quartz configuration
+org.quartz.scheduler.skipUpdateCheck = true
+org.quartz.scheduler.instanceName = InMemoryScheduler
+org.quartz.scheduler.jobFactory.class = org.quartz.simpl.SimpleJobFactory
+org.quartz.threadPool.class = org.quartz.simpl.SimpleThreadPool
+org.quartz.threadPool.threadCount = 5
+</code></pre>
+<p>Now, if you need more fancy UI management of Quartz, give <a href="http://code.google.com/p/myschedule">MySchedule</a> a try.</p>
+<p>Happy scheduling!</p>
+</p>
 
 	<hr />
 
 	<ul class="pager">
 		<li class="previous"><a href="https://zemian.github.io/20">Previous</a></li>
-		<li>Page: 21/29</li>
+		<li>Page: 21/28</li>
 		<li class="next"><a href="https://zemian.github.io/22">Next</a></li>
 	</ul>
 

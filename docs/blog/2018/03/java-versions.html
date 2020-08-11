@@ -61,24 +61,16 @@
 	    <a href="../../../tags/javap-version.html">javap-version</a> 
 	</p>
 
-	<p><div class="paragraph">
-<p>How to check Java version from compiled classes</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>javap -cp target/classes -verbose com.zemian.hellojava.App | grep 'major version'
-major version: 49</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>You may use this forumla to get the JDK version: <code>&lt;class_file_major_ver&gt; - 44 = JDK version</code>. So this means above class is targeted for JDK 5 (1.5).</p>
-</div>
-<div class="paragraph">
-<p>Here are more examples of different class format versions matching to JDK versions.</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>major version: 45.3 = Java 1.1
+	<p><p>How to check Java version from compiled classes</p>
+<pre><code>javap -cp target/classes -verbose com.zemian.hellojava.App | grep 'major version'
+major version: 49
+</code></pre>
+<p>You may use this forumla to get the JDK version:<br />
+<code>&lt;class_file_major_ver&gt; - 44 = JDK version</code>. So this means above class<br />
+is targeted for JDK 5 (1.5).</p>
+<p>Here are more examples of different class format versions matching to<br />
+JDK versions.</p>
+<pre><code>major version: 45.3 = Java 1.1
 major version: 46 = Java 1.2
 major version: 47 = Java 1.3
 major version: 48 = Java 1.4
@@ -87,12 +79,10 @@ major version: 50 = Java 1.6
 major version: 51 = Java 1.7
 major version: 52 = Java 1.8
 major version: 53 = Java 9
-major version: 54 = Java 10</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Ref: <a href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html" class="bare">https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html</a></p>
-</div></p>
+major version: 54 = Java 10
+</code></pre>
+<p>Ref: <a href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html">https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html</a></p>
+</p>
 
 	<hr />
 
