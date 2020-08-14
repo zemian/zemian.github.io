@@ -9,10 +9,10 @@ let originPath = 'jbake/content/blog', directories = [];
 			directories.push(tempPath);
 			moveFiles(tempPath);
 		} else {
-			// let newPath = tempPath.split('/');
-			// newPath.splice(newPath.length - 2, 1);
-			// newPath = newPath.join('/');
-			// fs.renameSync(tempPath, newPath);
+			let newPath = tempPath.split('/');
+			newPath.splice(newPath.length - 2, 1);
+			newPath = newPath.join('/');
+			fs.renameSync(tempPath, newPath);
 		}
 	}
 })(originPath);
