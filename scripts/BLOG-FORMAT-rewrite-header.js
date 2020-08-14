@@ -5,7 +5,7 @@ function rewriteHeader(path) {
 	let file = fs.readFileSync(path, {encoding: 'utf8'});
 	let header = file.split('\n').slice(0, 4);
 	header.unshift('---');
-	header.splice(2, 1);
+	header.splice(3, 1);
 	let tags = header[3].slice(5).split(', ');
 	for(let tag of tags) {
 		header.push(`-${tag}`)
@@ -31,5 +31,3 @@ function rewriteHeader(path) {
 		}
 	}	
 })(originPath);
-
-rewriteHeader('jbake/content/blog/2020/2020-03-22-front-end.md');
