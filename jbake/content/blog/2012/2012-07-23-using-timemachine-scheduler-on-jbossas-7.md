@@ -1,9 +1,10 @@
-title=Using TimeMachine Scheduler on JBossAS 7
-date=2012-07-23
-type=post
-tags=jboss, timemachine
-status=published
-~~~~~~
+---
+title: Using TimeMachine Scheduler on JBossAS 7
+date: 2012-07-23
+tags:
+  - jboss
+  - timemachine
+---
 
 I’ve written an article for MasterTheBoss.com on integrating
 [TimeMachine Scheduler on

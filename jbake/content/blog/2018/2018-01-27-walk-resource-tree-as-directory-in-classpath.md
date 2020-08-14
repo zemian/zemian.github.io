@@ -1,9 +1,10 @@
-title=Walk resource tree as directory in classpath
-date=2018-01-27
-type=post
-tags=java, classpath
-status=published
-~~~~~~
+---
+title: Walk resource tree as directory in classpath
+date: 2018-01-27
+tags:
+  - java
+  - classpath
+---
 
 The two most frequent type of classpath URL we get when get it through
 `ClassLoader#getResource(resourceName)` is either `file` or `jar`

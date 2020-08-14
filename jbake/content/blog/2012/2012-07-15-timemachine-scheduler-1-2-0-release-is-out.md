@@ -1,9 +1,9 @@
-title=TimeMachine Scheduler 1.2.0 release is out!
-date=2012-07-15
-type=post
-tags=timemachine
-status=published
-~~~~~~
+---
+title: TimeMachine Scheduler 1.2.0 release is out!
+date: 2012-07-15
+tags:
+  - timemachine
+---
 
 I just released the [timemachine-scheudler-1.2.0](https://bitbucket.org/timemachine/scheduler/downloads), and it now comes with both stand-alone server (zip) and web application (war) distribution packages.
 

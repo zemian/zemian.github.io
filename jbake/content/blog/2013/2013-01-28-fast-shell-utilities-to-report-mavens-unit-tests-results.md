@@ -1,9 +1,9 @@
-title=Fast shell utilities to report Maven's unit tests results
-date=2013-01-28
-type=post
-tags=maven
-status=published
-~~~~~~
+---
+title: Fast shell utilities to report Maven's unit tests results
+date: 2013-01-28
+tags:
+  - maven
+---
 
 I would like to share couple shell utilities that I have collected. These are for fast Maven multi modules reporting from your unit tests results, without having you to run entire Maven site reports, which can take a LONG time to generate if you have a large project! They should work on Linux or Window's Cygwin shell.
 

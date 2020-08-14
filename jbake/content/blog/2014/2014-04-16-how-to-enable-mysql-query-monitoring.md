@@ -1,9 +1,9 @@
-title=How to enable MySQL query monitoring
-date=2014-04-16
-type=post
-tags=mysql
-status=published
-~~~~~~
+---
+title: How to enable MySQL query monitoring
+date: 2014-04-16
+tags:
+  - mysql
+---
 
 Do you need to monitor any SQL statements passing through your MySQL server? You would need to turn on the server logging. Edit your my.cnf file and add these:
 

@@ -1,9 +1,9 @@
-title=Getting started with annotation based Spring MVC web application
-date=2013-10-04
-type=post
-tags=spring
-status=published
-~~~~~~
+---
+title: Getting started with annotation based Spring MVC web application
+date: 2013-10-04
+tags:
+  - spring
+---
 
 Here is a minimal way to get a Spring 3 MVC project started with Maven.
 

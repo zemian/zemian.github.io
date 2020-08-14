@@ -1,9 +1,9 @@
-title=How to create multiple workspaces with NetBeans
-date=2015-04-23
-type=post
-tags=netbeans
-status=published
-~~~~~~
+---
+title: How to create multiple workspaces with NetBeans
+date: 2015-04-23
+tags:
+  - netbeans
+---
 
 #### Examples
 

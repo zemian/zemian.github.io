@@ -1,9 +1,9 @@
-title=EE Serlvet 3: Generating HTML output in Servlet
-date=2015-01-01
-type=post
-tags=servlet
-status=published
-~~~~~~
+---
+title: EE Serlvet 3: Generating HTML output in Servlet
+date: 2015-01-01
+tags:
+  - servlet
+---
 If you just need to handle a handful of requests URI in your EE web module, then it might be easier to generate your own HTML response in your Servlet code instead of using a full blown template library. As part of my examples, I tried out a very simple Java DSL that generate html output when writing your own Serlvet. The code looks like this:
 
 package zemian.servlet3example.web;

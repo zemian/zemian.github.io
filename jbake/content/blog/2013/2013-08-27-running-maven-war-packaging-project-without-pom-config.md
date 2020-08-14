@@ -1,9 +1,9 @@
-title=Running Maven war packaging project without pom config
-date=2013-08-27
-type=post
-tags=maven
-status=published
-~~~~~~
+---
+title: Running Maven war packaging project without pom config
+date: 2013-08-27
+tags:
+  - maven
+---
 
 Use Jetty (latest 9.x requires JDK7)
 

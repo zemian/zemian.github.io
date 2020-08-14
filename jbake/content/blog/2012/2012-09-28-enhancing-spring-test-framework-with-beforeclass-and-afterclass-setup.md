@@ -1,9 +1,10 @@
-title=Enhancing Spring Test Framework with beforeClass and afterClass setup
-date=2012-09-28
-type=post
-tags=java, spring
-status=published
-~~~~~~
+---
+title: Enhancing Spring Test Framework with beforeClass and afterClass setup
+date: 2012-09-28
+tags:
+  - java
+  - spring
+---
 
 # How to allow instance methods to run as JUnit BeforeClass behavior
 

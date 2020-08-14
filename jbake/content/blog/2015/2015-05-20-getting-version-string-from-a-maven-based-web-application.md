@@ -1,9 +1,10 @@
-title=Getting version string from a Maven based web application
-date=2015-05-20
-type=post
-tags=maven, java
-status=published
-~~~~~~
+---
+title: Getting version string from a Maven based web application
+date: 2015-05-20
+tags:
+  - maven
+  - java
+---
 When you package a maven project, it will automatically generate a pom.properties file inside that will contains the version, artifactId and groupId information. These are handy to have and to display for your web application at runtime. One can use a method like following to retrive it.
 
 public class Application {

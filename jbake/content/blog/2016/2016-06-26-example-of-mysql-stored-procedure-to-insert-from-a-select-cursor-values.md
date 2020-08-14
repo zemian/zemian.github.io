@@ -1,9 +1,9 @@
-title=Example of MySQL stored procedure to INSERT from a SELECT cursor values
-date=2016-06-26
-type=post
-tags=mysql
-status=published
-~~~~~~
+---
+title: Example of MySQL stored procedure to INSERT from a SELECT cursor values
+date: 2016-06-26
+tags:
+  - mysql
+---
 DELIMITER //
 DROP PROCEDURE IF EXISTS proc_hotfix1 //
 CREATE PROCEDURE proc_hotfix1()

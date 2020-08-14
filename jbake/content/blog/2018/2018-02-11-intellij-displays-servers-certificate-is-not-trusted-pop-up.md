@@ -1,9 +1,9 @@
-title=IntelliJ displays Server's Certificate is not trusted pop-up
-date=2018-02-11
-type=post
-tags=intellij
-status=published
-~~~~~~
+---
+title: IntelliJ displays Server's Certificate is not trusted pop-up
+date: 2018-02-11
+tags:
+  - intellij
+---
 
 I get this "Server’s Certificate is not trusted" pop-up window once in a
 while when I am in different network. If you know your IDE is already

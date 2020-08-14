@@ -1,9 +1,9 @@
-title=Java versions
-date=2018-03-26
-type=post
-tags=javap-version
-status=published
-~~~~~~
+---
+title: Java versions
+date: 2018-03-26
+tags:
+  - javap-version
+---
 
 How to check Java version from compiled classes
 

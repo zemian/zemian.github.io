@@ -1,9 +1,10 @@
-title=Setup MySQL DataSource on WLS
-date=2015-10-04
-type=post
-tags=weblogic, mysql
-status=published
-~~~~~~
+---
+title: Setup MySQL DataSource on WLS
+date: 2015-10-04
+tags:
+  - weblogic
+  - mysql
+---
 Here is a WLST script to setup MySQL DataSource in WebLogic server after you have created a domain. The script will also assign this DataSource to one or more servers you pass in at the end of arguments.
 
 # Update an existing domain to setup a DataSource and assign it to servers

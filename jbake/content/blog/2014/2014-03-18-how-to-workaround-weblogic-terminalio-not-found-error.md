@@ -1,9 +1,9 @@
-title=How to workaround WebLogic terminalio not found error
-date=2014-03-18
-type=post
-tags=weblogic
-status=published
-~~~~~~
+---
+title: How to workaround WebLogic terminalio not found error
+date: 2014-03-18
+tags:
+  - weblogic
+---
 In some PC environments, you may have encounter error like following when trying to create and start a WebLogic Server domain admin server 
 
 <Mar 10, 2014 9:40:58 AM EDT> <Error> <Security> <BEA-090783> <Server is Running in Development Mode and Native Library(terminalio) to read the password securely from commandline is not found.><Mar 10, 2014 9:40:58 AM EDT> <Notice> <WebLogicServer> <BEA-000388> <JVM called WLS shutdown hook. The server will force shutdown now>

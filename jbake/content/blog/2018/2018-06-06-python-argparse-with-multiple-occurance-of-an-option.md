@@ -1,9 +1,9 @@
-title=Python argparse with multiple occurance of an option
-date=2018-06-06
-type=post
-tags=python-argparse
-status=published
-~~~~~~
+---
+title: Python argparse with multiple occurance of an option
+date: 2018-06-06
+tags:
+  - python-argparse
+---
 
 **test.py.**
 

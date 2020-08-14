@@ -1,9 +1,11 @@
-title=Adding new cacert entry into AdoptOpenJDK
-date=2018-07-23
-type=post
-tags=cacert, keytool, openjdk
-status=published
-~~~~~~
+---
+title: Adding new cacert entry into AdoptOpenJDK
+date: 2018-07-23
+tags:
+  - cacert
+  - keytool
+  - openjdk
+---
 
 I downloaded latest Tomcat source and it failed to get the dependencies.
 

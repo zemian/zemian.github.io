@@ -1,9 +1,9 @@
-title=Creating your own loop structure in Java 8 lambda
-date=2014-04-04
-type=post
-tags=java
-status=published
-~~~~~~
+---
+title: Creating your own loop structure in Java 8 lambda
+date: 2014-04-04
+tags:
+  - java
+---
 Java doesn't have an easy construct of repeat something N number of times. We can make a for loop of course, but many times we don't even care about the variable that we created in the loop. We just want repeat N times of some code and that's it. With the lambda available in Java 8, you may attempt something like this:
 
 public class RepeatDemo {

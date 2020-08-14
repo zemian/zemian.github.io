@@ -1,9 +1,10 @@
-title=Taming the JMX on WebLogic Server
-date=2013-06-11
-type=post
-tags=weblogic, jmx
-status=published
-~~~~~~
+---
+title: Taming the JMX on WebLogic Server
+date: 2013-06-11
+tags:
+  - weblogic
+  - jmx
+---
 Taming the JMX on WebLogic Server
 
 # Taming the JMX on WebLogic Server

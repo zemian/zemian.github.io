@@ -1,9 +1,10 @@
-title=mysqlclient gives "Library not loaded: libmysqlclient.18.dylib" error
-date=2015-10-16
-type=post
-tags=python, mysql
-status=published
-~~~~~~
+---
+title: mysqlclient gives "Library not loaded: libmysqlclient.18.dylib" error
+date: 2015-10-16
+tags:
+  - python
+  - mysql
+---
 If you want to use python MySQLdb module (eg: if you run Trac with MySQL backend), you would need first install MySQL server on MacOSX, then install the mysqlclient python package using pip. However upon verifying it, you may encounter error like this:
 
 (mypy-test)Zemians-Air:dev zemian$ pip install mysqlclient

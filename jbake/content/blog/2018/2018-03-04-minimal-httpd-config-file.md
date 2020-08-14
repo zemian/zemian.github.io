@@ -1,9 +1,9 @@
-title=Minimal HTTPD config file
-date=2018-03-04
-type=post
-tags=httpd
-status=published
-~~~~~~
+---
+title: Minimal HTTPD config file
+date: 2018-03-04
+tags:
+  - httpd
+---
 
 If you are looking for small set of httpd config file, here is one I
 come up with based on original [httpd

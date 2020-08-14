@@ -1,9 +1,10 @@
-title=Oracle DB Data Types and Test Table 
-date=2018-08-18
-type=post
-tags=sql, oracle
-status=published
-~~~~~~
+---
+title: Oracle DB Data Types and Test Table 
+date: 2018-08-18
+tags:
+  - sql
+  - oracle
+---
 
     --
     -- Notes on Oracle Database 12.2

@@ -1,9 +1,9 @@
-title=View and terminate Oracle Database user sessions
-date=2015-08-21
-type=post
-tags=oracle
-status=published
-~~~~~~
+---
+title: View and terminate Oracle Database user sessions
+date: 2015-08-21
+tags:
+  - oracle
+---
 Verify sessions:
 SELECT USERNAME FROM V$SESSION;
 

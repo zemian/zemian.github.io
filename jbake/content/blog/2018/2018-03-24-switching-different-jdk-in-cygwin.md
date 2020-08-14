@@ -1,9 +1,9 @@
-title=Switching Different JDK in Cygwin
-date=2018-03-24
-type=post
-tags=cygwin-jdk
-status=published
-~~~~~~
+---
+title: Switching Different JDK in Cygwin
+date: 2018-03-24
+tags:
+  - cygwin-jdk
+---
 
 I love to use bash shell terminal. It’s a much more powerful terminal to
 do everyday tasks. Even in Windows, I can get most of what I need using

@@ -1,9 +1,11 @@
-title=Getting started with Glassfish Server and Setting up SLF4J logging
-date=2014-12-10
-type=post
-tags=glassfish, slf4j, logging
-status=published
-~~~~~~
+---
+title: Getting started with Glassfish Server and Setting up SLF4J logging
+date: 2014-12-10
+tags:
+  - glassfish
+  - slf4j
+  - logging
+---
 Some notes I jot down while playing with GlassFish Server (3) for EE 6. You may get a working example here:
 [https://github.com/saltnlight5/java-ee6-examples/tree/master/extra/glassfish-logging-example](https://github.com/saltnlight5/java-ee6-examples/tree/master/extra/glassfish-logging-example)
 

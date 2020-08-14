@@ -1,9 +1,9 @@
-title=Exploring Spring Controller with JSTL view
-date=2013-10-16
-type=post
-tags=spring
-status=published
-~~~~~~
+---
+title: Exploring Spring Controller with JSTL view
+date: 2013-10-16
+tags:
+  - spring
+---
 
 Let&#8217;s improve [our previous Spring JDBC application](http://saltnlight5.blogspot.com/2013/10/getting-started-with-spring-jdbc-in-web.html) with some more exploration on Spring MVC&#8217;s Controller development. I will show another exercise of writing a new Controller that processes a HTML form and use JSTL tags in JSP view pages.
 

@@ -1,9 +1,10 @@
-title=SQLite3 Data Types and Test Table 
-date=2018-08-21
-type=post
-tags=sql, sqlite3
-status=published
-~~~~~~
+---
+title: SQLite3 Data Types and Test Table 
+date: 2018-08-21
+tags:
+  - sql
+  - sqlite3
+---
 
     -- Notes for SQLite3 Database (3.24)
     -- https://www.sqlite.org/docs.html

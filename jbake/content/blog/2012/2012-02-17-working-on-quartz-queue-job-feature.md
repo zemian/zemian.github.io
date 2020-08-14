@@ -1,9 +1,9 @@
-title=Working on Quartz Queue Job Feature
-date=2012-02-17
-type=post
-tags=quartz
-status=published
-~~~~~~
+---
+title: Working on Quartz Queue Job Feature
+date: 2012-02-17
+tags:
+  - quartz
+---
 My job at Bank of New York Mellon has been keeping me fairly busy lately. It's hard to juggle with Church, a family, a full time job, and time for open source projects. But it seems God has blessed me with not many skills nor hobbies other than programming, which I enjoy the most. So I tend to endup writing more code on weekend when the kids are asleep!
 
 I haven't able to put much time into [MySchedule ](http://code.google.com/p/myschedule)other than fixed couple of urgent issues recently. If you are using this app, you should get the latest download now.

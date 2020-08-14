@@ -1,9 +1,9 @@
-title=NetBeans projects dependencies
-date=2015-05-13
-type=post
-tags=netbeans
-status=published
-~~~~~~
+---
+title: NetBeans projects dependencies
+date: 2015-05-13
+tags:
+  - netbeans
+---
 With all the coolness of NetBeans, one of the feature I feel it's lacking is managing project denpendencies natively in IDE. Currently the only way to get this feature is if your Java projects are Maven based. If you have Ant based projects, then you would have to manually do this with hacks, and for each projects/sub-projects! Take a look at these two links:
 
 [http://stackoverflow.com/questions/13669237/netbeans-java-how-to-add-as-library-another-project-with-dependencies](http://stackoverflow.com/questions/13669237/netbeans-java-how-to-add-as-library-another-project-with-dependencies)

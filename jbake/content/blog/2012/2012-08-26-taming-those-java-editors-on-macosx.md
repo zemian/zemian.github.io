@@ -1,9 +1,9 @@
-title=Taming those Java editors on MacOSX
-date=2012-08-26
-type=post
-tags=editor
-status=published
-~~~~~~
+---
+title: Taming those Java editors on MacOSX
+date: 2012-08-26
+tags:
+  - editor
+---
 
 Today, I learned that you can open multiple Eclipse instances in MacOSX like this
 

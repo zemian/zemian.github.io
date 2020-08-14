@@ -1,9 +1,9 @@
-title=Inspect Oracle Database Schema and Tables with Kotlin
-date=2016-07-05
-type=post
-tags=kotlin
-status=published
-~~~~~~
+---
+title: Inspect Oracle Database Schema and Tables with Kotlin
+date: 2016-07-05
+tags:
+  - kotlin
+---
 
     // Filename: conn.kts
     // Usage: kotlinc -cp /home/zedeng/Downloads/ojdbc7.jar -script conn.kts

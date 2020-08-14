@@ -1,9 +1,9 @@
-title=Java implementation of String#next() successor
-date=2012-12-31
-type=post
-tags=java
-status=published
-~~~~~~
+---
+title: Java implementation of String#next() successor
+date: 2012-12-31
+tags:
+  - java
+---
 
 I've found the [Ruby's `String#next()` or `#succ`](http://www.ruby-doc.org/core-1.9.3/String.html#method-i-succ) very useful and productive, specially when generating data for testing. Here is what the Ruby doc says:
 

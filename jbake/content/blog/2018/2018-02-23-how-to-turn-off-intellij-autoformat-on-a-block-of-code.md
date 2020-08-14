@@ -1,9 +1,9 @@
-title=How to turn off IntelliJ autoformat on a block of code
-date=2018-02-23
-type=post
-tags=intellij
-status=published
-~~~~~~
+---
+title: How to turn off IntelliJ autoformat on a block of code
+date: 2018-02-23
+tags:
+  - intellij
+---
 
 When doing bug fix on old codes, you want least possible change set as
 possible. The IntelliJ IDE by default will auto reformat your code upon

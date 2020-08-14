@@ -1,9 +1,9 @@
-title=Hg shortcuts for bash .profile
-date=2013-02-28
-type=post
-tags=bash
-status=published
-~~~~~~
+---
+title: Hg shortcuts for bash .profile
+date: 2013-02-28
+tags:
+  - bash
+---
 Some shortcuts I used most often when working with Mecurial (hg) source control.
 
     

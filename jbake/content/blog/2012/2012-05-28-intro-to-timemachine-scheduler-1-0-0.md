@@ -1,9 +1,9 @@
-title=Intro to TimeMachine Scheduler 1.0.0
-date=2012-05-28
-type=post
-tags=timemachine
-status=published
-~~~~~~
+---
+title: Intro to TimeMachine Scheduler 1.0.0
+date: 2012-05-28
+tags:
+  - timemachine
+---
 Hello developers,
 
 I am happy to annouce the first release of TimeMachine Scheduler is available for you to download here:

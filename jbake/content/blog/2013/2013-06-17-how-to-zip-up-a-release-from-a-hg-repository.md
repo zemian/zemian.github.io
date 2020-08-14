@@ -1,9 +1,9 @@
-title=How to zip up a release from a hg repository
-date=2013-06-17
-type=post
-tags=hg
-status=published
-~~~~~~
+---
+title: How to zip up a release from a hg repository
+date: 2013-06-17
+tags:
+  - hg
+---
 
 ## How to zip up a release from a hg repository
 

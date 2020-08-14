@@ -1,9 +1,11 @@
-title=A better java shell script wrapper
-date=2012-08-01
-type=post
-tags=java, bash, shell
-status=published
-~~~~~~
+---
+title: A better java shell script wrapper
+date: 2012-08-01
+tags:
+  - java
+  - bash
+  - shell
+---
 
 In many Java projects, you often see wrapper shell script to invoke the `java` command with its custom application parameters. For example, `$ANT_HOME/bin/ant`, `$GROOVY_HOME/bin/groovy`, or even in our [TimeMachine Scheduler](http://bitbucket.org/timemachine/scheduler) you will see `$TIMEMACHINE_HOME/bin/scheduler.sh`.
 

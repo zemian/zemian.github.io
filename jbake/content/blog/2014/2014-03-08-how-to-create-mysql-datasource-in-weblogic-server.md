@@ -1,9 +1,9 @@
-title=How to create MySQL DataSource in WebLogic Server
-date=2014-03-08
-type=post
-tags=weblogic
-status=published
-~~~~~~
+---
+title: How to create MySQL DataSource in WebLogic Server
+date: 2014-03-08
+tags:
+  - weblogic
+---
 One cool thing about using an application server is that it allows you to create DataSource outside of your application and it can manage it along with connections pool and transaction manager etc. With WebLogic Server, it comes with quite a few built in JDBC drivers such as Oracle Database and MySQL etc ready for your use. Here I will show you how to create a MySQL DataSource.
 
 1. Login into http://localhost:7001/console

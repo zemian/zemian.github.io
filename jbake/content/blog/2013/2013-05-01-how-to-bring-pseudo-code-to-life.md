@@ -1,8 +1,9 @@
-title=How to bring pseudo code to life
-date=2013-05-01
-type=post
-status=published
-~~~~~~
+---
+title: How to bring pseudo code to life
+date: 2013-05-01
+tags:
+  - s: published
+---
 
 When designing a piece of software, I like to start with some pseudo code first, then work my way out. I tend to try mapping out the normal workflow (one that runs without any corner cases) with high level of actions as series of steps. Then the detailed implementation of the code can be filled in at later time.
 

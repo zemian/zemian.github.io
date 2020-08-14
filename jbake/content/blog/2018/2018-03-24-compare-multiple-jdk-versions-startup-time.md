@@ -1,9 +1,10 @@
-title=Compare Multiple JDK Versions Startup Time
-date=2018-03-24
-type=post
-tags=jdk-startup-time, python
-status=published
-~~~~~~
+---
+title: Compare Multiple JDK Versions Startup Time
+date: 2018-03-24
+tags:
+  - jdk-startup-time
+  - python
+---
 
 **`jdk-startup-time-test.py`.**
 

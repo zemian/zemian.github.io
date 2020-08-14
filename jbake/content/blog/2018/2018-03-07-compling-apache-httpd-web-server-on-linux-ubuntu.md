@@ -1,9 +1,10 @@
-title=Compling Apache HTTPD Web Server on Linux (Ubuntu)
-date=2018-03-07
-type=post
-tags=httpd, linux
-status=published
-~~~~~~
+---
+title: Compling Apache HTTPD Web Server on Linux (Ubuntu)
+date: 2018-03-07
+tags:
+  - httpd
+  - linux
+---
 
     sudo apt install autoconf automake libtool libtool-bin libpcre3-dev libexpat1-dev libexpat1-dev libexpat1-dev
     mkdir ossdev

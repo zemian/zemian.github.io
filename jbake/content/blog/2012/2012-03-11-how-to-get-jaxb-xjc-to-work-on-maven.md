@@ -1,9 +1,10 @@
-title=How to get JAXB (xjc) to work on Maven
-date=2012-03-11
-type=post
-tags=java, maven
-status=published
-~~~~~~
+---
+title: How to get JAXB (xjc) to work on Maven
+date: 2012-03-11
+tags:
+  - java
+  - maven
+---
 I got it working by using the following
 
 ```

@@ -1,9 +1,10 @@
-title=How to view Unix man pages with browser
-date=2015-10-24
-type=post
-tags=mac, unix
-status=published
-~~~~~~
+---
+title: How to view Unix man pages with browser
+date: 2015-10-24
+tags:
+  - mac
+  - unix
+---
 I have come across this wonderful project called Bwana (https://www.bruji.com/bwana/) for Mac. Install it and you can view any man page on the browser. For example try typing the following address on the Safari:
 
 man:find

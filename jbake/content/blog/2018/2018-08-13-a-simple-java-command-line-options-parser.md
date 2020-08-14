@@ -1,9 +1,9 @@
-title=A simple Java command line options parser
-date=2018-08-13
-type=post
-tags=commandline_parser
-status=published
-~~~~~~
+---
+title: A simple Java command line options parser
+date: 2018-08-13
+tags:
+  - commandline_parser
+---
 
     package com.zemian.hellojava;
 

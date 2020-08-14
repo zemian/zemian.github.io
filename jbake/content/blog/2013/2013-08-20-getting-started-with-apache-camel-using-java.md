@@ -1,9 +1,9 @@
-title=Getting started with Apache Camel using Java
-date=2013-08-20
-type=post
-tags=camel
-status=published
-~~~~~~
+---
+title: Getting started with Apache Camel using Java
+date: 2013-08-20
+tags:
+  - camel
+---
 
 Apache Camel is a very useful library that helps you process events or messages
 from many different sources. You may move these messages through many different

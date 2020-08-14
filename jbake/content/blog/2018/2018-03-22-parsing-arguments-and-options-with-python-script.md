@@ -1,9 +1,9 @@
-title=Parsing Arguments and Options With Python Script
-date=2018-03-22
-type=post
-tags=python-argparse
-status=published
-~~~~~~
+---
+title: Parsing Arguments and Options With Python Script
+date: 2018-03-22
+tags:
+  - python-argparse
+---
 
     import argparse
     parser = argparse.ArgumentParser()

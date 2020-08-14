@@ -1,9 +1,9 @@
-title=Learn how to grep by context will give you better result
-date=2013-02-03
-type=post
-tags=linux
-status=published
-~~~~~~
+---
+title: Learn how to grep by context will give you better result
+date: 2013-02-03
+tags:
+  - linux
+---
 
 I learned that `grep` command supports few options called "context" searching. Basically it can print lines around the matching string! For example, you can use this feature to perform a quick Java threads stack analysis like this (assuming you have a java process PID=12345).
 

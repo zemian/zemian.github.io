@@ -1,9 +1,9 @@
-title=MySchedule 3.2.0.0 FINAL is released
-date=2013-06-07
-type=post
-tags=myschedule
-status=published
-~~~~~~
+---
+title: MySchedule 3.2.0.0 FINAL is released
+date: 2013-06-07
+tags:
+  - myschedule
+---
 
 Hi folks,
 

@@ -1,9 +1,9 @@
-title=Creating new WebLogic domain using WLST script
-date=2015-10-02
-type=post
-tags=weblogic
-status=published
-~~~~~~
+---
+title: Creating new WebLogic domain using WLST script
+date: 2015-10-02
+tags:
+  - weblogic
+---
 Here is how to creating new WebLogic domain using WLST script without starting up a WebLogic server instance. The default AdminServer console login username is 'weblogic', and the script allow you to change its password and a port number for the AdminServer instance.
 
 # Usage: wlst.cmd createDomain.py <domain_home> <port> <password>

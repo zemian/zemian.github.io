@@ -1,9 +1,9 @@
-title=A strange case of Java generic and inheritage parameter passing
-date=2012-12-20
-type=post
-tags=java
-status=published
-~~~~~~
+---
+title: A strange case of Java generic and inheritage parameter passing
+date: 2012-12-20
+tags:
+  - java
+---
 
 I came a cross some strange Java code and I would like to share it here. Take a look few of classes I have here:
 

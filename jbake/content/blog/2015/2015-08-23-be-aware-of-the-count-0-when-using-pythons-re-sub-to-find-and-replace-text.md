@@ -1,9 +1,9 @@
-title=Be aware of the count=0 when using Python's re.sub() to find and replace text
-date=2015-08-23
-type=post
-tags=python
-status=published
-~~~~~~
+---
+title: Be aware of the count: 0 when using Python's re.sub() to find and replace text
+date: 2015-08-23
+tags:
+  - python
+---
 I have an xml file and I want to remove a whole section of element without actually parsing the XML file. I wrote an Python script to do just that. I first tested it out like this:
 
 import re

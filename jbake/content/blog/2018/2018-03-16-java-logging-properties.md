@@ -1,9 +1,9 @@
-title=Java Logging Properties
-date=2018-03-16
-type=post
-tags=java-logging
-status=published
-~~~~~~
+---
+title: Java Logging Properties
+date: 2018-03-16
+tags:
+  - java-logging
+---
 
 Example:
 

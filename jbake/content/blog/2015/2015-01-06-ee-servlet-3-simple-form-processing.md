@@ -1,9 +1,9 @@
-title=EE Servlet 3: Simple Form Processing
-date=2015-01-06
-type=post
-tags=servlet
-status=published
-~~~~~~
+---
+title: EE Servlet 3: Simple Form Processing
+date: 2015-01-06
+tags:
+  - servlet
+---
 Form handling in web application is like bread and butter for most Web developers. It will not be much use if we can not capture users input and process it. So I have included a simple [FormServlet ](https://github.com/saltnlight5/java-ee6-examples/blob/master/servlet3-example/src/main/java/zemian/servlet3example/web/FormServlet.java)in my servlet3-example  that demonstrated few frequently used form inputs you might encounter. Here is how it looks like:
 
 package zemian.servlet3example.web;

@@ -1,9 +1,10 @@
-title=Developing Java EE applications with Maven, NetBeans and Glassfish
-date=2014-12-21
-type=post
-tags=javaee, maven
-status=published
-~~~~~~
+---
+title: Developing Java EE applications with Maven, NetBeans and Glassfish
+date: 2014-12-21
+tags:
+  - javaee
+  - maven
+---
 I have been working with EE 6 stack lately, and I find it quite pleasant and productive. For my own learning purpose, I intend to explore more deeper on some of the major components available on the EE stack.
 
 I have started a [java-ee6-examples](https://github.com/saltnlight5/java-ee6-examples) project in GitHub, and I plan to add my examples and working demo code there, along with some blog posts whenever I can. The project is seperated into sub-modules that a typical EE application would organized: a parent module, a common library jar module and one or more web modules etc. The project is buildable using [Maven 3 tool](http://maven.apache.org/) on command line, and you may use any major IDE that supports Maven (I will try out NetBeans for these demos).

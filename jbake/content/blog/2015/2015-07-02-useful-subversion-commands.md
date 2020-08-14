@@ -1,9 +1,9 @@
-title=Useful subversion commands
-date=2015-07-02
-type=post
-tags=svn
-status=published
-~~~~~~
+---
+title: Useful subversion commands
+date: 2015-07-02
+tags:
+  - svn
+---
 # shell alias and utilities for Subversion
 
 function svnremovenew {

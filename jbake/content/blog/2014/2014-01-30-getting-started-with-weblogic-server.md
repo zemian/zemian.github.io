@@ -1,9 +1,9 @@
-title=Getting started with WebLogic Server
-date=2014-01-30
-type=post
-tags=weblogic
-status=published
-~~~~~~
+---
+title: Getting started with WebLogic Server
+date: 2014-01-30
+tags:
+  - weblogic
+---
 
 Here are some quick tips on how to get started with WebLogic Server on Windows OS:
 

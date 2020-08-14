@@ -1,9 +1,9 @@
-title=Getting jboss-cli.sh to work on MacOSX
-date=2012-07-28
-type=post
-tags=jboss
-status=published
-~~~~~~
+---
+title: Getting jboss-cli.sh to work on MacOSX
+date: 2012-07-28
+tags:
+  - jboss
+---
 If you use MacOSX and JBossAS, then you might have encountered this problem when using the jboss-client.sh tool:
 
 	$ bin/jboss-cli.sh 

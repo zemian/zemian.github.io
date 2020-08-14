@@ -1,9 +1,9 @@
-title=How to import SSL cert into WLS DemoTrust.jks keystore file
-date=2016-07-05
-type=post
-tags=weblogic
-status=published
-~~~~~~
+---
+title: How to import SSL cert into WLS DemoTrust.jks keystore file
+date: 2016-07-05
+tags:
+  - weblogic
+---
 
 In WLS, you can import your own SSL cert into its trust keystore file to invoke "https" contents. Here is how you do that with the default WLS `DemoTrust.jks` file.
 

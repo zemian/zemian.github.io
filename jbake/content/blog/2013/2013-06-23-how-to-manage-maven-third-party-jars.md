@@ -1,9 +1,9 @@
-title=How to manage Maven third party jars
-date=2013-06-23
-type=post
-tags=maven
-status=published
-~~~~~~
+---
+title: How to manage Maven third party jars
+date: 2013-06-23
+tags:
+  - maven
+---
 
 ## How to manage Maven third party jars
 

@@ -1,9 +1,9 @@
-title=Simple Variable Substitution in Java String
-date=2012-10-24
-type=post
-tags=java
-status=published
-~~~~~~
+---
+title: Simple Variable Substitution in Java String
+date: 2012-10-24
+tags:
+  - java
+---
 
 When I wrote about how to improve the Java Properties class using [Props](http://saltnlight5.blogspot.com/2012/09/improving-javautilproperties.html), I've shown
 a feature where you can use variable substition such as `mypath=${user.home}` in your config file. The implementation underneath it uses the Apache Common Lang library with `org.apache.commons.lang.text.StrSubstitutor`. There is nothing wrong with this, but I was curious how bad would it be to remove such dependency, so the `Props` can be more standalone.

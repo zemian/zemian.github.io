@@ -1,9 +1,9 @@
-title=Oracle JET Intro Articles on DZone
-date=2020-03-31
-type=post
-tags=ojet
-status=published
-~~~~~~
+---
+title: Oracle JET Intro Articles on DZone
+date: 2020-03-31
+tags:
+  - ojet
+---
 
 
 I found an old series of articles that introduced Oracle JET by [Chris Muir](https://blogs.oracle.com/author/chris-muir) on DZone. These articles seem dated way back in 2016 (with OJET v3 ?), but the core concepts are still valid. In fact many of these introductions are now captured in the [Oracle JET Developer Guide](https://docs.oracle.com/en/middleware/developer-tools/jet/8.1/develop/index.html) already. But these articles are short and good read. I don’t know Chris personally, but thanks for publishing these.

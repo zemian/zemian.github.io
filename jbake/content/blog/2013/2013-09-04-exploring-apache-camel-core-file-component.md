@@ -1,9 +1,9 @@
-title=Exploring Apache Camel Core - File Component
-date=2013-09-04
-type=post
-tags=camel
-status=published
-~~~~~~
+---
+title: Exploring Apache Camel Core - File Component
+date: 2013-09-04
+tags:
+  - camel
+---
 
 A file poller is a very useful mechanism to solve common IT problems. Camel&#8217;s built-in `file` component is extremely flexible, and there are many options available for configuration. Let&#8217;s cover few common usages here.
 

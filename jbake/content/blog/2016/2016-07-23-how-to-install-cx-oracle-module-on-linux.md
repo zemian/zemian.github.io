@@ -1,9 +1,10 @@
-title=How to install cx_Oracle module on Linux
-date=2016-07-23
-type=post
-tags=python, oracle
-status=published
-~~~~~~
+---
+title: How to install cx_Oracle module on Linux
+date: 2016-07-23
+tags:
+  - python
+  - oracle
+---
 
 Here are my notes on installing [`cx_Oracle` python
 module](http://cx-oracle.sourceforge.net/) to access Oracle Database

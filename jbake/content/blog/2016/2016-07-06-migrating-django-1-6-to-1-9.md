@@ -1,9 +1,9 @@
-title=Migrating Django 1.6 to 1.9
-date=2016-07-06
-type=post
-tags=django
-status=published
-~~~~~~
+---
+title: Migrating Django 1.6 to 1.9
+date: 2016-07-06
+tags:
+  - django
+---
 
 Couple years ago, I wrote a simple Events and Signin management app
 using django 1.6. It was fun to write and it worked really well. Just

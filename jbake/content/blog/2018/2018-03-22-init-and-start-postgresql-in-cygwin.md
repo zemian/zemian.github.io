@@ -1,9 +1,9 @@
-title=Init and Start PostgreSQL in Cygwin
-date=2018-03-22
-type=post
-tags=postgres
-status=published
-~~~~~~
+---
+title: Init and Start PostgreSQL in Cygwin
+date: 2018-03-22
+tags:
+  - postgres
+---
 
 Run Postgres Server
 ===================

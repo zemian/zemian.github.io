@@ -1,9 +1,9 @@
-title=How To Create Windows Context Menu Without Admin Rights
-date=2018-03-16
-type=post
-tags=windows
-status=published
-~~~~~~
+---
+title: How To Create Windows Context Menu Without Admin Rights
+date: 2018-03-16
+tags:
+  - windows
+---
 
     @REM Base on tips here:
     @REM https://stackoverflow.com/questions/48138681/how-to-add-sublime-text-to-contextual-menu-without-admin-privileges-on-windows

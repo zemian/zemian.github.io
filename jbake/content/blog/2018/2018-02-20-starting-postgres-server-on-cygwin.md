@@ -1,9 +1,10 @@
-title=Starting postgres server on Cygwin
-date=2018-02-20
-type=post
-tags=postgres, cygwin
-status=published
-~~~~~~
+---
+title: Starting postgres server on Cygwin
+date: 2018-02-20
+tags:
+  - postgres
+  - cygwin
+---
 
 To run postgres database server on Cygwin, you need first run the
 `cygserver`. If not, you will get error similar to this:

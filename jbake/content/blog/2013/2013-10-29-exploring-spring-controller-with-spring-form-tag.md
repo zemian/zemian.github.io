@@ -1,9 +1,9 @@
-title=Exploring Spring Controller with Spring Form Tag
-date=2013-10-29
-type=post
-tags=spring
-status=published
-~~~~~~
+---
+title: Exploring Spring Controller with Spring Form Tag
+date: 2013-10-29
+tags:
+  - spring
+---
 
 In the past [article](http://saltnlight5.blogspot.com/2013/10/exploring-spring-controller-with-jstl.html), I have shown you how to process an plain HTML form with Spring controller. But a more powerful way to process form is to use Spring&#8217;s `@ModelAttribute` and its `spring:form` tags. I will show you how to get that started here by modifying last article&#8217;s project setup. We will simply modify the Comment form and controller to use this feature.
 

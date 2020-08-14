@@ -1,9 +1,9 @@
-title=Reading https url from a self-signed cert
-date=2012-12-26
-type=post
-tags=groovy
-status=published
-~~~~~~
+---
+title: Reading https url from a self-signed cert
+date: 2012-12-26
+tags:
+  - groovy
+---
 Groovy has made fetching data from URL a snap:
 
     println(new URL("http://www.google.com").text)

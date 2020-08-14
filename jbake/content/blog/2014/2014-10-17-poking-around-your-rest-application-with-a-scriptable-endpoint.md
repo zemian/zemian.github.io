@@ -1,9 +1,10 @@
-title=Poking around your REST application with a scriptable endpoint
-date=2014-10-17
-type=post
-tags=restful, scripting
-status=published
-~~~~~~
+---
+title: Poking around your REST application with a scriptable endpoint
+date: 2014-10-17
+tags:
+  - restful
+  - scripting
+---
 I love the fact that JDK comes with a ScriptEngine. It's so flexible when you want to evaluate and troubleshoot your application that's already deployed in an server environment. Add this REST endpoint into a Java EE app, and it will give you instant access to internal states of the app.
 
 package myrestapp;

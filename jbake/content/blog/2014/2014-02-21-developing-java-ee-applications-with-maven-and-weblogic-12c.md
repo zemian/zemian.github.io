@@ -1,9 +1,10 @@
-title=Developing Java EE applications with Maven and WebLogic 12c
-date=2014-02-21
-type=post
-tags=weblogic, maven
-status=published
-~~~~~~
+---
+title: Developing Java EE applications with Maven and WebLogic 12c
+date: 2014-02-21
+tags:
+  - weblogic
+  - maven
+---
 The WebLogic Server 12c has very nice support for Maven now. The doc for this is kinda hidden though, so here is a direct link [http://docs.oracle.com/middleware/1212/core/MAVEN](http://docs.oracle.com/middleware/1212/core/MAVEN)
 
 To summarize the doc, Oracle did not provide a public Maven repository manager hosting for their server artifacts. However they do now provide a tool for you to create and populate your own. You can setup either your local repository (if you are working mostly on your own in a single computer), or you may deploy them into your own internal Maven repository manager such as Archiva or Nexus.

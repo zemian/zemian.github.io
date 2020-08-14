@@ -1,9 +1,9 @@
-title=How to secure a web application by the app server container
-date=2014-12-01
-type=post
-tags=security
-status=published
-~~~~~~
+---
+title: How to secure a web application by the app server container
+date: 2014-12-01
+tags:
+  - security
+---
 There are many benefits to allow a container in managing users, groups and authentication policies. You may configure your WAR application to take advantage of this by adding the following in the WEB-INF/web.xml file
 
    <security-constraint>

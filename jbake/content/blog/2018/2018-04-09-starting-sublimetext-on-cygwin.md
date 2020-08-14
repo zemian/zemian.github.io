@@ -1,9 +1,9 @@
-title=Starting SublimeText on Cygwin
-date=2018-04-09
-type=post
-tags=sublimetext-cygwin
-status=published
-~~~~~~
+---
+title: Starting SublimeText on Cygwin
+date: 2018-04-09
+tags:
+  - sublimetext-cygwin
+---
 
 I edit files a lot from command line Cygwin, and I usually use an alias
 `e` to my favorite editor. For SublimeText, I found it more useful to

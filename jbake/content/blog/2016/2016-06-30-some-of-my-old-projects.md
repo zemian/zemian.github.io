@@ -1,8 +1,9 @@
-title=Some of my old projects
-date=2016-06-30
-type=post
-status=published
-~~~~~~
+---
+title: Some of my old projects
+date: 2016-06-30
+tags:
+  - s: published
+---
 
 Here are some of interesting side projects I have worked on in the past
 

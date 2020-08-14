@@ -1,9 +1,10 @@
-title=Using Spring Boot Cli
-date=2019-03-03
-type=post
-tags=spring-boot, groovy
-status=published
-~~~~~~
+---
+title: Using Spring Boot Cli
+date: 2019-03-03
+tags:
+  - spring-boot
+  - groovy
+---
 
 The easiest way to get started with Spring is to setup SpringBoot with
 their CLI tool. You can bootstrap a web application with a single Groovy

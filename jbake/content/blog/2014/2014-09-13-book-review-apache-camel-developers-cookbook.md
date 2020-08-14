@@ -1,9 +1,10 @@
-title=Book Review: Apache Camel Developer's Cookbook
-date=2014-09-13
-type=post
-tags=bookreview, camel
-status=published
-~~~~~~
+---
+title: Book Review: Apache Camel Developer's Cookbook
+date: 2014-09-13
+tags:
+  - bookreview
+  - camel
+---
 
 I got a chance to review the "[Apache CamelDeveloper's Cookbook](https://www.packtpub.com/application-development/apache-camel-developers-cookbook)" by Cranton and Korab. Overall I think this is a
 great book. System integration problems and solutions come in many forms, so

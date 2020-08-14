@@ -1,9 +1,9 @@
-title=WebLogic shared library deployment
-date=2014-08-19
-type=post
-tags=weblogic
-status=published
-~~~~~~
+---
+title: WebLogic shared library deployment
+date: 2014-08-19
+tags:
+  - weblogic
+---
 When deploying a large WAR file application, it would be more easier to manage if we can separate the dependency jars away from the rest of the Web content; or at least those third party jars that do not update often. In this case, we usually call the jars content a "Shared Library" and the Web content the "Skinny WAR".
 
 With WebLogic Server, you can easily deploy such two artifacts. Just seperate and package your WAR application into two. The share library would be simply another WAR with only the WEB-INF/lib content in it, while the Skinny war will be the rest of your application without the jar depependencies. On the shared lib WAR file, ensure you have an META-INF/MANIFEST.MF that specify the name and version like the following:

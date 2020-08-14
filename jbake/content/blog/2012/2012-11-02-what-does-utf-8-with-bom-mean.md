@@ -1,8 +1,9 @@
-title=What does UTF-8 with BOM mean?
-date=2012-11-02
-type=post
-status=published
-~~~~~~
+---
+title: What does UTF-8 with BOM mean?
+date: 2012-11-02
+tags:
+  - s: published
+---
 
 Believe it or not, There is no such thing as Plain Text!
 

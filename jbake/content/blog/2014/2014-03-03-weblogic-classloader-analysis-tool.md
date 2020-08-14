@@ -1,9 +1,9 @@
-title=WebLogic Classloader Analysis Tool
-date=2014-03-03
-type=post
-tags=weblogic
-status=published
-~~~~~~
+---
+title: WebLogic Classloader Analysis Tool
+date: 2014-03-03
+tags:
+  - weblogic
+---
 The WebLogic Server has a built-in webapp called Classloader Analysis Tool, and you may access it through http://localhost:7001/wls-cat
 
 You need to login with same user as you configured for the /console webapp. With the CAT, you may check what classes are loaded by your application in the server. This is extremely handy if your app is loading jar that's already loaded by the server. For example, if you include your own Apache commons-lang.jar in a webapp and deploy it, you will see that org.apache.commons.lang.time.DateUtils is not from your webapp!

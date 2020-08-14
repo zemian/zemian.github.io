@@ -1,9 +1,9 @@
-title=Choosing Technology Stack to build a common platform
-date=2013-05-29
-type=post
-tags=architecture
-status=published
-~~~~~~
+---
+title: Choosing Technology Stack to build a common platform
+date: 2013-05-29
+tags:
+  - architecture
+---
 
 There are many talks in Java community about Spring vs Java EE, and how one group would argue you should use one and not other etc. When I see this, I can't help but to think why can't we use them both together? In fact I think using them both effectively would create a great technology stack for building an infrastructure for large company who like to provide a common platform that may host and run many different applications and projects.
 

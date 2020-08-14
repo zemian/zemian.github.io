@@ -1,9 +1,9 @@
-title=How to install Zoom conference on Ubuntu 14.04 LTS
-date=2016-06-17
-type=post
-tags=linux
-status=published
-~~~~~~
+---
+title: How to install Zoom conference on Ubuntu 14.04 LTS
+date: 2016-06-17
+tags:
+  - linux
+---
 1. Download latest zoom_2.0.52458.0531_amd64.deb package from https://zoom.us/download
 
 2. Run  

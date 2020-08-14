@@ -1,9 +1,9 @@
-title=Oracle Java SE JDK vs OpenJDK
-date=2018-03-24
-type=post
-tags=openjdk
-status=published
-~~~~~~
+---
+title: Oracle Java SE JDK vs OpenJDK
+date: 2018-03-24
+tags:
+  - openjdk
+---
 
 In general:
 

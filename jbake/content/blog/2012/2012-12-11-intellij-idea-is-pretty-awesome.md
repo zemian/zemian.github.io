@@ -1,9 +1,9 @@
-title=Intellij IDEA is pretty awesome!
-date=2012-12-11
-type=post
-tags=intellij
-status=published
-~~~~~~
+---
+title: Intellij IDEA is pretty awesome!
+date: 2012-12-11
+tags:
+  - intellij
+---
 Did you know IntelliJ IDEA has a free Community Edition you may [download](http://www.jetbrains.com/idea/download/index.html)? I've been test driving it, and I will post few things I learned so far.
 
 Here are few things that I usually change from out of the default installed settings.

@@ -1,9 +1,9 @@
-title=MacBook Air is not displaying scroll bar on Finder
-date=2015-10-10
-type=post
-tags=mac
-status=published
-~~~~~~
+---
+title: MacBook Air is not displaying scroll bar on Finder
+date: 2015-10-10
+tags:
+  - mac
+---
 
 For odd reason that I don’t see scrollbar shows up on Finder in MacBook
 Air when I have a long list of files. Can’t scroll down with my

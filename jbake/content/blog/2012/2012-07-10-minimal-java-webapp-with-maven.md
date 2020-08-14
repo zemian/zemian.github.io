@@ -1,9 +1,10 @@
-title=Minimal Java webapp with Maven
-date=2012-07-10
-type=post
-tags=maven, java
-status=published
-~~~~~~
+---
+title: Minimal Java webapp with Maven
+date: 2012-07-10
+tags:
+  - maven
+  - java
+---
 Below are the shortest steps I know that would get you the smallest Java web application ready in Maven.
 
     $ mkdir -p webapp/src/main/webapp/WEB-INF/classes

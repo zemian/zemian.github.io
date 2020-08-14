@@ -1,9 +1,9 @@
-title=Python processing each line from stdin or files
-date=2015-07-11
-type=post
-tags=python
-status=published
-~~~~~~
+---
+title: Python processing each line from stdin or files
+date: 2015-07-11
+tags:
+  - python
+---
 import fileinput,re
 for line in fileinput.input():
 line=line.rstrip()

@@ -1,9 +1,9 @@
-title=TimeMachine jars size and dependencies
-date=2012-08-03
-type=post
-tags=timemachine
-status=published
-~~~~~~
+---
+title: TimeMachine jars size and dependencies
+date: 2012-08-03
+tags:
+  - timemachine
+---
 
 From the [TimeMachine Scheduler](https://bitbucket.org/timemachine/scheduler/downloads) download page you will see that the latest 1.2.1 release zip package size is around 13M. It may seem large for a scheduler application, but let's examine it closely to see what's in there. Here is how the zip package looks like inside
 

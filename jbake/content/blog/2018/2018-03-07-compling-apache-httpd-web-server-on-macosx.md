@@ -1,9 +1,10 @@
-title=Compling Apache HTTPD Web Server on MacOSX
-date=2018-03-07
-type=post
-tags=macosx, httpd
-status=published
-~~~~~~
+---
+title: Compling Apache HTTPD Web Server on MacOSX
+date: 2018-03-07
+tags:
+  - macosx
+  - httpd
+---
 
 Before you begin, you should know that the HTTPD server is very likely
 already comes with your MacOSX! For example, here is how my server looks

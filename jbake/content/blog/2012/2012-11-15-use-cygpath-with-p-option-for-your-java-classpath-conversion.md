@@ -1,9 +1,9 @@
-title=Use cygpath with -p option for your Java CLASSPATH conversion
-date=2012-11-15
-type=post
-tags=cygwin
-status=published
-~~~~~~
+---
+title: Use cygpath with -p option for your Java CLASSPATH conversion
+date: 2012-11-15
+tags:
+  - cygwin
+---
 I just noticed that Cygwin's `cygpath` command supports `-p` option. This is a real gem when writing Java wrapper script that needs to covert CLASSPATH values. A simple script can demonstrate the purpose.
 
     

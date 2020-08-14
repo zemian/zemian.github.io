@@ -1,9 +1,9 @@
-title=Running maven commands with multi modules project
-date=2012-10-14
-type=post
-tags=maven
-status=published
-~~~~~~
+---
+title: Running maven commands with multi modules project
+date: 2012-10-14
+tags:
+  - maven
+---
 
 Have you ever tried running Maven commands inside a sub-module of a multi modules Maven project, and get `Could not resolve dependencies for project` error msg? And you checked the dependencies that it's missing are those sister modules within the same project! So what gives? It turns out you have to give few more options to get this running correctly, and you have to remember always stays in the parent pom directory to run it!
 

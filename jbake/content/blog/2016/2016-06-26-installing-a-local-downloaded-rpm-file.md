@@ -1,9 +1,9 @@
-title=Installing a local downloaded .rpm file
-date=2016-06-26
-type=post
-tags=linux
-status=published
-~~~~~~
+---
+title: Installing a local downloaded .rpm file
+date: 2016-06-26
+tags:
+  - linux
+---
 To install:
 bash> sudo yum install <package_name.rpm>
 

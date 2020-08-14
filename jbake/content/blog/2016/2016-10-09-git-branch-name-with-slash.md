@@ -1,9 +1,9 @@
-title=Git Branch name with 'slash'
-date=2016-10-09
-type=post
-tags=git
-status=published
-~~~~~~
+---
+title: Git Branch name with 'slash'
+date: 2016-10-09
+tags:
+  - git
+---
 
 Git allows you to use */* slash in your branch name. It’s useful for
 grouping branches. However, you need to be careful that once a slashy

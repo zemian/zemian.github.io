@@ -1,9 +1,9 @@
-title=Simple http server with CGI scripts enabled
-date=2016-07-14
-type=post
-tags=python
-status=published
-~~~~~~
+---
+title: Simple http server with CGI scripts enabled
+date: 2016-07-14
+tags:
+  - python
+---
 If you want to experiment some python code as CGI script to serve by a HTTP server,
 you can get started by these steps:
 

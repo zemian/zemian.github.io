@@ -1,9 +1,10 @@
-title=Example of plain Jdbc Support Class
-date=2015-06-05
-type=post
-tags=java, jdbc
-status=published
-~~~~~~
+---
+title: Example of plain Jdbc Support Class
+date: 2015-06-05
+tags:
+  - java
+  - jdbc
+---
 Need to fetch some data from DB quickly with Java? Here is a quick example of plain JDBC JdbcSupport  Class to help you.
 
 package zemian.jdbcexample

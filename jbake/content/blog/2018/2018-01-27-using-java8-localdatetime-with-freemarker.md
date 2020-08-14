@@ -1,9 +1,9 @@
-title=Using Java8 LocalDateTime with FreeMarker
-date=2018-01-27
-type=post
-tags=freemarker
-status=published
-~~~~~~
+---
+title: Using Java8 LocalDateTime with FreeMarker
+date: 2018-01-27
+tags:
+  - freemarker
+---
 
 It’s unfortunate that even latest FreeMarker 2.3.27 still does not
 support `java.time.LocalDateTime` as data model natively. If you want to

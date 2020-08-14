@@ -1,9 +1,9 @@
-title=How to setup a Java web application using Gradle
-date=2016-06-14
-type=post
-tags=gradle
-status=published
-~~~~~~
+---
+title: How to setup a Java web application using Gradle
+date: 2016-06-14
+tags:
+  - gradle
+---
 For basic java and Gradle, it's really simple. All you need is one line in build.gradle file and you can start compiling Java source under src/main/java folder.
 
 apply plugin: 'java'

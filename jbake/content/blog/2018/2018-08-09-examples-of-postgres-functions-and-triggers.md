@@ -1,9 +1,11 @@
-title=Examples of Postgres Functions and Triggers
-date=2018-08-09
-type=post
-tags=postgres, function, trigger
-status=published
-~~~~~~
+---
+title: Examples of Postgres Functions and Triggers
+date: 2018-08-09
+tags:
+  - postgres
+  - function
+  - trigger
+---
 
     -- Simple Function
     create or replace function rand_range(a int, b int) returns int

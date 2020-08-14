@@ -1,9 +1,9 @@
-title=How to switch Linux account user without the target user's password
-date=2016-07-07
-type=post
-tags=linux
-status=published
-~~~~~~
+---
+title: How to switch Linux account user without the target user's password
+date: 2016-07-07
+tags:
+  - linux
+---
 
 Did you know if you have been granted `sudo` access to a remote
 host with `su` command, then you may switch to any user without the

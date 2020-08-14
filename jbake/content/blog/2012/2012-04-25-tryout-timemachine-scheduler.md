@@ -1,9 +1,9 @@
-title=Tryout TimeMachine Scheduler
-date=2012-04-25
-type=post
-tags=timemachine
-status=published
-~~~~~~
+---
+title: Tryout TimeMachine Scheduler
+date: 2012-04-25
+tags:
+  - timemachine
+---
 There are few updates with TimeMachine Scheduler project:
 
 1. The project has a new home: 

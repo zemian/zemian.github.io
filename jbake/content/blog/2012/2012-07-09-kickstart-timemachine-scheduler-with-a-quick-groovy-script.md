@@ -1,9 +1,10 @@
-title=Kickstart TimeMachine Scheduler with a quick Groovy script
-date=2012-07-09
-type=post
-tags=groovy, timemachine
-status=published
-~~~~~~
+---
+title: Kickstart TimeMachine Scheduler with a quick Groovy script
+date: 2012-07-09
+tags:
+  - groovy
+  - timemachine
+---
 If you have [Groovy ](http://groovy.codehaus.org/)installed, you can kick start a [TimeMachine Scheduler](https://bitbucket.org/timemachine/scheduler) job without any setup! Try this out:
 
 // Create a repeating schedule job that runs every 3 seconds.

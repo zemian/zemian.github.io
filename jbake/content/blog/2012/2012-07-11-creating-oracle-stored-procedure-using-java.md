@@ -1,9 +1,10 @@
-title=Creating Oracle Stored Procedure using Java
-date=2012-07-11
-type=post
-tags=oracle, java
-status=published
-~~~~~~
+---
+title: Creating Oracle Stored Procedure using Java
+date: 2012-07-11
+tags:
+  - oracle
+  - java
+---
 Did you know you can write Oracle database stored procedure in Java? Give this a try in your `sqlplus` prompt.
 
     

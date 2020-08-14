@@ -1,9 +1,10 @@
-title=How to manage SQL statements more effectively with Java
-date=2015-07-22
-type=post
-tags=java, sql
-status=published
-~~~~~~
+---
+title: How to manage SQL statements more effectively with Java
+date: 2015-07-22
+tags:
+  - java
+  - sql
+---
 If you work with plain Java JDBC without any external libraries, you will need to manage your own SQL statements. Unfortunately Java String does not support muti-lines construct, and you have to use many "quotes" + "concatenation" and makes the SQL very hard to read and manage. This makes it hard to maintain and test (try to copy a SQL from Java code into your SQL client). It would be so nice to keep the entire SQL block of text intact without these Java noise.
 
 Here is a solution. Store your SQL queries in XML inside CDATA:

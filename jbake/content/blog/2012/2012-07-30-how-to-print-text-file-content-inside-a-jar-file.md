@@ -1,9 +1,9 @@
-title=How to print text file content inside a jar file
-date=2012-07-30
-type=post
-tags=java
-status=published
-~~~~~~
+---
+title: How to print text file content inside a jar file
+date: 2012-07-30
+tags:
+  - java
+---
 Have you ever wonder what's the exact version of your `ojdbc6.jar` that you have? All the jar files will contain a `META-INF/MANIFEST.MF` file, and chances are the version will be in it! You may try using `$JAVA_HOME/bin/jar -xvf` to extract the jar and then view the text file. But afterward you would have to clean up the extracted file so not to liter.
 
 However, if you got Groovy, you can print any text file inside a jar without above mess.

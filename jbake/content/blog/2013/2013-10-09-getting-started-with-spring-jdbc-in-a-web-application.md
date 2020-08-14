@@ -1,9 +1,10 @@
-title=Getting started with Spring JDBC in a web application
-date=2013-10-09
-type=post
-tags=spring, jdbc
-status=published
-~~~~~~
+---
+title: Getting started with Spring JDBC in a web application
+date: 2013-10-09
+tags:
+  - spring
+  - jdbc
+---
 
 I have shown you how to setup a [basic Spring 3 MVC web application](http://saltnlight5.blogspot.com/2013/10/getting-started-with-annotation-based.html) in my previous article. Reusing that project setup as template, I will show you how to enhance it to work with JDBC. With this you can store and retrieve data from database. We will add a new controller and a data service through Spring so you can see how Spring injection and annotation configuration works together.
 

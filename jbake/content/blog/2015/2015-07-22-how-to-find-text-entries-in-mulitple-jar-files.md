@@ -1,9 +1,9 @@
-title=How to find text entries in mulitple jar files
-date=2015-07-22
-type=post
-tags=java
-status=published
-~~~~~~
+---
+title: How to find text entries in mulitple jar files
+date: 2015-07-22
+tags:
+  - java
+---
 Similar to [printjar ](http://saltnlight5.blogspot.com/2012/07/how-to-print-text-file-content-inside.html)utility, here is a findjar util that can comes in handy to verify whether a class exists or not among a pile of jar files.
 
 JavaScript (run with jrunscript command)

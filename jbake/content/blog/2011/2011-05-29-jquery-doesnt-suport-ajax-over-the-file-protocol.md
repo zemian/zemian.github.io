@@ -1,9 +1,9 @@
-title=jQuery doesn't suport ajax over the file protocol
-date=2011-05-29
-type=post
-tags=jquery
-status=published
-~~~~~~
+---
+title: jQuery doesn't suport ajax over the file protocol
+date: 2011-05-29
+tags:
+  - jquery
+---
 I was playing with jQueryUI today, and a simple example like this failed to update an page.
 
         $.get('data1.xml', function(data) {

@@ -1,9 +1,10 @@
-title=Checking MySQL database connection with mysql-connector-python
-date=2015-10-09
-type=post
-tags=python, mysql
-status=published
-~~~~~~
+---
+title: Checking MySQL database connection with mysql-connector-python
+date: 2015-10-09
+tags:
+  - python
+  - mysql
+---
 First install the MySQL package
 
 bash>pip install --allow-all-external mysql-connector-python

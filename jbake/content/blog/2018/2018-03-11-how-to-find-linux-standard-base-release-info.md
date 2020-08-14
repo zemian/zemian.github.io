@@ -1,9 +1,9 @@
-title=How to find Linux Standard Base release info
-date=2018-03-11
-type=post
-tags=linux
-status=published
-~~~~~~
+---
+title: How to find Linux Standard Base release info
+date: 2018-03-11
+tags:
+  - linux
+---
 
             zemian@zemian-VirtualBox:~$ lsb_release -a
             No LSB modules are available.

@@ -1,9 +1,9 @@
-title=Print Python Runtime Information
-date=2018-03-22
-type=post
-tags=python
-status=published
-~~~~~~
+---
+title: Print Python Runtime Information
+date: 2018-03-22
+tags:
+  - python
+---
 
     # Print python runtime information
     import os, sys

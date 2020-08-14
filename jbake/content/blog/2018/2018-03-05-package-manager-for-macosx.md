@@ -1,9 +1,11 @@
-title=Package manager for MacOSX
-date=2018-03-05
-type=post
-tags=macosx, package-manager, brew
-status=published
-~~~~~~
+---
+title: Package manager for MacOSX
+date: 2018-03-05
+tags:
+  - macosx
+  - package-manager
+  - brew
+---
 
     #
     # Install package manager for macosx called brew from https://brew.sh

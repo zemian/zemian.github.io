@@ -1,9 +1,10 @@
-title=Hello BulmaCSS
-date=2020-04-18
-type=post
-tags=bulma, css
-status=published
-~~~~~~
+---
+title: Hello BulmaCSS
+date: 2020-04-18
+tags:
+  - bulma
+  - css
+---
 
 
 The [Bulma CSS](https://bulma.io/) library is a very nice project with work with. It’s small and has enough features to style just about any thing you want on the web. The Bulma is a pure CSS library and has no JS dependency! I like this minimalist approach to things.

@@ -1,9 +1,9 @@
-title=Quick project sharing with hg over ssh
-date=2014-03-04
-type=post
-tags=hg
-status=published
-~~~~~~
+---
+title: Quick project sharing with hg over ssh
+date: 2014-03-04
+tags:
+  - hg
+---
 Mercurial is an awesome source control system! If you got a project in your PC and would like to share with your team. An easy and practical way is to put it in a common server (eg: linux) with ssh enabled.
 
 1. Copy your existing project source into your server $HOME/repo/myproject

@@ -1,9 +1,9 @@
-title=First snapshot of myschedule-3.0.0 is available
-date=2013-03-27
-type=post
-tags=myschedule
-status=published
-~~~~~~
+---
+title: First snapshot of myschedule-3.0.0 is available
+date: 2013-03-27
+tags:
+  - myschedule
+---
 
 First snapshot of [myschedule-3.0.0](https://code.google.com/p/myschedule/downloads/list) with brand new UI is ready to be try out! 
 

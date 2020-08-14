@@ -1,9 +1,10 @@
-title=How to integrate TimeMachine Scheduler in Spring based application
-date=2012-08-17
-type=post
-tags=timemachine, spring
-status=published
-~~~~~~
+---
+title: How to integrate TimeMachine Scheduler in Spring based application
+date: 2012-08-17
+tags:
+  - timemachine
+  - spring
+---
 
 One of the goals for [TimeMachine Scheduler](https://bitbucket.org/timemachine/scheduler) is to make use of POJO as friendly as possible so that we can integrate into any IoC container easily. I've prepared a demo that will show you how to integrate TimeMachine with [Spring](http://www.springsource.org/) based application. 
 

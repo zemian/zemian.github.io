@@ -1,9 +1,9 @@
-title=How to make an executable WAR file
-date=2012-08-14
-type=post
-tags=maven
-status=published
-~~~~~~
+---
+title: How to make an executable WAR file
+date: 2012-08-14
+tags:
+  - maven
+---
 
 If you ever used [Jenkin](http://jenkins-ci.org) CI server, you have probably seen their super easy one-line instruction to get started: `java -jar jenkins.war`. Now that's one awesome way to get your users to try out your product!
 

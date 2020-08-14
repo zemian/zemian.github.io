@@ -1,9 +1,9 @@
-title=How Servlet and JSP create sessions
-date=2014-10-26
-type=post
-tags=servlet
-status=published
-~~~~~~
+---
+title: How Servlet and JSP create sessions
+date: 2014-10-26
+tags:
+  - servlet
+---
 In Servlet, you may get the Session object by "httpServletRequest.getSession(true)". The "true" flag will create the session if it doesn't already exist, else it gets the existing session.
 
 Now if you want to check whether you have the session exists or not (without have to create one if doesn't exist), you need to pass in "false" and then check for "null".

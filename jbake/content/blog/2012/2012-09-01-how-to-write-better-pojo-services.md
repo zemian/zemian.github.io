@@ -1,9 +1,9 @@
-title=How to write better POJO Services
-date=2012-09-01
-type=post
-tags=java
-status=published
-~~~~~~
+---
+title: How to write better POJO Services
+date: 2012-09-01
+tags:
+  - java
+---
 
 In Java, you can easily implement some business logic in Plain Old Java Object (POJO) classes, and then able to run them in a fancy
 server or framework without much hassle. There many server/frameworks, such as JBossAS, Spring or Camel etc, that 

@@ -1,9 +1,9 @@
-title=Java Http Proxy with User and Password
-date=2018-03-16
-type=post
-tags=java-http-proxy
-status=published
-~~~~~~
+---
+title: Java Http Proxy with User and Password
+date: 2018-03-16
+tags:
+  - java-http-proxy
+---
 
 **scratch\_1.java.**
 

@@ -1,9 +1,9 @@
-title=Getting Project File Stats with Python
-date=2018-03-14
-type=post
-tags=python
-status=published
-~~~~~~
+---
+title: Getting Project File Stats with Python
+date: 2018-03-14
+tags:
+  - python
+---
 
     import os, sys
     from collections import defaultdict

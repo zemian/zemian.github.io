@@ -1,9 +1,9 @@
-title=Writing your own logging service?
-date=2014-12-13
-type=post
-tags=logging
-status=published
-~~~~~~
+---
+title: Writing your own logging service?
+date: 2014-12-13
+tags:
+  - logging
+---
 Application logging is one those things like favorite Editors war: everyone has their own opinions and there are endless of implemenations and flavors out there. Now a days, you likely would want to use something already available such as Log4j or Logback. Even JDK has a built in "java.util.logging" implementation. To avoid couple to a direct logger, many projects would opt to use a facade interface, and there is already couple good ones out there already, such as SLF4J or Apache Common Logging etc.
 
 Despite all these, many project owners still want to try write their own logger service! I wondered if I were to ask and write one myself, what would it be like? So I played around and come up with this simple facade that wraps one of the logger provider (JDK logger in this case), and you can check it out [here](https://github.com/saltnlight5/java-ee6-examples/tree/master/common-service/src/main/java/zemian/service/logging). With my logger, you can use it like this in your application:

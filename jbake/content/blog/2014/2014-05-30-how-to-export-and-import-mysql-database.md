@@ -1,9 +1,9 @@
-title=How to export and import MySQL database
-date=2014-05-30
-type=post
-tags=mysql
-status=published
-~~~~~~
+---
+title: How to export and import MySQL database
+date: 2014-05-30
+tags:
+  - mysql
+---
 You can export the MySQL database with schema table definitions and data separated. Here is a simple bash shell script that will export an database.
 
 # file: database-export.sh

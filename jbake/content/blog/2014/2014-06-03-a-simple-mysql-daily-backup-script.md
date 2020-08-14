@@ -1,9 +1,10 @@
-title=A simple MySQL daily backup script
-date=2014-06-03
-type=post
-tags=mysql, backup
-status=published
-~~~~~~
+---
+title: A simple MySQL daily backup script
+date: 2014-06-03
+tags:
+  - mysql
+  - backup
+---
 Using the MySQL export script I've showed from [last post](http://saltnlight5.blogspot.com/2014/05/how-to-export-and-import-mysql-database.html) (assume you saved it in a file named "$HOME/database-export.sh"), you may now perform a daily backup with your crontab service like this.
 
 #file: mysql-backups.sh

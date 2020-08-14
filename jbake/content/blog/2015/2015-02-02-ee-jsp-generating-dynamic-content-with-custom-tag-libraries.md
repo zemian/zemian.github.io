@@ -1,9 +1,10 @@
-title=EE JSP: Generating Dynamic Content with Custom Tag Libraries
-date=2015-02-02
-type=post
-tags=jsp, tag
-status=published
-~~~~~~
+---
+title: EE JSP: Generating Dynamic Content with Custom Tag Libraries
+date: 2015-02-02
+tags:
+  - jsp
+  - tag
+---
 When developing View layer in a web application, you want to try not to duplicate content in JSP files as much as possible. The JSP spec API allows you to reduce this duplication by using tag libraries. A custom JSP tag is a user defined xml tag element that you can insert into JSP file to replace with some dynamic content.
 
 Here is an simple [jsp-example](https://github.com/saltnlight5/java-ee6-examples/blob/master/jsp-example/) using a custom JSP tag that insert a server time stamp value:

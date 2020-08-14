@@ -1,9 +1,9 @@
-title=Boost your Groovy with NailGun
-date=2012-09-13
-type=post
-tags=groovy
-status=published
-~~~~~~
+---
+title: Boost your Groovy with NailGun
+date: 2012-09-13
+tags:
+  - groovy
+---
 
 Are you working on a large Hibernate project that takes long time to load up all the `hbm.xml` files when creating the 
 `Session` object? This is fine during deployment and runtime because it only loads it once. However, often time we also 

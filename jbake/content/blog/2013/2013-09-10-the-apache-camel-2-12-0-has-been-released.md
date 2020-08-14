@@ -1,9 +1,9 @@
-title=The Apache Camel 2.12.0 has been released!
-date=2013-09-10
-type=post
-tags=camel
-status=published
-~~~~~~
+---
+title: The Apache Camel 2.12.0 has been released!
+date: 2013-09-10
+tags:
+  - camel
+---
 
 The Apache Camel 2.12.0 has been released! Yeh!
 

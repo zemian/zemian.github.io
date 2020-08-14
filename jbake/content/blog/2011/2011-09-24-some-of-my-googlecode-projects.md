@@ -1,8 +1,9 @@
-title=Some of my googlecode projects
-date=2011-09-24
-type=post
-status=published
-~~~~~~
+---
+title: Some of my googlecode projects
+date: 2011-09-24
+tags:
+  - s: published
+---
 I have created number of googlecode projects in attempt to try out new codes and ideas in the past. I now have links to all of them in my consolidated playground area [http://code.google.com/p/zemiandeng/](http://code.google.com/p/zemiandeng/)
 
 I also kept few Java project templates (Maven based) in there: [http://code.google.com/p/zemiandeng/source/browse/](http://code.google.com/p/zemiandeng/source/browse/) These can get you started a project fairly quickly. See the README.txt in each for more details. I have added:

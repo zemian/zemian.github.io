@@ -1,9 +1,10 @@
-title=Script Console Tool for any WAR application
-date=2012-07-21
-type=post
-tags=java, script
-status=published
-~~~~~~
+---
+title: Script Console Tool for any WAR application
+date: 2012-07-21
+tags:
+  - java
+  - script
+---
 
 In the latest release of [TimeMachine scheduler project](https://bitbucket.org/timemachine/scheduler), I've added a Groovy scripting console to the web app and allow user to script the scheduler. This feature is actually very useful for any servlet application as well. Imagine that if you have a script/shell console for your web application that allow you to dynamically inspect any variables or data?
 

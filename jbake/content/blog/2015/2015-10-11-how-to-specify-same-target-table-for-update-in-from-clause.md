@@ -1,9 +1,9 @@
-title=How to specify SAME target table for update in FROM clause
-date=2015-10-11
-type=post
-tags=mysql
-status=published
-~~~~~~
+---
+title: How to specify SAME target table for update in FROM clause
+date: 2015-10-11
+tags:
+  - mysql
+---
 Have you tried updating something simple as following?
 
 update category_tmp set last_update=NOW() 

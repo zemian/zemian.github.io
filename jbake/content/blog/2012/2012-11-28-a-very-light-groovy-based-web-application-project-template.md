@@ -1,9 +1,9 @@
-title=A very light Groovy based web application project template
-date=2012-11-28
-type=post
-tags=groovy
-status=published
-~~~~~~
+---
+title: A very light Groovy based web application project template
+date: 2012-11-28
+tags:
+  - groovy
+---
 
 You might have heard of the project Grails is a Groovy version of Ruby on Rails like framework that let you create web application much more easier with
 Dynamic scripting. Despite all that power Grails provided, it is not "light" if you look under the hood. I am not saying Grails is bad or anything. Grails is actually pretty cool to write web application with. However I found myself often want something even lighter and yet still want to prototype with Groovy. So here I will show you a [maven-groovy-webapp](https://bitbucket.org/saltnlight5/sandbox/downloads/maven-webapp-groovy.zip) project template that I use to get start any web application development. It's very simple, light, and yet very Groovy.

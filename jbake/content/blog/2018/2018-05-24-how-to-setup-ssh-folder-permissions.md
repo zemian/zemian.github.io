@@ -1,9 +1,10 @@
-title=How to setup .ssh folder permissions
-date=2018-05-24
-type=post
-tags=ssh, linux
-status=published
-~~~~~~
+---
+title: How to setup .ssh folder permissions
+date: 2018-05-24
+tags:
+  - ssh
+  - linux
+---
 
 How to setup .ssh folder permissions
 ====================================

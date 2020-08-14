@@ -1,9 +1,9 @@
-title=How to reset WebLogic admin server password
-date=2014-04-02
-type=post
-tags=weblogic
-status=published
-~~~~~~
+---
+title: How to reset WebLogic admin server password
+date: 2014-04-02
+tags:
+  - weblogic
+---
 
     If you forgot your admin user password for WebLogic, you can reset it this way. Ensure you are in the domain directory first! 
 

@@ -1,9 +1,9 @@
-title=High Level Design Diagrams for TimeMachine Scheduler
-date=2012-09-29
-type=post
-tags=timemachine
-status=published
-~~~~~~
+---
+title: High Level Design Diagrams for TimeMachine Scheduler
+date: 2012-09-29
+tags:
+  - timemachine
+---
 
 Despite the advance of all the computers, I am one of those guys who still carry a pen and composition notebook around. I am far from those who has photographic memories, nor one who can digest every thing in their heads. Especially when it comes to doing software design. I still find my self scribbling on my notebook quite a bit, or even on piece of napkin if no paper is available. I am also one of those who only need high level ideas drawn out, then I can usually go directly to code, map it to some API and then write some simple implementations to get started. 
 

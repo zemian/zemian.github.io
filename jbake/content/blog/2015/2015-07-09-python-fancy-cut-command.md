@@ -1,9 +1,9 @@
-title=python fancy cut command
-date=2015-07-09
-type=post
-tags=python
-status=published
-~~~~~~
+---
+title: python fancy cut command
+date: 2015-07-09
+tags:
+  - python
+---
 # file: cut.py
 
 #

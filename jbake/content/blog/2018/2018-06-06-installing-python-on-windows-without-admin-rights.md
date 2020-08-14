@@ -1,9 +1,9 @@
-title=Installing Python on Windows Without Admin Rights
-date=2018-06-06
-type=post
-tags=python-install
-status=published
-~~~~~~
+---
+title: Installing Python on Windows Without Admin Rights
+date: 2018-06-06
+tags:
+  - python-install
+---
 
 To install Python on Windows without Admin Rights:
 

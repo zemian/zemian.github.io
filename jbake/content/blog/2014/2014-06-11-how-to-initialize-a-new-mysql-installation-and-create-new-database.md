@@ -1,9 +1,9 @@
-title=How to initialize a new MySQL installation and create new database
-date=2014-06-11
-type=post
-tags=mysql
-status=published
-~~~~~~
+---
+title: How to initialize a new MySQL installation and create new database
+date: 2014-06-11
+tags:
+  - mysql
+---
 
      
 

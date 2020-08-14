@@ -1,9 +1,12 @@
-title=How to setup Httpd Reverse Proxy To Tomcat
-date=2018-03-05
-type=post
-tags=httpd, reverse, proxy, tomcat
-status=published
-~~~~~~
+---
+title: How to setup Httpd Reverse Proxy To Tomcat
+date: 2018-03-05
+tags:
+  - httpd
+  - reverse
+  - proxy
+  - tomcat
+---
 
 Here is an example on how to configure HTTPD server with reverse proxy
 into Tomcat, and adding the authenticated user as header and passing to

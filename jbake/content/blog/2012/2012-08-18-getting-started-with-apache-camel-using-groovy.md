@@ -1,9 +1,10 @@
-title=Getting started with Apache Camel using Groovy
-date=2012-08-18
-type=post
-tags=groovy, camel
-status=published
-~~~~~~
+---
+title: Getting started with Apache Camel using Groovy
+date: 2012-08-18
+tags:
+  - groovy
+  - camel
+---
 
 From their site, it says the [Apache Camel](http://camel.apache.org) is a versatile open-source integration framework based on known Enterprise Integration Patterns. It might seem like a vague definition, but I want to tell you that this is a very productive Java library that can solve many of typical IT problems! You can think of it as a very light weight ESB framework with "batteries" included.
 

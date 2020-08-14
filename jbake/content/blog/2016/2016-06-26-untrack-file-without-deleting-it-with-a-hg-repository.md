@@ -1,9 +1,9 @@
-title=Untrack file without deleting it with a hg repository
-date=2016-06-26
-type=post
-tags=hg
-status=published
-~~~~~~
+---
+title: Untrack file without deleting it with a hg repository
+date: 2016-06-26
+tags:
+  - hg
+---
 So I have created a maven based Java project using IntelliJ IDEA, and I added all files to my hg repository with this .hgignore file in place:
 
 syntax: glob

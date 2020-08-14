@@ -1,9 +1,9 @@
-title=My Quick Git Reference
-date=2016-10-04
-type=post
-tags=git
-status=published
-~~~~~~
+---
+title: My Quick Git Reference
+date: 2016-10-04
+tags:
+  - git
+---
 
 I have started using git and here are some of my frequently used
 commands.

@@ -1,9 +1,9 @@
-title=Hello VueJS
-date=2020-04-18
-type=post
-tags=vue
-status=published
-~~~~~~
+---
+title: Hello VueJS
+date: 2020-04-18
+tags:
+  - vue
+---
 
 I like [VueJS](http://vuejs.org/) because it’s similar to [KnockoutJS](hello-knockout.md) that I am familiar with. The VueJS has much more modern feel and the code is a lot more smoother compare to the KnockoutJS. One big difference is KO uses the Observable object to bind reactive properties, while in VueJS it can be treated as normal JS properties.
 

@@ -1,9 +1,9 @@
-title=A command to remove all Windows mapped drives
-date=2012-12-12
-type=post
-tags=cmd
-status=published
-~~~~~~
+---
+title: A command to remove all Windows mapped drives
+date: 2012-12-12
+tags:
+  - cmd
+---
 
 If you work in a Corp env and having a Laptop, you will likely go home
 with it still running and it must has all the network drives still

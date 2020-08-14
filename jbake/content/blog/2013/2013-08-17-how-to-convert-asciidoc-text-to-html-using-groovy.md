@@ -1,9 +1,9 @@
-title=How to convert asciidoc text to html using Groovy
-date=2013-08-17
-type=post
-tags=groovy
-status=published
-~~~~~~
+---
+title: How to convert asciidoc text to html using Groovy
+date: 2013-08-17
+tags:
+  - groovy
+---
 
 Here is how you can convert `asciidoc` text using Groovy script:
 

@@ -1,9 +1,10 @@
-title=IntelliJ highlight "out.println" in JSP as red error
-date=2018-02-17
-type=post
-tags=intellij, jsp
-status=published
-~~~~~~
+---
+title: IntelliJ highlight "out.println" in JSP as red error
+date: 2018-02-17
+tags:
+  - intellij
+  - jsp
+---
 
 Some times you might have a Maven web application that deployes without
 problem into a Tomcat server, but when open in IntelliJ IDE, you will

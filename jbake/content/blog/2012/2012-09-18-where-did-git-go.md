@@ -1,9 +1,9 @@
-title=Where did Git go?
-date=2012-09-18
-type=post
-tags=git
-status=published
-~~~~~~
+---
+title: Where did Git go?
+date: 2012-09-18
+tags:
+  - git
+---
 My git is gone after I upgraded to latest MacOSX updates! What a annoying thing.
 
 Appearently it's in here now: `/usr/local/git/bin/git`

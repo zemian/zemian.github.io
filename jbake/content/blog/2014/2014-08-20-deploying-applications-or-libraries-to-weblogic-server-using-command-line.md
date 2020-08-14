@@ -1,9 +1,9 @@
-title=Deploying applications or libraries to WebLogic Server using command line
-date=2014-08-20
-type=post
-tags=weblogic
-status=published
-~~~~~~
+---
+title: Deploying applications or libraries to WebLogic Server using command line
+date: 2014-08-20
+tags:
+  - weblogic
+---
 Here is how you can automate deployment for WebLogic server using command line.
 
 First source the env settings from the server:

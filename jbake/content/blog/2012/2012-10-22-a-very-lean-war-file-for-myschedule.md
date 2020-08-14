@@ -1,9 +1,10 @@
-title=A very lean war file for MySchedule
-date=2012-10-22
-type=post
-tags=myschedule, quartz
-status=published
-~~~~~~
+---
+title: A very lean war file for MySchedule
+date: 2012-10-22
+tags:
+  - myschedule
+  - quartz
+---
 On the next coming MySchedule release, I've been working on removing few dependencies in the project to improve its size, but yet still keeping all the original functionality.
 
 The [result](http://code.google.com/p/myschedule/downloads/list) is about 70% reduction in war file size!

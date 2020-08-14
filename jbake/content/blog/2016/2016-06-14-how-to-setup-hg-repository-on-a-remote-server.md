@@ -1,9 +1,9 @@
-title=How to setup hg repository on a remote server
-date=2016-06-14
-type=post
-tags=hg
-status=published
-~~~~~~
+---
+title: How to setup hg repository on a remote server
+date: 2016-06-14
+tags:
+  - hg
+---
 I love using mercurial source control! It's easy to use and it works as I expected everytime I need to do something with my source repository. Here is how you can quickly create a remote repository to push your existing project into it. (use this as backup of your project or share among your team etc)
 
 1. SSH into your remote server and create an empty repository.

@@ -1,9 +1,10 @@
-title=JavaScript Jdbc Quick Test
-date=2015-09-09
-type=post
-tags=javascript, jdbc
-status=published
-~~~~~~
+---
+title: JavaScript Jdbc Quick Test
+date: 2015-09-09
+tags:
+  - javascript
+  - jdbc
+---
 importPackage(java.sql)
 url = "jdbc:mysql://localhost/test";
 username = "test";

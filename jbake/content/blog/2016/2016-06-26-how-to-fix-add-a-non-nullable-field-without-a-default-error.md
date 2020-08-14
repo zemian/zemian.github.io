@@ -1,9 +1,9 @@
-title=How to fix 'add a non-nullable field ... without a default' error
-date=2016-06-26
-type=post
-tags=django
-status=published
-~~~~~~
+---
+title: How to fix 'add a non-nullable field ... without a default' error
+date: 2016-06-26
+tags:
+  - django
+---
 
 Error example:
 

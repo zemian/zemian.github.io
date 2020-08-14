@@ -1,9 +1,9 @@
-title=Exploring Apache Camel Core - DataSet Component
-date=2013-09-03
-type=post
-tags=camel
-status=published
-~~~~~~
+---
+title: Exploring Apache Camel Core - DataSet Component
+date: 2013-09-03
+tags:
+  - camel
+---
 
 A good sample data generator can help you test program more throughly and help measure
 the processing throughput. The `camel-core` comes with a `dataset` component that can

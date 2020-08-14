@@ -1,9 +1,10 @@
-title=How to run nginx and setup reverse proxy to Tomcat
-date=2017-08-04
-type=post
-tags=nginx, tomcat
-status=published
-~~~~~~
+---
+title: How to run nginx and setup reverse proxy to Tomcat
+date: 2017-08-04
+tags:
+  - nginx
+  - tomcat
+---
 
     # start
     cd ~/apps/nginx-1.13.7

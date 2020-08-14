@@ -1,9 +1,9 @@
-title=Cygwin tips: open anything with cygstart
-date=2012-12-13
-type=post
-tags=cygwin
-status=published
-~~~~~~
+---
+title: Cygwin tips: open anything with cygstart
+date: 2012-12-13
+tags:
+  - cygwin
+---
 Cygwin has this cool command called `cygstart`, and I usually alias it as `open`.
  
 

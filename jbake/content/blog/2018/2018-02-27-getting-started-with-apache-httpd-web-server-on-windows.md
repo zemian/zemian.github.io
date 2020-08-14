@@ -1,9 +1,10 @@
-title=Getting started with Apache HTTPD Web Server on Windows
-date=2018-02-27
-type=post
-tags=httpd, cygwin
-status=published
-~~~~~~
+---
+title: Getting started with Apache HTTPD Web Server on Windows
+date: 2018-02-27
+tags:
+  - httpd
+  - cygwin
+---
 
 Using native Windows Binary (without admin rights)
 ==================================================

@@ -1,9 +1,9 @@
-title=How to setup Intellij IDE war exploded artifact with multiple CDI dependent projects
-date=2015-05-29
-type=post
-tags=intellij
-status=published
-~~~~~~
+---
+title: How to setup Intellij IDE war exploded artifact with multiple CDI dependent projects
+date: 2015-05-29
+tags:
+  - intellij
+---
 I have a large Java project with many sub modules, and they have simple top down dependencies like this:
 
 ProjectX

@@ -1,9 +1,11 @@
-title=Getting django started on Windows 7 with python 3 and MySQL 5.6
-date=2014-06-18
-type=post
-tags=django, python, mysql
-status=published
-~~~~~~
+---
+title: Getting django started on Windows 7 with python 3 and MySQL 5.6
+date: 2014-06-18
+tags:
+  - django
+  - python
+  - mysql
+---
 Django is a python web framework library and it works on both python 2 or 3. I will show you how to get python 3 setup in Cygwin environment.
 
 If you're on a Windows OS, the best experience I have when working with Django on Windows is to use Cygwin, a Unix emulator shell that runs on Windows. The pip and django commands would automatically setup in Cygwin's PATH after installed. The default python package on Cygwin is only 2.7 though, so you have to search for "python3" package to get the latest python version. And you can have both versions installed without problem, but the executable are named "python" and "python3" respectively.

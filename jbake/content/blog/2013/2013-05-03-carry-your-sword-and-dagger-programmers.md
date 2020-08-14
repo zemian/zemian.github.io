@@ -1,8 +1,9 @@
-title=Carry your sword and dagger programmers!
-date=2013-05-03
-type=post
-status=published
-~~~~~~
+---
+title: Carry your sword and dagger programmers!
+date: 2013-05-03
+tags:
+  - s: published
+---
 
 A knight would for sure carry his sword proudly and ready for any
 battles. But then he can not use such a heavy weapon for daily tasks

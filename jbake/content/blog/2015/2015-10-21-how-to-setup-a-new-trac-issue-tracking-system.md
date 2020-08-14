@@ -1,9 +1,10 @@
-title=How to setup a new Trac issue tracking system
-date=2015-10-21
-type=post
-tags=python, issue-tracker
-status=published
-~~~~~~
+---
+title: How to setup a new Trac issue tracking system
+date: 2015-10-21
+tags:
+  - python
+  - issue-tracker
+---
 Here is how I setup a local instance of Trac (a python based issue tracking web application) on my Mac.
 
 Prerequisite: MySQL 5.6 and Python 2.7 (Python3 will not work with Trac yet!)

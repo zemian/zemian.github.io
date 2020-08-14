@@ -1,9 +1,9 @@
-title=Reduce recent project list size in IntelliJ
-date=2018-03-07
-type=post
-tags=intellij
-status=published
-~~~~~~
+---
+title: Reduce recent project list size in IntelliJ
+date: 2018-03-07
+tags:
+  - intellij
+---
 
 When opening a project from IntelliJ IDE, it will give you a list of
 menu that contains your recent projects. This list however has default

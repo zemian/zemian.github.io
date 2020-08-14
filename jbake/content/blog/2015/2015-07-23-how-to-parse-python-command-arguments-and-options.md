@@ -1,9 +1,9 @@
-title=How to parse Python command arguments and options
-date=2015-07-23
-type=post
-tags=python
-status=published
-~~~~~~
+---
+title: How to parse Python command arguments and options
+date: 2015-07-23
+tags:
+  - python
+---
 https://docs.python.org/3/howto/argparse.html
 
 The python doc for [argparse ](https://docs.python.org/3.4/library/argparse.html)module didn't provide enough examples on the usage. I also think the module and parser itself is TOO flexible, in that the add_argument function accept too many parameters and it's confusing to use.

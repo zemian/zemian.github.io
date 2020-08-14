@@ -1,9 +1,9 @@
-title=MySchedule-3.2.1.0 is out!
-date=2013-08-23
-type=post
-tags=myschedule
-status=published
-~~~~~~
+---
+title: MySchedule-3.2.1.0 is out!
+date: 2013-08-23
+tags:
+  - myschedule
+---
 
 The main work on this release is upgrade to Quartz 2.2.1
 

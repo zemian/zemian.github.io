@@ -1,9 +1,11 @@
-title=Customizing httpd conf with special request header and filter
-date=2018-02-26
-type=post
-tags=httpd, proxy, filter
-status=published
-~~~~~~
+---
+title: Customizing httpd conf with special request header and filter
+date: 2018-02-26
+tags:
+  - httpd
+  - proxy
+  - filter
+---
 
 How to setup httpd reverse proxy for Tomcat
 ===========================================

@@ -1,9 +1,9 @@
-title=EE Servlet 3: Getting started with web application module and a landing page
-date=2014-12-27
-type=post
-tags=servlet
-status=published
-~~~~~~
+---
+title: EE Servlet 3: Getting started with web application module and a landing page
+date: 2014-12-27
+tags:
+  - servlet
+---
 
 ## 
 Getting started with Servlet 3

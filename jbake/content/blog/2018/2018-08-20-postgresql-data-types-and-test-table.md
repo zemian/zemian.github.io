@@ -1,9 +1,10 @@
-title=PostgreSQL Data Types and Test Table 
-date=2018-08-20
-type=post
-tags=sql, postgres
-status=published
-~~~~~~
+---
+title: PostgreSQL Data Types and Test Table 
+date: 2018-08-20
+tags:
+  - sql
+  - postgres
+---
 
     -- Notes for PostgreSQL Database (9.6)
     -- https://www.postgresql.org/docs/9.6/static/index.html

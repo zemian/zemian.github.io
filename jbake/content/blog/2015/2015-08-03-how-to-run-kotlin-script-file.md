@@ -1,9 +1,9 @@
-title=How to run Kotlin script file
-date=2015-08-03
-type=post
-tags=kotlin
-status=published
-~~~~~~
+---
+title: How to run Kotlin script file
+date: 2015-08-03
+tags:
+  - kotlin
+---
 The script name MUST have ".kts" extension! If not, you will get a unfriendly error message.
 
 kotlinc -script hello.kts

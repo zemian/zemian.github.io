@@ -1,9 +1,9 @@
-title=Python cat program
-date=2015-07-24
-type=post
-tags=python
-status=published
-~~~~~~
+---
+title: Python cat program
+date: 2015-07-24
+tags:
+  - python
+---
 You can implement the Linux cat program with few lines of Python code.
 
 import fileinput

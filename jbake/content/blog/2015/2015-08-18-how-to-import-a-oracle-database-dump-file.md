@@ -1,9 +1,9 @@
-title=How to import a Oracle database dump file
-date=2015-08-18
-type=post
-tags=oracle
-status=published
-~~~~~~
+---
+title: How to import a Oracle database dump file
+date: 2015-08-18
+tags:
+  - oracle
+---
 Here is an example on how to import a Oracle database dump file (a binary file that's exported from a Oracle database using the Oracle data pump utility). For this instruction example, let's say I was given a myapp.dmp.gz file.
 
 NOTE: If you do not use the same db user/tablespace for export and import, then you need to know its names used during export to perform the remapping during import.

@@ -1,9 +1,9 @@
-title=TimeMachine Scheduler Tour: Part7
-date=2012-06-24
-type=post
-tags=timemachine
-status=published
-~~~~~~
+---
+title: TimeMachine Scheduler Tour: Part7
+date: 2012-06-24
+tags:
+  - timemachine
+---
 
 This is part 7 of 7 in a series of articles that will give you a tour of the [TimeMachine Scheduler](https://bitbucket.org/timemachine/scheduler/wiki/Home) project. These articles will introduce you to the scheduler, how to load jobs and schedules, and explore some of its advanced features. For the most current and accurate instructions, please visit the ReferenceManual from the project site.
 

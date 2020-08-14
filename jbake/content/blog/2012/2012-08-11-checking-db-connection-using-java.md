@@ -1,9 +1,9 @@
-title=Checking DB Connection using Java
-date=2012-08-11
-type=post
-tags=java
-status=published
-~~~~~~
+---
+title: Checking DB Connection using Java
+date: 2012-08-11
+tags:
+  - java
+---
 For complete sake, here is a Java version of the http://saltnlight5.blogspot.com/2012/12/checking-db-connection-using-groovy.html[Groovy post] to test your Oracle Database connection.
 
 ```

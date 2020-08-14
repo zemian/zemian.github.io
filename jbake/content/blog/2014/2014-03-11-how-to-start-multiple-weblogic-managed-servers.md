@@ -1,9 +1,9 @@
-title=How to start multiple WebLogic managed servers
-date=2014-03-11
-type=post
-tags=weblogic
-status=published
-~~~~~~
+---
+title: How to start multiple WebLogic managed servers
+date: 2014-03-11
+tags:
+  - weblogic
+---
 The WebLogic Server docs recommand you to create a dedicated admin server and then sepearate managed servers for application deployment. Here I will show you how to create one or more managed server in the same host as the admin server.
 
 I assume you already have WLS installed with your own domain created and running. If you haven't done this before, you may refer to my [previous blog on how to create and start WLS.](http://saltnlight5.blogspot.com/2014/01/getting-started-with-weblogic-server.html) After you started your domain (that's the default admin server), then follow these steps.

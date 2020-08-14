@@ -1,9 +1,9 @@
-title=Getting started with PostgreSQL database
-date=2016-06-26
-type=post
-tags=postgres
-status=published
-~~~~~~
+---
+title: Getting started with PostgreSQL database
+date: 2016-06-26
+tags:
+  - postgres
+---
 
 I have been learning and using PostgreSQL recently for a Django app, and I have to say it's really GOOD! I have used quite a bit of MySQL and Oracle DB in my workplace, so I didn't find good reason to learn PostgreSQL in the past. Now I finally get a chance to start another new project with Django, so I decided to give it a try, and I wasn't disappointed. I will write up a brief getting started guide here for those impatient to get things moving.
 

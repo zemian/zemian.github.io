@@ -1,9 +1,9 @@
-title=Getting JDK6 src.zip for new iMac
-date=2012-07-03
-type=post
-tags=java
-status=published
-~~~~~~
+---
+title: Getting JDK6 src.zip for new iMac
+date: 2012-07-03
+tags:
+  - java
+---
 I got a new iMac, and I have activated the first time usage of JDK6. It's all working, but it doesn't come with src.zip! I googled around but other's solution didn't work for me. (eg: http://stackoverflow.com/questions/4011002/java-eclipse-on-macosx-where-is-the-src-zip). I tried download their Apple JDK updates, but it still doesn't have the src.zip.
 
 So finally realized that this is easier than it needs to be. You can download the full JDK source here: 

@@ -1,9 +1,9 @@
-title=How to install venv and pip with a python 3.4 distribution
-date=2016-06-27
-type=post
-tags=python
-status=published
-~~~~~~
+---
+title: How to install venv and pip with a python 3.4 distribution
+date: 2016-06-27
+tags:
+  - python
+---
 If you are unfortunate enough to have stuck with a Python 3.4 distribution and you want to setup a virtual env, then likely you will get the ensurepip module not found error:
 
 bash> python3.4 -m venv mypy

@@ -1,9 +1,10 @@
-title=How to replace all with pre-processing on a captured group with Java
-date=2015-06-12
-type=post
-tags=java, regex
-status=published
-~~~~~~
+---
+title: How to replace all with pre-processing on a captured group with Java
+date: 2015-06-12
+tags:
+  - java
+  - regex
+---
 Need to replace all occurances of a pattern text and replace it with a captured group? Something like this in Java works nicely:
 
         

@@ -1,8 +1,9 @@
-title=Git clone failed with SSL certificate problem
-date=2018-03-03
-type=post
-status=published
-~~~~~~
+---
+title: Git clone failed with SSL certificate problem
+date: 2018-03-03
+tags:
+  - s: published
+---
 
 Problem:
 

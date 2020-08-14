@@ -1,9 +1,9 @@
-title=A simple Groovy issue tracker using file system
-date=2012-12-18
-type=post
-tags=groovy
-status=published
-~~~~~~
+---
+title: A simple Groovy issue tracker using file system
+date: 2012-12-18
+tags:
+  - groovy
+---
 It will be a chaos not to track bugs and feature requests when you developing software. Having a simple issue tracker would make managing the project much more successful. Now I like simple stuff, and I think for small project, having this tracker right inside the source control (especially with DSVC like Mercurial/Git etc) repository is not only doable, but very convenient as well. You don't have to go crazy with all the fancy features, but just enough to track issues are fine. I would like to propose this layout for you.
 
 Let's say you have a project that looks like this

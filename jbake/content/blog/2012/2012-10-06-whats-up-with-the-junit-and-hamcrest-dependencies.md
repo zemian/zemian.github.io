@@ -1,9 +1,10 @@
-title=What's up with the JUnit and Hamcrest dependencies?
-date=2012-10-06
-type=post
-tags=java, junit
-status=published
-~~~~~~
+---
+title: What's up with the JUnit and Hamcrest dependencies?
+date: 2012-10-06
+tags:
+  - java
+  - junit
+---
 
 It's awesome that [JUnit](http://www.junit.org/) is recognizing the usefulness of [Hamcrest](http://code.google.com/p/hamcrest/), because I use these two a lot. However, I find JUnit packaging of their dependencies odd, and can cause class loading problem if you are not careful. 
 

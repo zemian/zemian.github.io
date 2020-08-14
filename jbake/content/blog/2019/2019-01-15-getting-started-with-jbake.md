@@ -1,9 +1,10 @@
-title=Getting Started with jbake
-date=2019-01-15
-type=post
-tags=blog, jbake
-status=published
-~~~~~~
+---
+title: Getting Started with jbake
+date: 2019-01-15
+tags:
+  - blog
+  - jbake
+---
 
 I started using <https://jbake.org/> for [my blog
 site](https://zemian.github.io/) here at GitHub page. It’s a Java based

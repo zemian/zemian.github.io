@@ -1,9 +1,11 @@
-title=How to setup httpd form authentication and user session login/logout
-date=2018-02-27
-type=post
-tags=httpd, authentication, session
-status=published
-~~~~~~
+---
+title: How to setup httpd form authentication and user session login/logout
+date: 2018-02-27
+tags:
+  - httpd
+  - authentication
+  - session
+---
 
 Configuration setup for `httpd.conf`
 ====================================

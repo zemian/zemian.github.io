@@ -1,9 +1,9 @@
-title=Improving java.util.Properties
-date=2012-09-07
-type=post
-tags=java
-status=published
-~~~~~~
+---
+title: Improving java.util.Properties
+date: 2012-09-07
+tags:
+  - java
+---
 
 The Java built-in `java.util.Properties` class could really use some love. I have written a slightly improved version called
 [timemachine.scheduler.support.Props](https://bitbucket.org/timemachine/scheduler/src/15f066cc6dad/timemachine-scheduler/src/main/java/timemachine/scheduler/support/Props.java), and below are some features that I use often.

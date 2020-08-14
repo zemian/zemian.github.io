@@ -1,9 +1,10 @@
-title=Getting started with Intellij IDEA and WebLogic Server
-date=2014-01-31
-type=post
-tags=intellij, weblogic
-status=published
-~~~~~~
+---
+title: Getting started with Intellij IDEA and WebLogic Server
+date: 2014-01-31
+tags:
+  - intellij
+  - weblogic
+---
 Before starting, you would need the Ultimate version of IDEA to run WebLogic Server (yes, the paid version or the 30 days trial). The Community edition of IDEA will not support Application Server deployment.
 
 I also assume you have already setup WebLogic Server and a user domain as per my [previous blog instructions](http://saltnlight5.blogspot.com/2014/01/getting-started-with-weblogic-server.html). So now let's setup the IDE to boost your development.

@@ -1,9 +1,9 @@
-title=Exploring More on RequireJS
-date=2020-04-22
-type=post
-tags=requirejs
-status=published
-~~~~~~
+---
+title: Exploring More on RequireJS
+date: 2020-04-22
+tags:
+  - requirejs
+---
 
 ## Configuring RequireJS
 

@@ -1,9 +1,10 @@
-title=Run Tomcat with webapp-runner.jar
-date=2018-06-21
-type=post
-tags=tomcat, webapp-runner
-status=published
-~~~~~~
+---
+title: Run Tomcat with webapp-runner.jar
+date: 2018-06-21
+tags:
+  - tomcat
+  - webapp-runner
+---
 
 I have used <https://github.com/jsimone/webapp-runner> in several
 projects now, and I find it really useful.

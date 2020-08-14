@@ -1,9 +1,9 @@
-title=Building message based application using Camel
-date=2012-09-14
-type=post
-tags=camel
-status=published
-~~~~~~
+---
+title: Building message based application using Camel
+date: 2012-09-14
+tags:
+  - camel
+---
 
 This is a long article that contains three separate topics:
 

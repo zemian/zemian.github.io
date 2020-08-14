@@ -1,9 +1,9 @@
-title=Inspecting your Oracle database
-date=2012-04-11
-type=post
-tags=oracle
-status=published
-~~~~~~
+---
+title: Inspecting your Oracle database
+date: 2012-04-11
+tags:
+  - oracle
+---
 Some quick tips on how to inspect what you have in your Oracle database.
 
     

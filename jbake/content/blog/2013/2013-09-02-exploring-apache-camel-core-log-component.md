@@ -1,9 +1,9 @@
-title=Exploring Apache Camel Core - Log Component
-date=2013-09-02
-type=post
-tags=camel
-status=published
-~~~~~~
+---
+title: Exploring Apache Camel Core - Log Component
+date: 2013-09-02
+tags:
+  - camel
+---
 
 There are many ways to log and inspect the messages as it pass through your
 Camel `Route`. The `camel-core` comes with a `log` component that let

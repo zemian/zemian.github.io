@@ -1,9 +1,10 @@
-title=How to monitor multiple JVM's on a server with VisualVM
-date=2014-03-15
-type=post
-tags=java, visualvm
-status=published
-~~~~~~
+---
+title: How to monitor multiple JVM's on a server with VisualVM
+date: 2014-03-15
+tags:
+  - java
+  - visualvm
+---
 In the [last article](http://saltnlight5.blogspot.com/2014/03/how-to-start-multiple-weblogic-managed.html) I have shown you how to start WebLogic Server with single admin and mulitiple managed servers. After those are started, how do you go check their health status? You can use the admin's /console webapp. But there  is also another tool that comes with all the default Oracle/Open JDK 6+: the VisualVM. I will show you how to get that up and running to monitor multiple JVM's.
 
 On the server where you run your JVM servers, do this:

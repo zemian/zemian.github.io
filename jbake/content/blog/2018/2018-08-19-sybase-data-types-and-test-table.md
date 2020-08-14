@@ -1,9 +1,10 @@
-title=Sybase Data Types and Test Table 
-date=2018-08-19
-type=post
-tags=sql, sybase
-status=published
-~~~~~~
+---
+title: Sybase Data Types and Test Table 
+date: 2018-08-19
+tags:
+  - sql
+  - sybase
+---
 
     -- Notes for Sybase Database 16
     -- http://infocenter.sybase.com/help/index.jsp?topic=/com.sybase.infocenter.dc70202.1570/html/quickref/title.htm

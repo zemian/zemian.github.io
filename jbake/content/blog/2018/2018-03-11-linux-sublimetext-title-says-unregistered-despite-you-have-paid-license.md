@@ -1,9 +1,9 @@
-title=Linux SublimeText title says "Unregistered" despite you have paid license
-date=2018-03-11
-type=post
-tags=sublimetext
-status=published
-~~~~~~
+---
+title: Linux SublimeText title says "Unregistered" despite you have paid license
+date: 2018-03-11
+tags:
+  - sublimetext
+---
 
 Solution: Edit the "Name" line in
 `~/.local/share/applications/sublime_text.desktop` file.

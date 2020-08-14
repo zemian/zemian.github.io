@@ -1,9 +1,9 @@
-title=How to fix IntelliJ OutOfMemoryError
-date=2018-01-19
-type=post
-tags=intellij
-status=published
-~~~~~~
+---
+title: How to fix IntelliJ OutOfMemoryError
+date: 2018-01-19
+tags:
+  - intellij
+---
 
 If you have a large project, you might get this error when trying to do
 a full build

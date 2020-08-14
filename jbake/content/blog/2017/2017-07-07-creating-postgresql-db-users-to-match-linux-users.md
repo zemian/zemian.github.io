@@ -1,9 +1,9 @@
-title=Creating PostgreSQL db users to match Linux users
-date=2017-07-07
-type=post
-tags=postgres
-status=published
-~~~~~~
+---
+title: Creating PostgreSQL db users to match Linux users
+date: 2017-07-07
+tags:
+  - postgres
+---
 
 By default the `posgresql-server` install will create a `postgres` Linux
 user account and the server will run under that user. And also

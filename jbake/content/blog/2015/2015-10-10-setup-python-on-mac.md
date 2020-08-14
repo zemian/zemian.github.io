@@ -1,9 +1,10 @@
-title=Setup Python on Mac
-date=2015-10-10
-type=post
-tags=python, mac
-status=published
-~~~~~~
+---
+title: Setup Python on Mac
+date: 2015-10-10
+tags:
+  - python
+  - mac
+---
 
 ## 
 Setup Python 2

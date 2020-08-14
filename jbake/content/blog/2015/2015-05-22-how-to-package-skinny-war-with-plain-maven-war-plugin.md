@@ -1,9 +1,9 @@
-title=How to package skinny war with plain maven-war-plugin
-date=2015-05-22
-type=post
-tags=maven
-status=published
-~~~~~~
+---
+title: How to package skinny war with plain maven-war-plugin
+date: 2015-05-22
+tags:
+  - maven
+---
 
 If you are not using maven EAR plugin, then you can also use plain maven-war-plugin to package a Skinny war package like this:
             <plugin>

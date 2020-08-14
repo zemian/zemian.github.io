@@ -1,9 +1,9 @@
-title=Quick way to benchmark Java code
-date=2012-07-11
-type=post
-tags=java
-status=published
-~~~~~~
+---
+title: Quick way to benchmark Java code
+date: 2012-07-11
+tags:
+  - java
+---
 Don't you envy Ruby has the Benchmark module? Yes, there are many art and science go behind how to setup and run a good micro benchmark code, especially with the JVM. But many times you just want to see some result, quickly. There is actually a very groovy and quick way to bench mark Java code with gbench! Check this out:
 
      

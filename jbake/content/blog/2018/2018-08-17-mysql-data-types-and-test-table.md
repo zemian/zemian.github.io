@@ -1,9 +1,10 @@
-title=MySQL Data Types and Test Table 
-date=2018-08-17
-type=post
-tags=sql, mysql
-status=published
-~~~~~~
+---
+title: MySQL Data Types and Test Table 
+date: 2018-08-17
+tags:
+  - sql
+  - mysql
+---
 
     -- Notes for MySQL (8)
     -- https://dev.mysql.com/doc/refman/8.0/en/

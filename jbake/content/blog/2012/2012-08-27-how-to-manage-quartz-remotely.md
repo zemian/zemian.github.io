@@ -1,9 +1,9 @@
-title=How to manage Quartz remotely
-date=2012-08-27
-type=post
-tags=quartz
-status=published
-~~~~~~
+---
+title: How to manage Quartz remotely
+date: 2012-08-27
+tags:
+  - quartz
+---
 
 ## Option 1: JMX
 

@@ -1,9 +1,9 @@
-title=Hello Oracle JET
-date=2020-03-25
-type=post
-tags=ojet
-status=published
-~~~~~~
+---
+title: Hello Oracle JET
+date: 2020-03-25
+tags:
+  - ojet
+---
 
 Here are some short instructions on how to create your first Oracle JET (v8.1.0) application.
 

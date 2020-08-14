@@ -1,9 +1,9 @@
-title=A simple cron wrapper script with logging
-date=2014-06-04
-type=post
-tags=crontab
-status=published
-~~~~~~
+---
+title: A simple cron wrapper script with logging
+date: 2014-06-04
+tags:
+  - crontab
+---
 When working with crontab service, one thing I often need is to capture the ouput of the job. Having the job script aware of this output and logging is tedious, and often make the script harder to read. So I wrote a shell wrapper that will redirect all job script's STDOUT into a log file. This way I can inspect it when a job has run and the job script can just focus on the task itself. 
 
 # file: runcmd.sh

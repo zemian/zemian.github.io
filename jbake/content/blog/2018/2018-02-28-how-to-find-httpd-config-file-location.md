@@ -1,9 +1,9 @@
-title=How to find httpd config file location
-date=2018-02-28
-type=post
-tags=httpd
-status=published
-~~~~~~
+---
+title: How to find httpd config file location
+date: 2018-02-28
+tags:
+  - httpd
+---
 
     Zemians-MacBook-Air:~ zemian$ httpd -t -D DUMP_INCLUDES
     Included configuration files:

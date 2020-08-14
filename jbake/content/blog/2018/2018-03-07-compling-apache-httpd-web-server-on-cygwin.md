@@ -1,9 +1,10 @@
-title=Compling Apache HTTPD Web Server on Cygwin
-date=2018-03-07
-type=post
-tags=httpd, cygwin
-status=published
-~~~~~~
+---
+title: Compling Apache HTTPD Web Server on Cygwin
+date: 2018-03-07
+tags:
+  - httpd
+  - cygwin
+---
 
 I have noted the instructions on how to build the HTTPD web server from
 scratch in a Cygwin platoform in a Windows 7 PC.
