@@ -13,11 +13,11 @@ function rewriteHeader(path) {
 	header[3] = 'tags:'
 	header.push('---');
 	header = header.join('\n');
+	header = header.replace(/=/g, ': ', 'g');
 	file = file.split('~~~~~~');
 	file.shift();
 	file.unshift(header);
 	file = file.join('');
-	file.replace('=', ': ');
 	fs.writeFileSync(path, file);
 }
 
