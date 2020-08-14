@@ -8,7 +8,7 @@ function rewriteHeader(path) {
 	header.splice(3, 1);
 	let tags = header[3].slice(5).split(', ');
 	for(let tag of tags) {
-		header.push(`-${tag}`)
+		header.push(`  - ${tag}`)
 	}
 	header[3] = 'tags:'
 	header.push('---');
@@ -17,6 +17,7 @@ function rewriteHeader(path) {
 	file.shift();
 	file.unshift(header);
 	file = file.join('');
+	file.replace('=', ': ');
 	fs.writeFileSync(path, file);
 }
 
