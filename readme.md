@@ -14,8 +14,7 @@ tags:
   - blog
 ---
 
-My blog content.
-
+My blog content goes here.
 ```
 
 Then preview it:
@@ -43,4 +42,4 @@ Clone another another copy this repository under `temp` folder, and checkout `gh
 1. Go to travis-ci.com and Add `GITHUB_TOKEN` environment variable under the project with the value copied.
 1. Trigger a build
 
-From this point forward, any commits pushed to master will auto trigger build and all the output under `docs` folder will be copy to `gh-pages` branch, commit and push form Travis.
+From this point forward, any commits pushed to master will auto trigger build and all the output under `docs` folder will be copy to `gh-pages` branch, commit and push from Travis CI.
