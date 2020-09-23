@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      How to setup httpd form authentication and user session login/logout &middot; Zemian's Blog
+    
+  </title>
+
+  
+  <link rel="canonical" href="http://localhost:4000/2018/02/27/how-to-setup-httpd-form-authentication-and-user-session-loginlogout/">
+  
+
+  <link rel="stylesheet" href="http://localhost:4000/public/css/poole.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/syntax.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/lanyon.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700%7CPT+Sans:400">
+
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/public/apple-touch-icon-precomposed.png">
+  <link rel="shortcut icon" href="http://localhost:4000/public/favicon.ico">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="http://localhost:4000/atom.xml">
+
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-135626598-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  
+</head>
+
+
+  <body>
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p>A weblog on software development.</p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item" href="http://localhost:4000/">Home</a>
+
+    
+
+    
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="http://localhost:4000/about/">About</a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+
+  </nav>
+
+  <div class="sidebar-item">
+    <p>
+      &copy; 2020. All rights reserved.
+    </p>
+  </div>
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <h3 class="masthead-title">
+            <a href="/" title="Home">Zemian's Blog</a>
+            <small>Life in programming world!</small>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+        <div class="post">
+  <h1 class="post-title">How to setup httpd form authentication and user session login/logout</h1>
+  <span class="post-date">27 Feb 2018</span>
+  <h2 id="configuration-setup-for-httpdconf">Configuration setup for <code class="language-plaintext highlighter-rouge">httpd.conf</code></h2>
+
+<p>Enable modules</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>LoadModule auth_form_module modules/mod_auth_form.so
+LoadModule auth_digest_module modules/mod_auth_digest.so
+LoadModule session_module modules/mod_session.so
+LoadModule session_cookie_module modules/mod_session_cookie.so
+</code></pre></div></div>
+
+<p>NOTE: This configuration is only for tutorial purpose and not secured by default! Using Cookies session store is NOT secured! It’s recommend you use <code class="language-plaintext highlighter-rouge">mod_session_crypto</code> to further secure data, or use server side session data store.</p>
+
+<p>Setup users</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># First user and new file
+htpasswd -c /etc/httpd/passwd/passwords test
+# Update/add more user
+htpasswd /etc/httpd/passwd/passwords zemian
+</code></pre></div></div>
+
+<p>NOTE: You need <code class="language-plaintext highlighter-rouge">httpd-tool</code> package from Cygwin to find <code class="language-plaintext highlighter-rouge">htpasswd</code> command.</p>
+
+<p>Example of Digest login</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Digest Login
+&lt;Location "/secured"&gt;
+	AuthType Basic
+	AuthName "Restricted Files"
+	AuthBasicProvider file
+	AuthUserFile "/etc/httpd/passwd/passwords"
+	Require valid-user
+&lt;/Location&gt;
+</code></pre></div></div>
+
+<p>Example of form login</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Form Login/logout process
+&lt;LocationMatch "(/secured|/cgi-bin/secured)"&gt;
+	Require valid-user
+	AuthName "SecuredArea"
+	AuthFormProvider file
+	AuthUserFile "/etc/httpd/passwd/passwords"
+    AuthType form
+	AuthFormLoginRequiredLocation "/login.html"
+	
+	Session On
+	SessionCookieName session path=/
+	SessionMaxAge 30
+	SessionEnv On
+	SessionHeader X-Replace-Session
+&lt;/LocationMatch&gt;
+&lt;Location "/login"&gt;
+	SetHandler form-login-handler
+	AuthName "SecuredArea"
+	AuthFormProvider file
+	AuthUserFile "/etc/httpd/passwd/passwords"
+    AuthType form
+	AuthFormLoginRequiredLocation "/login.html"
+    AuthFormLoginSuccessLocation "/secured/index.html"
+		
+	Session On
+	SessionCookieName session path=/
+&lt;/Location&gt;
+&lt;Location "/logout"&gt;
+	SetHandler form-logout-handler
+	AuthName "SecuredArea"
+	AuthFormLogoutLocation "http://localhost/logout.html"
+	
+	Session On
+	SessionCookieName session path=/
+	SessionMaxAge 1
+&lt;/Location&gt;
+</code></pre></div></div>
+
+<p>Login page <code class="language-plaintext highlighter-rouge">htdocs/login.html</code></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;form method="POST" action="/login"&gt;
+  Username: &lt;input type="text" name="httpd_username" value="" /&gt;
+  Password: &lt;input type="password" name="httpd_password" value="" /&gt;
+  &lt;input type="submit" name="login" value="Login" /&gt;
+&lt;/form&gt;
+</code></pre></div></div>
+
+<p>Logout page <code class="language-plaintext highlighter-rouge">htdocs/logout.html</code></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;p&gt;You have been logged out.&lt;/p&gt;
+</code></pre></div></div>
+
+<p>Secured page <code class="language-plaintext highlighter-rouge">htdocs/secured/index.html</code></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;p&gt;This is secured area&lt;/p&gt;
+</code></pre></div></div>
+
+</div>
+
+
+<div class="related">
+  <h2>Related posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2020/09/20/world-of-php/">
+            The World of PHP Development
+            <small>20 Sep 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/09/19/multiple-jquery/">
+            How to Load Multiple jQuery
+            <small>19 Sep 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/08/15/switched-to-vuepress/">
+            Switched Blogging to VuePress
+            <small>15 Aug 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+
+      </div>
+    </div>
+
+    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+    <script src='/public/js/script.js'></script>
+  </body>
+</html>

@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Zemian's Blog &middot; Life in programming world!
+    
+  </title>
+
+  
+  <link rel="canonical" href="http://localhost:4000/page16/">
+  
+
+  <link rel="stylesheet" href="http://localhost:4000/public/css/poole.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/syntax.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/lanyon.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700%7CPT+Sans:400">
+
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/public/apple-touch-icon-precomposed.png">
+  <link rel="shortcut icon" href="http://localhost:4000/public/favicon.ico">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="http://localhost:4000/atom.xml">
+
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-135626598-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  
+</head>
+
+
+  <body>
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p>A weblog on software development.</p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item active" href="http://localhost:4000/">Home</a>
+
+    
+
+    
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="http://localhost:4000/about/">About</a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+
+  </nav>
+
+  <div class="sidebar-item">
+    <p>
+      &copy; 2020. All rights reserved.
+    </p>
+  </div>
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <h3 class="masthead-title">
+            <a href="/" title="Home">Zemian's Blog</a>
+            <small>Life in programming world!</small>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+        <div class="posts">
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2014/08/19/weblogic-shared-library-deployment/">
+        WebLogic shared library deployment
+      </a>
+    </h1>
+
+    <span class="post-date">19 Aug 2014</span>
+
+    <p>When deploying a large WAR file application, it would be more easier to manage if we can separate the dependency jars away from the rest of the Web content; or at least those third party jars that do not update often. In this case, we usually call the jars content a “Shared Library” and the Web content the “Skinny WAR”.</p>
+
+<p>With WebLogic Server, you can easily deploy such two artifacts. Just seperate and package your WAR application into two. The share library would be simply another WAR with only the WEB-INF/lib content in it, while the Skinny war will be the rest of your application without the jar depependencies. On the shared lib WAR file, ensure you have an META-INF/MANIFEST.MF that specify the name and version like the following:</p>
+
+<p>Implementation-Title: my_shared_lib
+Implementation-Version: 1.0
+Specification-Title: my_shared_lib
+Specification-Version: 1.0
+Extension-Name: my_shared_lib-1.0</p>
+
+<p>Now your Skinny WAR would need to add an WEB-INF/weblogic.xml extension file to reference the library like this:</p>
+
+<weblogic-web-app> 
+    <library-ref>
+        <library-name>my_shared_lib</library-name>
+        <specification-version>1.0</specification-version>
+        <implementation-version>1.0</implementation-version>
+        <exact-match>true</exact-match>
+    </library-ref>
+</weblogic-web-app>
+
+<p>With these two packaged, now turn to your WLS admin console, you will find “Deployments” menu link on left, and on right, you click “Install” button. The next screen will prompt you to choose which type of deployment to install: “Library” (Shared Lib War) or “Application” (Skinny War). Re-run this twice, each with your two seperated WAR files you just built.</p>
+
+<p><img src="/images/posts/2014/wls-shared-lib.png" alt="" /></p>
+
+<p>The WLS will combine the two when running your WAR application. This comes handy if you are to deploy multiple instances of your Skinny war application, but now you only need one shared lib.</p>
+
+<p>NOTE: Ensure you select at least one, and the same Target servers where you deploy the Library and Application. Else your application will not be deployed and run.</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2014/06/18/getting-django-started-on-windows-7-with-python-3-and-mysql-5-6/">
+        Getting django started on Windows 7 with python 3 and MySQL 5.6
+      </a>
+    </h1>
+
+    <span class="post-date">18 Jun 2014</span>
+
+    <p>Django is a python web framework library and it works on both python 2 or 3. I will show you how to get python 3 setup in Cygwin environment.</p>
+
+<p>If you’re on a Windows OS, the best experience I have when working with Django on Windows is to use Cygwin, a Unix emulator shell that runs on Windows. The pip and django commands would automatically setup in Cygwin’s PATH after installed. The default python package on Cygwin is only 2.7 though, so you have to search for “python3” package to get the latest python version. And you can have both versions installed without problem, but the executable are named “python” and “python3” respectively.</p>
+
+<ol>
+  <li>
+    <p>Install Cygwin python3 package. Verify “python3 -V” is working.</p>
+  </li>
+  <li>
+    <p>Install “pip” by downloading this “get-pip.py” file from <a href="http://pip.readthedocs.org/en/latest/installing.html">http://pip.readthedocs.org/en/latest/installing.html</a> and then run “python3 get-pip.py”. Verify “pip3 –version” is working.</p>
+  </li>
+</ol>
+
+<p>(NOTE: If you are running Windows 7, you might run into this issue: <a href="https://github.com/pypa/pip/issues/1448">https://github.com/pypa/pip/issues/1448</a> where pip exit without a warning. In this case the workaround is install Cygwin “<code class="language-plaintext highlighter-rouge">binutils</code>” and “<code class="language-plaintext highlighter-rouge">libuuid-devel" </code>packages, and that fixed the problem for me.)</p>
+
+<ol>
+  <li>
+    <p>Install “django” by running “pip3 install django”</p>
+  </li>
+  <li>
+    <p>Finally install the MySQL driver with “pip3 install mysql-connector-python –allow-external mysql-connector-python” command.</p>
+  </li>
+</ol>
+
+<p>Now to get a django project started, try these:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>django-admin.py startproject myapp
+</code></pre></div></div>
+
+<p>The “django-admin.py” script should automatically in your PATH. and this create a new project with initial settings. To switch default database from SQLite3 to MySQL, change the “myapp/settings.py” with the following:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>DATABASES = {
+    'default': {
+        'NAME': 'mydb',
+        'ENGINE': 'mysql.connector.django',
+        'USER': 'root',
+        'PASSWORD': 'secret',
+    }
+}
+</code></pre></div></div>
+
+<p>Now I assume you have MySQL 5.6+ installed on your Windows already. Change the root password to match yours or using different DB user. You can now have django app setup the initial database schema tables for this specif myapp with this commad:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cd myapp
+
+python3 manage.py syncdb
+</code></pre></div></div>
+
+<p>Follow the prompt and setup your admin user. Now you can start django web app:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python3 manage.py runserver 
+</code></pre></div></div>
+
+<p>Open browser to http://localhost:8000/admin. Now try to login and enjoy!</p>
+
+<p>References:
+<a href="https://www.python.org/">https://www.python.org</a>
+<a href="http://cygwin.com/">http://cygwin.com</a>
+<a href="http://dev.mysql.com/">http://dev.mysql.com</a>
+<a href="https://docs.djangoproject.com/">https://docs.djangoproject.com</a></p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2014/06/18/getting-django-setup-on-windows/">
+        Getting Django setup on Windows
+      </a>
+    </h1>
+
+    <span class="post-date">18 Jun 2014</span>
+
+    <p>A friend asked me how to setup an Django enviroment on Windows without the Cygwin fuzz. Here is the shortest steps I can think of:</p>
+
+<ol>
+  <li>
+    <p>Install Python3.4 as default path. (It should be “C:\Python34”).</p>
+  </li>
+  <li>Open cmd.exe program on Windows and run the following commands:
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> set PATH=%PATH%;C:\Python34;C:\Python34\Scripts
+ pip install django
+ python C:\Python34\Lib\site-packages\django\bin\django-admin.py startproject mysite
+ cd mysite
+ python manage.py syncdb
+ (Follow prompts to setup an initial db. remember the user you used here.)
+ python manage.py runserver
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>You are ready to django! Open your browser http://127.0.0.1:8000 to verify.</p>
+
+    <p>Or login into http://127.0.0.1:8000/admin with the user you setup above.</p>
+  </li>
+</ol>
+
+<p>What’s next?</p>
+
+<p>Explore django with a guided tutorial here:</p>
+
+<p><a href="https://docs.djangoproject.com/en/1.6/intro/tutorial01">https://docs.djangoproject.com/en/1.6/intro/tutorial01</a></p>
+
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2014/06/11/how-to-initialize-a-new-mysql-installation-and-create-new-database/">
+        How to initialize a new MySQL installation and create new database
+      </a>
+    </h1>
+
+    <span class="post-date">11 Jun 2014</span>
+
+    <p>For a freshly installed MySQL server, you would need to initialize the system tables and data directory like this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cd mysql-&lt;version&gt; 
+
+scripts/mysql_install_db --basedir=. --datadir=data
+bin/mysqld_safe --defaults-file=my.cnf &amp;
+</code></pre></div></div>
+
+<p>Before MySQL 5.6, this will setup a “root” with empty password that you can immediately login. For MySQL 5.7 however, it creates a random password for “root” user now. The password is generated under $HOME/.mysql_secret. You need to login and run “SET PASSWORD ## PASSWORD(‘secret’)” to change it.</p>
+
+<p>After above, you may login using “root” and start creating your own database and users. For example:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CREATE DATABASE mydb;
+GRANT ALL PRIVILEGES ON mydb.* TO 'myuser'@'%' IDENTIFIED BY 'secret';
+GRANT ALL PRIVILEGES ON mydb.* TO 'myuser'@'localhost' IDENTIFIED BY 'secret';
+</code></pre></div></div>
+
+<p>UPDATE 2015-01-26</p>
+
+<p>Here are more notes to replace/upgrade existing mysql server and install to init.d to auto start by OS.</p>
+
+<h2 id="install-and-setup-new-mysql-into-an-exiting-linux">Install and Setup new MySQL into an exiting Linux.</h2>
+
+<h3 id="to-removedislable-old-existing-mysqld-initd-one-usually-defualt-installed-under-usrmysql">To remove/dislable old existing mysqld init.d (one usually defualt installed under /usr/mysql)</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo /sbin/chkconfig --del mysqld
+</code></pre></div></div>
+
+<h3 id="install-new-mysql-server-5616">Install new mysql server (5.6.16)</h3>
+
+<ul>
+  <li>Ensure mysql user exists and installation files are owned by this user</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Setup and initial the new mysql server 
+groupadd mysql
+useradd -r -g mysql mysql 
+cd /apps/mysql
+sudo chown -R mysql:mysql .
+sudo scripts/mysql_install_db --basedir=/apps/mysql --datadir=/apps/mysql/data --user=mysql
+
+# Optional: Manually start the server and see if it works
+# sudo bin/mysqld_safe --defaults-file=/apps/mysql/my.cnf --user=mysql
+# sudo bin/mysqladmin shutdown -u root
+
+# Install the init.d script to start server upon system reboot 
+sudo ln -s support-file/mysql.server /etc/init.d/mysql.server
+sudo vim support-file/mysql.server
+    * Ensure these vars are set correctly in your env
+basedir=/apps/mysql
+datadir=/apps/mysql/data
+cnffile=/apps/mysql/my.cnf
+user=mysql
+    * modify the mysqld_safe command line to add (ENSURE --user option comes last!)
+    --defaults-file=$cnffile --user=$user
+    
+sudo /sbin/chkconfig --add mysql.server
+sudo /sbin/service mysql.server start
+    
+### Change MySQL root password
+        sudo bin/mysqladmin password 'new_password'
+</code></pre></div></div>
+<p>Ref:
+<a href="https://dev.mysql.com/doc/refman/5.6/en/binary-installation.html">https://dev.mysql.com/doc/refman/5.6/en/binary-installation.html</a></p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2014/06/08/using-crontab-to-startup-service/">
+        Using crontab to startup service
+      </a>
+    </h1>
+
+    <span class="post-date">08 Jun 2014</span>
+
+    <p>Did you know that crontab service has the “@reboot” schedule that would start a script during your system startup time? This is handy if you want something to run right after your system has stared. Try this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># crontab -e
+@reboot $HOME/crontab/runcmd.sh /apps/start-myapp.sh
+</code></pre></div></div>
+<p>The disadvantage of this vs the rc.d scripts are you do not have control on when the system shutdown(“stop”) state. So if your app doens’t need to clean up during shutdown, but only care to start when during reboot, this would be an easy option.</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2014/06/04/a-simple-cron-wrapper-script-with-logging/">
+        A simple cron wrapper script with logging
+      </a>
+    </h1>
+
+    <span class="post-date">04 Jun 2014</span>
+
+    <p>When working with crontab service, one thing I often need is to capture the ouput of the job. Having the job script aware of this output and logging is tedious, and often make the script harder to read. So I wrote a shell wrapper that will redirect all job script’s STDOUT into a log file. This way I can inspect it when a job has run and the job script can just focus on the task itself.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># file: runcmd.sh
+# Helper/wrapper script to run any command in the crontab env. This script will ensure
+# user profile script is loaded and to log any command output into log files. It also
+# ensure not to print anything to STDOUT to avoid crontab system mail alert.
+#
+# NOTE: be sure to pass in absolute path of the command to be run so it can be found.
+#
+# Usage:
+#   ./runcmd.sh find $HOME/crontab/test.sh            # Simple use case
+#   LOG_NAME=mytest ./runcmd.sh $HOME/crontab/test.sh # Change the log name to something specific
+#
+
+# Options
+DIR=`dirname $0`
+CMD="$@"
+CMD_NAME=`basename $1`
+LOG_NAME=${LOG_NAME:=$CMD_NAME}
+LOG="$DIR/logs/$LOG_NAME.log`date +%s`"
+
+# Ensure logs dir exists
+if [[ ! -e $DIR/logs ]]; then
+        mkdir -p $DIR/logs
+fi
+
+# Run cron command
+source $HOME/.bash_profile
+echo "`date` Started cron cmd=$CMD, logname=$LOG_NAME" &gt;&gt; $LOG 2&gt;&amp;1
+$CMD &gt;&gt; $LOG 2&gt;&amp;1
+echo "`date` Cron cmd is done." &gt;&gt; $LOG 2&gt;&amp;1
+</code></pre></div></div>
+<p>With this wrapper, you can run any shell script and their output will be recorded. For example this job script below will clean up the logs accumulated in our logs folder.</p>
+
+<p>Note that the wrapper will also auto source the “.bash_profile”. Often this this is needed if your job script expect all the env variables you already have setup in your login shell scripts.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># file: remove-crontab-logs.sh
+DIR=`dirname $0`/logs
+echo "Checking and removing logs in $DIR"
+find $DIR -type f -mtime +31 -print -delete
+echo "Done"
+</code></pre></div></div>
+<p>Now in the crontab file, you may run the job script like this:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Clean up crontab logs
+@montly $HOME/crontab/runcmd.sh $HOME/crontab/remove-crontab-logs.sh
+
+</code></pre></div></div>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2014/06/03/a-simple-mysql-daily-backup-script/">
+        A simple MySQL daily backup script
+      </a>
+    </h1>
+
+    <span class="post-date">03 Jun 2014</span>
+
+    <p>Using the MySQL export script I’ve showed from <a href="http://saltnlight5.blogspot.com/2014/05/how-to-export-and-import-mysql-database.html">last post</a> (assume you saved it in a file named “$HOME/database-export.sh”), you may now perform a daily backup with your crontab service like this.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#file: mysql-backups.sh
+DIR=`dirname $0`
+echo "Backup DB with export script."
+$DIR/database-export.sh
+
+echo "Moving exported files into backup dir."
+DB_BAK_DIR=$HOME/mysql-backups/`date +%a`
+echo "Removing old file (if exists) and saving new backup into $DB_BAK_DIR"
+if [[ -e $DB_BAK_DIR ]]; then
+  rm -fv $DB_BAK_DIR/*
+else
+  mkdir -p $DB_BAK_DIR
+fi
+cp -v $DIR/*.sql $DB_BAK_DIR
+</code></pre></div></div>
+<p>This script should create a daily folder under your home directory, for example like “$HOME/mysql-backups/Mon”, “Tue”, “Wed” etc. It should save up to 7 days in a week if you run this with a daily cron job.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># crontab -e
+@daily $HOME/mysql-backups.sh &gt; /dev/null 2&gt;&amp;1
+</code></pre></div></div>
+<p>This is not the most robust way of backing up your DB, but it’s a simple solution if you just want something quick up and running without worry too much.</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2014/05/30/how-to-export-and-import-mysql-database/">
+        How to export and import MySQL database
+      </a>
+    </h1>
+
+    <span class="post-date">30 May 2014</span>
+
+    <p>You can export the MySQL database with schema table definitions and data separated. Here is a simple bash shell script that will export an database.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># file: database-export.sh
+DB_NAME=mydb
+DB_SCHEMA_FILE=mydb.sql
+DB_DATA_FILE=mydb-data.sql
+DB_USERNAME=root
+DB_PASSWORD=secret
+
+# export schema only from mysql 
+echo "`date` Exporting database $DB_NAME schema to $DB_SCHEMA_FILE"
+mysqldump --no-data --routines -u $DB_USERNAME -p$DB_PASSWORD $DB_NAME &gt; $DB_SCHEMA_FILE
+\
+# export data only from mysql
+
+echo "`date` Exporting database $DB_NAME data to $DB_DATA_FILE"
+mysqldump --single-transaction --quick --no-autocommit --no-create-info --extended-insert=false -u $DB_USERNAME -p$DB_PASSWORD $DB_NAME &gt; $DB_DATA_FILE
+
+echo "`date` Done."
+</code></pre></div></div>
+<p>The schema export with “–routines” will export stored proc as well. When exporitng data you have to be little more careful. The “–single-transaction” will ensure your data is good. The “–no-autocommit” can really speed up your import later on certain OS.</p>
+
+<p>Now to import these files back, you can create an empty database and then run the following.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># file: database-import.sh 
+# import schema and data into mysql
+echo "`date` Importing Schema $DB_SCHEMA_FILE into $DB_NAME"
+mysql -f -u $DB_USERNAME -p$DB_PASSWORD $DB_NAME &lt; $DB_SCHEMA_FILE
+echo "`date` Importing DATA $DB_DATA_FILE into $DB_NAME"
+mysql -f -u $DB_USERNAME -p$DB_PASSWORD $DB_NAME &lt; $DB_DATA_FILE
+
+echo "`date` Done."
+</code></pre></div></div>
+<p>The import with “-f” option will allow you to continue even if you already have duplicated data in the tables; it will simply ignore and continue.</p>
+
+<p>These two combo commands will allow you to quicly backup and restore a MySQL database.</p>
+
+<p>Enjoy.</p>
+
+<p>PS: I have come to learn that “mysqldump” with procedures will insert an extra line like “DEFINER ‘user’@’hostname’”, and it may create problem if you use different users to export/import or even run the application! Unfortunately there is no exclude from the “mysqldump” tool. So you have to manually strip that off if that’s creating a problem for you.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mysqldump --no-data --routines -u $DB_USERNAME -p$DB_PASSWORD $DB_NAME | perl -pi -e 's/DEFINER="\w+"@"\w+" //g' &gt; $DB_SCHEMA_FILE
+</code></pre></div></div>
+
+<p>You can vote the issue here: <a href="http://bugs.mysql.com/bug.php?id=24680">http://bugs.mysql.com/bug.php?id=24680</a></p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2014/04/16/how-to-enable-mysql-query-monitoring/">
+        How to enable MySQL query monitoring
+      </a>
+    </h1>
+
+    <span class="post-date">16 Apr 2014</span>
+
+    <p>Do you need to monitor any SQL statements passing through your MySQL server? You would need to turn on the server logging. Edit your my.cnf file and add these:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>log-output=FILE
+general-log=1
+general_log_file=mysql-general.log
+</code></pre></div></div>
+<p>You also need to restart the database server after these changes.</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2014/04/15/be-careful-with-java-path-endswithstring-usage/">
+        Be careful with Java Path.endsWith(String) usage
+      </a>
+    </h1>
+
+    <span class="post-date">15 Apr 2014</span>
+
+    <p>If you need to compare the java.io.file.Path object, be aware that Path.endsWith(String) will ONLY match another sub-element of Path object in your original path, not the path name string portion! If you want to match the string name portion, you would need to call the <code class="language-plaintext highlighter-rouge">Path.toString()</code> first. For example</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// Match all jar files.
+Files.walk(dir).forEach(path -&gt; {
+if (path.toString().endsWith(".jar"))
+System.out.println(path);
+});
+</code></pre></div></div>
+<p>With out the “<code class="language-plaintext highlighter-rouge">toString()</code>” you will spend many fruitless hours wonder why your program didn’t work.</p>
+
+  </div>
+  
+</div>
+
+<div class="pagination">
+  
+    <a class="pagination-item older" href="http://localhost:4000/page17">Older</a>
+  
+  
+    
+      <a class="pagination-item newer" href="http://localhost:4000/page15">Newer</a>
+    
+  
+</div>
+
+      </div>
+    </div>
+
+    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+    <script src='/public/js/script.js'></script>
+  </body>
+</html>

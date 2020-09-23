@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      How to use NodeManager to control WebLogic Servers &middot; Zemian's Blog
+    
+  </title>
+
+  
+  <link rel="canonical" href="http://localhost:4000/2014/03/21/how-to-use-nodemanager-to-control-weblogic-servers/">
+  
+
+  <link rel="stylesheet" href="http://localhost:4000/public/css/poole.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/syntax.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/lanyon.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700%7CPT+Sans:400">
+
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/public/apple-touch-icon-precomposed.png">
+  <link rel="shortcut icon" href="http://localhost:4000/public/favicon.ico">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="http://localhost:4000/atom.xml">
+
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-135626598-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  
+</head>
+
+
+  <body>
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p>A weblog on software development.</p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item" href="http://localhost:4000/">Home</a>
+
+    
+
+    
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="http://localhost:4000/about/">About</a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+
+  </nav>
+
+  <div class="sidebar-item">
+    <p>
+      &copy; 2020. All rights reserved.
+    </p>
+  </div>
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <h3 class="masthead-title">
+            <a href="/" title="Home">Zemian's Blog</a>
+            <small>Life in programming world!</small>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+        <div class="post">
+  <h1 class="post-title">How to use NodeManager to control WebLogic Servers</h1>
+  <span class="post-date">21 Mar 2014</span>
+  <p>In my <a href="http://saltnlight5.blogspot.com/2014/03/how-to-start-multiple-weblogic-managed.html">previous post</a>, you have seen how we can start a WebLogic admin and multiple managed servers. One downside with that instruction is that those processes will start in foreground and the STDOUT are printed on terminal. If you intended to run these severs as background services, you might want to try the WebLogic node manager <code class="language-plaintext highlighter-rouge">wlscontrol.sh</code> tool. I will show you how you can get Node Manager started here.</p>
+
+<p>The easiest way is still to create the domain directory with the admin server running temporary and then create all your servers through the /console application as described in last post. Once you have these created, then you may shut down all these processes and start it with Node Manager.</p>
+
+<ol>
+  <li>cd <code class="language-plaintext highlighter-rouge">$WL_HOME/server/bin &amp;&amp; startNodeManager.sh &amp;</code></li>
+  <li><code class="language-plaintext highlighter-rouge">$WL_HOME/common/bin/wlscontrol.sh -d mydomain -r $HOME/domains/mydomain -c -f startWebLogic.sh -s myserver START</code></li>
+  <li><code class="language-plaintext highlighter-rouge">$WL_HOME/common/bin/wlscontrol.sh -d mydomain -r $HOME/domains/mydomain  -c -f startManagedWebLogic.sh -s appserver1 START</code></li>
+</ol>
+
+<p>The first step above is to start and run your Node Manager. It is recommended you run this as full daemon service so even OS reboot can restart itself. But for this demo purpose, you can just run it and send to background. Using the Node Manager we can then start the admin in step 2, and then to start the managed server on step 3.</p>
+
+<p>The NodeManager can start not only just the WebLogic server for you, but it can also monitor them and automatically restart them if they were terminated for any reasons. If you want to shutdown the server manually, you may use this command using Node Manager as well:</p>
+
+<p><code class="language-plaintext highlighter-rouge">$WL_HOME/common/bin/wlscontrol.sh -d mydomain -s appserver1 KILL</code></p>
+
+<p>The Node Manager can also be used to start servers remotely through SSH on multiple machines. Using this tool effectively can help managing your servers across your network. You may read more details here:</p>
+
+<p>http://docs.oracle.com/cd/E23943_01/web.1111/e13740/toc.htm</p>
+
+<p>TIPS1: If there is problem when starting server, you may wnat to look into the log files. One log file is the <code class="language-plaintext highlighter-rouge">&lt;domain&gt;/servers/&lt;server&gt;/logs/&lt;server&gt;.out</code> of the server you trying to start. Or you can look into the Node Manager log itself at <code class="language-plaintext highlighter-rouge">$WL_HOME/common/nodemanager/nodemanager.log</code></p>
+
+<p>TIPS2: You add startup JVM arguments to each server starting with Node Manager. You need to create a file under <code class="language-plaintext highlighter-rouge">&lt;domain&gt;/servers/&lt;server&gt;/data</code><code class="language-plaintext highlighter-rouge">/nodemanager/startup.properties</code> and add this key value pair: <code class="language-plaintext highlighter-rouge">Arguments = -Dmyapp=/foo/bar</code></p>
+
+<p>TIPS3: If you want to explore Windows version of NodeManager, you may want to start NodeManager without native library to save yourself some trouble. Try adding <code class="language-plaintext highlighter-rouge">NativeVersionEnabled=false</code> to <code class="language-plaintext highlighter-rouge">$WL_HOME/common/nodemanager/nodemanager.properties </code>
+file.</p>
+
+</div>
+
+
+<div class="related">
+  <h2>Related posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2020/09/20/world-of-php/">
+            The World of PHP Development
+            <small>20 Sep 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/09/19/multiple-jquery/">
+            How to Load Multiple jQuery
+            <small>19 Sep 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/08/15/switched-to-vuepress/">
+            Switched Blogging to VuePress
+            <small>15 Aug 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+
+      </div>
+    </div>
+
+    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+    <script src='/public/js/script.js'></script>
+  </body>
+</html>

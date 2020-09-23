@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Zemian's Blog &middot; Life in programming world!
+    
+  </title>
+
+  
+  <link rel="canonical" href="http://localhost:4000/page23/">
+  
+
+  <link rel="stylesheet" href="http://localhost:4000/public/css/poole.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/syntax.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/lanyon.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700%7CPT+Sans:400">
+
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/public/apple-touch-icon-precomposed.png">
+  <link rel="shortcut icon" href="http://localhost:4000/public/favicon.ico">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="http://localhost:4000/atom.xml">
+
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-135626598-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  
+</head>
+
+
+  <body>
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p>A weblog on software development.</p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item active" href="http://localhost:4000/">Home</a>
+
+    
+
+    
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="http://localhost:4000/about/">About</a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+
+  </nav>
+
+  <div class="sidebar-item">
+    <p>
+      &copy; 2020. All rights reserved.
+    </p>
+  </div>
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <h3 class="masthead-title">
+            <a href="/" title="Home">Zemian's Blog</a>
+            <small>Life in programming world!</small>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+        <div class="posts">
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2012/11/15/use-cygpath-with-p-option-for-your-java-classpath-conversion/">
+        Use cygpath with -p option for your Java CLASSPATH conversion
+      </a>
+    </h1>
+
+    <span class="post-date">15 Nov 2012</span>
+
+    <p>I just noticed that Cygwin’s <code class="language-plaintext highlighter-rouge">cygpath</code> command supports <code class="language-plaintext highlighter-rouge">-p</code> option. This is a real gem when writing Java wrapper script that needs to covert CLASSPATH values. A simple script can demonstrate the purpose.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    #!/usr/bin/env bash
+    # Author: Zemian Deng, date: 2012-11-16T00:00:00-05:00
+    #
+    # run.sh - A simple Java wrapper script for Cygwin and Unix/Linux shell. We assume 
+    # this script is located in a subdiretory inside the application home directory.
+    # Example:
+    #   app/bin/run.sh
+    #   app/config/log4j.properties
+    #   app/lib/log4j.jar
+    # Usage:
+    #   bash&gt; run.sh app.Hello
+    #
+    DIR=$(cd "$(dirname $0)/.." &amp;&amp; pwd)
+    CP=${CP:="$DIR/config:$DIR/lib/*"}
+    if [[ "$OS" == Windows* ]]; then
+     CP=$(cygpath -mp $CP)
+    fi
+    java -cp "$CP" "$@"
+</code></pre></div></div>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2012/11/02/what-does-utf-8-with-bom-mean/">
+        What does UTF-8 with BOM mean?
+      </a>
+    </h1>
+
+    <span class="post-date">02 Nov 2012</span>
+
+    <p>Believe it or not, There is no such thing as Plain Text!</p>
+
+<p>All files in a modern Operating Sytems (Windows, Linux, or MacOSX) are saved with an encoding scheme! They are encoded (a table mapping of what each byte means) in such way so that other programs can read it back and understand how to get information out. It happens that US/ASCII encoding is earliest and widely used that people think it’s just “Plain Tex”. But even ASCII is an encoding! It uses 7 bits in mapping all US characters in saving the bytes into file. Obviously you are free to use any kind of encoding (mapping) scheme to save any files, but if you want other programs to read it back easily, then sticking to some standard ones would help a lot. Without an agreed upon encoding, programs will not able to read files and be any useful!</p>
+
+<p>The most useful and practical file encoding today is “UTF-8” because it support Unicode, and it’s widely used in internet.</p>
+
+<p>I discovered something odd when using Eclipse and Notepadd++. In Ecilpse, if we set default encoding with UTF-8, it would use normal UTF-8 without the Byte Order Mark (BOM). But in Notepad++, it appears to support UTF-8 wihtout BOM, but it won’t recoginze it when first open. You can check this by going Menu &gt; Encoding and see which one is selected. Notepad++ seems to only recognize UTF-8 wihtout BOM with ones it converted by it’s own conversion utility. Perhaps it’s a bug in notepad++.</p>
+
+<p>So what is BOM? The byte order mark is useless for UTF-8. They only used for UTF-16 so they know which byte order is first. But UTF-8 will allow you to save these BOM for conversion purpose… they are ineffective in encoding the doc itself. So a “normal” UTF-8, it won’t have BOM, but Windows would like to use them anyway. The Windows NOTEPAD would automatically save BOM in UTF-8!</p>
+
+<p>So be-aware when viewing UTF-8 without BOM encoding files in Notepad++, as it can be deceiving at first glance.</p>
+
+<p>Ref:</p>
+
+<p><a href="http://en.wikipedia.org/wiki/UTF-8">http://en.wikipedia.org/wiki/UTF-8</a></p>
+
+<p><a href="http://www.joelonsoftware.com/articles/Unicode.html">http://www.joelonsoftware.com/articles/Unicode.html</a></p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2012/10/27/a-simple-way-to-setup-java-application-with-external-configuration-file/">
+        A simple way to setup Java application with external configuration file
+      </a>
+    </h1>
+
+    <span class="post-date">27 Oct 2012</span>
+
+    <p>Many Java applications would deploy and run it with some kind of external configuration files. It’s very typical that you would want a set of config files per environments such as DEV, QA and PROD. There many options in tackling this problem, especially in a Java app, but keeping it simple and easy to maintain would take some disciplines.</p>
+
+<p>Here I would layout a simple way you may use to depploy a typical Java application. The concept is simple and you can easily apply to a standalone, web, or even a JEE application.</p>
+
+<h2 id="use-a-env-system-properties-per-environment">Use a env System Properties per environment</h2>
+
+<p>Java allows you to invoke any program with extra System Properties added. When launching an Java application, you should set an <code class="language-plaintext highlighter-rouge">env</code> property. For example:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bash&gt; java -Denv=prod myapp.Main
+</code></pre></div></div>
+
+<p>This property would give your <code class="language-plaintext highlighter-rouge">Main</code> application to identify which environment you are running against with. You should be reading it like this inside your code:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>String env = System.getProperty("env", "dev");
+</code></pre></div></div>
+
+<p>This way you always would have an environment to work with. Even if user doesn’t supply one, it will default to use <code class="language-plaintext highlighter-rouge">dev</code> env.</p>
+
+<p>Another useful System Property to set is <code class="language-plaintext highlighter-rouge">app.home</code>. You want to set this value in relative to where your application is deployed, so you may reference any files (eg: data) easily. To do this, you can use a script wrapper to automatically calculate the path. See section below for an example.</p>
+
+<h2 id="use-a-config-dir-prefix-in-classpath">Use a config dir prefix in CLASSPATH</h2>
+
+<p>In stead of passing a explicit config file to your application as argument, another flexible way to load configuration file is to add an extra <code class="language-plaintext highlighter-rouge">config</code>
+folder into your CLASSPATH. For example, you can easily create a startup wrapper script <code class="language-plaintext highlighter-rouge">myapp.sh</code> like this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#/usr/bin/env bash
+APP_HOME=$(cd "`dirname $0`/.." &amp;&amp; pwd)
+java $JAVA_OPTS -Dapp.home=$APP_HOME -cp "$APP_HOME/config:$APP_HOME/lib/*" myapp.Main "$@"
+</code></pre></div></div>
+
+<p>From this, you can setup the application packaging layout this way:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    myapp
+        +- bin
+            +- myapp.sh
+        +- config
+            +- dev.properties
+            +- qa.properties
+            +- prod.properties
+        +- data
+            +- myrecords.data
+        +- lib
+            +- myapp-1.0.0.jar
+            +- slf4j-1.7.1.jar
+</code></pre></div></div>
+
+<p>You would typically invoke the application like this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bash&gt; JAVA_OPTS='-Denv=prod' myapp/bin/myapp.sh
+</code></pre></div></div>
+
+<p>The above will give you a good foundation to load a single config properties file per <code class="language-plaintext highlighter-rouge">env</code>. For example, you can read your properites file like this somewhere in your code.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    // Get appHome and data dir.
+    String appHome = System.getProperty("app.home");
+    String dataDir = appHome + "/data";
+    
+    // Get env value to load config parameters
+    String env = System.getProperty("env", "dev");
+    String config = env + ".properites";
+    Properties configProps = new Properties();
+    InputStream inStream = null;
+    try {
+        inStream = getClass().getClassLoader().getResourceAsStream(config);
+        configProps.load(inStream);
+    } finally {
+        if (inStream != null)
+            inStream.close();
+    }
+    // Now load any config parameters from configProps map.
+</code></pre></div></div>
+
+<p>Now you would have the <code class="language-plaintext highlighter-rouge">configProps</code> object at your disposal to read any configuration keys and values set per an environment.</p>
+
+<p>NOTE: If you want a more flexible Java wrapper script, see my old post on <a href="http://saltnlight5.blogspot.com/2012/08/a-better-java-shell-script-wrapper.html">run-java</a> wrapper.</p>
+
+<h2 id="do-not-abuse-classpath">Do not abuse CLASSPATH</h2>
+
+<p>Now, just because you have setup <code class="language-plaintext highlighter-rouge">config</code> as part of your CLASSPATH entry, I have to caution you not to abuse it. What I mean is do not go wild on 
+loading all your application resources in that folder! If you have that many resources that user MUST edit and configure, then you should re-think
+about your application design! Simple interface, or configuration in this case, is always a win. Do not bother users with complexity just because 
+your application can support gazillion ways of configuration combination. If you can keep it as one config file, it would make users very happy.</p>
+
+<p>Also, this doesn’t mean you have to put the entire world inside one of <code class="language-plaintext highlighter-rouge">prod.properites</code> either. In the real world, an application is likely going to have only 
+handful of user tunable parameters, and many other resources are less frequent used. I would recommand put the most frequently used parameters in these
+config properties only. For all other (for example most of the Spring context files in an application do not belong to a typical users config level, they are more developer level config files. In another word, changing these files would have catastrophic effect to your application!) You should put these inside as part of your <code class="language-plaintext highlighter-rouge">myapp.jar</code>.</p>
+
+<p>You might ask, ‘Oh, but what happen if I must want to override one of 
+the resource in the jar?’. But in that very unusual case, you would still have an option to override! You have the <code class="language-plaintext highlighter-rouge">config</code> as prefix in CLASSPATH, remember? Even when you nested resources inside a package inside the 
+jar, you would still able to overwrite by simply create same directory structure inside <code class="language-plaintext highlighter-rouge">config</code>. You probably only do this for emmergency and less frequent use anyway.</p>
+
+<h2 id="feedback">Feedback</h2>
+
+<p>So what are some clever ways you have seen or done with your application configuration? I hope to hear from you and share.</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2012/10/24/simple-variable-substitution-in-java-string/">
+        Simple Variable Substitution in Java String
+      </a>
+    </h1>
+
+    <span class="post-date">24 Oct 2012</span>
+
+    <p>When I wrote about how to improve the Java Properties class using <a href="http://saltnlight5.blogspot.com/2012/09/improving-javautilproperties.html">Props</a>, I’ve shown
+a feature where you can use variable substition such as <code class="language-plaintext highlighter-rouge">mypath=${user.home}</code> in your config file. The implementation underneath it uses the Apache Common Lang library with <code class="language-plaintext highlighter-rouge">org.apache.commons.lang.text.StrSubstitutor</code>. There is nothing wrong with this, but I was curious how bad would it be to remove such dependency, so the <code class="language-plaintext highlighter-rouge">Props</code> can be more standalone.</p>
+
+<p>Here is a quick implementation in Groovy, but you should able to translate to Java easily.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    // String variable substitutions
+    def parseVariableNames(String text) {
+        def names = []
+        def pos = 0, max = text.length()
+        while (pos &lt; max) {
+            pos = text.indexOf('${', pos)
+            if (pos == -1)
+                break
+            def end = text.indexOf('}', pos + 2)
+            if (end == -1)
+                break
+            def name = text.substring(pos + 2, end)
+            names.add(name)
+            pos = end + 1
+        }
+        return names
+    }
+    def replaceVariable(String key, String value, String text) {
+        //println "DEBUG: Replacing '${key}'' with '${value}'"
+        result = text.replaceAll('\\$\\{' + key + '}', value)
+        return result
+    }
+</code></pre></div></div>
+
+<p>Probably not the most efficient thing, but it should work. Let’s have some tests.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    // Test
+    def map = ["name": "Zemian", "id": "1001"]
+    def inputs  = [
+        'Hello ${name}',
+        'My id is ${id}',
+        '${name} is a good programmer.',
+        '${name}\'s id is ${id}.'
+    ]
+    
+    result = inputs.collect{ line -&gt;
+        def names = parseVariableNames(line)
+        names.each{ key -&gt;
+            line = replaceVariable(key, map.get(key), line) 
+        }
+        line
+    }
+    assert result == [
+        'Hello Zemian',
+        'My id is 1001',
+        'Zemian is a good programmer.',
+        'Zemian\'s id is 1001.'
+    ]
+</code></pre></div></div>
+
+<p>The output should print nothing, as it passed the test. What do you think?</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2012/10/22/exploring-different-scheduling-types-with-quartz-2/">
+        Exploring different scheduling types with Quartz 2
+      </a>
+    </h1>
+
+    <span class="post-date">22 Oct 2012</span>
+
+    <p>We often think of Cron when we want to schedule a job. Cron is very flexible in expressing an repeating occurance of an event/job in a very compact expression. However it’s not answer for everything, as I often see people are asking for help in the Quartz user forum. Did you know that the popular <a href="http://quartz-scheduler.org">Quartz 2</a> library provide many other schedule types (called Trigger) besides cron? I will show you each of the Quartz 2 built-in schedule types here within a complete, standalone Groovy script that you can run and test it out. Let’s start with a simple one.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    @Grab('org.quartz-scheduler:quartz:2.1.6')
+    @Grab('org.slf4j:slf4j-simple:1.7.1')
+    import org.quartz.*
+    import org.quartz.impl.*
+    import org.quartz.jobs.*
+    
+    import static org.quartz.DateBuilder.*
+    import static org.quartz.JobBuilder.*
+    import static org.quartz.TriggerBuilder.*
+    import static org.quartz.SimpleScheduleBuilder.*
+    
+    def trigger = newTrigger()
+        .withSchedule(
+            simpleSchedule()
+            .withIntervalInSeconds(3)
+            .repeatForever())
+        .startNow()
+        .build()
+    dates = TriggerUtils.computeFireTimes(trigger, null, 20)
+    dates.each{ println it }
+</code></pre></div></div>
+
+<p>This is the Quartz’s <code class="language-plaintext highlighter-rouge">SimpleTrigger</code>, and it allows you to create a fixed rate repeating job. You can even limit to certain number of count if you like. I have imported all the nessary classes the script needs, and I use the latest Quartz 2.x builder API to create an instance of the trigger.</p>
+
+<p>The quickest way to explore and test out whether a scheduling fits your need is to print out its future execution times. Hence you see me using <code class="language-plaintext highlighter-rouge">TriggerUtils.computeFireTimes</code> in the script. Run the above and you should get the datetimes as scheduled to be run, in this case every 3 seconds.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    bash&gt; $ groovy simpleTrigger.groovy
+        Tue Oct 23 20:28:01 EDT 2012
+        Tue Oct 23 20:28:04 EDT 2012
+        Tue Oct 23 20:28:07 EDT 2012
+        Tue Oct 23 20:28:10 EDT 2012
+        Tue Oct 23 20:28:13 EDT 2012
+        Tue Oct 23 20:28:16 EDT 2012
+        Tue Oct 23 20:28:19 EDT 2012
+        Tue Oct 23 20:28:22 EDT 2012
+        Tue Oct 23 20:28:25 EDT 2012
+        Tue Oct 23 20:28:28 EDT 2012
+        Tue Oct 23 20:28:31 EDT 2012
+        Tue Oct 23 20:28:34 EDT 2012
+        Tue Oct 23 20:28:37 EDT 2012
+        Tue Oct 23 20:28:40 EDT 2012
+        Tue Oct 23 20:28:43 EDT 2012
+        Tue Oct 23 20:28:46 EDT 2012
+        Tue Oct 23 20:28:49 EDT 2012
+        Tue Oct 23 20:28:52 EDT 2012
+        Tue Oct 23 20:28:55 EDT 2012
+        Tue Oct 23 20:28:58 EDT 2012
+</code></pre></div></div>
+
+<p>The most frequent used scheduling type is the <code class="language-plaintext highlighter-rouge">CronTrigger</code>, and you can test it out in similar way.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    @Grab('org.quartz-scheduler:quartz:2.1.6')
+    @Grab('org.slf4j:slf4j-simple:1.7.1')
+    import org.quartz.*
+    import org.quartz.impl.*
+    import org.quartz.jobs.*
+    
+    import static org.quartz.DateBuilder.*
+    import static org.quartz.JobBuilder.*
+    import static org.quartz.TriggerBuilder.*
+    import static org.quartz.CronScheduleBuilder.*
+    
+    def trigger = newTrigger()
+        .withSchedule(cronSchedule("0 30 08 * * ?"))
+        .startNow()
+        .build()
+    dates = TriggerUtils.computeFireTimes(trigger, null, 20)
+    dates.each{ println it }
+</code></pre></div></div>
+
+<p>The javadoc for <a href="http://quartz-scheduler.org/api/2.1.5/org/quartz/CronExpression.html">CronExpression</a> is very good and you should definately read it throughly to use it effectively. With the script, you can explore all the combination you want easily and verify future fire times before your job is invoked.</p>
+
+<p>Now, if you have some odd scheduling needs such as run a job every 30 mins from MON to FRI and only between 8:00AM to 10:00AM, then don’t try to cramp all that into the Cron expression. The Quartz 2.x has a dedicated trigger type just for this use, and it’s 
+called <code class="language-plaintext highlighter-rouge">DailyTimeIntervalTrigger</code>! Check this out:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    @Grab('org.quartz-scheduler:quartz:2.1.6')
+    @Grab('org.slf4j:slf4j-simple:1.7.1')
+    import org.quartz.*
+    import org.quartz.impl.*
+    import org.quartz.jobs.*
+    
+    import static org.quartz.DateBuilder.*
+    import static org.quartz.JobBuilder.*
+    import static org.quartz.TriggerBuilder.*
+    import static org.quartz.DailyTimeIntervalScheduleBuilder.*
+    import static java.util.Calendar.*
+    
+    def trigger = newTrigger()
+        .withSchedule(
+            dailyTimeIntervalSchedule()
+            .startingDailyAt(TimeOfDay.hourMinuteAndSecondOfDay(8, 0, 0))
+            .endingDailyAt(TimeOfDay.hourMinuteAndSecondOfDay(10, 0, 0))
+            .onDaysOfTheWeek(MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY)
+            .withInterval(10, IntervalUnit.MINUTE))
+        .startNow()
+        .build()
+    dates = TriggerUtils.computeFireTimes(trigger, null, 20)
+    dates.each{ println it }
+</code></pre></div></div>
+
+<p>Another hidden Trigger type from Quartz is <code class="language-plaintext highlighter-rouge">CalendarIntervalTrigger</code>, and you would use this if you need to repeat job that’s in every interval of a calendar period, such as every year or month etc, where the interval is not fixed, but calendar specific. Here is a test script for that.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    @Grab('org.quartz-scheduler:quartz:2.1.6')
+    @Grab('org.slf4j:slf4j-simple:1.7.1')
+    import org.quartz.*
+    import org.quartz.impl.*
+    import org.quartz.jobs.*
+    
+    import static org.quartz.DateBuilder.*
+    import static org.quartz.JobBuilder.*
+    import static org.quartz.TriggerBuilder.*
+    import static org.quartz.CalendarIntervalScheduleBuilder.*
+    import static java.util.Calendar.*
+    
+    def trigger = newTrigger()
+        .withSchedule(
+            calendarIntervalSchedule()
+            .withInterval(2, IntervalUnit.MONTH))
+        .startAt(futureDate(10, IntervalUnit.MINUTE))
+        .build()
+    dates = TriggerUtils.computeFireTimes(trigger, null, 20)
+    dates.each{ println it }
+</code></pre></div></div>
+
+<p>I hope these will help you get started on most of your scheduling need with Quartz 2. Try these out and see your future fire times before even scheduling a job into the scheduler should save you some times and troubles.</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2012/10/22/a-very-lean-war-file-for-myschedule/">
+        A very lean war file for MySchedule
+      </a>
+    </h1>
+
+    <span class="post-date">22 Oct 2012</span>
+
+    <p>On the next coming MySchedule release, I’ve been working on removing few dependencies in the project to improve its size, but yet still keeping all the original functionality.</p>
+
+<p>The <a href="http://code.google.com/p/myschedule/downloads/list">result</a> is about 70% reduction in war file size!</p>
+
+<p>There are few things that I removed that resulted in a much smaller webapp.</p>
+
+<ol>
+  <li>
+    <p>Removed MySQL jdbc driver. Not every one uses Quartz with this DB, so including it in distribution is not necessary. You can easily add it into a server classpath without modifying the war.</p>
+  </li>
+  <li>
+    <p>Removed Groovy. I’ve improved the UI and the ScriptingJob component so that it works with any Java standard script engine. The JDK comes with JavaScript engine built-in! So now Groovy can be optional, and yet user can still use it by simply add it to the server classpath, and they can select the language in MySchedule UI. Without it, MySchedule will just default to JavaScript for scripting.</p>
+  </li>
+  <li>
+    <p>Removed Spring (MVC) Framework. Now this is a big task because MySchedule uses Spring annotations, controllers and service beans in IoC config to bootstrap the entire webapp. I’ve replaced it with a simple static <a href="http://code.google.com/p/myschedule/source/browse/myschedule-web/src/main/java/myschedule/web/AppConfig.java">AppConfig</a> that wired my services together, and then used the plain Servlet API to process all http requests.</p>
+  </li>
+</ol>
+
+<p>So why remove Spring? Don’t get me wrong, I like working with Spring, and I think it’s awesome framework. I have been working with Spring based projects for a long time, and I even have my own set of <a href="http://code.google.com/p/zemiandeng/source/browse/springmvc-project-template">SpringMVC template</a> to
+start any web application quickly. I know where things are configured and where to add new code to make a Spring app works, and it’s flexibility are fantastic for development, especially for larger projects.  But in MySchedule case, it is just a small webapp that has it’s focus is on Quartz. I wanted to remove Spring to create less confusion for any one who want to look at the code. The Spring bundled with Quartz in its core, and I want to avoid (I didn’t use any of that any way.) I also want to shrink the war file size. And lastly, just to challenge of myself that, yes there is life outside of Spring, and it still can be maintainable. :-P</p>
+
+<p>So in replacing Spring, but kept very much of same coding style, I have created my tiny little web request processing library. It only has few classes, and it will allow me to use single Servlet controller to map and process all URL actions through many smaller unit of code, which I called action handler. Now MySchedule can be easily configured through one <a href="http://code.google.com/p/myschedule/source/browse/myschedule-web/src/main/java/myschedule/web/servlet/app/MainServlet.java">MainServlet</a>class. Not bad!</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2012/10/14/running-maven-commands-with-multi-modules-project/">
+        Running maven commands with multi modules project
+      </a>
+    </h1>
+
+    <span class="post-date">14 Oct 2012</span>
+
+    <p>Have you ever tried running Maven commands inside a sub-module of a multi modules Maven project, and get <code class="language-plaintext highlighter-rouge">Could not resolve dependencies for project</code> error msg? And you checked the dependencies that it’s missing are those sister modules within the same project! So what gives? It turns out you have to give few more options to get this running correctly, and you have to remember always stays in the parent pom directory to run it!</p>
+
+<p>For exmaple if you checkout the TimeMachine scheduler project, you can invoke the <code class="language-plaintext highlighter-rouge">timemachine-hibernate</code> module with maven commands like this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bash&gt; hg clone https://bitbucket.org/timemachine/scheduler
+bash&gt; cd scheduler
+bash&gt; mvn -pl timemachine-hibernate -am clean test-compile
+</code></pre></div></div>
+
+<p>You can start the scheduler using Maven like this (remember to stay in the parent pom directory!):</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bash &gt; mvn -pl timemachine-scheduler exec:java -Dexec.mainClass=timemachine.scheduler.tool.SchedulerServer -Dexec.classpathScope=test
+</code></pre></div></div>
+
+<p>I have added the <code class="language-plaintext highlighter-rouge">-Dexec.classpathScope=test</code> so you will see logging output, because there is an <code class="language-plaintext highlighter-rouge">log4j.properties</code> in the classpath for testing.</p>
+
+<p>Without these, you can always run <code class="language-plaintext highlighter-rouge">mvn install</code> in the project root directory, then you can cd into any sub-module and run Maven commands. However you will have to keep a tab on what changed in the dependencies, even if they are in sister modules.</p>
+
+<p>You can read more from this <a href="http://www.sonatype.com/people/2009/10/maven-tips-and-tricks-advanced-reactor-options">article</a> from Sonatype.</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2012/10/06/whats-up-with-the-junit-and-hamcrest-dependencies/">
+        What's up with the JUnit and Hamcrest dependencies?
+      </a>
+    </h1>
+
+    <span class="post-date">06 Oct 2012</span>
+
+    <p>It’s awesome that <a href="http://www.junit.org/">JUnit</a> is recognizing the usefulness of <a href="http://code.google.com/p/hamcrest/">Hamcrest</a>, because I use these two a lot. However, I find JUnit packaging of their dependencies odd, and can cause class loading problem if you are not careful.</p>
+
+<p>Let’s take a closer look. If you look at <code class="language-plaintext highlighter-rouge">junit:junit:4.10</code> from Maven Central, you will see that it has this dependencies graph:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    +- junit:junit:jar:4.10:test
+        |  - org.hamcrest:hamcrest-core:jar:1.1:test
+</code></pre></div></div>
+
+<p>This is great, except that inside the <code class="language-plaintext highlighter-rouge">junit-4.10.jar</code>, you will also find the <code class="language-plaintext highlighter-rouge">hamcrest-core-1.1.jar</code> content are <em>embedded</em>!</p>
+
+<p>But <strong>why???</strong></p>
+
+<p>I suppose it’s a convenient for folks who use Ant, so that they save one jar to package in their <code class="language-plaintext highlighter-rouge">lib</code> folder, but it’s not very Maven friendly. And you also expect classloading trouble if you want to upgrade Hamcrest or use extra Hamcrest modules.</p>
+
+<p>Now if you use Hamcrest long enough, you know that most of their goodies are in the second module named <code class="language-plaintext highlighter-rouge">hamcrest-library</code>, but this JUnit didn’t package in. JUnit however chose to include some JUnit+Hamcrest extension of their own. Now including duplicated classes in jar are very trouble maker, so JUnit has a separated module <code class="language-plaintext highlighter-rouge">junit-dep</code> that doesn’t include Hamcrest core package and help you avoid this issue. So if you are using Maven project, you should use this instead.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    &lt;dependency&gt;
+        &lt;groupId&gt;junit&lt;/groupId&gt;
+        &lt;artifactId&gt;junit-dep&lt;/artifactId&gt;
+        &lt;version&gt;4.10&lt;/version&gt;
+        &lt;scope&gt;test&lt;/scope&gt;
+        &lt;exclusions&gt;
+            &lt;exclusion&gt;
+                &lt;groupId&gt;org.hamcrest&lt;/groupId&gt;
+                &lt;artifactId&gt;hamcrest-core&lt;/artifactId&gt;
+            &lt;/exclusion&gt;
+        &lt;/exclusions&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.hamcrest&lt;/groupId&gt;
+        &lt;artifactId&gt;hamcrest-library&lt;/artifactId&gt;
+        &lt;version&gt;1.2.1&lt;/version&gt;
+        &lt;scope&gt;test&lt;/scope&gt;
+    &lt;/dependency&gt;
+</code></pre></div></div>
+
+<p>Notice that’s a <code class="language-plaintext highlighter-rouge">junit-dep</code>, and also on how I have to exclude hamcrest from it. This is needed if you want <code class="language-plaintext highlighter-rouge">hamcrest-library</code> that has higher version than the one JUnit comes with, which is <code class="language-plaintext highlighter-rouge">1.1</code>.</p>
+
+<p>Interesting enough, Maven’s dependencies in pom is order sensitive when it comes to auto resolving conflicting versions dependencies. Actually it would just pick the first one found and ignore the rest. So you can shorten above without exclusion if, only if, you place the Hamcrest bofore JUnit like this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    &lt;dependency&gt;
+        &lt;groupId&gt;org.hamcrest&lt;/groupId&gt;
+        &lt;artifactId&gt;hamcrest-library&lt;/artifactId&gt;
+        &lt;version&gt;1.2.1&lt;/version&gt;
+        &lt;scope&gt;test&lt;/scope&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;junit&lt;/groupId&gt;
+        &lt;artifactId&gt;junit-dep&lt;/artifactId&gt;
+        &lt;version&gt;4.10&lt;/version&gt;
+        &lt;scope&gt;test&lt;/scope&gt;
+    &lt;/dependency&gt;    
+</code></pre></div></div>
+
+<p>This should make Maven use the following dependencies:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    +- org.hamcrest:hamcrest-library:jar:1.2.1:test
+    |  \- org.hamcrest:hamcrest-core:jar:1.2.1:test
+    +- junit:junit-dep:jar:4.10:test
+</code></pre></div></div>
+
+<p>However I think using the exclusion tag would probably give you more stable build and not rely on Maven implicit ordering rule. And it avoid easy mistake for Maven beginer users. However I wish JUnit would do a better job at packaging and remove duplicated classes in jar. I personally think it’s more productive for JUnit to also include <code class="language-plaintext highlighter-rouge">hamcrest-libray</code> instead of just the <code class="language-plaintext highlighter-rouge">hamcrest-core</code> jar.</p>
+
+<p>What do you think?</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2012/09/29/high-level-design-diagrams-for-timemachine-scheduler/">
+        High Level Design Diagrams for TimeMachine Scheduler
+      </a>
+    </h1>
+
+    <span class="post-date">29 Sep 2012</span>
+
+    <p>Despite the advance of all the computers, I am one of those guys who still carry a pen and composition notebook around. I am far from those who has photographic memories, nor one who can digest every thing in their heads. Especially when it comes to doing software design. I still find my self scribbling on my notebook quite a bit, or even on piece of napkin if no paper is available. I am also one of those who only need high level ideas drawn out, then I can usually go directly to code, map it to some API and then write some simple implementations to get started.</p>
+
+<p>That’s how I started with the <a href="https://bitbucket.org/timemachine/scheduler">TimeMachine Scheduler</a> project a while back. However, as we come to a point where we have a solid runnable code, we must also start to present it to others. Showing my composition notebook is not the prettier thing in the world, specially when I have no gift in penmenship at all. This is a time to look into some professional diagram and design tools to draw up the high level architecture.</p>
+
+<p>I was contacted by <a href="http://www.architexa.com">Architexa</a> to give them some review of their tool. I think this is a great opportunity for me to try it to draw up some diagrams on the TimeMachine project. Most of what I have diagrammed here are explained in details in the project <a href="https://bitbucket.org/timemachine/scheduler/wiki/ReferenceManual">reference manual</a>, so if you want to know more, please do read it up for further reference.</p>
+
+<h1 id="timemachine-top-level-packages">TimeMachine top level packages</h1>
+
+<p>First, the Architexa provides their software as an Eclipse plugin, and after installing it, it can analysis an existing project. I did that and here is the package level view it presents me for the TimeMachine.</p>
+
+<p><img src="https://bitbucket.org/saltnlight5/images/raw/84cde5b1e9ba/timemachine-diagrams/package-dependencies.png" alt="TimeMachine packages dependencies diagram" /></p>
+
+<p>The graph is not very clear on why everything depends on <code class="language-plaintext highlighter-rouge">schedule</code> package, but perhaps Schedule is used through the code. Any way the TimeMachine has been carefully separating out the pakcages so it’s easy for user to use. All the interfaces you need to scheduler jobs are in <code class="language-plaintext highlighter-rouge">timemachine.scheduler</code>. In it, there are couple static factories class: <code class="language-plaintext highlighter-rouge">Schedules</code> and <code class="language-plaintext highlighter-rouge">JobTasks</code> provide majority of the functionity you need. So the goal is you can do quiet a bit with just <code class="language-plaintext highlighter-rouge">import timemachine.scheduler.*;</code>; then as you need each layer functionality, you can import them explicitly the sub-packages.</p>
+
+<h1 id="timemachine-main-classes-diagrams">TimeMachine main classes diagrams</h1>
+
+<p>In TimeMachine, you have few major class hierarchy that you must need to get familiar in order to write effective scheduling jobs.</p>
+
+<p>A job in TimeMachine is implemented by a class with <code class="language-plaintext highlighter-rouge">JobTask</code> interface. The project provide few for you to get started.</p>
+
+<p><img src="https://bitbucket.org/saltnlight5/images/raw/84cde5b1e9ba/timemachine-diagrams/jobtask-class-hierarchy.png" alt="TimeMachine JobTask class diagram" /></p>
+
+<p>How often and frequent to run your job in the scheduler is provided by a <code class="language-plaintext highlighter-rouge">Schedule</code>. Here we provided some most used implementations, including the customizable <code class="language-plaintext highlighter-rouge">DateListSchedule</code> that uses a <code class="language-plaintext highlighter-rouge">provider</code> generator.</p>
+
+<p><img src="https://bitbucket.org/saltnlight5/images/raw/84cde5b1e9ba/timemachine-diagrams/schedule-class-hierarchy.png" alt="TimeMachine Schedule class diagram" /></p>
+
+<p>The TimeMachine is a scheduler composed by a stackable service container. Here are some of the services that power the scheduler as a whole. The user/developer can write their own user <code class="language-plaintext highlighter-rouge">Service</code> and add into the container as well.</p>
+
+<p><img src="https://bitbucket.org/saltnlight5/images/raw/84cde5b1e9ba/timemachine-diagrams/service-class-hierarchy.png" alt="TimeMachine SchedulerEngine class diagram" /></p>
+
+<p>The services above are then combined together to form the scheduler engine.</p>
+
+<p><img src="https://bitbucket.org/saltnlight5/images/raw/84cde5b1e9ba/timemachine-diagrams/scheduler-engine-class-hierarchy.png" alt="TimeMachine SchedulerEngine class diagram" /></p>
+
+<h1 id="timemachine-in-action-diagrams">TimeMachine in action diagrams</h1>
+
+<p>Depicting sequence diagram is pretty challenging. The Architexa plugin is pretty good in this area, especially when you already have code already done. The Architexa plugin would take advantage of existing code and Java reflection and give you a selectable choice on what and to where as action. Here I will highlight couple actions in TimeMachine.</p>
+
+<p>The most basic startup of the TimeMachine sequence would look something like this.</p>
+
+<p><img src="https://bitbucket.org/saltnlight5/images/raw/84cde5b1e9ba/timemachine-diagrams/scheduler-start-up-sequence.png" alt="TimeMachine Scheduler startup up sequence diagram" /></p>
+
+<p>In the heart of the scheduler logic is in the <code class="language-plaintext highlighter-rouge">PollingScheduleRunner</code> service, and here are some of the actions depicted.</p>
+
+<p><img src="https://bitbucket.org/saltnlight5/images/raw/84cde5b1e9ba/timemachine-diagrams/polling-schedule-runner-sequence.png" alt="TimeMachine PollingScheduleRunner sequence diagram" /></p>
+
+<h1 id="using-architexa">Using Architexa</h1>
+
+<p>Over all, I think Architexa provided a pretty good plugin for Eclipse. I have some problems when generating the sequence diagrams. For example, I can’t resize the width between two actors(classes) to display full method name. And in some actions there are no lines drawn! I suspect it’s due to the tool is using code inspection, and some of the call are called by different threads.</p>
+
+<p>The plugin itself seems pretty solid. You can install and uninstall without harm. They currently offer free download for small number of users, which I think it’s a great way for you to explorer.</p>
+
+<p>I am not too sure how effective of Architexa on builing a collabration of sharing these diagrams as platform. I treat these diagrams as supplement to the project. It certainly helps in explaining high level architeture, but it’s far from the complete documentation. No documentation can get any closer to the code. I think the strength of Java being static already provided some level of documentation when just reading the code alone. I would rather Architexa to focus and perfecting the plugin that draw the diagram, because these are more important to me.</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2012/09/28/enhancing-spring-test-framework-with-beforeclass-and-afterclass-setup/">
+        Enhancing Spring Test Framework with beforeClass and afterClass setup
+      </a>
+    </h1>
+
+    <span class="post-date">28 Sep 2012</span>
+
+    <h1 id="how-to-allow-instance-methods-to-run-as-junit-beforeclass-behavior">How to allow instance methods to run as JUnit BeforeClass behavior</h1>
+
+<p>JUnit allows you to setup methods on the class level once before and after all tests methods invocation. However, by design on purpose that they restrict this to only <em>static</em> methods using <code class="language-plaintext highlighter-rouge">@BeforeClass</code> and <code class="language-plaintext highlighter-rouge">@AfterClass</code> annotations. For example this simple demo shows the typical Junit setup:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    package deng.junitdemo;
+    
+    import org.junit.AfterClass;
+    import org.junit.BeforeClass;
+    import org.junit.Test;
+    
+    public class DemoTest {
+    
+        @Test
+        public void testOne() {
+            System.out.println("Normal test method #1.");
+        }
+    
+        @Test
+        public void testTwo() {
+            System.out.println("Normal test method #2.");
+        }
+    
+        @BeforeClass
+        public static void beforeClassSetup() {
+            System.out.println("A static method setup before class.");
+        }
+    
+        @AfterClass
+        public static void afterClassSetup() {
+            System.out.println("A static method setup after class.");
+        }
+    }
+</code></pre></div></div>
+
+<p>And above should result the following output:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    A static method setup before class.
+    Normal test method #1.
+    Normal test method #2.
+    A static method setup after class.
+</code></pre></div></div>
+
+<p>This usage is fine for most of the time, but there are times you want to use non-static methods to setup the test. I will show you a more detailed use case later, but for now, let’s see how we can solve this naughty problem with JUnit first. We can solve this by making the test
+implements a Listener that provide the before and after callbacks, and we will need to digg into JUnit to detect this Listener to invoke our methods. This is a solution I came up with:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    package deng.junitdemo;
+    
+    import org.junit.Test;
+    import org.junit.runner.RunWith;
+    
+    @RunWith(InstanceTestClassRunner.class)
+    public class Demo2Test implements InstanceTestClassListener {
+    
+        @Test
+        public void testOne() {
+            System.out.println("Normal test method #1");
+        }
+    
+        @Test
+        public void testTwo() {
+            System.out.println("Normal test method #2");
+        }
+    
+        @Override
+        public void beforeClassSetup() {
+            System.out.println("An instance method setup before class.");
+        }
+    
+        @Override
+        public void afterClassSetup() {
+            System.out.println("An instance method setup after class.");
+        }
+    }
+</code></pre></div></div>
+
+<p>As stated above, our Listener is a simple contract:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    package deng.junitdemo;
+    
+    public interface InstanceTestClassListener {
+        void beforeClassSetup();
+        void afterClassSetup();
+    }
+</code></pre></div></div>
+
+<p>Our next task is to provide the JUnit runner implementation that will trigger the setup methods.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    package deng.junitdemo;
+    
+    import org.junit.runner.notification.RunNotifier;
+    import org.junit.runners.BlockJUnit4ClassRunner;
+    import org.junit.runners.model.InitializationError;
+    
+    public class InstanceTestClassRunner extends BlockJUnit4ClassRunner {
+    
+        private InstanceTestClassListener instanceSetupListener;
+    
+        public InstanceTestClassRunner(Class&lt;?&gt; klass) throws InitializationError {
+            super(klass);
+        }
+    
+        @Override
+        protected Object createTest() throws Exception {
+            Object test = super.createTest();
+            // Note that JUnit4 will call this createTest() multiple times for each
+            // test method, so we need to ensure to call "beforeClassSetup" only once.
+            if (test instanceof InstanceTestClassListener &amp;&amp; instanceSetupListener == null) {
+                instanceSetupListener = (InstanceTestClassListener) test;
+                instanceSetupListener.beforeClassSetup();
+            }
+            return test;
+        }
+    
+        @Override
+        public void run(RunNotifier notifier) {
+            super.run(notifier);
+            if (instanceSetupListener != null)
+                instanceSetupListener.afterClassSetup();
+        }
+    }
+</code></pre></div></div>
+
+<p>Now we are in business. If we run above test, it should give us similar result, but this time we are using instance methods instead!</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    An instance method setup before class.
+    Normal test method #1
+    Normal test method #2
+    An instance method setup after class.
+</code></pre></div></div>
+
+<h1 id="a-concrete-use-case-working-with-spring-test-framework">A concrete use case: Working with Spring Test Framework</h1>
+
+<p>Now let me show you a real use case with above. If you use Spring Test Framework, you would normally setup a test like this so that you may have test fixture injected as member instance.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    package deng.junitdemo.spring;
+    
+    import static org.hamcrest.Matchers.is;
+    import static org.junit.Assert.assertThat;
+    
+    import java.util.List;
+    
+    import javax.annotation.Resource;
+    
+    import org.junit.Test;
+    import org.junit.runner.RunWith;
+    import org.springframework.test.context.ContextConfiguration;
+    import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+    
+    @RunWith(SpringJUnit4ClassRunner.class)
+    @ContextConfiguration
+    public class SpringDemoTest {
+    
+        @Resource(name="myList")
+        private List&lt;String&gt; myList;
+    
+        @Test
+        public void testMyListInjection() {
+            assertThat(myList.size(), is(2));
+        }
+    }
+</code></pre></div></div>
+
+<p>You would also need a spring xml under that same package for above to run:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+    &lt;beans xmlns="http://www.springframework.org/schema/beans"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"&gt;
+         &lt;bean id="myList" class="java.util.ArrayList"&gt;
+            &lt;constructor-arg&gt;
+                &lt;list&gt;
+                    &lt;value&gt;one&lt;/value&gt;
+                    &lt;value&gt;two&lt;/value&gt;
+                &lt;/list&gt;
+            &lt;/constructor-arg&gt;
+         &lt;/bean&gt;
+    &lt;/beans&gt;
+</code></pre></div></div>
+
+<p>Pay very close attention to member instance <code class="language-plaintext highlighter-rouge">List&lt;String&gt; myList</code>. When running JUnit test, that field will be injected by Spring, and it can be used in any test method. However, if you ever want a one time setup of some code and get a reference to a Spring injected field, then you are in bad luck. This is because the JUnit <code class="language-plaintext highlighter-rouge">@BeforeClass</code> will force your method to be static; and if you make your field static, Spring injection won’t work in your test!</p>
+
+<p>Now if you are a frequent Spring user, you should know that Spring Test Framework already provided a way for you to handle this type of use case. Here is a way for you to do class level setup with Spring’s style:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    package deng.junitdemo.spring;
+    
+    import static org.hamcrest.Matchers.is;
+    import static org.junit.Assert.assertThat;
+    
+    import java.util.List;
+    
+    import javax.annotation.Resource;
+    
+    import org.junit.Test;
+    import org.junit.runner.RunWith;
+    import org.springframework.test.context.ContextConfiguration;
+    import org.springframework.test.context.TestContext;
+    import org.springframework.test.context.TestExecutionListeners;
+    import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+    import org.springframework.test.context.support.AbstractTestExecutionListener;
+    import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
+    
+    @RunWith(SpringJUnit4ClassRunner.class)
+    @TestExecutionListeners(listeners = {
+            DependencyInjectionTestExecutionListener.class, 
+            SpringDemo2Test.class})
+    @ContextConfiguration
+    public class SpringDemo2Test extends AbstractTestExecutionListener {
+    
+        @Resource(name="myList")
+        private List&lt;String&gt; myList;
+    
+        @Test
+        public void testMyListInjection() {
+            assertThat(myList.size(), is(2));
+        }
+    
+        @Override
+        public void afterTestClass(TestContext testContext) {
+            List&lt;?&gt; list = testContext.getApplicationContext().getBean("myList", List.class);
+            assertThat((String)list.get(0), is("one"));
+        }
+    
+        @Override
+        public void beforeTestClass(TestContext testContext) {
+            List&lt;?&gt; list = testContext.getApplicationContext().getBean("myList", List.class);
+            assertThat((String)list.get(1), is("two"));
+        }
+    }
+</code></pre></div></div>
+
+<p>As you can see, Spring offers the <code class="language-plaintext highlighter-rouge">@TestExecutionListeners</code> annotation to allow you to write any Listener, and in it you will have a reference to the <code class="language-plaintext highlighter-rouge">TestContext</code> which has the <code class="language-plaintext highlighter-rouge">ApplicationContext</code> for you to get to the injected field reference. This works, but I find it not very elegant. It forces you to look up the bean, while your injected field is already available as field. But you can’t use it unless you go through the <code class="language-plaintext highlighter-rouge">TestContext</code> parameter.</p>
+
+<p>Now if you mix the solution we provided in the beginning, we will see a more prettier test setup. Let’s see it:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    package deng.junitdemo.spring;
+    
+    import static org.hamcrest.Matchers.is;
+    import static org.junit.Assert.assertThat;
+    
+    import java.util.List;
+    
+    import javax.annotation.Resource;
+    
+    import org.junit.Test;
+    import org.junit.runner.RunWith;
+    import org.springframework.test.context.ContextConfiguration;
+    
+    import deng.junitdemo.InstanceTestClassListener;
+    
+    @RunWith(SpringInstanceTestClassRunner.class)
+    @ContextConfiguration
+    public class SpringDemo3Test implements InstanceTestClassListener {
+    
+        @Resource(name="myList")
+        private List&lt;String&gt; myList;
+    
+        @Test
+        public void testMyListInjection() {
+            assertThat(myList.size(), is(2));
+        }
+    
+        @Override
+        public void beforeClassSetup() {
+            assertThat((String)myList.get(0), is("one"));
+        }
+    
+        @Override
+        public void afterClassSetup() {
+            assertThat((String)myList.get(1), is("two"));
+        }
+    }
+</code></pre></div></div>
+
+<p>Now JUnit only allow you to use single <code class="language-plaintext highlighter-rouge">Runner</code>, so we must extends the Spring’s version to insert what we did before.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    package deng.junitdemo.spring;
+    
+    import org.junit.runner.notification.RunNotifier;
+    import org.junit.runners.model.InitializationError;
+    import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+    
+    import deng.junitdemo.InstanceTestClassListener;
+    
+    public class SpringInstanceTestClassRunner extends SpringJUnit4ClassRunner {
+    
+        private InstanceTestClassListener instanceSetupListener;
+    
+        public SpringInstanceTestClassRunner(Class&lt;?&gt; clazz) throws InitializationError {
+            super(clazz);
+        }
+    
+        @Override
+        protected Object createTest() throws Exception {
+            Object test = super.createTest();
+            // Note that JUnit4 will call this createTest() multiple times for each
+            // test method, so we need to ensure to call "beforeClassSetup" only once.
+            if (test instanceof InstanceTestClassListener &amp;&amp; instanceSetupListener == null) {
+                instanceSetupListener = (InstanceTestClassListener) test;
+                instanceSetupListener.beforeClassSetup();
+            }
+            return test;
+        }
+    
+        @Override
+        public void run(RunNotifier notifier) {
+            super.run(notifier);
+            if (instanceSetupListener != null)
+                instanceSetupListener.afterClassSetup();
+        }
+    }
+</code></pre></div></div>
+
+<p>That should do the trick. Running the test will give use this output:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    12:58:48 main INFO  org.springframework.test.context.support.AbstractContextLoader:139 | Detected default resource location "classpath:/deng/junitdemo/spring/SpringDemo3Test-context.xml" for test class [deng.junitdemo.spring.SpringDemo3Test].
+    12:58:48 main INFO  org.springframework.test.context.support.DelegatingSmartContextLoader:148 | GenericXmlContextLoader detected default locations for context configuration [ContextConfigurationAttributes@74b23210 declaringClass = 'deng.junitdemo.spring.SpringDemo3Test', locations = '{classpath:/deng/junitdemo/spring/SpringDemo3Test-context.xml}', classes = '{}', inheritLocations = true, contextLoaderClass = 'org.springframework.test.context.ContextLoader'].
+    12:58:48 main INFO  org.springframework.test.context.support.AnnotationConfigContextLoader:150 | Could not detect default configuration classes for test class [deng.junitdemo.spring.SpringDemo3Test]: SpringDemo3Test does not declare any static, non-private, non-final, inner classes annotated with @Configuration.
+    12:58:48 main INFO  org.springframework.test.context.TestContextManager:185 | @TestExecutionListeners is not present for class [class deng.junitdemo.spring.SpringDemo3Test]: using defaults.
+    12:58:48 main INFO  org.springframework.beans.factory.xml.XmlBeanDefinitionReader:315 | Loading XML bean definitions from class path resource [deng/junitdemo/spring/SpringDemo3Test-context.xml]
+    12:58:48 main INFO  org.springframework.context.support.GenericApplicationContext:500 | Refreshing org.springframework.context.support.GenericApplicationContext@44c9d92c: startup date [Sat Sep 29 12:58:48 EDT 2012]; root of context hierarchy
+    12:58:49 main INFO  org.springframework.beans.factory.support.DefaultListableBeanFactory:581 | Pre-instantiating singletons in org.springframework.beans.factory.support.DefaultListableBeanFactory@73c6641: defining beans [myList,org.springframework.context.annotation.internalConfigurationAnnotationProcessor,org.springframework.context.annotation.internalAutowiredAnnotationProcessor,org.springframework.context.annotation.internalRequiredAnnotationProcessor,org.springframework.context.annotation.internalCommonAnnotationProcessor,org.springframework.context.annotation.ConfigurationClassPostProcessor$ImportAwareBeanPostProcessor#0]; root of factory hierarchy
+    12:58:49 Thread-1 INFO  org.springframework.context.support.GenericApplicationContext:1025 | Closing org.springframework.context.support.GenericApplicationContext@44c9d92c: startup date [Sat Sep 29 12:58:48 EDT 2012]; root of context hierarchy
+    12:58:49 Thread-1 INFO  org.springframework.beans.factory.support.DefaultListableBeanFactory:433 | Destroying singletons in org.springframework.beans.factory.support.DefaultListableBeanFactory@73c6641: defining beans [myList,org.springframework.context.annotation.internalConfigurationAnnotationProcessor,org.springframework.context.annotation.internalAutowiredAnnotationProcessor,org.springframework.context.annotation.internalRequiredAnnotationProcessor,org.springframework.context.annotation.internalCommonAnnotationProcessor,org.springframework.context.annotation.ConfigurationClassPostProcessor$ImportAwareBeanPostProcessor#0]; root of factory hierarchy
+</code></pre></div></div>
+
+<p>Obviously the output shows nothing interesting here, but the test should run with all assertion passed. The point is that now we have a more elegant way to invoking a before and after test setup that are at class level, and they can be instance methods to allow Spring injection.</p>
+
+<h1 id="download-the-demo-code">Download the demo code</h1>
+
+<p>You may get above demo code in a working Maven project from <a href="https://bitbucket.org/saltnlight5/sandbox/src/8d545b15fbbd/junit-examples">my sandbox</a>.</p>
+
+  </div>
+  
+</div>
+
+<div class="pagination">
+  
+    <a class="pagination-item older" href="http://localhost:4000/page24">Older</a>
+  
+  
+    
+      <a class="pagination-item newer" href="http://localhost:4000/page22">Newer</a>
+    
+  
+</div>
+
+      </div>
+    </div>
+
+    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+    <script src='/public/js/script.js'></script>
+  </body>
+</html>

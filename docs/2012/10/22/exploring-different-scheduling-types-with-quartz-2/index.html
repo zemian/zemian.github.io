@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Exploring different scheduling types with Quartz 2 &middot; Zemian's Blog
+    
+  </title>
+
+  
+  <link rel="canonical" href="http://localhost:4000/2012/10/22/exploring-different-scheduling-types-with-quartz-2/">
+  
+
+  <link rel="stylesheet" href="http://localhost:4000/public/css/poole.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/syntax.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/lanyon.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700%7CPT+Sans:400">
+
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/public/apple-touch-icon-precomposed.png">
+  <link rel="shortcut icon" href="http://localhost:4000/public/favicon.ico">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="http://localhost:4000/atom.xml">
+
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-135626598-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  
+</head>
+
+
+  <body>
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p>A weblog on software development.</p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item" href="http://localhost:4000/">Home</a>
+
+    
+
+    
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="http://localhost:4000/about/">About</a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+
+  </nav>
+
+  <div class="sidebar-item">
+    <p>
+      &copy; 2020. All rights reserved.
+    </p>
+  </div>
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <h3 class="masthead-title">
+            <a href="/" title="Home">Zemian's Blog</a>
+            <small>Life in programming world!</small>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+        <div class="post">
+  <h1 class="post-title">Exploring different scheduling types with Quartz 2</h1>
+  <span class="post-date">22 Oct 2012</span>
+  <p>We often think of Cron when we want to schedule a job. Cron is very flexible in expressing an repeating occurance of an event/job in a very compact expression. However it’s not answer for everything, as I often see people are asking for help in the Quartz user forum. Did you know that the popular <a href="http://quartz-scheduler.org">Quartz 2</a> library provide many other schedule types (called Trigger) besides cron? I will show you each of the Quartz 2 built-in schedule types here within a complete, standalone Groovy script that you can run and test it out. Let’s start with a simple one.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    @Grab('org.quartz-scheduler:quartz:2.1.6')
+    @Grab('org.slf4j:slf4j-simple:1.7.1')
+    import org.quartz.*
+    import org.quartz.impl.*
+    import org.quartz.jobs.*
+    
+    import static org.quartz.DateBuilder.*
+    import static org.quartz.JobBuilder.*
+    import static org.quartz.TriggerBuilder.*
+    import static org.quartz.SimpleScheduleBuilder.*
+    
+    def trigger = newTrigger()
+        .withSchedule(
+            simpleSchedule()
+            .withIntervalInSeconds(3)
+            .repeatForever())
+        .startNow()
+        .build()
+    dates = TriggerUtils.computeFireTimes(trigger, null, 20)
+    dates.each{ println it }
+</code></pre></div></div>
+
+<p>This is the Quartz’s <code class="language-plaintext highlighter-rouge">SimpleTrigger</code>, and it allows you to create a fixed rate repeating job. You can even limit to certain number of count if you like. I have imported all the nessary classes the script needs, and I use the latest Quartz 2.x builder API to create an instance of the trigger.</p>
+
+<p>The quickest way to explore and test out whether a scheduling fits your need is to print out its future execution times. Hence you see me using <code class="language-plaintext highlighter-rouge">TriggerUtils.computeFireTimes</code> in the script. Run the above and you should get the datetimes as scheduled to be run, in this case every 3 seconds.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    bash&gt; $ groovy simpleTrigger.groovy
+        Tue Oct 23 20:28:01 EDT 2012
+        Tue Oct 23 20:28:04 EDT 2012
+        Tue Oct 23 20:28:07 EDT 2012
+        Tue Oct 23 20:28:10 EDT 2012
+        Tue Oct 23 20:28:13 EDT 2012
+        Tue Oct 23 20:28:16 EDT 2012
+        Tue Oct 23 20:28:19 EDT 2012
+        Tue Oct 23 20:28:22 EDT 2012
+        Tue Oct 23 20:28:25 EDT 2012
+        Tue Oct 23 20:28:28 EDT 2012
+        Tue Oct 23 20:28:31 EDT 2012
+        Tue Oct 23 20:28:34 EDT 2012
+        Tue Oct 23 20:28:37 EDT 2012
+        Tue Oct 23 20:28:40 EDT 2012
+        Tue Oct 23 20:28:43 EDT 2012
+        Tue Oct 23 20:28:46 EDT 2012
+        Tue Oct 23 20:28:49 EDT 2012
+        Tue Oct 23 20:28:52 EDT 2012
+        Tue Oct 23 20:28:55 EDT 2012
+        Tue Oct 23 20:28:58 EDT 2012
+</code></pre></div></div>
+
+<p>The most frequent used scheduling type is the <code class="language-plaintext highlighter-rouge">CronTrigger</code>, and you can test it out in similar way.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    @Grab('org.quartz-scheduler:quartz:2.1.6')
+    @Grab('org.slf4j:slf4j-simple:1.7.1')
+    import org.quartz.*
+    import org.quartz.impl.*
+    import org.quartz.jobs.*
+    
+    import static org.quartz.DateBuilder.*
+    import static org.quartz.JobBuilder.*
+    import static org.quartz.TriggerBuilder.*
+    import static org.quartz.CronScheduleBuilder.*
+    
+    def trigger = newTrigger()
+        .withSchedule(cronSchedule("0 30 08 * * ?"))
+        .startNow()
+        .build()
+    dates = TriggerUtils.computeFireTimes(trigger, null, 20)
+    dates.each{ println it }
+</code></pre></div></div>
+
+<p>The javadoc for <a href="http://quartz-scheduler.org/api/2.1.5/org/quartz/CronExpression.html">CronExpression</a> is very good and you should definately read it throughly to use it effectively. With the script, you can explore all the combination you want easily and verify future fire times before your job is invoked.</p>
+
+<p>Now, if you have some odd scheduling needs such as run a job every 30 mins from MON to FRI and only between 8:00AM to 10:00AM, then don’t try to cramp all that into the Cron expression. The Quartz 2.x has a dedicated trigger type just for this use, and it’s 
+called <code class="language-plaintext highlighter-rouge">DailyTimeIntervalTrigger</code>! Check this out:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    @Grab('org.quartz-scheduler:quartz:2.1.6')
+    @Grab('org.slf4j:slf4j-simple:1.7.1')
+    import org.quartz.*
+    import org.quartz.impl.*
+    import org.quartz.jobs.*
+    
+    import static org.quartz.DateBuilder.*
+    import static org.quartz.JobBuilder.*
+    import static org.quartz.TriggerBuilder.*
+    import static org.quartz.DailyTimeIntervalScheduleBuilder.*
+    import static java.util.Calendar.*
+    
+    def trigger = newTrigger()
+        .withSchedule(
+            dailyTimeIntervalSchedule()
+            .startingDailyAt(TimeOfDay.hourMinuteAndSecondOfDay(8, 0, 0))
+            .endingDailyAt(TimeOfDay.hourMinuteAndSecondOfDay(10, 0, 0))
+            .onDaysOfTheWeek(MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY)
+            .withInterval(10, IntervalUnit.MINUTE))
+        .startNow()
+        .build()
+    dates = TriggerUtils.computeFireTimes(trigger, null, 20)
+    dates.each{ println it }
+</code></pre></div></div>
+
+<p>Another hidden Trigger type from Quartz is <code class="language-plaintext highlighter-rouge">CalendarIntervalTrigger</code>, and you would use this if you need to repeat job that’s in every interval of a calendar period, such as every year or month etc, where the interval is not fixed, but calendar specific. Here is a test script for that.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    @Grab('org.quartz-scheduler:quartz:2.1.6')
+    @Grab('org.slf4j:slf4j-simple:1.7.1')
+    import org.quartz.*
+    import org.quartz.impl.*
+    import org.quartz.jobs.*
+    
+    import static org.quartz.DateBuilder.*
+    import static org.quartz.JobBuilder.*
+    import static org.quartz.TriggerBuilder.*
+    import static org.quartz.CalendarIntervalScheduleBuilder.*
+    import static java.util.Calendar.*
+    
+    def trigger = newTrigger()
+        .withSchedule(
+            calendarIntervalSchedule()
+            .withInterval(2, IntervalUnit.MONTH))
+        .startAt(futureDate(10, IntervalUnit.MINUTE))
+        .build()
+    dates = TriggerUtils.computeFireTimes(trigger, null, 20)
+    dates.each{ println it }
+</code></pre></div></div>
+
+<p>I hope these will help you get started on most of your scheduling need with Quartz 2. Try these out and see your future fire times before even scheduling a job into the scheduler should save you some times and troubles.</p>
+
+</div>
+
+
+<div class="related">
+  <h2>Related posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2020/09/20/world-of-php/">
+            The World of PHP Development
+            <small>20 Sep 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/09/19/multiple-jquery/">
+            How to Load Multiple jQuery
+            <small>19 Sep 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/08/15/switched-to-vuepress/">
+            Switched Blogging to VuePress
+            <small>15 Aug 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+
+      </div>
+    </div>
+
+    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+    <script src='/public/js/script.js'></script>
+  </body>
+</html>

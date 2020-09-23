@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Getting started with Intellij IDEA and WebLogic Server &middot; Zemian's Blog
+    
+  </title>
+
+  
+  <link rel="canonical" href="http://localhost:4000/2014/01/31/getting-started-with-intellij-idea-and-weblogic-server/">
+  
+
+  <link rel="stylesheet" href="http://localhost:4000/public/css/poole.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/syntax.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/lanyon.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700%7CPT+Sans:400">
+
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/public/apple-touch-icon-precomposed.png">
+  <link rel="shortcut icon" href="http://localhost:4000/public/favicon.ico">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="http://localhost:4000/atom.xml">
+
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-135626598-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  
+</head>
+
+
+  <body>
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p>A weblog on software development.</p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item" href="http://localhost:4000/">Home</a>
+
+    
+
+    
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="http://localhost:4000/about/">About</a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+
+  </nav>
+
+  <div class="sidebar-item">
+    <p>
+      &copy; 2020. All rights reserved.
+    </p>
+  </div>
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <h3 class="masthead-title">
+            <a href="/" title="Home">Zemian's Blog</a>
+            <small>Life in programming world!</small>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+        <div class="post">
+  <h1 class="post-title">Getting started with Intellij IDEA and WebLogic Server</h1>
+  <span class="post-date">31 Jan 2014</span>
+  <p>Before starting, you would need the Ultimate version of IDEA to run WebLogic Server (yes, the paid version or the 30 days trial). The Community edition of IDEA will not support Application Server deployment.</p>
+
+<p>I also assume you have already setup WebLogic Server and a user domain as per my <a href="http://saltnlight5.blogspot.com/2014/01/getting-started-with-weblogic-server.html">previous blog instructions</a>. So now let’s setup the IDE to boost your development.</p>
+
+<ol>
+  <li>Create a simple HelloWorld web application in IDEA.</li>
+  <li>For your HelloWorld, you can go into the Project Settings &gt; Artifacts, and add “web:war exploded” entry for your application. You will add this into your app server later.</li>
+  <li>
+    <p>Ensure you have added the Application Server Views plugin with WebLogic Server. (It’s under Settings &gt; IDE Settings &gt; Application Server)</p>
+  </li>
+  <li>Click + and enter Name: WebLogic 12.1.2</li>
+  <li>
+    <p>WebLogic Home: <code class="language-plaintext highlighter-rouge">C:\apps\wls12120</code></p>
+  </li>
+  <li>
+    <p>Back to your editor, select Menu: Run &gt; Edit Configuration</p>
+  </li>
+  <li>Click + and add “WebLogic Server” &gt; Local</li>
+  <li>Name: WLS</li>
+  <li>On Server tab, ensure DomainPath is set: <code class="language-plaintext highlighter-rouge">C:\apps\wls12120\mydomain </code></li>
+  <li>On Deployment tab, select “web:war exploded” for your HelloWorld project.</li>
+  <li>
+    <p>Click OK</p>
+  </li>
+  <li>Now Menu: Run &gt; “Run WLS”</li>
+</ol>
+
+<p>Your WebLogic Server should now start and running your web application inside. You may visit the browser on http://localhost:7001/web_war_exploded</p>
+
+<p>Some goodies with Intellij IDEA and WLS are:</p>
+
+<ul>
+  <li>Redeploy WAR only without restarting server</li>
+  <li>Deploy application in exploded mode and have IDE auto make and sync</li>
+  <li>Debug application with server running within IDE</li>
+  <li>Full control on server settings</li>
+</ul>
+
+<p>NOTE: As noted in previous blog, if you do not set MW_HOME as system variable, then you must add this in IDEA’s Run Configuration. Or you edit your “mydomain/bin/startWebLogic.cmd” and “stopWebLogic.cmd” scripts directly.</p>
+
+</div>
+
+
+<div class="related">
+  <h2>Related posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2020/09/20/world-of-php/">
+            The World of PHP Development
+            <small>20 Sep 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/09/19/multiple-jquery/">
+            How to Load Multiple jQuery
+            <small>19 Sep 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/08/15/switched-to-vuepress/">
+            Switched Blogging to VuePress
+            <small>15 Aug 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+
+      </div>
+    </div>
+
+    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+    <script src='/public/js/script.js'></script>
+  </body>
+</html>

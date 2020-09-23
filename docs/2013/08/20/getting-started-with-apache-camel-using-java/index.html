@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Getting started with Apache Camel using Java &middot; Zemian's Blog
+    
+  </title>
+
+  
+  <link rel="canonical" href="http://localhost:4000/2013/08/20/getting-started-with-apache-camel-using-java/">
+  
+
+  <link rel="stylesheet" href="http://localhost:4000/public/css/poole.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/syntax.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/lanyon.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700%7CPT+Sans:400">
+
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/public/apple-touch-icon-precomposed.png">
+  <link rel="shortcut icon" href="http://localhost:4000/public/favicon.ico">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="http://localhost:4000/atom.xml">
+
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-135626598-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  
+</head>
+
+
+  <body>
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p>A weblog on software development.</p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item" href="http://localhost:4000/">Home</a>
+
+    
+
+    
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="http://localhost:4000/about/">About</a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+
+  </nav>
+
+  <div class="sidebar-item">
+    <p>
+      &copy; 2020. All rights reserved.
+    </p>
+  </div>
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <h3 class="masthead-title">
+            <a href="/" title="Home">Zemian's Blog</a>
+            <small>Life in programming world!</small>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+        <div class="post">
+  <h1 class="post-title">Getting started with Apache Camel using Java</h1>
+  <span class="post-date">20 Aug 2013</span>
+  <p>Apache Camel is a very useful library that helps you process events or messages
+from many different sources. You may move these messages through many different
+protocols such as between VM, HTTP, FTP, JMS, or even DIRECTORY/FILE, and yet
+still keep your processing code free of transport logic. This allows you to
+concentrate on digesting the content of the messages instead.</p>
+
+<p>Here I will provide a tutorial on how you can get started with Apache Camel using
+Java.</p>
+
+<p>Let’s start by creating a Maven project <code class="language-plaintext highlighter-rouge">pom.xml</code> file first.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://maven.apache.org/POM/4.0.0
+        http://maven.apache.org/maven-v4_0_0.xsd"&gt;
+
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;groupId&gt;camel-spring-demo&lt;/groupId&gt;
+    &lt;artifactId&gt;camel-spring-demo&lt;/artifactId&gt;
+    &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+    &lt;packaging&gt;jar&lt;/packaging&gt;
+
+    &lt;properties&gt;
+        &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+        &lt;camel.version&gt;2.11.1&lt;/camel.version&gt;
+    &lt;/properties&gt;
+
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.apache.camel&lt;/groupId&gt;
+            &lt;artifactId&gt;camel-core&lt;/artifactId&gt;
+            &lt;version&gt;${camel.version}&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.slf4j&lt;/groupId&gt;
+            &lt;artifactId&gt;slf4j-simple&lt;/artifactId&gt;
+            &lt;version&gt;1.7.5&lt;/version&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+
+&lt;/project&gt;
+</code></pre></div></div>
+
+<p>We are only going to explore the <code class="language-plaintext highlighter-rouge">camel-core</code>, which actually contains quite of few useful
+components that you may use. Also for logging purpose, I have added a <code class="language-plaintext highlighter-rouge">slf4j-simple</code> as
+<a href="http://saltnlight5.blogspot.com/2013/08/how-to-configure-slf4j-with-different.html">a logger implementation</a>
+so we may see output on console.</p>
+
+<p>Next you just need a class to construct an <code class="language-plaintext highlighter-rouge">Route</code>. A <code class="language-plaintext highlighter-rouge">Route</code> is like a instruction
+definition to Camel on how to move your messages from one point to another. We are
+going to create <code class="language-plaintext highlighter-rouge">src/main/java/camelcoredemo/TimerRouteBuilder.java</code> file that
+will generate a timer message on every second, and then pass to a processor
+that simply logs it.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>package camelcoredemo;
+
+import org.slf4j.*;
+import org.apache.camel.*;
+import org.apache.camel.builder.*;
+
+public class TimerRouteBuilder extends RouteBuilder {
+    static Logger LOG = LoggerFactory.getLogger(TimerRouteBuilder.class);
+    public void configure() {
+        from("timer://timer1?period=1000")
+        .process(new Processor() {
+            public void process(Exchange msg) {
+                LOG.info("Processing {}", msg);
+            }
+        });
+    }
+}
+</code></pre></div></div>
+
+<p>That’s all you needed to get started. Now you may build and run this simple
+demo.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bash&gt; mvn compile
+bash&gt; mvn exec:java -Dexec.mainClass=org.apache.camel.main.Main -Dexec.args='-r camelcoredemo.TimerRouteBuilder'
+</code></pre></div></div>
+
+<p>Notice that we didn’t even write a Java <strong>main</strong> class, but simply use the
+<code class="language-plaintext highlighter-rouge">org.apache.camel.main.Main</code> option to accepts a <code class="language-plaintext highlighter-rouge">RouteBuilder</code> class
+name as parameter. Then it will load and create the route automatically.</p>
+
+<h2 id="controlling-the-camelcontext">Controlling the <code class="language-plaintext highlighter-rouge">CamelContext</code></h2>
+
+<p>When you start Camel, it creates a <code class="language-plaintext highlighter-rouge">CamelContext</code> object that holds
+many information on how to run it, including the definition of the
+<code class="language-plaintext highlighter-rouge">Route</code> we created. Now if you want to have more control over this
+<code class="language-plaintext highlighter-rouge">CamelContext</code>, then you would need to write your own <code class="language-plaintext highlighter-rouge">Main</code> class.
+I will show you a simple one here.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>package camelcoredemo;
+
+import org.slf4j.*;
+import org.apache.camel.*;
+import org.apache.camel.impl.*;
+import org.apache.camel.builder.*;
+
+public class TimerMain {
+    static Logger LOG = LoggerFactory.getLogger(TimerMain.class);
+    public static void main(String[] args) throws Exception {
+        new TimerMain().run();
+    }
+    void run() throws Exception {
+        final CamelContext camelContext = new DefaultCamelContext();
+        camelContext.addRoutes(createRouteBuilder());
+        camelContext.setTracing(true);
+        camelContext.start();
+
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            public void run() {
+                try {
+                    camelContext.stop();
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+
+        waitForStop();
+    }
+    RouteBuilder createRouteBuilder() {
+        return new TimerRouteBuilder();
+    }
+    void waitForStop() {
+        while (true) {
+            try {
+                Thread.sleep(Long.MAX_VALUE);
+            } catch (InterruptedException e) {
+                break;
+            }
+        }
+    }
+}
+</code></pre></div></div>
+
+<p>As you can see, we re-used the existing <code class="language-plaintext highlighter-rouge">TimerRouteBuilder</code> class inside
+<code class="language-plaintext highlighter-rouge">createRouteBuilder()</code> method. Our <code class="language-plaintext highlighter-rouge">Main</code> class now have full control
+when to create, start and stop the
+<a href="http://camel.apache.org/maven/current/camel-core/apidocs/org/apache/camel/CamelContext.html"><code class="language-plaintext highlighter-rouge">CamelContext</code></a>.
+This context allow you to have control on how to configure Camel
+globally rather than on <code class="language-plaintext highlighter-rouge">Route</code> level. The javadoc link gives all the setter
+methods that you can explore on what it can do.</p>
+
+<p>Noticed that we also need to provide few setup codes in our <code class="language-plaintext highlighter-rouge">Main</code> class.
+First we need to handle graceful shutdown, so we added a Java shutdown hook
+to invoke the context <code class="language-plaintext highlighter-rouge">stop()</code>. Secondly we need to add a thread block after
+context has started. The reason for this is that the <code class="language-plaintext highlighter-rouge">CamelContext#start()</code>
+method is non-blocking! If you don’t block your <code class="language-plaintext highlighter-rouge">Main</code> thread after
+start, then it will simply exit right after it, which will have not
+much use. You want to run Camel as a service (like a server) until
+you explicitly press <code class="language-plaintext highlighter-rouge">CTRL+C</code> to terminate the process.</p>
+
+<h2 id="improving-the-main-class-to-start-camelcontext">Improving the <code class="language-plaintext highlighter-rouge">Main</code> class to start <code class="language-plaintext highlighter-rouge">CamelContext</code></h2>
+
+<p>If you don’t want to deal with much of the <code class="language-plaintext highlighter-rouge">Main</code> class setup
+code such as above, then you may simply extends the <code class="language-plaintext highlighter-rouge">org.apache.camel.main.Main</code>
+class provided by <code class="language-plaintext highlighter-rouge">camel-core</code> intead. By piggy-back on this class, you will
+only not have your Context auto setup, but you will get all the additional
+command line features such as controlling how long to run the
+process for, enabling tracing, loading custom route class etc.</p>
+
+<p>Refactoring previous example, here is how it look like.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>package camelcoredemo;
+
+import org.slf4j.*;
+import org.apache.camel.builder.*;
+import org.apache.camel.main.Main;
+
+public class TimerMain2 extends Main {
+    static Logger LOG = LoggerFactory.getLogger(TimerMain2.class);
+    public static void main(String[] args) throws Exception {
+        TimerMain2 main = new TimerMain2();
+        main.enableHangupSupport();
+        main.addRouteBuilder(createRouteBuilder());
+        main.run(args);
+    }
+    static RouteBuilder createRouteBuilder() {
+        return new TimerRouteBuilder();
+    }
+}
+</code></pre></div></div>
+
+<p>Now our <code class="language-plaintext highlighter-rouge">TimerMain2</code> is much shorter, and you may try it out and it should
+function the same as before.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bash&gt; mvn compile
+bash&gt; mvn exec:java -Dexec.mainClass=camelcoredemo.TimerMain2 -Dexec.args='-t'
+</code></pre></div></div>
+
+<p>Notice that we have given <code class="language-plaintext highlighter-rouge">-t</code> option and it will dump <code class="language-plaintext highlighter-rouge">Route</code> tracing. Use <code class="language-plaintext highlighter-rouge">-h</code>
+and you will see all the available options.</p>
+
+<h2 id="adding-bean-to-the-camel-registry">Adding bean to the Camel <code class="language-plaintext highlighter-rouge">Registry</code></h2>
+
+<p>In the <code class="language-plaintext highlighter-rouge">TimerRouteBuilder</code> example above, we have created a <code class="language-plaintext highlighter-rouge">Processor</code> on
+the fly. Now if you were to combine few different <code class="language-plaintext highlighter-rouge">Processor</code> together, it
+would be nicer to minimize the noise. Camel allow you to do this by registering
+processing beans in their registry space, and then you simply reference them in
+your route as <code class="language-plaintext highlighter-rouge">bean</code> component. Here is how I can convert above example into
+beans processing.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>package camelcoredemo;
+
+import org.slf4j.*;
+import org.apache.camel.*;
+import org.apache.camel.builder.*;
+import org.apache.camel.main.Main;
+
+public class TimerBeansMain extends Main {
+    static Logger LOG = LoggerFactory.getLogger(TimerBeansMain.class);
+    public static void main(String[] args) throws Exception {
+        TimerBeansMain main = new TimerBeansMain();
+        main.enableHangupSupport();
+        main.bind("processByBean1", new Bean1());
+        main.bind("processAgainByBean2", new Bean2());
+        main.addRouteBuilder(createRouteBuilder());
+        main.run(args);
+    }
+    static RouteBuilder createRouteBuilder() {
+        return new RouteBuilder() {
+                public void configure() {
+                    from("timer://timer1?period=1000")
+                    .to("bean:processByBean1")
+                    .to("bean:processAgainByBean2");
+                }
+            };
+    }
+
+    // Processor beans
+    static class Bean1 implements Processor {
+        public void process(Exchange msg) {
+            LOG.info("First process {}", msg);
+        }
+    }
+    static class Bean2 implements Processor {
+        public void process(Exchange msg) {
+            LOG.info("Second process {}", msg);
+        }
+    }
+}
+</code></pre></div></div>
+
+<p>Now you see my <code class="language-plaintext highlighter-rouge">Route</code> is very slim and without noise clutter; and I have
+refactored my processing code into individual classes. This promotes better
+code management and testing as you write more complex <code class="language-plaintext highlighter-rouge">Route</code> to address
+business logic. It let you build LEGO like block of re-usable POJO beans.
+Besides just processing beans, Camel use this registry space for many other
+services as well. For example you may customize many other component endpoints
+with additional features and or configurations. Or thing such as thread
+pool strategy implementation replacement etc.</p>
+
+<p>The <code class="language-plaintext highlighter-rouge">Route</code> in example above is constructed using what’s called Java DSL.
+The route is very readable, and yet you’ll get full IDE support to browse all the methods available to use for your route.</p>
+
+<p>I hope this article has helped you jump start your Camel ride. Besides the
+<code class="language-plaintext highlighter-rouge">timer</code> component mentioned, the <code class="language-plaintext highlighter-rouge">camel-core</code> also comes with the following
+components out of it’s core jar.</p>
+
+<ul>
+  <li>
+    <p><a href="http://camel.apache.org/bean.html">bean component</a></p>
+  </li>
+  <li>
+    <p><a href="http://camel.apache.org/browse.html">browse component</a></p>
+  </li>
+  <li>
+    <p><a href="http://camel.apache.org/dataset.html">dataset component</a></p>
+  </li>
+  <li>
+    <p><a href="http://camel.apache.org/direct.html">direct component</a></p>
+  </li>
+  <li>
+    <p><a href="http://camel.apache.org/file.html">file component</a></p>
+  </li>
+  <li>
+    <p><a href="http://camel.apache.org/log.html">log component</a></p>
+  </li>
+  <li>
+    <p><a href="http://camel.apache.org/mock.html">mock component</a></p>
+  </li>
+  <li>
+    <p><a href="http://camel.apache.org/properties.html">properties component</a></p>
+  </li>
+  <li>
+    <p><a href="http://camel.apache.org/seda.html">seda component</a></p>
+  </li>
+  <li>
+    <p><a href="http://camel.apache.org/test.html">test component</a></p>
+  </li>
+  <li>
+    <p><a href="http://camel.apache.org/timer.html">timer component</a></p>
+  </li>
+  <li>
+    <p><a href="http://camel.apache.org/stub.html">stub component</a></p>
+  </li>
+  <li>
+    <p><a href="http://camel.apache.org/validation.html">validator component</a></p>
+  </li>
+  <li>
+    <p><a href="http://camel.apache.org/vm.html">vm component</a></p>
+  </li>
+  <li>
+    <p><a href="http://camel.apache.org/xslt.html">xslt component</a></p>
+  </li>
+</ul>
+
+<p>Have fun!</p>
+
+</div>
+
+
+<div class="related">
+  <h2>Related posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2020/09/20/world-of-php/">
+            The World of PHP Development
+            <small>20 Sep 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/09/19/multiple-jquery/">
+            How to Load Multiple jQuery
+            <small>19 Sep 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/08/15/switched-to-vuepress/">
+            Switched Blogging to VuePress
+            <small>15 Aug 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+
+      </div>
+    </div>
+
+    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+    <script src='/public/js/script.js'></script>
+  </body>
+</html>

@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Zemian's Blog &middot; Life in programming world!
+    
+  </title>
+
+  
+  <link rel="canonical" href="http://localhost:4000/page15/">
+  
+
+  <link rel="stylesheet" href="http://localhost:4000/public/css/poole.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/syntax.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/lanyon.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700%7CPT+Sans:400">
+
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/public/apple-touch-icon-precomposed.png">
+  <link rel="shortcut icon" href="http://localhost:4000/public/favicon.ico">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="http://localhost:4000/atom.xml">
+
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-135626598-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  
+</head>
+
+
+  <body>
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p>A weblog on software development.</p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item active" href="http://localhost:4000/">Home</a>
+
+    
+
+    
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="http://localhost:4000/about/">About</a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+
+  </nav>
+
+  <div class="sidebar-item">
+    <p>
+      &copy; 2020. All rights reserved.
+    </p>
+  </div>
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <h3 class="masthead-title">
+            <a href="/" title="Home">Zemian's Blog</a>
+            <small>Life in programming world!</small>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+        <div class="posts">
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2014/12/13/writing-your-own-logging-service/">
+        Writing your own logging service?
+      </a>
+    </h1>
+
+    <span class="post-date">13 Dec 2014</span>
+
+    <p>Application logging is one those things like favorite Editors war: everyone has their own opinions and there are endless of implemenations and flavors out there. Now a days, you likely would want to use something already available such as Log4j or Logback. Even JDK has a built in “java.util.logging” implementation. To avoid couple to a direct logger, many projects would opt to use a facade interface, and there is already couple good ones out there already, such as SLF4J or Apache Common Logging etc.</p>
+
+<p>Despite all these, many project owners still want to try write their own logger service! I wondered if I were to ask and write one myself, what would it be like? So I played around and come up with this simple facade that wraps one of the logger provider (JDK logger in this case), and you can check it out <a href="https://github.com/saltnlight5/java-ee6-examples/tree/master/common-service/src/main/java/zemian/service/logging">here</a>. With my logger, you can use it like this in your application:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> import zemian.service.logging.*;
+ class MyService {
+   static Log LOG = LogFactory.createLog(MyService.class);
+   public void run() {
+     LOG.info(Message.msg("%s service is running now.", this));
+   }
+ }
+</code></pre></div></div>
+<p>Or you can use the Logger wrapper to avoid many imports:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> import zemian.service.logging.Logger;
+ class MyService2 {
+   static Logger LOGGER = new Logger(MyService2.class);
+   public void run() {
+     LOGGER.info("%s service is running now.", this);
+   }
+ }
+</code></pre></div></div>
+<p>Some principles I followed when trying this out:</p>
+
+<ul>
+  <li>Use simple names for different level of messages: error, warn, info, debug and trace (no crazy fine, finer and finest level names.)</li>
+  <li>Seperate Log service from implementation so you can swap provider.</li>
+  <li>Uses Message logging POJO as data encapsulation. It simplifies the log service interface.</li>
+  <li>Use log parameters and lazy format binding to construct log message to speed performance.</li>
+</ul>
+
+<p>Do not go crazy with logging service implemenation make it complex. For example I recommend NOT to mix business logic or data in your logging if possible! If you need custom error codes to be logged for example, you can write your own Exception class and encapsulate there, and then let the logging service do its job: just logging.</p>
+
+<p>Here are some general rules about using logger in your application that I recommend:</p>
+
+<ul>
+  <li>Use <code class="language-plaintext highlighter-rouge">ERROR</code> log messages when there is reallyl a error! Try not to log an “acceptable” error message in your application. Treat an ERROR as critical problem in your application, like if it’s in production, some one should be paged to take care of the problem immediately. Each message should have a full Java stacktrace! Some application might want to assign a unique Error Code to these level of messages for easier identification and troubleshoot purpose.</li>
+  <li>Use <code class="language-plaintext highlighter-rouge">WARN</code> log messages if it’s a problem that’s ignorable during production operation, but not good idea to supress it. Likely these might point to potentially problem in your application or env. Each message should have a full Java stacktrace, if available that is!</li>
+  <li>Use <code class="language-plaintext highlighter-rouge">INFO</code> log messages for admin operators or application monitors peoples to see how your application is doing. High level application status or some important and meaningful business information indicators etc. Do not litter your log with developer’s messages and unessary verbose and unclear message. Each message should be written in clear sentence so operators knows it’s meaningful.</li>
+  <li>Use <code class="language-plaintext highlighter-rouge">DEBUG</code> log messages for developers to see and troubleshoot the application. Use this for critical application junction and operation to show objects and services states etc. Try not to add repeated loop info messages here and litter your log content.</li>
+  <li>Use <code class="language-plaintext highlighter-rouge">TRACE</code> log message for developers to troubleshoot tight for loop and high traffic messages information.</li>
+  <li>You should select a logger provider that let you configure and turn these logging levels ON or OFF (preferrable at runtime if possible as well). Each level should able to automatically suppress all levels below it. And ofcourse you want a logger provider that can handle log message output to STDOUT and/or to FILE as destination as well.</li>
+</ul>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2014/12/10/getting-started-with-glassfish-server-and-setting-up-slf4j-logging/">
+        Getting started with Glassfish Server and Setting up SLF4J logging
+      </a>
+    </h1>
+
+    <span class="post-date">10 Dec 2014</span>
+
+    <p>Some notes I jot down while playing with GlassFish Server (3) for EE 6. You may get a working example here:
+<a href="https://github.com/saltnlight5/java-ee6-examples/tree/master/extra/glassfish-logging-example">https://github.com/saltnlight5/java-ee6-examples/tree/master/extra/glassfish-logging-example</a></p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>= Gettin started with Glassfish server
+
+== Start server
+
+1. cd $GF/bin
+2. asadmin start-domain domain1
+
+== Stop server
+
+1. cd $GF/bin
+2. asadmin stop-domain domain1
+
+== Server Ports
+
+Admin Console Application is at http://localhost:4848
+ * Default setup has no user and password restriction!
+
+Web applications is http://localhost:8080
+
+== To create a new domain with diferent ports
+
+1. cd $GF/bin
+2. asadmin create-domain --portbase 9000 domain2
+
+* If you accept default then again no password for admin user. After this, your
+  admin console app is at http://localhost:9048 while your application is at
+  http://localhost:9080
+
+= Glassfish Server Setup
+
+== How to setup SLF4J
+
+1. Copy slf4j-api and slf4j-jdk jars into $GF/lib/endorsed
+2. Edit $GF/domains/domain1/config/logging.properties and add your own logging package level
+ mypackage.level=FINEST
+
+== How to enable JSTL tag for all web applications
+
+1. Copy jstl-1.2.jar into $GF/domains/domain1/lib
+
+== How to add MySQL Driver for all applications
+
+1. Copy mysql-connector-java-5.1.30-bin.jar into $GF/domains/domain1/lib
+</code></pre></div></div>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2014/12/01/how-to-secure-a-web-application-by-the-app-server-container/">
+        How to secure a web application by the app server container
+      </a>
+    </h1>
+
+    <span class="post-date">01 Dec 2014</span>
+
+    <p>There are many benefits to allow a container in managing users, groups and authentication policies. You may configure your WAR application to take advantage of this by adding the following in the WEB-INF/web.xml file</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   &lt;security-constraint&gt;
+        &lt;web-resource-collection&gt;
+            &lt;web-resource-name&gt;webuser&lt;/web-resource-name&gt;
+            &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+        &lt;/web-resource-collection&gt;
+        &lt;auth-constraint&gt;
+            &lt;role-name&gt;webuser&lt;/role-name&gt; 
+        &lt;/auth-constraint&gt;
+    &lt;/security-constraint&gt;
+    &lt;login-config&gt;
+        &lt;auth-method&gt;BASIC&lt;/auth-method&gt;
+        &lt;realm-name&gt;default&lt;/realm-name&gt;
+    &lt;/login-config&gt;
+    &lt;security-role&gt;
+        &lt;role-name&gt;webuser&lt;/role-name&gt;
+    &lt;/security-role&gt;
+</code></pre></div></div>
+<p>Above will secure the entire application and allow only users with “webuser” role to access it. The name “webuser” can be any name you want.</p>
+
+<p>Each app server will manage users differently. In the case of WLS, it lets you create “user” and “user group”, and then you can map the defined role above to the group. To do this, add the following to the  WEB-INF/weblogic.xml file.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;weblogic-web-app 
+    xmlns="http://xmlns.oracle.com/weblogic/weblogic-web-app" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://xmlns.oracle.com/weblogic/weblogic-web-app 
+        http://xmlns.oracle.com/weblogic/weblogic-web-app/1.2/weblogic-web-app.xsd"&gt;
+    &lt;security-role-assignment&gt;
+        &lt;role-name&gt;webuser&lt;/role-name&gt;
+        &lt;principal-name&gt;webusergroup&lt;/principal-name&gt;
+    &lt;/security-role-assignment&gt;
+&lt;/weblogic-web-app&gt;
+</code></pre></div></div>
+<p>Here we tell WLS that we map the “webuser” role defined in web.xml to use the “webusergroup”, a WLS user group.</p>
+
+<p>To create  user or user group in WLS, you may use the WLS Admin console web application. Go to the Security Realm and select the default “myrealm”, and then select User or Group tab. Go ahead and add a user with password under a new group named “webusergroup”. After this you can deploy your app, and it would prompt you for user and password whenever you try to access its URL.</p>
+
+<p>You can find out more security info at <a href="https://docs.oracle.com/cd/E23943_01/web.1111/e13711/thin_client.htm#SCPRG171">https://docs.oracle.com/cd/E23943_01/web.1111/e13711/thin_client.htm#SCPRG171</a>.</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2014/11/01/how-to-use-ssh-tunneling-to-get-to-your-restricted-servers/">
+        How to use SSH tunneling to get to your restricted servers
+      </a>
+    </h1>
+
+    <span class="post-date">01 Nov 2014</span>
+
+    <p>Have you ever been told that in your network serverX can only be reached by a serverY via SSH? Now you have access to serverY from your own PC with normal SSH access as well, but just not directly to serverX.</p>
+
+<p>What can you do in situation like this if you need to access the restricted serverY? Well you can always ssh into serverY, then ssh again into serverX to check your work or log or whatever. But what happen if you have a database server or WebLogic Server instance running in serverX; and you want your local PC’s fancy tools to access the serverX? (Eg: Accessing the WLS admin console, or using SqlDeveloper to connect to your DB etc). In this case, that’s where ssh tunneling can help you, and here is how.</p>
+
+<ol>
+  <li>
+    <p>Establish a connection to your serverY that you have access to from your PC. On top of that and at the same time, you will create a tunnel to serverX (your restricted server) by letting serverY redirect all the network traffic data back to your local PC on a specific port. Sounds scary, but it can be done with single command. For example this is how I can access the WLS Admin Console app that was running on the restricted server X. On your own PC, open a terminal and run the following:</p>
+
+    <p>bash&gt; ssh -L 12345:serverX:7001 serverY</p>
+  </li>
+</ol>
+
+<p>Above will prompt you to access serverY with your normal ssh credential that you have access to. Once logged in, you need to keep the terminal open. Now the tunnel is established and redirecting traffic from port 7001 (where the WLS admin console is running) on serverX to your own PC on port 12345 via the tunnel of server Y.</p>
+
+<ol>
+  <li>Open a browser on your own PC and type in address http://localhost:12345/console</li>
+</ol>
+
+<p>Now you should able to access your restricted serverX’s WLS admin console!</p>
+
+<p>Same can be done with a database server such as MySQL. For example, you will run  ssh -L 12346:serverX:3306 serverY and then change your SqlDeveloper JDBC connection url string to the tunnel port <code class="language-plaintext highlighter-rouge">jdbc:mysql://localhost:12346/mydb</code></p>
+
+<p>This is a cool technique to get around a secured environment.</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2014/10/28/how-to-setup-custom-sslsocketfactorys-trustmanager-per-each-url-connection/">
+        How to setup custom SSLSocketFactory's TrustManager per each URL connection
+      </a>
+    </h1>
+
+    <span class="post-date">28 Oct 2014</span>
+
+    <p>We can see from javadoc that javax.net.ssl.HttpsURLConnection provided a static method to override with setDefaultSSLSocketFory() method. This allow you to supply a custom javax.net.ssl.TrustManager that may verify your own  CA certs handshake and validation etc. But this will override the default for all “https” URLs per your JVM!</p>
+
+<p>So how can we override just a single https URL? Looking at javax.net.ssl.HttpsURLConnection again we see instance method for setSSLSocketFactory(), but we can’t instantiate HttpsURLConnection object directly! It took me some digging to realized that the java.net.URL is actually an factory class for its implementation! One can get an instance like this using new URL(“https://localhost”).openConnection()</p>
+
+<p>To complete this article, I will provide a simple working example that demonstrate this.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>package zemian;
+
+import java.io.BufferedReader;
+
+import java.io.InputStream;
+
+import java.io.InputStreamReader;
+
+import java.net.URL;
+
+import java.net.URLConnection;
+
+import java.security.SecureRandom;
+
+import java.security.cert.X509Certificate;
+
+import javax.net.ssl.HttpsURLConnection;
+
+import javax.net.ssl.SSLContext;
+
+import javax.net.ssl.SSLSocketFactory;
+
+import javax.net.ssl.TrustManager;
+
+import javax.net.ssl.X509TrustManager;
+
+public class WGetText {
+
+    public static void main(String[] args) throws Exception {
+
+        String urlString = System.getProperty("url", "https://google.com");
+
+        URL url = new URL(urlString);
+
+        URLConnection urlConnection = url.openConnection();
+
+        HttpsURLConnection httpsUrlConnection = (HttpsURLConnection) urlConnection;
+
+        SSLSocketFactory sslSocketFactory = createTrustAllSslSocketFactory();
+
+        httpsUrlConnection.setSSLSocketFactory(sslSocketFactory);
+
+        try (InputStream inputStream = httpsUrlConnection.getInputStream()) {
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+
+            String line = null;
+
+            while ((line = reader.readLine()) != null) {
+
+                System.out.println(line);
+
+            }
+
+        }
+
+    }
+
+    private static SSLSocketFactory createTrustAllSslSocketFactory() throws Exception {
+
+        TrustManager[] byPassTrustManagers = new TrustManager[] { new X509TrustManager() {
+
+            public X509Certificate[] getAcceptedIssuers() {
+
+                return new X509Certificate[0];
+
+            }
+
+            public void checkClientTrusted(X509Certificate[] chain, String authType) {
+
+            }
+
+            public void checkServerTrusted(X509Certificate[] chain, String authType) {
+
+            }
+
+        } };
+
+        SSLContext sslContext = SSLContext.getInstance("TLS");
+
+        sslContext.init(null, byPassTrustManagers, new SecureRandom());
+
+        return sslContext.getSocketFactory();
+
+    }
+
+}
+</code></pre></div></div>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2014/10/26/how-servlet-and-jsp-create-sessions/">
+        How Servlet and JSP create sessions
+      </a>
+    </h1>
+
+    <span class="post-date">26 Oct 2014</span>
+
+    <p>In Servlet, you may get the Session object by “httpServletRequest.getSession(true)”. The “true” flag will create the session if it doesn’t already exist, else it gets the existing session.</p>
+
+<p>Now if you want to check whether you have the session exists or not (without have to create one if doesn’t exist), you need to pass in “false” and then check for “null”.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Session session = httpServletRequest.getSession(false);
+if (session == null) {
+  // do something without creating session object.
+}
+</code></pre></div></div>
+<p>Now comes the trick party. If you run above code and then dispatch the request to render a JSP page, you might quickly come to find out that the container will create a new Session object still! It turns out that by default JSP will create new Session object if you do not have one! To disable this, you need to set this explicitly on top of the JSP page:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> &lt;% page session="false" %&gt;
+</code></pre></div></div>
+<p>Only with this you will able to actually prevent creation of unnecessary Session object if you were to use JSP for output! Something to watch out for when debugging session based application.</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2014/10/17/poking-around-your-rest-application-with-a-scriptable-endpoint/">
+        Poking around your REST application with a scriptable endpoint
+      </a>
+    </h1>
+
+    <span class="post-date">17 Oct 2014</span>
+
+    <p>I love the fact that JDK comes with a ScriptEngine. It’s so flexible when you want to evaluate and troubleshoot your application that’s already deployed in an server environment. Add this REST endpoint into a Java EE app, and it will give you instant access to internal states of the app.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>package myrestapp;
+
+import java.io.StringReader;
+import java.util.logging.Logger;
+import javax.script.Bindings;
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.core.Context;
+
+/**
+ * Give instant access to your internal application with dynamic scripting.
+ * 
+ * &lt;p&gt;Example script:
+ * &lt;pre&gt;
+ * "sc" + servletContext + ", req=" + request;
+ * &lt;/pre&gt;
+ * 
+ * &lt;p&gt;Example2
+ * &lt;pre&gt;
+ * names = servletContext.getAttributeNames();
+ * while(names.hasMoreElements()) {
+ *   name = names.nextElement();
+ *   println(name);
+ * }
+ * &lt;/pre&gt;
+ * 
+ * &lt;p&gt;Example on how to import Java packages and classes.
+ * &lt;pre&gt;
+ * importPackage(Packages.java.text);
+ * df = new SimpleDateFormat("MM/dd/yyyy");
+ * dt = df.parse("01/01/2014");
+ * &lt;/pre&gt;
+ */
+@Path("script")
+public class ScriptResource {
+    private static final Logger logger = Logger.getLogger(ScriptResource.class.getName());
+    
+    @Context
+    private ServletContext servletContext;
+        
+    @POST
+    public String script(@Context HttpServletRequest request, String scriptText) throws Exception {
+        String engineName = "JavaScript";
+        ScriptEngineManager manager = new ScriptEngineManager();
+        ScriptEngine engine = manager.getEngineByName(engineName);
+        logger.info("Running script text length=" + scriptText.length() + ", engine=" + engine);
+        Object result = null;
+        try (StringReader reader = new StringReader(scriptText)) {
+            Bindings bindings = engine.createBindings();
+            bindings.put("servletContext", servletContext);
+            bindings.put("request", request);
+            result = engine.eval(reader, bindings);
+        }
+        logger.info("Result " + result);
+        return "RESULT=" + result;
+    }
+}
+</code></pre></div></div>
+<p>Notice that I gave couple JavaScript examples in the comment area already. You will have access to two binding variables that should give you full access to many internal components of your application. And here is a <a href="http://docs.oracle.com/javase/7/docs/technotes/guides/scripting/programmer_guide">quick reference on scripting JDK 7</a>.</p>
+
+<p>Need an UI to test out this endpoint? How about give the “Advance Rest Client” Chrome Extension a try? (Thanks to my co-worker’s Chris Griffith for showing me this cool extension. It’s really handy tool to have!).</p>
+
+<p>UPDATES (12/8/2014)</p>
+
+<ul>
+  <li>
+    <p>If you are using FireFox, try the “RESTClient” add-ons.</p>
+  </li>
+  <li>
+    <p>If you are using JDK7 Rhino JavaScript engine, here is a good ref for help: https://developer.mozilla.org/en-US/docs/Mozilla/Projects/Rhino/Scripting_Java</p>
+  </li>
+  <li>
+    <p>If you’re in a EE6 web application and doesn’t have REST enabled yet, then simply add a class like this to your application. It should automatically configure an endpoint that you can access as “http://localhost/rest/script”.
+```
+package myrestapp;</p>
+  </li>
+</ul>
+
+<p>import javax.ws.rs.ApplicationPath;
+import javax.ws.rs.core.Application;</p>
+
+<p>/**</p>
+<ul>
+  <li>This is the main entry into REST Application that bootstrap the provider.
+ */
+@ApplicationPath(“rest”)
+public class RestApplication extends Application {
+}
+```</li>
+</ul>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2014/09/13/book-review-apache-camel-developers-cookbook/">
+        Book Review - Apache Camel Developer's Cookbook
+      </a>
+    </h1>
+
+    <span class="post-date">13 Sep 2014</span>
+
+    <p>I got a chance to review the “<a href="https://www.packtpub.com/application-development/apache-camel-developers-cookbook">Apache CamelDeveloper’s Cookbook</a>” by Cranton and Korab. Overall I think this is a
+great book. System integration problems and solutions come in many forms, so
+getting started by reading on some proven solution recipes is definitely a good
+way to improve your skill. This book provides more than 100 examples on how to
+solve integration problems with Camel framework; from simple standalone Java
+application to testing, transaction, monitoring and even a chapter on web
+services. Each example comes with brief explanations and further reading
+references. My favorites are the side notes sprinkled throughout each recipe.
+Clearly these great tips can only have came from well experienced Camel
+developers who has spent time on the field.</p>
+
+<p>As many cookbook style, the book can only go to certain length with each example
+on explanation and teaching, but readers may dig much deeper by using the
+sample code provided by this book. In fact I think it’s really cool that it’s available
+through GitHub as well. Check it out at <a href="http://github.com/CamelCookbook/camel-cookbook-examples">http://github.com/CamelCookbook/camel-cookbook-examples</a>.
+(although I think there is a typo in the book for this URL on the copy I have!
+^_^) The sample code are complete, clean and easy to follow for each recipe
+example. The source code is in Maven based project, so you will get all the
+dependencies needed by just running the “install” phase. Open by any
+major IDE and you will start reading and compiling immediately. Because it’s
+using Maven, you can also download the Camel dependencies with Source, and you
+can jump right into the framework code itself to analyze what’s behind this
+cool project.</p>
+
+<p>Because it’s a cookbook, it does not go into too deep about Camel internal. But
+through the examples, many of the core concepts of Camel has been touched; and
+it serves as a great example and can be used as handy reference book. Because
+it covers the Camel concept briefly, it expected you to know little bit of the
+integration knowledge and background though. Things like Enterprise Integration
+Patterns and transport technologies used such as File, FTP, SEDA, JMS etc. The
+book also comes with many Spring based XML configuration examples, and it
+expects you to know some basic knowledge of bean configuration. But the xml
+configuration of Camel routes itself are very self explanatory, so readers should able to follow along easily.</p>
+
+<p>If you work with Camel project, or have to start an integration project, I
+would recommend you to check out this book.</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2014/09/04/django-with-python-3-and-mysql-database/">
+        Django with Python 3 and MySQL database
+      </a>
+    </h1>
+
+    <span class="post-date">04 Sep 2014</span>
+
+    <p>I read many folks are having problems using MySQL db driver with Python 3, especially when setting up a Django app. The default Django 1.6.5 is only supporting the MySQLdb driver and that only works with Python 2.</p>
+
+<p>I have been using mysql-connector-python package with Python 3 and it has built-in django support as well. I had ran into trouble like this <a href="http://bugs.mysql.com/bug.php?id=73232">http://bugs.mysql.com/bug.php?id=73232</a>, but it is fixed now with the latest mysql-connector-python 1.2.3 release. The mysql-connector-python also works with Python 2.7 as well, and it’s a pure python library without native code, which makes the install much easier.</p>
+
+<p>When installing mysql-connector-python, ensure you allow external hosted files like this</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install --allow-all-external mysql-connector-python
+</code></pre></div></div>
+
+<p>If you are behind a firewall, use the proxy option</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install --proxy my_proxy_server --allow-all-external mysql-connector-python
+</code></pre></div></div>
+
+<p>With these, now you can set your Django settings.py file with MySQL engine</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>DATABASES = {
+    'default': {
+        'ENGINE': 'mysql.connector.django',
+        'NAME': 'mydb',
+        'USER': 'myuser',
+        'PASSWORD': 'mypassword',
+    }
+}
+</code></pre></div></div>
+
+<p>PS: My initial testing with Django 1.7 also works pretty well with mysql-connector-python. How sweet!</p>
+
+<p>UPDATE 07/15/2015:</p>
+
+<p>The django 1.8 documentation now recommends using ‘mysqlclient’ package if you want to use Python3 with MySQL backend. It should be a drop in replacement for ‘MySQLdb’.</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2014/08/20/deploying-applications-or-libraries-to-weblogic-server-using-command-line/">
+        Deploying applications or libraries to WebLogic Server using command line
+      </a>
+    </h1>
+
+    <span class="post-date">20 Aug 2014</span>
+
+    <p>Here is how you can automate deployment for WebLogic server using command line.</p>
+
+<p>First source the env settings from the server:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ source $ML_HOME/server/bin/setWLSEnv.sh
+</code></pre></div></div>
+
+<p>Deploy Library:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ java weblogic.Deployer -nostage -deploy -library \
+-adminurl localhost:7001 \
+-username weblogic -password my_secret \
+-targets myserver \
+my_shared_lib.war
+</code></pre></div></div>
+
+<p>Deploy Application:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ java weblogic.Deployer -nostage -deploy \
+-adminurl localhost:7001 \
+-username weblogic -password my_secret \
+-targets myserver \
+-name myapp.war myapp.war
+</code></pre></div></div>
+
+<p>For development, you likely want to use the “-nostage” meaning to deploy the app or library directly from the file system. This means any changes to that file location and a reload from WLS will take effect immediately.</p>
+
+<p>For undeploy the command line options are same for library or app but with matching name.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ java weblogic.Deployer -undeploy \
+-adminurl localhost:7001 \
+-username weblogic -password my_secret \
+-targets myserver \
+-name myapp_or_lib.war
+</code></pre></div></div>
+
+  </div>
+  
+</div>
+
+<div class="pagination">
+  
+    <a class="pagination-item older" href="http://localhost:4000/page16">Older</a>
+  
+  
+    
+      <a class="pagination-item newer" href="http://localhost:4000/page14">Newer</a>
+    
+  
+</div>
+
+      </div>
+    </div>
+
+    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+    <script src='/public/js/script.js'></script>
+  </body>
+</html>

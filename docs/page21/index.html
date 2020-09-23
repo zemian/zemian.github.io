@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Zemian's Blog &middot; Life in programming world!
+    
+  </title>
+
+  
+  <link rel="canonical" href="http://localhost:4000/page21/">
+  
+
+  <link rel="stylesheet" href="http://localhost:4000/public/css/poole.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/syntax.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/lanyon.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700%7CPT+Sans:400">
+
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/public/apple-touch-icon-precomposed.png">
+  <link rel="shortcut icon" href="http://localhost:4000/public/favicon.ico">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="http://localhost:4000/atom.xml">
+
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-135626598-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  
+</head>
+
+
+  <body>
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p>A weblog on software development.</p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item active" href="http://localhost:4000/">Home</a>
+
+    
+
+    
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="http://localhost:4000/about/">About</a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+
+  </nav>
+
+  <div class="sidebar-item">
+    <p>
+      &copy; 2020. All rights reserved.
+    </p>
+  </div>
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <h3 class="masthead-title">
+            <a href="/" title="Home">Zemian's Blog</a>
+            <small>Life in programming world!</small>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+        <div class="posts">
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2013/06/11/taming-the-jmx-on-weblogic-server/">
+        Taming the JMX on WebLogic Server
+      </a>
+    </h1>
+
+    <span class="post-date">11 Jun 2013</span>
+
+    <p>Taming the JMX on WebLogic Server</p>
+
+<h1 id="taming-the-jmx-on-weblogic-server">Taming the JMX on WebLogic Server</h1>
+
+<p>Let assume couple things first:</p>
+
+<p>1) I assume you have heard of Java’s JMX features and familiar what it does (expose and manage your service remotely). You ought to know that default JVM will have a Platform MBeanServer instance that you can register MBean. And you may view them using the <code class="language-plaintext highlighter-rouge">jconsole</code> command from the JDK.</p>
+
+<p>2) As of today, I think by far the easiest way you can expose any services in your application to a JMX MBeanServer is using Spring’s exporter. You will do something like this:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>        &lt;bean class="org.springframework.jmx.export.MBeanExporter"&gt;
+            &lt;property name="assembler"&gt;
+                  &lt;bean class="org.springframework.jmx.export.assembler.InterfaceBasedMBeanInfoAssembler"&gt;
+                    &lt;property name="managedInterfaces"&gt;
+                        &lt;list&gt;
+                            &lt;!-- Expose any java interface you like to see under JMX as MBean --&gt;
+                            &lt;value&gt;myproject.services.Service&lt;/value&gt;
+                        &lt;/list&gt;
+                    &lt;/property&gt;
+                  &lt;/bean&gt;
+            &lt;/property&gt;
+            &lt;property name="beans"&gt;
+              &lt;map&gt;
+                &lt;entry key="myproject.services:name=MyCoolService" value-ref="myCoolService"/&gt;
+              &lt;/map&gt;
+            &lt;/property&gt;
+        &lt;/bean&gt;
+        &lt;!-- This service must implements the interface used above --&gt;
+        &lt;bean id="myCoolService" class="myproject.services.MyCoolService"&gt;
+        &lt;/bean&gt;
+</code></pre></div></div>
+<p>Above should get you standalone application with JMX enabled.</p>
+
+<p>Now if you want to do similar on WebLogic Server, then I have few goodies and notes that might help you. Read on…</p>
+
+<h2 id="weblogic-servers-wls-mbeanserver">WebLogic Server’s (WLS) MBeanServer</h2>
+
+<h3 id="the-jconsole-trick">The JConsole trick</h3>
+
+<p>The WLS, like many other EE server will have it’s own MBeanServer. However, to see the MBean’s you would need to do little extra with <code class="language-plaintext highlighter-rouge">jconsole</code>. Assume you have a default config WLS started on localhost, then you can connect to it like this.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>jconsole -J-Djava.class.path="$JAVA_HOME/lib/jconsole.jar:$MW_HOME/wlserver/server/lib/wljmxclient.jar" -J-Djmx.remote.protocol.provider.pkgs=weblogic.management.remote
+</code></pre></div></div>
+
+<p>Then when prompted to login, enter the following:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Remote Process: service:jmx:iiop://localhost:7001/jndi/weblogic.management.mbeanservers.runtime
+User: &lt;same userid you used setup WLS to their console app.&gt;
+Password: &lt;same password you used setup WLS to their console app.&gt;
+</code></pre></div></div>
+
+<p>Now you should see all the MBeans that WLS already exposed to you as a EE server. You may add your own service there.</p>
+
+<h3 id="programming-with-jmx-connection">Programming with JMX connection</h3>
+
+<p>You may connect to the WLS MBeanServer remotely inside your standalone application. Here is a typical connection code you would need</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>            String serviceName = "com.bea:Name=DomainRuntimeService,Type=weblogic.management.mbeanservers.domainruntime.DomainRuntimeServiceMBean";
+            try {
+                ObjectName service = new ObjectName(serviceName);
+            } catch (MalformedObjectNameException e) {
+                throw new RuntimeException("Not able to create JMX ObjectName: " + serviceName);
+            }
+    
+            String protocol = "t3";
+            String jndiroot = "/jndi/";
+            String mserver = "weblogic.management.mbeanservers.runtime";
+            try {
+                JMXServiceURL serviceURL = new JMXServiceURL(protocol, "localhost", 7001, jndiroot + mserver);
+    
+                Hashtable h = new Hashtable();
+                h.put(Context.SECURITY_PRINCIPAL, username);
+                h.put(Context.SECURITY_CREDENTIALS, password);
+                h.put(JMXConnectorFactory.PROTOCOL_PROVIDER_PACKAGES,
+                        "weblogic.management.remote");
+                h.put("jmx.remote.x.request.waiting.timeout", new Long(10000));
+                JMXConnector connector = JMXConnectorFactory.connect(serviceURL, h);
+                MBeanServerConnection remoteMBeanServer = connector.getMBeanServerConnection();
+    
+                // TODO: Do what you need with remoteMBeanServer here.
+            } catch (Exception e) {
+                throw new RuntimeException("Not able to initiate MBeanServer protocol= " + protocol +
+                        ", jndiroot= " + jndiroot + ", mserver= " + mserver);
+            }
+</code></pre></div></div>
+<p>That’s a mouthful of boiler code just to get a remote MBeanServer connection! Fortunately there is another easier way though. Read on…</p>
+
+<h3 id="the-jndi-trick">The JNDI trick</h3>
+
+<p>The WLS MBeanServer service is also available through JNDI lookup. Again Spring can help you with their JNDI lookup and you simply need to inject it to other services that need it. For example:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>        &lt;bean id="jmxServerRuntime" class="org.springframework.jndi.JndiObjectFactoryBean"&gt;
+            &lt;property name="jndiName" value="java:comp/env/jmx/runtime"/&gt;
+        &lt;/bean&gt;
+        &lt;bean id="exporter" class="org.springframework.jmx.export.MBeanExporter"&gt;
+            &lt;property name="beans"&gt;
+                &lt;map&gt;
+                    &lt;entry key="myproject.services:name=MyCoolService" value-ref="myCoolService"/&gt;
+                &lt;/map&gt;
+            &lt;/property&gt;
+            &lt;property name="server" ref="jmxServerRuntime"/&gt;
+        &lt;/bean&gt;
+</code></pre></div></div>
+<p>Notice that we have injetcted the “server” property with one we looked up from WLS JNDI service. If you use that in your WAR application and deploy it onto a WLS instance, and whola, you got yourself exposed service onto WLS JMX!</p>
+
+<p>Note</p>
+
+<p>above will only works if your Spring xml config is part of the WAR/JAR/EAR that’s deployed in same server where JNDI lives! If you are not, you need to use this JNDI name without the “env” part instead, like “java:comp/env/jmx/runtime”.</p>
+
+<p>For more details on how to work with JMX and WLS, see their docs here:
+<a href="http://docs.oracle.com/cd/E12839_01/web.1111/e13728/accesswls.htm#i1119556">http://docs.oracle.com/cd/E12839_01/web.1111/e13728/accesswls.htm#i1119556</a></p>
+
+<p>Last updated 2013-06-12 23:52:42 EDT</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2013/06/07/myschedule-3-2-0-0-final-is-released/">
+        MySchedule 3.2.0.0 FINAL is released
+      </a>
+    </h1>
+
+    <span class="post-date">07 Jun 2013</span>
+
+    <p>Hi folks,</p>
+
+<p>I have tagged the 3.2.0.0 release of the MySchedule project today. This is the first stable release of the version 3 branch line of the project. In this release we bring you the latest Vaadin UI experience. You may expect all the good stuff from old release, plus few new features added.</p>
+
+<ul>
+  <li>You may now save your own Templates in scheduler configurations, scripting text or even XML for job loader.</li>
+  <li>You may interrupt a running job.</li>
+  <li>More Scheduler runtime information are displayed.</li>
+  <li>New table display of all plugins used.</li>
+  <li>Added an embedded web server for quick self running UI server.</li>
+  <li>Single convenient package download.</li>
+  <li>New release format: 3.2.x.y is used for MySchedule3 using Quartz 2.x library.</li>
+  <li>New <a href="http://demo-myschedule.rhcloud.com">online demo</a> setup on OpenShift platform</li>
+</ul>
+
+<p>Get it and try it out here <a href="http://code.google.com/p/myschedule">http://code.google.com/p/myschedule</a></p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2013/05/29/choosing-technology-stack-to-build-a-common-platform/">
+        Choosing Technology Stack to build a common platform
+      </a>
+    </h1>
+
+    <span class="post-date">29 May 2013</span>
+
+    <p>There are many talks in Java community about Spring vs Java EE, and how one group would argue you should use one and not other etc. When I see this, I can’t help but to think why can’t we use them both together? In fact I think using them both effectively would create a great technology stack for building an infrastructure for large company who like to provide a common platform that may host and run many different applications and projects.</p>
+
+<h1 id="why-combine-spring-and-java-ee-together">Why combine Spring and Java EE together?</h1>
+
+<p>When writing software, we create and build libraries/framework that can be reuse and help us get things done faster. Spring is such a swiss-army knife like library that allows application to be build in an un-intrusive way and with many easier wrappers and helpers classes. This is what I call developer friendliness library.</p>
+
+<p>However many people don’t realize is that Spring is just a library and wrappers to many things that ease the development. Spring has a web framework layer to let you write MVC web app, but you still need a Servlet Container (server). Spring provides data layer that mostly wraps other JPA/Hibernate/JDBC that integrate well in their IoC container, but the actual ORM implementation is outside of Spring (eg: Hibernate). Spring wraps JMS or even JNDI for development, but you still need a JMS server or JNDI provider. Spring has a Transaction Manager Abstract layer, but it’s just a wrapper (for single DB, it’s the database vendor that actually provided the ACID attributes of your transaction guarantee, not Spring). If you want to atomic transaction on multiple resources (such as JMS and Database, or multiple databases) you still need a “real” Transaction Manager (JTA)!</p>
+
+<p>So now you see, in order to build a successful enterprise application, you need Spring on top of many vendor provided features. If you are not careful, you could be lock into many proprietary services that’s hard to integrate and deploy. This is where Java EE comes in. It’s a spec layout that vendor must provide most of those services in a standard manner. Hence any JEE compliance server would provide services with standard API that suppose to works the similar way.</p>
+
+<p>Now there must be balance to make. From my experience, the more standards you enforce, then less “developer friendliness” it will get. But at the same time, without standard, it’s hard to provide common infrastructure such as API, runtime server and/or even OS environment for deployment. This is the reason I would argue that combining Spring with Java EE would bring most practical and effective platform to IT.</p>
+
+<h1 id="choosing-the-technology-stack">Choosing the Technology Stack</h1>
+
+<p>Not every project is created equals and their needs are different. So providing a common technology stack that will satisfy all projects is impossible. But we can certainly try to create a common one that satisfy most of projects need. Also choosing a concrete library/stack is very opinionated, and no matter which actual implementation is selected, there are always going to be pro and cons. With this in mind, I will try to layout my own personal choices of a technology stack that I think it will provide the most flexible platform to host majority projects and applications. Specially in a big corporate environment.</p>
+
+<p>I will choose a Java EE application server as common platform. From this, I will choose some “developer friendliness” libraries that replace (or add on-top) few existing EE standards to gain productivity. I think EE has come a long way and getting better through each spec iteration, but I still feel it is more flexibility in using Spring as IoC container verse using CDI when wiring POJO services together. Plus the Spring comes with a very flexible MVC framework layer that’s effective and easy to development in compare to plain Servlet API. Once these are combined and available as a common platform, I think it can support many kind of applications in various IT environment.</p>
+
+<p>Starting Java EE 6, there are two profiles a server must provide now. So let’s start exploring the stack from these two views.</p>
+
+<h1 id="jee-web-profile---lighter-web-based-driven-application">JEE Web profile - Lighter web based driven application</h1>
+
+<ul>
+  <li>Use Spring MVC (controller, form, validation, ModelAndView and IoC configurations) instead of plain Servlet API programming.</li>
+  <li>Write backend business service logic as POJO as possible and use Spring IoC to wire them. Do not abuse this. I personally think Spring IoC is more flexible and easier to use in compare to CDI.</li>
+  <li>Use JPA for data service layer instead of JDBC API programming.</li>
+  <li>Use JSON data exchange format. From experience, JSON is much more efficient and easier to work in comparison to XML.</li>
+  <li>
+    <p>Views options:</p>
+  </li>
+  <li>Use well formed xhtml/Bootstraps/jquery/AJAX -&gt; If you need just static pages and some client side interactive</li>
+  <li>Freemarker (or Thymeleaf) -&gt; If you need a lot of dynamic content to generate, use an template engine! This is better than JSP alone.</li>
+  <li>
+    <p>Vaadin -&gt; If you need desktop application behavior like on web browser side. This is easier in compare to JSF.</p>
+  </li>
+  <li>Servlet 3.0 now support asynchronous requests. This solve many challenging problems in web domain. Take advantage of it if needed! (Latest Spring MVC has support for this already.)</li>
+</ul>
+
+<h1 id="jee-6-full-profile---full-ee-features-application">JEE 6 Full profile - Full EE features application</h1>
+
+<ul>
+  <li>On top of everything mentioned above in Web Profile.</li>
+  <li>Use JMS for any messaging need that fall into Point-To-Point or Publish/Subscribe domain.</li>
+  <li>Use JTA when you need atomic transaction for multiple databases and/or JMS delivery.</li>
+  <li>Use standard JAX-RS (RESTful web service API) for exposing external services. Use JSON data exchange format.</li>
+  <li>Use consistent Spring IoC for services injection. It’s more flexible and easier to work with in compare to CDI.</li>
+  <li>Use POJO services and wire by Spring instead of EJB if possible. I found them more easier to test and development.</li>
+  <li>Plus whatever else EE spec somes with that it supports such as (JavaMail and JCA etc. usually Spring will have a easier wrapper for these API as well.)</li>
+</ul>
+
+<h1 id="apache-camel---light-weight-esb">Apache Camel - Light Weight ESB</h1>
+
+<p>The Camel project is not an EE standard, however from my experience is that many common IT work can be easily done with simple Camel route/workflow. The development and style of Camel is simple to understand and easy to test. It can be run as stand alone application/service or as part of a web application. I believe it’s a great value to add on top of a common platform with above. You would use it whenever you need the following:</p>
+
+<ul>
+  <li>For any integration pattern like work flow process (eg: bridge a file poller to a web service to a JMS queue to database etc.)</li>
+  <li>For creating business workflow process.</li>
+  <li>For any ETL workflow process.</li>
+  <li>For easy mapping of business requirement workflow to code logic process</li>
+</ul>
+
+<h1 id="which-ee-application-server-to-use">Which EE application server to use</h1>
+
+<p>I think this is subjective as well, but we need to choose one that’s fit for business need. I personally favor JBoss because it’s open source, and yet they provide commercial backed version of their application server. Being an open source based product, it gives developers greater flexibility in learning and exploring the platform. I also see many benefits in their in house projects such as testing tools and libraries are open and benefit to developers.</p>
+
+<h2 id="what-about-tomcat-server">What about Tomcat server?</h2>
+
+<p>Tomcat is a very well known Servlet server. However it is only a Web container that support Servlet/JSP application. It does not provide JMS or JTA features that provided by a Java EE server. It’s a fact that many web application requirements can be satisfy with simple Tomcat server. However in a large IT env, you will often you need other services that provided by Java EE server. In many cases, people will simply run Tomcat webapp and bridge to other Java EE server when needed.</p>
+
+<p>Well, this is reason I would select a Java EE server in the first place. Specially with JEE6, it provided Web Profile that stripped down to mostly Web Container features, then should make the server faster to start-up and less extra services loaded. However, in case when application needed EE features, the platform we provide will able to support it.</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2013/05/03/carry-your-sword-and-dagger-programmers/">
+        Carry your sword and dagger programmers!
+      </a>
+    </h1>
+
+    <span class="post-date">03 May 2013</span>
+
+    <p>A knight would for sure carry his sword proudly and ready for any
+battles. But then he can not use such a heavy weapon for daily tasks
+such as peeling an apple. Sometimes I think the same with ourself as
+programmers. We need a stable, strong and static typed programming
+language that can get us the heavy job (large project, and enterprise
+system) done in more manageable way. But yet, we face many smaller daily
+tasks (eg: parse a text file for a search value, or generate sample data
+etc) that is better fitted to use a lighter, dynamic language because
+they are faster to write; and the code need not go through heavier
+process as the main project.</p>
+
+<p>Through out my career, I have been keeping two languages (one strong
+typed and one dynamic typed) pair very up to date. I would learn it and
+be proficient with it enough to write code without flipping through a
+book. I started with C++ with Perl and then switched to Python. And then
+later with Java and Jython, and later with Groovy. These are my
+strongest languages that I used the most, especially with Java. Of
+course I never stop learning other languages as well, such as Scala and
+Ruby etc. I personally think Ruby is very nice and good language to
+learn and use. I just not have had a chance to use it that extensively
+yet. Mastering a full static language such as Java would take much
+longer time, but one can learn a dynamic language fairly quickly.</p>
+
+<p>Any rate, if you a programmer, I strongly encourage you to learn at
+least two languages, and learn it well. As I said, prefer one static and
+one dynamic language. This pair of combination will boost your
+productivity to next level.</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2013/05/01/how-to-bring-pseudo-code-to-life/">
+        How to bring pseudo code to life
+      </a>
+    </h1>
+
+    <span class="post-date">01 May 2013</span>
+
+    <p>When designing a piece of software, I like to start with some pseudo code first, then work my way out. I tend to try mapping out the normal workflow (one that runs without any corner cases) with high level of actions as series of steps. Then the detailed implementation of the code can be filled in at later time.</p>
+
+<p>Now with Java, you can easily do this with pseudo code, bring it to life, and still make it very maintainable. Try this out.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    package deng.javademo;
+    
+    /**
+     * @author Zemian Deng
+     */
+    public class PseudoCodeToLife {
+        public static void main(String[] args) {
+            CreditCardProcessor creditCardProcessor = new CreditCardProcessor()
+                    .step(webServiceRequest())
+                    .step(validateCardNumber())
+                    .step(validateSecurityCode())
+                    .step(checkAvailableCredit())
+                    .step(chargeCard())
+                    .step(webServiceResponse());
+    
+            creditCardProcessor.run();
+        }
+    }
+</code></pre></div></div>
+
+<p>Now that’s as high level as you can get, but it still let me fill in the implementation without losing the overall requirement flow. To implement such workflow, we need a contract that allow processor to move data from one step to another, and yet it needs to perform some action along the way. How about an interface like this.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    package deng.javademo;
+    
+    /**
+     * @author Zemian Deng
+     */
+    public interface StepAction {
+        public void onAction(Exchange exchange);
+    }
+</code></pre></div></div>
+
+<p>Next is how to wire steps together. For now we can just do it inside <code class="language-plaintext highlighter-rouge">CreditCardProcessor</code>, but you can easily abstract that into a re-usable base class.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    package deng.javademo;
+    
+    import java.util.ArrayList;
+    import java.util.List;
+    
+    /**
+     * @author Zemian Deng
+     */
+    public class CreditCardProcessor {
+        List&lt;StepAction&gt; steps = new ArrayList&lt;StepAction&gt;();
+    
+        public CreditCardProcessor step(StepAction stepAction) {
+            steps.add(stepAction);
+            return this;
+        }
+    
+        public void run() {
+            Exchange exchange = new Exchange();
+            for (StepAction step : steps) {
+                step.onAction(exchange);
+            }
+        }
+    }
+</code></pre></div></div>
+
+<p>Pretty straight forward. Here I used an <code class="language-plaintext highlighter-rouge">Exchange</code> as message, passing between each steps to allow the workflow to exchange data. You can wrap just about any real payload and/or add a Map of header properties.</p>
+
+<p>Now what we are missing is just filling in each step of actions. Since we have an explicit step name when defining the workflow, we can just generate these method and fill in the actions per step required. I will add them all inside the <code class="language-plaintext highlighter-rouge">PseudoCodeToLife</code> and reprint it here.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    package deng.javademo;
+    
+    /**
+     * @author Zemian Deng
+     */
+    public class PseudoCodeToLife {
+        public static void main(String[] args) {
+            CreditCardProcessor creditCardProcessor = new CreditCardProcessor()
+                    .step(webServiceRequest())
+                    .step(validateCardNumber())
+                    .step(validateSecurityCode())
+                    .step(checkAvailableCredit())
+                    .step(chargeCard())
+                    .step(webServiceResponse());
+    
+            creditCardProcessor.run();
+        }
+    
+        private static StepAction webServiceRequest() {
+            return new StepAction() {
+                @Override
+                public void onAction(Exchange exchange) {
+                    System.out.println("webServiceRequest step.");
+                }
+            };
+        }
+    
+        private static StepAction validateCardNumber() {
+            return new StepAction() {
+                @Override
+                public void onAction(Exchange exchange) {
+                    System.out.println("validateCardNumber step.");
+                }
+            };
+        }
+    
+        private static StepAction validateSecurityCode() {
+            return new StepAction() {
+                @Override
+                public void onAction(Exchange exchange) {
+                    System.out.println("validateSecurityCode step.");
+                }
+            };
+        }
+    
+        private static StepAction checkAvailableCredit() {
+            return new StepAction() {
+                @Override
+                public void onAction(Exchange exchange) {
+                    System.out.println("checkAvailableCredit step.");
+                }
+            };
+        }
+    
+        private static StepAction chargeCard() {
+            return new StepAction() {
+                @Override
+                public void onAction(Exchange exchange) {
+                    System.out.println("chargeCard step.");
+                }
+            };
+        }
+    
+        private static StepAction webServiceResponse() {
+            return new StepAction() {
+                @Override
+                public void onAction(Exchange exchange) {
+                    System.out.println("webServiceResponse step.");
+                }
+            };
+        }
+    }
+</code></pre></div></div>
+
+<p>That’s all to this. What do you think? I think it’s a simple way to tackle business problems. Simple software make less bugs and easier to maintain.</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2013/03/27/first-snapshot-of-myschedule-3-0-0-is-available/">
+        First snapshot of myschedule-3.0.0 is available
+      </a>
+    </h1>
+
+    <span class="post-date">27 Mar 2013</span>
+
+    <p>First snapshot of <a href="https://code.google.com/p/myschedule/downloads/list">myschedule-3.0.0</a> with brand new UI is ready to be try out!</p>
+
+<p>It’s been a long time since I made a release for MySchedule project, and I have been busy!</p>
+
+<p>Well, for starter, I have been exploring the Vaaddin library for a new UI design for the project, and it’s working really nice! I love to have full Java code for UI layout and widget controls and yet it runs on browser. It’s a perfect fit for MySchedule. As you will see from the snapshot, the UI is still pretty bare, but for me, as backend developer, and be able to have such clean UI code is super exciting. (on other hand, working with JavaScript, even with such nice library as jQuery can still feel like a hack at times. ^_^) You should checkout the latest MySchedule source to take a look yourself. All that GUI is less than handful of UI classes. Vaaddin is pretty sweet!</p>
+
+<p>As MySchedule jumped to 3.x version, I’ve taken the opportunity to clean up few areas in the “quartz-extra” module as well. Also to support Vaadin, the web layer needed a rework. The new code is easy to follow and ready to support more UI features in the future.</p>
+
+<p>I also improved on the project packaging. Now getting started with is even more easier. Get the single zip file, and try any of these simple steps:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    ## Web application usage (option 1: power up a self-contained servlet server!)
+     
+     bash&gt; cd myschedule-3.*
+     bash&gt; bin/myschedule-ui.sh --httpPort=8081
+    
+    Now open a browser and visit http://localhost:8081
+    
+    ## Web application usage (option 2: use your own servelt server)
+    
+    Simply copy the myschedule-3.*/war/myschedule.war file into your Servlet container such as Tomcat.
+    
+    ## Command line usage (option 3: quickly test your quartz config)
+    
+     bash&gt; cd myschedule-3.*
+     bash&gt; bin/myschedule.sh bin/quartz.properties
+</code></pre></div></div>
+
+<p>Note that not all MySchedule-2.x features are in the 3.0 snapshot yet. For now, you would need to use the ScripConsole window to enter jobs into the scheduler. There are now new templates UI available for you to choose and start working quickly. I am still working on allowing users to save their own templates and edit them. This should give users more rich experience in using the UI manager.</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2013/02/28/hg-shortcuts-for-bash-profile/">
+        Hg shortcuts for bash .profile
+      </a>
+    </h1>
+
+    <span class="post-date">28 Feb 2013</span>
+
+    <p>Some shortcuts I used most often when working with Mecurial (hg) source control.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    # Hg shortcuts
+    function splithgfiles() { ruby -ne 'if $_ =~ /files: / then puts $_.split else puts $_ end' ; }
+    alias hgpu='hg pull -u'
+    alias hgl='hg log -v -l 5 | splithgfiles'
+    alias hgl1='hg log -v -l 1 | splithgfiles'
+    alias hgu='hg update'
+    alias hgc='hg commit -m'
+    alias hgb='hg branches'
+    alias hgbm='hg bookmarks'
+    alias hgt='hg tags'
+    alias hgs='hg status'
+    alias hgsu='echo "# Summary" &amp;&amp; hg summary &amp;&amp; echo "# Heads" &amp;&amp; hg heads'
+    alias hgr='hg revert -C'
+    
+    # Remove unversion files from Hg repository dir.
+    function hgrmnew {
+     rm -vfr `hg st | cut -d ' ' -f 2`
+    }
+</code></pre></div></div>
+
+<p>One worth special mentioning is that default “hg log -v” shows files with space separator. I find it easier to view with one file per line instead, hence I added the “splithgfiles” helper function.</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2013/02/20/few-notes-about-java-clone-method/">
+        Few notes about Java clone() method
+      </a>
+    </h1>
+
+    <span class="post-date">20 Feb 2013</span>
+
+    <p>Did you know you can create new Java instance without constructor? That’s right, and this feature is brought to you by the Java clone() method. I personally don’t like to use it much because it has many pitfalls, and it feels very broken in many ways. You probably can write better “clone” by using copy constructor or a static copy factory methods.</p>
+
+<p>Anyrate, here is a unit test that highlights few notes I have gathered about Java clone. Look for the “Note” comments below.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    package atest;
+    
+    import org.junit.Test;
+    
+    import java.util.ArrayList;
+    import java.util.List;
+    
+    import static org.hamcrest.Matchers.hasItems;
+    import static org.hamcrest.Matchers.is;
+    import static org.junit.Assert.assertThat;
+    
+    public class CloneTest {
+        @Test
+        public void testFooClone() throws Exception {
+            Foo a = new Foo();
+            Foo b = a.clone();
+    
+            assertThat(a != b, is(true));
+            assertThat(a.constructorCallsCount, is(1));
+            assertThat(a.name, is("foo"));
+            assertThat(b.constructorCallsCount, is(1)); // Note1: Wow, a new instance without calling constructor!
+            assertThat(b.name, is("foo"));
+    
+            a.name = "fooX";
+            assertThat(a.name, is("fooX"));
+            assertThat(b.name, is("foo"));
+    
+            Foo2 c = new Foo2();
+            c.ids.add("a");
+            Foo2 d = c.clone();
+            d.ids.add("b");
+    
+            c.ids.clear();
+            c.ids.add("A");
+    
+            assertThat(c != d, is(true));
+            assertThat(c.constructorCallsCount, is(2));
+            assertThat(c.name, is("foo"));
+            assertThat(d.constructorCallsCount, is(2));
+            assertThat(d.name, is("foo"));
+    
+            assertThat(c.ids, hasItems("A"));
+            assertThat(c.ids.size(), is(1));
+            assertThat(d.ids, hasItems("a", "b"));
+            assertThat(d.ids.size(), is(2));
+        }
+    
+        /** A simple clone examples with simple type fields. */
+        public static class Foo implements Cloneable {
+            static int constructorCallsCount = 0;
+            String name = "foo";
+            public Foo() {
+                constructorCallsCount++;
+            }
+            public Foo clone() {
+                // Note2: Catch checked exception here so client or subclass doesn't need to.
+                Foo result = null;
+                try {
+                    result = (Foo)super.clone();
+                } catch (CloneNotSupportedException e) {
+                    throw new RuntimeException("Unable to clone.", e);
+                }
+                return result;
+            }
+        }
+    
+        /** A clone example that needs to fix field afterward super.clone(). */
+        public static class Foo2 extends Foo {
+            List&lt;String&gt; ids = new ArrayList();
+            public Foo2 clone() {
+                Foo2 result = (Foo2)super.clone(); // Note3: Some how, super clone will auto return the correct type!
+                result.ids = new ArrayList(ids);   // Note4: need to fix non-simple field.
+                return result;
+            }
+        }
+    }
+</code></pre></div></div>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2013/02/03/learn-how-to-grep-by-context-will-give-you-better-result/">
+        Learn how to grep by context will give you better result
+      </a>
+    </h1>
+
+    <span class="post-date">03 Feb 2013</span>
+
+    <p>I learned that <code class="language-plaintext highlighter-rouge">grep</code> command supports few options called “context” searching. Basically it can print lines around the matching string! For example, you can use this feature to perform a quick Java threads stack analysis like this (assuming you have a java process PID=12345).</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bash&gt; jstack 12345 | grep --color 'State: BLOCKED' -B 1
+"A-Bad-Boy-Thread" prio=5 tid=0x00007fcfbc895800 nid=0xcd03 waiting on condition [0x00000001657cb000]
+   java.lang.Thread.State: BLOCKED (on object monitor)
+</code></pre></div></div>
+
+<p>See, without the “-B 1” option, which show one line before match, you won’t know which name of the tread that’s acting up! Now isn’t that a gem!</p>
+
+<p>You may also use “-A 5” to see 5 more lines after the match. Or you may use the “-C 5” to see 5 lines before and after the match.</p>
+
+<p>PS: There is nothing wrong with a “BLOCKED” thread in Java, however if you got one that won’t go away, then it’s a good indicator that something is fishy about that thread in your application; because in a well designed app, threads should be in BLOCKED state as briefly as possible. Read the javadoc on <code class="language-plaintext highlighter-rouge">java.lang.Thread.State</code> for more details.</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2013/01/28/fast-shell-utilities-to-report-mavens-unit-tests-results/">
+        Fast shell utilities to report Maven's unit tests results
+      </a>
+    </h1>
+
+    <span class="post-date">28 Jan 2013</span>
+
+    <p>I would like to share couple shell utilities that I have collected. These are for fast Maven multi modules reporting from your unit tests results, without having you to run entire Maven site reports, which can take a LONG time to generate if you have a large project! They should work on Linux or Window’s Cygwin shell.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Show failed tests among all the surefire results.
+function failedtests() {
+    for DIR in $(find . -maxdepth 3 -type d -name "surefire-reports") ; do
+        ruby -ne 'puts "#$FILENAME : #$&amp;" if $_ =~ /(Failures: [1-9][0-9]*.*|Errors: [1-9][0-9]*.*)/' $DIR/*.txt
+    done
+}
+
+# Show the top tests that took the longest time to run from maven surefire reports
+function slowtests() {
+    FILES=''
+    for DIR in $(find . -maxdepth 3 -type d -name "surefire-reports") ; do
+        FILES="$FILES $DIR/*.txt"
+    done
+    head -q -n 4 $FILES \
+        | ruby -ne 'gets; print $_.chomp + " "; gets; print gets' \
+        | ruby -ane 'printf "%8.03f sec: ", $F[-2].to_f; puts $_' \
+        | sort -r \
+        | head -10
+}
+</code></pre></div></div>
+
+<p>When developing with Maven, you often want to see a summary of failed tests, and you want those surefire TXT file content to see what’s going on. The <code class="language-plaintext highlighter-rouge">failedtests</code> function will give you a list of all the failed tests filenames in all modules; and then you can cat each one to investigate.</p>
+
+<p>With <code class="language-plaintext highlighter-rouge">slowtests</code> function you may quickly see the top 10 most time consuming tests from your project!</p>
+
+<p>Enjoy!</p>
+
+<hr />
+
+<h2 id="updated-20130130">Updated (2013/01/30)</h2>
+
+<p>I found out that the <code class="language-plaintext highlighter-rouge">head</code> command on MacOSX doesn’t have the “-q” option and it always prints the “==&gt; filename `# Replace this
+head -q -n 4 $FILES \</p>
+
+<h1 id="with-this">With this</h1>
+<p>ruby -e ‘ARGV.each{ |n| File.open(n) {|f| 4.times{ puts f.readline}} }’ $FILES <br />
+`
+It’s a tad longer, but it’s PORTABLE!</p>
+
+  </div>
+  
+</div>
+
+<div class="pagination">
+  
+    <a class="pagination-item older" href="http://localhost:4000/page22">Older</a>
+  
+  
+    
+      <a class="pagination-item newer" href="http://localhost:4000/page20">Newer</a>
+    
+  
+</div>
+
+      </div>
+    </div>
+
+    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+    <script src='/public/js/script.js'></script>
+  </body>
+</html>

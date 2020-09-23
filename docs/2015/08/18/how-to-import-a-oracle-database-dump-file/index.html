@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      How to import a Oracle database dump file &middot; Zemian's Blog
+    
+  </title>
+
+  
+  <link rel="canonical" href="http://localhost:4000/2015/08/18/how-to-import-a-oracle-database-dump-file/">
+  
+
+  <link rel="stylesheet" href="http://localhost:4000/public/css/poole.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/syntax.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/lanyon.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700%7CPT+Sans:400">
+
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/public/apple-touch-icon-precomposed.png">
+  <link rel="shortcut icon" href="http://localhost:4000/public/favicon.ico">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="http://localhost:4000/atom.xml">
+
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-135626598-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  
+</head>
+
+
+  <body>
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p>A weblog on software development.</p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item" href="http://localhost:4000/">Home</a>
+
+    
+
+    
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="http://localhost:4000/about/">About</a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+
+  </nav>
+
+  <div class="sidebar-item">
+    <p>
+      &copy; 2020. All rights reserved.
+    </p>
+  </div>
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <h3 class="masthead-title">
+            <a href="/" title="Home">Zemian's Blog</a>
+            <small>Life in programming world!</small>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+        <div class="post">
+  <h1 class="post-title">How to import a Oracle database dump file</h1>
+  <span class="post-date">18 Aug 2015</span>
+  <p>Here is an example on how to import a Oracle database dump file (a binary file that’s exported from a Oracle database using the Oracle data pump utility). For this instruction example, let’s say I was given a myapp.dmp.gz file.</p>
+
+<p>NOTE: If you do not use the same db user/tablespace for export and import, then you need to know its names used during export to perform the remapping during import.</p>
+
+<p>Step 1: If you don’t have an Oracle database instance to work with, create one first. Or ask your DBA to create or allocate a instance for your import purpose.</p>
+
+<p>Step 2: Create a new tablespace and a DB user in an Oracle database instance. (For this example, I will call my new user <code class="language-plaintext highlighter-rouge">MYAPP08182015</code>, password <code class="language-plaintext highlighter-rouge">Password1</code>, and tablespace named <code class="language-plaintext highlighter-rouge">MY_TABLE_SPACE</code>.)</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>create tablespace MY_TABLE_SPACE datafile
+  '/opt/myapp_datafiles/MY_TABLE_SPACE.dat'
+  size 500m autoextend on next 500m
+  extent management local
+  segment space management auto;
+
+create user MYAPP08182015 identified by Password1
+  default tablespace MY_TABLE_SPACE
+  temporary tablespace TEMP
+  quota unlimited on MYTABLESPACE;
+
+grant create session, grant any privilege to MYAPP08182015;
+grant IMP_FULL_DATABASE to MYAPP08182015;
+
+create directory MY_DATADUMP_DIR as '/opt/myapp_datadump';
+</code></pre></div></div>
+
+<p>Note that user must have <code class="language-plaintext highlighter-rouge">IMP_FULL_DATABASE</code> privilege to be able to used by import tool. And if you don’t want to use default import data directory, then you would need to create the directory object to be used by import as shown above.</p>
+
+<p>Note also that your TEMP tablespace might not have enough disk space for large import. In this case, you may increase it like this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>alter tablespace temp add tempfile
+  '/opt/myapp_datafiles/TEMP2.dat'
+  size 500m autoextend on next 500m;
+</code></pre></div></div>
+
+<p>Step 3: Now you have a new db User (Schema) and password, you may start the data import using the command line prompt. Ssh into the database server where you can find the impdp command utility.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>scp myapp.dmp.gz zemian@mydbserver:/opt/myapp_datadump
+ssh zemian@mydbserver
+cd /opt/myapp_datafiles
+gunzip myapp.dmp.gz
+/app/oracle/dbhome/bin/impdp MYAPP08182015/Password1 DIRECTORY=MY_DATADUMP_DIR REMAP_SCHEMA=MYAPP:MYAPP08182015 REMAP_TABLESPACE=USERS:MY_TABLE_SPACE LOGFILE=myapp-import.log DUMPFILE=myapp.dmp
+</code></pre></div></div>
+
+<p>References:
+<a href="http://docs.oracle.com/cd/B19306_01/server.102/b14215/dp_overview.htm">http://docs.oracle.com/cd/B19306_01/server.102/b14215/dp_overview.htm</a></p>
+
+</div>
+
+
+<div class="related">
+  <h2>Related posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2020/09/20/world-of-php/">
+            The World of PHP Development
+            <small>20 Sep 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/09/19/multiple-jquery/">
+            How to Load Multiple jQuery
+            <small>19 Sep 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/08/15/switched-to-vuepress/">
+            Switched Blogging to VuePress
+            <small>15 Aug 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+
+      </div>
+    </div>
+
+    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+    <script src='/public/js/script.js'></script>
+  </body>
+</html>

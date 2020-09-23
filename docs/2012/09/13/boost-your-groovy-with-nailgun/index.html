@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Boost your Groovy with NailGun &middot; Zemian's Blog
+    
+  </title>
+
+  
+  <link rel="canonical" href="http://localhost:4000/2012/09/13/boost-your-groovy-with-nailgun/">
+  
+
+  <link rel="stylesheet" href="http://localhost:4000/public/css/poole.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/syntax.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/lanyon.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700%7CPT+Sans:400">
+
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/public/apple-touch-icon-precomposed.png">
+  <link rel="shortcut icon" href="http://localhost:4000/public/favicon.ico">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="http://localhost:4000/atom.xml">
+
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-135626598-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  
+</head>
+
+
+  <body>
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p>A weblog on software development.</p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item" href="http://localhost:4000/">Home</a>
+
+    
+
+    
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="http://localhost:4000/about/">About</a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+
+  </nav>
+
+  <div class="sidebar-item">
+    <p>
+      &copy; 2020. All rights reserved.
+    </p>
+  </div>
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <h3 class="masthead-title">
+            <a href="/" title="Home">Zemian's Blog</a>
+            <small>Life in programming world!</small>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+        <div class="post">
+  <h1 class="post-title">Boost your Groovy with NailGun</h1>
+  <span class="post-date">13 Sep 2012</span>
+  <p>Are you working on a large Hibernate project that takes long time to load up all the <code class="language-plaintext highlighter-rouge">hbm.xml</code> files when creating the 
+<code class="language-plaintext highlighter-rouge">Session</code> object? This is fine during deployment and runtime because it only loads it once. However, often time we also 
+need to the same <code class="language-plaintext highlighter-rouge">Session</code> object to do some ad-hoc <code class="language-plaintext highlighter-rouge">HQL</code> queries to debug or validate data. Loading and re-loading
+large mapping files in a <code class="language-plaintext highlighter-rouge">Session</code> to just execute single query is very painful.</p>
+
+<p>Now, I like to poke around Java things with <code class="language-plaintext highlighter-rouge">Groovy</code>, and it’s a great tool to peek at your data as ad-hoc queries as well. 
+You can easily do this with their <code class="language-plaintext highlighter-rouge">groovyConsole</code> GUI tool and add <code class="language-plaintext highlighter-rouge">--classpath</code> option to include your project classes. This
+will bring up a tiny Editor, and you can script to load your hibernate <code class="language-plaintext highlighter-rouge">Session</code> there. Once the first run is loaded (the 
+hibenrate <code class="language-plaintext highlighter-rouge">Session</code> created), then second run is almost in an instant.</p>
+
+<p>Running the little <code class="language-plaintext highlighter-rouge">groovyConsole</code> had wet my appetite, and I was hungry for a better text editor, but yet I don’t really
+want a full blow IDE for scripting. I like do my scripting in a plain editor. Now if you have an editor such as <a href="http://sublimetext.com">Sublime Text 2</a> (ST2) that has a “build” feature to execute a external command, then you will enjoy scripting much more. With
+ST2, I can have it call <code class="language-plaintext highlighter-rouge">groovy.bat</code> from inside the editor on the script that I am editing. However, there is another problem: the external command will restart a new JVM process on each run! Now I am back to square one.</p>
+
+<p>To solve this problem, and still have my cake (editor), I recalled an awesome tool called <a href="http://www.martiansoftware.com/nailgun/index.html">NailGun</a>. This works perfectly with Groovy and my problem. I can start a server like this</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>java -cp "groovy-all-2.0.1.jar:nailgun-0.7.1.jar" -server com.martiansoftware.nailgun.NGServer
+</code></pre></div></div>
+
+<p>And then in my ST2 editor, I can run an external command like this as the NailGun client:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/path/to/nailgun-0.7.1/ng groovy.ui.GroovyMain test.groovy
+</code></pre></div></div>
+
+<p>Nail gun client sends the script file content to the server and prints the result. Again, after first run, the second run should
+be instantaneously.</p>
+
+<p>There, I scratched my itch.</p>
+
+<h1 id="details-on-how-to-setup-sublime-text-2-to-run-nailgun-client">Details on how to setup Sublime Text 2 to run NailGun client</h1>
+
+<ol>
+  <li>Go to menu: “Preference &gt; Browse Packages”</li>
+  <li>Open the Groovy folder</li>
+  <li>Save a file named “GroovyNailGunClient.sublime-build” with the following:</li>
+</ol>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  {
+  "cmd": ["/path/to/nailgun-0.7.1/ng", "groovy.ui.GroovyMain", "$file"],
+  "file_regex": "^(...*?):([0-9]*):?([0-9]*)",
+  "selector": "source.groovy"
+  }
+</code></pre></div></div>
+
+<ol>
+  <li>Select menu “Tool &gt; Build System &gt; GroovyNailGunClient”</li>
+  <li>Press <code class="language-plaintext highlighter-rouge">CTRL+B</code> to run any groovy file in your editor.</li>
+</ol>
+
+</div>
+
+
+<div class="related">
+  <h2>Related posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2020/09/20/world-of-php/">
+            The World of PHP Development
+            <small>20 Sep 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/09/19/multiple-jquery/">
+            How to Load Multiple jQuery
+            <small>19 Sep 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/08/15/switched-to-vuepress/">
+            Switched Blogging to VuePress
+            <small>15 Aug 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+
+      </div>
+    </div>
+
+    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+    <script src='/public/js/script.js'></script>
+  </body>
+</html>

@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Zemian's Blog &middot; Life in programming world!
+    
+  </title>
+
+  
+  <link rel="canonical" href="http://localhost:4000/page26/">
+  
+
+  <link rel="stylesheet" href="http://localhost:4000/public/css/poole.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/syntax.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/lanyon.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700%7CPT+Sans:400">
+
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/public/apple-touch-icon-precomposed.png">
+  <link rel="shortcut icon" href="http://localhost:4000/public/favicon.ico">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="http://localhost:4000/atom.xml">
+
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-135626598-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  
+</head>
+
+
+  <body>
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p>A weblog on software development.</p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item active" href="http://localhost:4000/">Home</a>
+
+    
+
+    
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="http://localhost:4000/about/">About</a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+
+  </nav>
+
+  <div class="sidebar-item">
+    <p>
+      &copy; 2020. All rights reserved.
+    </p>
+  </div>
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <h3 class="masthead-title">
+            <a href="/" title="Home">Zemian's Blog</a>
+            <small>Life in programming world!</small>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+        <div class="posts">
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2012/07/15/timemachine-scheduler-1-2-0-release-is-out/">
+        TimeMachine Scheduler 1.2.0 release is out!
+      </a>
+    </h1>
+
+    <span class="post-date">15 Jul 2012</span>
+
+    <p>I just released the <a href="https://bitbucket.org/timemachine/scheduler/downloads">timemachine-scheudler-1.2.0</a>, and it now comes with both stand-alone server (zip) and web application (war) distribution packages.</p>
+
+<p>In this <a href="https://bitbucket.org/timemachine/scheduler/wiki/ReleaseNotes">release</a>, I fixed few major bugs and made many small clean ups and minor fixes. I also added few new features. I will briefly introduce them to you here.</p>
+
+<h2 id="groovy-20">Groovy 2.0</h2>
+
+<p>I have upgraded the optional script engine dependency to latest groovy 2.0.0 within our scheduler distribution. The groovy-2.0.0 has modularized their jar distribution, and our scheduler only requires minimal of jsr-223 module, so our overall package size should be smaller.</p>
+
+<h2 id="timemachine-web">TimeMachine-Web</h2>
+
+<p>I have added a web application that can provide a fully running scheduler. This web app provides UI screens that let you manage and view jobs/schedules, and it can even edit the scheduler configuration online.</p>
+
+<p>You can see more info on <a href="https://bitbucket.org/timemachine/scheduler/wiki/WebConsole">WebConsole</a> doc, or try it out with our <a href="http://demos-tmscheduler.rhcloud.com/timemachine-web">demo</a>.</p>
+
+<h2 id="schedule-priority">Schedule Priority</h2>
+
+<p>You may now set a priority value 1-9 on any Schedule, and the default is 5. These are used if you have schedules that has same nextRun time, and having the lower priority value will get to run first.</p>
+
+<h2 id="event-and-job-histories">Event and Job Histories</h2>
+
+<p>In this release, I also provided a EventHistoryService that can record all major scheduler events such as when scheduler init, start, stop or destroyed. Also when scheduling data are added or deleted. And all the job run events are also recorded. To support this, we added a new built-in data model: EventHistory. You may retrieve and store these with our DataStore service if you desire. As convenience, we have added a History screen on our web application that display all the events happening in the scheduler.</p>
+
+<p>This feature is disabled by default, but to enable it is easy. You simply add the following value in the scheduler configuration file:
+timemachine.scheduler.eventHistory.class = timemachine.scheduler.service.EventHistoryService</p>
+
+<p>There are few more options you may configure with this service, and you can read more it on the scheduler <a href="https://bitbucket.org/timemachine/scheduler/wiki/ReferenceManual">reference doc</a>.</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2012/07/12/ctrl-c-not-working-on-cygwin-1-7-15-1/">
+        CTRL+C not working on Cygwin 1.7.15-1
+      </a>
+    </h1>
+
+    <span class="post-date">12 Jul 2012</span>
+
+    <p>When I installed new package in my Cygwin recently, it also automatically upgraded to latest Cygwin 1.7.15-1 DLL. After this, pressing CTRL+C no longer work</p>
+
+<p>on a running Java process the cygwin shell. I found the reason why this happens, and here is the email I sent to cygwin mailing list:</p>
+
+<blockquote>
+  <p>Okay, I finally found out what’s going on.</p>
+
+  <p>I used to have an old cygwin installed (not even sure what version) that only has “C:\Cygwin\Cygwin.bat” to start an terminal. This batch file open a terminal that I can run java.exe, and I used to hit CTRL+C to end it (not only that, it will also invoke the Java’s shutdown hook.)</p>
+
+  <p>After I upgraded to cygwin 1.7.15-1 (it will auto upgrade when we run setup.exe!). The above behavior no longer works!</p>
+
+  <p>It turns out the new cygwin 1.7.15-1 automatically comes with Mintty terminal now, and will default to create a Shortcut to this on desktop. Well I still have a shortcut to “C:\Cygwin\Cygwin.bat”. What I discover is that Java will no longer work with terminal that opens with “C:\Cygwin\Cygwin.bat”! But it DOES work with the Mintty terminal!</p>
+
+  <p>It’s all great for me, because I kind of like Mintty terminal. It’s kindda funny because for years I would love to use Mintty, but only to stop because CTRL+C wont’ work there. Now we have reverse!</p>
+
+  <p>However, I have to point out also that although I can hit CTRL+C in mintty to kill a java.exe process, but it DOES NOT invoke the Java’s shutdown hook process! Which is shame, because now I can’t test my shutdown procedure code.</p>
+
+  <p>I hope cygwin team can look at this further and provide a good solution, even for the Java folks like myself. I can only cope with Windows because of cygwin exists, so kudo to all the cygwin team and their hard work!</p>
+
+  <p>Hope also this post will help other Java developers out there.</p>
+
+  <p>Cheers,
+Zemian</p>
+</blockquote>
+
+<p>Ref: <a href="http://old.nabble.com/CTRL%2BC-is-not-working-with-java-on-latest-cygwin-1.7.15-tt34147441.html">http://old.nabble.com/CTRL%2BC-is-not-working-with-java-on-latest-cygwin-1.7.15-tt34147441.html</a></p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2012/07/11/quick-way-to-benchmark-java-code/">
+        Quick way to benchmark Java code
+      </a>
+    </h1>
+
+    <span class="post-date">11 Jul 2012</span>
+
+    <p>Don’t you envy Ruby has the Benchmark module? Yes, there are many art and science go behind how to setup and run a good micro benchmark code, especially with the JVM. But many times you just want to see some result, quickly. There is actually a very groovy and quick way to bench mark Java code with gbench! Check this out:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@Grab('com.googlecode.gbench:gbench:0.3.1-groovy-2.0')
+@Grab('commons-lang:commons-lang:2.6')
+import gbench.*
+import org.apache.commons.lang.StringUtils
+new BenchmarkBuilder().run {
+    'jdk.String.split' {
+        100.times{ "a b c d e f g h i j k l m n o p q r s t u v w x y z".split(" ") }
+    }
+    'commons-lang.StringUtils.split' {
+        100.times{ StringUtils.split("a b c d e f g h i j k l m n o p q r s t u v w x y z", " ") }
+    }
+}.prettyPrint()
+</code></pre></div></div>
+
+<p>I ran above and get the following on my machine:</p>
+
+<p><code class="language-plaintext highlighter-rouge">$ groovy benchmarkSplit.groovy</code></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Environment
+===========
+* Groovy: 2.0.0
+* JVM: Java HotSpot(TM) Client VM (20.1-b02, Sun Microsystems Inc.)
+    * JRE: 1.6.0_26
+    * Total Memory: 15.5 MB
+    * Maximum Memory: 247.5 MB
+* OS: Windows XP (5.1, x86)
+
+Options
+=======
+* Warm Up: Auto
+* CPU Time Measurement: On
+
+                                  user  system     cpu    real
+
+jdk.String.split                663219       0  663219  693382
+commons-lang.StringUtils.split  192721       0  192721  212359
+</code></pre></div></div>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2012/07/11/creating-oracle-stored-procedure-using-java/">
+        Creating Oracle Stored Procedure using Java
+      </a>
+    </h1>
+
+    <span class="post-date">11 Jul 2012</span>
+
+    <p>Did you know you can write Oracle database stored procedure in Java? Give this a try in your <code class="language-plaintext highlighter-rouge">sqlplus</code> prompt.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sql&gt; create or replace and compile java source named "MyJavaDbProcedure" as
+sql&gt; public class MyJavaDbProcedure {
+sql&gt;   public static String upcase(String text) {
+sql&gt;     return text.toUpperCase();
+sql&gt;   }
+sql&gt; };
+sql&gt; /
+sql&gt; 
+sql&gt; create or replace function upcase (s in varchar2)
+sql&gt;   return varchar2
+sql&gt; as language java
+sql&gt;   name 'MyJavaDbProcedure.upcase(java.lang.String) return java.lang.String';
+sql&gt; /
+sql&gt; 
+sql&gt; select upcase('hello') from dual;
+sql&gt; /
+</code></pre></div></div>
+
+<p>I let the database compile a Java source directly, but there is also the <code class="language-plaintext highlighter-rouge">java class</code> PL/SQL that you can load Java binary <code class="language-plaintext highlighter-rouge">.class</code> file as well. I am sure your DBA will fight all their might to prevent you doing stuff like this. But it’s cool to see that this option is available.</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2012/07/10/minimal-java-webapp-with-maven/">
+        Minimal Java webapp with Maven
+      </a>
+    </h1>
+
+    <span class="post-date">10 Jul 2012</span>
+
+    <p>Below are the shortest steps I know that would get you the smallest Java web application ready in Maven.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ mkdir -p webapp/src/main/webapp/WEB-INF/classes
+$ echo '&lt;web-app&gt;&lt;/web-app&gt;' &gt; webapp/src/main/webapp/WEB-INF/web.xml
+$ echo '&lt;html&gt;Hello World.&lt;/html&gt;' &gt; webapp/src/main/webapp/index.jsp
+$ echo '&lt;project&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;groupId&gt;atest&lt;/groupId&gt;
+    &lt;artifactId&gt;webapp&lt;/artifactId&gt;
+    &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+    &lt;packaging&gt;war&lt;/packaging&gt;
+&lt;/project&gt;' &gt; webapp/pom.xml
+$ cd webapp
+$ mvn org.apache.tomcat.maven:tomcat7-maven-plugin:2.0-beta-1:run
+</code></pre></div></div>
+
+<p>You should able to visit http://localhost:8080/webapp after that. Editing any JSP files should auto refresh by the server, and you don’t need to restart it. This is a fast way to prototype and test out your ideas.</p>
+
+<p>(Yes, I am aware that maven has the archetype for webapp, but it above do give you the bare minimal and you see each lines what go into your project.)</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2012/07/09/kickstart-timemachine-scheduler-with-a-quick-groovy-script/">
+        Kickstart TimeMachine Scheduler with a quick Groovy script
+      </a>
+    </h1>
+
+    <span class="post-date">09 Jul 2012</span>
+
+    <p>If you have <a href="http://groovy.codehaus.org/">Groovy</a>installed, you can kick start a <a href="https://bitbucket.org/timemachine/scheduler">TimeMachine Scheduler</a> job without any setup! Try this out:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// Create a repeating schedule job that runs every 3 seconds.
+@Grab('org.slf4j:slf4j-simple:1.6.6')
+@Grab('org.bitbucket.timemachine:timemachine-scheduler:1.2.2')
+import timemachine.scheduler.*
+scheduler = new SchedulerFactory().createScheduler()
+scheduler.init()
+jobDef = JobDefs.groovyJobDef('''
+    println("Hello World.")
+''')
+jobDef.addSchedule(Schedules.secondly(3))
+scheduler.schedule(jobDef)
+scheduler.start()
+addShutdownHook{ scheduler.destroy() }
+</code></pre></div></div>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2012/07/03/getting-jdk6-src-zip-for-new-imac/">
+        Getting JDK6 src.zip for new iMac
+      </a>
+    </h1>
+
+    <span class="post-date">03 Jul 2012</span>
+
+    <p>I got a new iMac, and I have activated the first time usage of JDK6. It’s all working, but it doesn’t come with src.zip! I googled around but other’s solution didn’t work for me. (eg: http://stackoverflow.com/questions/4011002/java-eclipse-on-macosx-where-is-the-src-zip). I tried download their Apple JDK updates, but it still doesn’t have the <code class="language-plaintext highlighter-rouge">src.zip</code>.</p>
+
+<p>So finally realized that this is easier than it needs to be. You can download the full JDK source here:</p>
+
+<p><a href="http://download.java.net/openjdk/jdk6">http://download.java.net/openjdk/jdk6</a></p>
+
+<p>After unzip, you should see the src folder under like this:</p>
+
+<p><code class="language-plaintext highlighter-rouge">openjdk-6-src-b25-01_may_2012/jdk/src/share/classes</code></p>
+
+<p>I’ve set this in my Eclipse’s <code class="language-plaintext highlighter-rouge">classes.jar</code> as source folder and it works great.</p>
+
+<p>PS: If you install the JDK7 from Oracle for MacOSX, it does come with the <code class="language-plaintext highlighter-rouge">src.zip</code> properly. However if you use Eclipse IDE with maven that set target to 1.6, it still convenient to browse that version of the source.</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2012/06/24/timemachine-scheduler-tour-part7/">
+        TimeMachine Scheduler Tour - Part7
+      </a>
+    </h1>
+
+    <span class="post-date">24 Jun 2012</span>
+
+    <p>This is part 7 of 7 in a series of articles that will give you a tour of the <a href="https://bitbucket.org/timemachine/scheduler/wiki/Home">TimeMachine Scheduler</a> project. These articles will introduce you to the scheduler, how to load jobs and schedules, and explore some of its advanced features. For the most current and accurate instructions, please visit the ReferenceManual from the project site.</p>
+
+<h2 id="running-multiple-schedulers-in-a-clustering-mode">Running Multiple Schedulers in a Clustering Mode</h2>
+
+<p>One of TimeMachine Scheduler goal is to be scalable and run high number of jobs. One of the way to do this is be able to run multiple schedulers on separate JVM under a single logical scheduler data space. In previous articles, you might already have noticed that our data models were designed to support multiple scheduler data space from the begining. This feature is actually already implicitly enabled by default, and you do not have to do much to take advantage of it!</p>
+
+<p>When running multiple schedulers (usually on separated JVM, but not required), your scheduler configuration is still all the same, except you need to pay attention to these two properties:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>timemachine.scheduler.schedulerName = TimeMachineScheduler
+
+timemachine.scheduler.nodeName = #{hostname}
+</code></pre></div></div>
+
+<p>In order to keep all data in a single logical scheduler, your schedulerName must be unique among all other nodes configuration files that belong in same cluster. Within the cluster, each nodeName must be unique. In fact, as default, the schedulerNode is default to your hostname already. So if you are running each scheduler on separate machines, you automatically will join into the default logical scheduler named “TimeMachineScheduler” with your hostname as node name.</p>
+
+<h2 id="using-hibernatedatastore">Using HibernateDataStore</h2>
+
+<p>A typical and common way to run scalable data store is to use a database persistence. Our HibernateDataStore would let you run all clustered scheduler configuration and store the data in a database of your choice (well as many as Hibernate would support). Each scheduler node would record itself during start and stop with host IP and timestamp and etc. And each JobDef and Schedule are store per each logical SchedulerData, so the namespace is already in place. Each scheduler node would execute whatever schedule that’s next run is due in a first “poll” first “run” fashion. If no schedules to be run, then the node would just be idling.</p>
+
+<h2 id="using-memorydatastore">Using MemoryDataStore</h2>
+
+<p>Our MemoryDataStore implementation actually supports multiple scheduler as well! But it’s not enabled as default. The default config is to use a new instance of the MemoryDataStore for data space, and thus the data will be lost and reset per scheduler start/stop. But if you add this config property:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>timemachine.scheduler.dataStore.memoryDataStore.useSingleton = true
+</code></pre></div></div>
+
+<p>This would make the MemoryDataStore service to use a singleton instance of the MemoryDataStore  for multiple schedulers to store data, thus making it cluster enable as well. This would be handy if you want to explore Big Memory or Data environment.</p>
+
+<h2 id="summary">Summary</h2>
+
+<p>This would conclude our tour with the TimeMachine Scheduler. We hope these articles have given you helpful information to explore more. Our goals are to provide a scheduler that can scale well, able to run high concurrent jobs, allow flexible schedules, and easy to configure. We love to hear your feedback. Please visit the project site and join the user forum to participate.</p>
+
+<p>End of part 7. You may see <a href="http://saltnlight5.blogspot.com/2012/06/timemachine-scheduler-tour-part6.html">previous tour</a>.</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2012/06/22/timemachine-scheduler-tour-part6/">
+        TimeMachine Scheduler Tour - Part6
+      </a>
+    </h1>
+
+    <span class="post-date">22 Jun 2012</span>
+
+    <p>This is part 6 of 7 in a series of articles that will give you a tour of the <a href="https://bitbucket.org/timemachine/scheduler/wiki/Home">TimeMachine Scheduler</a> project. These articles will introduce you to the scheduler, how to load jobs and schedules, and explore some of its advanced features. For the most current and accurate instructions, please visit the ReferenceManual from the project site.</p>
+
+<h2 id="configuring-multiple-threadpools">Configuring Multiple ThreadPools</h2>
+
+<p>By now you know how to write your own JobTask and even write your own Schedule implementation in TimeMachine Scheduler. We will switch back to configuration for a bit to talk about how to control the job execution.</p>
+
+<p>By default the scheduler will have two thread pools. The first one is reserved for system services, and default to only 1 fixed thread pool (used by PoolingScheduleRunner). The second thread pool is default to 4 dynamic threads exclusively for running JobTask only. Here is how the default config looks like for these pools:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># System service thread pool (you only need one pool!)
+timemachine.scheduler.systemThreadPool.class = timemachine.scheduler.service.FixedSizeThreadPool
+timemachine.scheduler.systemThreadPool.maxSize = 1
+timemachine.scheduler.systemThreadPool.threadNamePrefix = ${timemachine.scheduler.schedulerName}-System-Thread-
+
+# Default jobTask thread pool (you may define more than one pool!)
+timemachine.scheduler.jobTaskThreadPool.DEFAULT.class = timemachine.scheduler.service.DynamicThreadPool
+timemachine.scheduler.jobTaskThreadPool.DEFAULT.minSize = 0
+timemachine.scheduler.jobTaskThreadPool.DEFAULT.maxSize = 4
+timemachine.scheduler.jobTaskThreadPool.DEFAULT.timeToLive = 300000
+timemachine.scheduler.jobTaskThreadPool.DEFAULT.useShutdownNow = false
+timemachine.scheduler.jobTaskThreadPool.DEFAULT.maxShutdownWaitTime = 1000
+timemachine.scheduler.jobTaskThreadPool.DEFAULT.threadNamePrefix = ${timemachine.scheduler.schedulerName}-JobTask-Thread-
+</code></pre></div></div>
+
+<p>As you use the scheduler for more jobs, you might run into situation where you want to create multiple thread pools to run certain specific JobTask’s. In this case, you want to configure certain jobs that would only run in a isolated threads pool. The TimeMachine Scheduler has this feature that you create multiple thread pools, and it allow you to match to job task’s name. When you do this, you would also need to create a JobTaskPoolNameResolver that would resolve JobTask’s name match to one of the thread pool you configured. Here is an example of scheduler configuration file that exercise this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Extra job tasks thread pool
+timemachine.scheduler.jobTaskThreadPool.MYPOOL2.class = timemachine.scheduler.service.DynamicThreadPool
+timemachine.scheduler.jobTaskThreadPool.MYPOOL2.maxSize = 4
+timemachine.scheduler.jobTaskThreadPool.MYPOOL2.threadNamePrefix = MYPOOL2-Thread-
+
+# Extra job tasks thread pool
+timemachine.scheduler.jobTaskThreadPool.MYPOOL3.class = timemachine.scheduler.service.DynamicThreadPool
+timemachine.scheduler.jobTaskThreadPool.MYPOOL3.maxSize = 4
+timemachine.scheduler.jobTaskThreadPool.MYPOOL3.threadNamePrefix = MYPOOL3-Thread-
+
+# Resolving multiple jobTask thread pools
+timemachine.scheduler.jobTaskPoolNameResolver.poolName.MYPOOL2.matchToJobNameRexp = MyJobType2.*
+timemachine.scheduler.jobTaskPoolNameResolver.poolName.MYPOOL3.matchToJobNameRexp = MyJobType3.*
+</code></pre></div></div>
+
+<p>The name to pool matching is done using the Java regular expression. The example above setup two set of job task names match to each of their pool instance. Any job names starting with MyJobType2 will be executed by MYPOOL2, while any starting with MyJobType3 will be executed by MYPOOL3. And finally if any JobTask name that doesn’t match will use the DEFAULT pool.</p>
+
+<p>Note that JobTask’s name is only optional (only ID is required and it’s auto generated), so to use this features, you want to ensure to set the JobTask’s name that match your configured pool, or else they all default back to single DEFAULT pool.</p>
+
+<p>End of part 6. You may continue <a href="http://saltnlight5.blogspot.com/2012/06/timemachine-scheduler-tour-part7.html">next tour</a>, or see <a href="http://saltnlight5.blogspot.com/2012/06/timemachine-scheduler-tour-part5.html">previous tour</a>.</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2012/06/20/timemachine-scheduler-tour-part5/">
+        TimeMachine Scheduler Tour - Part5
+      </a>
+    </h1>
+
+    <span class="post-date">20 Jun 2012</span>
+
+    <p>This is part 5 of 7 in a series of articles that will give you a tour of the <a href="https://bitbucket.org/timemachine/scheduler/wiki/Home">TimeMachine Scheduler</a> project. These articles will introduce you to the scheduler, how to load jobs and schedules, and explore some of its advanced features. For the most current and accurate instructions, please visit the ReferenceManual from the project site.</p>
+
+<h2 id="how-to-create-custom-schedule">How to create Custom Schedule</h2>
+
+<p>We have shown you how to create custom JobTask in previous tour. In most cases, you would write a custom JobTask and then pick one of built-in Schedule to run it. The TimeMachine Scheduler currently provides 3 built-in Schedule’s: CronSchedule, RepeatSchedule and DateListSchedule. So what happen if these are not want you wanted, and you need special scheduling pattern? You can certainly write and extend the timemachine.scheduler.Schedule class and provide all the needed methods. But writing such Schedule implementation is much harder. Not only you would need to fully understand the base class, you would also need to deal with the persistence side in the DataStore; saving and re-load the states of your new Schedule implementation. In case of HibernateDataStore, you would also need to add a new entity mapping file etc. This is a lot of work to create a customized Schedule to run in a scheduler. Fortunately we provide something better and easier.</p>
+
+<p>Our solution is in the DateListSchedule. By default this schedule only let you set a list of dates explicitly to run. The scheduler would simply run on those specified dates and times, and when the schedule has reached at the end of the list, it’s done. The Schedule will be mark it as completed and remove it after the last job task has been run.</p>
+
+<p>However, there is another usage of DateListSchedule, that is to use a DateListProvider to supply a new dates list whenever the Schedule has reached the end of the list. You simply need to set a DateListProvider implementation class name in the schedule instance.</p>
+
+<h2 id="writing-and-using-datelistprovider">Writing and using DateListProvider</h2>
+
+<p>Let’s say you want a job to be run on every midnight end of month. We will show you how this can be done with our DateListSchdule.</p>
+
+<p>First, write a class that implements timemachine.scheduler.DateListProvider interface that will return last day of the month each time it’s called, like this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>package schedulerdemo;
+import java.util*;
+import timemachine.scheduler.*;
+import timemachine.scheduler.schedule.*;
+public class MyEndOfMonthDateListProvider implements DateListSchedule.DateListProvider {
+  public List&lt;Date&gt; getDateList(DateListSchedule schedule) {
+    List&lt;Date&gt; result = new ArrayList&lt;Date&gt;();
+    Date prevDate = schedule.getPrevRun();
+    if (prevDate == null)
+      result.add(Schedules.endOfMonth(Schedules.time("00:00:00")));
+    else
+      result.add(Schedules.endOfMonth(Schedules.addMonths(prevDate, 1)));
+    return result;
+  }
+}
+</code></pre></div></div>
+
+<p>Noticed that we take care to use prevRun date as starting point to calculate the next last-day-of-Month. And if prevRun is null, then we know that it’s the first time it’s called, so we need to create an initial date first. Again, our Schedules utility class can be a great help when handling with Java dates calculation.</p>
+
+<p>Now you can use above class in a DateListSchedule to schedule any job def. For example, you may schedule a job in a user service during init of the scheduler like this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>package schedulerdemo;
+import timemachine.scheduler.*;
+import timemachine.scheduler.schedule.*;
+import timemachine.scheduler.support.*;
+public class MyService extends AbstractService implements SchedulerListener {
+  private Scheduler scheduler;
+  public void onScheduler(Scheduler scheduler) { this.scheduler = scheduler; }
+  public void init() {
+    DateListSchedule schedule = new DateListSchedule();
+    schedule.setDateListProviderClassName(MyEndOfMonthDateListProvider.class);
+    JobDef jobDef = JobDefs.groovyJobDef("logger.info('Hello')");
+    jobDef.addSchedule(schedule);
+    scheduler.schedule(jobDef);
+  }
+}
+</code></pre></div></div>
+
+<p>Next, run the scheduler with the following config file:</p>
+
+<p>timemachine.scheduler.userservice.myService.class = schedulerdemo.MyService</p>
+
+<h2 id="using-scriptingdatelistprovider">Using ScriptingDateListProvider</h2>
+
+<p>With the same concept as above, we also provided a built-in ScriptingDateListProvider class that let you create custom date list with Scripting. This allow you to write custom schedule without even recompiling a Java project!</p>
+
+<p>In order to support  ScriptingDateListProvider, the DateListSchedule has another field that can be set using setDateListProviderData() method. This field is a string of data map in the key=value,key2=value2 format. We need this information to tell what scriptEngineName to use, and the scriptText to be executed (or scriptFile).</p>
+
+<p>To mimic above example again , we are going to switch to Groovy scripting completly, even writing the user service in Groovy initScript, so no Java compile is needed.</p>
+
+<p>First create a scheduler config file like this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>timemachine.scheduler.userservice.myScriptService.class = timemachine.scheduler.userservice.ScriptingService
+ScriptingService.scriptEngineName = Groovy
+ScriptingService.initScript = config/init.groovy
+</code></pre></div></div>
+
+<p>Now create the config/init.groovy initScript file:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import timemachine.scheduler.*
+import timemachine.scheduler.schedule.*
+import timemachine.scheduler.support.*
+schedule = new DateListSchedule()
+schedule.setDateListProviderClassName(ScriptingDateListProvider.class)
+schedule.setDataListProviderData('''
+  scriptEngineName=Groovy,scriptText=
+    import timemachine.scheduler.*
+    prevDate = dateListSchedule.getPrevRun()
+    if (prevDate == null)
+      [Schedules.endOfMonth(Schedules.time("00:00:00"))]
+    else
+      [Schedules.endOfMonth(Schedules.addMonths(prevDate, 1))]
+''')
+jobDef = JobDefs.groovyJobDef("logger.info('Hello')")
+jobDef.addSchedule(schedule)
+scheduler.schedule(jobDef)
+</code></pre></div></div>
+
+<p>There, you just experienced a little bit of script within script! Pretty cool huh? Go ahead and re-start your scheduler with above config and you shall see your custom schedule in action.</p>
+
+<p>As you can see, our DateListSchedule can give you a very flexible way to customize any schedule needs, even with dynamic scripting. Since this DateListSchedule is already part of the built-in schedule, all the persistence layer would work correctly without modifying any classes nor database structure.</p>
+
+<p>End of part 5. You may continue <a href="http://saltnlight5.blogspot.com/2012/06/timemachine-scheduler-tour-part6.html">next tour</a>, or see <a href="http://saltnlight5.blogspot.com/2012/06/timemachine-scheduler-tour-part4.html">previous tour</a>.</p>
+
+  </div>
+  
+</div>
+
+<div class="pagination">
+  
+    <a class="pagination-item older" href="http://localhost:4000/page27">Older</a>
+  
+  
+    
+      <a class="pagination-item newer" href="http://localhost:4000/page25">Newer</a>
+    
+  
+</div>
+
+      </div>
+    </div>
+
+    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+    <script src='/public/js/script.js'></script>
+  </body>
+</html>

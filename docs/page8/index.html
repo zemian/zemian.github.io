@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Zemian's Blog &middot; Life in programming world!
+    
+  </title>
+
+  
+  <link rel="canonical" href="http://localhost:4000/page8/">
+  
+
+  <link rel="stylesheet" href="http://localhost:4000/public/css/poole.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/syntax.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/lanyon.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700%7CPT+Sans:400">
+
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/public/apple-touch-icon-precomposed.png">
+  <link rel="shortcut icon" href="http://localhost:4000/public/favicon.ico">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="http://localhost:4000/atom.xml">
+
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-135626598-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  
+</head>
+
+
+  <body>
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p>A weblog on software development.</p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item active" href="http://localhost:4000/">Home</a>
+
+    
+
+    
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="http://localhost:4000/about/">About</a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+
+  </nav>
+
+  <div class="sidebar-item">
+    <p>
+      &copy; 2020. All rights reserved.
+    </p>
+  </div>
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <h3 class="masthead-title">
+            <a href="/" title="Home">Zemian's Blog</a>
+            <small>Life in programming world!</small>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+        <div class="posts">
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2018/01/27/using-java8-localdatetime-with-freemarker/">
+        Using Java8 LocalDateTime with FreeMarker
+      </a>
+    </h1>
+
+    <span class="post-date">27 Jan 2018</span>
+
+    <p>It’s unfortunate that even latest FreeMarker 2.3.27 still does not
+support <code class="language-plaintext highlighter-rouge">java.time.LocalDateTime</code> as data model natively. If you want to
+use this in your template, you would either have to write your own, or
+use this friendly library:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>        &lt;!-- Web View: FTL Template Engine --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.freemarker&lt;/groupId&gt;
+            &lt;artifactId&gt;freemarker&lt;/artifactId&gt;
+            &lt;version&gt;2.3.27-incubating&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;no.api.freemarker&lt;/groupId&gt;
+            &lt;artifactId&gt;freemarker-java8&lt;/artifactId&gt;
+            &lt;version&gt;1.1.5&lt;/version&gt;
+        &lt;/dependency&gt;
+</code></pre></div></div>
+
+<p>With this, you may format the java8 date model in template like this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Today date is ${todayDate.format()}
+
+Or use custom date formatter: ${todayDate.format('yyyy-MM-dd HH:mm')}
+</code></pre></div></div>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2018/01/19/how-to-fix-intellij-outofmemoryerror/">
+        How to fix IntelliJ OutOfMemoryError
+      </a>
+    </h1>
+
+    <span class="post-date">19 Jan 2018</span>
+
+    <p>If you have a large project, you might get this error when trying to do
+a full build</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error:java: OutOfMemoryError: insufficient memory
+</code></pre></div></div>
+
+<p>You can fix this by increase memory in two places in the IDE. For
+example, let says you want to increase to 2GB of memory:</p>
+
+<ol>
+  <li>
+    <p>Update the <code class="language-plaintext highlighter-rouge">idea64.exe.vmoptions</code> file with <code class="language-plaintext highlighter-rouge">-Xmx2048m</code> to increase
+Java max heap memory size for your IDE. (Require IDE restart)</p>
+  </li>
+  <li>
+    <p>Go to IDE menu: File &gt; Settings … &gt; Build, Execution,
+Deployment &gt; Compiler &gt; “Build process heap size (Mbytes):”
+and increase it to <code class="language-plaintext highlighter-rouge">2000</code>.</p>
+  </li>
+</ol>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2017/08/04/how-to-run-nginx-and-setup-reverse-proxy-to-tomcat/">
+        How to run nginx and setup reverse proxy to Tomcat
+      </a>
+    </h1>
+
+    <span class="post-date">04 Aug 2017</span>
+
+    <h1 id="basic-nginx-usage">Basic <code class="language-plaintext highlighter-rouge">nginx</code> usage</h1>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># start
+cd ~/apps/nginx-1.13.7
+./nginx -c conf/nginx.conf
+
+# stop
+./nginx -c conf/nginx.conf -s stop
+</code></pre></div></div>
+<p>How to setup nginx reverse proxy to Tomcat
+==========================================</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># nginx.conf
+server {
+        listen       80;
+        server_name  localhost;
+
+        location / {
+                proxy_pass http://localhost:8080;
+                proxy_set_header X-Forwarded-Host $host;
+                proxy_set_header X-Forwarded-Server $host;
+        }
+}
+</code></pre></div></div>
+<p>Setup to setup nginx ssl and reverse proxy to Tomcat
+====================================================</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># ssl setup
+cd ~/apps/nginx-1.13.7/conf
+openssl req -x509 -nodes -newkey rsa:2048 -keyout cert.key -out cert.crt
+
+# nginx.conf
+server {
+    listen       443 ssl;
+    server_name  localhost;
+
+    ssl_certificate      cert.crt;
+    ssl_certificate_key  cert.key;
+
+    ssl_session_cache    shared:SSL:1m;
+    ssl_session_timeout  5m;
+
+    ssl_ciphers  HIGH:!aNULL:!MD5;
+    ssl_prefer_server_ciphers  on;
+
+    location / {
+                    proxy_pass http://localhost:8080;
+                    proxy_set_header X-Forwarded-Host $host;
+                    proxy_set_header X-Forwarded-Server $host;
+                    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            }
+}
+</code></pre></div></div>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2017/07/07/creating-postgresql-db-users-to-match-linux-users/">
+        Creating PostgreSQL db users to match Linux users
+      </a>
+    </h1>
+
+    <span class="post-date">07 Jul 2017</span>
+
+    <p>By default the <code class="language-plaintext highlighter-rouge">posgresql-server</code> install will create a <code class="language-plaintext highlighter-rouge">postgres</code> Linux
+user account and the server will run under that user. And also
+PostgreSQL server will default have a DB user named <code class="language-plaintext highlighter-rouge">postgres</code> as well,
+and this DB user does not have a password! There is a distinction
+between Linux user vs PostgreSQL database user, and mostly you need to
+work with DB user only. After the install, you may change the password
+for DB <code class="language-plaintext highlighter-rouge">postgres</code> like this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bash&gt; sudo -u postgres psql
+
+postgres=# \password postgres
+
+# It should prompt you to enter password for `postgres` DB user.
+</code></pre></div></div>
+
+<p>When developing application, I like to create a dedicated DB user to
+match my login account and create database there instead of using the
+default <code class="language-plaintext highlighter-rouge">postgres</code> user. You may create a new DB user that match to your
+current Linux account user (eg: <code class="language-plaintext highlighter-rouge">zemian</code>) like this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bash&gt; sudo -u postgres createdb -s -P zemian
+# It should prompt you to enter password for `zemian` DB user. The `-s` option is to for superuser privileges.
+</code></pre></div></div>
+
+<p>Now that you have a DB user <code class="language-plaintext highlighter-rouge">zemian</code>, you may create a default database
+for it.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bash&gt; createdb --username=zemian zemian
+</code></pre></div></div>
+
+<p>Now you may invoke <code class="language-plaintext highlighter-rouge">psql</code> under <code class="language-plaintext highlighter-rouge">zemian</code> Linux user session without any
+parameters and it should log you in!</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bash&gt; psql
+
+zemian=# CREATE TABLE test(id serial, name VARCHAR(20), message VARCHAR(500));
+NOTICE:  CREATE TABLE will create implicit sequence "test_id_seq" for serial column "test.id"
+CREATE TABLE
+
+zemian=# \d test
+                                 Table "public.test"
+ Column  |          Type          |                     Modifiers
+---------+------------------------+---------------------------------------------------
+ id      | integer                | not null default nextval('test_id_seq'::regclass)
+ name    | character varying(20)  |
+ message | character varying(500) |
+
+zemian=# INSERT INTO test(name, message) VALUES('Hello', 'World');
+INSERT 0 1
+zemian=# INSERT INTO test(name, message) VALUES('Hello2', 'World2');
+INSERT 0 1
+zemian=# SELECT * FROM test;
+ id |  name  | message
+----+--------+---------
+  1 | Hello  | World
+  2 | Hello2 | World2
+(2 rows)
+</code></pre></div></div>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2016/10/09/git-branch-name-with-slash/">
+        Git Branch name with 'slash'
+      </a>
+    </h1>
+
+    <span class="post-date">09 Oct 2016</span>
+
+    <p>Git allows you to use <code class="language-plaintext highlighter-rouge">/</code> slash in your branch name. It’s useful for
+grouping branches. However, you need to be careful that once a slashy
+branch name is created, you can’t use its name as the “base” for another
+new nested slash name! For example:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># this is fine
+git branch foo/bar
+git branch foo/bar2
+
+# but this fails
+git branch foo/bar/cool
+fatal: cannot lock ref 'refs/heads/foo/bar/cool': 'refs/heads/foo/bar' exists; cannot create 'refs/heads/foo/bar/cool'
+
+# So to use two level of slashes, you must first start a branch with two slashes!
+git branch foo2/bar/cool
+git branch foo2/bar/cool2
+git branch foo2/bar2/cool
+git branch foo2/bar2/cool2
+</code></pre></div></div>
+
+<p>Here is a more concrete example. Let’s say you worked on an <code class="language-plaintext highlighter-rouge">issue-123</code>
+branch, and now you are done but want to rename under a subcategory
+<code class="language-plaintext highlighter-rouge">closed/issue-123</code>. If you were to create a bsranch <code class="language-plaintext highlighter-rouge">closed</code> first, then
+the rename will fail! You have to first ensure <code class="language-plaintext highlighter-rouge">closed</code> branch does not
+exist. In fact reate a <code class="language-plaintext highlighter-rouge">closed/zkeepme</code> first, then you can always move
+your completed branch into that sub category!</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2016/10/04/my-quick-git-reference/">
+        My Quick Git Reference
+      </a>
+    </h1>
+
+    <span class="post-date">04 Oct 2016</span>
+
+    <p>I have started using git and here are some of my frequently used
+commands.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone http://path/to/repo.git  # Retrieve a repo for work (auto checkout master branch into WorkingDir)
+git init                           # Create new repository for work (auto checkout master branch into WorkingDir)
+git init --bare                    # Create new repository without WorkingDir  - bare repo for server share only
+
+git status             # Print current status of the repo
+git branch -a          # List of all branches (including remote branches)
+git tag                # List of all tags
+git log -3                                      # Show last 3 commits
+git log -30 --oneline                           # Show last 30 commits one per line
+git log --decorate --graph --format='%h %an %s' # Show all log messages one per line in a graph
+git log --reverse |head                         # Show first commit message
+git show --stat &lt;sha1&gt; # Show what files changed on a commit
+git diff               # Show diff all files between Index and WorkingDir
+git diff readme.md     # Show diff of a file against Index
+git diff master..topic # Show diff between two branches
+
+git checkout -b topic               # Create a new topic branch and set as current branch
+                                      (New branch starts from previous checkout branch)
+git checkout -b topic origin/topic  # Create a new topic branch and set as current branch
+                                      (New branch starts from origin/topic "remote" branch)
+git branch --move topicA topicB     # Rename a branch
+git branch -d topic                 # Delete a branch (use -D to force it)
+git checkout master                 # Switch to master branch and set as current branch
+git merge topic                     # Merge changes from topic branch onto current branch
+
+git add .                        # Add files to Index
+git add readme.md                # Add one file to Index
+git add -A                       # Add everything to Index
+git commit -m 'topic: my change' # Commit Index changes
+
+git mv oldfile.md newfile.md     # Rename a file
+git rm outdated.md               # Remove a file from Index and WorkingDir
+git rm --cached outdated.md      # Remove a file from Index only (leave it in WorkingDir)
+
+git remote add origin http://path/to/repo.git     # Setup remote repository
+git remote set-url origin http://path/to/repo.git # Update remote repository
+git remote -v                                     # List remote repositories
+
+git push --set-upstream origin topic              # Push branch to remote first time
+git push                                          # Push branch to remote second time
+git push --all                                    # Push all the branches to remote!
+git push origin :topic                            # Push and DELETE the remote branch!
+
+git pull   # Fetch and merge the "auto tracked remote" branch onto current branch
+git fetch  # Fetch only the "auto tracked remote" branch onto current branch
+
+git checkout              # Restore WorkingDir from Index (will not override local modified files!)
+git checkout -- readme.md # Restore a single WorkingDir file from Index
+
+git reset          # Reset the HEAD and Index (same as --mixed)
+git reset --soft   # Reset the HEAD only
+git reset --hard   # Reset the HEAD, Index and WorkingDir!
+
+git reflog         # Inpect any recent transactions and can be use to recover lost (unnamed) commits
+
+git stash          # Put away all pending changes
+git stash pop      # Bring back all pending changes
+git stash list     # List all stashes
+</code></pre></div></div>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2016/07/23/how-to-install-cx-oracle-module-on-linux/">
+        How to install cx_Oracle module on Linux
+      </a>
+    </h1>
+
+    <span class="post-date">23 Jul 2016</span>
+
+    <p>Here are my notes on installing <a href="http://cx-oracle.sourceforge.net/"><code class="language-plaintext highlighter-rouge">cx_Oracle</code> python
+module</a> to access Oracle Database
+12c. First, you need to download these two packages from <a href="http://www.oracle.com/technetwork/database/features/instant-client">Oracle Instant
+Client</a>
+site.</p>
+
+<ul>
+  <li>
+    <p>Instant Client Package - Basic</p>
+  </li>
+  <li>
+    <p>Instant Client Package - SDK</p>
+  </li>
+</ul>
+
+<p>I’ve tried their <code class="language-plaintext highlighter-rouge">.rpm</code> packages and it did not work for me on Linux, so
+I would suggest you use the <code class="language-plaintext highlighter-rouge">.zip</code> packages instead.</p>
+
+<p>Once you downloaded these two, unzip them into a single directory (eg:
+<code class="language-plaintext highlighter-rouge">$HOME/apps/instantclient</code>). You then need to follow these instructions
+to install the module itself.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cd $HOME/apps/instantclient
+ln -s libclntsh.so.12.1 libclntsh.so
+export ORACLE_HOME=$HOME/apps/instantclient
+export LD_LIBRARY_PATH=$ORACLE_HOME:$LD_LIBRARY_PATH
+
+pip install cx_Oracle
+</code></pre></div></div>
+
+<p>Here are some quick python test code to verify <code class="language-plaintext highlighter-rouge">cx_Oracle</code> is working.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import cx_Oracle as db
+dsn='(DESCRIPTION=(ADDRESS=(HOST=myhost)(PORT=1521)(PROTOCOL=TCP))(CONNECT_DATA=(SERVER=DEDICATED)(SID=orcl)))'
+conn = db.connect('zemian', 'Welcome1', dsn)
+cur = conn.cursor()
+cur.execute('SELECT 1+1')
+print(cur.fetchone()[0])
+cur.close()
+conn.close()
+</code></pre></div></div>
+
+<p>Using the <code class="language-plaintext highlighter-rouge">dsn</code> form above can connect directly to database without the
+need to setup further entry in Oracle’s <code class="language-plaintext highlighter-rouge">tnsnames.ora</code> file.</p>
+
+<h1 id="optionally-installing-sqlplus-client">Optionally installing sqlplus client</h1>
+
+<p>The <code class="language-plaintext highlighter-rouge">sqlplus</code> is a classic client you may use to connect to the Oracle
+database. You may install this to perform adhoc query and verify your
+data. Download the following from the same download site above.</p>
+
+<ul>
+  <li>Instant Client Package - <code class="language-plaintext highlighter-rouge">SQL\*Plus</code></li>
+</ul>
+
+<p>Unzip and then add the following to your <code class="language-plaintext highlighter-rouge">PATH</code></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>export $ORACLE_HOME/bin:$PATH
+
+sqlplus mydbuser@(DESCRIPTION=(ADDRESS=(HOST=myhost)(PORT=1521)(PROTOCOL=TCP))(CONNECT_DATA=(SERVER=DEDICATED)(SID=orcl)))
+</code></pre></div></div>
+
+<p>For more information, see <a href="https://docs.oracle.com/database/121/SQPUG/toc.htm"><code class="language-plaintext highlighter-rouge">sqlplus</code>
+doc</a></p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2016/07/14/simple-http-server-with-cgi-scripts-enabled/">
+        Simple http server with CGI scripts enabled
+      </a>
+    </h1>
+
+    <span class="post-date">14 Jul 2016</span>
+
+    <p>If you want to experiment some python code as CGI script to serve by a HTTP server,
+you can get started by these steps:</p>
+
+<ol>
+  <li>Create a <code class="language-plaintext highlighter-rouge">cgi-bin</code> directory.</li>
+  <li>Ready!</li>
+</ol>
+
+<p>No, really, it’s that simple! Try these CGI scripts out.</p>
+
+<h2 id="example-1-cgi-binhellopy">Example 1: <code class="language-plaintext highlighter-rouge">cgi-bin/hello.py</code></h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#!/usr/bin/env python3
+
+localvars_table = ''
+for x in dir():
+  localvars_table += '%s' % x
+localvars_table += ''
+
+print("Content-type: text/html")
+print("")
+print("""
+Hello World! Your custom CGI script is working. Here are your current Python local variables.
+
+%s
+
+NOTE: If you want to write useful CGI script, try the Python 'cgi' module. See cgitest.py script.
+""" % (localvars_table))
+</code></pre></div></div>
+
+<p>To test and run this, you simply invoke these couple commands:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bash&gt; chmod a+x cgi-bin/hello.py
+bash&gt; python3 -m http.server --cgi
+</code></pre></div></div>
+
+<p>You may now test it on your browser with <a href="http://localhost:8000/cgi-bin/hello.py">http://localhost:8000/cgi-bin/hello.py</a>. Hit <code class="language-plaintext highlighter-rouge">CTRL+C</code> to stop the server.</p>
+
+<p>If you want to do more with fancy CGI scripts, try the Python’s <code class="language-plaintext highlighter-rouge">cgi</code> module. Here is another example.</p>
+
+<h2 id="example-2-cgi-bincgitestpy">Example 2: <code class="language-plaintext highlighter-rouge">cgi-bin/cgitest.py</code></h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#!/usr/bin/env python3
+
+import cgi
+cgi.test()
+</code></pre></div></div>
+
+<p>Again <code class="language-plaintext highlighter-rouge">chmod</code> your <code class="language-plaintext highlighter-rouge">cgitest.py</code> script and visit <a href="http://localhost:8000/cgi-bin/cgitest.py">http://localhost:8000/cgi-bin/cgitest.py</a>. You will see all the
+HTTP related data as expected when working with a CGI script. See <a href="https://docs.python.org/3/library/cgi.html">https://docs.python.org/3/library/cgi.html</a>
+for more details.</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2016/07/08/how-to-install-posgresql-server-with-yum-on-linux/">
+        How to install posgresql-server with yum on Linux
+      </a>
+    </h1>
+
+    <span class="post-date">08 Jul 2016</span>
+
+    <p>If you have a RedHat/CentOS/OracleLinux distro of Linux, then <code class="language-plaintext highlighter-rouge">yum</code> should be available as your package manager. Here are the notes I have to get PostgreSQL server up running.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bash&gt; yum info postgresql-server
+bash&gt; # Verify that's the version you want to install
+
+bash&gt; # Ready to install
+bash&gt; sudo su -
+bash&gt; yum -y install postgresql-server
+bash&gt; service postgresql initdb
+
+bash&gt; # Startup the server manually
+bash&gt; service postgresql start
+
+bash&gt; # Make server startup at system reboot
+bash&gt; chkconfig postgresql on
+
+bash&gt; # Verify postgres DB is working
+bash&gt; su - postgres -c psql
+postgres=# \du
+postgres=# \q
+
+bash&gt; # We are done, exit root user shell
+bash&gt; exit
+</code></pre></div></div>
+
+<p>If you can’t find <code class="language-plaintext highlighter-rouge">service</code> or <code class="language-plaintext highlighter-rouge">chkconfig</code> commands, then check to ensure you have have <code class="language-plaintext highlighter-rouge">/sbin</code> in your <code class="language-plaintext highlighter-rouge">$PATH</code>.</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2016/07/07/how-to-switch-linux-account-user-without-the-target-users-password/">
+        How to switch Linux account user without the target user's password
+      </a>
+    </h1>
+
+    <span class="post-date">07 Jul 2016</span>
+
+    <p>Did you know if you have been granted <code class="language-plaintext highlighter-rouge">sudo</code> access to a remote
+host with <code class="language-plaintext highlighter-rouge">su</code> command, then you may switch to any user without the
+need to type in their password?</p>
+
+<p>Try this out:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>zemian@myhost bash&gt; sudo su - postgres
+# When prompted for password, enter your own user account password.
+
+# Now you are in as `postgres` user!
+postgres@myhost bash&gt;
+</code></pre></div></div>
+
+<p>Or if you want to switch to the root user directly, simply try:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bash&gt; sudo su -
+</code></pre></div></div>
+
+<p>This is very useful when you need to switch to a user account that
+was only setup just to run applications (eg: <code class="language-plaintext highlighter-rouge">postgres</code>, <code class="language-plaintext highlighter-rouge">mysql</code>,
+<code class="language-plaintext highlighter-rouge">oracle</code>, or <code class="language-plaintext highlighter-rouge">weblogic</code> etc.) and not intented for real user. In this
+case, you might not even know what the real password is. Above
+trick should get you switch into that target user account.</p>
+
+  </div>
+  
+</div>
+
+<div class="pagination">
+  
+    <a class="pagination-item older" href="http://localhost:4000/page9">Older</a>
+  
+  
+    
+      <a class="pagination-item newer" href="http://localhost:4000/page7">Newer</a>
+    
+  
+</div>
+
+      </div>
+    </div>
+
+    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+    <script src='/public/js/script.js'></script>
+  </body>
+</html>

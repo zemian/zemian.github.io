@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Zemian's Blog &middot; Life in programming world!
+    
+  </title>
+
+  
+  <link rel="canonical" href="http://localhost:4000/page4/">
+  
+
+  <link rel="stylesheet" href="http://localhost:4000/public/css/poole.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/syntax.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/lanyon.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700%7CPT+Sans:400">
+
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/public/apple-touch-icon-precomposed.png">
+  <link rel="shortcut icon" href="http://localhost:4000/public/favicon.ico">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="http://localhost:4000/atom.xml">
+
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-135626598-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  
+</head>
+
+
+  <body>
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p>A weblog on software development.</p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item active" href="http://localhost:4000/">Home</a>
+
+    
+
+    
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="http://localhost:4000/about/">About</a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+
+  </nav>
+
+  <div class="sidebar-item">
+    <p>
+      &copy; 2020. All rights reserved.
+    </p>
+  </div>
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <h3 class="masthead-title">
+            <a href="/" title="Home">Zemian's Blog</a>
+            <small>Life in programming world!</small>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+        <div class="posts">
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2018/07/23/adding-new-cacert-entry-into-adoptopenjdk/">
+        Adding new cacert entry into AdoptOpenJDK
+      </a>
+    </h1>
+
+    <span class="post-date">23 Jul 2018</span>
+
+    <p>I downloaded latest Tomcat source and it failed to get the dependencies.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  cd src/github/tomcat
+  ant download-test-compile
+        [get] Error getting https://repo.maven.apache.org/maven2/junit/junit/4.12/junit-4.12.jar to C:\Users\zemian\tomcat-build-libs\download-2000731528.tmp
+
+BUILD FAILED
+C:\Users\zemian\src\github\tomcat\build.xml:2705: The following error occurred while executing this line:
+C:\Users\zemian\src\github\tomcat\build.xml:3051: javax.net.ssl.SSLException: java.lang.RuntimeException: Unexpected error: java.security.InvalidAlgorithmParameterException: the trustAnchors parameter must be non-empty
+        at sun.security.ssl.Alerts.getSSLException(Alerts.java:208)
+</code></pre></div></div>
+
+<p>It turns out this error is caused by the OpenJDK 8 that I am using. The
+one I got is from <a href="https://adoptopenjdk.net/">https://adoptopenjdk.net/</a>, and the
+$JAVA_HOME/jre/lib/security/cacert file has no entries for trusted CA
+certs!</p>
+
+<p>So I found few solutions:</p>
+
+<ol>
+  <li>
+    <p>Find a copy of OracleJDK and copy their <code class="language-plaintext highlighter-rouge">cacerts</code> over.</p>
+  </li>
+  <li>
+    <p>If you are on Linux, you can try installing cacerts using tools the
+OS provided. (eg: Ubuntu can be done like here:
+<a href="https://stackoverflow.com/questions/6784463/error-trustanchors-parameter-must-be-non-empty">https://stackoverflow.com/questions/6784463/error-trustanchors-parameter-must-be-non-empty</a>)</p>
+  </li>
+  <li>
+    <p>Upgrade OpenJDK to 10</p>
+  </li>
+  <li>
+    <p>Or the quick way, go to the site that gives you problem, export
+their cert using the browser, and then import into to the <code class="language-plaintext highlighter-rouge">cacerts</code>
+file.</p>
+  </li>
+</ol>
+
+<p>So for me, I went to <a href="https://repo.maven.apache.org/">https://repo.maven.apache.org/</a> and exported
+<code class="language-plaintext highlighter-rouge">repomavenapacheorg.crt</code>, and then I ran the following:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cd $JAVA_HOME/jre/lib/security
+keytool -keystore cacerts -storepasswd changeit -importcert -file 'Downloads/repomavenapacheorg.crt' -trustcacerts
+keytool -keystore cacerts -storepasswd changeit -list
+</code></pre></div></div>
+
+<p>This fixed my problem.</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2018/06/21/run-tomcat-with-webapp-runner-jar/">
+        Run Tomcat with webapp-runner.jar
+      </a>
+    </h1>
+
+    <span class="post-date">21 Jun 2018</span>
+
+    <p>I have used <a href="https://github.com/jsimone/webapp-runner">https://github.com/jsimone/webapp-runner</a> in several
+projects now, and I find it really useful.</p>
+
+<p>You can start a Tomcat instance as simple as this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>java -jar target/webapp-runner.jar target/adocblog.war
+</code></pre></div></div>
+
+<p>However if you need to run it with extra classpath entries, then you
+would need to use the <code class="language-plaintext highlighter-rouge">-cp</code> instead of <code class="language-plaintext highlighter-rouge">-jar</code> Java option. Like this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>java -cp "target/extra-classes:target/webapp-runner.jar" webapp.runner.launch.Main target/adocblog.war
+</code></pre></div></div>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2018/06/06/python-argparse-with-multiple-occurance-of-an-option/">
+        Python argparse with multiple occurance of an option
+      </a>
+    </h1>
+
+    <span class="post-date">06 Jun 2018</span>
+
+    <p><strong>test.py.</strong></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument("prog_args", nargs='*')
+parser.add_argument("-e", action='append')
+args = parser.parse_args()
+prog_args = args.prog_args
+env = dict([e.split('=') for e in args.e])
+
+print(f"Program args: {prog_args}")
+print(f"Env options: {env}")
+</code></pre></div></div>
+
+<p><strong>Example.</strong></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ python3 test.py one two three -ek1=1 -e k2=foo
+Program args: ['one', 'two', 'three']
+Env options: {'k1': '1', 'k2': 'foo'}
+</code></pre></div></div>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2018/06/06/installing-python-on-windows-without-admin-rights/">
+        Installing Python on Windows Without Admin Rights
+      </a>
+    </h1>
+
+    <span class="post-date">06 Jun 2018</span>
+
+    <p>To install Python on Windows without Admin Rights:</p>
+
+<ol>
+  <li>
+    <p>Download binary from <a href="https://www.python.org/downloads/windows/">https://www.python.org/downloads/windows/</a></p>
+  </li>
+  <li>
+    <p>Run the following in <code class="language-plaintext highlighter-rouge">cmd.exe</code> terminal.</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mkdir %USERPROFILE%\apps\python-2.6.6
+msiexec /a python-2.6.6.amd64.msi /qb TARGETDIR=%USERPROFILE%\apps\python-2.6.6
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<p>Starting Python 3.5 the official downloads site already has “Windows
+x86-64 embeddable zip file” version you may download. This you may
+install without Admin Rights already.</p>
+
+<p>Ref:
+<a href="https://stackoverflow.com/questions/2678702/install-python-2-6-without-using-installer-on-win32">https://stackoverflow.com/questions/2678702/install-python-2-6-without-using-installer-on-win32</a></p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2018/05/24/how-to-setup-ssh-folder-permissions/">
+        How to setup .ssh folder permissions
+      </a>
+    </h1>
+
+    <span class="post-date">24 May 2018</span>
+
+    <h1 id="how-to-setup-ssh-folder-permissions">How to setup .ssh folder permissions</h1>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>chmod 700 ~/.ssh                # (drwx------)
+chmod 600 ~/.ssh/authorized_key # (-rw-------)
+chmod 600 ~/.ssh/id_rsa         # (-rw-------)
+chmod 644 ~/.ssh/id_rsa.pub     # (-rw-r--r--)
+chmod 755 ~                     # (drwxr-xr-x)
+</code></pre></div></div>
+
+<p>ref:
+<a href="https://superuser.com/questions/215504/permissions-on-private-key-in-ssh-folder">https://superuser.com/questions/215504/permissions-on-private-key-in-ssh-folder</a></p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2018/05/19/create-multiple-vms-using-vagrant/">
+        Create multiple VMs using Vagrant
+      </a>
+    </h1>
+
+    <span class="post-date">19 May 2018</span>
+
+    <p>Vagrant is a great tool to automate and setup VMs. Here is a config file
+that can setup multiple VMs in your own PC to simulate a
+controller(admin), db, and app servers farm env. I will setup so that
+it’s ready to install Ansible in a the control server, and ensure all
+other servers is accessible by a private virtual IP with default python
+executable.</p>
+
+<ol>
+  <li>
+    <p>Install VirtualBox and Vagrant in your development PC. (These two
+requires elevated admin rights!)</p>
+  </li>
+  <li>
+    <p>Now as normal user open a terminal and run the following:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ mkdir vm-serversfarm
+$ vagrant init ubuntu/xenial64
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<p>Now edit <code class="language-plaintext highlighter-rouge">Vagrantfile</code> with the following:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># This file is to setup Ubuntu VM servers
+Vagrant.configure("2") do |config|
+  vm_box = "ubuntu/xenial64"
+  config.vm.define "admin" do |admin|
+    admin.vm.box = vm_box
+    admin.vm.hostname = 'ubuntu-xenial-admin'
+    admin.vm.network "private_network", ip: "192.168.56.200"
+    admin.vm.provision "shell", privileged: false,
+      inline: &lt;&lt;-SCRIPT_DOC
+        ssh-keygen -f ~vagrant/.ssh/id_rsa -t rsa -N ''
+        cp -v ~vagrant/.ssh/id_rsa.pub /vagrant/admin_id_rsa.pub
+      SCRIPT_DOC
+    admin.vm.provision "shell",
+      inline: &lt;&lt;-SCRIPT_DOC
+        apt-get update
+        apt-get install -y ansible
+      SCRIPT_DOC
+  end
+
+  config.vm.define "db1" do |db1|
+    db1.vm.box = vm_box
+    db1.vm.hostname = 'ubuntu-xenial-db1'
+    db1.vm.network "private_network", ip: "192.168.56.211"
+    db1.vm.provision "shell", inline: "cat /vagrant/admin_id_rsa.pub &gt;&gt; ~vagrant/.ssh/authorized_keys"
+    db1.vm.provision "shell",
+      inline: &lt;&lt;-SCRIPT_DOC
+        #apt-get update
+        apt-get install -y python
+        apt-get install -y postgresql
+      SCRIPT_DOC
+  end
+
+  config.vm.define "app1" do |app1|
+    app1.vm.box = vm_box
+    app1.vm.hostname = 'ubuntu-xenial-app1'
+    app1.vm.network "private_network", ip: "192.168.56.221"
+    app1.vm.provision "shell", inline: "cat /vagrant/admin_id_rsa.pub &gt;&gt; ~vagrant/.ssh/authorized_keys"
+    app1.vm.provision "shell",
+      inline: &lt;&lt;-SCRIPT_DOC
+        #apt-get update
+        apt-get install -y python
+      SCRIPT_DOC
+  end
+
+  config.vm.define "app2" do |app2|
+    app2.vm.box = vm_box
+    app2.vm.hostname = 'ubuntu-xenial-app2'
+    app2.vm.network "private_network", ip: "192.168.56.222"
+    app2.vm.provision "shell", inline: "cat /vagrant/admin_id_rsa.pub &gt;&gt; ~vagrant/.ssh/authorized_keys"
+    app2.vm.provision "shell",
+      inline: &lt;&lt;-SCRIPT_DOC
+        #apt-get update
+        apt-get install -y python
+      SCRIPT_DOC
+  end
+end
+</code></pre></div></div>
+
+<p>Now you can bring them up by running just this command:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ vagrant up
+</code></pre></div></div>
+
+<p>When all is done, you may ssh into any box by their name like this</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ vagrant ssh admin
+$ # Or any of other boxes: db1, app1, app2
+</code></pre></div></div>
+
+<h1 id="using-centos-vms">Using CentOS VMs</h1>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># This file is to setup CentOS VM servers
+Vagrant.configure("2") do |config|
+  vm_box = "generic/centos7"
+
+  # Server app1 is the admin server. We will also host the DB server here.
+  config.vm.define "app1" do |app1|
+    app1.vm.box = vm_box
+    app1.vm.hostname = 'app1'
+    app1.vm.network "private_network", ip: "192.168.56.201"
+    app1.vm.synced_folder ".", "/vagrant_data"
+    app1.vm.provision "shell", inline: &lt;&lt;-SCRIPT_DOC
+      yum install -y python-virtualenv python36 ansible postgresql
+    SCRIPT_DOC
+    app1.vm.provision "shell", privileged: false, inline: &lt;&lt;-SCRIPT_DOC
+      ssh-keygen -f ~vagrant/.ssh/id_rsa -t rsa -N ''
+      cp -v ~vagrant/.ssh/id_rsa.pub /vagrant_data/app1_id_rsa.pub
+    SCRIPT_DOC
+  end
+
+  # Server app2 is a application workhorse server
+  config.vm.define "app2" do |app2|
+    app2.vm.box = vm_box
+    app2.vm.hostname = 'app2'
+    app2.vm.network "private_network", ip: "192.168.56.202"
+    app2.vm.synced_folder ".", "/vagrant_data"
+    app2.vm.provision "shell", inline: &lt;&lt;-SCRIPT_DOC
+      yum install -y python36
+    SCRIPT_DOC
+    app2.vm.provision "shell", privileged: false, inline: &lt;&lt;-SCRIPT_DOC
+      cat /vagrant_data/app1_id_rsa.pub &gt;&gt; ~vagrant/.ssh/authorized_keys
+      chmod 600 ~vagrant/.ssh/authorized_keys
+      chmod 700 ~vagrant/.ssh
+    SCRIPT_DOC
+  end
+
+  # Server app3 is a application workhorse server
+  config.vm.define "app3" do |app3|
+    app3.vm.box = vm_box
+    app3.vm.hostname = 'app3'
+    app3.vm.network "private_network", ip: "192.168.56.203"
+    app3.vm.synced_folder ".", "/vagrant_data"
+    app3.vm.provision "shell", inline: &lt;&lt;-SCRIPT_DOC
+      yum install -y python36
+    SCRIPT_DOC
+    app3.vm.provision "shell", privileged: false, inline: &lt;&lt;-SCRIPT_DOC
+      cat /vagrant_data/app1_id_rsa.pub &gt;&gt; ~vagrant/.ssh/authorized_keys
+      chmod 600 ~vagrant/.ssh/authorized_keys
+      chmod 700 ~vagrant/.ssh
+    SCRIPT_DOC
+  end
+end
+</code></pre></div></div>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2018/04/09/starting-sublimetext-on-cygwin/">
+        Starting SublimeText on Cygwin
+      </a>
+    </h1>
+
+    <span class="post-date">09 Apr 2018</span>
+
+    <p>I edit files a lot from command line Cygwin, and I usually use an alias
+<code class="language-plaintext highlighter-rouge">e</code> to my favorite editor. For SublimeText, I found it more useful to
+start a new windows on files I pass in like this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function subl() { "/C/Users/zemian/apps/Sublime-Text-Build-3143-x64/subl.exe" --new-window $(cygpath -am "$@") ; }
+alias e=subl
+</code></pre></div></div>
+
+<p>Now in terminal, I can edit any files by simply running this:</p>
+
+<p><code class="language-plaintext highlighter-rouge">$ e ~/.bashrc</code></p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2018/03/26/java-versions/">
+        Java versions
+      </a>
+    </h1>
+
+    <span class="post-date">26 Mar 2018</span>
+
+    <p>How to check Java version from compiled classes</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>javap -cp target/classes -verbose com.zemian.hellojava.App | grep 'major version'
+major version: 49
+</code></pre></div></div>
+
+<p>You may use this forumla to get the JDK version:
+<code class="language-plaintext highlighter-rouge">&lt;class_file_major_ver&gt; - 44 = JDK version</code>. So this means above class
+is targeted for JDK 5 (1.5).</p>
+
+<p>Here are more examples of different class format versions matching to
+JDK versions.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>major version: 45.3 = Java 1.1
+major version: 46 = Java 1.2
+major version: 47 = Java 1.3
+major version: 48 = Java 1.4
+major version: 49 = Java 1.5
+major version: 50 = Java 1.6
+major version: 51 = Java 1.7
+major version: 52 = Java 1.8
+major version: 53 = Java 9
+major version: 54 = Java 10
+</code></pre></div></div>
+
+<p>Ref: <a href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html">https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html</a></p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2018/03/24/switching-different-jdk-in-cygwin/">
+        Switching Different JDK in Cygwin
+      </a>
+    </h1>
+
+    <span class="post-date">24 Mar 2018</span>
+
+    <p>I love to use bash shell terminal. It’s a much more powerful terminal to
+do everyday tasks. Even in Windows, I can get most of what I need using
+Cygwin. Unfortunately Java executable are native to OS only, and for
+Windows, it would still work under Cygwin, but all the file system paths
+are still native. Java can understand the mixed-path though, and it has
+made somewhat easier than the Windows native backward slash path like
+typing. This means we can define <code class="language-plaintext highlighter-rouge">JAVA_HOME</code> variable using mixed path
+mode. In Cygwin, I define my <code class="language-plaintext highlighter-rouge">.bashrc</code> like this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>export JAVA_HOME=C:/Users/zemian/apps/jdk-8u161
+PATH=$HOME/apps/jdk-8u161/bin:$PATH
+</code></pre></div></div>
+
+<p>I sometimes work with different version of JDK for various application
+testing. In this case, I need a way to quicly switch JDK version in my
+shell env. To make it easier, I have installed all of my JDK in a
+<code class="language-plaintext highlighter-rouge">$HOME/apps</code> directory, and created symbolic links to each JDKs like
+this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cd $HOME/apps
+ls -ld jdk*
+
+drwx------+ 1 zemian staff 0 Mar 24 16:58 jdk-8u161
+drwx------+ 1 zemian staff 0 Mar 24 10:57 jdk-9.0.4
+drwx------+ 1 zemian staff 0 Mar 24 10:48 jdk-10
+
+lrwxrwxrwx  1 zemian staff 9 Mar 24 16:55 jdk8 -&gt; jdk-8u161
+lrwxrwxrwx  1 zemian staff 9 Mar 24 11:02 jdk9 -&gt; jdk-9.0.4
+lrwxrwxrwx  1 zemian staff 6 Mar 24 11:00 jdk10 -&gt; jdk-10
+</code></pre></div></div>
+
+<p>Now that each JDK has a nice consistent version number in path, then I
+create a shell function like this to switch between them:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Switching Multiple JDK
+switchjava() {
+        JDK="jdk$1"
+        if [[ ! -d $APPS_DIR/$JDK ]]; then
+                echo "ERROR: JDK path not found: $APPS_DIR/$JDK"
+                return
+        fi
+        export JAVA_HOME=`cygpath -wm $APPS_DIR/$JDK`
+        export PATH=$APPS_DIR/$JDK/bin:$PATH
+
+        # Verifying java
+        echo "Switched JAVA_HOME to $JAVA_HOME"
+        echo "Java Path:"
+        which java
+        echo "Java Version:"
+        java -version
+}
+</code></pre></div></div>
+
+<p>To put it in use, it looks like this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ switchjava 9
+Switched JAVA_HOME to C:/Users/zemian/apps/jdk-9.0.4
+Java Path:
+/home/zemian/apps/jdk9/bin/java
+Java Version:
+openjdk version "9.0.4"
+OpenJDK Runtime Environment (build 9.0.4+11)
+OpenJDK 64-Bit Server VM (build 9.0.4+11, mixed mode)
+
+$ switchjava 8
+Switched JAVA_HOME to C:/Users/zemian/apps/jdk-8u161
+Java Path:
+/home/zemian/apps/jdk8/bin/java
+Java Version:
+java version "1.8.0_161"
+Java(TM) SE Runtime Environment (build 1.8.0_161-b12)
+Java HotSpot(TM) 64-Bit Server VM (build 25.161-b12, mixed mode)
+</code></pre></div></div>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2018/03/24/oracle-java-se-jdk-vs-openjdk/">
+        Oracle Java SE JDK vs OpenJDK
+      </a>
+    </h1>
+
+    <span class="post-date">24 Mar 2018</span>
+
+    <p>In general:</p>
+
+<ul>
+  <li>
+    <p>JRE - Java Runtime Environment. It comes with the Java (<code class="language-plaintext highlighter-rouge">java</code>)
+executable for running Java application. This is typical for end
+users who use it to run compiled Java applications (in jar file
+distribution), and not doing any development. JRE is smaller to
+download than JDK.</p>
+  </li>
+  <li>
+    <p>JDK - Java Development Kit. It comes with Java compiler (<code class="language-plaintext highlighter-rouge">javac</code>)
+and many other development tools; and it also include the JRE as
+well. This is for Java development and running Java applications
+together. As a developer, you usually want to get this as single
+package.</p>
+  </li>
+</ul>
+
+<p>Oracle sponsors and drives the official open source
+<a href="http://jdk.java.net/">OpenJDK</a> project, where new Java edition are
+develope. It provides binary releases that developers may download for
+various OS envs. (Note starting JDK9, you may download binary package
+that simply untar/unzip into a directory without need of installer!)</p>
+
+<p>Oracle also provides commercial version of the <a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">Java SE
+JDK</a>.
+These JDK packages has different licenses for usage, and are built with
+different installer format. Users usually require local Admin Rights to
+install it.</p>
+
+  </div>
+  
+</div>
+
+<div class="pagination">
+  
+    <a class="pagination-item older" href="http://localhost:4000/page5">Older</a>
+  
+  
+    
+      <a class="pagination-item newer" href="http://localhost:4000/page3">Newer</a>
+    
+  
+</div>
+
+      </div>
+    </div>
+
+    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+    <script src='/public/js/script.js'></script>
+  </body>
+</html>

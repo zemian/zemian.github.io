@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      MySQL Data Types and Test Table &middot; Zemian's Blog
+    
+  </title>
+
+  
+  <link rel="canonical" href="http://localhost:4000/2018/08/17/mysql-data-types-and-test-table/">
+  
+
+  <link rel="stylesheet" href="http://localhost:4000/public/css/poole.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/syntax.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/lanyon.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700%7CPT+Sans:400">
+
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/public/apple-touch-icon-precomposed.png">
+  <link rel="shortcut icon" href="http://localhost:4000/public/favicon.ico">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="http://localhost:4000/atom.xml">
+
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-135626598-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  
+</head>
+
+
+  <body>
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p>A weblog on software development.</p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item" href="http://localhost:4000/">Home</a>
+
+    
+
+    
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="http://localhost:4000/about/">About</a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+
+  </nav>
+
+  <div class="sidebar-item">
+    <p>
+      &copy; 2020. All rights reserved.
+    </p>
+  </div>
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <h3 class="masthead-title">
+            <a href="/" title="Home">Zemian's Blog</a>
+            <small>Life in programming world!</small>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+        <div class="post">
+  <h1 class="post-title">MySQL Data Types and Test Table</h1>
+  <span class="post-date">17 Aug 2018</span>
+  <p>A quick sql table setup to test most common data types.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>-- Notes for MySQL (8)
+-- https://dev.mysql.com/doc/refman/8.0/en/
+
+-- Data Types
+-- https://dev.mysql.com/doc/refman/8.0/en/data-types.html
+
+/*
+
+CHAR          Fixed length and space padded character string (sql: CHAR)
+VARCHAR       Variable length character string (sql: VARCHAR)
+TEXT          Variable length character large string (sql: TEXT)
+
+INT           Declare integer number (sql: INT 32 bits)
+SMALLINT      16 bits
+BIGINT        64 bits
+SERIAL        Auto increment integer (INT with sequence)
+              An alias for BIGINT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE.
+
+REAL             Declare floating-point number 32 bits
+DOUBLE PRECISION Declare floating-point number 64 bits
+
+NUMERIC(p,s)     Declare fixed-point number (sql: NUMERIC)
+
+DATE          Declare date
+TIME          Declare time
+TIMESTAMP     Declare datetime (stored as UTC but convert to client session timezone)
+
+BLOB          Binary data
+
+ */
+
+-- test table
+create table test(
+  id       serial primary key,
+  ts       timestamp default current_timestamp,
+  cat      varchar(10),
+
+  price    numeric(19,4),
+  qty      int,
+
+  txtdata  text,
+  bindata  blob,
+
+  distx    real,
+  disty    double precision
+);
+insert into test(cat, price, qty) values ('test', 100000.10, 50000),
+                                         ('test', 100000.20, 0),
+                                         ('test', 100000.00, 1),
+                                         ('test', 9977000.3333, 179),
+                                         ('test', 104729.1129, 104729);
+insert into test(cat, bindata, txtdata) values ('test2', X'CAFEBABE', 'CAFEBABE');
+insert into test(cat, bindata) values ('test3', unhex(replace(uuid(), '-','')));
+insert into test(cat, bindata) values ('test3', unhex(replace(uuid(), '-','')));
+insert into test(cat, bindata) values ('test3', unhex(replace(uuid(), '-','')));
+update test set txtdata = hex(bindata) where cat = 'test3';
+insert into test(cat, distx, disty) values ('test4', rand(), rand());
+insert into test(cat, distx, disty) values ('test4', rand(), rand());
+insert into test(cat, distx, disty) values ('test4', rand(), rand());
+select sum(price) from test where cat = 'test';
+select * from test order by cat, ts desc;
+</code></pre></div></div>
+
+</div>
+
+
+<div class="related">
+  <h2>Related posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2020/09/20/world-of-php/">
+            The World of PHP Development
+            <small>20 Sep 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/09/19/multiple-jquery/">
+            How to Load Multiple jQuery
+            <small>19 Sep 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/08/15/switched-to-vuepress/">
+            Switched Blogging to VuePress
+            <small>15 Aug 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+
+      </div>
+    </div>
+
+    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+    <script src='/public/js/script.js'></script>
+  </body>
+</html>

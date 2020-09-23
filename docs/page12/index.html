@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Zemian's Blog &middot; Life in programming world!
+    
+  </title>
+
+  
+  <link rel="canonical" href="http://localhost:4000/page12/">
+  
+
+  <link rel="stylesheet" href="http://localhost:4000/public/css/poole.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/syntax.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/lanyon.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700%7CPT+Sans:400">
+
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/public/apple-touch-icon-precomposed.png">
+  <link rel="shortcut icon" href="http://localhost:4000/public/favicon.ico">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="http://localhost:4000/atom.xml">
+
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-135626598-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  
+</head>
+
+
+  <body>
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p>A weblog on software development.</p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item active" href="http://localhost:4000/">Home</a>
+
+    
+
+    
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="http://localhost:4000/about/">About</a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+
+  </nav>
+
+  <div class="sidebar-item">
+    <p>
+      &copy; 2020. All rights reserved.
+    </p>
+  </div>
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <h3 class="masthead-title">
+            <a href="/" title="Home">Zemian's Blog</a>
+            <small>Life in programming world!</small>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+        <div class="posts">
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2015/08/18/how-to-import-a-oracle-database-dump-file/">
+        How to import a Oracle database dump file
+      </a>
+    </h1>
+
+    <span class="post-date">18 Aug 2015</span>
+
+    <p>Here is an example on how to import a Oracle database dump file (a binary file that’s exported from a Oracle database using the Oracle data pump utility). For this instruction example, let’s say I was given a myapp.dmp.gz file.</p>
+
+<p>NOTE: If you do not use the same db user/tablespace for export and import, then you need to know its names used during export to perform the remapping during import.</p>
+
+<p>Step 1: If you don’t have an Oracle database instance to work with, create one first. Or ask your DBA to create or allocate a instance for your import purpose.</p>
+
+<p>Step 2: Create a new tablespace and a DB user in an Oracle database instance. (For this example, I will call my new user <code class="language-plaintext highlighter-rouge">MYAPP08182015</code>, password <code class="language-plaintext highlighter-rouge">Password1</code>, and tablespace named <code class="language-plaintext highlighter-rouge">MY_TABLE_SPACE</code>.)</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>create tablespace MY_TABLE_SPACE datafile
+  '/opt/myapp_datafiles/MY_TABLE_SPACE.dat'
+  size 500m autoextend on next 500m
+  extent management local
+  segment space management auto;
+
+create user MYAPP08182015 identified by Password1
+  default tablespace MY_TABLE_SPACE
+  temporary tablespace TEMP
+  quota unlimited on MYTABLESPACE;
+
+grant create session, grant any privilege to MYAPP08182015;
+grant IMP_FULL_DATABASE to MYAPP08182015;
+
+create directory MY_DATADUMP_DIR as '/opt/myapp_datadump';
+</code></pre></div></div>
+
+<p>Note that user must have <code class="language-plaintext highlighter-rouge">IMP_FULL_DATABASE</code> privilege to be able to used by import tool. And if you don’t want to use default import data directory, then you would need to create the directory object to be used by import as shown above.</p>
+
+<p>Note also that your TEMP tablespace might not have enough disk space for large import. In this case, you may increase it like this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>alter tablespace temp add tempfile
+  '/opt/myapp_datafiles/TEMP2.dat'
+  size 500m autoextend on next 500m;
+</code></pre></div></div>
+
+<p>Step 3: Now you have a new db User (Schema) and password, you may start the data import using the command line prompt. Ssh into the database server where you can find the impdp command utility.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>scp myapp.dmp.gz zemian@mydbserver:/opt/myapp_datadump
+ssh zemian@mydbserver
+cd /opt/myapp_datafiles
+gunzip myapp.dmp.gz
+/app/oracle/dbhome/bin/impdp MYAPP08182015/Password1 DIRECTORY=MY_DATADUMP_DIR REMAP_SCHEMA=MYAPP:MYAPP08182015 REMAP_TABLESPACE=USERS:MY_TABLE_SPACE LOGFILE=myapp-import.log DUMPFILE=myapp.dmp
+</code></pre></div></div>
+
+<p>References:
+<a href="http://docs.oracle.com/cd/B19306_01/server.102/b14215/dp_overview.htm">http://docs.oracle.com/cd/B19306_01/server.102/b14215/dp_overview.htm</a></p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2015/08/16/selectively-checkout-large-project-from-svn-repository/">
+        Selectively checkout large project from SVN repository
+      </a>
+    </h1>
+
+    <span class="post-date">16 Aug 2015</span>
+
+    <p>Do you have a crazy large SVN repository that’s just impractical to checkout the entire trunk? Or maybe you work on a large project that you only need few modules to do 
+your work only, and don’t need the 1 hour checkout time for the rest of the trunk files? Here is how 
+you can do this with SVN command line.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>svn checkout --depth immediates http://myserver/svnrepo/myproject/trunk
+cd trunk
+svn update --depth infinity moduleA
+
+svn update --depth infinity moduleB
+
+svn update --depth infinity common/moduleX
+
+svn update --depth infinity common/moduleY
+
+svn update --depth empty lib/special
+svn update --depth infinity lib/special/jars
+</code></pre></div></div>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2015/08/14/how-to-check-oracle-database-tablespace/">
+        How to check Oracle Database tablespace
+      </a>
+    </h1>
+
+    <span class="post-date">14 Aug 2015</span>
+
+    <p>When creating a new users in Oracle database (new schema), you need to verify the existing tablespace availability. This query will show you what’s there and how much space are free to use.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT df.tablespace_name "Tablespace",
+
+  totalusedspace "Used MB",
+
+  (df.totalspace - tu.totalusedspace) "Free MB",
+
+  df.totalspace "Total MB",
+
+  ROUND(100 * ( (df.totalspace - tu.totalusedspace)/ df.totalspace)) "% Free"
+
+FROM
+
+  (SELECT tablespace_name,
+
+    ROUND(SUM(bytes) / 1048576) TotalSpace
+
+  FROM dba_data_files
+
+  GROUP BY tablespace_name
+
+  ) df,
+
+  (SELECT ROUND(SUM(bytes)/(1024*1024)) totalusedspace,
+
+    tablespace_name
+
+  FROM dba_segments
+
+  GROUP BY tablespace_name
+
+  ) tu
+
+WHERE df.tablespace_name = tu.tablespace_name;
+</code></pre></div></div>
+
+<p>Also, this query will show where the tablespace file are located:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT  FILE_NAME, BLOCKS, TABLESPACE_NAME
+
+   FROM DBA_DATA_FILES;
+</code></pre></div></div>
+
+<p>Here are some references on how Oracle manages user, schema and tablespace.</p>
+
+<p><a href="https://community.oracle.com/message/1832920">https://community.oracle.com/message/1832920</a></p>
+
+<p><a href="http://docs.oracle.com/cd/B28359_01/server.111/b28310/tspaces014.htm#ADMIN11412">http://docs.oracle.com/cd/B28359_01/server.111/b28310/tspaces014.htm#ADMIN11412</a>
+<a href="http://docs.oracle.com/cd/B28359_01/server.111/b28286/statements_8003.htm">http://docs.oracle.com/cd/B28359_01/server.111/b28286/statements_8003.htm</a>
+<a href="http://stackoverflow.com/questions/880230/difference-between-a-user-and-a-schema-in-oracle">http://stackoverflow.com/questions/880230/difference-between-a-user-and-a-schema-in-oracle</a>
+<a href="https://asktom.oracle.com/pls/asktom/f?p=100:11:0::::P11_QUESTION_ID:6162110256950">https://asktom.oracle.com/pls/asktom/f?p=100:11:0::::P11_QUESTION_ID:6162110256950</a></p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2015/08/03/how-to-run-kotlin-script-file/">
+        How to run Kotlin script file
+      </a>
+    </h1>
+
+    <span class="post-date">03 Aug 2015</span>
+
+    <p>The script name MUST have “.kts” extension! If not, you will get a unfriendly error message.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kotlinc -script hello.kts
+
+Hello World
+</code></pre></div></div>
+
+<p>vs</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kotlinc -script hello.kt
+
+EXCEPTION: java.lang.RuntimeException: Failed to evaluate script: java.lang.NullPointerException
+
+        at org.jetbrains.kotlin.cli.jvm.compiler.KotlinToJVMBytecodeCompiler.compileScript(KotlinToJVMBytecodeCompiler.java:290)
+
+        at org.jetbrains.kotlin.cli.jvm.compiler.KotlinToJVMBytecodeCompiler.compileAndExecuteScript(KotlinToJVMBytecodeCompiler.java:243)
+
+        at org.jetbrains.kotlin.cli.jvm.K2JVMCompiler.doExecute(K2JVMCompiler.java:186)
+
+        at org.jetbrains.kotlin.cli.jvm.K2JVMCompiler.doExecute(K2JVMCompiler.java:53)
+
+        at org.jetbrains.kotlin.cli.common.CLICompiler.exec(CLICompiler.java:148)
+
+        at org.jetbrains.kotlin.cli.common.CLICompiler.exec(CLICompiler.java:128)
+
+        at org.jetbrains.kotlin.cli.common.CLICompiler.exec(CLICompiler.java:52)
+
+        at org.jetbrains.kotlin.cli.common.CLICompiler.doMainNoExit(CLICompiler.java:197)
+
+        at org.jetbrains.kotlin.cli.common.CLICompiler.doMain(CLICompiler.java:188)
+
+        at org.jetbrains.kotlin.cli.jvm.K2JVMCompiler.main(K2JVMCompiler.java:57)
+
+        at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+
+        at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+
+        at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+
+        at java.lang.reflect.Method.invoke(Method.java:606)
+
+        at org.jetbrains.kotlin.preloading.Preloader.main(Preloader.java:83)
+
+Caused by: java.lang.NullPointerException
+
+        at org.jetbrains.kotlin.resolve.ScriptNameUtil.classNameForScript(ScriptNameUtil.java:33)
+
+        at org.jetbrains.kotlin.cli.jvm.compiler.KotlinToJVMBytecodeCompiler.compileScript(KotlinToJVMBytecodeCompiler.java:286)
+
+        ... 14 more
+</code></pre></div></div>
+
+<p>See http://kotlinlang.org/docs/tutorials/command-line.html</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2015/07/24/python-cat-program/">
+        Python cat program
+      </a>
+    </h1>
+
+    <span class="post-date">24 Jul 2015</span>
+
+    <p>You can implement the Linux cat program with few lines of Python code.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import fileinput
+for line in fileinput.input():
+    print(line, end='')
+</code></pre></div></div>
+
+<p>Then I was tinkering with this, and wanted to add an option to display the filename if multiple files were given. Here is how I use argparse module for this. Not the most efficient code and prob overkill, but it works!</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import fileinput, argparse
+parser = argparse.ArgumentParser()
+parser.add_argument('files', nargs='+', metavar='FILE', help='files to concatenate or print')
+parser.add_argument('-n', action='store_true', help='show filename')
+args = parser.parse_args()
+with fileinput.input(files=args.files) as finput:
+    for line in finput:
+        if (args.n and finput.isfirstline()):
+            print('\n=== {0} ==='.format(finput.filename()))
+        print(line, end='')
+</code></pre></div></div>
+
+<p>Note that argparse not only just parse for options, but actual argument list as well, and you have to explicitly define it, so you may reference it after the parse.</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2015/07/23/how-to-parse-python-command-arguments-and-options/">
+        How to parse Python command arguments and options
+      </a>
+    </h1>
+
+    <span class="post-date">23 Jul 2015</span>
+
+    <p>https://docs.python.org/3/howto/argparse.html</p>
+
+<p>The python doc for <a href="https://docs.python.org/3.4/library/argparse.html">argparse</a>module didn’t provide enough examples on the usage. I also think the module and parser itself is TOO flexible, in that the add_argument function accept too many parameters and it’s confusing to use.</p>
+
+<p>In most cases, you would define structure of your program’s input with two parts: Your program actual arguments and optional parameters. Then you would invoke the parser and use the result as a dict (Namespace) like object.</p>
+
+<p>Here are few examples that demonstrate how to use it in few common cases.</p>
+
+<p>Example0: Handle raw arguments</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import sys
+args = sys.argv[1:]
+
+
+for name in args:
+
+  print(name)
+</code></pre></div></div>
+
+<p>Example1: Handle 2 arguments and a boolean option</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument('hostname', default='localhost')
+parser.add_argument('port', default=12345, type=int)
+parser.add_argument('-d', default=False, action='store_true')
+args = parser.parse_args()
+
+if args.d:
+ print("Processing host %s on port %d" % (args.hostname, args.port))
+</code></pre></div></div>
+
+<p>Example2: Handle 1 argument with many options</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument('url')
+parser.add_argument('-u', '--user', help='user', default='demo')
+parser.add_argument('-p', '--password', help='user password', default='demo123')
+parser.add_argument('-l', '--limit', help='max limit value', default=1000, type=int)
+parser.add_argument('--payload', help='text file payload', default='payload.xml')
+args = parser.parse_args()
+
+print("Processing url %s" % args.url)
+
+user, password = args.user, args.password
+print("Got option user=%s" % user)
+
+with open(args.payload) as fh:
+  payload = fh.read()
+
+if args.limit &gt; 100:
+  print("Limit has exceed 100")
+</code></pre></div></div>
+
+<p>Example3: Handle one or more arguments with a boolean option</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import argparse, fileinput
+parser = argparse.ArgumentParser()
+parser.add_argument('files', metavar='FILE', nargs='+')
+parser.add_argument('-d', default=False, action='store_true')
+args = parser.parse_args()
+
+for line in fileinput.input(args.files):
+  if args.d:
+    print("Processing line: %s" % line, end='')
+</code></pre></div></div>
+
+<p>To display the default values in the helppage, do this with the parser</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+</code></pre></div></div>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2015/07/22/how-to-manage-sql-statements-more-effectively-with-java/">
+        How to manage SQL statements more effectively with Java
+      </a>
+    </h1>
+
+    <span class="post-date">22 Jul 2015</span>
+
+    <p>If you work with plain Java JDBC without any external libraries, you will need to manage your own SQL statements. Unfortunately Java String does not support muti-lines construct, and you have to use many “quotes” + “concatenation” and makes the SQL very hard to read and manage. This makes it hard to maintain and test (try to copy a SQL from Java code into your SQL client). It would be so nice to keep the entire SQL block of text intact without these Java noise.</p>
+
+<p>Here is a solution. Store your SQL queries in XML inside CDATA:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
+&lt;sqlMap&gt;
+    &lt;sqls&gt;
+        &lt;entry&gt;
+            &lt;key&gt;getUser&lt;/key&gt;
+            &lt;value&gt;&lt;![CDATA[
+SELECT *
+FROM USERS
+WHERE ID = ?
+            ]]&gt;&lt;/value&gt;
+        &lt;/entry&gt;
+        &lt;entry&gt;
+            &lt;key&gt;getSpecialCodeByUserId&lt;/key&gt;
+            &lt;value&gt;&lt;![CDATA[
+SELECT u.EMAIL, p.ID as PROFILEID, p.SPECIALCODE, a.MANAGERID
+FROM USERS u
+  LEFT JOIN PROFILE p ON p.USERID = u.ID
+  LEFT JOIN ACCOUNT a ON a.PROFILEID = p.ID
+WHERE u.ID = ?  ]]&gt;&lt;/value&gt;
+        &lt;/entry&gt;  &lt;/sqls&gt;
+&lt;/sqlMap&gt;
+</code></pre></div></div>
+
+<p>Now you just need to read it. One way to do this is with built-in JAXB</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import javax.xml.bind.annotation.XmlRootElement;
+import java.util.HashMap;
+import java.util.Map;
+
+@XmlRootElement
+public class SqlMap {
+    Map&lt;String, String&gt; sqls = new HashMap&lt;&gt;();
+
+    public Map&lt;String, String&gt; getSqls() {
+        return sqls;
+    }
+
+    public void setSqls(Map&lt;String, String&gt; sqls) {
+        this.sqls = sqls;
+    }
+
+    public String getSql(String name) {
+        return sqls.get(name);
+    }
+
+    public static SqlMap load(String name) throws Exception {
+        InputStream inStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(name);
+        SqlMap sqlMap = JAXB.unmarshal(inStream, SqlMap.class);
+        return sqlMap;
+    }
+}
+</code></pre></div></div>
+
+<p>Another way is to simply use java.util.Properties#loadFromXML by following their schema DTD. Here is an example of XML:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
+&lt;!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd"&gt;
+&lt;properties&gt;
+    &lt;comment&gt;XML Props&lt;/comment&gt;
+    &lt;!-- Foo entry --&gt;
+    &lt;entry key="foo"&gt;bar&lt;/entry&gt;
+    &lt;!-- Query entry --&gt;
+    &lt;entry key="query"&gt;
+        &lt;![CDATA[
+                SELECT * FROM USERS
+        ]]&gt;
+    &lt;/entry&gt;
+&lt;/properties&gt;
+</code></pre></div></div>
+
+<p>Both of these are built-in from your JDK!</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2015/07/22/how-to-find-text-entries-in-mulitple-jar-files/">
+        How to find text entries in mulitple jar files
+      </a>
+    </h1>
+
+    <span class="post-date">22 Jul 2015</span>
+
+    <p>Similar to <a href="http://saltnlight5.blogspot.com/2012/07/how-to-print-text-file-content-inside.html">printjar</a>utility, here is a findjar util that can comes in handy to verify whether a class exists or not among a pile of jar files.</p>
+
+<p>JavaScript (run with jrunscript command)</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pattern = arguments[arguments.length -1];
+for (i=0; i &lt; arguments.length - 1; i++) {
+    path = arguments[i];
+    jar = new java.util.jar.JarFile(path)
+    entries = jar.entries();
+    while(entries.hasMoreElements()) {
+        jarEntry = entries.nextElement();
+        if (jarEntry.toString().search(pattern) != -1) {
+            println(jarEntry + " : " + path);
+        }
+    }
+    jar.close();
+}
+</code></pre></div></div>
+
+<p>Jython</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import sys, glob, re
+from java.util.jar import JarFile
+pattern = sys.argv[-1]
+for name in sys.argv[1: -2]:
+    for path in glob.glob(name):
+        jar = JarFile(path)
+        for e in jar.entries():
+            if re.search(pattern, str(e)):
+                print "%s %s" % (str(e), path)
+        jar.close()
+</code></pre></div></div>
+
+<p>Java version (The search argument input is at position one in this example)</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import java.io.File;
+import java.util.Enumeration;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
+
+public class findjar {
+    public static void main(String[] args) throws Exception {
+        String searchText = args[0];
+        if (searchText.contains("."))
+            searchText = searchText.replaceAll("\\.", "/");
+        String dir = args[1];
+        System.out.println("Searching " + searchText + " in " + dir);
+        search(searchText, new File(dir));
+        System.out.println("Done.");
+    }
+
+    private static void search(String searchText, File dir) throws Exception {
+        File[] files = dir.listFiles();
+        for (File file : files) {
+            if (file.isFile() &amp;&amp; file.getName().endsWith(".jar")) {
+                JarFile jarFile = new JarFile(file);
+                Enumeration&lt;JarEntry&gt; entries = jarFile.entries();
+                while(entries.hasMoreElements()) {
+                    JarEntry e = entries.nextElement();
+                    String name = e.getName();
+                    if (name.indexOf(searchText) &gt;= 0) {
+                        System.out.println("Found: " + name + " in " + jarFile.getName());
+                    }
+                }
+                jarFile.close();
+            } else if (file.isDirectory()){
+                search(searchText, file);
+            }
+        }
+    }
+}
+</code></pre></div></div>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2015/07/19/python-one-liner/">
+        Python one-liner
+      </a>
+    </h1>
+
+    <span class="post-date">19 Jul 2015</span>
+
+    <p>perl or ruby is still the King of one-liner. But if you still want to
+use Python, you may want to try</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install oneliner
+</code></pre></div></div>
+
+<ul>
+  <li>
+    <p><a href="http://python-oneliner.readthedocs.org/en/latest/">http://python-oneliner.readthedocs.org/en/latest/</a></p>
+  </li>
+  <li>
+    <p><a href="https://github.com/gvalkov/python-oneliner/">https://github.com/gvalkov/python-oneliner/</a></p>
+  </li>
+</ul>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2015/07/11/python-processing-each-line-from-stdin-or-files/">
+        Python processing each line from stdin or files
+      </a>
+    </h1>
+
+    <span class="post-date">11 Jul 2015</span>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import fileinput,re
+for line in fileinput.input():
+line=line.rstrip()
+line=line.replace('\\', '/')
+a,b,*_=re.split('\s+', line)
+print(b)
+</code></pre></div></div>
+
+  </div>
+  
+</div>
+
+<div class="pagination">
+  
+    <a class="pagination-item older" href="http://localhost:4000/page13">Older</a>
+  
+  
+    
+      <a class="pagination-item newer" href="http://localhost:4000/page11">Newer</a>
+    
+  
+</div>
+
+      </div>
+    </div>
+
+    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+    <script src='/public/js/script.js'></script>
+  </body>
+</html>

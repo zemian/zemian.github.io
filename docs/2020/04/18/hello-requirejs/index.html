@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Hello RequiredJS &middot; Zemian's Blog
+    
+  </title>
+
+  
+  <link rel="canonical" href="http://localhost:4000/2020/04/18/hello-requirejs/">
+  
+
+  <link rel="stylesheet" href="http://localhost:4000/public/css/poole.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/syntax.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/lanyon.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700%7CPT+Sans:400">
+
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/public/apple-touch-icon-precomposed.png">
+  <link rel="shortcut icon" href="http://localhost:4000/public/favicon.ico">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="http://localhost:4000/atom.xml">
+
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-135626598-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  
+</head>
+
+
+  <body>
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p>A weblog on software development.</p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item" href="http://localhost:4000/">Home</a>
+
+    
+
+    
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="http://localhost:4000/about/">About</a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+
+  </nav>
+
+  <div class="sidebar-item">
+    <p>
+      &copy; 2020. All rights reserved.
+    </p>
+  </div>
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <h3 class="masthead-title">
+            <a href="/" title="Home">Zemian's Blog</a>
+            <small>Life in programming world!</small>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+        <div class="post">
+  <h1 class="post-title">Hello RequiredJS</h1>
+  <span class="post-date">18 Apr 2020</span>
+  <p>The <a href="https://requirejs.org/">RequiredJS</a> is a JavaScript library that helps you separate your code into modules as namespaces, and it helps to load them as dependencies when need it. Here is a simple html demo:</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"app"</span><span class="nt">&gt;</span>
+    Hi
+<span class="nt">&lt;/div&gt;</span>
+
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"https://unpkg.com/requirejs@2.3.6/require.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;script&gt;</span>
+    <span class="nx">define</span><span class="p">(</span><span class="dl">'</span><span class="s1">mymodule</span><span class="dl">'</span><span class="p">,</span> <span class="p">[],</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="nx">uniqueId</span><span class="p">()</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">().</span><span class="nx">toString</span><span class="p">(</span><span class="mi">16</span><span class="p">).</span><span class="nx">substring</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">});</span>
+    <span class="nx">require</span><span class="p">([</span><span class="dl">'</span><span class="s1">mymodule</span><span class="dl">'</span><span class="p">],</span> <span class="kd">function</span><span class="p">(</span><span class="nx">my</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">Generating a uniqueId=</span><span class="dl">"</span> <span class="o">+</span> <span class="nx">my</span><span class="p">.</span><span class="nx">uniqueId</span><span class="p">());</span>
+        <span class="kd">let</span> <span class="nx">output</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="dl">"</span><span class="s2">#app</span><span class="dl">"</span><span class="p">);</span>
+        <span class="nx">output</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="s2">`Hello RequireJS - </span><span class="p">${</span><span class="nx">requirejs</span><span class="p">.</span><span class="nx">version</span><span class="p">}</span><span class="s2">`</span><span class="p">;</span>
+    <span class="p">});</span>
+<span class="nt">&lt;/script&gt;</span>
+</code></pre></div></div>
+
+<p>The RequireJS only introduces three variables you need to learn to use it effectively: <code class="language-plaintext highlighter-rouge">define</code>, <code class="language-plaintext highlighter-rouge">require</code>, and <code class="language-plaintext highlighter-rouge">requirejs</code>.</p>
+
+<p>You use <code class="language-plaintext highlighter-rouge">define()</code> function to write your own modules. Many JS libraries out there already supporting RequireJS as module, so you can just simply include them in your application! When writing your own module, you usually would store one module per single JS file. If you do that, then the name of the module would simply be the filename, without you having to explicitly named as above example. When writing the module, you may load other modules that you depend on. In our example case above, we do not need any, hence it has an empty array as 2nd parameter. Your module code should wrap inside a function as last parameter. Any object you return from module function, it is exported as module data for caller to consume or load it.</p>
+
+<p>You use <code class="language-plaintext highlighter-rouge">require()</code> function to load modules that you want to use in your application. Each module imported may be assigned to a parameter variable in the callback function parameters as in example above. Note that sometimes you might load a module without assigning variable for direct use. In this case, the loading of the module is all you care/need. Note also that the order of your module array should match to the call back function parameter list.</p>
+
+<p>There are many configuration options you may setup the RequireJS, and that’s when you use the <code class="language-plaintext highlighter-rouge">requirejs.config()</code> function. For example you may configure paths to where to look for other external libraries such KnockoutJS like this:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">requirejs</span><span class="p">.</span><span class="nx">config</span><span class="p">({</span>
+	<span class="na">paths</span><span class="p">:</span> <span class="p">{</span>
+		<span class="dl">'</span><span class="s1">knockout</span><span class="dl">'</span><span class="p">:</span> <span class="dl">'</span><span class="s1">https://unpkg.com/knockout@3.5.1/build/output/knockout-latest</span><span class="dl">'</span>
+	<span class="p">}</span>
+<span class="p">});</span>
+
+<span class="nx">require</span><span class="p">([</span><span class="dl">'</span><span class="s1">knockout</span><span class="dl">'</span><span class="p">],</span> <span class="kd">function</span><span class="p">(</span><span class="nx">ko</span><span class="p">)</span> <span class="p">{</span>
+	<span class="nx">ko</span><span class="p">.</span><span class="nx">applyBindings</span><span class="p">({</span><span class="na">msg</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Hello</span><span class="dl">"</span><span class="p">});</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p>Notice that the path to knockout module is without the <code class="language-plaintext highlighter-rouge">.js</code> extension!</p>
+
+<p>The RequireJS is great for writing larger JS application. Modules help you avoid names clash, and it helps break down code into a manageable files.</p>
+
+</div>
+
+
+<div class="related">
+  <h2>Related posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2020/09/20/world-of-php/">
+            The World of PHP Development
+            <small>20 Sep 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/09/19/multiple-jquery/">
+            How to Load Multiple jQuery
+            <small>19 Sep 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/08/15/switched-to-vuepress/">
+            Switched Blogging to VuePress
+            <small>15 Aug 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+
+      </div>
+    </div>
+
+    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+    <script src='/public/js/script.js'></script>
+  </body>
+</html>

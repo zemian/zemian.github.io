@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-09-22T22:10:16-04:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Zemian’s Blog</title><subtitle>A weblog on software development.</subtitle><author><name>Zemian Deng</name></author><entry><title type="html">The World of PHP Development</title><link href="http://localhost:4000/2020/09/20/world-of-php/" rel="alternate" type="text/html" title="The World of PHP Development" /><published>2020-09-20T01:00:00-04:00</published><updated>2020-09-20T01:00:00-04:00</updated><id>http://localhost:4000/2020/09/20/world-of-php</id><content type="html" xml:base="http://localhost:4000/2020/09/20/world-of-php/">&lt;p&gt;I have gotten into PHP lately in order to help a friend who runs a Joomla site with a custom component. Thinking to myself now that I have some &lt;a href=&quot;/2020/03/22/front-end&quot;&gt;Front End Experience&lt;/a&gt;, I shouldn’t have trouble doing this. But I have never seriuosly got into PHP in the past though, and now I need to learn enough to debug and fix few bugs in the Joomla env. I have gathered and learned quite a few things and like to write it down.&lt;/p&gt;
+
+&lt;h2 id=&quot;learning-php&quot;&gt;Learning PHP&lt;/h2&gt;
+
+&lt;p&gt;I started &lt;a href=&quot;https://github.com/zemian/learn-php&quot;&gt;Learn PHP&lt;/a&gt; repository to familiar with PHP first. I want to setup PHP locally in my machine so I can learn some syntax and programming construct. I was suprised their documentation is pretty good. I even watched a old video on &lt;a href=&quot;https://www.youtube.com/watch?v=rKXFgWP-2xQ&quot;&gt;PHP in 2018 by the Creator of PHP&lt;/a&gt; by Rasmus Lerdorf. It was very informative and encouraging to see PHP is still thriving and doing good.&lt;/p&gt;
+
+&lt;p&gt;PHP is not much use without a database and a web server, so I learned how to setup and connect PHP to those two. It seems PHP loves MySQL, and getting that running is pretty easy. As far as web server, there are few major ones to choose: Apache Httpd, Nginx or Lighttpd. The Lighttpd is the easiest to setup. I like it how I can just use one config file and bring up the server in foreground process, and the DocumentRoot can be set to your CWD. No need to setup any background PHP daemon process (like Nginx requires one). Apache Httpd can also start without a PHP daemon but the setup is complicated. Then later I learned that PHP itself comes with a web server for development! Just run &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;php -S localhost:3000&lt;/code&gt; and it serves your current working directory. No setup needed! Sweet!&lt;/p&gt;
+
+&lt;p&gt;NOTE: For production, it’s recommended to use either Apache Httpd or Nginx.&lt;/p&gt;
+
+&lt;p&gt;Later, I also found there are different versions of PHP that I would need to fix the site, and settting up multiple versions of PHP in a single web server is pretty complicated. I gathered a lot of notes on each of these subject in my repository, so check it out.&lt;/p&gt;
+
+&lt;h2 id=&quot;learning-joomla&quot;&gt;Learning Joomla&lt;/h2&gt;
+
+&lt;p&gt;My goal is to help my friend’s site, so next I started &lt;a href=&quot;https://github.com/zemian/learn-joomla&quot;&gt;Learn Joomla&lt;/a&gt; project. My friend site is actually quite old (Joomla 3.5.1 with PHP 5.6 and MySQL 5.7). Because of this and the PHP was compiled with some special extension in server, I actually had hard time setting it up in my Mac for local development. I ended up had to compile my own PHP from source to get a setup working! It was a painful exercise since compiling PHP 5.6 on latest MacOS has many hiccups.&lt;/p&gt;
+
+&lt;p&gt;Once the environment is up, installing Joomla itself is not too bad. I got it up running in short time. Joomla documentation site is only so so though. I think this CMS design is overly complex. Their concept of Menus, Articles and Extensions are confusing, feel bulky and a lot to learn. A simple MVC based component extension will take over 10+ files to write! I just want to learn enough to use it to support a site, not experts, so this repository have gotten me through what I need to know about Joomla.&lt;/p&gt;
+
+&lt;p&gt;One interesting I learned about Joomla is that its “System Debug” feature is pretty good. When enabled, it shows a “Debug Console” footer in your site that shows session, request, SQL queries and application debug messages. Great tool to debug the application. (If your site or component uses their full MVC model that is.)&lt;/p&gt;
+
+&lt;h2 id=&quot;fixing-a-php-application&quot;&gt;Fixing a PHP application&lt;/h2&gt;
+
+&lt;p&gt;When I got into my friend’s site, I had a pretty good idea about the PHP env. So I thought I was pretty prepared. Boy, I was wrong! The site has a custom component that started out as nice self-contained extension. But through many years of abuse, it is now old with many unmaintained dependencies. It has many developers touched it over the years without any consistency. The code was badly formatted (PHP mixed with HTML in the worse way you can think of), files scattered everywhere, and worse of it all there are lots of repeated codes. Through all these, there were no version control used. So dead code eveywhere, and backup unused files literred all over the place. This is a one big mess of an app.&lt;/p&gt;
+
+&lt;p&gt;Prowling through large, new code base is a daunting task. I’ve found the JetBrains’ PHPStorm IDE helps a little bit there. I was able to jump functions and searching in directory is a breeze. The IDE also supports PHP debugger, but unfortunately it only works with latest PHP7 well. The PHP 5.6 is harder to get it setup that in the end I gave up.&lt;/p&gt;
+
+&lt;p&gt;Without a debugger, the next resort in debugging an app is print message as you trace through code. The PHP is notoriously easy to allow developers litter code with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;echo&lt;/code&gt; lines and then comment it out after debug. The Joomla actually has a nice &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;JLog&lt;/code&gt; logging function that let you dynamically turns on/off and to file output. But this application that I am supporting didn’t use that, and there is zero log message. I also learned that logging to file is essential when tracing a AJAX supported PHP code. Here you can’t simply &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;echo&lt;/code&gt; your debug message out, or it will break the JSON payload. So I have to write some of these debugging code to help myself to troubleshoot the application.&lt;/p&gt;
+
+&lt;p&gt;At the end, I was able to fix few of the pressing issues due to their multiple version of jQuery loading conflicts and some bad SQL in their dynamic query builder. I have to say that nothing teaches you more than jumping into a badly coded site that’s somehow working, and yet you need to fix few naughty issues! It’s a hair pulling experience, but I learned a lot.&lt;/p&gt;</content><author><name>Zemian Deng</name></author><category term="php" /><category term="mysql" /><category term="webserver" /><category term="joomla" /><summary type="html">I have gotten into PHP lately in order to help a friend who runs a Joomla site with a custom component. Thinking to myself now that I have some Front End Experience, I shouldn’t have trouble doing this. But I have never seriuosly got into PHP in the past though, and now I need to learn enough to debug and fix few bugs in the Joomla env. I have gathered and learned quite a few things and like to write it down.</summary></entry><entry><title type="html">How to Load Multiple jQuery</title><link href="http://localhost:4000/2020/09/19/multiple-jquery/" rel="alternate" type="text/html" title="How to Load Multiple jQuery" /><published>2020-09-19T01:00:00-04:00</published><updated>2020-09-19T01:00:00-04:00</updated><id>http://localhost:4000/2020/09/19/multiple-jquery</id><content type="html" xml:base="http://localhost:4000/2020/09/19/multiple-jquery/">&lt;p&gt;Sometimes, your site might need to load mulitple versions of jQuery to support some legacy libraries. Here I will provide two ways to do that.&lt;/p&gt;
+
+&lt;h2 id=&quot;using-plain-htmljs&quot;&gt;Using plain HTML/JS&lt;/h2&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;script&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;src&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;https://unpkg.com/jquery@3.5.1/dist/jquery.js&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/script&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;&amp;gt;
+&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;script&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;jq3&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;jQuery&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;noConflict&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/script&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;&amp;gt;
+&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;script&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;src&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;https://unpkg.com/jquery@1.12.4/dist/jquery.js&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/script&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;&amp;gt;
+&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;script&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;jq1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;jQuery&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;noConflict&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/script&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;&amp;gt;
+&lt;/span&gt;
+
+&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;script&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// Now we can use each jQuery with the name assigned.&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;jQuery 3 version &lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;jq3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;fn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;jquery&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;jQuery 1 version &lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;jq1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;fn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;jquery&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;jQuery 3 document &lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;jq3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;document&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;jQuery 1 document &lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;jq1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;document&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/script&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;&amp;gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;NOTE: You need to call &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;noConflict()&lt;/code&gt; immediately after the script tag load of the jQuery. If you are dealing with multiple jQuery, it’s best not to use the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;$&lt;/code&gt; global variable to avoid confusion.&lt;/p&gt;
+
+&lt;h2 id=&quot;using-requirejs&quot;&gt;Using RequireJS&lt;/h2&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;script&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;src&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;https://unpkg.com/requirejs@2.3.6/require.js&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/script&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;&amp;gt;
+&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;script&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+	&lt;span class=&quot;nx&quot;&gt;define&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;jq3&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;https://unpkg.com/jquery@3.5.1/dist/jquery&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+		&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;jQuery&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;noConflict&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+	&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+	&lt;span class=&quot;nx&quot;&gt;define&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;jq1&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;https://unpkg.com/jquery@1.12.4/dist/jquery&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+		&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;jQuery&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;noConflict&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+	&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+
+	&lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;jq3&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;jq1&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;jq3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;jq1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+		&lt;span class=&quot;nx&quot;&gt;jq3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+		&lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;jQuery 3 version &lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;jq3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;fn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;jquery&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+		&lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;jQuery 1 version &lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;jq1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;fn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;jquery&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+		&lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;jQuery 3 document &lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;jq3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;document&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
+		&lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;jQuery 1 document &lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;jq1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;document&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
+		&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+	&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/script&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;&amp;gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;NOTE: Do not load multiple versions of jQuery through the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;paths&lt;/code&gt; inside &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;requirejs.config()&lt;/code&gt; method. As that will automatically bind the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;jquery&lt;/code&gt; module name and you can’t change that.&lt;/p&gt;</content><author><name>Zemian Deng</name></author><category term="js" /><category term="jquery" /><category term="requirejs" /><summary type="html">Sometimes, your site might need to load mulitple versions of jQuery to support some legacy libraries. Here I will provide two ways to do that.</summary></entry><entry><title type="html">Switched Blogging to VuePress</title><link href="http://localhost:4000/2020/08/15/switched-to-vuepress/" rel="alternate" type="text/html" title="Switched Blogging to VuePress" /><published>2020-08-15T01:00:00-04:00</published><updated>2020-08-15T01:00:00-04:00</updated><id>http://localhost:4000/2020/08/15/switched-to-vuepress</id><content type="html" xml:base="http://localhost:4000/2020/08/15/switched-to-vuepress/">&lt;p&gt;I have switched my blog publishing source from &lt;a href=&quot;https://github.com/zemian/zemian.github.io/tree/jbake&quot;&gt;jbake&lt;/a&gt; to &lt;a href=&quot;https://github.com/zemian/zemian.github.io/tree/master&quot;&gt;vuepress&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;When I started with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;jbake&lt;/code&gt;, I used &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;asccidoc&lt;/code&gt; format for post content, then I come to learn that Markdown is much easier to write for my need. I usually just need to write few lines of thoughts and code examples. Markdown suited me just fine. I also have been learning and using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;JavaScript&lt;/code&gt; development a lot lately, so I decided to use a JS based site generator. I spent some time learning &lt;a href=&quot;https://github.com/zemian/cms-eval/tree/master/learn-vuepress&quot;&gt;VuePress&lt;/a&gt; and find it very promising, so I decided to switch.&lt;/p&gt;
+
+&lt;p&gt;To switch to it, I had to convert my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;asciidoc&lt;/code&gt; posts into Markdown format, and then I have to take care of the frontmatter metadata keys. Another area I needed was to move the posts files into different folders for better file organization. Then I also took the chance to cleanup many bad posts formatting along the way.&lt;/p&gt;
+
+&lt;p&gt;Recently I also have been teaching my son, Kenny, on learning &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;JavaScript&lt;/code&gt; programming, and I thought this is perfect chance to put some of his learning in to practical use. He actually helped me convert all the post files by writing some &lt;a href=&quot;https://github.com/zemian/zemian.github.io/pull/2&quot;&gt;utility scripts&lt;/a&gt;. He also got to use GitHub and Pull Request the for the first time!&lt;/p&gt;
+
+&lt;p&gt;Thanks to Kenny, here we have a before and after blog screenshots!&lt;/p&gt;
+
+&lt;p&gt;Before - Blog with JBake:
+&lt;img src=&quot;/images/posts/2020/blog-jbake.png&quot; alt=&quot;&quot; title=&quot;Before - Blog with JBake&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;After - Blog with VuePress:
+&lt;img src=&quot;/images/posts/2020/blog-vuepress.png&quot; alt=&quot;&quot; title=&quot;After - Blog with VuePress&quot; /&gt;&lt;/p&gt;</content><author><name>Zemian Deng</name></author><category term="zemian" /><category term="blog" /><category term="vuepress" /><summary type="html">I have switched my blog publishing source from jbake to vuepress.</summary></entry><entry><title type="html">Oracle JET 9 Released</title><link href="http://localhost:4000/2020/08/09/ojet9-release/" rel="alternate" type="text/html" title="Oracle JET 9 Released" /><published>2020-08-09T01:00:00-04:00</published><updated>2020-08-09T01:00:00-04:00</updated><id>http://localhost:4000/2020/08/09/ojet9-release</id><content type="html" xml:base="http://localhost:4000/2020/08/09/ojet9-release/">&lt;p&gt;The Oracle JET 9 has been release short while ago. This release is a major release compare to version 8. The most noticable thing is their new &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;redwood&lt;/code&gt; theme is the default when you generate a new project now. The old &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;alta&lt;/code&gt; theme is still there, but you need to opt in
+to get it. Their &lt;a href=&quot;https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html&quot;&gt;cookbook&lt;/a&gt; has been updated to use this “Redwood” themme. So check it out!&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.oracle.com/webfolder/technetwork/jet/index.html?_ojCoreRouter=releasenotes&quot;&gt;Release notes&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://docs.oracle.com/en/middleware/developer-tools/jet/9/reference-api/index.html&quot;&gt;API Doc&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://docs.oracle.com/en/middleware/developer-tools/jet/9/develop/index.html&quot;&gt;Developer Guide&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</content><author><name>Zemian Deng</name></author><category term="ojet" /><summary type="html">The Oracle JET 9 has been release short while ago. This release is a major release compare to version 8. The most noticable thing is their new redwood theme is the default when you generate a new project now. The old alta theme is still there, but you need to opt in to get it. Their cookbook has been updated to use this “Redwood” themme. So check it out!</summary></entry><entry><title type="html">Back To GitHub</title><link href="http://localhost:4000/2020/08/01/move-back-to-github/" rel="alternate" type="text/html" title="Back To GitHub" /><published>2020-08-01T01:00:00-04:00</published><updated>2020-08-01T01:00:00-04:00</updated><id>http://localhost:4000/2020/08/01/move-back-to-github</id><content type="html" xml:base="http://localhost:4000/2020/08/01/move-back-to-github/">&lt;p&gt;Okay, I tried &lt;a href=&quot;https://medium.com/@zemiandeng&quot;&gt;Medium Blogging&lt;/a&gt;, but still not very satisfied. So
+now I am back on GitHub. I am currently &lt;a href=&quot;https://github.com/zemian/cms-eval&quot;&gt;evaluating other CMS tools&lt;/a&gt;.&lt;/p&gt;</content><author><name>Zemian Deng</name></author><category term="blog" /><category term="zemian" /><summary type="html">Okay, I tried Medium Blogging, but still not very satisfied. So now I am back on GitHub. I am currently evaluating other CMS tools.</summary></entry><entry><title type="html">Exploring More on RequireJS</title><link href="http://localhost:4000/2020/04/22/more-on-requirejs/" rel="alternate" type="text/html" title="Exploring More on RequireJS" /><published>2020-04-22T01:00:00-04:00</published><updated>2020-04-22T01:00:00-04:00</updated><id>http://localhost:4000/2020/04/22/more-on-requirejs</id><content type="html" xml:base="http://localhost:4000/2020/04/22/more-on-requirejs/">&lt;h2 id=&quot;configuring-requirejs&quot;&gt;Configuring RequireJS&lt;/h2&gt;
+
+&lt;p&gt;You can use either &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;requirejs.config()&lt;/code&gt; or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;require.config()&lt;/code&gt; to setup RequireJS. I preferred the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;requirejs.config()&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;require()&lt;/code&gt; to load modules just so to give them some distinction on usage. A typical config usage is like this:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;requirejs.config({
+    baseUrl: &quot;js/&quot;,
+    paths: {
+        'foo': 'path/foo',
+        'bar': 'path/bar',
+    }
+});
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;You can actually run &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;requirejs.config()&lt;/code&gt; multiple times! Most of the options will be appended together. But the last &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;baseUrl&lt;/code&gt; will override all.&lt;/p&gt;
+
+&lt;h2 id=&quot;use-shim-for-library-that-has-no-amd-support&quot;&gt;Use Shim for Library that has no AMD support&lt;/h2&gt;
+
+&lt;p&gt;If you are loading a library (eg: CKEDITOR4), then you need to work with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;shim&lt;/code&gt; because it expose a global variable named CKEDITOR. Examples:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;requirejs.config({
+    paths: {
+        ckeditor: 'https://cdn.jsdelivr.net/npm/ckeditor4@4.14.0/ckeditor'
+    },
+    shims: {
+        ckeditor: {
+            exports: 'CKEDITOR'
+        }
+    }
+});
+require(['ckeditor'], () =&amp;gt; {
+    // Notice that CKEDITOR variable is automatically available due to our shims' export.
+    CKEDITOR.replace('editor', {width: '100%', height: '85%'});
+});
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;writing-modules&quot;&gt;Writing Modules&lt;/h2&gt;
+
+&lt;p&gt;It’s recommended you don’t explicitly name your module, but simply let your filename be the module name. Example:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;//file: mymodule.js
+define('mymodule', [], function() {
+    return {
+        uniqueId() {
+            return Math.random().toString(16).substring(2);
+        }
+    }
+});
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;You can create many internal functions and variable you want and they do need to be all returned (or exported). Another popular export data is simply the JS function constructor. Example:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;//file: MyService.js
+define(['mylib', function(mylib) {
+  function MyService () {
+    // ... define your service here.
+    // note that 'mylib' is loaded and availabe to use here.
+  }
+  return MyService;
+});require(['MyService'], (MyService) =&amp;gt; {
+  let service = new MyService();
+  // Use service here...
+});
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;loading-modules&quot;&gt;Loading Modules&lt;/h2&gt;
+
+&lt;p&gt;You should know that when you use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;require()&lt;/code&gt; to load modules, they are all loaded asynchronously, and all the dependency are loaded accordingly in the proper order!&lt;/p&gt;
+
+&lt;p&gt;You can configure RequireJS with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;paths&lt;/code&gt; that setup hundreds of ready to use libraries, but if you don’t invoke &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;require()&lt;/code&gt;, it will not be loaded into your browser at runtime!&lt;/p&gt;
+
+&lt;p&gt;The &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;require()&lt;/code&gt; can be use anywhere in your HTML script code. One popular way to organize the code is that you place your application entry file (usually named &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;main.js&lt;/code&gt;) with entry point of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;require()&lt;/code&gt; to start your application. Then you can load it in browser like this:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;script data-main=&quot;main&quot; src=&quot;https://unpkg.com/requirejs@2.3.6/require.js&quot;&amp;gt;&amp;lt;/script&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Note that &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.js&lt;/code&gt; is optional when you use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;data-main&lt;/code&gt; attribute. Above can also be loaded in your old fashion way like this:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;script src=&quot;https://unpkg.com/requirejs@2.3.6/require.js&quot;&amp;gt;&amp;lt;/script&amp;gt;
+&amp;lt;script src=&quot;main.js&quot;&amp;gt;&amp;lt;/script&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;troubleshooting-tips&quot;&gt;Troubleshooting Tips&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;The usage and syntax of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;require()&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;define()&lt;/code&gt; is the same, so ensure you use the correct one! Using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;define()&lt;/code&gt; instead of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;require()&lt;/code&gt; will obviously fail your application, but the error might not be so straight forward.&lt;/li&gt;
+  &lt;li&gt;RequireJS loads modules in relative to the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;baseUrl&lt;/code&gt; path value setup in your config options. Ensure the value it’s loaded properly. Especially if you are using relative path. It default value is relative to the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.html&lt;/code&gt; file where you include the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;require.js&lt;/code&gt; file in script tag. Triple check this if you see error not able to find your modules.&lt;/li&gt;
+  &lt;li&gt;The &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;paths&lt;/code&gt; configuration option accept value of module with out &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.js&lt;/code&gt; extension! If you include it, it will fail to find your module.&lt;/li&gt;
+  &lt;li&gt;If you have large modules that you use all of the time. Try reduce the number of dependency modules your user need to import by writing a wrapper module.&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;When loading large dependency module list, use a consistent formatting to help. Also, ensure you match up your array of dependency module names with the function callback parameters correctly. Else you get all sort of weird errors. For example:&lt;/p&gt;
+
+    &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;require(['mymodulelib',
+  'mymodulelib2',
+  'mymodulelib3',
+  'mymodulelib4',
+  'mymodulelib5'
+], function(lib, lib2, lib3) {// write your module here...});
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;</content><author><name>Zemian Deng</name></author><category term="requirejs" /><summary type="html">Configuring RequireJS</summary></entry><entry><title type="html">VueJS Examples With Oracle JET</title><link href="http://localhost:4000/2020/04/20/vue-exmaples-implemented-in-ojet/" rel="alternate" type="text/html" title="VueJS Examples With Oracle JET" /><published>2020-04-20T01:00:00-04:00</published><updated>2020-04-20T01:00:00-04:00</updated><id>http://localhost:4000/2020/04/20/vue-exmaples-implemented-in-ojet</id><content type="html" xml:base="http://localhost:4000/2020/04/20/vue-exmaples-implemented-in-ojet/">&lt;p&gt;I like some of the &lt;a href=&quot;https://vuejs.org/v2/examples/&quot;&gt;examples show cased from VueJS&lt;/a&gt;. I have re-implemented some of them using Oracle JET framework instead of VueJS. This proved to be a very good learning exercise.&lt;/p&gt;
+
+&lt;p&gt;See &lt;a href=&quot;https://github.com/zemian/oraclejet-for-vuejs-examples&quot;&gt;oraclejet-for-vuejs-examples&lt;/a&gt; for details:&lt;/p&gt;</content><author><name>Zemian Deng</name></author><category term="ojet" /><category term="vue" /><summary type="html">I like some of the examples show cased from VueJS. I have re-implemented some of them using Oracle JET framework instead of VueJS. This proved to be a very good learning exercise.</summary></entry><entry><title type="html">JS Object To JSON Converter</title><link href="http://localhost:4000/2020/04/19/js-object-to-json/" rel="alternate" type="text/html" title="JS Object To JSON Converter" /><published>2020-04-19T01:00:00-04:00</published><updated>2020-04-19T01:00:00-04:00</updated><id>http://localhost:4000/2020/04/19/js-object-to-json</id><content type="html" xml:base="http://localhost:4000/2020/04/19/js-object-to-json/">&lt;p&gt;Wrote a &lt;a href=&quot;https://raw.githack.com/zemian/html-starter/master/tools/js-to-json.html&quot;&gt;tiny JSON converter&lt;/a&gt; that you can check it out!&lt;/p&gt;
+
+&lt;p&gt;The source is &lt;a href=&quot;https://github.com/zemian/html-starter/blob/master/tools/js-to-json.html&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;</content><author><name>Zemian Deng</name></author><category term="js" /><category term="json" /><summary type="html">Wrote a tiny JSON converter that you can check it out!</summary></entry><entry><title type="html">Hello VueJS</title><link href="http://localhost:4000/2020/04/18/hello-vuejs/" rel="alternate" type="text/html" title="Hello VueJS" /><published>2020-04-18T01:00:00-04:00</published><updated>2020-04-18T01:00:00-04:00</updated><id>http://localhost:4000/2020/04/18/hello-vuejs</id><content type="html" xml:base="http://localhost:4000/2020/04/18/hello-vuejs/">&lt;p&gt;I like &lt;a href=&quot;http://vuejs.org/&quot;&gt;VueJS&lt;/a&gt; because it’s similar to &lt;a href=&quot;hello-knockout.md&quot;&gt;KnockoutJS&lt;/a&gt; that I am familiar with. The VueJS has much more modern feel and the code is a lot more smoother compare to the KnockoutJS. One big difference is KO uses the Observable object to bind reactive properties, while in VueJS it can be treated as normal JS properties.&lt;/p&gt;
+
+&lt;p&gt;Get started on &lt;a href=&quot;https://vuejs.org/&quot;&gt;VueJS&lt;/a&gt; with single JS script.&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;div id=&quot;app&quot;&amp;gt;
+    &amp;lt;span v-text=&quot;message&quot;&amp;gt;&amp;lt;/span&amp;gt;
+&amp;lt;/div&amp;gt;
+
+&amp;lt;script src=&quot;https://unpkg.com/vue@2.6.11/dist/vue.js&quot;&amp;gt;&amp;lt;/script&amp;gt;
+&amp;lt;script&amp;gt;
+    let app = new Vue({
+        data: {
+            message: &quot;Hello&quot;
+        }
+    });
+    app.$mount(&quot;#app&quot;);
+&amp;lt;/script&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;If you run this in browser, you should see “Hello”. Then open the Developer Console and change the model like this:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;app.message = &quot;Hello VueJS&quot;;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;And the browser updates immediately!&lt;/p&gt;</content><author><name>Zemian Deng</name></author><category term="vue" /><summary type="html">I like VueJS because it’s similar to KnockoutJS that I am familiar with. The VueJS has much more modern feel and the code is a lot more smoother compare to the KnockoutJS. One big difference is KO uses the Observable object to bind reactive properties, while in VueJS it can be treated as normal JS properties.</summary></entry><entry><title type="html">Hello RequiredJS</title><link href="http://localhost:4000/2020/04/18/hello-requirejs/" rel="alternate" type="text/html" title="Hello RequiredJS" /><published>2020-04-18T01:00:00-04:00</published><updated>2020-04-18T01:00:00-04:00</updated><id>http://localhost:4000/2020/04/18/hello-requirejs</id><content type="html" xml:base="http://localhost:4000/2020/04/18/hello-requirejs/">&lt;p&gt;The &lt;a href=&quot;https://requirejs.org/&quot;&gt;RequiredJS&lt;/a&gt; is a JavaScript library that helps you separate your code into modules as namespaces, and it helps to load them as dependencies when need it. Here is a simple html demo:&lt;/p&gt;
+
+&lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;id=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;app&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+    Hi
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;script &lt;/span&gt;&lt;span class=&quot;na&quot;&gt;src=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;https://unpkg.com/requirejs@2.3.6/require.js&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&amp;lt;/script&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;script&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;define&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;mymodule&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[],&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;nx&quot;&gt;uniqueId&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Math&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;random&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;toString&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;16&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;substring&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;mymodule&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;my&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Generating a uniqueId=&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;my&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;uniqueId&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;());&lt;/span&gt;
+        &lt;span class=&quot;kd&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;output&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;document&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;querySelector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;#app&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;output&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;innerHTML&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;`Hello RequireJS - &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;requirejs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/script&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The RequireJS only introduces three variables you need to learn to use it effectively: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;define&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;require&lt;/code&gt;, and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;requirejs&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;You use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;define()&lt;/code&gt; function to write your own modules. Many JS libraries out there already supporting RequireJS as module, so you can just simply include them in your application! When writing your own module, you usually would store one module per single JS file. If you do that, then the name of the module would simply be the filename, without you having to explicitly named as above example. When writing the module, you may load other modules that you depend on. In our example case above, we do not need any, hence it has an empty array as 2nd parameter. Your module code should wrap inside a function as last parameter. Any object you return from module function, it is exported as module data for caller to consume or load it.&lt;/p&gt;
+
+&lt;p&gt;You use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;require()&lt;/code&gt; function to load modules that you want to use in your application. Each module imported may be assigned to a parameter variable in the callback function parameters as in example above. Note that sometimes you might load a module without assigning variable for direct use. In this case, the loading of the module is all you care/need. Note also that the order of your module array should match to the call back function parameter list.&lt;/p&gt;
+
+&lt;p&gt;There are many configuration options you may setup the RequireJS, and that’s when you use the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;requirejs.config()&lt;/code&gt; function. For example you may configure paths to where to look for other external libraries such KnockoutJS like this:&lt;/p&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nx&quot;&gt;requirejs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;
+	&lt;span class=&quot;na&quot;&gt;paths&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+		&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;knockout&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;https://unpkg.com/knockout@3.5.1/build/output/knockout-latest&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;
+	&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;knockout&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;ko&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;nx&quot;&gt;ko&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;applyBindings&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;msg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Hello&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Notice that the path to knockout module is without the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.js&lt;/code&gt; extension!&lt;/p&gt;
+
+&lt;p&gt;The RequireJS is great for writing larger JS application. Modules help you avoid names clash, and it helps break down code into a manageable files.&lt;/p&gt;</content><author><name>Zemian Deng</name></author><category term="vue" /><summary type="html">The RequiredJS is a JavaScript library that helps you separate your code into modules as namespaces, and it helps to load them as dependencies when need it. Here is a simple html demo:</summary></entry></feed>

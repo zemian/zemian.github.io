@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Exploring Spring Controller with JSTL view &middot; Zemian's Blog
+    
+  </title>
+
+  
+  <link rel="canonical" href="http://localhost:4000/2013/10/16/exploring-spring-controller-with-jstl-view/">
+  
+
+  <link rel="stylesheet" href="http://localhost:4000/public/css/poole.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/syntax.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/lanyon.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700%7CPT+Sans:400">
+
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/public/apple-touch-icon-precomposed.png">
+  <link rel="shortcut icon" href="http://localhost:4000/public/favicon.ico">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="http://localhost:4000/atom.xml">
+
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-135626598-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  
+</head>
+
+
+  <body>
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p>A weblog on software development.</p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item" href="http://localhost:4000/">Home</a>
+
+    
+
+    
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="http://localhost:4000/about/">About</a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+
+  </nav>
+
+  <div class="sidebar-item">
+    <p>
+      &copy; 2020. All rights reserved.
+    </p>
+  </div>
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <h3 class="masthead-title">
+            <a href="/" title="Home">Zemian's Blog</a>
+            <small>Life in programming world!</small>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+        <div class="post">
+  <h1 class="post-title">Exploring Spring Controller with JSTL view</h1>
+  <span class="post-date">16 Oct 2013</span>
+  <p>Let’s improve <a href="http://saltnlight5.blogspot.com/2013/10/getting-started-with-spring-jdbc-in-web.html">our previous Spring JDBC application</a> with some more exploration on Spring MVC’s Controller development. I will show another exercise of writing a new Controller that processes a HTML form and use JSTL tags in JSP view pages.</p>
+
+<p>To enable JSTL in Spring MVC application, you would need to add the following to the <code class="language-plaintext highlighter-rouge">WebAppConfig</code> config class. Let’s move it outside of <code class="language-plaintext highlighter-rouge">WebApp.java</code> and into it’s own top level class file in <code class="language-plaintext highlighter-rouge">src/main/java/springweb/WebAppConfig.java</code>.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>package springweb;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
+
+@Configuration
+@EnableWebMvc
+@ComponentScan("springweb.controller")
+public class WebAppConfig {
+    @Bean
+    public InternalResourceViewResolver viewResolver() {
+        InternalResourceViewResolver result = new InternalResourceViewResolver();
+        result.setPrefix("/");
+        result.setSuffix(".jsp");
+        return result;
+    }
+}
+</code></pre></div></div>
+
+<p>Inside the <code class="language-plaintext highlighter-rouge">InternalResourceViewResolver</code> bean, you define where to find your JSP pages that may have JSTL tags in them. The <code class="language-plaintext highlighter-rouge">prefix</code> setter is a path in relative to your <code class="language-plaintext highlighter-rouge">src/webapp</code> location. This allow you to hide your JSP files completely if you want to. For example, by setting it to <code class="language-plaintext highlighter-rouge">"/WEB-INF/jsp"</code> then you may move and store all JSP files into <code class="language-plaintext highlighter-rouge">src/webapp/WEB-INF/jsp</code> which is private in the web application. The <code class="language-plaintext highlighter-rouge">suffix</code> is just the file extension. These two values allow you to return a view name inside the controller with just the basename of your JSP file, which can be short as “/myform” or “/index” etc.</p>
+
+<p>If you are to use Tomcat as your web container, you would need to add JSTL jar dependency as well, since the Tomcat server doesn’t come with standard tag library! So add this into the <code class="language-plaintext highlighter-rouge">pom.xml</code> file now.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>        &lt;dependency&gt;
+            &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
+            &lt;artifactId&gt;jstl&lt;/artifactId&gt;
+            &lt;version&gt;1.2&lt;/version&gt;
+        &lt;/dependency&gt;
+</code></pre></div></div>
+
+<p>While you’re at the <code class="language-plaintext highlighter-rouge">pom.xml</code> file, you might want to add the Tomcat maven plugin so you can type less in command line when running your web application.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;project&gt;
+...
+    &lt;build&gt;
+        &lt;plugins&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.apache.tomcat.maven&lt;/groupId&gt;
+                &lt;artifactId&gt;tomcat7-maven-plugin&lt;/artifactId&gt;
+                &lt;version&gt;2.1&lt;/version&gt;
+            &lt;/plugin&gt;
+        &lt;/plugins&gt;
+    &lt;/build&gt;
+...
+&lt;/project&gt;
+</code></pre></div></div>
+
+<p>With that, you should able to run <code class="language-plaintext highlighter-rouge">mvn tomcat7:run</code> in root of your project without plugin prefix.</p>
+
+<p>So what does JSTL bring to your application? Well, quite a bit actually. It lets you use some standard JSP tags that’s frequently used when writing JSP views. I will demonstrate this with a set of Controller and views to capture user comments from the application. Note that I will try to show you how to work with Spring Controller in the most basic way only. The Spring actually comes with a custom <code class="language-plaintext highlighter-rouge">form</code> JSP tag that is much more powerful to use. I will reserve that as another article in another time. Today let us focus on learning more about basic Spring Controller and JSTL, and a bit more on Spring JDBC data service as well.</p>
+
+<p>We want to capture user comment, so let’s add a database table to store that information. Add the following DDL into your <code class="language-plaintext highlighter-rouge">src/main/resources/schema.sql</code> file. Again, this is for H2 database per last article project setup.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CREATE TABLE COMMENT (
+  ID INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  TEXT VARCHAR(10240) NOT NULL,
+  FROM_USER VARCHAR(15) NULL,
+  FROM_USER_IP VARCHAR(15) NULL,
+  FROM_URL VARCHAR(1024) NULL,
+  TAG VARCHAR(1024) NULL,
+  TS DATETIME NOT NULL
+);
+</code></pre></div></div>
+
+<p>This time, we will write a data model class to match this table. Let’s add <code class="language-plaintext highlighter-rouge">src/main/java/springweb/data/Comment.java</code></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>package springweb.data;
+
+import java.util.Date;
+
+public class Comment {
+    Long id;
+    String text;
+    String fromUrl;
+    String fromUser;
+    String fromUserIp;
+    String tag;
+    Date ts;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public String getFromUrl() {
+        return fromUrl;
+    }
+
+    public void setFromUrl(String fromUrl) {
+        this.fromUrl = fromUrl;
+    }
+
+    public String getFromUser() {
+        return fromUser;
+    }
+
+    public void setFromUser(String fromUser) {
+        this.fromUser = fromUser;
+    }
+
+    public String getFromUserIp() {
+        return fromUserIp;
+    }
+
+    public void setFromUserIp(String fromUserIp) {
+        this.fromUserIp = fromUserIp;
+    }
+
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
+
+    public Date getTs() {
+        return ts;
+    }
+
+    public void setTs(Date ts) {
+        this.ts = ts;
+    }
+
+    private String getTrimedComment(int maxLen) {
+        if (text == null)
+            return null;
+        if (text.length() &lt;= maxLen)
+            return text;
+        return text.substring(0, maxLen);
+    }
+
+    @Override
+    public String toString() {
+        return "Comment{" +
+                "id=" + id +
+                ", ts=" + ts +
+                ", text='" + getTrimedComment(12) + '\'' +
+                '}';
+    }
+
+    public static Comment create(String commentText) {
+        Comment result = new Comment();
+        result.setText(commentText);
+        result.setTs(new Date());
+        return result;
+    }
+}
+</code></pre></div></div>
+
+<p>Just as previous artcicle, we will write a data service to handle insert and retrieve of the data model. We add a new <code class="language-plaintext highlighter-rouge">src/main/java/springweb/data/CommentService.java</code> file</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>package springweb.data;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.stereotype.Repository;
+
+import javax.sql.DataSource;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+@Repository
+public class CommentService {
+    public static Log LOG = LogFactory.getLog(CommentService.class);
+
+    private JdbcTemplate jdbcTemplate;
+    private SimpleJdbcInsert insertActor;
+    private RowMapper&lt;Comment&gt; commentBeanRowMapper = new BeanPropertyRowMapper&lt;Comment&gt;(Comment.class);
+
+    @Autowired
+    public void setDataSource(DataSource dataSource) {
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
+        this.insertActor = new SimpleJdbcInsert(dataSource)
+            .withTableName("COMMENT")
+            .usingGeneratedKeyColumns("ID");
+    }
+
+    public void insert(Comment comment) {
+        LOG.info("Inserting Comment + " + comment);
+
+        Map&lt;String, Object&gt; parameters = new HashMap&lt;String, Object&gt;(2);
+        parameters.put("TEXT", comment.getText());
+        parameters.put("FROM_USER", comment.getFromUser());
+        parameters.put("FROM_USER_IP", comment.getFromUserIp());
+        parameters.put("FROM_URL", comment.getFromUrl());
+        parameters.put("TAG", comment.getTag());
+        parameters.put("TS", comment.getTs());
+        Number newId = insertActor.executeAndReturnKey(parameters);
+        comment.setId(newId.longValue());
+
+        LOG.info("New Comment inserted. Id=" + comment.getId());
+    }
+
+    public List&lt;Comment&gt; findComments() {
+        String sql = "SELECT " +
+                "ID as id, " +
+                "TEXT as text, " +
+                "TAG as tag, " +
+                "TS as ts, " +
+                "FROM_USER as fromUser, " +
+                "FROM_USER_IP as fromUserIp, " +
+                "FROM_URL as fromUrl " +
+                "FROM COMMENT ORDER BY TS";
+        List&lt;Comment&gt; result = jdbcTemplate.query(sql, commentBeanRowMapper);
+        LOG.info("Found " + result.size() + " Comment records.");
+        return result;
+    }
+}
+</code></pre></div></div>
+
+<p>Since we did not use any fancy ORM but just plain JDBC, we will have to write SQL in the data service. But thanks to Spring goodies, it makes life much easier with helpers such as <code class="language-plaintext highlighter-rouge">SimpleJdbcInsert</code>, which handles DB insert and retrieval of auto generated key etc. And also notice that in query, we use the Spring’s <code class="language-plaintext highlighter-rouge">BeanPropertyRowMapper</code> to automatically convert JDBC resultset into a java bean <code class="language-plaintext highlighter-rouge">Comment</code> object! Simple, direct and quick.</p>
+
+<p>Now we add the Spring controller in <code class="language-plaintext highlighter-rouge">src/main/java/springweb/controller/CommentController.java</code> to handle web requests.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>package springweb.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
+import springweb.data.Comment;
+import springweb.data.CommentService;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+
+@Controller
+public class CommentController {
+
+    @Autowired
+    private CommentService commentService;
+
+    @RequestMapping(value="/comments")
+    public ModelAndView comments() {
+        List&lt;Comment&gt; comments = commentService.findComments();
+        ModelAndView result = new ModelAndView("/comments");
+        result.addObject("comments", comments);
+        return result;
+    }
+
+    @RequestMapping(value="/comment")
+    public String comment() {
+        return "comment";
+    }
+
+    @RequestMapping(value="/comment", method = RequestMethod.POST)
+    public ModelAndView postComment(HttpServletRequest req, @RequestParam String commentText) {
+        String fromUrl = req.getRequestURI();
+        String user = req.getRemoteUser();
+        String userIp = req.getRemoteAddr();
+        Comment comment = Comment.create(commentText);
+        comment.setFromUserIp(userIp);
+        comment.setFromUser(user);
+        comment.setFromUrl(fromUrl);
+        commentService.insert(comment);
+        ModelAndView result = new ModelAndView("comment-posted");
+        result.addObject("comment", comment);
+        return result;
+    }
+}
+</code></pre></div></div>
+
+<p>In this controller we map <code class="language-plaintext highlighter-rouge">/comment</code> URL to handle display of the HTML form, which returns the <code class="language-plaintext highlighter-rouge">comment.jsp</code> view. The method default to handle a HTTP <code class="language-plaintext highlighter-rouge">GET</code>. Note that we remapped same <code class="language-plaintext highlighter-rouge">/comment</code> URL to handle HTTP <code class="language-plaintext highlighter-rouge">POST</code> on a separated <code class="language-plaintext highlighter-rouge">postComment()</code> method! See how clean the Spring Controller can be in this demo to handle HTTP request. Pay very close attention to the parameters declared in the <code class="language-plaintext highlighter-rouge">postComment()</code> method. Spring automatically handles the HTTP request object and map to your method just based upon the types you declared! On some cases you need to be explicit with the help of annotation such as <code class="language-plaintext highlighter-rouge">@RequestParam</code>, but Spring does the parsing of HTTP request and extraction for you! This saves you tons of repeated boiler plate code if we were to write a direct Servlet code.</p>
+
+<p>Now let’s see the view and how to use JSTL. The <code class="language-plaintext highlighter-rouge">/comments</code> URL is mapped to <code class="language-plaintext highlighter-rouge">src/main/webapp/comments.jsp</code> view file, which will list all <code class="language-plaintext highlighter-rouge">Comment</code> model objects.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %&gt;
+&lt;c:choose&gt;
+&lt;c:when test="${empty comments}"&gt;
+    &lt;p&gt;There are no comments in system yet.&lt;/p&gt;
+&lt;/c:when&gt;
+&lt;c:otherwise&gt;
+    &lt;table border="1"&gt;
+    &lt;tr&gt;
+        &lt;td&gt;INDEX&lt;/td&gt;
+        &lt;td&gt;TIME&lt;/td&gt;
+        &lt;td&gt;FROM&lt;/td&gt;
+        &lt;td&gt;COMMENT&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;c:forEach items="${comments}" var="comment" varStatus="status"&gt;
+    &lt;tr valign="top"&gt;
+        &lt;td&gt;${status.index}&lt;/td&gt;
+        &lt;td&gt;${comment.ts}&lt;/td&gt;
+        &lt;td&gt;${comment.fromUserIp}&lt;/td&gt;
+        &lt;%-- The c:out will escape html/xml characters. --%&gt;
+        &lt;td&gt;&lt;pre&gt;&lt;c:out value="${comment.text}"/&gt;&lt;/pre&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;/c:forEach&gt;
+    &lt;/table&gt;
+&lt;/c:otherwise&gt;
+&lt;/c:choose&gt;
+</code></pre></div></div>
+
+<p>Pretty standard stuff on JSTL. Next is the HTML form to post comment in <code class="language-plaintext highlighter-rouge">src/main/webapp/comment.jsp</code> file.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;form action="comment" method="POST"&gt;
+&lt;textarea name="commentText" rows="20" cols="80"&gt;&lt;/textarea&gt;
+&lt;br/&gt;
+&lt;input type="submit" value="Post"/&gt;
+&lt;/form&gt;
+</code></pre></div></div>
+
+<p>When form is posted and processed successful, we simply return to a new page in <code class="language-plaintext highlighter-rouge">src/main/webapp/comment-posted.jsp</code> file as output.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;p&gt;Your comment has been posted. Comment ID=${comment.id}&lt;/p&gt;
+</code></pre></div></div>
+
+<p>If you’ve done these right, you should able to run <code class="language-plaintext highlighter-rouge">mvn tomcat7:run</code> and browse <code class="language-plaintext highlighter-rouge">http://localhost:8080/spring-web-annotation/comment</code> to see the form. Go to <code class="language-plaintext highlighter-rouge">/comments</code> URL to verify all the comments posted.</p>
+
+<p>Note that despite I used Spring Controller as backend, all the views are in basic JSTL, and even the form are just basic HTML elements! I did this so you can see how flexible Spring Controller can be.</p>
+
+<p>I know these are lot of code to post as a blog article today, but I wanted to be complete and try to show a  working demo with tutorial notes. I choose to make it into a single post with file content instead of having you download a project somewhere else. It makes my notes and explanation easier to match onto the code.</p>
+
+<p>And that will conclude our tutorial for today. Please leave a note if you find this helpful.</p>
+
+</div>
+
+
+<div class="related">
+  <h2>Related posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2020/09/20/world-of-php/">
+            The World of PHP Development
+            <small>20 Sep 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/09/19/multiple-jquery/">
+            How to Load Multiple jQuery
+            <small>19 Sep 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/08/15/switched-to-vuepress/">
+            Switched Blogging to VuePress
+            <small>15 Aug 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+
+      </div>
+    </div>
+
+    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+    <script src='/public/js/script.js'></script>
+  </body>
+</html>

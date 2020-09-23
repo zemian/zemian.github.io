@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Java Jdbc Test for UTF8 and Default Value for TIMESTAMP &middot; Zemian's Blog
+    
+  </title>
+
+  
+  <link rel="canonical" href="http://localhost:4000/2015/11/02/java-jdbc-test-for-utf8-and-default-value-for-timestamp/">
+  
+
+  <link rel="stylesheet" href="http://localhost:4000/public/css/poole.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/syntax.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/lanyon.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700%7CPT+Sans:400">
+
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/public/apple-touch-icon-precomposed.png">
+  <link rel="shortcut icon" href="http://localhost:4000/public/favicon.ico">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="http://localhost:4000/atom.xml">
+
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-135626598-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  
+</head>
+
+
+  <body>
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p>A weblog on software development.</p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item" href="http://localhost:4000/">Home</a>
+
+    
+
+    
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="http://localhost:4000/about/">About</a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+
+  </nav>
+
+  <div class="sidebar-item">
+    <p>
+      &copy; 2020. All rights reserved.
+    </p>
+  </div>
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <h3 class="masthead-title">
+            <a href="/" title="Home">Zemian's Blog</a>
+            <small>Life in programming world!</small>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+        <div class="post">
+  <h1 class="post-title">Java Jdbc Test for UTF8 and Default Value for TIMESTAMP</h1>
+  <span class="post-date">02 Nov 2015</span>
+  <p>Just a quick MySQL test on how to use UTF8 encoding with JDBC connection string. Also a test on how to set TIMESTAMP default values.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>package zemian.jdbc;
+
+import org.junit.Test;
+
+import java.sql.*;
+import java.util.*;
+import java.util.Date;
+
+/**
+
+ -- drop table ztest_issues;
+ CREATE TABLE ztest_issues(
+ id INT NOT NULL AUTO_INCREMENT PRIMARY KEY
+ , title VARCHAR(64) NOT NULL
+ , summary TEXT NULL
+ , priority INT NOT NULL DEFAULT 5
+ , cdate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+ );
+
+ INSERT INTO ztest_issues(title) VALUES('test');
+ INSERT INTO ztest_issues(title, summary) VALUES('test2', 'Just a test');
+ INSERT INTO ztest_issues(title, summary, priority) VALUES('test2', 'Just a test', 1);
+ INSERT INTO ztest_issues(title, summary, priority, cdate) VALUES('test2', 'Just a test', 1, '2010-12-31 08:00:00');
+
+ --INSERT INTO ztest_issues(title, summary) VALUES('locale test1', LOAD_FILE('C:/data/tmp/test.xml'));
+ --INSERT INTO ztest_issues(title, summary) VALUES('locale test2', LOAD_FILE('C:/data/tmp/test2.xml'));
+ --INSERT INTO ztest_issues(title, summary) VALUES('locale test3', LOAD_FILE('C:/data/tmp/test3.xml'));
+
+ SELECT * FROM ztest_issues;
+
+ NOTE:
+ CURRENT_TIMESTAMP is version specific and is now allowed for DATETIME columns as of version 5.6 http://dev.mysql.com/doc/refman/5.6/en/timestamp-initialization.html
+
+ For 5.6 &lt;, use TIMESTAMP for cdate field instead.
+
+ cdate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+ cdate DATETIME NULL
+
+ NOTE2:
+ cdate DATETIME NOT NULL DEFAULT 0
+
+ If you were to use default to ZERO, then you would need this properties in conn string. Else you will fail to get ZERO date value into Java.
+
+ You need to tell the JDBC driver to convert them to NULL. This is done by passing a connection property name zeroDateTimeBehavior with the value convertToNull
+
+ For more details see the manual: http://dev.mysql.com/doc/refman/4.1/en/connector-j-installing-upgrading.html
+
+ */
+public class ZtestIssuesJdbcTest {
+//    String url = "jdbc:mysql://localhost/test";
+//    String url = "jdbc:mysql://localhost/test?zeroDateTimeBehavior=convertToNull";
+    String url = "jdbc:mysql://localhost/test?useUnicode=true&amp;characterEncoding=UTF-8&amp;connectionCollation=utf8_general_ci&amp;zeroDateTimeBehavior=convertToNull";
+    String username = "test";
+    String password = "test123";
+
+    @Test
+    public void testShowTableLocale() throws Exception {
+        try (Connection conn = DriverManager.getConnection(url, username, password)) {
+            String sql = "SHOW VARIABLES LIKE 'char%'";
+            System.out.println("Sql:" + sql);
+            Statement sm = conn.createStatement();
+            ResultSet rs = sm.executeQuery(sql);
+            while (rs.next()) {
+                System.out.printf("%s\t%s\n", rs.getObject(1), rs.getObject(2));
+            }
+
+            sql = "SHOW CREATE TABLE ztest_issues";
+            System.out.println("Sql:" + sql);
+            sm = conn.createStatement();
+            rs = sm.executeQuery(sql);
+            while (rs.next()) {
+                System.out.printf("%s\t%s\n", rs.getObject(1), rs.getObject(2));
+            }
+        }
+    }
+
+    @Test
+    public void testQuery() throws Exception {
+        try (Connection conn = DriverManager.getConnection(url, username, password)) {
+            String sql = "SELECT id, cdate, title, summary FROM ztest_issues";
+            System.out.println("Sql:" + sql);
+            Statement sm = conn.createStatement();
+            ResultSet rs = sm.executeQuery(sql);
+            while (rs.next()) {
+                System.out.printf("%d\t%s\t%s\t%s\n", rs.getObject(1), rs.getObject(2), rs.getObject(3), rs.getObject(4));
+            }
+        }
+    }
+
+    @Test
+    public void testInsert() throws Exception {
+        try (Connection conn = DriverManager.getConnection(url, username, password)) {
+            String sql = "INSERT INTO ztest_issues(title, summary, cdate) VALUES(?, ?, ?)";
+            System.out.println("Sql: " + sql);
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            String testId = "" + System.currentTimeMillis();
+
+            ps.setObject(1, "English Locale " + testId);
+            ps.setObject(2, "Just a test");
+            ps.setObject(3, new Date());
+            int result = ps.executeUpdate();
+            System.out.println("Insert Result: " + result);
+
+            ps.setObject(1, "Chinese Locale " + testId);
+            ps.setObject(2, "&amp;#21482;&amp;#26159;&amp;#19968;&amp;#20491;&amp;#28204;&amp;#35430;");
+            ps.setObject(3, new Date());
+            result = ps.executeUpdate();
+            System.out.println("Insert Result: " + result);
+
+            ps.setObject(1, "Spanish Locale " + testId);
+            ps.setObject(2, "Sólo una prueba");
+            ps.setObject(3, new Date());
+            result = ps.executeUpdate();
+            System.out.println("Insert Result: " + result);
+        }
+    }
+}
+</code></pre></div></div>
+
+</div>
+
+
+<div class="related">
+  <h2>Related posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2020/09/20/world-of-php/">
+            The World of PHP Development
+            <small>20 Sep 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/09/19/multiple-jquery/">
+            How to Load Multiple jQuery
+            <small>19 Sep 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/08/15/switched-to-vuepress/">
+            Switched Blogging to VuePress
+            <small>15 Aug 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+
+      </div>
+    </div>
+
+    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+    <script src='/public/js/script.js'></script>
+  </body>
+</html>

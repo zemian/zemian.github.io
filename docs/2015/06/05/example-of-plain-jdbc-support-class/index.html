@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Example of plain Jdbc Support Class &middot; Zemian's Blog
+    
+  </title>
+
+  
+  <link rel="canonical" href="http://localhost:4000/2015/06/05/example-of-plain-jdbc-support-class/">
+  
+
+  <link rel="stylesheet" href="http://localhost:4000/public/css/poole.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/syntax.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/lanyon.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700%7CPT+Sans:400">
+
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/public/apple-touch-icon-precomposed.png">
+  <link rel="shortcut icon" href="http://localhost:4000/public/favicon.ico">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="http://localhost:4000/atom.xml">
+
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-135626598-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  
+</head>
+
+
+  <body>
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p>A weblog on software development.</p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item" href="http://localhost:4000/">Home</a>
+
+    
+
+    
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="http://localhost:4000/about/">About</a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+
+  </nav>
+
+  <div class="sidebar-item">
+    <p>
+      &copy; 2020. All rights reserved.
+    </p>
+  </div>
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <h3 class="masthead-title">
+            <a href="/" title="Home">Zemian's Blog</a>
+            <small>Life in programming world!</small>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+        <div class="post">
+  <h1 class="post-title">Example of plain Jdbc Support Class</h1>
+  <span class="post-date">05 Jun 2015</span>
+  <p>Need to fetch some data from DB quickly with Java? Here is a quick example of plain JDBC JdbcSupport  Class to help you.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>package zemian.jdbcexample
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public abstract class JdbcSupport {
+    private static final Logger LOGGER = LoggerFactory.getLogger(JdbcSupport.class);
+
+    protected DataSource dataSource;
+
+    public JdbcSupport(DataSource dataSource) throws Exception {
+        this.dataSource = dataSource;
+    }
+
+    protected Row toRowMap(ResultSet rs) throws Exception {
+        Row row = new Row();
+        ResultSetMetaData meta = rs.getMetaData();
+        int count = meta.getColumnCount();
+        for (int i=1; i &lt;= count; i++) {
+            row.map.put(meta.getColumnName(i), rs.getObject(i));
+        }
+        return row;
+    }
+
+    protected List&lt;Row&gt; queryRowList(Connection conn, String sql, Object... params) throws Exception {
+        LOGGER.debug("Query sql={}, params={}", sql, Arrays.asList(params));
+        List&lt;Row&gt; result = new ArrayList&lt;&gt;();
+        try(PreparedStatement st = conn.prepareStatement(sql)) {
+            for (int i = 1; i &lt;= params.length; i++) {
+                st.setObject(i, params[i -1]);
+            }
+            try (ResultSet rs = st.executeQuery()) {
+                while(rs.next()) {
+                    result.add(toRowMap(rs));
+                }
+            }
+        }
+        return result;
+    }
+
+    protected Row queryRow(Connection conn, String sql, Object... params) throws Exception {
+        List&lt;Row&gt; rowList = queryRowList(conn, sql, params);
+        if (rowList.size() != 1) {
+            throw new RuntimeException("No unique result from query.");
+        }
+        return rowList.get(0);
+    }
+    
+    public static class Row {
+        public Map&lt;String, Object&gt; map = new HashMap&lt;&gt;();
+
+        public &lt;T&gt; T get(String name) {
+            T result = (T)map.get(name);
+            return result;
+        }
+
+        public &lt;T&gt; T get(String name, T defVal) {
+            T result = (T)map.get(name);
+            if (result == null)
+                return defVal;
+            return result;
+        }
+    }
+}
+</code></pre></div></div>
+<p>To use it, one may do something like this:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>public class AccountStore extends JdbcSupport {
+    public AccountStore(DataSource dataSource) {
+        super(dataSource);
+    }
+    
+    public void printAccountProfiles() {
+        try(Connection conn = dataSource.getConnection()) {
+            String sql = "SELECT ACCOUNTID FROM USERS WHERE USERNAME=?";
+            Row row = queryRow(conn, sql, "zemian");
+            
+            String accountId = row.get("ACCOUNTID");
+            String department = "IT";
+            sql = "SELECT * FROM ACCOUNTPROFILES WHERE ID=? AND DEPARTMENT=?";
+            List&lt;Row&gt; rowList = queryRowList(conn, sql, accountId, department);
+            
+            for (Row row : rowList) {
+                System.out.println("Got profile: " + row.map);
+            }
+        }
+    }
+}
+</code></pre></div></div>
+
+</div>
+
+
+<div class="related">
+  <h2>Related posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2020/09/20/world-of-php/">
+            The World of PHP Development
+            <small>20 Sep 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/09/19/multiple-jquery/">
+            How to Load Multiple jQuery
+            <small>19 Sep 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/08/15/switched-to-vuepress/">
+            Switched Blogging to VuePress
+            <small>15 Aug 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+
+      </div>
+    </div>
+
+    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+    <script src='/public/js/script.js'></script>
+  </body>
+</html>

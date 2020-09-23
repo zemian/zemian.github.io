@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      TimeMachine Scheduler Tour - Part6 &middot; Zemian's Blog
+    
+  </title>
+
+  
+  <link rel="canonical" href="http://localhost:4000/2012/06/22/timemachine-scheduler-tour-part6/">
+  
+
+  <link rel="stylesheet" href="http://localhost:4000/public/css/poole.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/syntax.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/lanyon.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700%7CPT+Sans:400">
+
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/public/apple-touch-icon-precomposed.png">
+  <link rel="shortcut icon" href="http://localhost:4000/public/favicon.ico">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="http://localhost:4000/atom.xml">
+
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-135626598-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  
+</head>
+
+
+  <body>
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p>A weblog on software development.</p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item" href="http://localhost:4000/">Home</a>
+
+    
+
+    
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="http://localhost:4000/about/">About</a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+
+  </nav>
+
+  <div class="sidebar-item">
+    <p>
+      &copy; 2020. All rights reserved.
+    </p>
+  </div>
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <h3 class="masthead-title">
+            <a href="/" title="Home">Zemian's Blog</a>
+            <small>Life in programming world!</small>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+        <div class="post">
+  <h1 class="post-title">TimeMachine Scheduler Tour - Part6</h1>
+  <span class="post-date">22 Jun 2012</span>
+  <p>This is part 6 of 7 in a series of articles that will give you a tour of the <a href="https://bitbucket.org/timemachine/scheduler/wiki/Home">TimeMachine Scheduler</a> project. These articles will introduce you to the scheduler, how to load jobs and schedules, and explore some of its advanced features. For the most current and accurate instructions, please visit the ReferenceManual from the project site.</p>
+
+<h2 id="configuring-multiple-threadpools">Configuring Multiple ThreadPools</h2>
+
+<p>By now you know how to write your own JobTask and even write your own Schedule implementation in TimeMachine Scheduler. We will switch back to configuration for a bit to talk about how to control the job execution.</p>
+
+<p>By default the scheduler will have two thread pools. The first one is reserved for system services, and default to only 1 fixed thread pool (used by PoolingScheduleRunner). The second thread pool is default to 4 dynamic threads exclusively for running JobTask only. Here is how the default config looks like for these pools:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># System service thread pool (you only need one pool!)
+timemachine.scheduler.systemThreadPool.class = timemachine.scheduler.service.FixedSizeThreadPool
+timemachine.scheduler.systemThreadPool.maxSize = 1
+timemachine.scheduler.systemThreadPool.threadNamePrefix = ${timemachine.scheduler.schedulerName}-System-Thread-
+
+# Default jobTask thread pool (you may define more than one pool!)
+timemachine.scheduler.jobTaskThreadPool.DEFAULT.class = timemachine.scheduler.service.DynamicThreadPool
+timemachine.scheduler.jobTaskThreadPool.DEFAULT.minSize = 0
+timemachine.scheduler.jobTaskThreadPool.DEFAULT.maxSize = 4
+timemachine.scheduler.jobTaskThreadPool.DEFAULT.timeToLive = 300000
+timemachine.scheduler.jobTaskThreadPool.DEFAULT.useShutdownNow = false
+timemachine.scheduler.jobTaskThreadPool.DEFAULT.maxShutdownWaitTime = 1000
+timemachine.scheduler.jobTaskThreadPool.DEFAULT.threadNamePrefix = ${timemachine.scheduler.schedulerName}-JobTask-Thread-
+</code></pre></div></div>
+
+<p>As you use the scheduler for more jobs, you might run into situation where you want to create multiple thread pools to run certain specific JobTask’s. In this case, you want to configure certain jobs that would only run in a isolated threads pool. The TimeMachine Scheduler has this feature that you create multiple thread pools, and it allow you to match to job task’s name. When you do this, you would also need to create a JobTaskPoolNameResolver that would resolve JobTask’s name match to one of the thread pool you configured. Here is an example of scheduler configuration file that exercise this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Extra job tasks thread pool
+timemachine.scheduler.jobTaskThreadPool.MYPOOL2.class = timemachine.scheduler.service.DynamicThreadPool
+timemachine.scheduler.jobTaskThreadPool.MYPOOL2.maxSize = 4
+timemachine.scheduler.jobTaskThreadPool.MYPOOL2.threadNamePrefix = MYPOOL2-Thread-
+
+# Extra job tasks thread pool
+timemachine.scheduler.jobTaskThreadPool.MYPOOL3.class = timemachine.scheduler.service.DynamicThreadPool
+timemachine.scheduler.jobTaskThreadPool.MYPOOL3.maxSize = 4
+timemachine.scheduler.jobTaskThreadPool.MYPOOL3.threadNamePrefix = MYPOOL3-Thread-
+
+# Resolving multiple jobTask thread pools
+timemachine.scheduler.jobTaskPoolNameResolver.poolName.MYPOOL2.matchToJobNameRexp = MyJobType2.*
+timemachine.scheduler.jobTaskPoolNameResolver.poolName.MYPOOL3.matchToJobNameRexp = MyJobType3.*
+</code></pre></div></div>
+
+<p>The name to pool matching is done using the Java regular expression. The example above setup two set of job task names match to each of their pool instance. Any job names starting with MyJobType2 will be executed by MYPOOL2, while any starting with MyJobType3 will be executed by MYPOOL3. And finally if any JobTask name that doesn’t match will use the DEFAULT pool.</p>
+
+<p>Note that JobTask’s name is only optional (only ID is required and it’s auto generated), so to use this features, you want to ensure to set the JobTask’s name that match your configured pool, or else they all default back to single DEFAULT pool.</p>
+
+<p>End of part 6. You may continue <a href="http://saltnlight5.blogspot.com/2012/06/timemachine-scheduler-tour-part7.html">next tour</a>, or see <a href="http://saltnlight5.blogspot.com/2012/06/timemachine-scheduler-tour-part5.html">previous tour</a>.</p>
+
+</div>
+
+
+<div class="related">
+  <h2>Related posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2020/09/20/world-of-php/">
+            The World of PHP Development
+            <small>20 Sep 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/09/19/multiple-jquery/">
+            How to Load Multiple jQuery
+            <small>19 Sep 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/08/15/switched-to-vuepress/">
+            Switched Blogging to VuePress
+            <small>15 Aug 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+
+      </div>
+    </div>
+
+    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+    <script src='/public/js/script.js'></script>
+  </body>
+</html>

@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Zemian's Blog &middot; Life in programming world!
+    
+  </title>
+
+  
+  <link rel="canonical" href="http://localhost:4000/page28/">
+  
+
+  <link rel="stylesheet" href="http://localhost:4000/public/css/poole.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/syntax.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/lanyon.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700%7CPT+Sans:400">
+
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/public/apple-touch-icon-precomposed.png">
+  <link rel="shortcut icon" href="http://localhost:4000/public/favicon.ico">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="http://localhost:4000/atom.xml">
+
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-135626598-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  
+</head>
+
+
+  <body>
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p>A weblog on software development.</p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item active" href="http://localhost:4000/">Home</a>
+
+    
+
+    
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="http://localhost:4000/about/">About</a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+
+  </nav>
+
+  <div class="sidebar-item">
+    <p>
+      &copy; 2020. All rights reserved.
+    </p>
+  </div>
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <h3 class="masthead-title">
+            <a href="/" title="Home">Zemian's Blog</a>
+            <small>Life in programming world!</small>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+        <div class="posts">
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2012/03/11/how-to-get-jaxb-xjc-to-work-on-maven/">
+        How to get JAXB (xjc) to work on Maven
+      </a>
+    </h1>
+
+    <span class="post-date">11 Mar 2012</span>
+
+    <p>I got it working by using the following</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    &lt;build&gt;
+        &lt;plugins&gt;
+            &lt;!-- Generate JAXB Java source files from an XSD file --&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.codehaus.mojo&lt;/groupId&gt;
+                &lt;artifactId&gt;jaxb2-maven-plugin&lt;/artifactId&gt;
+                &lt;version&gt;1.3.1&lt;/version&gt;
+                &lt;executions&gt;
+                    &lt;execution&gt;
+                        &lt;goals&gt;
+                            &lt;goal&gt;xjc&lt;/goal&gt;
+                        &lt;/goals&gt;
+                    &lt;/execution&gt;
+                &lt;/executions&gt;
+                &lt;configuration&gt;
+                    &lt;packageName&gt;my.jaxb.data&lt;/packageName&gt;
+                    &lt;outputDirectory&gt;${project.build.directory}/generated-source/jaxb&lt;/outputDirectory&gt;
+                    &lt;schemaDirectory&gt;${basedir}/src/main/resources&lt;/schemaDirectory&gt;
+                    &lt;schemaFiles&gt;mydata.xsd&lt;/schemaFiles&gt;
+                &lt;/configuration&gt;
+            &lt;/plugin&gt;
+
+            &lt;!-- Build helper plugin adds the sources generated by the JAXB to the compile path --&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.codehaus.mojo&lt;/groupId&gt;
+                &lt;artifactId&gt;build-helper-maven-plugin&lt;/artifactId&gt;
+                &lt;version&gt;1.7&lt;/version&gt;
+                &lt;executions&gt;      
+                    &lt;execution&gt; 
+                        &lt;phase&gt;process-sources&lt;/phase&gt;
+                        &lt;configuration&gt;
+                            &lt;sources&gt;
+                                &lt;source&gt;${project.build.directory}/generated-sources/jaxb&lt;/source&gt;
+                            &lt;/sources&gt;
+                        &lt;/configuration&gt;
+                        &lt;goals&gt;
+                            &lt;goal&gt;add-source&lt;/goal&gt;
+                        &lt;/goals&gt;
+                    &lt;/execution&gt;
+                &lt;/executions&gt;
+            &lt;/plugin&gt;
+        &lt;/plugins&gt;
+    &lt;/build&gt;
+</code></pre></div></div>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2012/03/09/first-snapshot-of-timemachine-scheduler-is-ready/">
+        First snapshot of TimeMachine scheduler is ready
+      </a>
+    </h1>
+
+    <span class="post-date">09 Mar 2012</span>
+
+    <p>The first snapshot of TimeMachine, a new open source Java Scheduler library, is aviable to download. Check it out at <a href="https://bitbucket.org/saltnlight5/timemachine-scheduler/downloads">https://bitbucket.org/saltnlight5/timemachine-scheduler/downloads</a> and let me know what you think!</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2012/02/28/timemachine-scheduler/">
+        TimeMachine Scheduler
+      </a>
+    </h1>
+
+    <span class="post-date">28 Feb 2012</span>
+
+    <p>Wanna contribute to an opensource project? Check out <a href="https://bitbucket.org/saltnlight5/timemachine-scheduler/wiki/Home">https://bitbucket.org/saltnlight5/timemachine-scheduler/wiki/Home</a></p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2012/02/27/myschedule-2-4-0-release/">
+        MySchedule-2.4.0 release
+      </a>
+    </h1>
+
+    <span class="post-date">27 Feb 2012</span>
+
+    <p>I have released version 2.4.0 of MySchedule project, and you may get it here: <a href="http://code.google.com/p/myschedule/downloads/list">http://code.google.com/p/myschedule/downloads/list</a></p>
+
+<p>In this release, I have added these:</p>
+
+<ul>
+  <li>Quartz is running on Heroku! Check it out: <a href="http://stormy-flower-6956.herokuapp.com/">http://stormy-flower-6956.herokuapp.com</a></li>
+  <li>
+    <p>Added JdbcSchedulerHistoryPlugin that will record job history in DB.</p>
+  </li>
+  <li>
+    <p>Added Cron Tool expression validation on web page.</p>
+  </li>
+  <li>
+    <p>Added AppConfig configurable by a Properties file.</p>
+  </li>
+  <li>
+    <p>Upgraded to quartz-2.1.1</p>
+  </li>
+  <li>Fixed trigger display page.</li>
+</ul>
+
+<p>Enjoy!</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2012/02/17/working-on-quartz-queue-job-feature/">
+        Working on Quartz Queue Job Feature
+      </a>
+    </h1>
+
+    <span class="post-date">17 Feb 2012</span>
+
+    <p>My job at Bank of New York Mellon has been keeping me fairly busy lately. It’s hard to juggle with Church, a family, a full time job, and time for open source projects. But it seems God has blessed me with not many skills nor hobbies other than programming, which I enjoy the most. So I tend to endup writing more code on weekend when the kids are asleep!</p>
+
+<p>I haven’t able to put much time into <a href="http://code.google.com/p/myschedule">MySchedule</a>other than fixed couple of urgent issues recently. If you are using this app, you should get the latest download now.</p>
+
+<p>However, I did spent time helping out on <a href="http://quartz-scheduler.org/">Quartz</a>development on their next major feature: <a href="http://svn.terracotta.org/fisheye/browse/Quartz/branches/quartz-2.2-prototype">Queue Jobs</a>. I got most of the initial ground work done. I need to think more about how the concurrent issues with database row locking etc. This feature would allow you to add jobs into a queue structure that the quartz system will process without a trigger (meaning they are process immediatly.) These queue jobs would have a priority value that sorted by the queue as they are processed. We hope this feature would give some users to use the Quartz system to process jobs more effectively.</p>
+
+<p>More of these to come in the future, so stay tuned.</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2011/11/19/how-to-build-ruby-on-cygwin-and-setup-heroku/">
+        How to build Ruby on Cygwin and setup Heroku
+      </a>
+    </h1>
+
+    <span class="post-date">19 Nov 2011</span>
+
+    <p>I like to use ruby that comes with Cygwin instead of the RubyInstaller for Windows, because the path it handles are more consistenly in Linux form. But the current Cygwin only comes with <code class="language-plaintext highlighter-rouge">ruby-1.8.7</code>, so to use <code class="language-plaintext highlighter-rouge">ruby-1.9.3</code>, I have to built it on Cygwin on my own. And when building ruby from source on Cygwin, you would also have to install gem on your own as well. Turns out there are few issues that you have to fix too. Here are the steps I got it working:</p>
+
+<ol>
+  <li>
+    <p>Ensure you have the typical Cygwin/Linux build tools (gcc, make, autoconf, libiconv, openssl and etc.)</p>
+  </li>
+  <li>
+    <p>Download source for the following:</p>
+  </li>
+</ol>
+
+<p>a) LibYAML 0.1.4 from http://pyyaml.org/wiki/LibYAML</p>
+
+<p>b) ruby-1.9.3-p0 source from http://ruby-lang.org</p>
+
+<p>c) rubygems-1.8.11 from http://rubygems.org</p>
+
+<ol>
+  <li>Unzip/tar them all in /tmp</li>
+</ol>
+
+<p>a)</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  $ cd /tmp/yaml-0.1.4 
+
+  $ ./configure &amp;&amp; make &amp;&amp; make install
+</code></pre></div></div>
+
+<p>b)</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  $ cd /tmp/ruby-1.9.3-p0/ext/openssl
+  $ ruby extconf.rb
+  $ make &amp;&amp; make install
+</code></pre></div></div>
+
+<p>c)</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  $ cd /tmp/ruby-1.9.3-p0
+  $ export CPPFLAGS=-I/usr/local/include
+  $ export LDFLAGS=-L/usr/local/lib     
+  $ ./configure &amp;&amp; make &amp;&amp; make install
+</code></pre></div></div>
+
+<p>e)</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  $ cd /tmp/rubygems-1.8.11
+  $ ruby setup.rb
+</code></pre></div></div>
+
+<p>With these completed, you may now install Heroku client tool as ruby gem:</p>
+
+<p>c)</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  $ gem install heroku
+</code></pre></div></div>
+
+<p>You would also need Git to successful push and deploy application to Heroku, but you can get Cygwin <code class="language-plaintext highlighter-rouge">git</code> package if you haven’t already done so.</p>
+
+<p>NOTE: FYI, all the user built applications are usually install into <code class="language-plaintext highlighter-rouge">/usr/local</code> directory, while those system (comes with cygwin packages) are in <code class="language-plaintext highlighter-rouge">/usr</code>.</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2011/11/06/myschedule-2-3-0-release/">
+        MySchedule-2.3.0 release is out
+      </a>
+    </h1>
+
+    <span class="post-date">06 Nov 2011</span>
+
+    <p>MySchedule is a web application that let you manage and run Quartz in a servlet container. You can get Quartz running and start exploring by simply dropping the war file into a web server such as Tomcat.</p>
+
+<p>Here is a short list of what’s in this release:</p>
+
+<ul>
+  <li>Use myschedule-2.3.0 to manage Quartz-2.x</li>
+  <li>Use myschedule-1.6.0 to manage Quartz-1.8.x</li>
+  <li>Removed all unnecessary dependencies, and making the war file tiny (~ 3MB)</li>
+  <li>Support any Java ScriptEngine, and many examples are provided for you to script and manage the scheduler.</li>
+  <li>There is an independent quartz-extra jar that you may use outside of webapp, and it has been backported consistently to 1.x version as well.</li>
+  <li>Documentation is available on the project site.</li>
+</ul>
+
+<p>Try it out and let me know what you think.</p>
+
+<p><a href="http://code.google.com/p/myschedule">http://code.google.com/p/myschedule</a></p>
+
+<p>Enjoy!</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2011/10/17/quartz-extra/">
+        Quartz Extra!
+      </a>
+    </h1>
+
+    <span class="post-date">17 Oct 2011</span>
+
+    <p>Looking for some extra goodies for Quartz Scheduler? Check out <a href="http://code.google.com/p/myschedule/downloads/list">myschedule-2.2.0 release</a>!</p>
+
+<p>Besides some small update to the web UI for quartz management, this release comes with a standalone quartz-extra jar you may download. See what it can do in <a href="http://code.google.com/p/myschedule/wiki/QuartzExtraUserGuide">QuartzExtraUserGuide</a>.</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2011/09/24/some-of-my-googlecode-projects/">
+        Some of my googlecode projects
+      </a>
+    </h1>
+
+    <span class="post-date">24 Sep 2011</span>
+
+    <p>I have created number of googlecode projects in attempt to try out new codes and ideas in the past. I now have links to all of them in my consolidated playground area <a href="http://code.google.com/p/zemiandeng/">http://code.google.com/p/zemiandeng/</a></p>
+
+<p>I also kept few Java project templates (Maven based) in there: <a href="http://code.google.com/p/zemiandeng/source/browse/">http://code.google.com/p/zemiandeng/source/browse/</a> These can get you started a project fairly quickly. See the README.txt in each for more details. I have added:</p>
+
+<ul>
+  <li>
+    <p>java-project-template</p>
+  </li>
+  <li>
+    <p>servlet-project-template</p>
+  </li>
+  <li>
+    <p>springmvc-project-template</p>
+  </li>
+</ul>
+
+<p>There is also the “java-tool” with misc command line programs that I have collected over the years.</p>
+
+<p>I also have stored a more reasonable preferences with Eclipse workspace, and few more custom Cygwin/Bash scripts setup.</p>
+
+<p>All these are publicly and freely available (Apache License 2.0) if you find it useful. Enjoy!</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2011/09/24/quartz-2-1-0-has-been-released/">
+        Quartz 2.1.0 has been released!
+      </a>
+    </h1>
+
+    <span class="post-date">24 Sep 2011</span>
+
+    <p><a href="http://quartz-scheduler.org/downloads/catalog">Quartz 2.1.0</a> has been released!</p>
+
+<p>In this release, I have helped fixed some bugs, and added a new built-in trigger type: DailyTimeIntervalTrigger. This new trigger will allow you to specify a interval time in either seconds, minutes, or hours interval on each day (Like fire every 72 mins starting at 7am everyday). And the daily start time will be reset each day regardless what time it ended in that day! You may even limit daily ending time too. And you may limit the days to run on certain weekdays only as well. You may see many examples on how this trigger is used here: <a href="http://svn.terracotta.org/fisheye/browse/Quartz/trunk/quartz/src/test/java/org/quartz/DailyTimeIntervalScheduleBuilderTest.java?r=HEAD">http://svn.terracotta.org/fisheye/browse/Quartz/trunk/quartz/src/test/java/org/quartz/DailyTimeIntervalScheduleBuilderTest.java?r=HEAD</a></p>
+
+<p>Another feature worthy of note in this release is the “batch” mode is finally working! You may turn this on by using “org.quartz.scheduler.batchTriggerAcquisitionMaxCount” and “org.quartz.scheduler.batchTriggerAcquisitionFireAheadTimeWindow” in your quartz.properties file. See config doc here: <a href="http://quartz-scheduler.org/documentation/quartz-2.1.x/configuration/ConfigMain">http://quartz-scheduler.org/documentation/quartz-2.1.x/configuration/ConfigMain</a></p>
+
+  </div>
+  
+</div>
+
+<div class="pagination">
+  
+    <a class="pagination-item older" href="http://localhost:4000/page29">Older</a>
+  
+  
+    
+      <a class="pagination-item newer" href="http://localhost:4000/page27">Newer</a>
+    
+  
+</div>
+
+      </div>
+    </div>
+
+    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+    <script src='/public/js/script.js'></script>
+  </body>
+</html>

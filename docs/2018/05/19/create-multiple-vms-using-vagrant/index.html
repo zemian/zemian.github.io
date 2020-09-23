@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Create multiple VMs using Vagrant &middot; Zemian's Blog
+    
+  </title>
+
+  
+  <link rel="canonical" href="http://localhost:4000/2018/05/19/create-multiple-vms-using-vagrant/">
+  
+
+  <link rel="stylesheet" href="http://localhost:4000/public/css/poole.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/syntax.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/lanyon.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700%7CPT+Sans:400">
+
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/public/apple-touch-icon-precomposed.png">
+  <link rel="shortcut icon" href="http://localhost:4000/public/favicon.ico">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="http://localhost:4000/atom.xml">
+
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-135626598-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  
+</head>
+
+
+  <body>
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p>A weblog on software development.</p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item" href="http://localhost:4000/">Home</a>
+
+    
+
+    
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="http://localhost:4000/about/">About</a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+
+  </nav>
+
+  <div class="sidebar-item">
+    <p>
+      &copy; 2020. All rights reserved.
+    </p>
+  </div>
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <h3 class="masthead-title">
+            <a href="/" title="Home">Zemian's Blog</a>
+            <small>Life in programming world!</small>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+        <div class="post">
+  <h1 class="post-title">Create multiple VMs using Vagrant</h1>
+  <span class="post-date">19 May 2018</span>
+  <p>Vagrant is a great tool to automate and setup VMs. Here is a config file
+that can setup multiple VMs in your own PC to simulate a
+controller(admin), db, and app servers farm env. I will setup so that
+it’s ready to install Ansible in a the control server, and ensure all
+other servers is accessible by a private virtual IP with default python
+executable.</p>
+
+<ol>
+  <li>
+    <p>Install VirtualBox and Vagrant in your development PC. (These two
+requires elevated admin rights!)</p>
+  </li>
+  <li>
+    <p>Now as normal user open a terminal and run the following:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ mkdir vm-serversfarm
+$ vagrant init ubuntu/xenial64
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<p>Now edit <code class="language-plaintext highlighter-rouge">Vagrantfile</code> with the following:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># This file is to setup Ubuntu VM servers
+Vagrant.configure("2") do |config|
+  vm_box = "ubuntu/xenial64"
+  config.vm.define "admin" do |admin|
+    admin.vm.box = vm_box
+    admin.vm.hostname = 'ubuntu-xenial-admin'
+    admin.vm.network "private_network", ip: "192.168.56.200"
+    admin.vm.provision "shell", privileged: false,
+      inline: &lt;&lt;-SCRIPT_DOC
+        ssh-keygen -f ~vagrant/.ssh/id_rsa -t rsa -N ''
+        cp -v ~vagrant/.ssh/id_rsa.pub /vagrant/admin_id_rsa.pub
+      SCRIPT_DOC
+    admin.vm.provision "shell",
+      inline: &lt;&lt;-SCRIPT_DOC
+        apt-get update
+        apt-get install -y ansible
+      SCRIPT_DOC
+  end
+
+  config.vm.define "db1" do |db1|
+    db1.vm.box = vm_box
+    db1.vm.hostname = 'ubuntu-xenial-db1'
+    db1.vm.network "private_network", ip: "192.168.56.211"
+    db1.vm.provision "shell", inline: "cat /vagrant/admin_id_rsa.pub &gt;&gt; ~vagrant/.ssh/authorized_keys"
+    db1.vm.provision "shell",
+      inline: &lt;&lt;-SCRIPT_DOC
+        #apt-get update
+        apt-get install -y python
+        apt-get install -y postgresql
+      SCRIPT_DOC
+  end
+
+  config.vm.define "app1" do |app1|
+    app1.vm.box = vm_box
+    app1.vm.hostname = 'ubuntu-xenial-app1'
+    app1.vm.network "private_network", ip: "192.168.56.221"
+    app1.vm.provision "shell", inline: "cat /vagrant/admin_id_rsa.pub &gt;&gt; ~vagrant/.ssh/authorized_keys"
+    app1.vm.provision "shell",
+      inline: &lt;&lt;-SCRIPT_DOC
+        #apt-get update
+        apt-get install -y python
+      SCRIPT_DOC
+  end
+
+  config.vm.define "app2" do |app2|
+    app2.vm.box = vm_box
+    app2.vm.hostname = 'ubuntu-xenial-app2'
+    app2.vm.network "private_network", ip: "192.168.56.222"
+    app2.vm.provision "shell", inline: "cat /vagrant/admin_id_rsa.pub &gt;&gt; ~vagrant/.ssh/authorized_keys"
+    app2.vm.provision "shell",
+      inline: &lt;&lt;-SCRIPT_DOC
+        #apt-get update
+        apt-get install -y python
+      SCRIPT_DOC
+  end
+end
+</code></pre></div></div>
+
+<p>Now you can bring them up by running just this command:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ vagrant up
+</code></pre></div></div>
+
+<p>When all is done, you may ssh into any box by their name like this</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ vagrant ssh admin
+$ # Or any of other boxes: db1, app1, app2
+</code></pre></div></div>
+
+<h1 id="using-centos-vms">Using CentOS VMs</h1>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># This file is to setup CentOS VM servers
+Vagrant.configure("2") do |config|
+  vm_box = "generic/centos7"
+
+  # Server app1 is the admin server. We will also host the DB server here.
+  config.vm.define "app1" do |app1|
+    app1.vm.box = vm_box
+    app1.vm.hostname = 'app1'
+    app1.vm.network "private_network", ip: "192.168.56.201"
+    app1.vm.synced_folder ".", "/vagrant_data"
+    app1.vm.provision "shell", inline: &lt;&lt;-SCRIPT_DOC
+      yum install -y python-virtualenv python36 ansible postgresql
+    SCRIPT_DOC
+    app1.vm.provision "shell", privileged: false, inline: &lt;&lt;-SCRIPT_DOC
+      ssh-keygen -f ~vagrant/.ssh/id_rsa -t rsa -N ''
+      cp -v ~vagrant/.ssh/id_rsa.pub /vagrant_data/app1_id_rsa.pub
+    SCRIPT_DOC
+  end
+
+  # Server app2 is a application workhorse server
+  config.vm.define "app2" do |app2|
+    app2.vm.box = vm_box
+    app2.vm.hostname = 'app2'
+    app2.vm.network "private_network", ip: "192.168.56.202"
+    app2.vm.synced_folder ".", "/vagrant_data"
+    app2.vm.provision "shell", inline: &lt;&lt;-SCRIPT_DOC
+      yum install -y python36
+    SCRIPT_DOC
+    app2.vm.provision "shell", privileged: false, inline: &lt;&lt;-SCRIPT_DOC
+      cat /vagrant_data/app1_id_rsa.pub &gt;&gt; ~vagrant/.ssh/authorized_keys
+      chmod 600 ~vagrant/.ssh/authorized_keys
+      chmod 700 ~vagrant/.ssh
+    SCRIPT_DOC
+  end
+
+  # Server app3 is a application workhorse server
+  config.vm.define "app3" do |app3|
+    app3.vm.box = vm_box
+    app3.vm.hostname = 'app3'
+    app3.vm.network "private_network", ip: "192.168.56.203"
+    app3.vm.synced_folder ".", "/vagrant_data"
+    app3.vm.provision "shell", inline: &lt;&lt;-SCRIPT_DOC
+      yum install -y python36
+    SCRIPT_DOC
+    app3.vm.provision "shell", privileged: false, inline: &lt;&lt;-SCRIPT_DOC
+      cat /vagrant_data/app1_id_rsa.pub &gt;&gt; ~vagrant/.ssh/authorized_keys
+      chmod 600 ~vagrant/.ssh/authorized_keys
+      chmod 700 ~vagrant/.ssh
+    SCRIPT_DOC
+  end
+end
+</code></pre></div></div>
+
+</div>
+
+
+<div class="related">
+  <h2>Related posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2020/09/20/world-of-php/">
+            The World of PHP Development
+            <small>20 Sep 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/09/19/multiple-jquery/">
+            How to Load Multiple jQuery
+            <small>19 Sep 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/08/15/switched-to-vuepress/">
+            Switched Blogging to VuePress
+            <small>15 Aug 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+
+      </div>
+    </div>
+
+    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+    <script src='/public/js/script.js'></script>
+  </body>
+</html>

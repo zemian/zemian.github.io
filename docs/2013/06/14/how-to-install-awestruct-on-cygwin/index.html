@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      How to install awestruct on Cygwin &middot; Zemian's Blog
+    
+  </title>
+
+  
+  <link rel="canonical" href="http://localhost:4000/2013/06/14/how-to-install-awestruct-on-cygwin/">
+  
+
+  <link rel="stylesheet" href="http://localhost:4000/public/css/poole.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/syntax.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/lanyon.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700%7CPT+Sans:400">
+
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/public/apple-touch-icon-precomposed.png">
+  <link rel="shortcut icon" href="http://localhost:4000/public/favicon.ico">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="http://localhost:4000/atom.xml">
+
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-135626598-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  
+</head>
+
+
+  <body>
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p>A weblog on software development.</p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item" href="http://localhost:4000/">Home</a>
+
+    
+
+    
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="http://localhost:4000/about/">About</a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+
+  </nav>
+
+  <div class="sidebar-item">
+    <p>
+      &copy; 2020. All rights reserved.
+    </p>
+  </div>
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <h3 class="masthead-title">
+            <a href="/" title="Home">Zemian's Blog</a>
+            <small>Life in programming world!</small>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+        <div class="post">
+  <h1 class="post-title">How to install awestruct on Cygwin</h1>
+  <span class="post-date">14 Jun 2013</span>
+  <p>How to install <code class="language-plaintext highlighter-rouge">awestruct</code> on Cygwin</p>
+
+<h2 id="how-to-install-awestruct-on-cygwin">How to install <code class="language-plaintext highlighter-rouge">awestruct</code> on Cygwin</h2>
+
+<p>I tried installing <code class="language-plaintext highlighter-rouge">awestruct</code> on Cygwin today, but it failed with following:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    gem install awestruct
+    Building native extensions.  This could take a while...
+    ERROR:  Error installing awestruct:
+            ERROR: Failed to build gem native extension.
+    
+            /usr/bin/ruby.exe extconf.rb
+    checking for libxml/parser.h... *** extconf.rb failed ***
+    Could not create Makefile due to some reason, probably lack of
+    necessary libraries and/or headers.  Check the mkmf.log file for more
+    details.  You may need configuration options.
+</code></pre></div></div>
+<p>I am running Windows 7 with Cygwin 1.7.20 and ruby 1.9.3p392</p>
+
+<p>After looking at the log and googling around, I’ve found that the <code class="language-plaintext highlighter-rouge">awestruct</code> depends on <code class="language-plaintext highlighter-rouge">nokogiri</code>, and in
+turns depends on <code class="language-plaintext highlighter-rouge">libxslt</code>, <code class="language-plaintext highlighter-rouge">libxslt</code> and <code class="language-plaintext highlighter-rouge">iconv</code> native lib. I have the last three
+already installed in Cygwin with default paths, but the problem is they are installed
+under <code class="language-plaintext highlighter-rouge">/usr</code> and not <code class="language-plaintext highlighter-rouge">/usr/local</code>. Because of this, I have to install the <code class="language-plaintext highlighter-rouge">awestruct</code>
+with extra parameters like this:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    gem install awestruct -- --with-xml2-include=/usr/include/libxml2 \
+                            --with-xml2-lib=/usr/lib \
+                            --with-xslt-dir=/usr/include/libxslt \
+                            --with-iconv-include=/usr/include \
+                            --with-iconv-lib=/usr/lib
+</code></pre></div></div>
+<p>Now I am awestruct!</p>
+
+<p>Last updated 2013-06-15 21:51:49 EDT</p>
+
+</div>
+
+
+<div class="related">
+  <h2>Related posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2020/09/20/world-of-php/">
+            The World of PHP Development
+            <small>20 Sep 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/09/19/multiple-jquery/">
+            How to Load Multiple jQuery
+            <small>19 Sep 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/08/15/switched-to-vuepress/">
+            Switched Blogging to VuePress
+            <small>15 Aug 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+
+      </div>
+    </div>
+
+    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+    <script src='/public/js/script.js'></script>
+  </body>
+</html>

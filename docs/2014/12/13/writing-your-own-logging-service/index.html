@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Writing your own logging service? &middot; Zemian's Blog
+    
+  </title>
+
+  
+  <link rel="canonical" href="http://localhost:4000/2014/12/13/writing-your-own-logging-service/">
+  
+
+  <link rel="stylesheet" href="http://localhost:4000/public/css/poole.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/syntax.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/lanyon.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700%7CPT+Sans:400">
+
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/public/apple-touch-icon-precomposed.png">
+  <link rel="shortcut icon" href="http://localhost:4000/public/favicon.ico">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="http://localhost:4000/atom.xml">
+
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-135626598-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  
+</head>
+
+
+  <body>
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p>A weblog on software development.</p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item" href="http://localhost:4000/">Home</a>
+
+    
+
+    
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="http://localhost:4000/about/">About</a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+
+  </nav>
+
+  <div class="sidebar-item">
+    <p>
+      &copy; 2020. All rights reserved.
+    </p>
+  </div>
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <h3 class="masthead-title">
+            <a href="/" title="Home">Zemian's Blog</a>
+            <small>Life in programming world!</small>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+        <div class="post">
+  <h1 class="post-title">Writing your own logging service?</h1>
+  <span class="post-date">13 Dec 2014</span>
+  <p>Application logging is one those things like favorite Editors war: everyone has their own opinions and there are endless of implemenations and flavors out there. Now a days, you likely would want to use something already available such as Log4j or Logback. Even JDK has a built in “java.util.logging” implementation. To avoid couple to a direct logger, many projects would opt to use a facade interface, and there is already couple good ones out there already, such as SLF4J or Apache Common Logging etc.</p>
+
+<p>Despite all these, many project owners still want to try write their own logger service! I wondered if I were to ask and write one myself, what would it be like? So I played around and come up with this simple facade that wraps one of the logger provider (JDK logger in this case), and you can check it out <a href="https://github.com/saltnlight5/java-ee6-examples/tree/master/common-service/src/main/java/zemian/service/logging">here</a>. With my logger, you can use it like this in your application:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> import zemian.service.logging.*;
+ class MyService {
+   static Log LOG = LogFactory.createLog(MyService.class);
+   public void run() {
+     LOG.info(Message.msg("%s service is running now.", this));
+   }
+ }
+</code></pre></div></div>
+<p>Or you can use the Logger wrapper to avoid many imports:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> import zemian.service.logging.Logger;
+ class MyService2 {
+   static Logger LOGGER = new Logger(MyService2.class);
+   public void run() {
+     LOGGER.info("%s service is running now.", this);
+   }
+ }
+</code></pre></div></div>
+<p>Some principles I followed when trying this out:</p>
+
+<ul>
+  <li>Use simple names for different level of messages: error, warn, info, debug and trace (no crazy fine, finer and finest level names.)</li>
+  <li>Seperate Log service from implementation so you can swap provider.</li>
+  <li>Uses Message logging POJO as data encapsulation. It simplifies the log service interface.</li>
+  <li>Use log parameters and lazy format binding to construct log message to speed performance.</li>
+</ul>
+
+<p>Do not go crazy with logging service implemenation make it complex. For example I recommend NOT to mix business logic or data in your logging if possible! If you need custom error codes to be logged for example, you can write your own Exception class and encapsulate there, and then let the logging service do its job: just logging.</p>
+
+<p>Here are some general rules about using logger in your application that I recommend:</p>
+
+<ul>
+  <li>Use <code class="language-plaintext highlighter-rouge">ERROR</code> log messages when there is reallyl a error! Try not to log an “acceptable” error message in your application. Treat an ERROR as critical problem in your application, like if it’s in production, some one should be paged to take care of the problem immediately. Each message should have a full Java stacktrace! Some application might want to assign a unique Error Code to these level of messages for easier identification and troubleshoot purpose.</li>
+  <li>Use <code class="language-plaintext highlighter-rouge">WARN</code> log messages if it’s a problem that’s ignorable during production operation, but not good idea to supress it. Likely these might point to potentially problem in your application or env. Each message should have a full Java stacktrace, if available that is!</li>
+  <li>Use <code class="language-plaintext highlighter-rouge">INFO</code> log messages for admin operators or application monitors peoples to see how your application is doing. High level application status or some important and meaningful business information indicators etc. Do not litter your log with developer’s messages and unessary verbose and unclear message. Each message should be written in clear sentence so operators knows it’s meaningful.</li>
+  <li>Use <code class="language-plaintext highlighter-rouge">DEBUG</code> log messages for developers to see and troubleshoot the application. Use this for critical application junction and operation to show objects and services states etc. Try not to add repeated loop info messages here and litter your log content.</li>
+  <li>Use <code class="language-plaintext highlighter-rouge">TRACE</code> log message for developers to troubleshoot tight for loop and high traffic messages information.</li>
+  <li>You should select a logger provider that let you configure and turn these logging levels ON or OFF (preferrable at runtime if possible as well). Each level should able to automatically suppress all levels below it. And ofcourse you want a logger provider that can handle log message output to STDOUT and/or to FILE as destination as well.</li>
+</ul>
+
+</div>
+
+
+<div class="related">
+  <h2>Related posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2020/09/20/world-of-php/">
+            The World of PHP Development
+            <small>20 Sep 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/09/19/multiple-jquery/">
+            How to Load Multiple jQuery
+            <small>19 Sep 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/08/15/switched-to-vuepress/">
+            Switched Blogging to VuePress
+            <small>15 Aug 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+
+      </div>
+    </div>
+
+    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+    <script src='/public/js/script.js'></script>
+  </body>
+</html>

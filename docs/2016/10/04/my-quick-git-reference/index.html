@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      My Quick Git Reference &middot; Zemian's Blog
+    
+  </title>
+
+  
+  <link rel="canonical" href="http://localhost:4000/2016/10/04/my-quick-git-reference/">
+  
+
+  <link rel="stylesheet" href="http://localhost:4000/public/css/poole.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/syntax.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/lanyon.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700%7CPT+Sans:400">
+
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/public/apple-touch-icon-precomposed.png">
+  <link rel="shortcut icon" href="http://localhost:4000/public/favicon.ico">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="http://localhost:4000/atom.xml">
+
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-135626598-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  
+</head>
+
+
+  <body>
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p>A weblog on software development.</p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item" href="http://localhost:4000/">Home</a>
+
+    
+
+    
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="http://localhost:4000/about/">About</a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+
+  </nav>
+
+  <div class="sidebar-item">
+    <p>
+      &copy; 2020. All rights reserved.
+    </p>
+  </div>
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <h3 class="masthead-title">
+            <a href="/" title="Home">Zemian's Blog</a>
+            <small>Life in programming world!</small>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+        <div class="post">
+  <h1 class="post-title">My Quick Git Reference</h1>
+  <span class="post-date">04 Oct 2016</span>
+  <p>I have started using git and here are some of my frequently used
+commands.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone http://path/to/repo.git  # Retrieve a repo for work (auto checkout master branch into WorkingDir)
+git init                           # Create new repository for work (auto checkout master branch into WorkingDir)
+git init --bare                    # Create new repository without WorkingDir  - bare repo for server share only
+
+git status             # Print current status of the repo
+git branch -a          # List of all branches (including remote branches)
+git tag                # List of all tags
+git log -3                                      # Show last 3 commits
+git log -30 --oneline                           # Show last 30 commits one per line
+git log --decorate --graph --format='%h %an %s' # Show all log messages one per line in a graph
+git log --reverse |head                         # Show first commit message
+git show --stat &lt;sha1&gt; # Show what files changed on a commit
+git diff               # Show diff all files between Index and WorkingDir
+git diff readme.md     # Show diff of a file against Index
+git diff master..topic # Show diff between two branches
+
+git checkout -b topic               # Create a new topic branch and set as current branch
+                                      (New branch starts from previous checkout branch)
+git checkout -b topic origin/topic  # Create a new topic branch and set as current branch
+                                      (New branch starts from origin/topic "remote" branch)
+git branch --move topicA topicB     # Rename a branch
+git branch -d topic                 # Delete a branch (use -D to force it)
+git checkout master                 # Switch to master branch and set as current branch
+git merge topic                     # Merge changes from topic branch onto current branch
+
+git add .                        # Add files to Index
+git add readme.md                # Add one file to Index
+git add -A                       # Add everything to Index
+git commit -m 'topic: my change' # Commit Index changes
+
+git mv oldfile.md newfile.md     # Rename a file
+git rm outdated.md               # Remove a file from Index and WorkingDir
+git rm --cached outdated.md      # Remove a file from Index only (leave it in WorkingDir)
+
+git remote add origin http://path/to/repo.git     # Setup remote repository
+git remote set-url origin http://path/to/repo.git # Update remote repository
+git remote -v                                     # List remote repositories
+
+git push --set-upstream origin topic              # Push branch to remote first time
+git push                                          # Push branch to remote second time
+git push --all                                    # Push all the branches to remote!
+git push origin :topic                            # Push and DELETE the remote branch!
+
+git pull   # Fetch and merge the "auto tracked remote" branch onto current branch
+git fetch  # Fetch only the "auto tracked remote" branch onto current branch
+
+git checkout              # Restore WorkingDir from Index (will not override local modified files!)
+git checkout -- readme.md # Restore a single WorkingDir file from Index
+
+git reset          # Reset the HEAD and Index (same as --mixed)
+git reset --soft   # Reset the HEAD only
+git reset --hard   # Reset the HEAD, Index and WorkingDir!
+
+git reflog         # Inpect any recent transactions and can be use to recover lost (unnamed) commits
+
+git stash          # Put away all pending changes
+git stash pop      # Bring back all pending changes
+git stash list     # List all stashes
+</code></pre></div></div>
+
+</div>
+
+
+<div class="related">
+  <h2>Related posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2020/09/20/world-of-php/">
+            The World of PHP Development
+            <small>20 Sep 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/09/19/multiple-jquery/">
+            How to Load Multiple jQuery
+            <small>19 Sep 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/08/15/switched-to-vuepress/">
+            Switched Blogging to VuePress
+            <small>15 Aug 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+
+      </div>
+    </div>
+
+    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+    <script src='/public/js/script.js'></script>
+  </body>
+</html>

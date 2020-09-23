@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Getting started with Spring JDBC in a web application &middot; Zemian's Blog
+    
+  </title>
+
+  
+  <link rel="canonical" href="http://localhost:4000/2013/10/09/getting-started-with-spring-jdbc-in-a-web-application/">
+  
+
+  <link rel="stylesheet" href="http://localhost:4000/public/css/poole.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/syntax.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/lanyon.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700%7CPT+Sans:400">
+
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/public/apple-touch-icon-precomposed.png">
+  <link rel="shortcut icon" href="http://localhost:4000/public/favicon.ico">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="http://localhost:4000/atom.xml">
+
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-135626598-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  
+</head>
+
+
+  <body>
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p>A weblog on software development.</p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item" href="http://localhost:4000/">Home</a>
+
+    
+
+    
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="http://localhost:4000/about/">About</a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+
+  </nav>
+
+  <div class="sidebar-item">
+    <p>
+      &copy; 2020. All rights reserved.
+    </p>
+  </div>
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <h3 class="masthead-title">
+            <a href="/" title="Home">Zemian's Blog</a>
+            <small>Life in programming world!</small>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+        <div class="post">
+  <h1 class="post-title">Getting started with Spring JDBC in a web application</h1>
+  <span class="post-date">09 Oct 2013</span>
+  <p>I have shown you how to setup a <a href="http://saltnlight5.blogspot.com/2013/10/getting-started-with-annotation-based.html">basic Spring 3 MVC web application</a> in my previous article. Reusing that project setup as template, I will show you how to enhance it to work with JDBC. With this you can store and retrieve data from database. We will add a new controller and a data service through Spring so you can see how Spring injection and annotation configuration works together.</p>
+
+<p>A direct JDBC based application is easy to setup in comparison to a full ORM such as Hibernate. You don’t need to worry AOP, TranactionManager, Entity mapping and full array of other configurations. On top of the JDK’s <code class="language-plaintext highlighter-rouge">java.jdbc</code> API, the Spring comes with <code class="language-plaintext highlighter-rouge">spring-jdbc</code> module that can boots your productively with their well known <code class="language-plaintext highlighter-rouge">JdbcTemplate</code> class. Let’s explore how this can be setup and run as web application.</p>
+
+<h2 id="getting-started-and-project-setup">Getting started and project setup</h2>
+
+<p>For demo purpose, I will use the in-memory version of H2Database as JDBC store. It’s simple to use and setup. And if you decided to use their FILE or TCP based database, you would simply have to re-set the datasource, and you may continue to explore more.</p>
+
+<p>We will start by adding new dependencies to your existing <code class="language-plaintext highlighter-rouge">spring-web-annotation/pom.xml</code> file.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  &lt;dependency&gt;
+   &lt;groupId&gt;com.h2database&lt;/groupId&gt;
+   &lt;artifactId&gt;h2&lt;/artifactId&gt;
+   &lt;version&gt;1.3.163&lt;/version&gt;
+  &lt;/dependency&gt;
+  &lt;dependency&gt;
+   &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+   &lt;artifactId&gt;spring-jdbc&lt;/artifactId&gt;
+   &lt;version&gt;3.2.4.RELEASE&lt;/version&gt;
+  &lt;/dependency&gt;
+</code></pre></div></div>
+
+<p>With this, you will have access to Spring module classes for configuration. Find the previous <code class="language-plaintext highlighter-rouge">src/main/java/springweb/WebApp.java</code> file in your existing project and add what’s new compare to below:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>package springweb;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
+
+import javax.sql.DataSource;
+
+public class WebApp extends AbstractAnnotationConfigDispatcherServletInitializer {
+    @Override
+    protected Class&lt;?&gt;[] getRootConfigClasses() {
+        return new Class&lt;?&gt;[]{ RootConfig.class };
+    }
+
+    @Override
+    protected Class&lt;?&gt;[] getServletConfigClasses() {
+        return new Class&lt;?&gt;[]{ WebAppConfig.class };
+    }
+
+    @Override
+    protected String[] getServletMappings() {
+        return new String[]{ "/" };
+    }
+
+    @Configuration
+    @EnableWebMvc
+    @ComponentScan("springweb.controller")
+    public static class WebAppConfig {
+    }
+
+    @Configuration
+    @ComponentScan("springweb.data")
+    public static class RootConfig {
+      @Bean
+      public DataSource dataSource() {
+        DataSource bean = new EmbeddedDatabaseBuilder()
+          .setType(EmbeddedDatabaseType.H2)
+          .addScript("classpath:schema.sql")
+          .build();
+        return bean;
+      }
+    }
+}
+</code></pre></div></div>
+
+<p>What’s new in here is we introduced a new <code class="language-plaintext highlighter-rouge">RootConfig</code> class that will be loaded inside <code class="language-plaintext highlighter-rouge">getRootConfigClasses()</code> method. The <code class="language-plaintext highlighter-rouge">RootConfig</code> is just another Spring annotation based configuration that creates a new Spring context for bean definitions. We’ve created a bean there that will run the in-memory database. The bean returned by the builder also conveniently implemented the <code class="language-plaintext highlighter-rouge">javax.sql.DataSource</code> interface, so we can actually inject this into any data service and start using it immediately.</p>
+
+<p>One more cool thing about the Spring embedded database builder is that it also runs any SQL script as part of the startup! For this demo, we will create a <code class="language-plaintext highlighter-rouge">PING</code> table in the <code class="language-plaintext highlighter-rouge">src/main/resources/schema.sql</code> file. This file is visible to Spring as in root of the CLASSPATH due to Maven standard source structure.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CREATE TABLE PING (
+  ID INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  TAG VARCHAR(1024) NOT NULL,
+  TS DATETIME NOT NULL
+);
+</code></pre></div></div>
+
+<p>That’s the datasource setup. Now notice that I did not add this datasource Spring bean definition into existing <code class="language-plaintext highlighter-rouge">WebAppConfig</code> class. The reason is that we want a separate Spring context to configure all service level beans, while reserving the <code class="language-plaintext highlighter-rouge">WebAppConfig</code> for all Spring MVC related beans (such as Controller, URL mapping etc). This helps organize your bean definitions in hierarchical order of Spring contexts; with <code class="language-plaintext highlighter-rouge">RootConfig</code> as parent and <code class="language-plaintext highlighter-rouge">WebAppConfig</code> as child layers. This also means that all service beans in <code class="language-plaintext highlighter-rouge">RootConfig</code> are automatically visible to <code class="language-plaintext highlighter-rouge">WebAppConfig</code>; for the purpose of injection etc.</p>
+
+<p>Also notice that with separated config classes, we are able to specify two distinct packages to scan for service components; we use <code class="language-plaintext highlighter-rouge">springweb.controller</code> for <code class="language-plaintext highlighter-rouge">WebAppConfig</code> and <code class="language-plaintext highlighter-rouge">springweb.data</code> for <code class="language-plaintext highlighter-rouge">RootConfig</code>. This is important and it can save you some troubles by letting Spring auto detecting your annotation based components.</p>
+
+<h2 id="creating-data-service">Creating Data Service</h2>
+
+<p>Now it’s time we use the JDBC, so let’s write a data service class under <code class="language-plaintext highlighter-rouge">src/main/java/springweb/data/PingService.java</code> file.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>package springweb.data;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
+
+import javax.sql.DataSource;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+@Repository
+public class PingService {
+    public static Log LOG = LogFactory.getLog(PingService.class);
+
+    private JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    public void setDataSource(DataSource dataSource) {
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
+    }
+
+    public void insert(String tag) {
+        LOG.info("Inserting Ping tag: " + tag);
+        jdbcTemplate.update("INSERT INTO PING(TAG, TS) VALUES(?, ?)", tag, new Date());
+    }
+
+    public List&lt;Map&lt;String, Object&gt;&gt; findAllPings() {
+        return jdbcTemplate.queryForList("SELECT * FROM PING ORDER BY TS");
+    }
+}
+</code></pre></div></div>
+
+<p>The service is very straight forward. I expose two methods: one for insert and one for retrieve all Ping data. Noticed that I used <code class="language-plaintext highlighter-rouge">@Repository</code> to indicate to Spring that this class is a component service that perform data service. Also note how we inject the <code class="language-plaintext highlighter-rouge">DataSource</code> using a setter method, and then instantiate the <code class="language-plaintext highlighter-rouge">JdbcTemplate</code> as member field. From that we can take full advantage of the Spring JDBC API for query and update.</p>
+
+<p>A note on logging. Spring core itself uses Apache <code class="language-plaintext highlighter-rouge">common-logging</code>, so I reused that API without even explicitly declare them in my <code class="language-plaintext highlighter-rouge">pom.xml</code>. If you want to see more details from log output, you should add <code class="language-plaintext highlighter-rouge">log4j</code> logger implementation to the project, and it should automatically work. I will leave that as your exercise.</p>
+
+<p>Next we will need to write a Controller that can bring data to web UI page. We will create this under <code class="language-plaintext highlighter-rouge">src/main/java/springweb/controller/PingController.java</code> file.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>package springweb.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import springweb.data.PingService;
+
+import java.util.List;
+import java.util.Map;
+
+@Controller
+public class PingController {
+
+    @Autowired
+    private PingService pingService;
+
+    @RequestMapping(value="/ping/{tag}", produces="text/plain")
+    @ResponseBody
+    public String pingTag(@PathVariable("tag") String tag) {
+        pingService.insert(tag);
+        return "Ping tag '" + tag + "' has been inserted. ";
+    }
+
+    @RequestMapping(value="/pings", produces="text/plain")
+    @ResponseBody
+    public String pings() {
+        List&lt;Map&lt;String, Object&gt;&gt; result = pingService.findAllPings();
+  if (result.size() == 0)
+   return "No record found.";
+
+        StringBuilder sb = new StringBuilder();
+        for (Map&lt;String, Object&gt; row : result) {
+            sb.append("Ping" + row).append("\n");
+        }
+        return sb.toString();
+    }
+}
+</code></pre></div></div>
+
+<p>In this controller, you can easily see that the Ping data is fetched and updated through our data service by injection. I’ve declared and map URL <code class="language-plaintext highlighter-rouge">/ping/{tag}</code> to insert Ping data into the database. Spring has this very nice shorthand syntax annotation that can extract parameter from your URL path. In this case it let user to pass a simple tag keyword to be inserted as Ping record; so we can identify the source in database.</p>
+
+<p>The other controller handler <code class="language-plaintext highlighter-rouge">/pings</code> URL is very straight forward; it simply returns all the records from PING table.</p>
+
+<p>For demo purpose, I choose to not use JSP as view, but to return plain text directly from the Controller. Spring let you do this by adding <code class="language-plaintext highlighter-rouge">@ResponseBody</code> to the handler method. Notice also we can specify the content type as <code class="language-plaintext highlighter-rouge">text/plain</code> as output directly using the annotation.</p>
+
+<h2 id="testing">Testing</h2>
+
+<p>To see your hard labor with above, you simply need to run the Maven tomcat plugin. The previous article has shown you an command to do that. Once you restarted it, you should able to open a browser and use these URLS for testing.</p>
+
+<ul>
+  <li>
+    <p><a href="http://localhost:8081/spring-web-annotation/ping/tester1">http://localhost:8081/spring-web-annotation/ping/tester1</a></p>
+  </li>
+  <li>
+    <p><a href="http://localhost:8081/spring-web-annotation/ping/tester2">http://localhost:8081/spring-web-annotation/ping/tester2</a></p>
+  </li>
+  <li>
+    <p><a href="http://localhost:8081/spring-web-annotation/ping/tester3">http://localhost:8081/spring-web-annotation/ping/tester3</a></p>
+  </li>
+  <li>
+    <p><a href="http://localhost:8081/spring-web-annotation/pings">http://localhost:8081/spring-web-annotation/pings</a></p>
+  </li>
+</ul>
+
+<h2 id="happing-programming">Happing programming</h2>
+
+<p>From this simple exercise, you can quickly see Spring MVC brings you many benefits; and a lot of fun in developing web application. Spring, by design principles, tends to be developers friendly, boots productivity and un-intrusively in your environment. It’s one of the reason I like to work with it a lot. I hope you enjoy this tutorial and go further explore on your own.</p>
+
+<p>Happy programming!</p>
+
+</div>
+
+
+<div class="related">
+  <h2>Related posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2020/09/20/world-of-php/">
+            The World of PHP Development
+            <small>20 Sep 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/09/19/multiple-jquery/">
+            How to Load Multiple jQuery
+            <small>19 Sep 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/08/15/switched-to-vuepress/">
+            Switched Blogging to VuePress
+            <small>15 Aug 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+
+      </div>
+    </div>
+
+    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+    <script src='/public/js/script.js'></script>
+  </body>
+</html>

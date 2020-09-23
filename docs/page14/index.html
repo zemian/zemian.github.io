@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Zemian's Blog &middot; Life in programming world!
+    
+  </title>
+
+  
+  <link rel="canonical" href="http://localhost:4000/page14/">
+  
+
+  <link rel="stylesheet" href="http://localhost:4000/public/css/poole.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/syntax.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/lanyon.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700%7CPT+Sans:400">
+
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/public/apple-touch-icon-precomposed.png">
+  <link rel="shortcut icon" href="http://localhost:4000/public/favicon.ico">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="http://localhost:4000/atom.xml">
+
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-135626598-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  
+</head>
+
+
+  <body>
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p>A weblog on software development.</p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item active" href="http://localhost:4000/">Home</a>
+
+    
+
+    
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="http://localhost:4000/about/">About</a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+
+  </nav>
+
+  <div class="sidebar-item">
+    <p>
+      &copy; 2020. All rights reserved.
+    </p>
+  </div>
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <h3 class="masthead-title">
+            <a href="/" title="Home">Zemian's Blog</a>
+            <small>Life in programming world!</small>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+        <div class="posts">
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2015/02/09/ee-cdi-better-backend-service-management-through-automatic-service-injection/">
+        EE CDI - Better Backend Service Management through Automatic Service Injection
+      </a>
+    </h1>
+
+    <span class="post-date">09 Feb 2015</span>
+
+    <p>In one of my <a href="http://saltnlight5.blogspot.com/2015/01/ee-servlet-3-how-to-setup-backend.html">previous post</a>, I have introduced the Application class that holds backend services, and we are exposing the services to Servlet by a singleton instance lookup pattern. This usage is very common and the Application class is been used as a global space holder in your application. Starting with EE 6, there is a new spec API introduced called CDI (context dependency injection) that can replace this kind of direct service lookup in your application. The CDI is a Java objects container (services in our case), or sometimes
+ called “beans container” that automatically manged the objects life 
+cycles for you; and then it can “inject” into places where you need 
+them. Using CDI to manage your services can make your Servlet easier to test, and less code to maintain since you don’t have to write and maintain the Application class.</p>
+
+<p>Let’s see how we can turn our previous example to use CDI.</p>
+
+<p>First step is to remove the Application class have have, and to use injection of UserService instead. In our example, we initialize Application in WebAppStartup, so that can be remove; and we will initialize CDI instead. By the spec, all we need is to add a beans XML file in src/main/webapp/WEB-INF folder.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;beans xmlns="http://java.sun.com/xml/ns/javaee"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/beans_1_0.xsd"&gt;
+&lt;/beans&gt;
+</code></pre></div></div>
+<p>That’s all you need to enable CDI in your EE application!</p>
+
+<p>Now how can we do service injection, Inside LoginServlet is where we are using UserService, and that’s where we want CDI to provide us the managed instance of UserService. So refactor UserService and remove Application usage there, but replace with a member field for UserService by injection using the @Inject annotation.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import javax.inject.Inject;
+...
+
+@WebServlet("/login")
+public class LoginServlet  extends HtmlWriterServlet {
+    
+    @Inject
+    private UserService userService;
+
+...
+    private boolean login(HttpServletRequest req) throws IOException {
+        String username = req.getParameter("username");
+        String password = req.getParameter("password");
+        
+        if (userService.validate(username, password)) {
+... 
+</code></pre></div></div>
+<p>There is one more area we need to take care of to complete the refactoring. Our  UserService has a init() method that’s originally called by Application class. But now that we removed it, we need this to be called by CDI container since it now manage the UserSerivce instance lifecycle. And the CDI spec provides us a simple way to use the @PostConstruct annotation to do so.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import javax.annotation.PostConstruct;
+...
+
+public class UserService {
+    ...
+
+    @PostConstruct
+    public void init() {
+...
+</code></pre></div></div>
+<p>That’s all the modifications you need to switch from your custom Application singleton pattern to use CDI to manage your backend services.</p>
+
+<p>One question you might ask is how does CDI know when to create new instance of UserService? The answer is by the @Inject annotation. Upon startup of the CDI container, it scans your application packages to see what’s needed to be injected. It also depends when you needed this service instance to be injected. In our case, it’s inside a Servlet, so it’s not needed until the HTTP request is called for, so CDI will create the new instance under what’s called “Request” scope. The CDI will inject a instance of UserService into LoginServlet right before it’s processing the request.</p>
+
+<p>With CDI available, you will quickly appreciate the power and simplicity of the EE application server. There are many more CDI features you may use in your application; and I hope I have sparked your interests to explore further on your own.</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2015/02/06/ee-jsp-generating-dynamic-content-with-jstl-tag-libraries/">
+        EE JSP - Generating Dynamic Content with JSTL Tag Libraries
+      </a>
+    </h1>
+
+    <span class="post-date">06 Feb 2015</span>
+
+    <p>Besides writing your own <a href="http://saltnlight5.blogspot.com/2015/02/ee-jsp-generating-dynamic-content-with.html">Custom Tags in JSP</a>, you will find that Java EE actually provides a set of Java Standard Tag Library (JSTL) ready for you to use. These built-in tags include repeating (for-loop) tags, if condition tags, variable declaration and output tags etc. The Libraries also come with many utility functions and international message formatting tags. Here is an example how it looks like.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %&gt;
+&lt;%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %&gt;
+&lt;%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %&gt;
+&lt;%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %&gt;
+&lt;%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+    &lt;body&gt;
+        &lt;h1&gt;JSTL Examples&lt;/h1&gt;
+        &lt;h2&gt;List of Application Context: ${applicationScope}&lt;/h2&gt;
+        &lt;table&gt;
+            &lt;c:forEach var="entry" items="${applicationScope}"&gt;
+            &lt;tr&gt;
+                &lt;td&gt;${entry.key}&lt;/td&gt;
+                &lt;td&gt;
+                    &lt;c:out value="${entry.value}"/&gt;
+                &lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;/c:forEach&gt;
+        &lt;/table&gt;
+        
+        &lt;h2&gt;List of Session Context: ${sessionScope}&lt;/h2&gt;
+        &lt;table&gt;
+            &lt;c:forEach var="entry" items="${sessionScope}"&gt;
+            &lt;tr&gt;
+                &lt;td&gt;${entry.key}&lt;/td&gt;
+                &lt;td&gt;
+                    &lt;c:out value="${entry.value}"/&gt;
+                &lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;/c:forEach&gt;
+        &lt;/table&gt;
+        
+        &lt;h2&gt;List of Page Context: ${pageScope}&lt;/h2&gt;
+        &lt;table&gt;
+            &lt;c:forEach var="entry" items="${pageScope}"&gt;
+            &lt;tr&gt;
+                &lt;td&gt;${entry.key}&lt;/td&gt;
+                &lt;td&gt;
+                    &lt;c:out value="${entry.value}"/&gt;
+                &lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;/c:forEach&gt;
+        &lt;/table&gt;
+        
+        &lt;h2&gt;List of Request Context: ${requestSope}&lt;/h2&gt;
+        &lt;table&gt;
+            &lt;c:forEach var="entry" items="${requestSope}"&gt;
+            &lt;tr&gt;
+                &lt;td&gt;${entry.key}&lt;/td&gt;
+                &lt;td&gt;
+                    &lt;c:out value="${entry.value}"/&gt;
+                &lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;/c:forEach&gt;
+        &lt;/table&gt;
+        
+        &lt;h2&gt;List of Query Parameters: ${param}&lt;/h2&gt;
+        &lt;table&gt;
+            &lt;c:forEach var="entry" items="${param}"&gt;
+            &lt;tr&gt;
+                &lt;td&gt;${entry.key}&lt;/td&gt;
+                &lt;td&gt;
+                    &lt;c:out value="${entry.value}"/&gt;
+                &lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;/c:forEach&gt;
+        &lt;/table&gt;
+        
+        &lt;h2&gt;List of Header Parameters: ${header}&lt;/h2&gt;
+        &lt;table&gt;
+            &lt;c:forEach var="entry" items="${header}"&gt;
+            &lt;tr&gt;
+                &lt;td&gt;${entry.key}&lt;/td&gt;
+                &lt;td&gt;
+                    &lt;c:out value="${entry.value}"/&gt;
+                &lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;/c:forEach&gt;
+        &lt;/table&gt;        
+        
+        &lt;h2&gt;List of Cookies: ${cookie}&lt;/h2&gt;
+        &lt;table&gt;
+            &lt;c:forEach var="entry" items="${cookie}"&gt;
+            &lt;tr&gt;
+                &lt;td&gt;${entry.key}&lt;/td&gt;
+                &lt;td&gt;
+                    &lt;c:out value="${entry.value}"/&gt;
+                &lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;/c:forEach&gt;
+        &lt;/table&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+</code></pre></div></div>
+<p>I used the core tag here to display map entries of few implicit variables. You may explore more on those tags declarations I have define on top of the example page from the Spec. These code are from the <a href="https://github.com/saltnlight5/java-ee6-examples/tree/master/jsp-example">jsp-example</a> from GitHub.</p>
+
+<p>GLASSFISH NOTE: When deploying above example in GlassFish 3/4, you will run into a NullPointerException and causing the page resulted in error. It turns out that GF server added a internal variable named com.sun.jsp.taglibraryCache  in ServletContext (Application Scope) that throws NPE when its toString() is called! To workaround this, I created <a href="https://github.com/saltnlight5/java-ee6-examples/blob/master/jsp-example/src/main/webapp/jstl-example2.jsp">jstl-example2.jsp</a> that wraps the ${entry.value} into a custom JSTL function so that it guarantees to return an output without throwing exception. So the lesson learned is that you should always return a String and not throw Exception when overriding toString() of a Java class. It’s just bad practice.</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2015/02/02/ee-jsp-generating-dynamic-content-with-custom-tag-libraries/">
+        EE JSP - Generating Dynamic Content with Custom Tag Libraries
+      </a>
+    </h1>
+
+    <span class="post-date">02 Feb 2015</span>
+
+    <p>When developing View layer in a web application, you want to try not to duplicate content in JSP files as much as possible. The JSP spec API allows you to reduce this duplication by using tag libraries. A custom JSP tag is a user defined xml tag element that you can insert into JSP file to replace with some dynamic content.</p>
+
+<p>Here is an simple <a href="https://github.com/saltnlight5/java-ee6-examples/blob/master/jsp-example/">jsp-example</a> using a custom JSP tag that insert a server time stamp value:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;%@ taglib prefix="myapp" tagdir="/WEB-INF/myappTags" %&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+    &lt;body&gt;
+        &lt;h1&gt;Hello World!&lt;/h1&gt;
+        &lt;p&gt;Page served on &lt;myapp:serverTime pattern="yyyy-MM-dd HH:mm:ss"/&gt;&lt;/p&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+</code></pre></div></div>
+<p>JSP tags can also allow you to pass in parameters as attributes of the tag. In the example above <myapp:serverTime> tag uses a custom pattern attribute to control how the date string should be formatted.</myapp:serverTime></p>
+
+<p>JSP tags can also be nested with sub tags, or any HTML content elements. The nested JSP tags can provide a way for you to conditionally render the enclosed content. Using tag to render conditional content is more verbose due to XML structure, but it eliminates the use of direct Scriptlet code in JSP.</p>
+
+<p>There are two ways you can create custom JSP tags. The first method is to implement the tag using pure Java code and then register it with a XML taglib definition file. I will skip this method for now and show you another easier way.</p>
+
+<p>The second method uses “Tag Files” that are similar to JSP pages to construct a tag (remember that JSP tag is nothing more than just a placeholder for some content!). I am going to show you how the second method is done for above example. First create a serverTime.tag file under your src/main/webapp/WEB-INF/tags/myapp project folder.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;%@ attribute name="pattern" required="true" %&gt;
+&lt;%@ tag import="java.util.Date, java.text.SimpleDateFormat" %&gt;
+&lt;%= new SimpleDateFormat(pattern).format(new Date()) %&gt;
+</code></pre></div></div>
+<p>The Tag File implementation depends on simple convention of file naming and location. Note that the src/main/webapp/WEB-INF/tags directory is a required path. Inside this folder,  you may create any sub folder you want to organize the tag files. In our case, it’s the myapp directory. A Tag File can be just like any JSP file you would normally create, except the tag directives are little different. You can see the JSP spec for a complete list of them. Whatever you output from the Tag File, it will be inserted and replaced the caller of the tag. Notice how I use the pattern attribute parameter to allow user change the date pattern, and it’s available in the Tag File inside the Scriptlet Java code as variable.</p>
+
+<p>Since you can write Tag Files just as you would with JSP, I will again caution the excessive use of Java code Scriptlet even inside Tag Files. If you must call Java code, try to wrap the code and replace by single line call, or write the Tag implementation with pure Java code; especially if you have very complex business logic involve. This would bring debugging much easier on your code and to maintain.</p>
+
+<p>JSP tags provide a powerful way to construct your View layer in the web application. It helps you reuse code or content, and generating a specific piece of response.</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2015/01/25/ee-jsp-the-reversed-jacket-of-servlet/">
+        EE JSP - The Reversed Jacket of Servlet
+      </a>
+    </h1>
+
+    <span class="post-date">25 Jan 2015</span>
+
+    <p>Generating HTML from Servlet is only practical if you have small amount of pages, or needed fine control of the content you are generating, (binary PDF etc). For most application, the output is going to be HTML, and we need a better way to do this; and that’s where the JSP (Java Server Pages) comes in.</p>
+
+<p>With JSP, you write and focus on the HTML content in a file; then only when you needed dynamic or condition logic in between the content, you would insert the Java code, which called the Scriptlet. When the application server process the JSP page, it will automatically generate a Servlet class that write these JSP file’s content out (as you would programatically writing it using PrintWriter as shown in my previous posts). Wherever you have the Scriptlet in JSP, it will be inlined in the generated Servlet class. The generated jsp servlet classes are all managed, compiled and deployed by the application server within your application automatically. In short, the JSP is nothing more than the reverse jacket of the Servlet.</p>
+
+<p>Here is a simple example of JSP that print Hello World and a server timestamp.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+    &lt;body&gt;
+        &lt;p&gt;Hello World!&lt;/p&gt;
+        &lt;p&gt;Page served on &lt;%= new java.util.Date()%&gt;&lt;/p&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+</code></pre></div></div>
+<p>Simply save this as text file named hello.jsp inside your src/main/webapp maven based folder, and it will be runnable within your NetBeans IDE. For JSP, you do not need to configure URL mapping as in Serlvet, and it’s directly accessable from your context path. For example, above should display in your browser by http://localhost:8080/hello.jsp URL.</p>
+
+<p>Notice the example also show how you can embed Java code. You can place a method or object inside &lt;%= %&gt; scriptlet, and it will use the resulted object’s toString() method output to concatenate to the HTML outside the scriptlet tag. You can also define new methods using &lt;%! %&gt; scriptlet tag, or execute any code that does not generate output using &lt;% %&gt; scriptlets. Note that you can add comments in JSP between &lt;%– –%&gt; scriptlet as well.</p>
+
+<p>JSP also allows you to insert “Page Directives” to control how the JSP container render the result. For example, you can change the result content type by insert this on top of the page</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;%@ page contentType="text/txt" %&gt;
+</code></pre></div></div>
+
+<p>Another often used page directive is import Java package so you don’t need to prefix it on each Java statement line.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    &lt;%@ page imporet="java.util.*" %&gt;
+
+     
+
+    ...
+
+     
+
+    &lt;p&gt;Page served on &lt;%= new Date()%&gt;&lt;/p&gt;
+</code></pre></div></div>
+<p>There are many more directives you can use. Checkout the JSP spec doc for more details.</p>
+
+<p>Besides inserting your own Java code, JSP also predefined some variables you may access directly without declaring them. Here is an example that displays most of these built-in implicit variables.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+    &lt;body&gt;
+        &lt;h1&gt;JSP Examples&lt;/h1&gt;
+        &lt;p&gt;Implicit Variables&lt;/p&gt;
+        &lt;table&gt;
+            &lt;tr&gt;
+                &lt;td&gt;Name&lt;/td&gt;&lt;td&gt;Instance&lt;/td&gt;&lt;td&gt;Example&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;applicationScope&lt;/td&gt;&lt;td&gt;${applicationScope}&lt;/td&gt;&lt;td&gt;${applicationScope['myAppName']}&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;sessionSope&lt;/td&gt;&lt;td&gt;${sessionSope}&lt;/td&gt;&lt;td&gt;${sessionSope['loginSession']}&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;pageScope&lt;/td&gt;&lt;td&gt;${pageScope}&lt;/td&gt;&lt;td&gt;${pageScope['javax.servlet.jsp.jspConfig']}&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;requestScope&lt;/td&gt;&lt;td&gt;${requestScope}&lt;/td&gt;&lt;td&gt;${requestScope['foo']}&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;param&lt;/td&gt;&lt;td&gt;${param}&lt;/td&gt;&lt;td&gt;${param['query']}&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;header&lt;/td&gt;&lt;td&gt;${header}&lt;/td&gt;&lt;td&gt;${header['user-agent']}&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;cookie&lt;/td&gt;&lt;td&gt;${cookie}&lt;/td&gt;&lt;td&gt;${cookie['JSESSIONID']}&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;pageContext&lt;/td&gt;&lt;td&gt;${pageContext}&lt;/td&gt;&lt;td&gt;${pageContext.request.contextPath}&lt;/td&gt;
+            &lt;/tr&gt;
+        &lt;/table&gt;
+        &lt;p&gt;Page served on &lt;%= new java.util.Date()%&gt;&lt;/p&gt;
+    &lt;/body&gt;
+&lt;/html&gt;  
+</code></pre></div></div>
+<p>In above example, I accessed the implicit variables using the JSP Expression Language (EL) syntax rather than the &lt;%= %&gt; scriptlet. The EL is more compact and easier to read, however it only can read variable that existed in any of the request, session or application scopes. The EL uses DOT notation to access fields or even nested fields from the object variable; assuming the fields have corresponding getter methods that is. EL can also access map with “myMap[key]” format, or a list with “myList[index]” syntax. Most of these implicit variables can be access as a Map object, and they exposed mainly from the ServletHttpRequest object on the request, as you would from your own Servlet class.</p>
+
+<p>JSP can be seen as a template language in the web application. It helps generate the “VIEW” part of the application. It let you or the authoring in your team to focus on the HTML and look and feel of the content. It can help building larger web application much easier. Be careful about using excessive and complex logic Java code inside your JSP files though, as it will make it harder to debug and read; especially if you have a Java statement that throws an exception. The line number from the stacktrace would be harder to track and match to your Scriptlet code. Also imagine if you start to have JavaScript code inside JSP files, then it can get really messy. Better to keep these in separate files. If you must embed Java code in JSP, try to wrap it in a single line of Java invocation call. Better yet, try to process request using Servlet code, and generate all the data you need to display in JSP by insert them into the request scope space, and then forward to a JSP file for rendering. With this pattern, you can actually limit usage of scriptlet 
+in JSP, and only use EL and JSP tags.</p>
+
+<p>You can find above code in my <a href="https://github.com/saltnlight5/java-ee6-examples/tree/master/jsp-example">jsp-example</a> in GitHub.</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2015/01/16/ee-servlet-3-developing-user-login-with-session-and-filter/">
+        EE Servlet 3 - Developing User Login with Session and Filter
+      </a>
+    </h1>
+
+    <span class="post-date">16 Jan 2015</span>
+
+    <p>I have introduced the Application class in my previous post where you can setup backend services. One example service I added is the UserService. This service will load a Java users properties file that contains username and password sets; and it’s used later to authenticate users to login into the web application. Now I will show how the login part is done using standard Servlet API along with this backend service.</p>
+
+<p>At a high level, what we want is to restrict some web resources (this means certain URLs provided by Servlets such as “/sysprops”, or “/user”) to only client users who are known in our users properties file. Users may identify themself with the matching password. This is typically done with a user login form, authenticate it, then insert a login token into Http Session scope space. This login token then can be used to verify whether to allow users to access the restricted resources or not. We only interested in a single authorization (no roles are defined, and any logged in user may access any protected URLs.)</p>
+
+<p>You have already seen an example that mapped to “/sysprops” URL in one of my previous post provided by the SysPropsServlet, which it simply generate a HTML table of System information. These are sensitive information, so we want to protect this URL. We would need to create a class that implements javax.servlet.Filter interface, and then add the “/sysprops” URL with this filter so it can pre-process the request before the actual Servlet does. This filter gives us a place to inspect the HTTP request object and abort the request if needed to, thus restricting the access.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>package zemian.servlet3example.web;
+
+import java.io.IOException;
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.annotation.WebFilter;
+import javax.servlet.http.HttpServletRequest;
+import zemian.service.logging.Logger;
+
+@WebFilter(urlPatterns={"/sys-props", "/user"})
+public class LoginRequiredFilter implements Filter {
+    private static final Logger LOGGER = new Logger(LoginRequiredFilter.class);
+    public static final String LOGIN_REDIRECT = "LOGIN_REDIRECT";
+   
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
+    }
+
+    @Override
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+        if (request instanceof HttpServletRequest) {
+            HttpServletRequest req = (HttpServletRequest) request;
+            LOGGER.trace("Checking LoginSession token for uri=%s", req.getRequestURI());
+            LoginSession loginSession = LoginServlet.getOptionalLoginSession(req);
+            if (loginSession == null) {
+                LOGGER.debug("No LoginSession token found; forwarding request to login page.");
+                // We need to save the old URI so we can auto redirect after login.
+                req.setAttribute(LOGIN_REDIRECT, req.getRequestURI());
+                req.getRequestDispatcher("/login").forward(request, response);
+                return;
+            } else {
+                LOGGER.debug("Request allowed using LoginSession token=%s", loginSession.getId());
+            }
+        }
+        chain.doFilter(request, response);
+    }
+
+    @Override
+    public void destroy() {
+    }
+
+}
+</code></pre></div></div>
+<p>Notice that you can configure this filter to match more than one URL that you want to protect. You can even use wildcard pattern such as “/*” and it will protect every URLs in your application! The filter simply looks into the Http Session space for a LoginSession object that we will create later. If it’s found then it let the request through, otherwise it will redirect to a Login form page, which is served by LoginServlet class (notice the RETURN statement for early exit of the filter method without calling the filter chain!).</p>
+
+<p>The LoginServlet class is a form processing Servlet that will prompt user for username and password. If it succeed, then we will insert the LoginSession token object into the HttpSession space space, which is what the filter above is looking for. Here is the processing Servlet code.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>package zemian.servlet3example.web;
+
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import zemian.service.logging.Logger;
+import zemian.servlet3example.service.Application;
+import zemian.servlet3example.service.UserService;
+
+@WebServlet("/login")
+public class LoginServlet  extends HtmlWriterServlet {
+    private static final Logger LOGGER = new Logger(LoginServlet.class);
+    
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        HtmlWriter html = createHtmlWriter(req, resp); 
+        String message;
+        
+        // Check to see if we are doing logout or not.
+        LoginSession loginSession = getOptionalLoginSession(req);
+        if (loginSession != null &amp;&amp; req.getParameter("logout") != null) {
+            logout(req);
+            message = "Your have successfully logged out.";
+        } else {    
+            message = (String)req.getAttribute("message");
+            if (message == null)
+                message = "";
+        }   
+        
+        // Show a login form
+        String redirectUri = (String)req.getAttribute(LoginRequiredFilter.LOGIN_REDIRECT);
+        String redirectHtmlTag = "";
+        if (redirectUri != null) {
+            redirectHtmlTag = "&lt;input type='hidden' name='redirectUri' value='" + redirectUri + "'/&gt;";
+        }
+        html.header()
+            .h(1, "Please Login")
+            .p(message)
+            .println("&lt;form method='post' action='login'&gt;")
+            .println(redirectHtmlTag)
+            .println("&lt;p/&gt;Username: &lt;input type='text' name='username'/&gt;")
+            .println("&lt;p/&gt;Password: &lt;input type='password' name='password'/&gt;")
+            .println("&lt;p/&gt;&lt;input type='submit' value='Submit'/&gt;")
+            .println("&lt;/form&gt;")
+            .footer();
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        LOGGER.debug("Processing login form.");
+        if (login(req)) {
+            // Login succeed, we should auto redirect user if exists.
+            String redirectUri = req.getParameter("redirectUri");
+            if (redirectUri != null) {
+                LOGGER.debug("Redirect after login to: %s", redirectUri);
+                resp.sendRedirect(redirectUri);
+                return;
+            }
+        }
+        
+        // Show the form again in case login failed or user didn't provide a redirect
+        doGet(req, resp);
+    }    
+       
+    protected LoginSession createLoginSession(HttpServletRequest req, String username) {
+        LoginSession result = new LoginSession(username);
+        req.getSession(true).setAttribute(LoginSession.LOGIN_SESSION_KEY, result);
+        return result;
+    }
+    
+    protected void removeLoginSession(HttpServletRequest req) {
+        HttpSession session = req.getSession(false);
+        if (session != null) {
+            session.removeAttribute(LoginSession.LOGIN_SESSION_KEY);
+        }
+    }
+
+    private boolean login(HttpServletRequest req) throws IOException {
+        String username = req.getParameter("username");
+        String password = req.getParameter("password");
+        
+        UserService userService = Application.getInstance().getUserService();
+        if (userService.validate(username, password)) {
+            LOGGER.info("User %s logged in successfully.", username);
+            // Create Session Data here after successful authenticated.
+            LoginSession loginsession = getOptionalLoginSession(req);
+            if (loginsession == null) {
+                createLoginSession(req, username);
+                req.setAttribute("message", "You have successfully logged in.");
+            } else {
+                req.setAttribute("message", "You already have logged in.");             
+            }
+        } else {
+            LOGGER.info("User %s failed to login.", username);
+            req.setAttribute("message", "Invalid login.");
+        }
+        return true;
+    }
+    
+    /** Return LoginSession if found in HttpSession scope, else return NULL value. */
+    public static LoginSession getOptionalLoginSession(HttpServletRequest req) {
+        LoginSession result = null;
+        HttpSession session = req.getSession(false);
+        if (session != null)
+            result = (LoginSession)session.getAttribute(LoginSession.LOGIN_SESSION_KEY);
+        return result;
+    }
+}
+</code></pre></div></div>
+<p>Inside LoginServlet class is where we use the UserService service to validate username and password. We display the login form with a GET request, and then process the login with a POST action. Once username and password are checked, we create the LoginSession object. This is just a simple POJO to represent a session token; and you can hold any user information you want. I won’t list here, but you can browse it on GitHub. Note that you should make it serializable though, because any data stored in HttpSession may be subject to be serialize/deserialize by your application server.</p>
+
+<p>Notice also that I have implemented the Logout functionality into the LoginServlet class
+ as well. You simply pass “logout” query parameter, and it will be 
+detected and remove the login token from the session. Ensure you invalid
+ the HttpSession itself when you do this, just to be in clean side. I 
+also exposed a static helper <code class="language-plaintext highlighter-rouge">getOptionalLoginSession</code></p>
+
+<p>that is used between few of the classes to check whether user has logged in or not.</p>
+
+<p>These few classes are simple but yet demonstrated the use of Servlet Filter and Servlet on how to manage Session data. This programming pattern allows users to have their own browsing session and privacy through the application.</p>
+
+<p>If you are to run my <a href="https://github.com/saltnlight5/java-ee6-examples/tree/master/servlet3-example">servlet3-example</a>  in a GlassFish server, you may login using any users listed in <a href="https://github.com/saltnlight5/java-ee6-examples/blob/master/servlet3-example/src/main/resources/zemian/servlet3example/service/users.properties">here</a>.</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2015/01/09/ee-servlet-3-how-to-setup-backend-services-in-a-web-application/">
+        EE Servlet 3 - How to Setup Backend Services in a Web Application
+      </a>
+    </h1>
+
+    <span class="post-date">09 Jan 2015</span>
+
+    <p>In a web application, providing user interfacing (UI) is often only half of the job. Many applications have requirements that’s supported by backend services. Some example of backend services are scheduler process (batch processing), listen to a queue and respond when messages come in, or simple thing such as storing information for the entire application to use. These global data often needs to be shared between all Servlet (for each request processor) classes. Here I will show you how and where you should add such backend services in a Servlet based application.</p>
+
+<p>Before we begin though, I would like to explain how a Servlet application store data variables (after all backend services are just simply Java objects). There are 3 major areas where you can add and share data (we sometimes call these areas in different “space”, “scope” or “context”). You may also think of each of these area as a hash Map with unique keys and data values.</p>
+
+<ol>
+  <li>Application scope - This is a global, application wide storage map space that’s allocated for your instance of web application. Each web application will have its unique space. Even if you deploy the same WAR file into a a domain server, they each will get their own space. You can get a hold of this space by implementing javax.servlet.ServletContextListener interface. This interface also has two callback methods that will get invoked when your application is starting (init) or shutting down (destroy). In these method you can do your own one-time application or services setup and clean up logic. You can store any Java objects by using ServletContext#setAttribute(key, value) method. This storage is not persistent externally but only in server memory. So the more you add to it, the more memory you will need (usually you only want to hold the the references to your service objects, so typically don’t have memory issue). This is the location where you should create backend services and initialize it, then add the instances to the space so you may retrieve it later.</li>
+</ol>
+
+<p>You may also use the Singleton Pattern to create a Application wide context area to hold your own business services as space, but you will still need ServletContextListener if you need to initialize it in a web application environment.</p>
+
+<ol>
+  <li>Request scope - This is a single HTTP request process storage map space, exits only for a specific request, or tempory. This map space is also not persistent. You will have access to this space inside your Servlet code by handling one of the HTTP action method. You will add data by using HttpServletRequest#setAttribute(key, value) method. Usually these stored data is used to pass to a VIEW processing layer (such as JSP) to construct HTML output. You have already seen some of my preview post that uses this inside a Servlet component.</li>
+</ol>
+
+<p>Note also that inside a Servlet method that process a request, you will also have access to the Application space method above by using HttpServletRequest#getServletContext()#getAttribute(key) method.</p>
+
+<ol>
+  <li>Session scope - This is a special space where you can track a specific user interacations to the applicatoin as a series of conversation requests, or so call a user session. Remember that a HTTP request is stateless, so you will need this space if you want to store some data to share between multiple requests, but they should be isolated for each client browser user. This is usually used when  implementing user login and resource restriction in an application. You can add to this space using the HttpServletRequest#getSession(true)#setAttribute(key, value) method in a Serlvet class. The application server will automatically return you the same session object or space everytime for that specific client user</li>
+</ol>
+
+<p>Handling user session can be tricky though, so you’ll have to spend time and carefully designing your application to implement the proper solution for your need. I will write a seperate post on how to use Session scope in future, but for now I can show you an exmaple of how I initialize my web Application with custom services inside. You can find this code in my <a href="https://github.com/saltnlight5/java-ee6-examples/tree/master/servlet3-example">servlet3-example</a>.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>package zemian.servlet3example.web;
+
+import javax.servlet.ServletContext;
+import zemian.servlet3example.service.Application;
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
+import javax.servlet.annotation.WebListener;
+import zemian.service.logging.Logger;
+
+@WebListener
+public class WebAppStartup implements ServletContextListener {
+    private static final Logger LOGGER = new Logger(WebAppStartup.class);
+
+    @Override
+    public void contextInitialized(ServletContextEvent event) {
+        LOGGER.debug("WebApp is starting up.");
+        Application app = Application.getInstance();
+        app.init();
+                
+        // Store the app instances.        event.getServletContext().setAttribute(Application.SERVLET_CONTEXT_KEY, app);
+        LOGGER.info("WebApp initialized.");        
+    }
+
+    @Override
+    public void contextDestroyed(ServletContextEvent event) {
+        Application app = Application.getInstance();
+        app.destroy();
+        LOGGER.info("WebApp destroyed.");
+    }
+}
+</code></pre></div></div>
+<p>With this in place, I can easily add any custom business backend services inside the Application class, and and then have any of the Servlet code access it. Notice that I am using Servlet 3’s @WebListener annotation so there is no config is needed. You simply package along your WAR application and it will be detected by your EE application server!</p>
+
+<p>NOTE: Try to use Application as holder class only and not place any logic in it. With EE 6, you can easily replace this with CDI bean injection as alternate solution.</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2015/01/06/ee-servlet-3-simple-form-processing/">
+        EE Servlet 3 - Simple Form Processing
+      </a>
+    </h1>
+
+    <span class="post-date">06 Jan 2015</span>
+
+    <p>Form handling in web application is like bread and butter for most Web developers. It will not be much use if we can not capture users input and process it. So I have included a simple <a href="https://github.com/saltnlight5/java-ee6-examples/blob/master/servlet3-example/src/main/java/zemian/servlet3example/web/FormServlet.java">FormServlet</a>in my servlet3-example  that demonstrated few frequently used form inputs you might encounter. Here is how it looks like:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>package zemian.servlet3example.web;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import zemian.service.logging.Logger;
+
+@WebServlet("/form")
+public class FormServlet extends HtmlWriterServlet {
+    private static final Logger LOGGER = new Logger(FormServlet.class);
+    
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        HtmlWriter html = createHtmlWriter(req, resp);    
+        String message = getMessage(req);
+        
+        html.header()
+            .h(1, "User Data Form")
+            .p(message)
+            .println("&lt;form method='post' action='form'&gt;")
+            .println("&lt;p/&gt;Username: &lt;input type='text' name='username'/&gt;")
+            .println("&lt;p/&gt;Password: &lt;input type='password' name='password'/&gt;")
+            .println("&lt;p/&gt;Choose a country: &lt;select name='country' size='1'&gt;")
+            .println("&lt;option default='true'&gt;US&lt;/option&gt;")
+            .println("&lt;option&gt;China&lt;/option&gt;")
+            .println("&lt;option&gt;Korea&lt;/option&gt;")
+            .println("&lt;/select&gt;")
+            .println("&lt;p/&gt;Skills set: &lt;input type='checkbox' name='skills' value='Java'/&gt; Java")
+            .println("&lt;input type='checkbox' name='skills' value='Java EE'/&gt;Java EE")
+            .println("&lt;input type='checkbox' name='skills' value='MySQL Database'/&gt; MySQL Database")
+            .println("&lt;p/&gt;Notes: &lt;textarea name='notes' cols='50' rows='3'&gt;&lt;/textarea&gt;")
+            .println("&lt;p/&gt;&lt;input type='submit' value='Submit'/&gt;")
+            .println("&lt;/form&gt;")
+            .println(html.link("Back to Home", "/index"))
+            .footer();
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        LOGGER.info("Processing form.");
+        Form form = new Form();
+        form.setUsername(req.getParameter("username"));
+        form.setPassword(req.getParameter("password"));
+        form.setNotes(req.getParameter("notes"));
+        form.setCountry(req.getParameter("country"));
+        String[] skills = req.getParameterValues("skills");
+        skills = (skills == null) ? new String[0] : skills;
+        form.setSkills(Arrays.asList(skills));
+        req.setAttribute("message", "Processed: " + form);
+        doGet(req, resp);
+    }
+   
+    private String getMessage(HttpServletRequest req) {
+        String message = (String)req.getAttribute("message");
+        if (message ==  null) {
+            message = "";
+        }
+        return message;
+    }
+}
+</code></pre></div></div>
+<p>As usual, most forms are display with a http GET request and then process it with a POST action. Take a closer look, and pay close attention to how Servlet handle single vs multi values inputs. These exist because HTML form might allow users to choose multiple values from a single input tag/widget.</p>
+
+<p>One common pattern developers do in form handling is to capture the input data into a “command object”, “transfer object”, or (in my example) “form” object; so that data can be pass into another layer of your application for further processing. This is a good design becuase it decouples the Web layer dependencies from your backend tier service layers.</p>
+
+<p>Another frequent dealt with area in form processing is data validation. If you capture your data as form object, then you will likely have two layers of validations. One layer is when you extract it right off the http request (usually from a String input), then you would validate such as is it a required field or optional, is the String value convertable to the expected and desiable type (integer or date etc). Second layer of validation might be further down in your service layer where you already have the form object constructed with correct types, but their values might not be valid per your application requirement. Most common invalid data is due to not conforming to the database constraints and thus not able to persist it. I didn’t provide example above on validation, but you can eaisly improve the Servlet and further explore this on your own.</p>
+
+<p>I like to mention one more note. There are many Java web frameworks out there that focus a LOT of attention on form handling, and they ought to help you develop application easier with less duplicated code. It is done usually with a very concrete programming model and style that, in many cases, shield you away from seing the HttpServletRequest object completly. All these are good (assuming the framework is a good quality one), but keep in mind that majority of cases when there is a problem occur, it’s mostly at the framework specific layer, or even more likely your own code that use the framwork. And then you will be spending most of your debugging time learning the framework specific domain, rather than the Servlet spec layer.</p>
+
+<p>For my example purpose I am trying to focus on EE API alone, so I will stay away from any extra frameworks other than the standard API. If you are a beginner, I strongly encourage you to study the Servlet API and see how form is handled, this gives you a more solid understanding of how the data come about in a web application. If you look further into the Java EE stack, it actually already has a framework that’s called JSF as part of EE 6 standards. It’s design is to help construct web pages as components model; and it lets you capture form data and automatically bind to a bean object in a much more smoother and integrated fashion. JSF is worthy of its own topic for future posts.</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2015/01/01/ee-serlvet-3-generating-html-output-in-servlet/">
+        EE Serlvet 3 - Generating HTML output in Servlet
+      </a>
+    </h1>
+
+    <span class="post-date">01 Jan 2015</span>
+
+    <p>If you just need to handle a handful of requests URI in your EE web module, then it might be easier to generate your own HTML response in your Servlet code instead of using a full blown template library. As part of my examples, I tried out a very simple Java DSL that generate html output when writing your own Serlvet. The code looks like this:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>package zemian.servlet3example.web;
+
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet("/index")
+public class IndexServlet extends HtmlWriterServlet {
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        HtmlWriter html = createHtmlWriter(req, resp);
+        String message = getMessage(req, html);
+        
+        html.header()
+            .h(1, "Welcome to Servlet 3 Example")
+            .p("Let's explore Java Servlet 3.x Features.")
+            .p(message)
+            .ul(
+                html.link("Index", "/index"),
+                html.link("Hello", "/hello"),
+                html.link("Sys Props", "/sys-props")
+            )
+            .footer();
+    } 
+}
+</code></pre></div></div>
+<p>I wrote a base HtmlWriterServlet class that provide a method where you can get an instance of a HtmlWriter builder. The benefit of wrapping the HTML like builder is that it’s more easier to read and helps generate correct well form tags. For example the “ul” and “table” accepts Java List or Map object, and it generates the correct html tags.</p>
+
+<p>Here is another example how I generate a table view of Java System Properties page with few lines of code:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>package zemian.servlet3example.web;
+
+import java.io.IOException;
+import java.util.TreeMap;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet("/sys-props")
+public class SysPropsServlet extends HtmlWriterServlet {
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        HtmlWriter html = createHtmlWriter(req, resp);
+        TreeMap sysProps = new TreeMap(System.getProperties());
+        html.header()
+            .h(1, "Java System Properties")
+            .table(sysProps)
+            .footer();
+    }
+}
+</code></pre></div></div>
+<p>The simple <a href="https://github.com/saltnlight5/java-ee6-examples/blob/master/servlet3-example/src/main/java/zemian/servlet3example/web/HtmlWriter.java">HtmlWriter</a>class provide few html builder methods and it can help generate HTML links with relative context paths. You can easily further improve it to help generate more HTML code such as form tags etc.</p>
+
+<p>Also, note that ServletResponse object let you have full control on writing custom responses, so you are not restricted to only returing HTML. You can write binary output such as PDF or even MP3 files. You simply need to control the Response Writer and the correct corresponding content mime type and size that will return.</p>
+
+<p>You can get these code at <a href="https://github.com/saltnlight5/java-ee6-examples/tree/master/servlet3-example">servlet3-example</a></p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2014/12/27/ee-servlet-3-getting-started-with-web-application-module-and-a-landing-page/">
+        EE Servlet 3 - Getting started with web application module and a landing page
+      </a>
+    </h1>
+
+    <span class="post-date">27 Dec 2014</span>
+
+    <h2 id="getting-started-with-servlet-3">Getting started with Servlet 3</h2>
+
+<p>Web application module in Java EE is probably the most common type of application module that a developer would encounter and work on. That’s because not only it can provide users the UI, but it also supoprt many common web application patterns: Model View Controller, Filter, Session, Context Listener, Http Request, Paramters, Query, and Form handling, Http Response writer, redirect, error etc. You can do all these with Servlet spec alone, so getting to know it well is an important part of learning in writing good web application.</p>
+
+<p>Servlet has been around for a long time, and many developers are already familiar with it. There are many other web frameworks such as Tapestry or Spring MVC that are built on top of Servlet. These frameworks provide separate programming models that suppose to easy development process, but nontheless the core concept is still based on the Servlet technologies (or at least tightly integrated if it were to run by any web container server). In this post, I will try to highlight how to get a web module application started, and configure a typical need: a default landing page.</p>
+
+<h2 id="hello-world">Hello World</h2>
+
+<p>Like many things in EE environment, you would write small components as Java class and then deploy them onto a server and let the server manage it’s lifecycle and execution. So as with Servlet, you would write a simple Java class that implements Servlet interface, package it and deploy, and server will do it’s magic.</p>
+
+<p>Before Servlet 3.0, your servlet component is configured and mapped in web.xml file, but now you can just add an annotation directly on your servlet class and the app server should be able to automatically deploy and run it. Here is an example of a classic hello world.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>package zemian.servlet3example.web;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet("/hello")
+public class HelloServlet extends HttpServlet {
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        PrintWriter writer = resp.getWriter();
+        writer.println("&lt;!DOCTYPE html&gt;");
+        writer.println("&lt;html&gt;");
+        writer.println("&lt;body&gt;");
+        writer.println("&lt;p&gt;Hello World!&lt;/p&gt;");
+        writer.println("&lt;/body&gt;");
+        writer.println("&lt;/html&gt;");
+    }
+}
+</code></pre></div></div>
+<p>In this Servlet, I simply extends an existing base 
+HttpServlet class that should be available in all Serlvet spec. and in 
+response to a http GET request, I write a Hello World message out 
+as html response.</p>
+
+<p>You may find above code in  <a href="https://github.com/saltnlight5/java-ee6-examples/tree/master/servlet3-example">servlet3-example</a>. Build and deploy it and then you can access it with http://localhost/servlet3-exmaple/hello. (I have many other servlet examples in the project, but you may just concentrate in this class for now.)</p>
+
+<h2 id="how-to-configure-a-default-landing-page-in-servlet-3">How to configure a default landing page in Servlet 3</h2>
+
+<p>A typical application server will likely default a landing page to “index.html” or “index.jsp” if it exists. For example, if I have written a IndexSerlvet class and mapped to “/index” instead, then you need to tell the server default to there. This will happen if users only type http://localhost/servlet3-example with context path in URL only.</p>
+
+<p>Despite you can can do just about most things in Java annotations with Servlet 3.0 as equivalent to the content found web.xml file, but not the welcome file though. So to do this, you would still need to create this good old web.xml. Here is an example</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" 
+         version="3.0"&gt;
+    &lt;welcome-file-list&gt;
+        &lt;welcome-file&gt;index&lt;/welcome-file&gt;
+    &lt;/welcome-file-list&gt;
+&lt;/web-app&gt;
+</code></pre></div></div>
+<p>Above example will default the landing page to a Servlet url mapping with “/index” path.</p>
+
+<p>TIPS: Do NOT to use “/” prefix when definining welcome-file element, else you will get a page not found error and likely your server won’t even print any error message in the log!</p>
+
+<p>Another alternate solution instead of overrite welcome-file is simply add a “index.jsp” file in root of webapp folder and do a redirect like this:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;% response.sendRedirect(request.getContextPath() + "/index"); %&gt;
+</code></pre></div></div>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2014/12/21/developing-java-ee-applications-with-maven-netbeans-and-glassfish/">
+        Developing Java EE applications with Maven, NetBeans and Glassfish
+      </a>
+    </h1>
+
+    <span class="post-date">21 Dec 2014</span>
+
+    <p>I have been working with EE 6 stack lately, and I find it quite pleasant and productive. For my own learning purpose, I intend to explore more deeper on some of the major components available on the EE stack.</p>
+
+<p>I have started a <a href="https://github.com/saltnlight5/java-ee6-examples">java-ee6-examples</a> project in GitHub, and I plan to add my examples and working demo code there, along with some blog posts whenever I can. The project is seperated into sub-modules that a typical EE application would organized: a parent module, a common library jar module and one or more web modules etc. The project is buildable using <a href="http://maven.apache.org/">Maven 3 tool</a> on command line, and you may use any major IDE that supports Maven (I will try out NetBeans for these demos).</p>
+
+<p>I will also be testing my examples application mainly on Glassfish Server. Glassfish Server is an open source EE application server, and 
+its current 4.x release supports EE 7 already (GF 3.x is for EE 6). We should able to run
+ any EE 6 applications on GF 4.x without much problems, so for my learning purpose, I will restrict my examples to use EE 6 for now (you will notice that I have to set EE 6 version as dependency in Maven pom file!)</p>
+
+<p>So if you are interested in these, watch this blog for future updates.</p>
+
+<p>To help you started with EE development, I jot down few useful links here.</p>
+
+<p>Downloads:</p>
+<ul>
+  <li><a href="http://www.oracle.com/technetwork/java/javase/downloads/java-archive-downloads-javase7-521261.html">JDK 7</a></li>
+  <li><a href="https://netbeans.org/downloads/">NetBeans IDE</a></li>
+  <li>
+    <p><a href="https://glassfish.java.net/download.html">Glassfish Application Server</a></p>
+
+    <p>(Oracle also provides <a href="http://www.oracle.com/technetwork/java/javaee/downloads/index.html">convenient package download</a> that includes all 3 above<a href="http://www.oracle.com/technetwork/java/javaee/downloads/index.html">http://www.oracle.com/technetwork/java/javaee/downloads/index.html</a>!)</p>
+  </li>
+</ul>
+
+<p>References:</p>
+<ul>
+  <li><a href="https://docs.oracle.com/javaee/6/tutorial/doc/">EE 6 Tutorial</a></li>
+  <li><a href="http://www.oracle.com/technetwork/java/javaee/tech/javaee6technologies-1955512.html">EE 6 Technologies</a></li>
+  <li><a href="http://docs.oracle.com/javaee/6/api/">EE 6 API</a></li>
+  <li><a href="http://docs.oracle.com/javase/7/docs/api/">JDK 7 API</a></li>
+</ul>
+
+  </div>
+  
+</div>
+
+<div class="pagination">
+  
+    <a class="pagination-item older" href="http://localhost:4000/page15">Older</a>
+  
+  
+    
+      <a class="pagination-item newer" href="http://localhost:4000/page13">Newer</a>
+    
+  
+</div>
+
+      </div>
+    </div>
+
+    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+    <script src='/public/js/script.js'></script>
+  </body>
+</html>

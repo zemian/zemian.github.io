@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Zemian's Blog &middot; Life in programming world!
+    
+  </title>
+
+  
+  <link rel="canonical" href="http://localhost:4000/page10/">
+  
+
+  <link rel="stylesheet" href="http://localhost:4000/public/css/poole.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/syntax.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/lanyon.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700%7CPT+Sans:400">
+
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/public/apple-touch-icon-precomposed.png">
+  <link rel="shortcut icon" href="http://localhost:4000/public/favicon.ico">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="http://localhost:4000/atom.xml">
+
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-135626598-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  
+</head>
+
+
+  <body>
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p>A weblog on software development.</p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item active" href="http://localhost:4000/">Home</a>
+
+    
+
+    
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="http://localhost:4000/about/">About</a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+
+  </nav>
+
+  <div class="sidebar-item">
+    <p>
+      &copy; 2020. All rights reserved.
+    </p>
+  </div>
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <h3 class="masthead-title">
+            <a href="/" title="Home">Zemian's Blog</a>
+            <small>Life in programming world!</small>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+        <div class="posts">
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2016/06/26/example-of-mysql-stored-procedure-to-insert-from-a-select-cursor-values/">
+        Example of MySQL stored procedure to INSERT from a SELECT cursor values
+      </a>
+    </h1>
+
+    <span class="post-date">26 Jun 2016</span>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>DELIMITER //
+DROP PROCEDURE IF EXISTS proc_hotfix1 //
+CREATE PROCEDURE proc_hotfix1()
+BEGIN
+  DECLARE flag INT DEFAULT 0;
+  DECLARE CID VARCHAR(64);
+  DECLARE LOGIN VARCHAR(1000);
+  DECLARE cur1 CURSOR FOR 
+    SELECT CID, LOGIN FROM MYUSER WHERE LOGIN LIKE 'bad.guy%';
+
+  OPEN cur1;
+  REPEAT
+    FETCH cur1 INTO CID, LOGIN;
+    INSERT INTO hotfix1(id,f1) VALUES (CID, LOGIN);
+  UNTIL flag
+  END REPEAT;
+  CLOSE cur1;
+END //
+
+DELIMITER ;
+DROP TABLE IF EXISTS hotfix1;
+CREATE TABLE hotfix1(
+  id VARCHAR(64) KEY
+  ,f1 VARCHAR(1000)
+  ,f2 VARCHAR(1000)
+  ,f3 VARCHAR(1000)
+);
+CALL proc_hotfix1();
+SELECT COUNT(*) FROM hotfix1;
+SELECT * FROM hotfix1;
+</code></pre></div></div>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2016/06/17/how-to-install-zoom-conference-on-ubuntu-14-04-lts/">
+        How to install Zoom conference on Ubuntu 14.04 LTS
+      </a>
+    </h1>
+
+    <span class="post-date">17 Jun 2016</span>
+
+    <ol>
+  <li>
+    <p>Download latest z<code class="language-plaintext highlighter-rouge">oom_2.0.52458.0531_amd64.deb</code> package from https://zoom.us/download</p>
+  </li>
+  <li>
+    <p>Run</p>
+
+    <p>bash&gt; sudo dpkg -i zoom_2.0.52458.0531_amd64.deb</p>
+  </li>
+  <li>
+    <p>Even though the package installed complete, you will see error messages if you have a 64-bit OS because Zoom has other dependencies that’s not met. And the above command will setup the apt-get to auto fetch the failed dependencies if you simply run the following next:</p>
+
+    <p><code class="language-plaintext highlighter-rouge">bash&gt; sudo apt-get -f install</code></p>
+  </li>
+</ol>
+
+<p>That’s it! Your zoom should be ready to go! Try to start Zoom by press Super + A, then type in “Zoom”.</p>
+
+<p>Extra: To Verify Installation, you may run:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>`bash&gt; dpkg -l |grep zoom`
+</code></pre></div></div>
+
+<p>UPDATE:</p>
+
+<p>The exact same steps can be used to install the Skype skype-ubuntu-precise_4.3.0.37-1_i386.deb on Ubuntu.</p>
+
+<p>NOTE: If you have errors running steps above, it’s very likely you have upgraded your kernel or added extra repositories into apt-get that’s causing all the package dependencies conflict. Try to revert back to original Ubuntu 14.04 install state and these steps should get you running!</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2016/06/16/how-to-manually-test-a-datasource-connection-in-weblogic/">
+        How to manually test a DataSource connection in WebLogic
+      </a>
+    </h1>
+
+    <span class="post-date">16 Jun 2016</span>
+
+    <p>When you creating new DataSource in WLS, it allows you to test the
+connectivity. However after you have created it, the test button is
+kinda hidden in a non-obvious way. This is how I get to it and test an
+existing DataSource that have targeted a server.</p>
+
+<ol>
+  <li>
+    <p>Login to Admin Console (eg: <a href="http://localhost:7100/console">http://localhost:7100/console</a>)</p>
+  </li>
+  <li>
+    <p>On the Domain Structure left panel, click:    
+<code class="language-plaintext highlighter-rouge">&lt;my\_domain\_name&gt;</code> (eg: DefaultDomain) &gt; Services &gt; Data
+Sources</p>
+  </li>
+  <li>
+    <p>On the right, Click on the DataSource name you want to test.</p>
+  </li>
+  <li>
+    <p>Click the “Monitoring” tab &gt; “Testing” tab.</p>
+  </li>
+  <li>
+    <p>Select the server the DataSource has targeted to and then press
+“Test Data Source” button.</p>
+  </li>
+</ol>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2016/06/14/how-to-setup-hg-repository-on-a-remote-server/">
+        How to setup hg repository on a remote server
+      </a>
+    </h1>
+
+    <span class="post-date">14 Jun 2016</span>
+
+    <p>I love using mercurial source control! It’s easy to use and it works as I expected everytime I need to do something with my source repository. Here is how you can quickly create a remote repository to push your existing project into it. (use this as backup of your project or share among your team etc)</p>
+
+<ol>
+  <li>SSH into your remote server and create an empty repository.
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ssh remote_hostname
+bash&gt; cd $HOME 
+bash&gt; mkdir -p hg-repos/myproject
+bash&gt; cd hg-repos/myproject
+bash&gt; hg init
+</code></pre></div>    </div>
+  </li>
+  <li>Back on your local machine and in your existing hg project, edit the .hg/hgrc file with the following:
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[paths]
+default=ssh://remote_hostname/hg-repos/myproject
+[ui]
+remotecmd=/usr/local/bin/hg
+</code></pre></div>    </div>
+    <p>That’s it! You don’t even need hg server running in remote host to make this work! Now you may perofrm “hg push” command inside your local project to sync up to remote host</p>
+  </li>
+</ol>
+
+<p>NOTE 1: This setup rely on your SSH into remote host. If you want to avoid user password promt everytime you perform “hg push”, then setup Key-Based SSH login.</p>
+
+<p>NOTE 2: You only need “remotecmd” part if your remote_hostname does not have a standard hg installed. Then you can specified your custom location here.</p>
+
+<p>NOTE 3: If you want to use abolute path for “default” path instead, then you can use double slash after the “remote_hostname”. Else the single slash is relative to your $HOME directory.</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2016/06/14/how-to-setup-a-java-web-application-using-gradle/">
+        How to setup a Java web application using Gradle
+      </a>
+    </h1>
+
+    <span class="post-date">14 Jun 2016</span>
+
+    <p>For basic java and Gradle, it’s really simple. All you need is one line in build.gradle file and you can start compiling Java source under src/main/java folder.</p>
+
+<p>apply plugin: ‘java’</p>
+
+<p>But to setup a useful web application,  you would need little more. Here I have another example of Gradle 2.7 script file for building a Java web application. I also have noted few things I have discovered in the comments.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># A Java web app project
+
+# There should be a src/main/webapp as web content directory
+apply plugin: 'war'
+apply plugin: 'jetty'
+
+# Change jetty default port from 8080
+httpPort = 9000
+
+# A repository must be given to fetch dependencies below.
+repositories {
+    mavenCentral()
+}
+
+# Library dependencies
+dependencies {
+    // JDK lang support
+    // Ouch! Gradle does not support 'provided' scope! Let's use compile for now.
+    //provided 'org.projectlombok:lombok:1.16.6'
+    compile 'org.projectlombok:lombok:1.16.6'
+
+    // Testing
+    testCompile 'junit:junit:4.12',
+        'org.hamcrest:hamcrest-library:1.3'
+
+    // Database
+    runtime 'mysql:mysql-connector-java:5.1.37'   
+
+    // Scripting
+    //runtime 'org.codehaus.groovy:groovy-all:2.4.5'
+    /*
+    NOTE: Error if you include groovy with gradle+jetty!!!
+            java.lang.ExceptionInInitializerError:
+        groovy.lang.GroovyRuntimeException: Conflicting module versions. Module [groovy-all is loaded in version 2.3.10 and you are trying to load version 2.4.5
+             // Verify your groovy version using the following:
+        import javax.script.*
+        out.println(new ScriptEngineManager().getEngineFactories())
+        out.println(org.codehaus.groovy.jsr223.GroovyScriptEngineFactory.class.getProtectionDomain().getCodeSource().getLocation())
+    */ 
+}
+</code></pre></div></div>
+<p>I also have this JSP in <code class="language-plaintext highlighter-rouge">src/main/webapp/script.jsp</code> folder</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;%@ page import="javax.script.*, java.io.*" %&gt;
+
+&lt;%
+// Initialize parameters
+String engineName = request.getParameter("engine");
+if (engineName == null) engineName = "Groovy";
+String code = request.getParameter("code");
+if (code == null) code = "";
+%&gt;
+
+&lt;!-- form: Script input code --&gt;
+&lt;h1&gt;Scripting&lt;/h1&gt;
+&lt;form method="POST"&gt;
+&lt;textarea name="code" cols="120" rows="25"&gt;&lt;%= code %&gt;&lt;/textarea&gt;
+&lt;p/&gt;&lt;input type="submit" value="Submit"/&gt;
+&lt;/form&gt;
+
+&lt;pre&gt;
+&lt;%
+if (request.getMethod().equals("POST")) {
+    // Process form and evaluate script code
+    ScriptEngine se = new ScriptEngineManager().getEngineByName(engineName);
+    if (se == null) {
+        out.println("ERROR: " + engineName + " engine not found! Use 'engine' parameter to change it.");
+    } else {
+        try {
+            Bindings b = se.createBindings();
+            b.put("request", request);
+            b.put("out", out);
+            Object result = se.eval(code, b);
+            
+            out.println(engineName + " script result:");
+            out.println("" + result);
+        } catch (Exception e) {
+            out.println("ERROR: " + engineName + " script failed to evaluate!");
+            e.printStackTrace(new PrintWriter(out));
+        }
+    }
+}
+%&gt;
+
+&lt;/pre&gt;
+</code></pre></div></div>
+<p>With this script.jsp, you can write something like this to test out your db connection.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// Groovy script:
+import java.sql*
+conn = DriverManager.getConnection('jdbc:mysql://localhost/test', 'dev', 'dev123')
+out.println("conn=" + conn)
+conn.close()
+
+And just for fun, I have created a data class using ProjectLombok generator in src/main/java/myjava/MyData.java
+
+package myjava;
+import java.util.*;
+
+@lombok.Data
+public class MyData {
+private Integer id;
+private String name;
+private Date createdDate;
+private List&lt;MyData&gt; dataList;
+private Map&lt;String, MyData&gt; dataMap;
+
+}
+
+I also have a unit test in src/test/java/myjava/MyDataTest.java
+
+package myjava;
+
+import org.junit.Test;
+import static org.junit.Assert.assertThat;
+import static org.hamcrest.Matchers.*;
+
+public class MyDataTest {
+@Test
+public void tesGeneratedGetterSettersAndToString() {
+MyData d = new MyData();
+d.setId(12345);
+d.setName("foo");
+assertThat(d.getId(), is(12345));
+assertThat(d.getName(), is("foo"));
+assertThat(d.toString(), is("MyData(id=12345, name=foo, createdDate=null, dataList=null, dataMap=null)"));
+}
+
+}
+</code></pre></div></div>
+<p>To compile code, type command: <code class="language-plaintext highlighter-rouge">gradle compileJava</code></p>
+
+<p>To run test, type command: gradle test(A nice feature of Gradle is that it auto generate test reports! Look for them in your build/reports folder.)</p>
+
+<p>To run web app, type command: gradle jettyRun</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2015/11/02/java-jdbc-test-for-utf8-and-default-value-for-timestamp/">
+        Java Jdbc Test for UTF8 and Default Value for TIMESTAMP
+      </a>
+    </h1>
+
+    <span class="post-date">02 Nov 2015</span>
+
+    <p>Just a quick MySQL test on how to use UTF8 encoding with JDBC connection string. Also a test on how to set TIMESTAMP default values.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>package zemian.jdbc;
+
+import org.junit.Test;
+
+import java.sql.*;
+import java.util.*;
+import java.util.Date;
+
+/**
+
+ -- drop table ztest_issues;
+ CREATE TABLE ztest_issues(
+ id INT NOT NULL AUTO_INCREMENT PRIMARY KEY
+ , title VARCHAR(64) NOT NULL
+ , summary TEXT NULL
+ , priority INT NOT NULL DEFAULT 5
+ , cdate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+ );
+
+ INSERT INTO ztest_issues(title) VALUES('test');
+ INSERT INTO ztest_issues(title, summary) VALUES('test2', 'Just a test');
+ INSERT INTO ztest_issues(title, summary, priority) VALUES('test2', 'Just a test', 1);
+ INSERT INTO ztest_issues(title, summary, priority, cdate) VALUES('test2', 'Just a test', 1, '2010-12-31 08:00:00');
+
+ --INSERT INTO ztest_issues(title, summary) VALUES('locale test1', LOAD_FILE('C:/data/tmp/test.xml'));
+ --INSERT INTO ztest_issues(title, summary) VALUES('locale test2', LOAD_FILE('C:/data/tmp/test2.xml'));
+ --INSERT INTO ztest_issues(title, summary) VALUES('locale test3', LOAD_FILE('C:/data/tmp/test3.xml'));
+
+ SELECT * FROM ztest_issues;
+
+ NOTE:
+ CURRENT_TIMESTAMP is version specific and is now allowed for DATETIME columns as of version 5.6 http://dev.mysql.com/doc/refman/5.6/en/timestamp-initialization.html
+
+ For 5.6 &lt;, use TIMESTAMP for cdate field instead.
+
+ cdate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+ cdate DATETIME NULL
+
+ NOTE2:
+ cdate DATETIME NOT NULL DEFAULT 0
+
+ If you were to use default to ZERO, then you would need this properties in conn string. Else you will fail to get ZERO date value into Java.
+
+ You need to tell the JDBC driver to convert them to NULL. This is done by passing a connection property name zeroDateTimeBehavior with the value convertToNull
+
+ For more details see the manual: http://dev.mysql.com/doc/refman/4.1/en/connector-j-installing-upgrading.html
+
+ */
+public class ZtestIssuesJdbcTest {
+//    String url = "jdbc:mysql://localhost/test";
+//    String url = "jdbc:mysql://localhost/test?zeroDateTimeBehavior=convertToNull";
+    String url = "jdbc:mysql://localhost/test?useUnicode=true&amp;characterEncoding=UTF-8&amp;connectionCollation=utf8_general_ci&amp;zeroDateTimeBehavior=convertToNull";
+    String username = "test";
+    String password = "test123";
+
+    @Test
+    public void testShowTableLocale() throws Exception {
+        try (Connection conn = DriverManager.getConnection(url, username, password)) {
+            String sql = "SHOW VARIABLES LIKE 'char%'";
+            System.out.println("Sql:" + sql);
+            Statement sm = conn.createStatement();
+            ResultSet rs = sm.executeQuery(sql);
+            while (rs.next()) {
+                System.out.printf("%s\t%s\n", rs.getObject(1), rs.getObject(2));
+            }
+
+            sql = "SHOW CREATE TABLE ztest_issues";
+            System.out.println("Sql:" + sql);
+            sm = conn.createStatement();
+            rs = sm.executeQuery(sql);
+            while (rs.next()) {
+                System.out.printf("%s\t%s\n", rs.getObject(1), rs.getObject(2));
+            }
+        }
+    }
+
+    @Test
+    public void testQuery() throws Exception {
+        try (Connection conn = DriverManager.getConnection(url, username, password)) {
+            String sql = "SELECT id, cdate, title, summary FROM ztest_issues";
+            System.out.println("Sql:" + sql);
+            Statement sm = conn.createStatement();
+            ResultSet rs = sm.executeQuery(sql);
+            while (rs.next()) {
+                System.out.printf("%d\t%s\t%s\t%s\n", rs.getObject(1), rs.getObject(2), rs.getObject(3), rs.getObject(4));
+            }
+        }
+    }
+
+    @Test
+    public void testInsert() throws Exception {
+        try (Connection conn = DriverManager.getConnection(url, username, password)) {
+            String sql = "INSERT INTO ztest_issues(title, summary, cdate) VALUES(?, ?, ?)";
+            System.out.println("Sql: " + sql);
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            String testId = "" + System.currentTimeMillis();
+
+            ps.setObject(1, "English Locale " + testId);
+            ps.setObject(2, "Just a test");
+            ps.setObject(3, new Date());
+            int result = ps.executeUpdate();
+            System.out.println("Insert Result: " + result);
+
+            ps.setObject(1, "Chinese Locale " + testId);
+            ps.setObject(2, "&amp;#21482;&amp;#26159;&amp;#19968;&amp;#20491;&amp;#28204;&amp;#35430;");
+            ps.setObject(3, new Date());
+            result = ps.executeUpdate();
+            System.out.println("Insert Result: " + result);
+
+            ps.setObject(1, "Spanish Locale " + testId);
+            ps.setObject(2, "Sólo una prueba");
+            ps.setObject(3, new Date());
+            result = ps.executeUpdate();
+            System.out.println("Insert Result: " + result);
+        }
+    }
+}
+</code></pre></div></div>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2015/11/01/conemu-a-terminal-windows-or-tab-manager/">
+        ConEmu - a Terminal Windows or Tab Manager
+      </a>
+    </h1>
+
+    <span class="post-date">01 Nov 2015</span>
+
+    <p>Just learned about ConEmu project at <a href="https://conemu.github.io">https://conemu.github.io</a> and it’s
+pretty awesome!</p>
+
+<p>Thanks Onur for the tips!</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2015/10/24/how-to-view-unix-man-pages-with-browser/">
+        How to view Unix man pages with browser
+      </a>
+    </h1>
+
+    <span class="post-date">24 Oct 2015</span>
+
+    <p>I have come across this wonderful project called Bwana (https://www.bruji.com/bwana/) for Mac. Install it and you can view any man page on the browser. For example try typing the following address on the Safari:</p>
+
+<p>man:find</p>
+
+<p>And you will see something like this:</p>
+
+<p><a href="http://1.bp.blogspot.com/-hJtb8OSJUcY/Vi0NzuU1aqI/AAAAAAAAArk/VxH6rcjZE6g/s1600/grab1.tiff"><img src="http://1.bp.blogspot.com/-hJtb8OSJUcY/Vi0NzuU1aqI/AAAAAAAAArk/VxH6rcjZE6g/s320/grab1.tiff" alt="" /></a></p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2015/10/21/how-to-setup-a-new-trac-issue-tracking-system/">
+        How to setup a new Trac issue tracking system
+      </a>
+    </h1>
+
+    <span class="post-date">21 Oct 2015</span>
+
+    <p>Here is how I setup a local instance of Trac (a python based issue tracking web application) on my Mac.</p>
+
+<p>Prerequisite: MySQL 5.6 and Python 2.7 (Python3 will not work with Trac yet!)</p>
+
+<p>Step1: Setup a Trac database and a user</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sql&gt; CREATE DATABASE trac DEFAULT CHARACTER SET utf8 COLLATE utf8_bin;
+sql&gt; CREATE USER 'dev'@'localhost' IDENTIFIED BY 'dev123';
+sql&gt; GRANT ALL ON trac.* TO 'dev'@'localhost';
+
+
+Step2: Install MySQL adaptor for Python and Trac
+
+bash&gt; pip install Genshi trac mysqlclient
+
+
+Step3: Setup a Track instance
+
+bash&gt; trac-admin /Users/zemian/dev/mytrac intent
+
+bash&gt; # Above will prompt you to enter a backend string. Use
+bash&gt; # this connection string: 
+
+bash&gt; #   mysql://dev:dev123@localhost:3306/trac
+
+Step3: Create a Trac admin user
+
+bash&gt; htpasswd -c /Users/zemian/dev/mytrac/.htpasswd admin
+
+Step4: Run Track
+
+bash&gt; tracd -p 8000 --basic-auth="mytrac,/Users/zemian/dev/mytrac/.htpasswd,mytrac" /Users/zemian/dev/metric
+</code></pre></div></div>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2015/10/16/mysqlclient-gives-library-not-loaded-libmysqlclient-18-dylib-error/">
+        mysqlclient gives "Library not loaded - libmysqlclient.18.dylib" error
+      </a>
+    </h1>
+
+    <span class="post-date">16 Oct 2015</span>
+
+    <p>If you want to use python MySQLdb module (eg: if you run Trac with MySQL backend), you would need first install MySQL server on MacOSX, then install the mysqlclient python package using pip. However upon verifying it, you may encounter error like this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(mypy-test)Zemians-Air:dev zemian$ pip install mysqlclient
+
+Collecting mysqlclient
+
+  Using cached mysqlclient-1.3.6.tar.gz
+
+Building wheels for collected packages: mysqlclient
+
+  Running setup.py bdist_wheel for mysqlclient
+
+  Stored in directory: /Users/zemian/Library/Caches/pip/wheels/9c/3b/73/8f16f45dc76999dafc2af06b0d6e1e669bc0e1594f41fcc2e8
+
+Successfully built mysqlclient
+
+Installing collected packages: mysqlclient
+
+Successfully installed mysqlclient-1.3.6
+
+(mypy-test)Zemians-Air:dev zemian$ python
+
+Python 2.7.10 (default, Aug 22 2015, 20:33:39) 
+
+[GCC 4.2.1 Compatible Apple LLVM 7.0.0 (clang-700.0.59.1)] on darwin
+
+Type "help", "copyright", "credits" or "license" for more information.
+
+&gt;&gt;&gt; import MySQLdb
+
+Traceback (most recent call last):
+
+  File "&lt;stdin&gt;", line 1, in &lt;module&gt;
+
+  File "/Users/zemian/dev/mypy-test/lib/python2.7/site-packages/MySQLdb/__init__.py", line 19, in &lt;module&gt;
+
+    import _mysql
+
+ImportError: dlopen(/Users/zemian/dev/mypy-test/lib/python2.7/site-packages/_mysql.so, 2): Library not loaded: libmysqlclient.18.dylib
+
+  Referenced from: /Users/zemian/dev/mypy-test/lib/python2.7/site-packages/_mysql.so
+
+  Reason: image not found
+</code></pre></div></div>
+
+<p>To resolve this, you need to add the following to your shell environment</p>
+
+<p><code class="language-plaintext highlighter-rouge">export DYLD_LIBRARY_PATH=/usr/local/mysql/lib</code></p>
+
+<p>Update 2016-06-17</p>
+
+<p>To install mysqlclient on Ubuntu 14, you might need to first install the mysql_config first:</p>
+
+<p><code class="language-plaintext highlighter-rouge">bash&gt; sudo apt-get install libmysqlclient-dev</code></p>
+
+  </div>
+  
+</div>
+
+<div class="pagination">
+  
+    <a class="pagination-item older" href="http://localhost:4000/page11">Older</a>
+  
+  
+    
+      <a class="pagination-item newer" href="http://localhost:4000/page9">Newer</a>
+    
+  
+</div>
+
+      </div>
+    </div>
+
+    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+    <script src='/public/js/script.js'></script>
+  </body>
+</html>

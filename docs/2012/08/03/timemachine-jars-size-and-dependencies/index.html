@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      TimeMachine jars size and dependencies &middot; Zemian's Blog
+    
+  </title>
+
+  
+  <link rel="canonical" href="http://localhost:4000/2012/08/03/timemachine-jars-size-and-dependencies/">
+  
+
+  <link rel="stylesheet" href="http://localhost:4000/public/css/poole.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/syntax.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/lanyon.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700%7CPT+Sans:400">
+
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/public/apple-touch-icon-precomposed.png">
+  <link rel="shortcut icon" href="http://localhost:4000/public/favicon.ico">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="http://localhost:4000/atom.xml">
+
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-135626598-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  
+</head>
+
+
+  <body>
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p>A weblog on software development.</p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item" href="http://localhost:4000/">Home</a>
+
+    
+
+    
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="http://localhost:4000/about/">About</a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+
+  </nav>
+
+  <div class="sidebar-item">
+    <p>
+      &copy; 2020. All rights reserved.
+    </p>
+  </div>
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <h3 class="masthead-title">
+            <a href="/" title="Home">Zemian's Blog</a>
+            <small>Life in programming world!</small>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+        <div class="post">
+  <h1 class="post-title">TimeMachine jars size and dependencies</h1>
+  <span class="post-date">03 Aug 2012</span>
+  <p>From the <a href="https://bitbucket.org/timemachine/scheduler/downloads">TimeMachine Scheduler</a> download page you will see that the latest 1.2.1 release zip package size is around 13M. It may seem large for a scheduler application, but let’s examine it closely to see what’s in there. Here is how the zip package looks like inside</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    timemachine-scheduler-1.2.1
+    +-- bin
+    +-- lib
+    +-- config
+</code></pre></div></div>
+
+<p>The <code class="language-plaintext highlighter-rouge">config</code> directory contains many sample configurations and scripts to help new users get started. The <code class="language-plaintext highlighter-rouge">bin</code> contains few startup wrapper scripts that let you start the scheduler. The <code class="language-plaintext highlighter-rouge">lib</code> contains the libraries for the scheduler application. I want to go into more details on these.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    +-- lib
+    -rw-r--r--@  1 zemian  staff   445288 Jun 20 23:20 antlr-2.7.7.jar
+    -rw-r--r--@  1 zemian  staff   610790 Jun 20 23:26 c3p0-0.9.1.2.jar
+    -rw-r--r--@  1 zemian  staff   109043 Jun 20 23:20 commons-io-1.4.jar
+    -rw-r--r--@  1 zemian  staff   279193 Jun 20 23:20 commons-lang-2.5.jar
+    -rw-r--r--@  1 zemian  staff   313898 Jun 20 23:26 dom4j-1.6.1.jar
+    -rw-r--r--@  1 zemian  staff  6156866 Aug  2 22:05 groovy-all-2.0.0.jar
+    -rw-r--r--@  1 zemian  staff  1267149 Jun 20 23:26 h2-1.3.163.jar
+    -rw-r--r--@  1 zemian  staff    81271 Jun 20 23:26 hibernate-commons-annotations-4.0.1.Final.jar
+    -rw-r--r--@  1 zemian  staff  4407494 Jun 20 23:26 hibernate-core-4.1.3.Final.jar
+    -rw-r--r--@  1 zemian  staff   102661 Jun 20 23:26 hibernate-jpa-2.0-api-1.0.1.Final.jar
+    -rw-r--r--@  1 zemian  staff   648253 Jun 20 23:26 javassist-3.15.0-GA.jar
+    -rw-r--r--@  1 zemian  staff    60768 Jun 20 23:26 jboss-logging-3.1.0.GA.jar
+    -rw-r--r--@  1 zemian  staff    11209 Jun 20 23:26 jboss-transaction-api_1.1_spec-1.0.0.Final.jar
+    -rw-r--r--@  1 zemian  staff   481535 Jun 20 23:20 log4j-1.2.16.jar
+    -rw-r--r--@  1 zemian  staff    25496 Jun 20 23:20 slf4j-api-1.6.1.jar
+    -rw-r--r--@  1 zemian  staff     9753 Jun 20 23:20 slf4j-log4j12-1.6.1.jar
+    -rw-r--r--@  1 zemian  staff    46885 Aug  2 22:37 timemachine-hibernate-1.2.1.jar
+    -rw-r--r--@  1 zemian  staff   154925 Aug  2 22:36 timemachine-scheduler-1.2.1.jar
+</code></pre></div></div>
+
+<p>The core of the scheduler <code class="language-plaintext highlighter-rouge">timemachine-scheduler-1.2.1.jar</code> would only need <code class="language-plaintext highlighter-rouge">slf4j-api-1.6.1.jar</code>, <code class="language-plaintext highlighter-rouge">commons-io-1.4.jar</code> and <code class="language-plaintext highlighter-rouge">commons-lang-2.5.jar</code> to run. These would support full scheduler with in memory data store. As you can see these add up to only about 500K!</p>
+
+<p>To be able to see useful logging output, you need an SLF4j impl. You may use built-in JDK’s logger if you choose, or you may use <code class="language-plaintext highlighter-rouge">slf4j-log4j12-1.6.1.jar</code> and <code class="language-plaintext highlighter-rouge">log4j-1.2.16.jar</code>. I personally think the JDK logger is horrible to use and configure, so I package up log4j as option for you.</p>
+
+<p>A Java scripting engine is only optional in TimeMachine, and JDK already comes with JavaScript. To be practical, I also package the Groovy engine <code class="language-plaintext highlighter-rouge">groovy-all-2.0.0.jar</code>. It’s much more easy to use. But the full groovy engine is costing us 6M in size!</p>
+
+<p>The TimeMachine allows you to switch data store service. We provided the <code class="language-plaintext highlighter-rouge">HibernateDataService</code> service in <code class="language-plaintext highlighter-rouge">timemachine-scheduler-1.2.1.jar</code>. This service would require the Hibernate dependencies, which is pretty heavy. They are: <code class="language-plaintext highlighter-rouge">hibernate-*.jar</code>, <code class="language-plaintext highlighter-rouge">jboss-*.jar</code>, <code class="language-plaintext highlighter-rouge">javassist-3.15.0-GA.jar</code>, <code class="language-plaintext highlighter-rouge">antlr-2.7.7.jar</code>, and <code class="language-plaintext highlighter-rouge">dom4j-1.6.1.jar</code>. These can add up to another 5M in size!</p>
+
+<p>Now with the Hibernate data service, you would also need a database driver that match to your database. I have included a H2Database, a Java database that provides full SQL database service including its driver in <code class="language-plaintext highlighter-rouge">h2-1.3.163.jar</code>. This alone is about 1.2M in size.</p>
+
+<p>When you working with Hibernate and Database, you should always use a Database connection pool. I packaged the <code class="language-plaintext highlighter-rouge">c3p0-0.9.1.2.jar</code> implementation which Hibernate can automatically detects.</p>
+
+<p>I hope these information can help you decide what to remove or add in case you want to customize your scheduler to fit into your application. You may also visit the project to see the Maven site dependencies report that has all the details. This also means that if you use Maven to bring in TimeMachine scheduler as dependency, you will automatically gets the minimal because I have carefully set all the optional items not to be included with the proper Maven scopes.</p>
+
+</div>
+
+
+<div class="related">
+  <h2>Related posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2020/09/20/world-of-php/">
+            The World of PHP Development
+            <small>20 Sep 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/09/19/multiple-jquery/">
+            How to Load Multiple jQuery
+            <small>19 Sep 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/08/15/switched-to-vuepress/">
+            Switched Blogging to VuePress
+            <small>15 Aug 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+
+      </div>
+    </div>
+
+    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+    <script src='/public/js/script.js'></script>
+  </body>
+</html>

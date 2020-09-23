@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Taming the JMX on WebLogic Server &middot; Zemian's Blog
+    
+  </title>
+
+  
+  <link rel="canonical" href="http://localhost:4000/2013/06/11/taming-the-jmx-on-weblogic-server/">
+  
+
+  <link rel="stylesheet" href="http://localhost:4000/public/css/poole.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/syntax.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/lanyon.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700%7CPT+Sans:400">
+
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/public/apple-touch-icon-precomposed.png">
+  <link rel="shortcut icon" href="http://localhost:4000/public/favicon.ico">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="http://localhost:4000/atom.xml">
+
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-135626598-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  
+</head>
+
+
+  <body>
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p>A weblog on software development.</p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item" href="http://localhost:4000/">Home</a>
+
+    
+
+    
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="http://localhost:4000/about/">About</a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+
+  </nav>
+
+  <div class="sidebar-item">
+    <p>
+      &copy; 2020. All rights reserved.
+    </p>
+  </div>
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <h3 class="masthead-title">
+            <a href="/" title="Home">Zemian's Blog</a>
+            <small>Life in programming world!</small>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+        <div class="post">
+  <h1 class="post-title">Taming the JMX on WebLogic Server</h1>
+  <span class="post-date">11 Jun 2013</span>
+  <p>Taming the JMX on WebLogic Server</p>
+
+<h1 id="taming-the-jmx-on-weblogic-server">Taming the JMX on WebLogic Server</h1>
+
+<p>Let assume couple things first:</p>
+
+<p>1) I assume you have heard of Java’s JMX features and familiar what it does (expose and manage your service remotely). You ought to know that default JVM will have a Platform MBeanServer instance that you can register MBean. And you may view them using the <code class="language-plaintext highlighter-rouge">jconsole</code> command from the JDK.</p>
+
+<p>2) As of today, I think by far the easiest way you can expose any services in your application to a JMX MBeanServer is using Spring’s exporter. You will do something like this:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>        &lt;bean class="org.springframework.jmx.export.MBeanExporter"&gt;
+            &lt;property name="assembler"&gt;
+                  &lt;bean class="org.springframework.jmx.export.assembler.InterfaceBasedMBeanInfoAssembler"&gt;
+                    &lt;property name="managedInterfaces"&gt;
+                        &lt;list&gt;
+                            &lt;!-- Expose any java interface you like to see under JMX as MBean --&gt;
+                            &lt;value&gt;myproject.services.Service&lt;/value&gt;
+                        &lt;/list&gt;
+                    &lt;/property&gt;
+                  &lt;/bean&gt;
+            &lt;/property&gt;
+            &lt;property name="beans"&gt;
+              &lt;map&gt;
+                &lt;entry key="myproject.services:name=MyCoolService" value-ref="myCoolService"/&gt;
+              &lt;/map&gt;
+            &lt;/property&gt;
+        &lt;/bean&gt;
+        &lt;!-- This service must implements the interface used above --&gt;
+        &lt;bean id="myCoolService" class="myproject.services.MyCoolService"&gt;
+        &lt;/bean&gt;
+</code></pre></div></div>
+<p>Above should get you standalone application with JMX enabled.</p>
+
+<p>Now if you want to do similar on WebLogic Server, then I have few goodies and notes that might help you. Read on…</p>
+
+<h2 id="weblogic-servers-wls-mbeanserver">WebLogic Server’s (WLS) MBeanServer</h2>
+
+<h3 id="the-jconsole-trick">The JConsole trick</h3>
+
+<p>The WLS, like many other EE server will have it’s own MBeanServer. However, to see the MBean’s you would need to do little extra with <code class="language-plaintext highlighter-rouge">jconsole</code>. Assume you have a default config WLS started on localhost, then you can connect to it like this.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>jconsole -J-Djava.class.path="$JAVA_HOME/lib/jconsole.jar:$MW_HOME/wlserver/server/lib/wljmxclient.jar" -J-Djmx.remote.protocol.provider.pkgs=weblogic.management.remote
+</code></pre></div></div>
+
+<p>Then when prompted to login, enter the following:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Remote Process: service:jmx:iiop://localhost:7001/jndi/weblogic.management.mbeanservers.runtime
+User: &lt;same userid you used setup WLS to their console app.&gt;
+Password: &lt;same password you used setup WLS to their console app.&gt;
+</code></pre></div></div>
+
+<p>Now you should see all the MBeans that WLS already exposed to you as a EE server. You may add your own service there.</p>
+
+<h3 id="programming-with-jmx-connection">Programming with JMX connection</h3>
+
+<p>You may connect to the WLS MBeanServer remotely inside your standalone application. Here is a typical connection code you would need</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>            String serviceName = "com.bea:Name=DomainRuntimeService,Type=weblogic.management.mbeanservers.domainruntime.DomainRuntimeServiceMBean";
+            try {
+                ObjectName service = new ObjectName(serviceName);
+            } catch (MalformedObjectNameException e) {
+                throw new RuntimeException("Not able to create JMX ObjectName: " + serviceName);
+            }
+    
+            String protocol = "t3";
+            String jndiroot = "/jndi/";
+            String mserver = "weblogic.management.mbeanservers.runtime";
+            try {
+                JMXServiceURL serviceURL = new JMXServiceURL(protocol, "localhost", 7001, jndiroot + mserver);
+    
+                Hashtable h = new Hashtable();
+                h.put(Context.SECURITY_PRINCIPAL, username);
+                h.put(Context.SECURITY_CREDENTIALS, password);
+                h.put(JMXConnectorFactory.PROTOCOL_PROVIDER_PACKAGES,
+                        "weblogic.management.remote");
+                h.put("jmx.remote.x.request.waiting.timeout", new Long(10000));
+                JMXConnector connector = JMXConnectorFactory.connect(serviceURL, h);
+                MBeanServerConnection remoteMBeanServer = connector.getMBeanServerConnection();
+    
+                // TODO: Do what you need with remoteMBeanServer here.
+            } catch (Exception e) {
+                throw new RuntimeException("Not able to initiate MBeanServer protocol= " + protocol +
+                        ", jndiroot= " + jndiroot + ", mserver= " + mserver);
+            }
+</code></pre></div></div>
+<p>That’s a mouthful of boiler code just to get a remote MBeanServer connection! Fortunately there is another easier way though. Read on…</p>
+
+<h3 id="the-jndi-trick">The JNDI trick</h3>
+
+<p>The WLS MBeanServer service is also available through JNDI lookup. Again Spring can help you with their JNDI lookup and you simply need to inject it to other services that need it. For example:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>        &lt;bean id="jmxServerRuntime" class="org.springframework.jndi.JndiObjectFactoryBean"&gt;
+            &lt;property name="jndiName" value="java:comp/env/jmx/runtime"/&gt;
+        &lt;/bean&gt;
+        &lt;bean id="exporter" class="org.springframework.jmx.export.MBeanExporter"&gt;
+            &lt;property name="beans"&gt;
+                &lt;map&gt;
+                    &lt;entry key="myproject.services:name=MyCoolService" value-ref="myCoolService"/&gt;
+                &lt;/map&gt;
+            &lt;/property&gt;
+            &lt;property name="server" ref="jmxServerRuntime"/&gt;
+        &lt;/bean&gt;
+</code></pre></div></div>
+<p>Notice that we have injetcted the “server” property with one we looked up from WLS JNDI service. If you use that in your WAR application and deploy it onto a WLS instance, and whola, you got yourself exposed service onto WLS JMX!</p>
+
+<p>Note</p>
+
+<p>above will only works if your Spring xml config is part of the WAR/JAR/EAR that’s deployed in same server where JNDI lives! If you are not, you need to use this JNDI name without the “env” part instead, like “java:comp/env/jmx/runtime”.</p>
+
+<p>For more details on how to work with JMX and WLS, see their docs here:
+<a href="http://docs.oracle.com/cd/E12839_01/web.1111/e13728/accesswls.htm#i1119556">http://docs.oracle.com/cd/E12839_01/web.1111/e13728/accesswls.htm#i1119556</a></p>
+
+<p>Last updated 2013-06-12 23:52:42 EDT</p>
+
+</div>
+
+
+<div class="related">
+  <h2>Related posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2020/09/20/world-of-php/">
+            The World of PHP Development
+            <small>20 Sep 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/09/19/multiple-jquery/">
+            How to Load Multiple jQuery
+            <small>19 Sep 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/08/15/switched-to-vuepress/">
+            Switched Blogging to VuePress
+            <small>15 Aug 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+
+      </div>
+    </div>
+
+    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+    <script src='/public/js/script.js'></script>
+  </body>
+</html>

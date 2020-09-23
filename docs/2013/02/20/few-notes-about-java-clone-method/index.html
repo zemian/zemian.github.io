@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Few notes about Java clone() method &middot; Zemian's Blog
+    
+  </title>
+
+  
+  <link rel="canonical" href="http://localhost:4000/2013/02/20/few-notes-about-java-clone-method/">
+  
+
+  <link rel="stylesheet" href="http://localhost:4000/public/css/poole.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/syntax.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/lanyon.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700%7CPT+Sans:400">
+
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/public/apple-touch-icon-precomposed.png">
+  <link rel="shortcut icon" href="http://localhost:4000/public/favicon.ico">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="http://localhost:4000/atom.xml">
+
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-135626598-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  
+</head>
+
+
+  <body>
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p>A weblog on software development.</p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item" href="http://localhost:4000/">Home</a>
+
+    
+
+    
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="http://localhost:4000/about/">About</a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+
+  </nav>
+
+  <div class="sidebar-item">
+    <p>
+      &copy; 2020. All rights reserved.
+    </p>
+  </div>
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <h3 class="masthead-title">
+            <a href="/" title="Home">Zemian's Blog</a>
+            <small>Life in programming world!</small>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+        <div class="post">
+  <h1 class="post-title">Few notes about Java clone() method</h1>
+  <span class="post-date">20 Feb 2013</span>
+  <p>Did you know you can create new Java instance without constructor? That’s right, and this feature is brought to you by the Java clone() method. I personally don’t like to use it much because it has many pitfalls, and it feels very broken in many ways. You probably can write better “clone” by using copy constructor or a static copy factory methods.</p>
+
+<p>Anyrate, here is a unit test that highlights few notes I have gathered about Java clone. Look for the “Note” comments below.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    package atest;
+    
+    import org.junit.Test;
+    
+    import java.util.ArrayList;
+    import java.util.List;
+    
+    import static org.hamcrest.Matchers.hasItems;
+    import static org.hamcrest.Matchers.is;
+    import static org.junit.Assert.assertThat;
+    
+    public class CloneTest {
+        @Test
+        public void testFooClone() throws Exception {
+            Foo a = new Foo();
+            Foo b = a.clone();
+    
+            assertThat(a != b, is(true));
+            assertThat(a.constructorCallsCount, is(1));
+            assertThat(a.name, is("foo"));
+            assertThat(b.constructorCallsCount, is(1)); // Note1: Wow, a new instance without calling constructor!
+            assertThat(b.name, is("foo"));
+    
+            a.name = "fooX";
+            assertThat(a.name, is("fooX"));
+            assertThat(b.name, is("foo"));
+    
+            Foo2 c = new Foo2();
+            c.ids.add("a");
+            Foo2 d = c.clone();
+            d.ids.add("b");
+    
+            c.ids.clear();
+            c.ids.add("A");
+    
+            assertThat(c != d, is(true));
+            assertThat(c.constructorCallsCount, is(2));
+            assertThat(c.name, is("foo"));
+            assertThat(d.constructorCallsCount, is(2));
+            assertThat(d.name, is("foo"));
+    
+            assertThat(c.ids, hasItems("A"));
+            assertThat(c.ids.size(), is(1));
+            assertThat(d.ids, hasItems("a", "b"));
+            assertThat(d.ids.size(), is(2));
+        }
+    
+        /** A simple clone examples with simple type fields. */
+        public static class Foo implements Cloneable {
+            static int constructorCallsCount = 0;
+            String name = "foo";
+            public Foo() {
+                constructorCallsCount++;
+            }
+            public Foo clone() {
+                // Note2: Catch checked exception here so client or subclass doesn't need to.
+                Foo result = null;
+                try {
+                    result = (Foo)super.clone();
+                } catch (CloneNotSupportedException e) {
+                    throw new RuntimeException("Unable to clone.", e);
+                }
+                return result;
+            }
+        }
+    
+        /** A clone example that needs to fix field afterward super.clone(). */
+        public static class Foo2 extends Foo {
+            List&lt;String&gt; ids = new ArrayList();
+            public Foo2 clone() {
+                Foo2 result = (Foo2)super.clone(); // Note3: Some how, super clone will auto return the correct type!
+                result.ids = new ArrayList(ids);   // Note4: need to fix non-simple field.
+                return result;
+            }
+        }
+    }
+</code></pre></div></div>
+
+</div>
+
+
+<div class="related">
+  <h2>Related posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2020/09/20/world-of-php/">
+            The World of PHP Development
+            <small>20 Sep 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/09/19/multiple-jquery/">
+            How to Load Multiple jQuery
+            <small>19 Sep 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/08/15/switched-to-vuepress/">
+            Switched Blogging to VuePress
+            <small>15 Aug 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+
+      </div>
+    </div>
+
+    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+    <script src='/public/js/script.js'></script>
+  </body>
+</html>

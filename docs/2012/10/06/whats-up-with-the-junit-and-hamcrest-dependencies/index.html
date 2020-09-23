@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      What's up with the JUnit and Hamcrest dependencies? &middot; Zemian's Blog
+    
+  </title>
+
+  
+  <link rel="canonical" href="http://localhost:4000/2012/10/06/whats-up-with-the-junit-and-hamcrest-dependencies/">
+  
+
+  <link rel="stylesheet" href="http://localhost:4000/public/css/poole.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/syntax.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/lanyon.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700%7CPT+Sans:400">
+
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/public/apple-touch-icon-precomposed.png">
+  <link rel="shortcut icon" href="http://localhost:4000/public/favicon.ico">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="http://localhost:4000/atom.xml">
+
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-135626598-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  
+</head>
+
+
+  <body>
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p>A weblog on software development.</p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item" href="http://localhost:4000/">Home</a>
+
+    
+
+    
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="http://localhost:4000/about/">About</a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+
+  </nav>
+
+  <div class="sidebar-item">
+    <p>
+      &copy; 2020. All rights reserved.
+    </p>
+  </div>
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <h3 class="masthead-title">
+            <a href="/" title="Home">Zemian's Blog</a>
+            <small>Life in programming world!</small>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+        <div class="post">
+  <h1 class="post-title">What's up with the JUnit and Hamcrest dependencies?</h1>
+  <span class="post-date">06 Oct 2012</span>
+  <p>It’s awesome that <a href="http://www.junit.org/">JUnit</a> is recognizing the usefulness of <a href="http://code.google.com/p/hamcrest/">Hamcrest</a>, because I use these two a lot. However, I find JUnit packaging of their dependencies odd, and can cause class loading problem if you are not careful.</p>
+
+<p>Let’s take a closer look. If you look at <code class="language-plaintext highlighter-rouge">junit:junit:4.10</code> from Maven Central, you will see that it has this dependencies graph:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    +- junit:junit:jar:4.10:test
+        |  - org.hamcrest:hamcrest-core:jar:1.1:test
+</code></pre></div></div>
+
+<p>This is great, except that inside the <code class="language-plaintext highlighter-rouge">junit-4.10.jar</code>, you will also find the <code class="language-plaintext highlighter-rouge">hamcrest-core-1.1.jar</code> content are <em>embedded</em>!</p>
+
+<p>But <strong>why???</strong></p>
+
+<p>I suppose it’s a convenient for folks who use Ant, so that they save one jar to package in their <code class="language-plaintext highlighter-rouge">lib</code> folder, but it’s not very Maven friendly. And you also expect classloading trouble if you want to upgrade Hamcrest or use extra Hamcrest modules.</p>
+
+<p>Now if you use Hamcrest long enough, you know that most of their goodies are in the second module named <code class="language-plaintext highlighter-rouge">hamcrest-library</code>, but this JUnit didn’t package in. JUnit however chose to include some JUnit+Hamcrest extension of their own. Now including duplicated classes in jar are very trouble maker, so JUnit has a separated module <code class="language-plaintext highlighter-rouge">junit-dep</code> that doesn’t include Hamcrest core package and help you avoid this issue. So if you are using Maven project, you should use this instead.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    &lt;dependency&gt;
+        &lt;groupId&gt;junit&lt;/groupId&gt;
+        &lt;artifactId&gt;junit-dep&lt;/artifactId&gt;
+        &lt;version&gt;4.10&lt;/version&gt;
+        &lt;scope&gt;test&lt;/scope&gt;
+        &lt;exclusions&gt;
+            &lt;exclusion&gt;
+                &lt;groupId&gt;org.hamcrest&lt;/groupId&gt;
+                &lt;artifactId&gt;hamcrest-core&lt;/artifactId&gt;
+            &lt;/exclusion&gt;
+        &lt;/exclusions&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.hamcrest&lt;/groupId&gt;
+        &lt;artifactId&gt;hamcrest-library&lt;/artifactId&gt;
+        &lt;version&gt;1.2.1&lt;/version&gt;
+        &lt;scope&gt;test&lt;/scope&gt;
+    &lt;/dependency&gt;
+</code></pre></div></div>
+
+<p>Notice that’s a <code class="language-plaintext highlighter-rouge">junit-dep</code>, and also on how I have to exclude hamcrest from it. This is needed if you want <code class="language-plaintext highlighter-rouge">hamcrest-library</code> that has higher version than the one JUnit comes with, which is <code class="language-plaintext highlighter-rouge">1.1</code>.</p>
+
+<p>Interesting enough, Maven’s dependencies in pom is order sensitive when it comes to auto resolving conflicting versions dependencies. Actually it would just pick the first one found and ignore the rest. So you can shorten above without exclusion if, only if, you place the Hamcrest bofore JUnit like this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    &lt;dependency&gt;
+        &lt;groupId&gt;org.hamcrest&lt;/groupId&gt;
+        &lt;artifactId&gt;hamcrest-library&lt;/artifactId&gt;
+        &lt;version&gt;1.2.1&lt;/version&gt;
+        &lt;scope&gt;test&lt;/scope&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;junit&lt;/groupId&gt;
+        &lt;artifactId&gt;junit-dep&lt;/artifactId&gt;
+        &lt;version&gt;4.10&lt;/version&gt;
+        &lt;scope&gt;test&lt;/scope&gt;
+    &lt;/dependency&gt;    
+</code></pre></div></div>
+
+<p>This should make Maven use the following dependencies:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    +- org.hamcrest:hamcrest-library:jar:1.2.1:test
+    |  \- org.hamcrest:hamcrest-core:jar:1.2.1:test
+    +- junit:junit-dep:jar:4.10:test
+</code></pre></div></div>
+
+<p>However I think using the exclusion tag would probably give you more stable build and not rely on Maven implicit ordering rule. And it avoid easy mistake for Maven beginer users. However I wish JUnit would do a better job at packaging and remove duplicated classes in jar. I personally think it’s more productive for JUnit to also include <code class="language-plaintext highlighter-rouge">hamcrest-libray</code> instead of just the <code class="language-plaintext highlighter-rouge">hamcrest-core</code> jar.</p>
+
+<p>What do you think?</p>
+
+</div>
+
+
+<div class="related">
+  <h2>Related posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2020/09/20/world-of-php/">
+            The World of PHP Development
+            <small>20 Sep 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/09/19/multiple-jquery/">
+            How to Load Multiple jQuery
+            <small>19 Sep 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/08/15/switched-to-vuepress/">
+            Switched Blogging to VuePress
+            <small>15 Aug 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+
+      </div>
+    </div>
+
+    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+    <script src='/public/js/script.js'></script>
+  </body>
+</html>

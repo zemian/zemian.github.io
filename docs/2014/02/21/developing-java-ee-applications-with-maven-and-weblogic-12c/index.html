@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Developing Java EE applications with Maven and WebLogic 12c &middot; Zemian's Blog
+    
+  </title>
+
+  
+  <link rel="canonical" href="http://localhost:4000/2014/02/21/developing-java-ee-applications-with-maven-and-weblogic-12c/">
+  
+
+  <link rel="stylesheet" href="http://localhost:4000/public/css/poole.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/syntax.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/lanyon.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700%7CPT+Sans:400">
+
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/public/apple-touch-icon-precomposed.png">
+  <link rel="shortcut icon" href="http://localhost:4000/public/favicon.ico">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="http://localhost:4000/atom.xml">
+
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-135626598-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  
+</head>
+
+
+  <body>
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p>A weblog on software development.</p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item" href="http://localhost:4000/">Home</a>
+
+    
+
+    
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="http://localhost:4000/about/">About</a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+
+  </nav>
+
+  <div class="sidebar-item">
+    <p>
+      &copy; 2020. All rights reserved.
+    </p>
+  </div>
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <h3 class="masthead-title">
+            <a href="/" title="Home">Zemian's Blog</a>
+            <small>Life in programming world!</small>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+        <div class="post">
+  <h1 class="post-title">Developing Java EE applications with Maven and WebLogic 12c</h1>
+  <span class="post-date">21 Feb 2014</span>
+  <p>The WebLogic Server 12c has very nice support for Maven now. The doc for this is kinda hidden though, so here is a direct link <a href="http://docs.oracle.com/middleware/1212/core/MAVEN">http://docs.oracle.com/middleware/1212/core/MAVEN</a></p>
+
+<p>To summarize the doc, Oracle did not provide a public Maven repository manager hosting for their server artifacts. However they do now provide a tool for you to create and populate your own. You can setup either your local repository (if you are working mostly on your own in a single computer), or you may deploy them into your own internal Maven repository manager such as Archiva or Nexus.</p>
+
+<p>Here I would show how the local repository is done. First step is use a maven plugin provided by WLS to populate the repository. I am using a MacOSX for this demo and my WLS is installed in $HOME/apps/wls12120. If you are on Windows, you may install it under C:/apps/wls12120.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cd $HOME/apps/wls12120/oracle_common/plugins/maven/com/oracle/maven/oracle-maven-sync/12.1.2/
+
+$ mvn install:install-file -DpomFile=oracle-maven-sync.12.1.2.pom -Dfile=oracle-maven-sync.12.1.2.jar
+
+$ mvn com.oracle.maven:oracle-maven-sync:push -Doracle-maven-sync.oracleHome=$HOME/apps/wls12120 -Doracle-maven-sync.testingOnly=false
+</code></pre></div></div>
+<p>The artifacts are placed under your local $HOME/.m2/repository/com/oracle. Now you may use Maven to build Java EE application with these WebLogic artifact as dependencies. Not only these are available, the push also populated some additional maven plugins that helps development more easy. For example, you can generate a template project using their archetype plugin.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cd $HOME
+
+$ mvn archetype:generate \
+
+    -DarchetypeGroupId=com.oracle.weblogic.archetype \
+
+    -DarchetypeArtifactId=basic-webapp \
+
+    -DarchetypeVersion=12.1.2-0-0 \
+
+    -DgroupId=org.mycompany \
+
+    -DartifactId=my-basic-webapp-project \
+
+    -Dversion=1.0-SNAPSHOT
+</code></pre></div></div>
+<p>Type ‘Y’ to confirm to finish. Notice that pom.xml it generated; it is using the “javax:javaee-web-api:6.0:provided” dependency. This is working because we setup the repository earlier. Now you may build it.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cd my-basic-webapp-project
+
+$ mvn package
+</code></pre></div></div>
+<p>After this build you should have the war file under the target directory. You may manually copy and deploy this into your WebLogic server domain. Or you may continue to configure the maven pom to do this all with maven. Here is how I do it. Edit the my-basic-webapp-project/pom.xml file and replace the weblogic-maven-plugin plugin like this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  &lt;plugin&gt;
+
+    &lt;groupId&gt;com.oracle.weblogic&lt;/groupId&gt; 
+
+    &lt;artifactId&gt;weblogic-maven-plugin&lt;/artifactId&gt; 
+
+    &lt;version&gt;12.1.2-0-0&lt;/version&gt; 
+
+    &lt;configuration&gt; 
+
+      &lt;middlewareHome&gt;${oracleMiddlewareHome}&lt;/middlewareHome&gt;
+
+      &lt;adminurl&gt;${oracleServerUrl}&lt;/adminurl&gt;
+
+      &lt;user&gt;${oracleUsername}&lt;/user&gt; 
+
+      &lt;password&gt;${oraclePassword}&lt;/password&gt;
+
+      &lt;source&gt;${project.build.directory}/${project.build.finalName}.${project.packaging}&lt;/source&gt;
+
+      &lt;targets&gt;${oracleServerName}&lt;/targets&gt;
+
+      &lt;verbose&gt;true&lt;/verbose&gt; 
+
+      &lt;name&gt;${project.build.finalName}&lt;/name&gt;
+
+    &lt;/configuration&gt;
+
+  &lt;/plugin&gt;  
+</code></pre></div></div>
+
+<p>With this change, you may deploy the webapp into WebLogic server (well, assuming you already started your “mydomain” with “myserver” server running locally. See my previous blog for instructions)</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cd my-basic-webapp-project
+
+$ mvn weblogic:deploy -DoracleMiddlewareHome=$HOME/apps/wls12120 -DoracleServerName=myserver -DoracleUsername=admin -DoraclePassword=admin123
+</code></pre></div></div>
+<p>After the “BUILD SUCCESS” message, you may visit the http://localhost:7001/basicWebapp URL.</p>
+
+<p>Revisit the WLS doc again and you will find that they also provide other project templates (Maven calls these archetypes) for building EJB, MDB, or WebService projects. These should help you get your EE projects started quickly.</p>
+
+</div>
+
+
+<div class="related">
+  <h2>Related posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2020/09/20/world-of-php/">
+            The World of PHP Development
+            <small>20 Sep 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/09/19/multiple-jquery/">
+            How to Load Multiple jQuery
+            <small>19 Sep 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/08/15/switched-to-vuepress/">
+            Switched Blogging to VuePress
+            <small>15 Aug 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+
+      </div>
+    </div>
+
+    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+    <script src='/public/js/script.js'></script>
+  </body>
+</html>

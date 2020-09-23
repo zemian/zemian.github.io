@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Zemian's Blog &middot; Life in programming world!
+    
+  </title>
+
+  
+  <link rel="canonical" href="http://localhost:4000/page18/">
+  
+
+  <link rel="stylesheet" href="http://localhost:4000/public/css/poole.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/syntax.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/lanyon.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700%7CPT+Sans:400">
+
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/public/apple-touch-icon-precomposed.png">
+  <link rel="shortcut icon" href="http://localhost:4000/public/favicon.ico">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="http://localhost:4000/atom.xml">
+
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-135626598-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  
+</head>
+
+
+  <body>
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p>A weblog on software development.</p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item active" href="http://localhost:4000/">Home</a>
+
+    
+
+    
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="http://localhost:4000/about/">About</a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+
+  </nav>
+
+  <div class="sidebar-item">
+    <p>
+      &copy; 2020. All rights reserved.
+    </p>
+  </div>
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <h3 class="masthead-title">
+            <a href="/" title="Home">Zemian's Blog</a>
+            <small>Life in programming world!</small>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+        <div class="posts">
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2014/03/15/how-to-monitor-multiple-jvms-on-a-server-with-visualvm/">
+        How to monitor multiple JVM's on a server with VisualVM
+      </a>
+    </h1>
+
+    <span class="post-date">15 Mar 2014</span>
+
+    <p>In the <a href="http://saltnlight5.blogspot.com/2014/03/how-to-start-multiple-weblogic-managed.html">last article</a> I have shown you how to start WebLogic Server with single admin and mulitiple managed servers. After those are started, how do you go check their health status? You can use the admin’s /console webapp. But there  is also another tool that comes with all the default Oracle/Open JDK 6+: the VisualVM. I will show you how to get that up and running to monitor multiple JVM’s.</p>
+
+<p>On the server where you run your JVM servers, do this:</p>
+
+<ol>
+  <li>cd into $HOME and create a file named “jstatd.all.policy” with the following:
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> grant codebase "file:${java.home}/../lib/tools.jar" {
+    permission java.security.AllPermission;
+ };
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Run this command:</p>
+
+    <p><code class="language-plaintext highlighter-rouge">jstatd -J-Djava.security.policy=jstatd.all.policy &amp;</code></p>
+  </li>
+  <li>
+    <p>Now go back to your PC and open a terminal and run the following:</p>
+
+    <p><code class="language-plaintext highlighter-rouge">jvisualvm&amp;</code></p>
+  </li>
+  <li>Inside ViaualVM, add a Remote host of your server and you should see all the JVM that started there.</li>
+</ol>
+
+<p>Here is an example of how it looks like:</p>
+
+<p><img src="/images/posts/2014/visualvm.png" alt="" /></p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2014/03/11/how-to-start-multiple-weblogic-managed-servers/">
+        How to start multiple WebLogic managed servers
+      </a>
+    </h1>
+
+    <span class="post-date">11 Mar 2014</span>
+
+    <p>The WebLogic Server docs recommand you to create a dedicated admin server and then sepearate managed servers for application deployment. Here I will show you how to create one or more managed server in the same host as the admin server.</p>
+
+<p>I assume you already have WLS installed with your own domain created and running. If you haven’t done this before, you may refer to my <a href="http://saltnlight5.blogspot.com/2014/01/getting-started-with-weblogic-server.html">previous blog on how to create and start WLS.</a> After you started your domain (that’s the default admin server), then follow these steps.</p>
+
+<ol>
+  <li>
+    <p>Login into your http://localhost:7001/console webapp.</p>
+  </li>
+  <li>
+    <p>On the right menu tree, click Environment &gt; Servers. You should see “<code class="language-plaintext highlighter-rouge">myserver(admin)</code>” already listed.</p>
+  </li>
+  <li>
+    <p>Click “New” button, enter Server Name: appserver and set Server Listen Port: 7002</p>
+  </li>
+  <li>
+    <p>Click “Next” and then “Finish”</p>
+  </li>
+  <li>
+    <p>Now open a new terminal and run these commands:</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> cd mydomain
+ bin/startManagedWeblogic.sh appserver1 localhost:7001
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<p>You would need to enter the username and password, same as for your /console webapp. After this managed server is up and running you may send the process in the background by pressing CTRL+Z and then run bg command. Or you may use the servers/appserver/security/boot.properties file to bypass the user/password prompt on every restart of this managed server.</p>
+
+<p>Now you have one managed server started along with your admin server. After this you may start deploying application onto this managed server. All the webapp deployed would now accessable by its assigned port such as http://localhost:7002/yourwebapp url. You may repeat the same for however number of managed server you like to run on the same host. Try to name your server name and port number unique.</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2014/03/08/how-to-create-mysql-datasource-in-weblogic-server/">
+        How to create MySQL DataSource in WebLogic Server
+      </a>
+    </h1>
+
+    <span class="post-date">08 Mar 2014</span>
+
+    <p>One cool thing about using an application server is that it allows you to create DataSource outside of your application and it can manage it along with connections pool and transaction manager etc. With WebLogic Server, it comes with quite a few built in JDBC drivers such as Oracle Database and MySQL etc ready for your use. Here I will show you how to create a MySQL DataSource.</p>
+
+<ol>
+  <li>
+    <p>Login into http://localhost:7001/console</p>
+  </li>
+  <li>
+    <p>On the left menu click Services &gt; Data Sources</p>
+  </li>
+  <li>
+    <p>On the right, click “New” button</p>
+  </li>
+  <li>
+    <p>Enter Name: <code class="language-plaintext highlighter-rouge">mysql_ds</code> ; You may optionally give it an JNDI Name: <code class="language-plaintext highlighter-rouge">jdbc/mysql_ds</code>; And then select Database Type: MySQL</p>
+  </li>
+  <li>
+    <p>Click “Next” button and then accept default with another two “Next” buttons.</p>
+  </li>
+  <li>Now enter Database Name: test; Host Name: localhost; Database User Name: root; and then the password.</li>
+  <li>
+    <p>Click “Next” and you may optionally test your connection here.</p>
+  </li>
+  <li>
+    <p>Click “Next” and you MUST select an sever as target!</p>
+  </li>
+  <li>Click “Finish”</li>
+</ol>
+
+<p>Now you have a DataSource ready to be used by your application on this server. You may access this by either JNDI lookup, or JPA configuration with entity manager injection.</p>
+
+<p>TIPS: If you do not pick a server Target in step 8, then your applicatoin will NOT able to access this Data Source! So ensure you have done this step as it’s the easy step to miss.</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2014/03/04/quick-project-sharing-with-hg-over-ssh/">
+        Quick project sharing with hg over ssh
+      </a>
+    </h1>
+
+    <span class="post-date">04 Mar 2014</span>
+
+    <p>Mercurial is an awesome source control system! If you got a project in your PC and would like to share with your team. An easy and practical way is to put it in a common server (eg: linux) with ssh enabled.</p>
+
+<ol>
+  <li>
+    <p>Copy your existing project source into your server $HOME/repo/myproject</p>
+  </li>
+  <li>
+    <p>ssh into your server and cd into $HOME/repo/myproject</p>
+  </li>
+  <li>
+    <p>Run # hg init &amp;&amp; hg commit -m ‘Init added’</p>
+  </li>
+  <li>
+    <p>Exit your server and get your project in your PC terminal and run:</p>
+
+    <p><code class="language-plaintext highlighter-rouge"># hg clone ssh://user_id@myserver/repo/myproject</code></p>
+  </li>
+</ol>
+
+<p>That’s it. You don’t even need a web server to host it! Just tell all your teammates to do the last step on their own PC terminal. Now eveyone can make changes to your project then commit and push or pull!</p>
+
+<p>TIPS: If you do not place your “repo/myproject” directory under your $HOME, then you would need the double slashes when cloning! For example:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>`# hg clone ssh://user_id@myserver//usr/local/repo/myproject`
+</code></pre></div></div>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2014/03/03/weblogic-classloader-analysis-tool/">
+        WebLogic Classloader Analysis Tool
+      </a>
+    </h1>
+
+    <span class="post-date">03 Mar 2014</span>
+
+    <p>The WebLogic Server has a built-in webapp called Classloader Analysis Tool, and you may access it through http://localhost:7001/wls-cat</p>
+
+<p>You need to login with same user as you configured for the /console webapp. With the CAT, you may check what classes are loaded by your application in the server. This is extremely handy if your app is loading jar that’s already loaded by the server. For example, if you include your own Apache commons-lang.jar in a webapp and deploy it, you will see that org.apache.commons.lang.time.DateUtils is not from your webapp!</p>
+
+<p><img src="/images/posts/2014/wls-analysis-tool.png" alt="" /></p>
+
+<p>If you ever get an error saying DateUtils#addDay() doesn’t exist or signature not match, then likely you are using different version than the one comes with WLS. In this case, you will need to add “WEB-INF/weblogic.xml” that change classloading behavior. Like this:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;weblogic-web-app&gt;
+    &lt;container-descriptor&gt;
+    &lt;prefer-web-inf-classes&gt;true&lt;/prefer-web-inf-classes&gt;
+    &lt;/container-descriptor&gt;
+&lt;/weblogic-web-app&gt;
+</code></pre></div></div>
+
+<p>Another cool thing you can use this webapp to check is resources packaged inside any jars.  For resource file, you must use # prefix to it. For example try look up #log4j.properties and you will see where it’s loading from.</p>
+
+<p>You may read more about this tool and related material here: <a href="http://docs.oracle.com/cd/E24329_01/web.1211/e24368/classloading.htm">http://docs.oracle.com/cd/E24329_01/web.1211/e24368/classloading.htm</a></p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2014/02/25/generating-a-war-file-from-a-plain-intellij-web-project/">
+        Generating a war file from a plain IntelliJ web project
+      </a>
+    </h1>
+
+    <span class="post-date">25 Feb 2014</span>
+
+    <p>Sometimes you just want to create a quick web project in IntelliJ IDEA, and you would use their wizard and with web or Java EE module as starter project. But these projects will not have Ant nor Maven script generated for you automatically, and the IDEA Build would only compile your classes. So if you want an war file generated, try the following:</p>
+
+<p>1) Menu: File &gt; Project Structure &gt; Artifacts</p>
+
+<p>2) Click the green + icon and create a “Web Application: Archive”, then OK</p>
+
+<p>3) Menu: Build &gt; Build Artifacts … &gt; Web: war</p>
+
+<p>By default it should generate it under your <code class="language-plaintext highlighter-rouge">&lt;project&gt;/out/artifacts/web_war.war</code></p>
+
+<p>Note that IntelliJ also allows you to setup “Web Application: Exploded” artifact, which great for development that run and deploy to an application server within your IDE.</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2014/02/21/developing-java-ee-applications-with-maven-and-weblogic-12c/">
+        Developing Java EE applications with Maven and WebLogic 12c
+      </a>
+    </h1>
+
+    <span class="post-date">21 Feb 2014</span>
+
+    <p>The WebLogic Server 12c has very nice support for Maven now. The doc for this is kinda hidden though, so here is a direct link <a href="http://docs.oracle.com/middleware/1212/core/MAVEN">http://docs.oracle.com/middleware/1212/core/MAVEN</a></p>
+
+<p>To summarize the doc, Oracle did not provide a public Maven repository manager hosting for their server artifacts. However they do now provide a tool for you to create and populate your own. You can setup either your local repository (if you are working mostly on your own in a single computer), or you may deploy them into your own internal Maven repository manager such as Archiva or Nexus.</p>
+
+<p>Here I would show how the local repository is done. First step is use a maven plugin provided by WLS to populate the repository. I am using a MacOSX for this demo and my WLS is installed in $HOME/apps/wls12120. If you are on Windows, you may install it under C:/apps/wls12120.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cd $HOME/apps/wls12120/oracle_common/plugins/maven/com/oracle/maven/oracle-maven-sync/12.1.2/
+
+$ mvn install:install-file -DpomFile=oracle-maven-sync.12.1.2.pom -Dfile=oracle-maven-sync.12.1.2.jar
+
+$ mvn com.oracle.maven:oracle-maven-sync:push -Doracle-maven-sync.oracleHome=$HOME/apps/wls12120 -Doracle-maven-sync.testingOnly=false
+</code></pre></div></div>
+<p>The artifacts are placed under your local $HOME/.m2/repository/com/oracle. Now you may use Maven to build Java EE application with these WebLogic artifact as dependencies. Not only these are available, the push also populated some additional maven plugins that helps development more easy. For example, you can generate a template project using their archetype plugin.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cd $HOME
+
+$ mvn archetype:generate \
+
+    -DarchetypeGroupId=com.oracle.weblogic.archetype \
+
+    -DarchetypeArtifactId=basic-webapp \
+
+    -DarchetypeVersion=12.1.2-0-0 \
+
+    -DgroupId=org.mycompany \
+
+    -DartifactId=my-basic-webapp-project \
+
+    -Dversion=1.0-SNAPSHOT
+</code></pre></div></div>
+<p>Type ‘Y’ to confirm to finish. Notice that pom.xml it generated; it is using the “javax:javaee-web-api:6.0:provided” dependency. This is working because we setup the repository earlier. Now you may build it.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cd my-basic-webapp-project
+
+$ mvn package
+</code></pre></div></div>
+<p>After this build you should have the war file under the target directory. You may manually copy and deploy this into your WebLogic server domain. Or you may continue to configure the maven pom to do this all with maven. Here is how I do it. Edit the my-basic-webapp-project/pom.xml file and replace the weblogic-maven-plugin plugin like this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  &lt;plugin&gt;
+
+    &lt;groupId&gt;com.oracle.weblogic&lt;/groupId&gt; 
+
+    &lt;artifactId&gt;weblogic-maven-plugin&lt;/artifactId&gt; 
+
+    &lt;version&gt;12.1.2-0-0&lt;/version&gt; 
+
+    &lt;configuration&gt; 
+
+      &lt;middlewareHome&gt;${oracleMiddlewareHome}&lt;/middlewareHome&gt;
+
+      &lt;adminurl&gt;${oracleServerUrl}&lt;/adminurl&gt;
+
+      &lt;user&gt;${oracleUsername}&lt;/user&gt; 
+
+      &lt;password&gt;${oraclePassword}&lt;/password&gt;
+
+      &lt;source&gt;${project.build.directory}/${project.build.finalName}.${project.packaging}&lt;/source&gt;
+
+      &lt;targets&gt;${oracleServerName}&lt;/targets&gt;
+
+      &lt;verbose&gt;true&lt;/verbose&gt; 
+
+      &lt;name&gt;${project.build.finalName}&lt;/name&gt;
+
+    &lt;/configuration&gt;
+
+  &lt;/plugin&gt;  
+</code></pre></div></div>
+
+<p>With this change, you may deploy the webapp into WebLogic server (well, assuming you already started your “mydomain” with “myserver” server running locally. See my previous blog for instructions)</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cd my-basic-webapp-project
+
+$ mvn weblogic:deploy -DoracleMiddlewareHome=$HOME/apps/wls12120 -DoracleServerName=myserver -DoracleUsername=admin -DoraclePassword=admin123
+</code></pre></div></div>
+<p>After the “BUILD SUCCESS” message, you may visit the http://localhost:7001/basicWebapp URL.</p>
+
+<p>Revisit the WLS doc again and you will find that they also provide other project templates (Maven calls these archetypes) for building EJB, MDB, or WebService projects. These should help you get your EE projects started quickly.</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2014/02/01/using-intellij-idea-12-for-weblogic-server-12c/">
+        Using Intellij IDEA 12 for WebLogic Server 12c
+      </a>
+    </h1>
+
+    <span class="post-date">01 Feb 2014</span>
+
+    <p>If you want to explore the latest EE features, you would need WebLogic Server 12c. However if you still have the IDEA 12 Ultimate edition, you will quickly find that it only supports up to WebLogic 
+Server 11g (10.x)! However you can still make your IDEA 12 U to work with WLS 12c, and all you need is an extra “registry.xml” file under WLS home directory (eg: C:/apps/wls12120/registry.xml). This file will allow the IDEA to pickup and recognize your latest WLS 12c installation.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;bea-product-information&gt;
+  &lt;host home="C:\apps\wls12120" name="${env.HOST}"&gt;
+    &lt;product format="1.0" name="WebLogic Platform"&gt;
+      &lt;release level="12.0"
+        ServicePackLevel="6" PatchLevel="0"
+        Status="installed" BeaProgramGroup="BEA WebLogic Platform 12.0" StartMenu=""
+        InstallTime="@INSTALL_TIME@"
+        InstallDir="C:\apps\wls12120\wlserver"
+        JavaHome="C:\apps\jdk7" JavaVersion="1.7.0" JavaVendor="@JAVA_VENDOR@"&gt;
+        &lt;component name="WebLogic Server" version="12.1.2.0"&gt;
+          &lt;component name="Server"/&gt;
+          &lt;component name="Server Examples"/&gt;
+        &lt;/component&gt;
+     &lt;/release&gt;
+    &lt;/product&gt;
+ &lt;/host&gt;
+&lt;/bea-product-information&gt;
+</code></pre></div></div>
+<p>I have learned this from reading the IntelliJ forum. Also note that the latest IDEA 13 will support WebLogic Server 12c out of the box now.</p>
+
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2014/01/31/getting-started-with-intellij-idea-and-weblogic-server/">
+        Getting started with Intellij IDEA and WebLogic Server
+      </a>
+    </h1>
+
+    <span class="post-date">31 Jan 2014</span>
+
+    <p>Before starting, you would need the Ultimate version of IDEA to run WebLogic Server (yes, the paid version or the 30 days trial). The Community edition of IDEA will not support Application Server deployment.</p>
+
+<p>I also assume you have already setup WebLogic Server and a user domain as per my <a href="http://saltnlight5.blogspot.com/2014/01/getting-started-with-weblogic-server.html">previous blog instructions</a>. So now let’s setup the IDE to boost your development.</p>
+
+<ol>
+  <li>Create a simple HelloWorld web application in IDEA.</li>
+  <li>For your HelloWorld, you can go into the Project Settings &gt; Artifacts, and add “web:war exploded” entry for your application. You will add this into your app server later.</li>
+  <li>
+    <p>Ensure you have added the Application Server Views plugin with WebLogic Server. (It’s under Settings &gt; IDE Settings &gt; Application Server)</p>
+  </li>
+  <li>Click + and enter Name: WebLogic 12.1.2</li>
+  <li>
+    <p>WebLogic Home: <code class="language-plaintext highlighter-rouge">C:\apps\wls12120</code></p>
+  </li>
+  <li>
+    <p>Back to your editor, select Menu: Run &gt; Edit Configuration</p>
+  </li>
+  <li>Click + and add “WebLogic Server” &gt; Local</li>
+  <li>Name: WLS</li>
+  <li>On Server tab, ensure DomainPath is set: <code class="language-plaintext highlighter-rouge">C:\apps\wls12120\mydomain </code></li>
+  <li>On Deployment tab, select “web:war exploded” for your HelloWorld project.</li>
+  <li>
+    <p>Click OK</p>
+  </li>
+  <li>Now Menu: Run &gt; “Run WLS”</li>
+</ol>
+
+<p>Your WebLogic Server should now start and running your web application inside. You may visit the browser on http://localhost:7001/web_war_exploded</p>
+
+<p>Some goodies with Intellij IDEA and WLS are:</p>
+
+<ul>
+  <li>Redeploy WAR only without restarting server</li>
+  <li>Deploy application in exploded mode and have IDE auto make and sync</li>
+  <li>Debug application with server running within IDE</li>
+  <li>Full control on server settings</li>
+</ul>
+
+<p>NOTE: As noted in previous blog, if you do not set MW_HOME as system variable, then you must add this in IDEA’s Run Configuration. Or you edit your “mydomain/bin/startWebLogic.cmd” and “stopWebLogic.cmd” scripts directly.</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2014/01/30/getting-started-with-weblogic-server/">
+        Getting started with WebLogic Server
+      </a>
+    </h1>
+
+    <span class="post-date">30 Jan 2014</span>
+
+    <p>Here are some quick tips on how to get started with WebLogic Server on Windows OS:</p>
+
+<ol>
+  <li>Download wls1212.zip from http://www.oracle.com/technetwork/middleware/weblogic/downloads/index.html</li>
+  <li>Unzip it under <code class="language-plaintext highlighter-rouge">C:\apps\wls12120</code></li>
+  <li><code class="language-plaintext highlighter-rouge">set MW_HOME=C:\apps\wls12120</code></li>
+  <li><code class="language-plaintext highlighter-rouge">set JAVA_HOME=C:\apps\jdk1.7.0_51</code></li>
+  <li><code class="language-plaintext highlighter-rouge">cd C:\apps\wls12120</code></li>
+  <li><code class="language-plaintext highlighter-rouge">configure.cmd</code></li>
+  <li><code class="language-plaintext highlighter-rouge">mkdir user_projects\domains\mydomain</code></li>
+  <li><code class="language-plaintext highlighter-rouge">cd user_projects\domains\mydomain</code></li>
+  <li><code class="language-plaintext highlighter-rouge">%JAVA_HOME%\bin\java -Xmx1024m -XX:MaxPermSize=256m weblogic.Server</code></li>
+</ol>
+
+<p>By default, the last step should create a domain with all the nessary files in your current working directory. It will also prompt you to create a config.xml (enter ‘y’ to continue) and then prompting for a username and password to manage the server. Optionally you may also setup username/password part by using additional sys props like this:
+<code class="language-plaintext highlighter-rouge">-Dweblogic.management.username=weblogic -Dweblogic.management.password=Welcome1</code></p>
+
+<p>Use CTRL+C to stop the server. The next time you start, you can just invoke “mydomain\bin\startWebLogic.cmd”</p>
+
+<p>TIPS1: If you omit <code class="language-plaintext highlighter-rouge">-Xmx1024m -XX:MaxPermSize=256m</code> you will likely can start the server but as soon as you activate the /console webapp, you will run into out of memory issue.</p>
+
+<p>TIPS2: If you have access, try to add Windows Environment variables for <code class="language-plaintext highlighter-rouge">MW_HOME</code> and <code class="language-plaintext highlighter-rouge">JAVA_HOME</code> into your system. If not, then you can easily add it into “<code class="language-plaintext highlighter-rouge">mydomain\bin\setDomainEnv.cmd</code>” as well (it’s generated so you can edit all you like.) Without these two variables, you will likely get a class not found error.</p>
+
+<p>TIPS3: The default server name created by this initial setup is called myserver. If you like to name it something else, then add sys props such as this: <code class="language-plaintext highlighter-rouge">-Dweblogic.Name=admin-server </code></p>
+
+<p>TIPS4: To change the domain name from <code class="language-plaintext highlighter-rouge">mydomain</code> to something else, use: <code class="language-plaintext highlighter-rouge">-Dweblogic.Domain=dev-domain</code></p>
+
+<p>TIPS5: The default admin server listening port is 7001. To change this, use: -Dweblogic.ListenPort=7002</p>
+
+  </div>
+  
+</div>
+
+<div class="pagination">
+  
+    <a class="pagination-item older" href="http://localhost:4000/page19">Older</a>
+  
+  
+    
+      <a class="pagination-item newer" href="http://localhost:4000/page17">Newer</a>
+    
+  
+</div>
+
+      </div>
+    </div>
+
+    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+    <script src='/public/js/script.js'></script>
+  </body>
+</html>

@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      A very light Groovy based web application project template &middot; Zemian's Blog
+    
+  </title>
+
+  
+  <link rel="canonical" href="http://localhost:4000/2012/11/28/a-very-light-groovy-based-web-application-project-template/">
+  
+
+  <link rel="stylesheet" href="http://localhost:4000/public/css/poole.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/syntax.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/lanyon.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700%7CPT+Sans:400">
+
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/public/apple-touch-icon-precomposed.png">
+  <link rel="shortcut icon" href="http://localhost:4000/public/favicon.ico">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="http://localhost:4000/atom.xml">
+
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-135626598-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  
+</head>
+
+
+  <body>
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p>A weblog on software development.</p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item" href="http://localhost:4000/">Home</a>
+
+    
+
+    
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="http://localhost:4000/about/">About</a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+
+  </nav>
+
+  <div class="sidebar-item">
+    <p>
+      &copy; 2020. All rights reserved.
+    </p>
+  </div>
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <h3 class="masthead-title">
+            <a href="/" title="Home">Zemian's Blog</a>
+            <small>Life in programming world!</small>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+        <div class="post">
+  <h1 class="post-title">A very light Groovy based web application project template</h1>
+  <span class="post-date">28 Nov 2012</span>
+  <p>You might have heard of the project Grails is a Groovy version of Ruby on Rails like framework that let you create web application much more easier with
+Dynamic scripting. Despite all that power Grails provided, it is not “light” if you look under the hood. I am not saying Grails is bad or anything. Grails is actually pretty cool to write web application with. However I found myself often want something even lighter and yet still want to prototype with Groovy. So here I will show you a <a href="https://bitbucket.org/saltnlight5/sandbox/downloads/maven-webapp-groovy.zip">maven-groovy-webapp</a> project template that I use to get start any web application development. It’s very simple, light, and yet very Groovy.</p>
+
+<h1 id="how-to-get-started">How to get started</h1>
+
+<p>Unzip <code class="language-plaintext highlighter-rouge">maven-webapp-groovy.zip</code> above and you should see these few files:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    bash&gt; cd maven-webapp-groovy
+    bash&gt; find .
+    bash&gt; ./pom.xml
+    bash&gt; ./README.txt
+    bash&gt; ./src
+    bash&gt; ./src/main
+    bash&gt; ./src/main/java
+    bash&gt; ./src/main/java/deng
+    bash&gt; ./src/main/java/deng/GroovyContextListener.java
+    bash&gt; ./src/main/resources
+    bash&gt; ./src/main/resources/log4j.properties
+    bash&gt; ./src/main/webapp
+    bash&gt; ./src/main/webapp/console.gt
+    bash&gt; ./src/main/webapp/health.gt
+    bash&gt; ./src/main/webapp/home.gt
+    bash&gt; ./src/main/webapp/WEB-INF
+    bash&gt; ./src/main/webapp/WEB-INF/classes
+    bash&gt; ./src/main/webapp/WEB-INF/classes/.keep
+    bash&gt; ./src/main/webapp/WEB-INF/groovy
+    bash&gt; ./src/main/webapp/WEB-INF/groovy/console.groovy
+    bash&gt; ./src/main/webapp/WEB-INF/groovy/health.groovy
+    bash&gt; ./src/main/webapp/WEB-INF/groovy/home.groovy
+    bash&gt; ./src/main/webapp/WEB-INF/groovy/init.groovy
+    bash&gt; ./src/main/webapp/WEB-INF/groovy/destroy.groovy
+    bash&gt; ./src/main/webapp/WEB-INF/web.xml
+</code></pre></div></div>
+
+<p>As you can see it’s a maven based application, and I have configured tomcat plugin, so you may run it like this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bash&gt; mvn tomcat7:run
+bash&gt; open http://localhost:8080/maven-webapp-groovy/home.groovy
+</code></pre></div></div>
+
+<p>And ofcourse, with maven, running package phase will let you deploy it into any real application servers when ready.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bash&gt; mvn package
+bash&gt; cp target/maven-webapp-groovy.war $APP_SERVER_HOME/autodeploy
+</code></pre></div></div>
+
+<h1 id="whats-in-it">What’s in it</h1>
+
+<p>You should checkout the main config in <code class="language-plaintext highlighter-rouge">web.xml</code> file, and you’ll see that there couple built-in Groovy servlets and a custom listener.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    &lt;?xml version="1.0"?&gt;
+    &lt;web-app xmlns="http://java.sun.com/xml/ns/javaee"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+            version="2.5"&gt;
+    
+        &lt;description&gt;Groovy Web Application&lt;/description&gt;
+        &lt;welcome-file-list&gt;
+            &lt;welcome-file&gt;home.groovy&lt;/welcome-file&gt;
+        &lt;/welcome-file-list&gt;
+    
+        &lt;servlet&gt;
+            &lt;servlet-name&gt;GroovyServlet&lt;/servlet-name&gt;
+            &lt;servlet-class&gt;groovy.servlet.GroovyServlet&lt;/servlet-class&gt;
+        &lt;/servlet&gt;
+        &lt;servlet-mapping&gt;
+            &lt;servlet-name&gt;GroovyServlet&lt;/servlet-name&gt;
+            &lt;url-pattern&gt;*.groovy&lt;/url-pattern&gt;
+        &lt;/servlet-mapping&gt;
+    
+        &lt;servlet&gt;
+            &lt;servlet-name&gt;TemplateServlet&lt;/servlet-name&gt;
+            &lt;servlet-class&gt;groovy.servlet.TemplateServlet&lt;/servlet-class&gt;
+        &lt;/servlet&gt;
+        &lt;servlet-mapping&gt;
+            &lt;servlet-name&gt;TemplateServlet&lt;/servlet-name&gt;
+            &lt;url-pattern&gt;*.gt&lt;/url-pattern&gt;
+        &lt;/servlet-mapping&gt;
+    
+        &lt;listener&gt;
+            &lt;listener-class&gt;deng.GroovyContextListener&lt;/listener-class&gt;
+        &lt;/listener&gt;
+        &lt;context-param&gt;  
+           &lt;param-name&gt;initScripts&lt;/param-name&gt;
+           &lt;param-value&gt;/WEB-INF/groovy/init.groovy&lt;/param-value&gt;
+        &lt;/context-param&gt;
+        &lt;context-param&gt;    
+           &lt;param-name&gt;destroyScripts&lt;/param-name&gt;
+           &lt;param-value&gt;/WEB-INF/groovy/destroy.groovy&lt;/param-value&gt;
+        &lt;/context-param&gt;
+    
+    &lt;/web-app&gt;
+</code></pre></div></div>
+
+<p>I’ve chosen to use <code class="language-plaintext highlighter-rouge">GroovyServlet</code> as a controller (it comes with Groovy!), and this let you use any scripts inside <code class="language-plaintext highlighter-rouge">/WEB-INF/groovy</code> directory. That’s it, no further setup. That’s about the only requirement you need to get a Groovy webapp started! See <code class="language-plaintext highlighter-rouge">console.groovy</code> as example and how it works. It’s a groovy version of <a href="http://saltnlight5.blogspot.com/2012/07/script-console-tool-for-any-war.html">this JVM console</a></p>
+
+<p>Now you can use Groovy to process any logic and even generate the HTML output if you like, but I find it even more easier to use <code class="language-plaintext highlighter-rouge">TemplateServlet</code>. This allow Groovy template files to be serve as view. It’s very much like JSP, but it uses Groovy instead! And we know Groovy syntax are much shorter to write! See <code class="language-plaintext highlighter-rouge">console.gt</code> as exmaple and how it works.</p>
+
+<p>The <code class="language-plaintext highlighter-rouge">GroovyContextListener</code> is something I wrote, and it’s optional. This allow you to run any scripts during the webapp startup or shutdown states. I’ve created an empty <code class="language-plaintext highlighter-rouge">init.groovy</code> and <code class="language-plaintext highlighter-rouge">destroy.groovy</code> placeholder. So now you have all the hooks you need to prototype just about any web application you need.</p>
+
+<h1 id="simplicity-wins">Simplicity wins</h1>
+
+<p>This setup is just plain Java Servlet with Groovy loaded. I often think the more simple you get, then less bug and faster you code. No heavy frameworks, no extra learning curve, (other than basic Servlet API and Groovy/Java skills ofcourse), and off you go.</p>
+
+<p>Go have fun with this Groovy webapp template! And let me know if you have some cool prototypes to show off after playing with this. :)</p>
+
+</div>
+
+
+<div class="related">
+  <h2>Related posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2020/09/20/world-of-php/">
+            The World of PHP Development
+            <small>20 Sep 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/09/19/multiple-jquery/">
+            How to Load Multiple jQuery
+            <small>19 Sep 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/08/15/switched-to-vuepress/">
+            Switched Blogging to VuePress
+            <small>15 Aug 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+
+      </div>
+    </div>
+
+    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+    <script src='/public/js/script.js'></script>
+  </body>
+</html>

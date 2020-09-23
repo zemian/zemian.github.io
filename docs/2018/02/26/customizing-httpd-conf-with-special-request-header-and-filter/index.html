@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Customizing httpd conf with special request header and filter &middot; Zemian's Blog
+    
+  </title>
+
+  
+  <link rel="canonical" href="http://localhost:4000/2018/02/26/customizing-httpd-conf-with-special-request-header-and-filter/">
+  
+
+  <link rel="stylesheet" href="http://localhost:4000/public/css/poole.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/syntax.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/lanyon.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700%7CPT+Sans:400">
+
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/public/apple-touch-icon-precomposed.png">
+  <link rel="shortcut icon" href="http://localhost:4000/public/favicon.ico">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="http://localhost:4000/atom.xml">
+
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-135626598-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  
+</head>
+
+
+  <body>
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p>A weblog on software development.</p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item" href="http://localhost:4000/">Home</a>
+
+    
+
+    
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="http://localhost:4000/about/">About</a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+
+  </nav>
+
+  <div class="sidebar-item">
+    <p>
+      &copy; 2020. All rights reserved.
+    </p>
+  </div>
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <h3 class="masthead-title">
+            <a href="/" title="Home">Zemian's Blog</a>
+            <small>Life in programming world!</small>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+        <div class="post">
+  <h1 class="post-title">Customizing httpd conf with special request header and filter</h1>
+  <span class="post-date">26 Feb 2018</span>
+  <h2 id="how-to-setup-httpd-reverse-proxy-for-tomcat">How to setup httpd reverse proxy for Tomcat</h2>
+
+<p>Enable modules</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>	# NOTE: If you are using Cygwin, these module requires cygserver to run!
+	#       else you get the following error:
+	#
+	#[Mon Feb 26 09:26:50.308620 2018] [proxy:crit] [pid 7564] (88)Function not implemented: AH02478: #failed to create proxy mutex
+	#AH00016: Configuration Failed
+	#
+	LoadModule proxy_module modules/mod_proxy.so
+	LoadModule proxy_http_module modules/mod_proxy_http.so
+</code></pre></div></div>
+
+<p>Setup reverse proxy</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>	# Reverse Proxy Setup
+	# NOTE: The ending slash '/' is important!
+	&lt;IfModule proxy_module&gt;
+	ProxyPass "/"  "http://localhost:8080/"
+	ProxyPassReverse "/"  "http://localhost/"
+	&lt;/IfModule&gt;
+</code></pre></div></div>
+
+<h2 id="how-to-add-custom-headers-to-requests">How to add custom headers to requests</h2>
+
+<p>Enable modules</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>LoadModule headers_module modules/mod_headers.so
+</code></pre></div></div>
+
+<p>Add headers to all requests</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;Location "/"&gt;
+	# Add custom headers
+	RequestHeader set appuser "test"
+	# Or add custom headers based on env variables exist
+	RequestHeader set appuser2 "%{APPUSER}e" env=APPUSER
+&lt;/Location&gt;
+</code></pre></div></div>
+
+<h2 id="how-to-setup-httpd-filter">How to setup Httpd Filter</h2>
+
+<p>Enable modules</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>LoadModule ext_filter_module modules/mod_ext_filter.so
+LoadModule request_module modules/mod_request.so
+</code></pre></div></div>
+
+<p>Windows Example</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>	# Setup external script to run request filter
+	ExtFilterDefine my-filter mode=input \
+		cmd="C:/Python36/pythonw.exe C:/Apache24/cgi-bin/my-filter.py"
+	&lt;Directory  "cgi-bin"&gt;
+		SetInputFilter my-filter
+	&lt;/Directory&gt;
+</code></pre></div></div>
+
+<p>Cygwin Example</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>	# Setup external script to run request filter
+	ExtFilterDefine my-filter mode=input \
+		cmd="/usr/bin/python3 /srv/www/cgi-bin/my-filter/my-filter.py"
+	&lt;Directory  "/srv/www/cgi-bin/my-filter"&gt;
+		SetInputFilter my-filter
+	&lt;/Directory&gt;
+</code></pre></div></div>
+
+<p>File my-filter.py</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>	#!/usr/bin/python3
+	import datetime
+	log = '/var/log/httpd/my-filter.log'
+	with open(log, 'a') as file:
+		file.write(f'{datetime.datetime.now()} hello filter\n')
+</code></pre></div></div>
+
+<p>File my-filter2.py</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>	#!/usr/bin/python3
+	import datetime, sys, os
+	log = '/var/log/httpd/my-filter.log'
+	with open(log, 'a') as file:
+		file.write(f'## {datetime.datetime.now()} hello filter\n')
+		file.write(f'arguments: {sys.argv}\n')
+		file.write(f'STDOIUT:\n')
+		for line in sys.stdin:
+			file.write(f'{line}\n')
+		file.write(f'os.environments:\n')
+		for k,v in os.environ.items():
+				file.write(f'os.env: {k} = {v}\n')
+</code></pre></div></div>
+
+</div>
+
+
+<div class="related">
+  <h2>Related posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2020/09/20/world-of-php/">
+            The World of PHP Development
+            <small>20 Sep 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/09/19/multiple-jquery/">
+            How to Load Multiple jQuery
+            <small>19 Sep 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/08/15/switched-to-vuepress/">
+            Switched Blogging to VuePress
+            <small>15 Aug 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+
+      </div>
+    </div>
+
+    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+    <script src='/public/js/script.js'></script>
+  </body>
+</html>

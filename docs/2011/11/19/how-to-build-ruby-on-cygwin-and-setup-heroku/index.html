@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      How to build Ruby on Cygwin and setup Heroku &middot; Zemian's Blog
+    
+  </title>
+
+  
+  <link rel="canonical" href="http://localhost:4000/2011/11/19/how-to-build-ruby-on-cygwin-and-setup-heroku/">
+  
+
+  <link rel="stylesheet" href="http://localhost:4000/public/css/poole.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/syntax.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/lanyon.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700%7CPT+Sans:400">
+
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/public/apple-touch-icon-precomposed.png">
+  <link rel="shortcut icon" href="http://localhost:4000/public/favicon.ico">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="http://localhost:4000/atom.xml">
+
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-135626598-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  
+</head>
+
+
+  <body>
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p>A weblog on software development.</p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item" href="http://localhost:4000/">Home</a>
+
+    
+
+    
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="http://localhost:4000/about/">About</a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+
+  </nav>
+
+  <div class="sidebar-item">
+    <p>
+      &copy; 2020. All rights reserved.
+    </p>
+  </div>
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <h3 class="masthead-title">
+            <a href="/" title="Home">Zemian's Blog</a>
+            <small>Life in programming world!</small>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+        <div class="post">
+  <h1 class="post-title">How to build Ruby on Cygwin and setup Heroku</h1>
+  <span class="post-date">19 Nov 2011</span>
+  <p>I like to use ruby that comes with Cygwin instead of the RubyInstaller for Windows, because the path it handles are more consistenly in Linux form. But the current Cygwin only comes with <code class="language-plaintext highlighter-rouge">ruby-1.8.7</code>, so to use <code class="language-plaintext highlighter-rouge">ruby-1.9.3</code>, I have to built it on Cygwin on my own. And when building ruby from source on Cygwin, you would also have to install gem on your own as well. Turns out there are few issues that you have to fix too. Here are the steps I got it working:</p>
+
+<ol>
+  <li>
+    <p>Ensure you have the typical Cygwin/Linux build tools (gcc, make, autoconf, libiconv, openssl and etc.)</p>
+  </li>
+  <li>
+    <p>Download source for the following:</p>
+  </li>
+</ol>
+
+<p>a) LibYAML 0.1.4 from http://pyyaml.org/wiki/LibYAML</p>
+
+<p>b) ruby-1.9.3-p0 source from http://ruby-lang.org</p>
+
+<p>c) rubygems-1.8.11 from http://rubygems.org</p>
+
+<ol>
+  <li>Unzip/tar them all in /tmp</li>
+</ol>
+
+<p>a)</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  $ cd /tmp/yaml-0.1.4 
+
+  $ ./configure &amp;&amp; make &amp;&amp; make install
+</code></pre></div></div>
+
+<p>b)</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  $ cd /tmp/ruby-1.9.3-p0/ext/openssl
+  $ ruby extconf.rb
+  $ make &amp;&amp; make install
+</code></pre></div></div>
+
+<p>c)</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  $ cd /tmp/ruby-1.9.3-p0
+  $ export CPPFLAGS=-I/usr/local/include
+  $ export LDFLAGS=-L/usr/local/lib     
+  $ ./configure &amp;&amp; make &amp;&amp; make install
+</code></pre></div></div>
+
+<p>e)</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  $ cd /tmp/rubygems-1.8.11
+  $ ruby setup.rb
+</code></pre></div></div>
+
+<p>With these completed, you may now install Heroku client tool as ruby gem:</p>
+
+<p>c)</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  $ gem install heroku
+</code></pre></div></div>
+
+<p>You would also need Git to successful push and deploy application to Heroku, but you can get Cygwin <code class="language-plaintext highlighter-rouge">git</code> package if you haven’t already done so.</p>
+
+<p>NOTE: FYI, all the user built applications are usually install into <code class="language-plaintext highlighter-rouge">/usr/local</code> directory, while those system (comes with cygwin packages) are in <code class="language-plaintext highlighter-rouge">/usr</code>.</p>
+
+</div>
+
+
+<div class="related">
+  <h2>Related posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2020/09/20/world-of-php/">
+            The World of PHP Development
+            <small>20 Sep 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/09/19/multiple-jquery/">
+            How to Load Multiple jQuery
+            <small>19 Sep 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/08/15/switched-to-vuepress/">
+            Switched Blogging to VuePress
+            <small>15 Aug 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+
+      </div>
+    </div>
+
+    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+    <script src='/public/js/script.js'></script>
+  </body>
+</html>

@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Improving java.util.Properties &middot; Zemian's Blog
+    
+  </title>
+
+  
+  <link rel="canonical" href="http://localhost:4000/2012/09/07/improving-java-util-properties/">
+  
+
+  <link rel="stylesheet" href="http://localhost:4000/public/css/poole.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/syntax.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/lanyon.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700%7CPT+Sans:400">
+
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/public/apple-touch-icon-precomposed.png">
+  <link rel="shortcut icon" href="http://localhost:4000/public/favicon.ico">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="http://localhost:4000/atom.xml">
+
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-135626598-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  
+</head>
+
+
+  <body>
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p>A weblog on software development.</p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item" href="http://localhost:4000/">Home</a>
+
+    
+
+    
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="http://localhost:4000/about/">About</a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+
+  </nav>
+
+  <div class="sidebar-item">
+    <p>
+      &copy; 2020. All rights reserved.
+    </p>
+  </div>
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <h3 class="masthead-title">
+            <a href="/" title="Home">Zemian's Blog</a>
+            <small>Life in programming world!</small>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+        <div class="post">
+  <h1 class="post-title">Improving java.util.Properties</h1>
+  <span class="post-date">07 Sep 2012</span>
+  <p>The Java built-in <code class="language-plaintext highlighter-rouge">java.util.Properties</code> class could really use some love. I have written a slightly improved version called
+<a href="https://bitbucket.org/timemachine/scheduler/src/15f066cc6dad/timemachine-scheduler/src/main/java/timemachine/scheduler/support/Props.java">timemachine.scheduler.support.Props</a>, and below are some features that I use often.</p>
+
+<h1 id="you-can-use-it-as-a-string-map-of-properties">You can use it as a “String Map” of properties</h1>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    Props props1 = new Props();
+    props1.put("foo", "bar");
+    
+    // It can load from/to the Java Properties
+    Props props2 = new Props(System.getProperties());
+    java.util.Properties javaProps = props3.toProperties();
+    
+    // It can load from/to a basic java.util.Map
+    Props props3 = new Props(System.getenv());
+    
+    // Props is a HashMap&lt;String, String&gt;, so no need to convert. Just use it
+    for(Map.Entry&lt;String, String&gt; entry : props3.entrySet())
+        System.our.println(entry.getKey() + ": " + entry.getValue());
+</code></pre></div></div>
+
+<h1 id="you-can-load-from-a-file-in-a-single-line">You can load from a file in a single line</h1>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    Props props1 = new Props("config.properties");
+    Props props2 = new Props("/path/to/config.properties");
+    Props props3 = new Props(new java.net.URL("http://myhost/config/config.properties"));
+    Props props4 = new Props(ClasspathURLStreamHandler.createURL("classpath://config/config.properties"));
+    
+    // You can re-load on top of existing instance to override values
+    props4.load("config2.properties");
+</code></pre></div></div>
+
+<p>NOTE: The <code class="language-plaintext highlighter-rouge">ClasspathURLStreamHandler</code> is a utility class from the same package under <code class="language-plaintext highlighter-rouge">timemachine.scheduler.support</code> that can load any resources that’s in the classpath.</p>
+
+<h1 id="you-can-get-many-basic-types-conversion">You can get many basic types conversion</h1>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    Props props = new Props();
+    props.put("str", "foo");
+    props.put("num", "123");
+    props.put("dec", "99.99");
+    props.put("flag", "true");
+    
+    String str = props.getString("str");
+    int num = props.getInt("num");
+    double dec = props.getDouble("dec");
+    boolean flag = props.getBoolean("flag");
+    
+    // You can even get default value when key is not found too
+    int num2 = props.getInt("num2", -1);
+</code></pre></div></div>
+
+<h1 id="you-can-auto-expand-variable-from-any-existing-properties">You can auto expand ${variable} from any existing properties</h1>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    Props props = new Props(System.getProperties());
+    props.put("configDir", "${user.home}/myapp/config");
+    props.expandVariables();
+    
+    // The ${user.home} should be expanded to actual user home dir value.
+    File dir = new File(props.get("configDir"));
+</code></pre></div></div>
+
+<p>There you have it. You see more code than words in this post, but I believe simple code speak louder than words and docs. I find these features very convenient and practical 
+for many Java applications to use. I wish the JDK would provide these out of the box, and make the <code class="language-plaintext highlighter-rouge">java.util.Properties</code> more
+developer friendly.</p>
+
+</div>
+
+
+<div class="related">
+  <h2>Related posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2020/09/20/world-of-php/">
+            The World of PHP Development
+            <small>20 Sep 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/09/19/multiple-jquery/">
+            How to Load Multiple jQuery
+            <small>19 Sep 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/08/15/switched-to-vuepress/">
+            Switched Blogging to VuePress
+            <small>15 Aug 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+
+      </div>
+    </div>
+
+    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+    <script src='/public/js/script.js'></script>
+  </body>
+</html>

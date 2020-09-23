@@ -1,0 +1,1774 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Zemian's Blog &middot; Life in programming world!
+    
+  </title>
+
+  
+  <link rel="canonical" href="http://localhost:4000/page24/">
+  
+
+  <link rel="stylesheet" href="http://localhost:4000/public/css/poole.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/syntax.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/lanyon.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700%7CPT+Sans:400">
+
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/public/apple-touch-icon-precomposed.png">
+  <link rel="shortcut icon" href="http://localhost:4000/public/favicon.ico">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="http://localhost:4000/atom.xml">
+
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-135626598-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  
+</head>
+
+
+  <body>
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p>A weblog on software development.</p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item active" href="http://localhost:4000/">Home</a>
+
+    
+
+    
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="http://localhost:4000/about/">About</a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+
+  </nav>
+
+  <div class="sidebar-item">
+    <p>
+      &copy; 2020. All rights reserved.
+    </p>
+  </div>
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <h3 class="masthead-title">
+            <a href="/" title="Home">Zemian's Blog</a>
+            <small>Life in programming world!</small>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+        <div class="posts">
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2012/09/25/timemachine-scheduler-1-2-2-release/">
+        TimeMachine Scheduler 1.2.2 Release
+      </a>
+    </h1>
+
+    <span class="post-date">25 Sep 2012</span>
+
+    <p>This is a bug fix release for couple of issues:</p>
+
+<ol>
+  <li>
+    <p>Fixed an issue with parsing release date string with “EDT” timezone that can cause the scheduler fail to startup</p>
+  </li>
+  <li>
+    <p>Added the optional slf4j-log4j binding to view log output in war file.</p>
+  </li>
+</ol>
+
+<p>You may download the latest here: <a href="https://bitbucket.org/timemachine/scheduler/downloads">https://bitbucket.org/timemachine/scheduler/downloads</a></p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2012/09/18/where-did-git-go/">
+        Where did Git go?
+      </a>
+    </h1>
+
+    <span class="post-date">18 Sep 2012</span>
+
+    <p>My git is gone after I upgraded to latest MacOSX updates! What a annoying thing.</p>
+
+<p>Appearently it’s in here now: <code class="language-plaintext highlighter-rouge">/usr/local/git/bin/git</code></p>
+
+<p>You can edit your <code class="language-plaintext highlighter-rouge">$PATH</code> like it says <a href="http://stackoverflow.com/questions/6810059/git-on-mac-os-x-lion">here</a>, or you could just relink it.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ln -s /usr/local/git/bin/git /usr/local/bin/git
+</code></pre></div></div>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2012/09/14/building-message-based-application-using-camel/">
+        Building message based application using Camel
+      </a>
+    </h1>
+
+    <span class="post-date">14 Sep 2012</span>
+
+    <p>This is a long article that contains three separate topics:</p>
+
+<ul>
+  <li>Getting started with Apache Camel with Java</li>
+  <li>Improving startup of routes with a CamelRunner</li>
+  <li>Building message based application using Camel</li>
+</ul>
+
+<p>But since I’ve prepared a <a href="https://bitbucket.org/saltnlight5/sandbox/downloads">camel-demo-1.0.0-SNAPSHOT-project.zip</a> that has all these materials included, I thought it would easier to combine them and present it as whole.</p>
+
+<h1 id="getting-started-with-apache-camel-with-java">Getting started with Apache Camel with Java</h1>
+
+<p>Trying out <a href="http://saltnlight5.blogspot.com/2012/08/getting-started-with-apache-camel-using.html">Camel with few Groovy lines</a> is one thing, but 
+getting a full scale project in Java is another matter. Today, I will show you how to get things started on <a href="http://camel.apache.org/">Apache Camel</a> with 
+<a href="http://maven.apache.org/">Maven</a> based project. You may also use the provided <code class="language-plaintext highlighter-rouge">camel-demo</code> as project template to jump start your own Apache Camel 
+project. You would just need to rename the Java package and rename the pom’s group and artifact id’s to match your need.</p>
+
+<h2 id="preparing-a-maven-based-project-with-camel-dependencies">Preparing a Maven based project with Camel dependencies</h2>
+
+<p>Unzip the <code class="language-plaintext highlighter-rouge">camel-demo</code> project source, and you will see the basic directory layout.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    camel-demo
+        +- bin
+        +- config
+        +- data
+        +- src
+        +- pom.xml
+        +- README.txt
+</code></pre></div></div>
+
+<p>What makes this demo a Camel based project is just the declaration in <code class="language-plaintext highlighter-rouge">pom.xml</code>. Let’s take a look the file and its dependencies.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+    &lt;project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0   http://maven.apache.org/maven-v4_0_0.xsd"&gt;
+    
+        &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+        &lt;groupId&gt;deng.cameldemo&lt;/groupId&gt;
+        &lt;artifactId&gt;camel-demo&lt;/artifactId&gt;
+        &lt;version&gt;1.0.0-SNAPSHOT&lt;/version&gt;
+        &lt;packaging&gt;jar&lt;/packaging&gt;
+    
+        &lt;properties&gt;
+            &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+            &lt;slf4j.version&gt;1.6.6&lt;/slf4j.version&gt;
+            &lt;camel.version&gt;2.10.1&lt;/camel.version&gt;
+        &lt;/properties&gt;
+    
+        &lt;build&gt;
+            &lt;plugins&gt;
+                &lt;plugin&gt;
+                    &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+                    &lt;version&gt;2.3.2&lt;/version&gt;
+                    &lt;configuration&gt;
+                        &lt;source&gt;1.6&lt;/source&gt;
+                        &lt;target&gt;1.6&lt;/target&gt;
+                    &lt;/configuration&gt;
+                &lt;/plugin&gt;
+                &lt;plugin&gt;
+                    &lt;artifactId&gt;maven-assembly-plugin&lt;/artifactId&gt;
+                    &lt;version&gt;2.3&lt;/version&gt;
+                    &lt;configuration&gt;
+                        &lt;descriptorRefs&gt;
+                            &lt;descriptorRef&gt;project&lt;/descriptorRef&gt;
+                            &lt;descriptorRef&gt;jar-with-dependencies&lt;/descriptorRef&gt;
+                        &lt;/descriptorRefs&gt;
+                    &lt;/configuration&gt;
+                    &lt;executions&gt;
+                        &lt;execution&gt;
+                            &lt;id&gt;make-assembly&lt;/id&gt;
+                            &lt;phase&gt;package&lt;/phase&gt;
+                            &lt;goals&gt;
+                                &lt;goal&gt;single&lt;/goal&gt;
+                            &lt;/goals&gt;
+                        &lt;/execution&gt;
+                    &lt;/executions&gt;
+                &lt;/plugin&gt;
+            &lt;/plugins&gt;
+        &lt;/build&gt;
+    
+        &lt;dependencies&gt;
+    
+            &lt;!-- Unit testing lib --&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;junit&lt;/groupId&gt;
+                &lt;artifactId&gt;junit-dep&lt;/artifactId&gt;
+                &lt;version&gt;4.10&lt;/version&gt;
+                &lt;scope&gt;test&lt;/scope&gt;
+            &lt;/dependency&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;org.hamcrest&lt;/groupId&gt;
+                &lt;artifactId&gt;hamcrest-library&lt;/artifactId&gt;
+                &lt;version&gt;1.2.1&lt;/version&gt;
+                &lt;scope&gt;test&lt;/scope&gt;
+            &lt;/dependency&gt;
+    
+            &lt;!-- Logging lib --&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;org.slf4j&lt;/groupId&gt;
+                &lt;artifactId&gt;slf4j-api&lt;/artifactId&gt;
+                &lt;version&gt;${slf4j.version}&lt;/version&gt;
+            &lt;/dependency&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;org.slf4j&lt;/groupId&gt;
+                &lt;artifactId&gt;slf4j-log4j12&lt;/artifactId&gt;
+                &lt;version&gt;${slf4j.version}&lt;/version&gt;
+                &lt;scope&gt;runtime&lt;/scope&gt;
+                &lt;optional&gt;true&lt;/optional&gt;
+            &lt;/dependency&gt;
+    
+            &lt;!-- Apache Commons lib --&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;commons-lang&lt;/groupId&gt;
+                &lt;artifactId&gt;commons-lang&lt;/artifactId&gt;
+                &lt;version&gt;2.6&lt;/version&gt;
+            &lt;/dependency&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;commons-io&lt;/groupId&gt;
+                &lt;artifactId&gt;commons-io&lt;/artifactId&gt;
+                &lt;version&gt;2.0.1&lt;/version&gt;
+            &lt;/dependency&gt;
+    
+            &lt;!-- Apache Camel --&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;org.apache.camel&lt;/groupId&gt;
+                &lt;artifactId&gt;camel-core&lt;/artifactId&gt;
+                &lt;version&gt;${camel.version}&lt;/version&gt;
+            &lt;/dependency&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;org.apache.camel&lt;/groupId&gt;
+                &lt;artifactId&gt;camel-spring&lt;/artifactId&gt;
+                &lt;version&gt;${camel.version}&lt;/version&gt;
+            &lt;/dependency&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;org.apache.camel&lt;/groupId&gt;
+                &lt;artifactId&gt;camel-groovy&lt;/artifactId&gt;
+                &lt;version&gt;${camel.version}&lt;/version&gt;
+            &lt;/dependency&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;org.apache.camel&lt;/groupId&gt;
+                &lt;artifactId&gt;camel-jackson&lt;/artifactId&gt;
+                &lt;version&gt;${camel.version}&lt;/version&gt;
+            &lt;/dependency&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;org.apache.camel&lt;/groupId&gt;
+                &lt;artifactId&gt;camel-mina&lt;/artifactId&gt;
+                &lt;version&gt;${camel.version}&lt;/version&gt;
+            &lt;/dependency&gt;
+    
+        &lt;/dependencies&gt;
+    
+    &lt;/project&gt;
+</code></pre></div></div>
+
+<p>This <code class="language-plaintext highlighter-rouge">pom.xml</code> decalares a Java based application and it will produce <code class="language-plaintext highlighter-rouge">jar</code>. It requires minimal of JDK 6 or higher. Besides the typical <code class="language-plaintext highlighter-rouge">junit</code> and <code class="language-plaintext highlighter-rouge">hamcrest</code> for unit testing, I also added <code class="language-plaintext highlighter-rouge">slf4j</code> for logging. I have added couple Apache’s <code class="language-plaintext highlighter-rouge">commons-lang/io</code> to the project as well. I think these are basic settings that any Java based application should use them.</p>
+
+<p>The <code class="language-plaintext highlighter-rouge">maven-assembly-plugin</code> I have declared is only for this demo packging purpose, and you may change or remove to suite your own project need.</p>
+
+<p>For Camel dependencies, you would need minimal <code class="language-plaintext highlighter-rouge">camel-core</code> for routes building. And then you can add any additional components you plan to use in your project. I have added the following for building typical message based application development:</p>
+
+<ol>
+  <li>The <code class="language-plaintext highlighter-rouge">camel-spring</code> - we want to have option to declare Camel routes in xml files as configuration. See <code class="language-plaintext highlighter-rouge">camel-demo/config</code> directory for samples.</li>
+  <li>The <code class="language-plaintext highlighter-rouge">camel-jackson</code> - we want to process messaging data in our application as JSON format.</li>
+  <li>The <code class="language-plaintext highlighter-rouge">camel-mina</code> - we want to send messaging data accross network through TCP socket.</li>
+  <li>The <code class="language-plaintext highlighter-rouge">camel-groovy</code> - [optional] we want to be able to add dynamic scripting to route, even inside the xml config. This is great for debug and POC.</li>
+</ol>
+
+<p>Note that since we use multiple camel components dependencies, I choose to set a Maven property <code class="language-plaintext highlighter-rouge">${camel.version}</code> so that when we upgrade Camel, 
+it’s easier to maintain the <code class="language-plaintext highlighter-rouge">pom.xml</code> file in one place.</p>
+
+<p>You should able to cd into the project directory and run <code class="language-plaintext highlighter-rouge">mvn compile</code> to verify that the project. It should compile without error.</p>
+
+<h1 id="improving-startup-of-routes-with-a-camelrunner">Improving startup of routes with a CamelRunner</h1>
+
+<p>With the project <code class="language-plaintext highlighter-rouge">pom.xml</code> file ready, you can start creating Camel routes to handle your own business logics. Before we get too excited, let’s try out
+a simple <code class="language-plaintext highlighter-rouge">HelloRoute</code> to see how it works and how we can run it first. Here is the route defnition code in <code class="language-plaintext highlighter-rouge">src/main/java/deng/cameldemo/HelloRoute.java</code>.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    package deng.cameldemo;
+    
+    import org.apache.camel.builder.RouteBuilder;
+    
+    public class HelloRoute extends RouteBuilder {
+        @Override
+        public void configure() throws Exception {
+            from("timer://helloTimer?period=3000").
+                to("log:" + getClass().getName());
+        }
+    }
+</code></pre></div></div>
+
+<h2 id="take-a-test-ride-with-the-camel">Take a test ride with the Camel</h2>
+
+<p>To see above in action, we need to add it into a <code class="language-plaintext highlighter-rouge">CamelContext</code> and start the context. For Java standalone program, we would write this setup code
+in a <code class="language-plaintext highlighter-rouge">Main</code> class. The Camel actually comes with a <code class="language-plaintext highlighter-rouge">org.apache.camel.main.MainSupport</code> abstract class that you may use to extend your own <code class="language-plaintext highlighter-rouge">Main</code>. 
+However, I think it would be even nicer if Camel would provide a <code class="language-plaintext highlighter-rouge">CamelRunner</code> that can run like this.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ java CamelRunner deng.cameldemo.HelloRoute
+</code></pre></div></div>
+
+<p>Such <code class="language-plaintext highlighter-rouge">CamelRunner</code> would be very user friendly and re-usable to have, so that’s what I did. I wrote one like this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    package deng.cameldemo;
+    
+    import org.apache.camel.CamelContext;
+    import org.apache.camel.builder.RouteBuilder;
+    import org.apache.camel.impl.DefaultCamelContext;
+    import org.slf4j.Logger;
+    import org.slf4j.LoggerFactory;
+    import org.springframework.context.ConfigurableApplicationContext;
+    import org.springframework.context.support.FileSystemXmlApplicationContext;
+    
+    /** 
+     * A main program to start Camel and run as a server using RouteBuilder class names or 
+     * Spring config files.
+     * 
+     * &lt;p&gt;Usage:
+     * 
+     * java deng.cameldemo.CamelRunner deng.cameldemo.HelloRoute
+     * 
+     * or
+     * 
+     * java -Dspring=true deng.cameldemo.CamelRunner /path/to/camel-spring.xml
+     * 
+     * @author Zemian Deng
+     */
+    public class CamelRunner {
+        public static void main(String[] args) throws Exception {
+            CamelRunner runner = new CamelRunner();
+            runner.run(args);
+        }
+    
+        private static Logger logger = LoggerFactory.getLogger(CamelRunner.class);
+        public void run(String[] args) throws Exception {
+            if (Boolean.parseBoolean(System.getProperty("spring", "false")))
+                runWithSpringConfig(args);
+            else
+                runWithCamelRoutes(args);
+    
+            // Wait for user to hit CRTL+C to stop the service
+            synchronized(this) {
+                this.wait();
+            }
+        }
+    
+        private void runWithSpringConfig(String[] args) {
+            final ConfigurableApplicationContext springContext = new FileSystemXmlApplicationContext(args);
+    
+            // Register proper shutdown.
+            Runtime.getRuntime().addShutdownHook(new Thread() { 
+                @Override
+                public void run() {
+                    try {
+                        springContext.close();
+                        logger.info("Spring stopped.");
+                    } catch (Exception e) {
+                        logger.error("Failed to stop Spring.", e);
+                    }
+                }
+            });
+    
+            // Start spring
+            logger.info("Spring started.");
+        }
+    
+        private void runWithCamelRoutes(String[] args) throws Exception {
+            final CamelContext camelContext = new DefaultCamelContext();        
+            // Register proper shutdown.
+            Runtime.getRuntime().addShutdownHook(new Thread() { 
+                @Override
+                public void run() {
+                    try {
+                        camelContext.stop();
+                        logger.info("Camel stopped for {}", camelContext);
+                    } catch (Exception e) {
+                        logger.error("Failed to stop Camel.", e);
+                    }
+                }
+            });
+    
+            // Added RouteBuilder from args
+            for (String className : args) {
+                Class&lt;?&gt; cls = Class.forName(className);
+                if (RouteBuilder.class.isAssignableFrom(cls)) {
+                    Object obj = cls.newInstance();
+                    RouteBuilder routeBuilder = (RouteBuilder)obj;
+                    camelContext.addRoutes(routeBuilder);
+                } else {
+                    throw new RuntimeException("Unable to add Camel RouteBuilder " + className);
+                }
+            }
+    
+            // Start camel
+            camelContext.start();
+            logger.info("Camel started for {}", camelContext);
+        }
+    }
+</code></pre></div></div>
+
+<p>To help you run the main class, I have provided a <a href="http://saltnlight5.blogspot.com/2012/08/a-better-java-shell-script-wrapper.html">run-java</a> 
+wrapper script under the project’s <code class="language-plaintext highlighter-rouge">bin</code> directory, so that you may quickly test it without having to setup classpath.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ mvn package
+$ bin/run-java deng.cameldemo.CamelRunner deng.cameldemo.HelloRoute
+</code></pre></div></div>
+
+<p>You will see that the program will load the <code class="language-plaintext highlighter-rouge">HelloRoute</code> in a <code class="language-plaintext highlighter-rouge">DefaultCamelContext</code> and start it as a server. The <code class="language-plaintext highlighter-rouge">HelloRoute</code> itself will 
+generate a 3 seconds timer message and send it to a logger, which should be printing onto your console screen. This will continue forever 
+until you hit <code class="language-plaintext highlighter-rouge">CTRL+C</code> to end it.</p>
+
+<p>NOTE: You only have to invoke <code class="language-plaintext highlighter-rouge">mvn package</code> command once, so that it will package up all the dependencies jars in order for <code class="language-plaintext highlighter-rouge">run-java</code> to auto-detect
+them. If you are not going to use <code class="language-plaintext highlighter-rouge">maven-assembly-plugin</code> during <code class="language-plaintext highlighter-rouge">package</code> phase, then use <code class="language-plaintext highlighter-rouge">mvn dependency:copy-dependencies</code> command 
+explicitly will work fine as well.</p>
+
+<h2 id="take-a-test-ride-with-the-camel-part-2-running-camel-with-spring-xml-configuration">Take a test ride with the Camel, Part 2: running Camel with Spring xml configuration</h2>
+
+<p>The <code class="language-plaintext highlighter-rouge">HelloRoute</code> example above would simply provide route definition that formed by using component URI’s. It will be nice if
+we can configure the route in a declarative manner so that we may change the route without re-compile a class file. This will be very handy especially
+if you are not familiar with each component’s options and want to explore and try things out. Well, that’s what the <code class="language-plaintext highlighter-rouge">camel-spring</code> is for. Beside 
+giving you an option to load route in xml config file, it also provides a very flexible way to register custom services/processors bean in the Spring
+IoC container.</p>
+
+<p>If you are a keen reader, you will notice in the <code class="language-plaintext highlighter-rouge">CamelRunner</code> code above that it has an extra <code class="language-plaintext highlighter-rouge">runWithSpringConfig</code> part. So the <code class="language-plaintext highlighter-rouge">CamelRunner</code> 
+can actually bootstrap any Spring xml file and start a context as a server. You may use it like this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ bin/run-java deng.cameldemo.CamelRunner -Dspring=true config/hellocamel-spring.xml
+</code></pre></div></div>
+
+<p>The <code class="language-plaintext highlighter-rouge">config/hellocamel-spring.xml</code> is just an equivalent of our <code class="language-plaintext highlighter-rouge">HelloRoute</code> code but in Spring xml form:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    &lt;beans xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd"&gt;
+    
+        &lt;camelContext id="helloCamel" xmlns="http://camel.apache.org/schema/spring"&gt;
+            &lt;route&gt;
+                &lt;from uri="timer://jdkTimer?period=3000"/&gt;
+                &lt;to uri="log://deng.cameldemo.HelloCamel"/&gt;
+            &lt;/route&gt;
+        &lt;/camelContext&gt;
+    
+    &lt;/beans&gt;
+</code></pre></div></div>
+
+<p>This remove the need to compile/re-compile <code class="language-plaintext highlighter-rouge">HelloRoute</code> to define the Camel route to run.</p>
+
+<h1 id="building-message-based-application-using-camel">Building message based application using Camel</h1>
+
+<p>To present you with a more practical demo, I would show you further on how to setup Camel to process message based application. In many IT
+shops, it’s common that you would have a server to take message data as input and process them. A practical use case is to take any JSON
+formated message and transform it into object and process it. To do this in Camel, what you want to build is a route that will take 
+input messages from a TCP port, and then process it in a pipeflow with any business logic you may have. You will run the route as a server, 
+and then client may use any mean to submit the message to the TCP port. Client may even be another thin Camel client app to submit data as well. 
+Let me show you how to get started.</p>
+
+<h2 id="writing-the-server-side-code-with-camel-route">Writing the server side code with Camel route</h2>
+
+<p>The server side would need a route to listen from a TCP port, and this is provided by <code class="language-plaintext highlighter-rouge">camel-mina</code> component. The first step is you need a route.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    package deng.cameldemo;
+    
+    import org.apache.camel.builder.RouteBuilder;
+    
+    public class TcpMsgRoute extends RouteBuilder {
+        @Override
+        public void configure() throws Exception {
+            String port = System.getProperty("port", "12345");
+            from("mina:tcp://localhost:" + port + "?sync=false").
+                to("log:" + getClass().getName());
+        }
+    }
+</code></pre></div></div>
+
+<p>Then the next step is … done! No way, you mean that’s all there to it for a server? Too good to be true? Well, let’s try it out</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    $ bin/run-java deng.cameldemo.CamelRunner deng.cameldemo.TcpMsgRoute -Dport=12345
+    15:21:41 main INFO  org.apache.camel.impl.DefaultCamelContext:1391 | Apache Camel 2.10.1 (CamelContext: camel-1) is starting
+    15:21:41 main INFO  org.apache.camel.management.ManagementStrategyFactory:43 | JMX enabled.
+    15:21:42 main INFO  org.apache.camel.impl.converter.DefaultTypeConverter:45 | Loaded 172 type converters
+    15:21:42 main INFO  org.apache.camel.component.mina.MinaConsumer:59 | Binding to server address: localhost/127.0.0.1:12345 using acceptor: org.apache.mina.transport.socket.nio.SocketAcceptor@2ffad8fe
+    15:21:42 main INFO  org.apache.camel.impl.DefaultCamelContext:2045 | Route: route1 started and consuming from: Endpoint[mina://tcp://localhost:12345?sync=true]
+    15:21:42 main INFO  org.apache.camel.management.DefaultManagementLifecycleStrategy:859 | StatisticsLevel at All so enabling load performance statistics
+    15:21:42 main INFO  org.apache.camel.impl.DefaultCamelContext:1426 | Total 1 routes, of which 1 is started.
+    15:21:42 main INFO  org.apache.camel.impl.DefaultCamelContext:1427 | Apache Camel 2.10.1 (CamelContext: camel-1) started in 0.505 seconds
+    15:21:42 main INFO  deng.cameldemo.CamelRunner:93 | Camel started for CamelContext(camel-1)
+</code></pre></div></div>
+
+<p>Voila! The server is up and waiting for your users to send messages through port <code class="language-plaintext highlighter-rouge">12345</code>. Not too bad for few lines of code.</p>
+
+<h2 id="writing-the-client-side-code-with-camel-producertemplate">Writing the client side code with Camel ProducerTemplate</h2>
+
+<p>Since our server expose a TCP port and take in any text content message, you can create any client that’s capable writing to a TCP socket. In here, 
+I will show you how to use Camel to write a thin client.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    package deng.cameldemo.client;
+    
+    import java.io.FileReader;
+    import org.apache.camel.CamelContext;
+    import org.apache.camel.ProducerTemplate;
+    import org.apache.camel.impl.DefaultCamelContext;
+    import org.apache.commons.io.IOUtils;
+    import org.slf4j.Logger;
+    import org.slf4j.LoggerFactory;
+    
+    public class TcpMsgSender {
+        public static void main(String[] args) throws Exception {
+            TcpMsgSender runner = new TcpMsgSender();
+            runner.run(args);
+        }
+    
+        private static Logger logger = LoggerFactory.getLogger(TcpMsgSender.class);
+        public void run(String[] args) throws Exception {
+            String fileName = args.length &gt; 0 ? args[0] : "data/msg.txt";
+            String[] hostPort = (args.length &gt; 1 ? args[1] : "localhost:12345").split(":");
+            String host = hostPort[0];
+            String port = hostPort.length &gt; 1 ? hostPort[1] : "12345";
+            logger.info("Sending tcp message {} to host={}, port={}", new Object[]{ fileName, host, port});
+    
+            String text = IOUtils.toString(new FileReader(fileName));
+            logger.debug("File size={}", text.length());
+    
+            CamelContext camelContext = new DefaultCamelContext();
+            ProducerTemplate producer = camelContext.createProducerTemplate();
+            producer.sendBody("mina:tcp://" + host + ":" + port + "?sync=false", text);
+            logger.info("Message sent.");
+        }
+    }
+</code></pre></div></div>
+
+<p>This <code class="language-plaintext highlighter-rouge">TcpMsgSender</code> can send any text file to your server endpoint. Try this out while your server is running:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    $ bin/run-java deng.cameldemo.client.TcpMsgSender data/test-msg.json localhost:12345
+    15:22:35 main INFO  deng.cameldemo.client.TcpMsgSender:24 | Sending tcp message data/test-msg.json to host=localhost, port=12345
+    15:22:35 main DEBUG deng.cameldemo.client.TcpMsgSender:27 | File size=47
+    15:22:35 main INFO  org.apache.camel.impl.converter.DefaultTypeConverter:45 | Loaded 172 type converters
+    15:22:35 main INFO  org.apache.camel.management.ManagementStrategyFactory:43 | JMX enabled.
+    15:22:35 main INFO  deng.cameldemo.client.TcpMsgSender:32 | Message sent.
+</code></pre></div></div>
+
+<p>You should able to verify from your server console output that it received the msg. The msg I sent is in <code class="language-plaintext highlighter-rouge">data/test-msg.json</code>, which 
+contains this simple text:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{ "firstName" : "Zemian", "lastName" : "Deng" }
+</code></pre></div></div>
+
+<p>Note that our server simply receive plain text and log it. We will discuss how to process the message next.</p>
+
+<h2 id="processing-message-data-in-json-format-with-camel-and-spring-xml-config">Processing message data in JSON format with Camel and Spring xml config</h2>
+
+<p>You thought the server code was easy from above, guess again. You can actually replace the <code class="language-plaintext highlighter-rouge">TcpMsgRoute</code> with just some simple xml lines!</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    &lt;beans xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd"&gt;
+    
+        &lt;camelContext id="tcpMsgServer" xmlns="http://camel.apache.org/schema/spring"&gt;
+            &lt;route&gt;
+                &lt;from uri="mina:tcp://localhost:12345?sync=false"/&gt;
+                &lt;to uri="log://deng.cameldemo.TcpMsgServer"/&gt;
+            &lt;/route&gt;
+        &lt;/camelContext&gt;
+    
+    &lt;/beans&gt;
+</code></pre></div></div>
+
+<p>Save it as <code class="language-plaintext highlighter-rouge">config/tcpmsgserver-spring.xml</code>. Then re-run the server, and you should get the same result as above.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ bin/run-java deng.cameldemo.CamelRunner -Dspring=true config/tcpmsgserver-spring.xml
+</code></pre></div></div>
+
+<p>Now let us improve the above xml to further process the JSON message data. We will like to transform the plain text to a Java object then process 
+by a custom bean. To do that, we first would need to add unmarshal component to the route. This is where the <code class="language-plaintext highlighter-rouge">camel-jackson</code> comes into play. 
+In our demo, the unmarshalling step would convert the JSON text into a <code class="language-plaintext highlighter-rouge">java.util.Map</code> and then pass it to a processor bean named <code class="language-plaintext highlighter-rouge">myMsgProcessor</code>.
+Let’s create a new xml file named <code class="language-plaintext highlighter-rouge">config/tcpmsgserver-json-spring.xml</code> as follow.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    &lt;beans xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd"&gt;
+    
+        &lt;camelContext id="tcpMsgServer" xmlns="http://camel.apache.org/schema/spring"&gt;
+            &lt;route&gt;
+                &lt;from uri="mina:tcp://localhost:12345?sync=false"/&gt;
+                &lt;to uri="log://deng.cameldemo.TcpMsgServer"/&gt;
+                &lt;unmarshal&gt;
+                    &lt;json library="Jackson"/&gt;
+                &lt;/unmarshal&gt;
+                &lt;to uri="bean:myMsgProcessor?method=process"/&gt;
+            &lt;/route&gt;
+        &lt;/camelContext&gt;
+    
+        &lt;bean id="myMsgProcessor" class="deng.cameldemo.MyMsgProcessor"&gt;
+        &lt;/bean&gt;
+    
+    &lt;/beans&gt;
+</code></pre></div></div>
+
+<p>The <code class="language-plaintext highlighter-rouge">myMsgProcessor</code> is an Spring bean that we provide custom logic code to process the data. At this point we have a full Java object
+to manipulate. The content of the processor can be any POJO with the method name specified in the URI. Here is an example one:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    package deng.cameldemo;
+    
+    import org.apache.camel.builder.RouteBuilder;
+    import org.slf4j.Logger;
+    import org.slf4j.LoggerFactory;
+    import java.util.Map;
+    
+    public class MyMsgProcessor {
+        private static Logger logger = LoggerFactory.getLogger(MyMsgProcessor.class);
+        public void process(Map&lt;String, String&gt; data) {
+            logger.info("We should slice and dice the data: " + data);
+        }
+    }
+</code></pre></div></div>
+
+<p>Try re-run the server with the new xml file above, and you should able to re-invoke the same client command to test it out. Here is a sample 
+output of my server:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    $ bin/run-java deng.cameldemo.CamelRunner -Dspring=true config/tcpmsgserver-json-spring.xml
+    17:05:25 main INFO  org.springframework.context.support.FileSystemXmlApplicationContext:456 | Refreshing org.springframework.context.support.FileSystemXmlApplicationContext@4200309: startup date [Sat Sep 15 17:05:25 EDT 2012]; root of context hierarchy
+    17:05:25 main INFO  org.springframework.beans.factory.xml.XmlBeanDefinitionReader:315 | Loading XML bean definitions from file [/Users/zemian/projects/sandbox/camel-demo/config/tcpmsgserver-json-spring.xml]
+    17:05:27 main INFO  org.springframework.beans.factory.support.DefaultListableBeanFactory:557 | Pre-instantiating singletons in org.springframework.beans.factory.support.DefaultListableBeanFactory@27b75165: defining beans [template,consumerTemplate,tcpMsgServer:beanPostProcessor,tcpMsgServer,myMsgProcessor]; root of factory hierarchy
+    17:05:27 main INFO  org.apache.camel.spring.SpringCamelContext:1391 | Apache Camel 2.10.1 (CamelContext: tcpMsgServer) is starting
+    17:05:27 main INFO  org.apache.camel.management.ManagementStrategyFactory:43 | JMX enabled.
+    17:05:27 main INFO  org.apache.camel.impl.converter.DefaultTypeConverter:45 | Loaded 172 type converters
+    17:05:28 main INFO  org.apache.camel.component.mina.MinaConsumer:59 | Binding to server address: localhost/127.0.0.1:12345 using acceptor: org.apache.mina.transport.socket.nio.SocketAcceptor@5a3cae4a
+    17:05:28 main INFO  org.apache.camel.spring.SpringCamelContext:2045 | Route: route1 started and consuming from: Endpoint[mina://tcp://localhost:12345?sync=false]
+    17:05:28 main INFO  org.apache.camel.management.DefaultManagementLifecycleStrategy:859 | StatisticsLevel at All so enabling load performance statistics
+    17:05:28 main INFO  org.apache.camel.spring.SpringCamelContext:1426 | Total 1 routes, of which 1 is started.
+    17:05:28 main INFO  org.apache.camel.spring.SpringCamelContext:1427 | Apache Camel 2.10.1 (CamelContext: tcpMsgServer) started in 0.695 seconds
+    17:05:28 main INFO  deng.cameldemo.CamelRunner:61 | Spring started.
+    17:05:35 Camel (tcpMsgServer) thread #3 - MinaThreadPool INFO  deng.cameldemo.TcpMsgServer:96 | Exchange[ExchangePattern:InOnly, BodyType:String, Body:{ "firstName" : "Zemian", "lastName" : "Deng" }]
+    17:05:35 Camel (tcpMsgServer) thread #3 - MinaThreadPool INFO  deng.cameldemo.MyMsgProcessor:11 | We should slice and dice the data: {lastName=Deng, firstName=Zemian}
+</code></pre></div></div>
+
+<p>Pay attention that Camel will auto convert the data format in your route! Our client only sends the plain text as JSON format, but when
+server receives it, it unmarshals it using Jackson library, and then converts it into a java Map object. It then passes the map object into our
+processor bean. Also, in this demo, I choose to use a generic <code class="language-plaintext highlighter-rouge">java.util.Map</code> as processor method argument (which is output of the JSON unmarshal), but
+you can easily define your own business data type, such as <code class="language-plaintext highlighter-rouge">MyCustomerData</code>. This reveals the power of Camel, since you don’t need to push the message
+in your flow, but only worry about writing your “processor” as a POJO. The Camel will “glue” components together to form a route and carry the message data through the pipeline flow.</p>
+
+<p>On the same token, when you write your business logic in one or more processors, it’s a good idea that you limit your POJO logic to be as small 
+unit as possible. When you do this, then you can maximize the reusability of the processors. The bigger POJO you make, with many business logics mixed in, it will also make it
+difficult to test. So I recommend you when developing these processor beans, try to think them as LEGO pieces – small POJO. You want to let Camel define the route and glue the LEGO
+pieces togther. Once you get into this habit of thiking, then you can use Camel in a more effectively way to solve many of your domain problems.</p>
+
+<p>Well, that’s all for today folks. I hope you enjoyed the Camel ride. Happy programming!</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2012/09/13/boost-your-groovy-with-nailgun/">
+        Boost your Groovy with NailGun
+      </a>
+    </h1>
+
+    <span class="post-date">13 Sep 2012</span>
+
+    <p>Are you working on a large Hibernate project that takes long time to load up all the <code class="language-plaintext highlighter-rouge">hbm.xml</code> files when creating the 
+<code class="language-plaintext highlighter-rouge">Session</code> object? This is fine during deployment and runtime because it only loads it once. However, often time we also 
+need to the same <code class="language-plaintext highlighter-rouge">Session</code> object to do some ad-hoc <code class="language-plaintext highlighter-rouge">HQL</code> queries to debug or validate data. Loading and re-loading
+large mapping files in a <code class="language-plaintext highlighter-rouge">Session</code> to just execute single query is very painful.</p>
+
+<p>Now, I like to poke around Java things with <code class="language-plaintext highlighter-rouge">Groovy</code>, and it’s a great tool to peek at your data as ad-hoc queries as well. 
+You can easily do this with their <code class="language-plaintext highlighter-rouge">groovyConsole</code> GUI tool and add <code class="language-plaintext highlighter-rouge">--classpath</code> option to include your project classes. This
+will bring up a tiny Editor, and you can script to load your hibernate <code class="language-plaintext highlighter-rouge">Session</code> there. Once the first run is loaded (the 
+hibenrate <code class="language-plaintext highlighter-rouge">Session</code> created), then second run is almost in an instant.</p>
+
+<p>Running the little <code class="language-plaintext highlighter-rouge">groovyConsole</code> had wet my appetite, and I was hungry for a better text editor, but yet I don’t really
+want a full blow IDE for scripting. I like do my scripting in a plain editor. Now if you have an editor such as <a href="http://sublimetext.com">Sublime Text 2</a> (ST2) that has a “build” feature to execute a external command, then you will enjoy scripting much more. With
+ST2, I can have it call <code class="language-plaintext highlighter-rouge">groovy.bat</code> from inside the editor on the script that I am editing. However, there is another problem: the external command will restart a new JVM process on each run! Now I am back to square one.</p>
+
+<p>To solve this problem, and still have my cake (editor), I recalled an awesome tool called <a href="http://www.martiansoftware.com/nailgun/index.html">NailGun</a>. This works perfectly with Groovy and my problem. I can start a server like this</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>java -cp "groovy-all-2.0.1.jar:nailgun-0.7.1.jar" -server com.martiansoftware.nailgun.NGServer
+</code></pre></div></div>
+
+<p>And then in my ST2 editor, I can run an external command like this as the NailGun client:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/path/to/nailgun-0.7.1/ng groovy.ui.GroovyMain test.groovy
+</code></pre></div></div>
+
+<p>Nail gun client sends the script file content to the server and prints the result. Again, after first run, the second run should
+be instantaneously.</p>
+
+<p>There, I scratched my itch.</p>
+
+<h1 id="details-on-how-to-setup-sublime-text-2-to-run-nailgun-client">Details on how to setup Sublime Text 2 to run NailGun client</h1>
+
+<ol>
+  <li>Go to menu: “Preference &gt; Browse Packages”</li>
+  <li>Open the Groovy folder</li>
+  <li>Save a file named “GroovyNailGunClient.sublime-build” with the following:</li>
+</ol>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  {
+  "cmd": ["/path/to/nailgun-0.7.1/ng", "groovy.ui.GroovyMain", "$file"],
+  "file_regex": "^(...*?):([0-9]*):?([0-9]*)",
+  "selector": "source.groovy"
+  }
+</code></pre></div></div>
+
+<ol>
+  <li>Select menu “Tool &gt; Build System &gt; GroovyNailGunClient”</li>
+  <li>Press <code class="language-plaintext highlighter-rouge">CTRL+B</code> to run any groovy file in your editor.</li>
+</ol>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2012/09/07/improving-java-util-properties/">
+        Improving java.util.Properties
+      </a>
+    </h1>
+
+    <span class="post-date">07 Sep 2012</span>
+
+    <p>The Java built-in <code class="language-plaintext highlighter-rouge">java.util.Properties</code> class could really use some love. I have written a slightly improved version called
+<a href="https://bitbucket.org/timemachine/scheduler/src/15f066cc6dad/timemachine-scheduler/src/main/java/timemachine/scheduler/support/Props.java">timemachine.scheduler.support.Props</a>, and below are some features that I use often.</p>
+
+<h1 id="you-can-use-it-as-a-string-map-of-properties">You can use it as a “String Map” of properties</h1>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    Props props1 = new Props();
+    props1.put("foo", "bar");
+    
+    // It can load from/to the Java Properties
+    Props props2 = new Props(System.getProperties());
+    java.util.Properties javaProps = props3.toProperties();
+    
+    // It can load from/to a basic java.util.Map
+    Props props3 = new Props(System.getenv());
+    
+    // Props is a HashMap&lt;String, String&gt;, so no need to convert. Just use it
+    for(Map.Entry&lt;String, String&gt; entry : props3.entrySet())
+        System.our.println(entry.getKey() + ": " + entry.getValue());
+</code></pre></div></div>
+
+<h1 id="you-can-load-from-a-file-in-a-single-line">You can load from a file in a single line</h1>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    Props props1 = new Props("config.properties");
+    Props props2 = new Props("/path/to/config.properties");
+    Props props3 = new Props(new java.net.URL("http://myhost/config/config.properties"));
+    Props props4 = new Props(ClasspathURLStreamHandler.createURL("classpath://config/config.properties"));
+    
+    // You can re-load on top of existing instance to override values
+    props4.load("config2.properties");
+</code></pre></div></div>
+
+<p>NOTE: The <code class="language-plaintext highlighter-rouge">ClasspathURLStreamHandler</code> is a utility class from the same package under <code class="language-plaintext highlighter-rouge">timemachine.scheduler.support</code> that can load any resources that’s in the classpath.</p>
+
+<h1 id="you-can-get-many-basic-types-conversion">You can get many basic types conversion</h1>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    Props props = new Props();
+    props.put("str", "foo");
+    props.put("num", "123");
+    props.put("dec", "99.99");
+    props.put("flag", "true");
+    
+    String str = props.getString("str");
+    int num = props.getInt("num");
+    double dec = props.getDouble("dec");
+    boolean flag = props.getBoolean("flag");
+    
+    // You can even get default value when key is not found too
+    int num2 = props.getInt("num2", -1);
+</code></pre></div></div>
+
+<h1 id="you-can-auto-expand-variable-from-any-existing-properties">You can auto expand ${variable} from any existing properties</h1>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    Props props = new Props(System.getProperties());
+    props.put("configDir", "${user.home}/myapp/config");
+    props.expandVariables();
+    
+    // The ${user.home} should be expanded to actual user home dir value.
+    File dir = new File(props.get("configDir"));
+</code></pre></div></div>
+
+<p>There you have it. You see more code than words in this post, but I believe simple code speak louder than words and docs. I find these features very convenient and practical 
+for many Java applications to use. I wish the JDK would provide these out of the box, and make the <code class="language-plaintext highlighter-rouge">java.util.Properties</code> more
+developer friendly.</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2012/09/01/how-to-write-better-pojo-services/">
+        How to write better POJO Services
+      </a>
+    </h1>
+
+    <span class="post-date">01 Sep 2012</span>
+
+    <p>In Java, you can easily implement some business logic in Plain Old Java Object (POJO) classes, and then able to run them in a fancy
+server or framework without much hassle. There many server/frameworks, such as JBossAS, Spring or Camel etc, that 
+would allow you to deploy POJO without even hardcoding to their API. Obviously you would get advance features if you willing to couple to
+their API specifics, but even if you do, you can keep these to minimal by encapsulating your own POJO and their API in a wrapper. 
+By writing and designing your own application as simple POJO as possible, you will have the most flexible ways in choose a framework or server to 
+deploy and run your application. One effective way to write your business logic in these environments is to use <em>Service</em> component. 
+In this article I will share few things I learned in writing <em>Services</em>.</p>
+
+<h1 id="what-is-a-service">What is a Service?</h1>
+
+<p>The word <em>Service</em> is overly used today, and it could mean many things to different people. When I say <em>Service</em>, my definition is a software 
+component that has minimal of life-cycles such as <code class="language-plaintext highlighter-rouge">init</code>, <code class="language-plaintext highlighter-rouge">start</code>, <code class="language-plaintext highlighter-rouge">stop</code>, and <code class="language-plaintext highlighter-rouge">destroy</code>. You may not need all these
+stages of life-cycles in every service you write, but you can simply ignore ones that don’t apply. When writing large application that 
+intended for long running such as a server component, definining these life-cycles and ensure they are excuted in proper order is crucial!</p>
+
+<p>I will be walking you through a Java demo project that I have prepared. It’s very basic and it should run as stand-alone. The only dependency it has is
+the <a href="http://www.slf4j.org">SLF4J</a> logger. If you don’t know how to use logger, then simply replace them with <code class="language-plaintext highlighter-rouge">System.out.println</code>. However I would strongly 
+encourage you to learn how to use logger effectively during application development though. Also if you want to try out the 
+<a href="http://www.springsource.org/spring-framework">Spring</a> related demos, then obviously you would need their jars as well.</p>
+
+<h1 id="writing-basic-pojo-service">Writing basic POJO service</h1>
+
+<p>You can quickly define a contract of a Service with life-cycles as below in an interface.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    package servicedemo;
+    
+    public interface Service {
+        void init();
+        void start();
+        void stop();
+        void destroy();
+        boolean isInited();
+        boolean isStarted();
+    }
+</code></pre></div></div>
+
+<p>Developers are free to do what they want in their Service implementation, but you might want to give them an adapter class so that 
+they don’t have to re-write same basic logic on each Service. I would provide an abstract service like this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    package servicedemo;
+    
+    import java.util.concurrent.atomic.*;
+    import org.slf4j.*;
+    public abstract class AbstractService implements Service {
+        protected Logger logger = LoggerFactory.getLogger(getClass());
+        protected AtomicBoolean started = new AtomicBoolean(false);
+        protected AtomicBoolean inited = new AtomicBoolean(false);
+    
+        public void init() {
+            if (!inited.get()) {
+                initService();
+                inited.set(true);
+                logger.debug("{} initialized.", this);
+            }
+        }
+    
+        public void start() {
+            // Init service if it has not done so.
+            if (!inited.get()) {
+                init();
+            }
+            // Start service now.
+            if (!started.get()) {
+                startService();
+                started.set(true);
+                logger.debug("{} started.", this);
+            }
+        }
+    
+        public void stop() {
+            if (started.get()) {
+                stopService();
+                started.set(false);
+                logger.debug("{} stopped.", this);
+            }
+        }
+    
+        public void destroy() {
+            // Stop service if it is still running.
+            if (started.get()) {
+                stop();
+            }
+            // Destroy service now.
+            if (inited.get()) {
+                destroyService();
+                inited.set(false);
+                logger.debug("{} destroyed.", this);
+            }
+        }
+    
+        public boolean isStarted() {
+            return started.get();
+        }
+    
+        public boolean isInited() {
+            return inited.get();
+        }
+    
+        @Override
+        public String toString() {
+                return getClass().getSimpleName() + "[id=" + System.identityHashCode(this) + "]";
+        }
+    
+        protected void initService() {
+        }
+    
+        protected void startService() {
+        }
+    
+        protected void stopService() {
+        }
+    
+        protected void destroyService() {
+        }
+    }
+
+</code></pre></div></div>
+
+<p>This abstract class provide the basic of most services needs. It has a logger and states to keep track of the life-cycles. It then delegate new
+sets of life-cycle methods so subclass can choose to override. Notice that the <code class="language-plaintext highlighter-rouge">start()</code> method is checking auto calling <code class="language-plaintext highlighter-rouge">init()</code> if it hasn’t 
+already done so. Same is done in <code class="language-plaintext highlighter-rouge">destroy()</code> method to the <code class="language-plaintext highlighter-rouge">stop()</code> method. This is important if we’re to use it in a container that only have 
+two stages life-cycles invocation. In this case, we can simply invoke <code class="language-plaintext highlighter-rouge">start()</code> and <code class="language-plaintext highlighter-rouge">destroy()</code> to match to our service’s life-cycles.</p>
+
+<p>Some frameworks might go even further and create separate interfaces for each stage of the life-cycles, such as <code class="language-plaintext highlighter-rouge">InitableService</code> or 
+<code class="language-plaintext highlighter-rouge">StartableService</code> etc. But I think that would be too much in a typical app. In most of the cases, you want something simple, so I like it just
+one interface. User may choose to ignore methods they don’t want, or simply use an adaptor class.</p>
+
+<p>Before we end this section, I would throw in a silly Hello world service that can be used in our demo later.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    package servicedemo;
+    
+    public class HelloService extends AbstractService {
+        public void initService() {
+            logger.info(this + " inited.");
+        }
+        public void startService() {
+            logger.info(this + " started.");
+        }
+        public void stopService() {
+            logger.info(this + " stopped.");
+        }
+        public void destroyService() {
+            logger.info(this + " destroyed.");
+        }
+    }
+</code></pre></div></div>
+
+<h1 id="managing-multiple-pojo-services-with-a-container">Managing multiple POJO Services with a container</h1>
+
+<p>Now we have the basic of <em>Service</em> definition defined, your development team may start writing business logic code! Before long, you will have 
+a library of your own services to re-use. To be able group and control these services into an effetive way, we want also provide a container 
+to manage them. The idea is that we typically want to control and manage multiple services with a container as a group in a higher level. Here 
+is a simple implementation for you to get started:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    package servicedemo;
+    
+    import java.util.*;
+    public class ServiceContainer extends AbstractService {
+        private List&lt;Service&gt; services = new ArrayList&lt;Service&gt;();
+    
+        public void setServices(List&lt;Service&gt; services) {
+            this.services = services;
+        }
+        public void addService(Service service) {
+            this.services.add(service);
+        }
+    
+        public void initService() {
+            logger.debug("Initializing " + this + " with " + services.size() + " services.");
+            for (Service service : services) {
+                logger.debug("Initializing " + service);
+                service.init();
+            }
+            logger.info(this + " inited.");
+        }
+        public void startService() {
+                logger.debug("Starting " + this + " with " + services.size() + " services.");
+                for (Service service : services) {
+                    logger.debug("Starting " + service);
+                    service.start();
+                }
+                logger.info(this + " started.");
+        }
+        public void stopService() {
+                int size = services.size();
+                logger.debug("Stopping " + this + " with " + size + " services in reverse order.");
+                for (int i = size - 1; i &gt;= 0; i--) {
+                    Service service = services.get(i);
+                    logger.debug("Stopping " + service);
+                    service.stop();
+                }
+                logger.info(this + " stopped.");
+        }
+        public void destroyService() {
+                int size = services.size();
+                logger.debug("Destroying " + this + " with " + size + " services in reverse order.");
+                for (int i = size - 1; i &gt;= 0; i--) {
+                    Service service = services.get(i);
+                    logger.debug("Destroying " + service);
+                    service.destroy();
+                }
+                logger.info(this + " destroyed.");
+        }
+    }
+</code></pre></div></div>
+
+<p>From above code, you will notice few important things:</p>
+
+<ol>
+  <li>We extends the AbstractService, so a container is a service itself.</li>
+  <li>We would invoke all service’s life-cycles before moving to next. No services will start unless all others are inited.</li>
+  <li>We should stop and destroy services in reverse order for most general use cases.</li>
+</ol>
+
+<p>The above container implementation is simple and run in synchronized fashion. This mean, you start container, then all services
+will start in order you added them. Stop should be same but in reverse order.</p>
+
+<p>I also hope you would able to see that there is plenty of room for you to improve this container as well. For example, you may 
+add thread pool to control the execution of the services in asynchronized fashion.</p>
+
+<h1 id="running-pojo-services">Running POJO Services</h1>
+
+<h2 id="running-services-with-a-simple-runner-program">Running services with a simple runner program.</h2>
+
+<p>In the simplest form, we can run our POJO services on our own without any fancy server or frameworks. Java programs start its life from a 
+static <code class="language-plaintext highlighter-rouge">main</code> method, so we surely can invoke <code class="language-plaintext highlighter-rouge">init</code> and <code class="language-plaintext highlighter-rouge">start</code> of our services in there. But we also need to address the <code class="language-plaintext highlighter-rouge">stop</code> and <code class="language-plaintext highlighter-rouge">destroy</code>
+life-cycles when user shuts down the program (usually by hitting <code class="language-plaintext highlighter-rouge">CTRL+C</code>.) For this, the Java has the <code class="language-plaintext highlighter-rouge">java.lang.Runtime#addShutdownHook()</code>
+facility. You can create a simple stand-alone server to bootstrap <em>Service</em> like this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    package servicedemo;
+    
+    import org.slf4j.*;
+    public class ServiceRunner {
+        private static Logger logger = LoggerFactory.getLogger(ServiceRunner.class);
+    
+        public static void main(String[] args) {
+            ServiceRunner main = new ServiceRunner();
+            main.run(args);
+        }
+    
+        public void run(String[] args) {
+            if (args.length &lt; 1)
+                throw new RuntimeException("Missing service class name as argument.");
+    
+            String serviceClassName = args[0];
+            try {
+                logger.debug("Creating " + serviceClassName);
+                Class&lt;?&gt; serviceClass = Class.forName(serviceClassName);
+                if (!Service.class.isAssignableFrom(serviceClass)) {
+                    throw new RuntimeException("Service class " + serviceClassName + " did not implements " + Service.class.getName());
+                }
+                Object serviceObject = serviceClass.newInstance();
+                Service service = (Service)serviceObject;
+    
+                registerShutdownHook(service);
+    
+                logger.debug("Starting service " + service);
+                service.init();
+                service.start();
+                logger.info(service + " started.");
+    
+                synchronized(this) {
+                    this.wait();
+                }
+            } catch (Exception e) {
+                throw new RuntimeException("Failed to create and run " + serviceClassName, e);
+            }
+        }
+    
+        private void registerShutdownHook(final Service service) {
+            Runtime.getRuntime().addShutdownHook(new Thread() {
+                public void run() {
+                    logger.debug("Stopping service " + service);
+                    service.stop();
+                    service.destroy();
+                    logger.info(service + " stopped.");
+                }
+            });
+        }
+    }
+</code></pre></div></div>
+
+<p>With abover runner, you should able to run it with this command:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ java demo.ServiceRunner servicedemo.HelloService
+</code></pre></div></div>
+
+<p>Look carefully, and you’ll see that you have many options to run multiple services with above runner. Let me highlight couple:</p>
+
+<ol>
+  <li>Improve above runner directly and make all <code class="language-plaintext highlighter-rouge">args</code> for each new service class name, instead of just first element.</li>
+  <li>Or write a <code class="language-plaintext highlighter-rouge">MultiLoaderService</code> that will load multiple services you want. You may control argument passing using System Properties.</li>
+</ol>
+
+<p>Can you think of other ways to improve this runner?</p>
+
+<h2 id="running-services-with-spring">Running services with Spring</h2>
+
+<p>The Spring framework is an IoC container, and it’s well known to be easy to work POJO, and Spring lets you wire your application 
+together. This would be a perfect fit to use in our POJO services. However, with all the features Spring brings, it missed a easy
+to use, out of box <em>main</em> program to bootstrap spring config xml context files. But with what we built so far, this is actually an
+easy thing to do. Let’s write one of our POJO <em>Service</em> to bootstrap a spring context file.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    package servicedemo;
+    
+    import org.springframework.context.ConfigurableApplicationContext;
+    import org.springframework.context.support.FileSystemXmlApplicationContext;
+    
+    public class SpringService extends AbstractService {
+        private ConfigurableApplicationContext springContext;
+    
+        public void startService() {
+            String springConfig = System.getProperty("springContext", "spring.xml);
+            springContext = new FileSystemXmlApplicationContext(springConfig);
+            logger.info(this + " started.");
+        }
+        public void stopService() {
+            springContext.close();
+            logger.info(this + " stopped.");
+        }
+    }
+</code></pre></div></div>
+
+<p>With that simple <code class="language-plaintext highlighter-rouge">SpringService</code> you can run and load any spring xml file. For example try this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ java -DspringContext=config/service-demo-spring.xml demo.ServiceRunner servicedemo.SpringService
+</code></pre></div></div>
+
+<p>Inside the <code class="language-plaintext highlighter-rouge">config/service-demo-spring.xml</code> file, you can easily create our container that hosts one or more service in Spring beans.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    &lt;beans xmlns="http://www.springframework.org/schema/beans"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"&gt;
+    
+        &lt;bean id="helloService" class="servicedemo.HelloService"&gt;
+        &lt;/bean&gt;
+    
+        &lt;bean id="serviceContainer" class="servicedemo.ServiceContainer" init-method="start" destroy-method="destroy"&gt;
+            &lt;property name="services"&gt;
+                &lt;list&gt;
+                    &lt;ref bean="helloService"/&gt;
+                &lt;/list&gt;
+            &lt;/property&gt;
+        &lt;/bean&gt;
+    
+    &lt;/beans&gt;
+</code></pre></div></div>
+
+<p>Notice that I only need to setup <code class="language-plaintext highlighter-rouge">init-method</code> and <code class="language-plaintext highlighter-rouge">destroy-method</code> once on the <code class="language-plaintext highlighter-rouge">serviceContainer</code> bean. You can then add one or more
+other service such as the <code class="language-plaintext highlighter-rouge">helloService</code> as much as you want. They will all be started, managed, and then shutdown when you close the
+Spring context.</p>
+
+<p>Note that Spring context container did not explicitly have the same life-cycles as our services. The Spring context will automatically
+instanciate all your dependency beans, and then invoke all beans who’s <code class="language-plaintext highlighter-rouge">init-method</code> is set. All that is done inside the constructor
+of <code class="language-plaintext highlighter-rouge">FileSystemXmlApplicationContext</code>. No explicit init method is called from user. However at the end, during stop of the service, Spring provide
+the <code class="language-plaintext highlighter-rouge">springContext#close()</code> to clean things up. Again, they do not differentiate <code class="language-plaintext highlighter-rouge">stop</code> from <code class="language-plaintext highlighter-rouge">destroy</code>. Because of this, we must merge our
+<code class="language-plaintext highlighter-rouge">init</code> and <code class="language-plaintext highlighter-rouge">start</code> into Spring’s <code class="language-plaintext highlighter-rouge">init</code> state, and then merge <code class="language-plaintext highlighter-rouge">stop</code> and <code class="language-plaintext highlighter-rouge">destroy</code> into Spring’s <code class="language-plaintext highlighter-rouge">close</code> state. Recall our 
+<code class="language-plaintext highlighter-rouge">AbstractService#destory</code> will auto invoke <code class="language-plaintext highlighter-rouge">stop</code> if it hasn’t already done so. So this is trick that we need to understand
+in order to use Spring effectively.</p>
+
+<h2 id="running-services-with-jee-app-server">Running services with JEE app server</h2>
+
+<p>In a corporate env, we usually do not have the freedom to run what we want as a stand-alone program. Instead they usually have some 
+infrustructure and stricter standard technology stack in place already, such as using a JEE application server. In these situation, the most 
+portable way to run POJO services is in a <code class="language-plaintext highlighter-rouge">war</code> web application. In a Servlet web application, you can write a class that implements 
+<code class="language-plaintext highlighter-rouge">javax.servlet.ServletContextListener</code> and this will provide you the life-cycles hook via <code class="language-plaintext highlighter-rouge">contextInitialized</code> and <code class="language-plaintext highlighter-rouge">contextDestroyed</code>.
+In there, you can instanciate your <code class="language-plaintext highlighter-rouge">ServiceContainer</code> object and call <code class="language-plaintext highlighter-rouge">start</code> and <code class="language-plaintext highlighter-rouge">destroy</code> methods accordingly.</p>
+
+<p>Here is an example that you can explore:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    package servicedemo;
+    import java.util.*;
+    import javax.servlet.*;
+    public class ServiceContainerListener implements ServletContextListener {
+        private static Logger logger = LoggerFactory.getLogger(ServiceContainerListener.class);
+        private ServiceContainer serviceContainer;
+    
+        public void contextInitialized(ServletContextEvent sce) {
+            serviceContainer = new ServiceContainer();
+            List&lt;Service&gt; services = createServices();
+            serviceContainer.setServices(services);
+            serviceContainer.start();
+            logger.info(serviceContainer + " started in web application.");
+        }
+    
+        public void contextDestroyed(ServletContextEvent sce) {
+            serviceContainer.destroy();
+            logger.info(serviceContainer + " destroyed in web application.");
+        }
+    
+        private List&lt;Service&gt; createServices() {
+            List&lt;Service&gt; result = new ArrayList&lt;Service&gt;();
+            // populate services here.
+            return result;
+        }
+    }
+</code></pre></div></div>
+
+<p>You may configure above in the <code class="language-plaintext highlighter-rouge">WEB-INF/web.xml</code> like this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>        &lt;listener&gt;
+            &lt;listener-class&gt;servicedemo.ServiceContainerListener&lt;/listener-class&gt;
+        &lt;/listener&gt;
+    
+    &lt;/web-app&gt;
+</code></pre></div></div>
+
+<p>The demo provided a placeholder that you must add your services in code. But you can easily make that configurable using the <code class="language-plaintext highlighter-rouge">web.xml</code> for
+context parameters.</p>
+
+<p>If you were to use Spring inside a Servlet container, you may directly use their <code class="language-plaintext highlighter-rouge">org.springframework.web.context.ContextLoaderListener</code> 
+class that does pretty much same as above, except they allow you to specify their xml configuration file using the
+<code class="language-plaintext highlighter-rouge">contextConfigLocation</code> context parameter. That’s how a typical Spring MVC based application is configure. Once you have this setup, you
+can experiment our POJO service just as the Spring xml sample given above to test things out. You should see our service in action by
+your logger output.</p>
+
+<p>PS: Actually what we described here are simply related to Servlet web application, and not JEE specific. So you can use Tomcat server just
+fine as well.</p>
+
+<h1 id="the-importance-of-services-life-cycles-and-its-real-world-usage">The importance of Service’s life-cycles and it’s real world usage</h1>
+
+<p>All the information I presented here are not novelty, nor a killer design pattern. In fact they have been used in many popular open source projects.
+However, in my past experience at work, folks always manage to make these extremely complicated, and worse case is that they completely disregard the 
+importance of life-cycles when writing services. It’s true that not everything you going to write needs to be fitted into a service, but if you find
+the need, please do pay attention to them, and take good care that they do invoked properly. The last thing you want is to exit JVM without clean up
+in services that you allocated precious resources for. These would become more disastrous if you allow your application to be dynamically reloaded during
+deployment without exiting JVM, in which will lead to system resources leakage.</p>
+
+<p>The above <em>Service</em> practice has been put into use in the <a href="https://bitbucket.org/timemachine/scheduler">TimeMachine</a> project. In fact, if you 
+look at the <code class="language-plaintext highlighter-rouge">timemachine.scheduler.service.SchedulerEngine</code>, it would just be a container of many <a href="https://bitbucket.org/timemachine/scheduler/src/15f066cc6dad/timemachine-scheduler/src/main/java/timemachine/scheduler/service">services</a> 
+running together. And that’s how user can extend the scheduler functionalities as well, by writing a <em>Service</em>. You can load these services dynamically by a simple properties file.</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2012/08/27/how-to-manage-quartz-remotely/">
+        How to manage Quartz remotely
+      </a>
+    </h1>
+
+    <span class="post-date">27 Aug 2012</span>
+
+    <h2 id="option-1-jmx">Option 1: JMX</h2>
+
+<p>Many people asked can they manage Quartz via JMX, and that the documentation on this is not clear enough to help them get started. So, let me highlight couple ways you can do this.</p>
+
+<p>Yes you can enable JMX in quartz with the following in 
+<code class="language-plaintext highlighter-rouge">quartz.properties</code></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>org.quartz.scheduler.jmx.export = true
+</code></pre></div></div>
+
+<p>After this, you use standard JMX client such as <code class="language-plaintext highlighter-rouge">$JAVA_HOME/bin/jconsole</code> to connect and manage remotely.</p>
+
+<h2 id="option-2-rmi">Option 2: RMI</h2>
+
+<p>Another way to manage quartz remotely is to enable RMI in Quartz. If you use this, you basically run one instance of Quartz as RMI server, and then 
+you can create second Quartz instance as RMI client. These two can talk remotely via a TCP port.</p>
+
+<p>For server scheduler instance, you want to add these in <code class="language-plaintext highlighter-rouge">quartz.properties</code></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    org.quartz.scheduler.rmi.export = true
+    org.quartz.scheduler.rmi.createRegistry = true
+    org.quartz.scheduler.rmi.registryHost = localhost
+    org.quartz.scheduler.rmi.registryPort = 1099
+    org.quartz.scheduler.rmi.serverPort = 1100
+</code></pre></div></div>
+
+<p>And for client scheduler instance, you want to add these in <code class="language-plaintext highlighter-rouge">quartz.properties</code></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    org.quartz.scheduler.rmi.proxy = true
+    org.quartz.scheduler.rmi.registryHost = localhost
+    org.quartz.scheduler.rmi.registryPort = 1099
+</code></pre></div></div>
+
+<p>The RMI feature is mentioned in Quartz doc <a href="http://quartz-scheduler.org/documentation/quartz-2.x/configuration/ConfigRMI">here</a>. Quartz doesn’t have 
+a <em>client</em> API, but use the same <code class="language-plaintext highlighter-rouge">org.quartz.Scheduler</code> for both server and client. It’s just the configuration are different.
+By different configuration, you get very different behavior. For server, your scheduler is running all the jobs, while for client, it’s simply a
+proxy. Your client scheduler instance will not run any jobs! You must be really careful when shutting down client because it does allow you to bring
+down the server!</p>
+
+<p>These configurations have been highlighted in the <a href="http://code.google.com/p/myschedule">MySchedule</a> project. If you run the webapp, you should see
+a screen like <a href="http://stormy-flower-6956.herokuapp.com/main/dashboard/create">this demo</a>, and you will see it provided many sample of quartz configurations
+with these remote managment config properties.</p>
+
+<p>If configure with RMI option, you can actually still use MySchedule web UI to manage the Quartz as proxy. You can view and drill down jobs, and you can
+even stop or shutdown remote server!</p>
+
+<p>Based on my experience, there is a down side of using Quartz RMI feature though. That is it creates a single point of failure. There is no fail over 
+if your RMI server port is down!</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2012/08/26/taming-those-java-editors-on-macosx/">
+        Taming those Java editors on MacOSX
+      </a>
+    </h1>
+
+    <span class="post-date">26 Aug 2012</span>
+
+    <p>Today, I learned that you can open multiple Eclipse instances in MacOSX like this</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ open -n -a Eclipse
+</code></pre></div></div>
+
+<p>This comes pretty handy if you want a separate workspace per large project that has dozen or so modules (try importing the Camel or SpringFramework 
+project source and you will see what I mean!)</p>
+
+<p>The <code class="language-plaintext highlighter-rouge">-a</code> is for name of an application to open, and <code class="language-plaintext highlighter-rouge">-n</code> means to open with new instance.</p>
+
+<h1 id="finding-a-programmer-friendly-text-editor-on-macosx">Finding a programmer friendly text editor on MacOSX</h1>
+
+<p>Despite I use Eclipse for most of my large Java projects, I still often find myself the need of a plain text editor. I use plain text editor for most
+of my scripting programming. I also use it for notes taking, text file browsing, or even writing Blog post in markdown format!</p>
+
+<p>I guess for most programmers, choosing an Editor is a very personally thing. So I am not here to convert anybody. However, for those who never heard of 
+<a href="http://www.jedit.org">jEdit</a>, you ought to give it a try. It’s open source, full features, programmers friendly text editor that works 
+across many of OS systems consistenly. It works because it’s Java based! If you use one of decent computer now a day, the performance 
+is excellent as well.</p>
+
+<p>However, for some strange reason, the jedit installer on MacOSX doesn’t comes with a normal java command line script wrapper. The only thing 
+I can see is the actual binary under <code class="language-plaintext highlighter-rouge">/Applications/jEdit.app/Contents/MacOS/jedit</code>. We can certainly run this as full jedit command, but then 
+it always liter the console with strange GUI warnings. So a better way to run it is actually to use the <code class="language-plaintext highlighter-rouge">open</code> command.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ open -a jedit $HOME/.bash_profile
+</code></pre></div></div>
+
+<p>Or you can add this in your <code class="language-plaintext highlighter-rouge">.bash_profile</code> file:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function jedit(){ open -a jedit "$@" ; }
+</code></pre></div></div>
+
+<p>Now you can use <code class="language-plaintext highlighter-rouge">jedit</code> command on the terminal.</p>
+
+<h2 id="some-of-my-favorite-features-of-jedit">Some of my favorite features of jEdit</h2>
+
+<ul>
+  <li>It’s open source and has very active community of users.</li>
+  <li>It works across MacOSX, Windows and Linux Desktop.</li>
+  <li>Support many common programming language syntax highlights.</li>
+  <li>Support multi columns editing.</li>
+  <li>Support rich feature search (reg ex, hyper-search, all buffers search, search and replace etc.)</li>
+  <li>Support multi buffers tabs editing.</li>
+  <li>Supports Macro recording and scripting.</li>
+  <li>Support plugin extension and there are many external plugins available (eg: XML formater, Diff viewer, SFTP client/editing, etc).</li>
+</ul>
+
+<h1 id="openning-other-stuff-on-macosx">Openning other stuff on MacOSX</h1>
+
+<p>The little <code class="language-plaintext highlighter-rouge">open</code> command can open not just application, but it can also open directories or files by extension associations. For
+example, to configure any <code class="language-plaintext highlighter-rouge">.properties</code> files to be open by jEdit, try the the following.</p>
+
+<ol>
+  <li>Use Finder to browse and find one of properties</li>
+  <li>Right click, “Open With” &gt; “Other…”</li>
+  <li>Choose “jEdit” under Applications folder.</li>
+  <li>Enable “Always Open With”, then click Open button.</li>
+</ol>
+
+<p>This change should affect your Terminal <code class="language-plaintext highlighter-rouge">open</code> command as well, and if you run <code class="language-plaintext highlighter-rouge">open my.properties</code>, your jEdit should pop up.</p>
+
+<p>You can find more options by running it without any options, and it will print you full help page.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    Usage: open [-e] [-t] [-f] [-W] [-R] [-n] [-g] [-h] [-b &lt;bundle identifier&gt;] [-a &lt;application&gt;] [filenames] [--args arguments]
+    Help: Open opens files from a shell.
+          By default, opens each file using the default application for that file.  
+          If the file is in the form of a URL, the file will be opened as a URL.
+    Options: 
+          -a                Opens with the specified application.
+          -b                Opens with the specified application bundle identifier.
+          -e                Opens with TextEdit.
+          -t                Opens with default text editor.
+          -f                Reads input from standard input and opens with TextEdit.
+          -F  --fresh       Launches the app fresh, that is, without restoring windows. Saved persistent state is lost, excluding Untitled documents.
+          -R, --reveal      Selects in the Finder instead of opening.
+          -W, --wait-apps   Blocks until the used applications are closed (even if they were already running).
+              --args        All remaining arguments are passed in argv to the application's main() function instead of opened.
+          -n, --new         Open a new instance of the application even if one is already running.
+          -j, --hide        Launches the app hidden.
+          -g, --background  Does not bring the application to the foreground.
+          -h, --header      Searches header file locations for headers matching the given filenames, and opens them.
+</code></pre></div></div>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2012/08/20/myschedule-2-4-4-release/">
+        myschedule-2.4.4 is out!
+      </a>
+    </h1>
+
+    <span class="post-date">20 Aug 2012</span>
+
+    <p>For those of you who are using Quartz, you might find http://code.google.com/p/myschedule[MySchedule] useful. I’ve made another minor release to upgrade it to latest Quartz 2.1.6 and few minor fixes.</p>
+
+<p>Enjoy!</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2012/08/18/getting-started-with-apache-camel-using-groovy/">
+        Getting started with Apache Camel using Groovy
+      </a>
+    </h1>
+
+    <span class="post-date">18 Aug 2012</span>
+
+    <p>From their site, it says the <a href="http://camel.apache.org">Apache Camel</a> is a versatile open-source integration framework based on known Enterprise Integration Patterns. It might seem like a vague definition, but I want to tell you that this is a very productive Java library that can solve many of typical IT problems! You can think of it as a very light weight ESB framework with “batteries” included.</p>
+
+<p>In every jobs I’ve been to so far, folks are writing their own solutions in one way or another to solve many common problems (or they would buy some very expensive enterprisy ESB servers that takes months and months to learn, config, and maintain). Things that we commonly solve are integration (glue) code of existing business services together, process data in a certain workflow manner, or move and transform data from one place to another etc. These are very typical need in many IT environments. The Apache Camel can be used in cases like these; not only that, but also in a very productive and effective way!</p>
+
+<p>In this article, I will show you how to get started with Apache Camel along with just few lines of <a href="http://groovy.codehaus.org/">Groovy</a> script. You can certainly also start off with a full Java project to try out Camel, but I find Groovy will give you the shortest working example and learning curve.</p>
+
+<h2 id="getting-started-with-apache-camel-using-groovy">Getting started with Apache Camel using Groovy</h2>
+
+<p>So let’s begin. First let’s see a hello world demo with Camel + Groovy.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    @Grab('org.apache.camel:camel-core:2.10.0')
+    @Grab('org.slf4j:slf4j-simple:1.6.6')
+    import org.apache.camel.*
+    import org.apache.camel.impl.*
+    import org.apache.camel.builder.*
+    
+    def camelContext = new DefaultCamelContext()
+    camelContext.addRoutes(new RouteBuilder() {
+        def void configure() {
+            from("timer://jdkTimer?period=3000")
+                .to("log://camelLogger?level=INFO")
+        }
+    })
+    camelContext.start()
+    
+    addShutdownHook{ camelContext.stop() }
+    synchronized(this){ this.wait() }
+</code></pre></div></div>
+
+<p>Save above into a file named <code class="language-plaintext highlighter-rouge">helloCamel.groovy</code> and then run it like this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    $ groovy helloCamel.groovy
+    388 [main] INFO org.apache.camel.impl.DefaultCamelContext - Apache Camel 2.10.0 (CamelContext: camel-1) is starting
+    445 [main] INFO org.apache.camel.management.ManagementStrategyFactory - JMX enabled.
+    447 [main] INFO org.apache.camel.management.DefaultManagementLifecycleStrategy - StatisticsLevel at All so enabling load performance statistics
+    678 [main] INFO org.apache.camel.impl.converter.DefaultTypeConverter - Loaded 170 type converters
+    882 [main] INFO org.apache.camel.impl.DefaultCamelContext - Route: route1 started and consuming from: Endpoint[timer://jdkTimer?period=3000]
+    883 [main] INFO org.apache.camel.impl.DefaultCamelContext - Total 1 routes, of which 1 is started.
+    887 [main] INFO org.apache.camel.impl.DefaultCamelContext - Apache Camel 2.10.0 (CamelContext: camel-1) started in 0.496 seconds
+    898 [Camel (camel-1) thread #1 - timer://jdkTimer] INFO camelLogger - Exchange[ExchangePattern:InOnly, BodyType:null, Body:[Body is null]]
+    3884 [Camel (camel-1) thread #1 - timer://jdkTimer] INFO camelLogger - Exchange[ExchangePattern:InOnly, BodyType:null, Body:[Body is null]]
+    6884 [Camel (camel-1) thread #1 - timer://jdkTimer] INFO camelLogger - Exchange[ExchangePattern:InOnly, BodyType:null, Body:[Body is null]]
+    ...
+</code></pre></div></div>
+
+<p>The little script above is simple but it presented few key features of Camel Groovyness. The first and last section of the <code class="language-plaintext highlighter-rouge">helloCamel.groovy</code> script are just Groovy featuers. The <code class="language-plaintext highlighter-rouge">@Grab</code> annotation will automatically download the dependency jars you specify. We import Java packages to use its classes later. At the end we ensure to shutdown Camel before exiting JVM through the Java Shutdown Hook mechanism. The program will sit and wait until user press <code class="language-plaintext highlighter-rouge">CTRL+C</code>, just as a typical server process behavior.</p>
+
+<p>The middle section is where the Camel action is. You would always create a Camel context to begin (think of it as the server or manager for the process.) And then you would add a Camel route (think of it as a workflow or pipeflow) that you like to process data (Camel likes to call these data “messages”). The route consists of a “from” starting point (where data generated), and one or more “to” points (where data going to be processed). Camel calls these destination ‘points’ as ‘Endpoints’. These endpoints can be expressed in simple URI string format such as <code class="language-plaintext highlighter-rouge">"timer://jdkTimer?period=3000"</code>. Here we are generating timer message in every 3 secs into the pipeflow, and then process by a logger URI, which will simply print to console output.</p>
+
+<p>After Camel context started, it will start processing data through the workflow, as you can observe from the output example above. Now try pressing <code class="language-plaintext highlighter-rouge">CTRL+C</code> to end its process. Notice how the Camel will shutdown everything very gracefully.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    7312 [Thread-2] INFO org.apache.camel.impl.DefaultCamelContext - Apache Camel 2.10.0 (CamelContext: camel-1) is shutting down
+    7312 [Thread-2] INFO org.apache.camel.impl.DefaultShutdownStrategy - Starting to graceful shutdown 1 routes (timeout 300 seconds)
+    7317 [Camel (camel-1) thread #2 - ShutdownTask] INFO org.apache.camel.impl.DefaultShutdownStrategy - Route: route1 shutdown complete, was consuming from: Endpoint[timer://jdkTimer?period=3000]
+    7317 [Thread-2] INFO org.apache.camel.impl.DefaultShutdownStrategy - Graceful shutdown of 1 routes completed in 0 seconds
+    7321 [Thread-2] INFO org.apache.camel.impl.converter.DefaultTypeConverter - TypeConverterRegistry utilization[attempts=2, hits=2, misses=0, failures=0] mappings[total=170, misses=0]
+    7322 [Thread-2] INFO org.apache.camel.impl.DefaultCamelContext - Apache Camel 2.10.0 (CamelContext: camel-1) is shutdown in 0.010 seconds. Uptime 7.053 seconds.
+</code></pre></div></div>
+
+<p>So that’s our first taste of Camel ride! However, we titled this section as “Hello World!” demo, and yet we haven’t seen any. But you might have also noticed that above script are mostly boiler plate code that we setup. No user logic has been added yet. Not even the logging the message part! We simply configuring the route.</p>
+
+<p>Now let’s modify the script little bit so we will actually add our user logic to process the timer message.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    @Grab('org.apache.camel:camel-core:2.10.0')
+    @Grab('org.slf4j:slf4j-simple:1.6.6')
+    import org.apache.camel.*
+    import org.apache.camel.impl.*
+    import org.apache.camel.builder.*
+    
+    def camelContext = new DefaultCamelContext()
+    camelContext.addRoutes(new RouteBuilder() {
+        def void configure() {
+            from("timer://jdkTimer?period=3000")
+                .to("log://camelLogger?level=INFO")
+                .process(new Processor() {
+                    def void process(Exchange exchange) {
+                        println("Hello World!")
+                    }
+                })
+        }
+    })
+    camelContext.start()
+    
+    addShutdownHook{ camelContext.stop() }
+    synchronized(this){ this.wait() }
+</code></pre></div></div>
+
+<p>Notice how I can simply append the process code part right after the <code class="language-plaintext highlighter-rouge">to("log...")</code> line. I have added a “processor” code block to process the timer message. The logic is simple: we greet the world on each tick.</p>
+
+<h2 id="making-camel-route-more-concise-and-practical">Making Camel route more concise and practical</h2>
+
+<p>Now, do I have you at Hello yet? If not, then I hope you will be patient and continue to follow along for few more practical features of Camel. First, if you were to put Camel in real use, I would recommend you setup your business logic separately from the workflow route definition. This is so that you can clearly express and see your entire pipeflow of route at a glance. To do this, you want to move the “processor”, into a service bean.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    @Grab('org.apache.camel:camel-core:2.10.0')
+    @Grab('org.slf4j:slf4j-simple:1.6.6')
+    import org.apache.camel.*
+    import org.apache.camel.impl.*
+    import org.apache.camel.builder.*
+    import org.apache.camel.util.jndi.*
+    
+    class SystemInfoService {
+        def void run() {
+            println("Hello World!")
+        }
+    }
+    def jndiContext = new JndiContext();
+    jndiContext.bind("systemInfoPoller", new SystemInfoService())
+    
+    def camelContext = new DefaultCamelContext(jndiContext)
+    camelContext.addRoutes(new RouteBuilder() {
+        def void configure() {
+            from("timer://jdkTimer?period=3000")
+                .to("log://camelLogger?level=INFO")
+                .to("bean://systemInfoPoller?method=run")
+        }
+    })
+    camelContext.start()
+    
+    addShutdownHook{ camelContext.stop() }
+    synchronized(this){ this.wait() }
+</code></pre></div></div>
+
+<p>Now, see how compact this workflow route has become? The Camel’s Java DSL such as <code class="language-plaintext highlighter-rouge">"from().to().to()"</code> for defining route are so clean and simple to use. You can even show this code snip to your Business Analysts, and they would likely be able to verify your business flow easily! Wouldn’t that alone worth a million dollars?</p>
+
+<h1 id="how-about-another-demo-filepoller-processing">How about another demo: FilePoller Processing</h1>
+
+<p>File polling processing is a very common and effective way to solve many business problems. If you work for commercial companies long enough, you might have written one before. A typical file poller would process incoming files from a directory and then process the content, and then move the file into a output directory. Let’s make a Camel route to do just that.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    @Grab('org.apache.camel:camel-core:2.10.0')
+    @Grab('org.slf4j:slf4j-simple:1.6.6')
+    import org.apache.camel.*
+    import org.apache.camel.impl.*
+    import org.apache.camel.builder.*
+    import org.apache.camel.util.jndi.*
+    
+    class UpperCaseTextService {
+        def String transform(String text) {
+            return text.toUpperCase()
+        }
+    }
+    def jndiContext = new JndiContext();
+    jndiContext.bind("upperCaseTextService", new UpperCaseTextService())
+    
+    def dataDir = "/${System.properties['user.home']}/test/file-poller-demo"
+    def camelContext = new DefaultCamelContext(jndiContext)
+    camelContext.addRoutes(new RouteBuilder() {
+        def void configure() {
+            from("file://${dataDir}/in")
+                .to("log://camelLogger")
+                .to("bean://upperCaseTextService?method=transform")
+                .to("file://${dataDir}/out")
+        }
+    })
+    camelContext.start()
+    
+    addShutdownHook{ camelContext.stop() }
+    synchronized(this){ this.wait() }    
+</code></pre></div></div>
+
+<p>Here you see I defined a route to poll a <code class="language-plaintext highlighter-rouge">$HOME/test/file-poller-demo/in</code> directory for text files. Once it’s found it will log it to console, and then process by a service that transform the content text into upper case. After this, it will send the file into <code class="language-plaintext highlighter-rouge">$HOME/test/file-poller-demo/out</code> directory. My goodness, reading the Camel route above probably express what I wrote down just as effective. Do you see the benefits here?</p>
+
+<h2 id="whats-the-batteries-included-part">What’s the “batteries” included part.</h2>
+
+<p>If you’ve used Python programming before, you might have heard the pharase that they claim often: Python has “batteries” included. This means their interpreter comes with a rich of libaries for most of the common programming need. You can often write python program without have to download separated external libraries.</p>
+
+<p>I am making similar analogies here with Apache Camel. The Camel project comes with so many ready to use <a href="http://camel.apache.org/components.html">components</a> that you can find just about any transport protocals that can carry data. These Camel “components” are ones that support different ‘Endpoint URI’ that we have seen in our demos above. We have simply shown you <code class="language-plaintext highlighter-rouge">timer</code>, <code class="language-plaintext highlighter-rouge">log</code>, <code class="language-plaintext highlighter-rouge">bean</code>, and <code class="language-plaintext highlighter-rouge">file</code> components, but there are over 120 more. You will find <code class="language-plaintext highlighter-rouge">jms</code>, <code class="language-plaintext highlighter-rouge">http</code>, <code class="language-plaintext highlighter-rouge">ftp</code>, <code class="language-plaintext highlighter-rouge">cfx</code>, or <code class="language-plaintext highlighter-rouge">tcp</code>  just to name a few.</p>
+
+<p>The Camel project also has an option for you to define route in <a href="http://camel.apache.org/spring.html">declarative xml format</a>. The xml is just an extension of a Spring xml config with Camel’s namespace handler added on top. Spring is optional in Camel, but you can use it together in a very powerful way.</p>
+
+  </div>
+  
+</div>
+
+<div class="pagination">
+  
+    <a class="pagination-item older" href="http://localhost:4000/page25">Older</a>
+  
+  
+    
+      <a class="pagination-item newer" href="http://localhost:4000/page23">Newer</a>
+    
+  
+</div>
+
+      </div>
+    </div>
+
+    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+    <script src='/public/js/script.js'></script>
+  </body>
+</html>

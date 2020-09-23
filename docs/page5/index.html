@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Zemian's Blog &middot; Life in programming world!
+    
+  </title>
+
+  
+  <link rel="canonical" href="http://localhost:4000/page5/">
+  
+
+  <link rel="stylesheet" href="http://localhost:4000/public/css/poole.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/syntax.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/lanyon.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700%7CPT+Sans:400">
+
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/public/apple-touch-icon-precomposed.png">
+  <link rel="shortcut icon" href="http://localhost:4000/public/favicon.ico">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="http://localhost:4000/atom.xml">
+
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-135626598-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  
+</head>
+
+
+  <body>
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p>A weblog on software development.</p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item active" href="http://localhost:4000/">Home</a>
+
+    
+
+    
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="http://localhost:4000/about/">About</a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+
+  </nav>
+
+  <div class="sidebar-item">
+    <p>
+      &copy; 2020. All rights reserved.
+    </p>
+  </div>
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <h3 class="masthead-title">
+            <a href="/" title="Home">Zemian's Blog</a>
+            <small>Life in programming world!</small>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+        <div class="posts">
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2018/03/24/compare-multiple-jdk-versions-startup-time/">
+        Compare Multiple JDK Versions Startup Time
+      </a>
+    </h1>
+
+    <span class="post-date">24 Mar 2018</span>
+
+    <p><strong><code class="language-plaintext highlighter-rouge">jdk-startup-time-test.py</code>.</strong></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#!/usr/bin/env python3
+# Author: Zemian Deng 2018-03-24
+#
+# This script will test multiple JDK versions of startup time in your system
+# We assume all JDK are installed in $HOME/apps directory with
+# names matching in 'jdk_versions' list.
+# Also we asusme you compiled `hello.java` with lowest JDK
+# you have in the same directory as this script. This is
+# used for testing the JVM loading time.
+#
+# NOTE: Running the script using Cygwin is a LOT slower than
+# running it natively in cmd.exe shell! This is because
+# time for Cygwin to start Java is very slow!
+#
+
+import time, subprocess, os
+home_dir = os.path.expanduser('~')
+app_dir = home_dir + '/apps'
+jdk_versions = [
+'jdk-6u29',
+'jdk-7u80',
+'jdk-8u161',
+'jdk-9.0.4',
+'jdk-10']
+def test_jdk_startup(jdk):
+        runs = []
+        java_cmd = app_dir + '/' + jdk + '/bin/java'
+        #print(f"Testing {java_cmd}")
+        for _ in range(10):
+                t1 = time.time()
+                subprocess.check_output([java_cmd, 'hello'])
+                t2 = time.time()
+                runs.append(t2 - t1)
+        return sum(runs) / len(runs)
+
+# Now test it
+for jdk in jdk_versions:
+        t = test_jdk_startup(jdk)
+        print(f"{jdk:20} avg start-time {t:.3}s")
+</code></pre></div></div>
+
+<p>Here is a sample of output:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python3 jdk-startup-time-test.py
+
+jdk-6u29             avg start-time 0.301s
+jdk-7u80             avg start-time 0.122s
+jdk-8u161            avg start-time 0.178s
+jdk-9.0.4            avg start-time 0.359s
+jdk-10               avg start-time 0.323s
+</code></pre></div></div>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2018/03/23/install-windows-jdk-without-admin-rights/">
+        Install Windows JDK Without Admin Rights
+      </a>
+    </h1>
+
+    <span class="post-date">23 Mar 2018</span>
+
+    <h1 id="installing-jdk-7">Installing JDK 7</h1>
+
+<ol>
+  <li>
+    <p>Download <a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">Oracle Java SE JDK 7</a>
+In this example, we will use <code class="language-plaintext highlighter-rouge">jdk-7u80-windows-x64.exe</code></p>
+  </li>
+  <li>
+    <p>Extract <code class="language-plaintext highlighter-rouge">jdk-7u80-windows-x64.exe</code> using 7-zip tool. Right click the
+file then select context menu 7-zip &gt; Extract to
+<code class="language-plaintext highlighter-rouge">jdk-7u80-windows-x64</code></p>
+  </li>
+  <li>
+    <p>Go to the directory <code class="language-plaintext highlighter-rouge">jdk-7u80-windows-x64/.rsrc/1033/JAVA_CAB10</code></p>
+
+    <ul>
+      <li>
+        <p>Step 1: Extract the file <code class="language-plaintext highlighter-rouge">111</code> using 7-zip again, which will
+result a <code class="language-plaintext highlighter-rouge">tools.zip</code> file</p>
+
+        <ul>
+          <li>Right click the file then select context menu 7-zip &gt; Extract here</li>
+        </ul>
+      </li>
+      <li>
+        <p>Step 2: Extract tools.zip using 7-zip tool again</p>
+
+        <ul>
+          <li>Right click the file then select context menu 7-zip &gt; Extract to <code class="language-plaintext highlighter-rouge">tools</code></li>
+        </ul>
+      </li>
+      <li>
+        <p>Step 3: Open <code class="language-plaintext highlighter-rouge">cmd.exe</code> and cd into <code class="language-plaintext highlighter-rouge">tools</code> directory above, then
+run the following:</p>
+
+        <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>for /r %i in (*.pack) do bin\unpack200 -r -v %i %~pi%~ni.jar
+</code></pre></div>        </div>
+        <p>Or if you use Cygwin Bash, you can run this:</p>
+      </li>
+    </ul>
+
+    <p>find . -name ‘*.pack’ -type f -exec sh -c ‘bin/unpack200 -r -v $0 ${0/.pack/.jar}’ {} \;</p>
+  </li>
+</ol>
+
+<ul>
+  <li>
+    <p>Step 4: Copy <code class="language-plaintext highlighter-rouge">tools</code> folder and rename it to <code class="language-plaintext highlighter-rouge">%USERPROFILE%/apps/jdk-7u80</code></p>
+
+    <ol>
+      <li>Optionally, if you want the JDK source code, following these
+instruction:</li>
+    </ol>
+  </li>
+  <li>
+    <p>Step 1: Go to the directory Go to the directory    <code class="language-plaintext highlighter-rouge">jdk-7u80-windows-x64/.rsrc/1033/JAVA_CAB9</code></p>
+  </li>
+  <li>
+    <p>Step 2: Extract the file <code class="language-plaintext highlighter-rouge">110</code>, which contains <code class="language-plaintext highlighter-rouge">src.zip</code></p>
+  </li>
+  <li>
+    <p>Step 3: Copy <code class="language-plaintext highlighter-rouge">src.zip</code> into <code class="language-plaintext highlighter-rouge">%USERPROFILE%/apps/jdk-7u80</code></p>
+  </li>
+</ul>
+
+<p>Refs:
+<a href="http://stackoverflow.com/questions/10891405/installing-jdk-without-administrator-privileges">http://stackoverflow.com/questions/10891405/installing-jdk-without-administrator-privileges</a></p>
+
+<h1 id="installing-jdk-8">Installing JDK 8</h1>
+
+<p>The JDK8 update 102 or higher has different file structure!</p>
+
+<ol>
+  <li>
+    <p>Use 7-zip to unpack <code class="language-plaintext highlighter-rouge">jdk-8u131-windows-x64.exe</code></p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">cd .rsrc/1033/JAVA_CAB10</code></p>
+  </li>
+  <li>
+    <p>Use 7-zip to unpack <code class="language-plaintext highlighter-rouge">111</code> file and extract <code class="language-plaintext highlighter-rouge">tools.zip</code></p>
+  </li>
+  <li>
+    <p>Use same instructions as above to unpack <code class="language-plaintext highlighter-rouge">tools.zip</code></p>
+  </li>
+</ol>
+
+<p>Java source <code class="language-plaintext highlighter-rouge">src.zip</code> is within the file <code class="language-plaintext highlighter-rouge">110</code> located inside <code class="language-plaintext highlighter-rouge">.rsrc/1033/JAVA_CAB9</code>.</p>
+
+<h1 id="installing-jdk-9">Installing JDK 9</h1>
+
+<p>Staring JDK9, the <a href="http://jdk.java.net/9">OpenJDK</a> provides binary tar
+ball (zipped) executable JDK package that can unpack in Windows in any
+directory. But if you still want Oracle Java SE JDK, then you still use
+above instruction to get around installing without admin rights.</p>
+
+<h1 id="refs">Refs</h1>
+
+<p><a href="https://stackoverflow.com/questions/10891405/installing-jdk-without-administrator-privileges">https://stackoverflow.com/questions/10891405/installing-jdk-without-administrator-privileges</a></p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2018/03/22/print-python-runtime-information/">
+        Print Python Runtime Information
+      </a>
+    </h1>
+
+    <span class="post-date">22 Mar 2018</span>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Print python runtime information
+import os, sys
+print(f"CWD={os.getcwd()}")
+print(f"Python={sys.version}")
+paths = '\n'.join(sys.path)
+print(f"Lib={paths}")
+</code></pre></div></div>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2018/03/22/parsing-arguments-and-options-with-python-script/">
+        Parsing Arguments and Options With Python Script
+      </a>
+    </h1>
+
+    <span class="post-date">22 Mar 2018</span>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument('--file')
+parser.add_argument('--debug', action='store_true')
+args = parser.parse_args()
+
+if args.debug:
+        print(f"Options: {args}")
+
+if args.file:
+        with open(args.file) as fh:
+                for line in fh:
+                        print(line, end='')
+</code></pre></div></div>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2018/03/22/init-and-start-postgresql-in-cygwin/">
+        Init and Start PostgreSQL in Cygwin
+      </a>
+    </h1>
+
+    <span class="post-date">22 Mar 2018</span>
+
+    <h1 id="run-postgres-server">Run Postgres Server</h1>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Start /usr/sbin/cygserver first if you haven't already done so
+mkdir /srv/pgdata
+export PGDATA=/srv/pgdata
+pg_ctl init
+pg_ctl start
+</code></pre></div></div>
+
+<h2 id="test-posgres-using-client">Test Posgres Using Client</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>psql postgres
+
+postgres=# create table test_ratings(username varchar(200), rating int);
+postgres=# insert into test_ratings values('tester1', 5), ('tester2', 4);
+postgres=# select * from test_ratings;
+ username | rating
+----------+--------
+ tester1  |      5
+ tester2  |      4
+</code></pre></div></div>
+
+<h2 id="test-connectivity-using-python">Test connectivity using Python</h2>
+
+<p>Run <code class="language-plaintext highlighter-rouge">pip install psycopg2</code> if you haven’t already install the driver.</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">testdb.py</code>.</strong></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import psycopg2
+with psycopg2.connect('dbname=postgres') as conn:
+        with conn.cursor() as cur:
+                cur.execute('select * from test_ratings')
+                while True:
+                        row = cur.fetchmany()
+                        if len(row) == 0:
+                                break
+                        print(row)
+</code></pre></div></div>
+
+<h1 id="postgres-windows-installation">Postgres Windows Installation</h1>
+
+<p>The official download is provided by EnterpriseDB (EDB) You can get a
+zip package from:</p>
+
+<p><a href="https://www.enterprisedb.com/download-postgresql-binaries">https://www.enterprisedb.com/download-postgresql-binaries</a></p>
+
+<p>To install, just unzip it.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mkdir $HOME/apps/postgresql-10.3-2
+cd $HOME/apps/postgresql-10.3-2
+unzip postgresql-10.3-2-windows-x64-binaries.zip
+</code></pre></div></div>
+
+<p>Server can be started manually like this in cmd.exe prompt:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bin\pg_ctl -D data -o "--encoding=UTF8 --auth=trust" initdb
+mkdir logs
+bin\pg_ctl -D data -l logs\postgres.log start
+
+bin\createdb %USERNAME%
+chcp 1252
+bin\psql
+
+zemian=# select version();
+                          version
+------------------------------------------------------------
+ PostgreSQL 10.3, compiled by Visual C++ build 1800, 64-bit
+(1 row)
+</code></pre></div></div>
+
+<p>By default inidb will create a “postgres” database, but user is your
+Windows login name, and it will not match. It’s more convient to create
+a database that match your username, and use that as default.</p>
+
+<p>You should be careful with “–auth=trust”, which can get you started
+quickly but not very secure.</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2018/03/16/java-logging-properties/">
+        Java Logging Properties
+      </a>
+    </h1>
+
+    <span class="post-date">16 Mar 2018</span>
+
+    <p>Example:</p>
+
+<p><code class="language-plaintext highlighter-rouge">java -Djava.util.logging.config.file=java-logging.properties myapp.Hello</code></p>
+
+<p><strong>java-logging.properties.</strong></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>handlers= java.util.logging.ConsoleHandler
+java.util.logging.ConsoleHandler.level = FINEST
+sun.net.www.protocol.http.HttpURLConnection.level = ALL
+myapp.Hello.level = ALL
+</code></pre></div></div>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2018/03/16/java-http-proxy-with-user-and-password/">
+        Java Http Proxy with User and Password
+      </a>
+    </h1>
+
+    <span class="post-date">16 Mar 2018</span>
+
+    <p>File: <code class="language-plaintext highlighter-rouge">scratch\_1.java</code></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.Authenticator;
+import java.net.PasswordAuthentication;
+import java.net.URL;
+
+public class scratch_1{
+    public static void main(String[] args) throws Exception {
+        System.setProperty("java.util.logging.config.file", "java-logging.properties");
+
+        System.setProperty("http.proxyHost", "proxy.mycompany.com");
+        System.setProperty("http.proxyPort", "8080");
+        System.setProperty("http.nonProxyHosts", "*.mycompany.com");
+        System.setProperty("https.proxyHost", "proxy.mycompany.com");
+        System.setProperty("https.proxyPort", "8080");
+        System.setProperty("https.nonProxyHosts", "*.mycompany.com");
+
+        Authenticator.setDefault(
+            new Authenticator() {
+                @Override
+                public PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication("zemian", "test123".toCharArray());
+                }
+            }
+        );
+
+        URL url = new URL("http://some.external.site.com");
+        //URL url = new URL("http://myapp.mycompany.com");
+        System.out.println("== WGET " + url);
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+            }
+        }
+    }
+}
+</code></pre></div></div>
+
+<p>File: <code class="language-plaintext highlighter-rouge">java-logging.properties</code></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>handlers= java.util.logging.ConsoleHandler
+java.util.logging.ConsoleHandler.level = FINEST
+sun.net.www.protocol.http.HttpURLConnection.level = ALL
+</code></pre></div></div>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2018/03/16/how-to-create-windows-context-menu-without-admin-rights/">
+        How To Create Windows Context Menu Without Admin Rights
+      </a>
+    </h1>
+
+    <span class="post-date">16 Mar 2018</span>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@REM Base on tips here:
+@REM https://stackoverflow.com/questions/48138681/how-to-add-sublime-text-to-contextual-menu-without-admin-privileges-on-windows
+
+@reg add "HKEY_CURRENT_USER\Software\Classes\*\shell\Open with Sublime Text 3"         /t REG_SZ /v "" /d "Open with Sublime Text 3"   /f
+@reg add "HKEY_CURRENT_USER\Software\Classes\*\shell\Open with Sublime Text 3"         /t REG_EXPAND_SZ /v "Icon" /d "%st3Path%,0" /f
+@reg add "HKEY_CURRENT_USER\Software\Classes\*\shell\Open with Sublime Text 3\command" /t REG_SZ /v "" /d "C:\Users\zemian\apps\Sublime-Text-Build-3143-x64\sublime_text.exe \"%%1\"" /f
+
+@REM If you want to remove above
+@REM @reg delete  "HKEY_CURRENT_USER\Software\Classes\*\shell\Open with Sublime Text 3\command" /f &gt;nul 2&gt;&amp;1
+@REM @reg delete  "HKEY_CURRENT_USER\Software\Classes\*\shell\Open with Sublime Text 3" /f &gt;nul 2&gt;&amp;1
+</code></pre></div></div>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2018/03/14/getting-project-file-stats-with-python/">
+        Getting Project File Stats with Python
+      </a>
+    </h1>
+
+    <span class="post-date">14 Mar 2018</span>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import os, sys
+from collections import defaultdict
+if len(sys.argv) == 1:
+        path = '.'
+else:
+        path = sys.argv[1]
+print(f"Inspecting dir: {os.path.abspath(path)}")
+dir_count, file_count, size_count = (0, 0, 0)
+file_type_counts = defaultdict(lambda: 0)
+for dirpath, dirnames, filenames in os.walk(path):
+        dir_count += len(dirnames)
+        file_count += len(filenames)
+        for f in filenames:
+                size_count += os.path.getsize(os.path.join(dirpath, f))
+                base, ext = os.path.splitext(f)
+                if ext == '':
+                        file_type_counts[base] += 1
+                else:
+                        file_type_counts[ext] += 1
+
+# Sort file_type_counts by value then print
+file_size = round(size_count / (1024 * 1024))
+print(f"Total file count: {file_count}")
+print(f"Total dir size: {file_size} MB")
+print(f"Total dir count: {dir_count}")
+print(f"Top 10 file type counts:")
+top_type_counts = sorted(file_type_counts, key=file_type_counts.get, reverse=True)[:10]
+for file_type in top_type_counts:
+        type_count = file_type_counts[file_type]
+        percentage = (type_count / file_count)
+        print(f"  {file_type:25} {type_count:&lt;10} {percentage:.1%}")
+</code></pre></div></div>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2018/03/11/linux-sublimetext-title-says-unregistered-despite-you-have-paid-license/">
+        Linux SublimeText title says "Unregistered" despite you have paid license
+      </a>
+    </h1>
+
+    <span class="post-date">11 Mar 2018</span>
+
+    <p>Solution: Edit the “Name” line in
+<code class="language-plaintext highlighter-rouge">~/.local/share/applications/sublime_text.desktop</code> file.</p>
+
+<p>See
+<a href="https://askubuntu.com/questions/678133/sublime-text-3-says-unregistered-in-menu-title-bar">https://askubuntu.com/questions/678133/sublime-text-3-says-unregistered-in-menu-title-bar</a></p>
+
+  </div>
+  
+</div>
+
+<div class="pagination">
+  
+    <a class="pagination-item older" href="http://localhost:4000/page6">Older</a>
+  
+  
+    
+      <a class="pagination-item newer" href="http://localhost:4000/page4">Newer</a>
+    
+  
+</div>
+
+      </div>
+    </div>
+
+    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+    <script src='/public/js/script.js'></script>
+  </body>
+</html>

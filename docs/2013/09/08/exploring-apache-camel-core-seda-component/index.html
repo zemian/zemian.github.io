@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Exploring Apache Camel Core - Seda Component &middot; Zemian's Blog
+    
+  </title>
+
+  
+  <link rel="canonical" href="http://localhost:4000/2013/09/08/exploring-apache-camel-core-seda-component/">
+  
+
+  <link rel="stylesheet" href="http://localhost:4000/public/css/poole.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/syntax.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/lanyon.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700%7CPT+Sans:400">
+
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/public/apple-touch-icon-precomposed.png">
+  <link rel="shortcut icon" href="http://localhost:4000/public/favicon.ico">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="http://localhost:4000/atom.xml">
+
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-135626598-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  
+</head>
+
+
+  <body>
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p>A weblog on software development.</p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item" href="http://localhost:4000/">Home</a>
+
+    
+
+    
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="http://localhost:4000/about/">About</a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+
+  </nav>
+
+  <div class="sidebar-item">
+    <p>
+      &copy; 2020. All rights reserved.
+    </p>
+  </div>
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <h3 class="masthead-title">
+            <a href="/" title="Home">Zemian's Blog</a>
+            <small>Life in programming world!</small>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+        <div class="post">
+  <h1 class="post-title">Exploring Apache Camel Core - Seda Component</h1>
+  <span class="post-date">08 Sep 2013</span>
+  <p>The <code class="language-plaintext highlighter-rouge">seda</code> component in Apache Camel is very similar to the <code class="language-plaintext highlighter-rouge">direct</code> component that I’ve presented in previous blog, but in a asynchronous manner. To do this, it uses a <code class="language-plaintext highlighter-rouge">java.util.concurrent.BlockingQueue</code> as default implementation to queue up messages and disconnect from your main <code class="language-plaintext highlighter-rouge">Route</code> thread and then processing the messages in a separated thread. Because of this <code class="language-plaintext highlighter-rouge">BlockingQueue</code>, you need to be aware of the usage and config option.</p>
+
+<p>One option needs to be aware of asynchronous processing is the it default to queue size is unbound, meaning it will grow as much as your memory allowed. To cap this, set <code class="language-plaintext highlighter-rouge">size=1000</code>. Let’s see an example.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>package camelcoredemo;
+
+import org.slf4j.*;
+import org.apache.camel.*;
+import org.apache.camel.builder.*;
+import org.apache.camel.main.Main;
+import java.io.*;
+
+public class SedaDemoCamel extends Main {
+    static Logger LOG = LoggerFactory.getLogger(SedaDemoCamel.class);
+    public static void main(String[] args) throws Exception {
+        SedaDemoCamel main = new SedaDemoCamel();
+        main.enableHangupSupport();
+        main.addRouteBuilder(createRouteBuilder1());
+        main.addRouteBuilder(createRouteBuilder2());
+        main.addRouteBuilder(createRouteBuilder3());
+        main.run(args);
+    }
+    // The file poller route
+    static RouteBuilder createRouteBuilder1() {
+        return new RouteBuilder() {
+            public void configure() {
+                from("file://target/input?preMove=staging&amp;move=.processed")
+                .process(new Processor() {
+                    public void process(Exchange msg) {
+                        CamelContext camelContext = msg.getContext();
+                        ProducerTemplate producer = camelContext.createProducerTemplate();
+                        String text = msg.getIn().getBody(String.class);
+                        String fileName = (String)msg.getIn().getHeader("CamelFileName");
+                        boolean specialFile = fileName.endsWith("_SPECIAL.dat");
+                        if (specialFile)
+                            producer.sendBody("seda:specialRoute", text);
+                        else
+                            producer.sendBody("seda:normalRoute", text);
+                    }
+                });
+            }
+        };
+    }
+    // The special file processing route
+    static RouteBuilder createRouteBuilder2() {
+        return new RouteBuilder() {
+            public void configure() {
+                from("seda:specialRoute")
+                .process(new Processor() {
+                    public void process(Exchange msg) {
+                        LOG.info("Processing special file: " + msg);
+                    }
+                });
+            }
+        };
+    }
+    // The normal file processing route
+    static RouteBuilder createRouteBuilder3() {
+        return new RouteBuilder() {
+            public void configure() {
+                from("seda:normalRoute")
+                .process(new Processor() {
+                    public void process(Exchange msg) {
+                        LOG.info("Processing normal file: " + msg);
+                    }
+                });
+            }
+        };
+    }
+}
+</code></pre></div></div>
+
+<p>You will notice that this demo code is very similar to the <code class="language-plaintext highlighter-rouge">direct</code> component demo, with few differences. First, we use <code class="language-plaintext highlighter-rouge">seda</code> endpoints. Second, in file poller, we read in the entire file content text. We do this because we are now passing to an asynchronous <code class="language-plaintext highlighter-rouge">Route</code> that will runs on separate threads. The poller is configured to move the processed file into different folder right after the first <code class="language-plaintext highlighter-rouge">Route</code> has ended. So we must ensure the processing <code class="language-plaintext highlighter-rouge">Route</code> is not depended on the path of the File, hence we will load entire text in instead.</p>
+
+<p>Another interesting <code class="language-plaintext highlighter-rouge">seda</code> option is you may set the number of concurrent threads to receive the messages to process them! Let’s say if your <strong>normal</strong> files are heavy in traffic, then you can configure to use more threads on that part (default is just one thread.)</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>from("seda:normalRoute?concurrentConsumers=10")
+.process(new Processor() {
+    public void process(Exchange msg) {
+        LOG.info("Processing normal file: " + msg);
+    }
+});
+</code></pre></div></div>
+
+<p>To verify that your are running concurrently, you can easily configure your logger to display thread name. For
+example with <code class="language-plaintext highlighter-rouge">log4j</code>, you can use this pattern:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>log4j.rootLogger=INFO, stdout
+log4j.appender.stdout=org.apache.log4j.ConsoleAppender
+log4j.appender.stdout.layout=org.apache.log4j.PatternLayout
+log4j.appender.stdout.layout.ConversionPattern=%d %p %t [%c] - %m%n
+</code></pre></div></div>
+
+<p>There are more options availabe from <a href="http://camel.apache.org/seda.html">Seda</a> component
+that you may explore.
+<a href="http://saltnlight5.blogspot.com/2013/08/getting-started-with-apache-camel-using.html">Try it out with a Route</a>
+and see it for yourself.</p>
+
+</div>
+
+
+<div class="related">
+  <h2>Related posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2020/09/20/world-of-php/">
+            The World of PHP Development
+            <small>20 Sep 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/09/19/multiple-jquery/">
+            How to Load Multiple jQuery
+            <small>19 Sep 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/08/15/switched-to-vuepress/">
+            Switched Blogging to VuePress
+            <small>15 Aug 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+
+      </div>
+    </div>
+
+    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+    <script src='/public/js/script.js'></script>
+  </body>
+</html>

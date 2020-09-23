@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Zemian's Blog &middot; Life in programming world!
+    
+  </title>
+
+  
+  <link rel="canonical" href="http://localhost:4000/page13/">
+  
+
+  <link rel="stylesheet" href="http://localhost:4000/public/css/poole.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/syntax.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/lanyon.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700%7CPT+Sans:400">
+
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/public/apple-touch-icon-precomposed.png">
+  <link rel="shortcut icon" href="http://localhost:4000/public/favicon.ico">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="http://localhost:4000/atom.xml">
+
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-135626598-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  
+</head>
+
+
+  <body>
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p>A weblog on software development.</p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item active" href="http://localhost:4000/">Home</a>
+
+    
+
+    
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="http://localhost:4000/about/">About</a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+
+  </nav>
+
+  <div class="sidebar-item">
+    <p>
+      &copy; 2020. All rights reserved.
+    </p>
+  </div>
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <h3 class="masthead-title">
+            <a href="/" title="Home">Zemian's Blog</a>
+            <small>Life in programming world!</small>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+        <div class="posts">
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2015/07/09/python-fancy-cut-command/">
+        python fancy cut command
+      </a>
+    </h1>
+
+    <span class="post-date">09 Jul 2015</span>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># file: cut.py
+
+#
+# Python port of the following perl command (fancy cut command)
+#   ls -l | tail -n +2 | perl -F'/\s+/' -ane 'print "$F[-1]\n"'
+# but it works better with python index slicer and split by full regex delimiter.
+#
+# Examples:
+#   ls -l | tail -n +2 | python cut.py ':'
+#   ls -l | tail -n +2 | python cut.py '2:3'
+
+import sys,fileinput,re
+indexes = sys.argv[1]
+files = sys.argv[2:]
+for line in fileinput.input(files):
+words = re.split("\s+", line.strip())
+print(eval("words[" + indexes + "]"))
+
+</code></pre></div></div>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2015/07/02/useful-subversion-commands/">
+        Useful subversion commands
+      </a>
+    </h1>
+
+    <span class="post-date">02 Jul 2015</span>
+
+    <h1 id="shell-alias-and-utilities-for-subversion">shell alias and utilities for Subversion</h1>
+
+<p>function svnremovenew {</p>
+<h1 id="svn-st--grep---perl--ane-print-f1n--xargs-rm--rf-">svn st | grep ‘^?’ | perl -ane ‘print “$F[1]\n”’ | xargs rm -rf {}</h1>
+<p>svn st | grep ‘^?’ | perl -pe ‘s/\/\//g’ | perl -ane ‘print “$F[1]\n”’ | xargs rm -rf {}</p>
+
+<p>}</p>
+
+<p>function svnrevertmod {
+svn revert <code class="language-plaintext highlighter-rouge">svn st | grep '^M' | perl -pe 's/\\/\//g' | perl -ane 'print "$F[1] "'</code></p>
+
+<p>}</p>
+
+<p>alias svnrevertall=’svn revert -R .’</p>
+
+<p>alias svnup=’svn update –accept mine-full’</p>
+
+<p>alias svnupreset=’svnup &amp;&amp; svnrevertall &amp;&amp; svnremovenew’</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2015/06/12/how-to-replace-all-with-pre-processing-on-a-captured-group-with-java/">
+        How to replace all with pre-processing on a captured group with Java
+      </a>
+    </h1>
+
+    <span class="post-date">12 Jun 2015</span>
+
+    <p>Need to replace all occurances of a pattern text and replace it with a captured group? Something like this in Java works nicely:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    String html = "&lt;a href='myurl?id=1123'&gt;myurl&lt;/a&gt;\n" +
+            "&lt;a href='myurl2?id=2123'&gt;myurl2&lt;/a&gt;\n" +
+            "&lt;a href='myurl3?id=3123'&gt;myurl3&lt;/a&gt;";
+    html = html.replaceAll("id=(\\w+)'?", "productId=$1'");
+</code></pre></div></div>
+
+<p>Here I swapped the query name from “id” to “productId” on all the links that matched my criteria. But what happen if I needed to pre-process the captured ID value before replacing it? Let’s say now I want to do a lookup and transform the ID value to something else?</p>
+
+<p>This extra requirement would lead us to dig deeper into Java RegEx package. Here is what I come up with:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import java.util.regex.*;
+...
+    public String replaceAndLookupIds(String html) {
+        StringBuffer newHtml = new StringBuffer();
+        Pattern p = Pattern.compile("id=(\\w+)'?");
+        Matcher m = p.matcher(html);
+        while (m.find()) {
+            String id= m.group(1);
+            String newId = lookup(id);
+            String rep = "productId=" + newId + "'";
+            m.appendReplacement(newHtml, rep);
+        }
+        m.appendTail(newHtml);
+        return newHtml.toString();
+    }
+</code></pre></div></div>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2015/06/05/example-of-plain-jdbc-support-class/">
+        Example of plain Jdbc Support Class
+      </a>
+    </h1>
+
+    <span class="post-date">05 Jun 2015</span>
+
+    <p>Need to fetch some data from DB quickly with Java? Here is a quick example of plain JDBC JdbcSupport  Class to help you.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>package zemian.jdbcexample
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public abstract class JdbcSupport {
+    private static final Logger LOGGER = LoggerFactory.getLogger(JdbcSupport.class);
+
+    protected DataSource dataSource;
+
+    public JdbcSupport(DataSource dataSource) throws Exception {
+        this.dataSource = dataSource;
+    }
+
+    protected Row toRowMap(ResultSet rs) throws Exception {
+        Row row = new Row();
+        ResultSetMetaData meta = rs.getMetaData();
+        int count = meta.getColumnCount();
+        for (int i=1; i &lt;= count; i++) {
+            row.map.put(meta.getColumnName(i), rs.getObject(i));
+        }
+        return row;
+    }
+
+    protected List&lt;Row&gt; queryRowList(Connection conn, String sql, Object... params) throws Exception {
+        LOGGER.debug("Query sql={}, params={}", sql, Arrays.asList(params));
+        List&lt;Row&gt; result = new ArrayList&lt;&gt;();
+        try(PreparedStatement st = conn.prepareStatement(sql)) {
+            for (int i = 1; i &lt;= params.length; i++) {
+                st.setObject(i, params[i -1]);
+            }
+            try (ResultSet rs = st.executeQuery()) {
+                while(rs.next()) {
+                    result.add(toRowMap(rs));
+                }
+            }
+        }
+        return result;
+    }
+
+    protected Row queryRow(Connection conn, String sql, Object... params) throws Exception {
+        List&lt;Row&gt; rowList = queryRowList(conn, sql, params);
+        if (rowList.size() != 1) {
+            throw new RuntimeException("No unique result from query.");
+        }
+        return rowList.get(0);
+    }
+    
+    public static class Row {
+        public Map&lt;String, Object&gt; map = new HashMap&lt;&gt;();
+
+        public &lt;T&gt; T get(String name) {
+            T result = (T)map.get(name);
+            return result;
+        }
+
+        public &lt;T&gt; T get(String name, T defVal) {
+            T result = (T)map.get(name);
+            if (result == null)
+                return defVal;
+            return result;
+        }
+    }
+}
+</code></pre></div></div>
+<p>To use it, one may do something like this:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>public class AccountStore extends JdbcSupport {
+    public AccountStore(DataSource dataSource) {
+        super(dataSource);
+    }
+    
+    public void printAccountProfiles() {
+        try(Connection conn = dataSource.getConnection()) {
+            String sql = "SELECT ACCOUNTID FROM USERS WHERE USERNAME=?";
+            Row row = queryRow(conn, sql, "zemian");
+            
+            String accountId = row.get("ACCOUNTID");
+            String department = "IT";
+            sql = "SELECT * FROM ACCOUNTPROFILES WHERE ID=? AND DEPARTMENT=?";
+            List&lt;Row&gt; rowList = queryRowList(conn, sql, accountId, department);
+            
+            for (Row row : rowList) {
+                System.out.println("Got profile: " + row.map);
+            }
+        }
+    }
+}
+</code></pre></div></div>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2015/05/29/how-to-setup-intellij-ide-war-exploded-artifact-with-multiple-cdi-dependent-projects/">
+        How to setup Intellij IDE war exploded artifact with multiple CDI dependent projects
+      </a>
+    </h1>
+
+    <span class="post-date">29 May 2015</span>
+
+    <p>I have a large Java project with many sub modules, and they have simple top down dependencies like this:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ProjectX
++-ModuleLibA
++-ModuleLibB
++-ModuleCdiLibC
++-ModuleCdiLibC2
++-ModuleLibD
++-ModuleCdiLibE
++-ModuleCdiLibE2
++-ModuleCdiLibE3
++-ModuleLibF
++-ModuleLibG
++-ModuleWebAppX
+</code></pre></div></div>
+<p>Each of these modules has their own third party dependency jars. When I say top down, it simply means Module from bottom have all the one above sub module and its third party dependencies as well. The project is large, and with many files, but the structure is straight forward. It does have large amount of third party jars though. At the end, the webapp would have over 100 jars packaged in WEB-INF/lib folder!</p>
+
+<p>When you create this project structure in IntelliJ IDE (no I do not have the luxury of using Maven in this case), all the third party dependencies are nicely exported and managed from one Module to another as I create my Project with existing source and third parties jars. I do not need to re-define any redudant jars libraries definitions between Modules. When it come to define ModuleWebAppX at the end, all I have to do is to add ModuleLibG as a project dependency, and it brings all the other “transitives” dependent jars in! This is all done by IntelliJ IDE, which is very nice!</p>
+
+<p>IntelliJ IDE also let you setup Artifacts from your project to prepare for package and deployment that can run inside your IDE servers. By default, any web application will have an option to create a war:exploded artifact definition, and the IDE will automatically copy and update your project build artifacts into this output folder, and it can be deploy/redeploy into any EE server as exploded mode nicely.</p>
+
+<p>All these work really smoothly, until there is one problem that hit hard! The way IntelliJ IDE package default war:exploded artifact is that it will copy all the .class files generated from each Modules into a single “out/artifact/ProjectX_war_exploded” output folder. This works most of the time when our Java package and classes are unique, but not so with resource files that’s not unique! My project uses several dependent CDI based modules. As you might know, each CDI module suppose to define their own, one and single location at META-INF/beans.xml to enable it and to customize CDI behavior. But becuase IntelliJ IDE flatten everything into a single output directory, I’ve lost the unique beans.xml file per each Module!</p>
+
+<p>This problem is hard to troubleshoot since it doesn’t produce any error at first, nor it stops the web app from running. It just not able to load certain CDI beans that you have customized in the beans.xml!!!</p>
+
+<p>To resolve this, I have to make the IntelliJIDE artifact dependent modules to generate it’s JAR instead of all copy into a single output. But we still want it to auto copy generated build files into the JAR archive automatically when we make a change. Lukcly IntelliJ has this feature. This is how I do it:</p>
+
+<ol>
+  <li>
+    <p>Open your project settings then select Artifacts on left.</p>
+  </li>
+  <li>
+    <p>Choose your war:exploded artifacts and look to your right.</p>
+  </li>
+  <li>
+    <p>Under OutputLayout tab, expand WEB-INF/lib, then right clik and “Create Archive” &gt; Enter your moduleX name.jar.</p>
+  </li>
+  <li>
+    <p>Right click this newly created archive moduleX.jar name, then “Add Copy of” &gt; “Module Output” and select one of your dependent module.</p>
+  </li>
+  <li>
+    <p>Repeat for each of the CDI based Modules!</p>
+  </li>
+</ol>
+
+<p>I wish there is a easier way to do across all Modules for this, but at least this manual solution works!</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2015/05/22/how-to-package-skinny-war-with-plain-maven-war-plugin/">
+        How to package skinny war with plain maven-war-plugin
+      </a>
+    </h1>
+
+    <span class="post-date">22 May 2015</span>
+
+    <p>If you are not using maven EAR plugin, then you can also use plain maven-war-plugin to package a Skinny war package like this:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>            &lt;plugin&gt;
+                &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+                &lt;artifactId&gt;maven-war-plugin&lt;/artifactId&gt;
+                &lt;version&gt;2.6&lt;/version&gt;
+                &lt;configuration&gt;
+                    &lt;!--
+                    We want to package skinny war to avoid third party jars --&gt;
+                    &lt;packagingExcludes&gt;
+                        WEB-INF/lib/*.jar
+                    &lt;/packagingExcludes&gt;
+                    &lt;archiveClasses&gt;true&lt;/archiveClasses&gt;
+                &lt;/configuration&gt;
+            &lt;/plugin&gt;
+
+</code></pre></div></div>
+
+<p>However, if you ran into the problem I described in <a href="http://saltnlight5.blogspot.com/2015/05/getting-version-string-from-maven-based.html">last post</a>, then you want a Skinny war, but still want to include the jar it produced from your own web project. In this case, you can try this:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>            &lt;plugin&gt;
+                &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+                &lt;artifactId&gt;maven-war-plugin&lt;/artifactId&gt;
+                &lt;version&gt;2.6&lt;/version&gt;
+                &lt;configuration&gt;
+                    &lt;!--
+                    We want to package skinny war to avoid third party jars, but we do want the classes from
+                    this project to be included --&gt;
+                    &lt;packagingExcludes&gt;
+                        %regex[WEB-INF/lib/(?!my-project-artifact-name-.*\.jar).*\.jar]
+                    &lt;/packagingExcludes&gt;
+                    &lt;archiveClasses&gt;true&lt;/archiveClasses&gt;
+                &lt;/configuration&gt;
+            &lt;/plugin&gt;
+</code></pre></div></div>
+<p>The plugin would accept a REGEX expression for exclusion as well, but getting it to work might take you a few tries! If you need more than this, try this online Java REGEX testing tool: <a href="http://www.regexplanet.com/advanced/java/index.html">http://www.regexplanet.com/advanced/java/index.html</a></p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2015/05/20/getting-version-string-from-a-maven-based-web-application/">
+        Getting version string from a Maven based web application
+      </a>
+    </h1>
+
+    <span class="post-date">20 May 2015</span>
+
+    <p>When you package a maven project, it will automatically generate a pom.properties file inside that will contains the version, artifactId and groupId information. These are handy to have and to display for your web application at runtime. One can use a method like following to retrive it.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>public class Application {
+     private String version;
+
+     public String getVersion() {
+        if (version == null) {
+            String res = "META-INF/maven/myapp/pom.properties";
+            URL url = Thread.currentThread().getContextClassLoader().getResource(res);
+            if (url == null) {
+                version = "SNAPSHOT." + Utils.timestamp();
+            } else {
+                Properties props = Utils.loadProperties(res);
+                version = props.getProperty("version");
+            }
+        }
+        return version;
+    }
+
+}
+</code></pre></div></div>
+<p>Sounds good? Not too fast! Turns out you have to do little more trick to have this working properly for deployment. By default the maven war plugin will package your classes files into the WEB-INF/classes, but the pom.properties are in META-INF at the same level, and not in WEB-INF/classes/META-INF! This resulted the above code not finding your resource pom.properties from classpath!</p>
+
+<p>To fix this, you need to add the following to your pom.xml file:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>            &lt;plugin&gt;
+                &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+                &lt;artifactId&gt;maven-war-plugin&lt;/artifactId&gt;
+                &lt;version&gt;2.6&lt;/version&gt;
+                &lt;configuration&gt;
+                    &lt;archiveClasses&gt;true&lt;/archiveClasses&gt;
+                &lt;/configuration&gt;
+            &lt;/plugin&gt;
+</code></pre></div></div>
+<p>This will tell maven to jar up your classes along with the pom.properties in a separate file, then place it in WEB-INF/lib folder instead of using the unpacked WEB-INF/classes version. This forces the pom.properties to be properly added and read by our getVersion() method.</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2015/05/13/netbeans-projects-dependencies/">
+        NetBeans projects dependencies
+      </a>
+    </h1>
+
+    <span class="post-date">13 May 2015</span>
+
+    <p>With all the coolness of NetBeans, one of the feature I feel it’s lacking is managing project denpendencies natively in IDE. Currently the only way to get this feature is if your Java projects are Maven based. If you have Ant based projects, then you would have to manually do this with hacks, and for each projects/sub-projects! Take a look at these two links:</p>
+
+<p><a href="http://stackoverflow.com/questions/13669237/netbeans-java-how-to-add-as-library-another-project-with-dependencies">http://stackoverflow.com/questions/13669237/netbeans-java-how-to-add-as-library-another-project-with-dependencies</a></p>
+
+<p><a href="https://netbeans.org/bugzilla/show_bug.cgi?id=47507">https://netbeans.org/bugzilla/show_bug.cgi?id=47507</a></p>
+
+<p>With today’s EE projects, you likely going to have many sub projects, and manually handling their dependencies on each project within the IDE is not fun, and hard to maintain. Basically the time you used to setup third party libraries on a ProjectA is wasted and will not automatically exported to ProjectB if it depends on it within the IDE. NetBeans seems to only use project dependencies as way to link related projects together, and to export the main proejct jar/classes, not its third party libraries. A transitive dependencies management feature is needed. Some of user’s responses on this topic seem to simply suggest one should go with Maven. Well, as much as I like to use Maven myself, I don’t think it acceptable to tell users to convert their existing projects from Ant to Maven just to use an IDE. The IDE tool should be more transparent in this regard.</p>
+
+<p>It’s worth to note that both Eclipse and Intellij have this feature and it’s productive. I wish NetBeans can improve on this and provide a solution in near future.</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2015/04/23/how-to-create-multiple-workspaces-with-netbeans/">
+        How to create multiple workspaces with NetBeans
+      </a>
+    </h1>
+
+    <span class="post-date">23 Apr 2015</span>
+
+    <h2 id="examples">Examples</h2>
+
+<ul>
+  <li>Windows:
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> netbeans.exe --userdir C:\MyOtherUserdir --cachedir "%HOME%\Locale Settings\Application Data\NetBeans\7.1\cache"
+</code></pre></div>    </div>
+  </li>
+  <li>Unix:
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> ./netbeans --userdir ~/my-other-userdir
+</code></pre></div>    </div>
+  </li>
+  <li>Mac OS:
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> /Applications/NetBeans.app/Contents/MacOS/executable --userdir ~/my-other-userdir
+</code></pre></div>    </div>
+    <p>Ref: <a href="http://wiki.netbeans.org/FaqAlternateUserdir">http://wiki.netbeans.org/FaqAlternateUserdir</a></p>
+  </li>
+</ul>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2015/03/13/ee-jsp-and-servlet-3-crafting-your-own-mvc-pattern/">
+        EE JSP and Servlet 3 - Crafting Your Own MVC Pattern
+      </a>
+    </h1>
+
+    <span class="post-date">13 Mar 2015</span>
+
+    <p>The combination of JSP and Servlet allows you to develope MVC pattern
+web application easily. The main focus of MVC pattern is that we want to
+write a Controller logic that can produce data Model, and then let the
+View to display these data and generate the desired HTML output. These
+are done so we may separate the concern on each layer, and makes
+developing larger application easier. In EE, we can map a Servlet to a
+URL and let the Servlet becomes the Contoller, and when all data model
+are gathered and stored in request, session or application scope, we can
+then forward to a JSP for rendering output.</p>
+
+<p>Now the last part is CONTROLLER, which can be verbose and a bit raw feel
+if you were to write a Servlet class per each. So we can improve this
+part and define a simplier interface to let developer write controller
+easier. Here I will show you how a simple MVC style of code can look
+like.</p>
+
+<p><a href="https://github.com/saltnlight5/java-ee6-examples/tree/master/mvc-example">mvc-example</a></p>
+
+  </div>
+  
+</div>
+
+<div class="pagination">
+  
+    <a class="pagination-item older" href="http://localhost:4000/page14">Older</a>
+  
+  
+    
+      <a class="pagination-item newer" href="http://localhost:4000/page12">Newer</a>
+    
+  
+</div>
+
+      </div>
+    </div>
+
+    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+    <script src='/public/js/script.js'></script>
+  </body>
+</html>

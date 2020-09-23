@@ -1,0 +1,1602 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Zemian's Blog &middot; Life in programming world!
+    
+  </title>
+
+  
+  <link rel="canonical" href="http://localhost:4000/page19/">
+  
+
+  <link rel="stylesheet" href="http://localhost:4000/public/css/poole.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/syntax.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/lanyon.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700%7CPT+Sans:400">
+
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/public/apple-touch-icon-precomposed.png">
+  <link rel="shortcut icon" href="http://localhost:4000/public/favicon.ico">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="http://localhost:4000/atom.xml">
+
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-135626598-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  
+</head>
+
+
+  <body>
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p>A weblog on software development.</p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item active" href="http://localhost:4000/">Home</a>
+
+    
+
+    
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="http://localhost:4000/about/">About</a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+
+  </nav>
+
+  <div class="sidebar-item">
+    <p>
+      &copy; 2020. All rights reserved.
+    </p>
+  </div>
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <h3 class="masthead-title">
+            <a href="/" title="Home">Zemian's Blog</a>
+            <small>Life in programming world!</small>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+        <div class="posts">
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2013/10/29/exploring-spring-controller-with-spring-form-tag/">
+        Exploring Spring Controller with Spring Form Tag
+      </a>
+    </h1>
+
+    <span class="post-date">29 Oct 2013</span>
+
+    <p>In the past <a href="http://saltnlight5.blogspot.com/2013/10/exploring-spring-controller-with-jstl.html">article</a>, I have shown you how to process an plain HTML form with Spring controller. But a more powerful way to process form is to use Spring’s <code class="language-plaintext highlighter-rouge">@ModelAttribute</code> and its <code class="language-plaintext highlighter-rouge">spring:form</code> tags. I will show you how to get that started here by modifying last article’s project setup. We will simply modify the Comment form and controller to use this feature.</p>
+
+<p>In the same project, modify the <code class="language-plaintext highlighter-rouge">src/webapp/comment.jsp</code> view file into this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;%@ taglib prefix="spring" uri="http://www.springframework.org/tags/form" %&gt;
+&lt;spring:form modelAttribute="comment"&gt;
+  &lt;table&gt;
+    &lt;tr&gt;
+        &lt;td&gt;&lt;spring:textarea path="text" rows="20" cols="80"/&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;td colspan="2"&gt;
+        &lt;input type="submit" value="Post"/&gt;
+        &lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/table&gt;
+&lt;/spring:form&gt;
+</code></pre></div></div>
+
+<p>This view now use the <code class="language-plaintext highlighter-rouge">spring:form</code> tag to render the comment form instead of plain HTML. I have only shown you one element here, but the <code class="language-plaintext highlighter-rouge">spring:form</code> tag library also comes with all the matching HTML form elements that helps you quickly render the form with data binded. This automatically triggers the <code class="language-plaintext highlighter-rouge">CommentController</code> when you submit. We will need to modify that to capture the form.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>package springweb.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
+import springweb.data.Comment;
+import springweb.data.CommentService;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+
+@Controller
+public class CommentController {
+
+    @Autowired
+    private CommentService commentService;
+
+    @RequestMapping(value="/comments")
+    public ModelAndView comments() {
+        List&lt;Comment&gt; comments = commentService.findComments();
+        ModelAndView result = new ModelAndView("/comments");
+        result.addObject("comments", comments);
+        return result;
+    }
+
+    @ModelAttribute("comment")
+    public Comment createFormModelAttribute() {
+        return Comment.create("");
+    }
+
+    @RequestMapping(value="/comment")
+    public String comment() {
+        return "comment";
+    }
+
+    @RequestMapping(value="/comment", method = RequestMethod.POST)
+    public ModelAndView postComment(HttpServletRequest req,
+                                @ModelAttribute("comment") Comment comment) {
+        String fromUrl = req.getRequestURI();
+        String user = req.getRemoteUser();
+        String userIp = req.getRemoteAddr();
+        comment.setFromUserIp(userIp);
+        comment.setFromUser(user);
+        comment.setFromUrl(fromUrl);
+        commentService.insert(comment);
+        ModelAndView result = new ModelAndView("comment-posted");
+        result.addObject("comment", comment);
+        return result;
+    }
+}
+</code></pre></div></div>
+
+<p>The difference in this controller compare to the old one is we used <code class="language-plaintext highlighter-rouge">@ModelAttribute</code> with an <code class="language-plaintext highlighter-rouge">form</code> object (or Spring calls it a <code class="language-plaintext highlighter-rouge">command</code> object.) We can name it, which I called <code class="language-plaintext highlighter-rouge">comment</code> here. It’s just a java POJO class, nothing special. But it is used to capture all the form input and then pass to Controller, which is called data binding. Notice that it will instanciate by <code class="language-plaintext highlighter-rouge">createFormModelAttribute()</code> method as you request the form view first. If you pre-populate the pojo with text, then it will automatically shows in the form! When user submit the controller will process in <code class="language-plaintext highlighter-rouge">postComment()</code> method, and the form object is re-populated with new form input again for processing. This allows you to work with form in pure Object style, and in many ways, it’s shorter and cleaner compare to plain HTML form.</p>
+
+<p>There are much to the Spring MVC form processing. One powerful feature is it able to help you orgainze the <code class="language-plaintext highlighter-rouge">form</code> object validation and collect the error messages. Spring also helps localize your error message text etc. You may read more on their reference doc.</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2013/10/16/exploring-spring-controller-with-jstl-view/">
+        Exploring Spring Controller with JSTL view
+      </a>
+    </h1>
+
+    <span class="post-date">16 Oct 2013</span>
+
+    <p>Let’s improve <a href="http://saltnlight5.blogspot.com/2013/10/getting-started-with-spring-jdbc-in-web.html">our previous Spring JDBC application</a> with some more exploration on Spring MVC’s Controller development. I will show another exercise of writing a new Controller that processes a HTML form and use JSTL tags in JSP view pages.</p>
+
+<p>To enable JSTL in Spring MVC application, you would need to add the following to the <code class="language-plaintext highlighter-rouge">WebAppConfig</code> config class. Let’s move it outside of <code class="language-plaintext highlighter-rouge">WebApp.java</code> and into it’s own top level class file in <code class="language-plaintext highlighter-rouge">src/main/java/springweb/WebAppConfig.java</code>.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>package springweb;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
+
+@Configuration
+@EnableWebMvc
+@ComponentScan("springweb.controller")
+public class WebAppConfig {
+    @Bean
+    public InternalResourceViewResolver viewResolver() {
+        InternalResourceViewResolver result = new InternalResourceViewResolver();
+        result.setPrefix("/");
+        result.setSuffix(".jsp");
+        return result;
+    }
+}
+</code></pre></div></div>
+
+<p>Inside the <code class="language-plaintext highlighter-rouge">InternalResourceViewResolver</code> bean, you define where to find your JSP pages that may have JSTL tags in them. The <code class="language-plaintext highlighter-rouge">prefix</code> setter is a path in relative to your <code class="language-plaintext highlighter-rouge">src/webapp</code> location. This allow you to hide your JSP files completely if you want to. For example, by setting it to <code class="language-plaintext highlighter-rouge">"/WEB-INF/jsp"</code> then you may move and store all JSP files into <code class="language-plaintext highlighter-rouge">src/webapp/WEB-INF/jsp</code> which is private in the web application. The <code class="language-plaintext highlighter-rouge">suffix</code> is just the file extension. These two values allow you to return a view name inside the controller with just the basename of your JSP file, which can be short as “/myform” or “/index” etc.</p>
+
+<p>If you are to use Tomcat as your web container, you would need to add JSTL jar dependency as well, since the Tomcat server doesn’t come with standard tag library! So add this into the <code class="language-plaintext highlighter-rouge">pom.xml</code> file now.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>        &lt;dependency&gt;
+            &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
+            &lt;artifactId&gt;jstl&lt;/artifactId&gt;
+            &lt;version&gt;1.2&lt;/version&gt;
+        &lt;/dependency&gt;
+</code></pre></div></div>
+
+<p>While you’re at the <code class="language-plaintext highlighter-rouge">pom.xml</code> file, you might want to add the Tomcat maven plugin so you can type less in command line when running your web application.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;project&gt;
+...
+    &lt;build&gt;
+        &lt;plugins&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.apache.tomcat.maven&lt;/groupId&gt;
+                &lt;artifactId&gt;tomcat7-maven-plugin&lt;/artifactId&gt;
+                &lt;version&gt;2.1&lt;/version&gt;
+            &lt;/plugin&gt;
+        &lt;/plugins&gt;
+    &lt;/build&gt;
+...
+&lt;/project&gt;
+</code></pre></div></div>
+
+<p>With that, you should able to run <code class="language-plaintext highlighter-rouge">mvn tomcat7:run</code> in root of your project without plugin prefix.</p>
+
+<p>So what does JSTL bring to your application? Well, quite a bit actually. It lets you use some standard JSP tags that’s frequently used when writing JSP views. I will demonstrate this with a set of Controller and views to capture user comments from the application. Note that I will try to show you how to work with Spring Controller in the most basic way only. The Spring actually comes with a custom <code class="language-plaintext highlighter-rouge">form</code> JSP tag that is much more powerful to use. I will reserve that as another article in another time. Today let us focus on learning more about basic Spring Controller and JSTL, and a bit more on Spring JDBC data service as well.</p>
+
+<p>We want to capture user comment, so let’s add a database table to store that information. Add the following DDL into your <code class="language-plaintext highlighter-rouge">src/main/resources/schema.sql</code> file. Again, this is for H2 database per last article project setup.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CREATE TABLE COMMENT (
+  ID INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  TEXT VARCHAR(10240) NOT NULL,
+  FROM_USER VARCHAR(15) NULL,
+  FROM_USER_IP VARCHAR(15) NULL,
+  FROM_URL VARCHAR(1024) NULL,
+  TAG VARCHAR(1024) NULL,
+  TS DATETIME NOT NULL
+);
+</code></pre></div></div>
+
+<p>This time, we will write a data model class to match this table. Let’s add <code class="language-plaintext highlighter-rouge">src/main/java/springweb/data/Comment.java</code></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>package springweb.data;
+
+import java.util.Date;
+
+public class Comment {
+    Long id;
+    String text;
+    String fromUrl;
+    String fromUser;
+    String fromUserIp;
+    String tag;
+    Date ts;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public String getFromUrl() {
+        return fromUrl;
+    }
+
+    public void setFromUrl(String fromUrl) {
+        this.fromUrl = fromUrl;
+    }
+
+    public String getFromUser() {
+        return fromUser;
+    }
+
+    public void setFromUser(String fromUser) {
+        this.fromUser = fromUser;
+    }
+
+    public String getFromUserIp() {
+        return fromUserIp;
+    }
+
+    public void setFromUserIp(String fromUserIp) {
+        this.fromUserIp = fromUserIp;
+    }
+
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
+
+    public Date getTs() {
+        return ts;
+    }
+
+    public void setTs(Date ts) {
+        this.ts = ts;
+    }
+
+    private String getTrimedComment(int maxLen) {
+        if (text == null)
+            return null;
+        if (text.length() &lt;= maxLen)
+            return text;
+        return text.substring(0, maxLen);
+    }
+
+    @Override
+    public String toString() {
+        return "Comment{" +
+                "id=" + id +
+                ", ts=" + ts +
+                ", text='" + getTrimedComment(12) + '\'' +
+                '}';
+    }
+
+    public static Comment create(String commentText) {
+        Comment result = new Comment();
+        result.setText(commentText);
+        result.setTs(new Date());
+        return result;
+    }
+}
+</code></pre></div></div>
+
+<p>Just as previous artcicle, we will write a data service to handle insert and retrieve of the data model. We add a new <code class="language-plaintext highlighter-rouge">src/main/java/springweb/data/CommentService.java</code> file</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>package springweb.data;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.stereotype.Repository;
+
+import javax.sql.DataSource;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+@Repository
+public class CommentService {
+    public static Log LOG = LogFactory.getLog(CommentService.class);
+
+    private JdbcTemplate jdbcTemplate;
+    private SimpleJdbcInsert insertActor;
+    private RowMapper&lt;Comment&gt; commentBeanRowMapper = new BeanPropertyRowMapper&lt;Comment&gt;(Comment.class);
+
+    @Autowired
+    public void setDataSource(DataSource dataSource) {
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
+        this.insertActor = new SimpleJdbcInsert(dataSource)
+            .withTableName("COMMENT")
+            .usingGeneratedKeyColumns("ID");
+    }
+
+    public void insert(Comment comment) {
+        LOG.info("Inserting Comment + " + comment);
+
+        Map&lt;String, Object&gt; parameters = new HashMap&lt;String, Object&gt;(2);
+        parameters.put("TEXT", comment.getText());
+        parameters.put("FROM_USER", comment.getFromUser());
+        parameters.put("FROM_USER_IP", comment.getFromUserIp());
+        parameters.put("FROM_URL", comment.getFromUrl());
+        parameters.put("TAG", comment.getTag());
+        parameters.put("TS", comment.getTs());
+        Number newId = insertActor.executeAndReturnKey(parameters);
+        comment.setId(newId.longValue());
+
+        LOG.info("New Comment inserted. Id=" + comment.getId());
+    }
+
+    public List&lt;Comment&gt; findComments() {
+        String sql = "SELECT " +
+                "ID as id, " +
+                "TEXT as text, " +
+                "TAG as tag, " +
+                "TS as ts, " +
+                "FROM_USER as fromUser, " +
+                "FROM_USER_IP as fromUserIp, " +
+                "FROM_URL as fromUrl " +
+                "FROM COMMENT ORDER BY TS";
+        List&lt;Comment&gt; result = jdbcTemplate.query(sql, commentBeanRowMapper);
+        LOG.info("Found " + result.size() + " Comment records.");
+        return result;
+    }
+}
+</code></pre></div></div>
+
+<p>Since we did not use any fancy ORM but just plain JDBC, we will have to write SQL in the data service. But thanks to Spring goodies, it makes life much easier with helpers such as <code class="language-plaintext highlighter-rouge">SimpleJdbcInsert</code>, which handles DB insert and retrieval of auto generated key etc. And also notice that in query, we use the Spring’s <code class="language-plaintext highlighter-rouge">BeanPropertyRowMapper</code> to automatically convert JDBC resultset into a java bean <code class="language-plaintext highlighter-rouge">Comment</code> object! Simple, direct and quick.</p>
+
+<p>Now we add the Spring controller in <code class="language-plaintext highlighter-rouge">src/main/java/springweb/controller/CommentController.java</code> to handle web requests.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>package springweb.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
+import springweb.data.Comment;
+import springweb.data.CommentService;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+
+@Controller
+public class CommentController {
+
+    @Autowired
+    private CommentService commentService;
+
+    @RequestMapping(value="/comments")
+    public ModelAndView comments() {
+        List&lt;Comment&gt; comments = commentService.findComments();
+        ModelAndView result = new ModelAndView("/comments");
+        result.addObject("comments", comments);
+        return result;
+    }
+
+    @RequestMapping(value="/comment")
+    public String comment() {
+        return "comment";
+    }
+
+    @RequestMapping(value="/comment", method = RequestMethod.POST)
+    public ModelAndView postComment(HttpServletRequest req, @RequestParam String commentText) {
+        String fromUrl = req.getRequestURI();
+        String user = req.getRemoteUser();
+        String userIp = req.getRemoteAddr();
+        Comment comment = Comment.create(commentText);
+        comment.setFromUserIp(userIp);
+        comment.setFromUser(user);
+        comment.setFromUrl(fromUrl);
+        commentService.insert(comment);
+        ModelAndView result = new ModelAndView("comment-posted");
+        result.addObject("comment", comment);
+        return result;
+    }
+}
+</code></pre></div></div>
+
+<p>In this controller we map <code class="language-plaintext highlighter-rouge">/comment</code> URL to handle display of the HTML form, which returns the <code class="language-plaintext highlighter-rouge">comment.jsp</code> view. The method default to handle a HTTP <code class="language-plaintext highlighter-rouge">GET</code>. Note that we remapped same <code class="language-plaintext highlighter-rouge">/comment</code> URL to handle HTTP <code class="language-plaintext highlighter-rouge">POST</code> on a separated <code class="language-plaintext highlighter-rouge">postComment()</code> method! See how clean the Spring Controller can be in this demo to handle HTTP request. Pay very close attention to the parameters declared in the <code class="language-plaintext highlighter-rouge">postComment()</code> method. Spring automatically handles the HTTP request object and map to your method just based upon the types you declared! On some cases you need to be explicit with the help of annotation such as <code class="language-plaintext highlighter-rouge">@RequestParam</code>, but Spring does the parsing of HTTP request and extraction for you! This saves you tons of repeated boiler plate code if we were to write a direct Servlet code.</p>
+
+<p>Now let’s see the view and how to use JSTL. The <code class="language-plaintext highlighter-rouge">/comments</code> URL is mapped to <code class="language-plaintext highlighter-rouge">src/main/webapp/comments.jsp</code> view file, which will list all <code class="language-plaintext highlighter-rouge">Comment</code> model objects.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %&gt;
+&lt;c:choose&gt;
+&lt;c:when test="${empty comments}"&gt;
+    &lt;p&gt;There are no comments in system yet.&lt;/p&gt;
+&lt;/c:when&gt;
+&lt;c:otherwise&gt;
+    &lt;table border="1"&gt;
+    &lt;tr&gt;
+        &lt;td&gt;INDEX&lt;/td&gt;
+        &lt;td&gt;TIME&lt;/td&gt;
+        &lt;td&gt;FROM&lt;/td&gt;
+        &lt;td&gt;COMMENT&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;c:forEach items="${comments}" var="comment" varStatus="status"&gt;
+    &lt;tr valign="top"&gt;
+        &lt;td&gt;${status.index}&lt;/td&gt;
+        &lt;td&gt;${comment.ts}&lt;/td&gt;
+        &lt;td&gt;${comment.fromUserIp}&lt;/td&gt;
+        &lt;%-- The c:out will escape html/xml characters. --%&gt;
+        &lt;td&gt;&lt;pre&gt;&lt;c:out value="${comment.text}"/&gt;&lt;/pre&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;/c:forEach&gt;
+    &lt;/table&gt;
+&lt;/c:otherwise&gt;
+&lt;/c:choose&gt;
+</code></pre></div></div>
+
+<p>Pretty standard stuff on JSTL. Next is the HTML form to post comment in <code class="language-plaintext highlighter-rouge">src/main/webapp/comment.jsp</code> file.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;form action="comment" method="POST"&gt;
+&lt;textarea name="commentText" rows="20" cols="80"&gt;&lt;/textarea&gt;
+&lt;br/&gt;
+&lt;input type="submit" value="Post"/&gt;
+&lt;/form&gt;
+</code></pre></div></div>
+
+<p>When form is posted and processed successful, we simply return to a new page in <code class="language-plaintext highlighter-rouge">src/main/webapp/comment-posted.jsp</code> file as output.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;p&gt;Your comment has been posted. Comment ID=${comment.id}&lt;/p&gt;
+</code></pre></div></div>
+
+<p>If you’ve done these right, you should able to run <code class="language-plaintext highlighter-rouge">mvn tomcat7:run</code> and browse <code class="language-plaintext highlighter-rouge">http://localhost:8080/spring-web-annotation/comment</code> to see the form. Go to <code class="language-plaintext highlighter-rouge">/comments</code> URL to verify all the comments posted.</p>
+
+<p>Note that despite I used Spring Controller as backend, all the views are in basic JSTL, and even the form are just basic HTML elements! I did this so you can see how flexible Spring Controller can be.</p>
+
+<p>I know these are lot of code to post as a blog article today, but I wanted to be complete and try to show a  working demo with tutorial notes. I choose to make it into a single post with file content instead of having you download a project somewhere else. It makes my notes and explanation easier to match onto the code.</p>
+
+<p>And that will conclude our tutorial for today. Please leave a note if you find this helpful.</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2013/10/09/getting-started-with-spring-jdbc-in-a-web-application/">
+        Getting started with Spring JDBC in a web application
+      </a>
+    </h1>
+
+    <span class="post-date">09 Oct 2013</span>
+
+    <p>I have shown you how to setup a <a href="http://saltnlight5.blogspot.com/2013/10/getting-started-with-annotation-based.html">basic Spring 3 MVC web application</a> in my previous article. Reusing that project setup as template, I will show you how to enhance it to work with JDBC. With this you can store and retrieve data from database. We will add a new controller and a data service through Spring so you can see how Spring injection and annotation configuration works together.</p>
+
+<p>A direct JDBC based application is easy to setup in comparison to a full ORM such as Hibernate. You don’t need to worry AOP, TranactionManager, Entity mapping and full array of other configurations. On top of the JDK’s <code class="language-plaintext highlighter-rouge">java.jdbc</code> API, the Spring comes with <code class="language-plaintext highlighter-rouge">spring-jdbc</code> module that can boots your productively with their well known <code class="language-plaintext highlighter-rouge">JdbcTemplate</code> class. Let’s explore how this can be setup and run as web application.</p>
+
+<h2 id="getting-started-and-project-setup">Getting started and project setup</h2>
+
+<p>For demo purpose, I will use the in-memory version of H2Database as JDBC store. It’s simple to use and setup. And if you decided to use their FILE or TCP based database, you would simply have to re-set the datasource, and you may continue to explore more.</p>
+
+<p>We will start by adding new dependencies to your existing <code class="language-plaintext highlighter-rouge">spring-web-annotation/pom.xml</code> file.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  &lt;dependency&gt;
+   &lt;groupId&gt;com.h2database&lt;/groupId&gt;
+   &lt;artifactId&gt;h2&lt;/artifactId&gt;
+   &lt;version&gt;1.3.163&lt;/version&gt;
+  &lt;/dependency&gt;
+  &lt;dependency&gt;
+   &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+   &lt;artifactId&gt;spring-jdbc&lt;/artifactId&gt;
+   &lt;version&gt;3.2.4.RELEASE&lt;/version&gt;
+  &lt;/dependency&gt;
+</code></pre></div></div>
+
+<p>With this, you will have access to Spring module classes for configuration. Find the previous <code class="language-plaintext highlighter-rouge">src/main/java/springweb/WebApp.java</code> file in your existing project and add what’s new compare to below:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>package springweb;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
+
+import javax.sql.DataSource;
+
+public class WebApp extends AbstractAnnotationConfigDispatcherServletInitializer {
+    @Override
+    protected Class&lt;?&gt;[] getRootConfigClasses() {
+        return new Class&lt;?&gt;[]{ RootConfig.class };
+    }
+
+    @Override
+    protected Class&lt;?&gt;[] getServletConfigClasses() {
+        return new Class&lt;?&gt;[]{ WebAppConfig.class };
+    }
+
+    @Override
+    protected String[] getServletMappings() {
+        return new String[]{ "/" };
+    }
+
+    @Configuration
+    @EnableWebMvc
+    @ComponentScan("springweb.controller")
+    public static class WebAppConfig {
+    }
+
+    @Configuration
+    @ComponentScan("springweb.data")
+    public static class RootConfig {
+      @Bean
+      public DataSource dataSource() {
+        DataSource bean = new EmbeddedDatabaseBuilder()
+          .setType(EmbeddedDatabaseType.H2)
+          .addScript("classpath:schema.sql")
+          .build();
+        return bean;
+      }
+    }
+}
+</code></pre></div></div>
+
+<p>What’s new in here is we introduced a new <code class="language-plaintext highlighter-rouge">RootConfig</code> class that will be loaded inside <code class="language-plaintext highlighter-rouge">getRootConfigClasses()</code> method. The <code class="language-plaintext highlighter-rouge">RootConfig</code> is just another Spring annotation based configuration that creates a new Spring context for bean definitions. We’ve created a bean there that will run the in-memory database. The bean returned by the builder also conveniently implemented the <code class="language-plaintext highlighter-rouge">javax.sql.DataSource</code> interface, so we can actually inject this into any data service and start using it immediately.</p>
+
+<p>One more cool thing about the Spring embedded database builder is that it also runs any SQL script as part of the startup! For this demo, we will create a <code class="language-plaintext highlighter-rouge">PING</code> table in the <code class="language-plaintext highlighter-rouge">src/main/resources/schema.sql</code> file. This file is visible to Spring as in root of the CLASSPATH due to Maven standard source structure.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CREATE TABLE PING (
+  ID INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  TAG VARCHAR(1024) NOT NULL,
+  TS DATETIME NOT NULL
+);
+</code></pre></div></div>
+
+<p>That’s the datasource setup. Now notice that I did not add this datasource Spring bean definition into existing <code class="language-plaintext highlighter-rouge">WebAppConfig</code> class. The reason is that we want a separate Spring context to configure all service level beans, while reserving the <code class="language-plaintext highlighter-rouge">WebAppConfig</code> for all Spring MVC related beans (such as Controller, URL mapping etc). This helps organize your bean definitions in hierarchical order of Spring contexts; with <code class="language-plaintext highlighter-rouge">RootConfig</code> as parent and <code class="language-plaintext highlighter-rouge">WebAppConfig</code> as child layers. This also means that all service beans in <code class="language-plaintext highlighter-rouge">RootConfig</code> are automatically visible to <code class="language-plaintext highlighter-rouge">WebAppConfig</code>; for the purpose of injection etc.</p>
+
+<p>Also notice that with separated config classes, we are able to specify two distinct packages to scan for service components; we use <code class="language-plaintext highlighter-rouge">springweb.controller</code> for <code class="language-plaintext highlighter-rouge">WebAppConfig</code> and <code class="language-plaintext highlighter-rouge">springweb.data</code> for <code class="language-plaintext highlighter-rouge">RootConfig</code>. This is important and it can save you some troubles by letting Spring auto detecting your annotation based components.</p>
+
+<h2 id="creating-data-service">Creating Data Service</h2>
+
+<p>Now it’s time we use the JDBC, so let’s write a data service class under <code class="language-plaintext highlighter-rouge">src/main/java/springweb/data/PingService.java</code> file.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>package springweb.data;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
+
+import javax.sql.DataSource;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+@Repository
+public class PingService {
+    public static Log LOG = LogFactory.getLog(PingService.class);
+
+    private JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    public void setDataSource(DataSource dataSource) {
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
+    }
+
+    public void insert(String tag) {
+        LOG.info("Inserting Ping tag: " + tag);
+        jdbcTemplate.update("INSERT INTO PING(TAG, TS) VALUES(?, ?)", tag, new Date());
+    }
+
+    public List&lt;Map&lt;String, Object&gt;&gt; findAllPings() {
+        return jdbcTemplate.queryForList("SELECT * FROM PING ORDER BY TS");
+    }
+}
+</code></pre></div></div>
+
+<p>The service is very straight forward. I expose two methods: one for insert and one for retrieve all Ping data. Noticed that I used <code class="language-plaintext highlighter-rouge">@Repository</code> to indicate to Spring that this class is a component service that perform data service. Also note how we inject the <code class="language-plaintext highlighter-rouge">DataSource</code> using a setter method, and then instantiate the <code class="language-plaintext highlighter-rouge">JdbcTemplate</code> as member field. From that we can take full advantage of the Spring JDBC API for query and update.</p>
+
+<p>A note on logging. Spring core itself uses Apache <code class="language-plaintext highlighter-rouge">common-logging</code>, so I reused that API without even explicitly declare them in my <code class="language-plaintext highlighter-rouge">pom.xml</code>. If you want to see more details from log output, you should add <code class="language-plaintext highlighter-rouge">log4j</code> logger implementation to the project, and it should automatically work. I will leave that as your exercise.</p>
+
+<p>Next we will need to write a Controller that can bring data to web UI page. We will create this under <code class="language-plaintext highlighter-rouge">src/main/java/springweb/controller/PingController.java</code> file.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>package springweb.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import springweb.data.PingService;
+
+import java.util.List;
+import java.util.Map;
+
+@Controller
+public class PingController {
+
+    @Autowired
+    private PingService pingService;
+
+    @RequestMapping(value="/ping/{tag}", produces="text/plain")
+    @ResponseBody
+    public String pingTag(@PathVariable("tag") String tag) {
+        pingService.insert(tag);
+        return "Ping tag '" + tag + "' has been inserted. ";
+    }
+
+    @RequestMapping(value="/pings", produces="text/plain")
+    @ResponseBody
+    public String pings() {
+        List&lt;Map&lt;String, Object&gt;&gt; result = pingService.findAllPings();
+  if (result.size() == 0)
+   return "No record found.";
+
+        StringBuilder sb = new StringBuilder();
+        for (Map&lt;String, Object&gt; row : result) {
+            sb.append("Ping" + row).append("\n");
+        }
+        return sb.toString();
+    }
+}
+</code></pre></div></div>
+
+<p>In this controller, you can easily see that the Ping data is fetched and updated through our data service by injection. I’ve declared and map URL <code class="language-plaintext highlighter-rouge">/ping/{tag}</code> to insert Ping data into the database. Spring has this very nice shorthand syntax annotation that can extract parameter from your URL path. In this case it let user to pass a simple tag keyword to be inserted as Ping record; so we can identify the source in database.</p>
+
+<p>The other controller handler <code class="language-plaintext highlighter-rouge">/pings</code> URL is very straight forward; it simply returns all the records from PING table.</p>
+
+<p>For demo purpose, I choose to not use JSP as view, but to return plain text directly from the Controller. Spring let you do this by adding <code class="language-plaintext highlighter-rouge">@ResponseBody</code> to the handler method. Notice also we can specify the content type as <code class="language-plaintext highlighter-rouge">text/plain</code> as output directly using the annotation.</p>
+
+<h2 id="testing">Testing</h2>
+
+<p>To see your hard labor with above, you simply need to run the Maven tomcat plugin. The previous article has shown you an command to do that. Once you restarted it, you should able to open a browser and use these URLS for testing.</p>
+
+<ul>
+  <li>
+    <p><a href="http://localhost:8081/spring-web-annotation/ping/tester1">http://localhost:8081/spring-web-annotation/ping/tester1</a></p>
+  </li>
+  <li>
+    <p><a href="http://localhost:8081/spring-web-annotation/ping/tester2">http://localhost:8081/spring-web-annotation/ping/tester2</a></p>
+  </li>
+  <li>
+    <p><a href="http://localhost:8081/spring-web-annotation/ping/tester3">http://localhost:8081/spring-web-annotation/ping/tester3</a></p>
+  </li>
+  <li>
+    <p><a href="http://localhost:8081/spring-web-annotation/pings">http://localhost:8081/spring-web-annotation/pings</a></p>
+  </li>
+</ul>
+
+<h2 id="happing-programming">Happing programming</h2>
+
+<p>From this simple exercise, you can quickly see Spring MVC brings you many benefits; and a lot of fun in developing web application. Spring, by design principles, tends to be developers friendly, boots productivity and un-intrusively in your environment. It’s one of the reason I like to work with it a lot. I hope you enjoy this tutorial and go further explore on your own.</p>
+
+<p>Happy programming!</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2013/10/04/getting-started-with-annotation-based-spring-mvc-web-application/">
+        Getting started with annotation based Spring MVC web application
+      </a>
+    </h1>
+
+    <span class="post-date">04 Oct 2013</span>
+
+    <p>Here is a minimal way to get a Spring 3 MVC project started with Maven.</p>
+
+<p>First create <code class="language-plaintext highlighter-rouge">spring-web-annotation/pom.xml</code> file and include the Spring dependency:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://maven.apache.org/POM/4.0.0
+        http://maven.apache.org/maven-v4_0_0.xsd"&gt;
+
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;groupId&gt;spring-web-annotation&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-web-annotation&lt;/artifactId&gt;
+    &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+    &lt;packaging&gt;war&lt;/packaging&gt;
+
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
+            &lt;artifactId&gt;javax.servlet-api&lt;/artifactId&gt;
+            &lt;version&gt;3.1.0&lt;/version&gt;
+            &lt;scope&gt;provided&lt;/scope&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-webmvc&lt;/artifactId&gt;
+            &lt;version&gt;3.2.4.RELEASE&lt;/version&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+&lt;/project&gt;
+</code></pre></div></div>
+
+<p>Now create the Servlet 3 web initializer and the Spring annotation config for the MVC parts in <code class="language-plaintext highlighter-rouge">spring-web-annotation/src/main/java/springweb/WebApp.java</code></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>package springweb;
+
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
+
+public class WebApp extends AbstractAnnotationConfigDispatcherServletInitializer {
+    @Override
+    protected Class&lt;?&gt;[] getRootConfigClasses() {
+        return new Class&lt;?&gt;[0];
+    }
+
+    @Override
+    protected Class&lt;?&gt;[] getServletConfigClasses() {
+        return new Class&lt;?&gt;[]{ WebAppConfig.class };
+    }
+
+    @Override
+    protected String[] getServletMappings() {
+        return new String[]{ "/" };
+    }
+
+    @Configuration
+    @EnableWebMvc
+    @ComponentScan("springweb.controller")
+    public static class WebAppConfig {
+    }
+}
+</code></pre></div></div>
+
+<p>The <code class="language-plaintext highlighter-rouge">WebApp</code> class extends Spring’s built in Servlet3 web initializer code. It allows Servlet3 container such as Tomcat7 to auto detect this web application without the need of <code class="language-plaintext highlighter-rouge">web.xml</code> configuration setup. Because of we do not use <code class="language-plaintext highlighter-rouge">web.xml</code>, we need this class to allow Spring to hook into the Servlet container to bootstrap their dispatcher servlet. Also instead of typical Spring beans xml file configuration, we now can use all annotation based using <code class="language-plaintext highlighter-rouge">WebAppConfig</code>.</p>
+
+<p>Noticed that I have combined the <code class="language-plaintext highlighter-rouge">WebAppConfig</code> as inner class, but you can easily move it out as top level class in a full scale application. This is the Spring annotation version of container configuration. You can easily customize the application by adding new <code class="language-plaintext highlighter-rouge">@Bean</code> here.</p>
+
+<p>Note: Do not forget to overwrite <code class="language-plaintext highlighter-rouge">getServletMappings</code> method with <code class="language-plaintext highlighter-rouge">"/"</code>, or else your URL request will not direct to the Spring dispatcher for processing! A step that can easily forgotten and you might find your self chasing why Spring controllers are not working.</p>
+
+<p>Above are really the minmal setup you need to start a war project. Next you want to add at least one controller to have some output to verify. Create this controller file <code class="language-plaintext highlighter-rouge">spring-web-annotation/src/main/java/springweb/controller/IndexController.java</code></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>package springweb.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+@Controller
+public class IndexController {
+    @RequestMapping(value="/")
+    public String index() {
+        return "index";
+    }
+}
+</code></pre></div></div>
+
+<p>And now you would need the JSP view <code class="language-plaintext highlighter-rouge">spring-web-annotation/src/main/webapp/index.jsp</code></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Hello World.
+</code></pre></div></div>
+
+<p>Now cd into <code class="language-plaintext highlighter-rouge">spring-web-annotation</code> and execute <code class="language-plaintext highlighter-rouge">mvn org.apache.tomcat.maven:tomcat7-maven-plugin:run</code>. You should see your Spring application starting and be able to browse <code class="language-plaintext highlighter-rouge">http://localhost:8080/spring-web-annotation</code> URL.</p>
+
+<p>There are lot of cool stuff you can do with Spring MVC. Checkout their awesome docs for more details.</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2013/09/10/the-apache-camel-2-12-0-has-been-released/">
+        The Apache Camel 2.12.0 has been released!
+      </a>
+    </h1>
+
+    <span class="post-date">10 Sep 2013</span>
+
+    <p>The Apache Camel 2.12.0 has been released! Yeh!</p>
+
+<p>This is a special release to me mainly because I have help fixed few   <a href="https://issues.apache.org/jira/issues/?jql=project%20%3D%20CAMEL%20AND%20status%20in%20(Resolved%2C%20Closed)%20AND%20text%20~%20%22Zemian%22">Jira Issues</a>. :-P</p>
+
+<p>Among these, I have helped ported the old <code class="language-plaintext highlighter-rouge">quartz</code> component into <a href="http://camel.apache.org/quartz2.html">quartz2</a> using the new Quartz 2.0 API. As far as for Camel users concern, it should work just as old one, except it will now use the <code class="language-plaintext highlighter-rouge">quartz2://</code> URL prefix instead. But the implementation uses Quartz2 library that’s not backward compatible with old Quartz1.8, which is very old. In addition, the <code class="language-plaintext highlighter-rouge">quartz2</code> component now has a new option <code class="language-plaintext highlighter-rouge">deleteJob=false</code> that will allow you to NOT delete the job created by Camel on shutdown, and it will also reuse existing job found with the same name in the Quartz scheduler if it exists during startup.</p>
+
+<p>Obviously my contribution seems tiny compare to what the <a href="http://camel.apache.org/camel-2120-release.html">full release</a> brings you, but it’s a start in helping out the project. I am glad the Camel folks accepted these patches and found it into their release.</p>
+
+<p>Try out the latest Camel and see what you think.</p>
+
+<p>Happing programming!</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2013/09/08/exploring-apache-camel-core-seda-component/">
+        Exploring Apache Camel Core - Seda Component
+      </a>
+    </h1>
+
+    <span class="post-date">08 Sep 2013</span>
+
+    <p>The <code class="language-plaintext highlighter-rouge">seda</code> component in Apache Camel is very similar to the <code class="language-plaintext highlighter-rouge">direct</code> component that I’ve presented in previous blog, but in a asynchronous manner. To do this, it uses a <code class="language-plaintext highlighter-rouge">java.util.concurrent.BlockingQueue</code> as default implementation to queue up messages and disconnect from your main <code class="language-plaintext highlighter-rouge">Route</code> thread and then processing the messages in a separated thread. Because of this <code class="language-plaintext highlighter-rouge">BlockingQueue</code>, you need to be aware of the usage and config option.</p>
+
+<p>One option needs to be aware of asynchronous processing is the it default to queue size is unbound, meaning it will grow as much as your memory allowed. To cap this, set <code class="language-plaintext highlighter-rouge">size=1000</code>. Let’s see an example.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>package camelcoredemo;
+
+import org.slf4j.*;
+import org.apache.camel.*;
+import org.apache.camel.builder.*;
+import org.apache.camel.main.Main;
+import java.io.*;
+
+public class SedaDemoCamel extends Main {
+    static Logger LOG = LoggerFactory.getLogger(SedaDemoCamel.class);
+    public static void main(String[] args) throws Exception {
+        SedaDemoCamel main = new SedaDemoCamel();
+        main.enableHangupSupport();
+        main.addRouteBuilder(createRouteBuilder1());
+        main.addRouteBuilder(createRouteBuilder2());
+        main.addRouteBuilder(createRouteBuilder3());
+        main.run(args);
+    }
+    // The file poller route
+    static RouteBuilder createRouteBuilder1() {
+        return new RouteBuilder() {
+            public void configure() {
+                from("file://target/input?preMove=staging&amp;move=.processed")
+                .process(new Processor() {
+                    public void process(Exchange msg) {
+                        CamelContext camelContext = msg.getContext();
+                        ProducerTemplate producer = camelContext.createProducerTemplate();
+                        String text = msg.getIn().getBody(String.class);
+                        String fileName = (String)msg.getIn().getHeader("CamelFileName");
+                        boolean specialFile = fileName.endsWith("_SPECIAL.dat");
+                        if (specialFile)
+                            producer.sendBody("seda:specialRoute", text);
+                        else
+                            producer.sendBody("seda:normalRoute", text);
+                    }
+                });
+            }
+        };
+    }
+    // The special file processing route
+    static RouteBuilder createRouteBuilder2() {
+        return new RouteBuilder() {
+            public void configure() {
+                from("seda:specialRoute")
+                .process(new Processor() {
+                    public void process(Exchange msg) {
+                        LOG.info("Processing special file: " + msg);
+                    }
+                });
+            }
+        };
+    }
+    // The normal file processing route
+    static RouteBuilder createRouteBuilder3() {
+        return new RouteBuilder() {
+            public void configure() {
+                from("seda:normalRoute")
+                .process(new Processor() {
+                    public void process(Exchange msg) {
+                        LOG.info("Processing normal file: " + msg);
+                    }
+                });
+            }
+        };
+    }
+}
+</code></pre></div></div>
+
+<p>You will notice that this demo code is very similar to the <code class="language-plaintext highlighter-rouge">direct</code> component demo, with few differences. First, we use <code class="language-plaintext highlighter-rouge">seda</code> endpoints. Second, in file poller, we read in the entire file content text. We do this because we are now passing to an asynchronous <code class="language-plaintext highlighter-rouge">Route</code> that will runs on separate threads. The poller is configured to move the processed file into different folder right after the first <code class="language-plaintext highlighter-rouge">Route</code> has ended. So we must ensure the processing <code class="language-plaintext highlighter-rouge">Route</code> is not depended on the path of the File, hence we will load entire text in instead.</p>
+
+<p>Another interesting <code class="language-plaintext highlighter-rouge">seda</code> option is you may set the number of concurrent threads to receive the messages to process them! Let’s say if your <strong>normal</strong> files are heavy in traffic, then you can configure to use more threads on that part (default is just one thread.)</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>from("seda:normalRoute?concurrentConsumers=10")
+.process(new Processor() {
+    public void process(Exchange msg) {
+        LOG.info("Processing normal file: " + msg);
+    }
+});
+</code></pre></div></div>
+
+<p>To verify that your are running concurrently, you can easily configure your logger to display thread name. For
+example with <code class="language-plaintext highlighter-rouge">log4j</code>, you can use this pattern:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>log4j.rootLogger=INFO, stdout
+log4j.appender.stdout=org.apache.log4j.ConsoleAppender
+log4j.appender.stdout.layout=org.apache.log4j.PatternLayout
+log4j.appender.stdout.layout.ConversionPattern=%d %p %t [%c] - %m%n
+</code></pre></div></div>
+
+<p>There are more options availabe from <a href="http://camel.apache.org/seda.html">Seda</a> component
+that you may explore.
+<a href="http://saltnlight5.blogspot.com/2013/08/getting-started-with-apache-camel-using.html">Try it out with a Route</a>
+and see it for yourself.</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2013/09/07/exploring-apache-camel-core-direct-component/">
+        Exploring Apache Camel Core - Direct Component
+      </a>
+    </h1>
+
+    <span class="post-date">07 Sep 2013</span>
+
+    <p>The Apache Camel allows you to create multiple <code class="language-plaintext highlighter-rouge">Route</code>’s within a single <code class="language-plaintext highlighter-rouge">CamelContext</code> space. The <code class="language-plaintext highlighter-rouge">direct</code> component in Camel would allow you to bridge messages between these <code class="language-plaintext highlighter-rouge">Route</code>’s. To demonstrate this, I will create few routes and pass messages between them.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>package camelcoredemo;
+
+import org.slf4j.*;
+import org.apache.camel.*;
+import org.apache.camel.builder.*;
+import org.apache.camel.main.Main;
+import java.io.*;
+
+public class DirectDemoCamel extends Main {
+    static Logger LOG = LoggerFactory.getLogger(DirectDemoCamel.class);
+    public static void main(String[] args) throws Exception {
+        DirectDemoCamel main = new DirectDemoCamel();
+        main.enableHangupSupport();
+        main.addRouteBuilder(createRouteBuilder1());
+        main.addRouteBuilder(createRouteBuilder2());
+        main.addRouteBuilder(createRouteBuilder3());
+        main.run(args);
+    }
+    // The file poller route
+    static RouteBuilder createRouteBuilder1() {
+        return new RouteBuilder() {
+            public void configure() {
+                from("file://target/input?preMove=staging&amp;move=.processed")
+                .process(new Processor() {
+                    public void process(Exchange msg) {
+                        CamelContext camelContext = msg.getContext();
+                        ProducerTemplate producer = camelContext.createProducerTemplate();
+                        File file = msg.getIn().getBody(File.class);
+                        boolean specialFile = file.getName().endsWith("_SPECIAL.dat");
+                        if (specialFile)
+                            producer.send("direct:specialRoute", msg);
+                        else
+                            producer.send("direct:normalRoute", msg);
+                    }
+                });
+            }
+        };
+    }
+    // The special file processing route
+    static RouteBuilder createRouteBuilder2() {
+        return new RouteBuilder() {
+            public void configure() {
+                from("direct:specialRoute")
+                .process(new Processor() {
+                    public void process(Exchange msg) {
+                        LOG.info("Processing special file: " + msg);
+                    }
+                });
+            }
+        };
+    }
+    // The normal file processing route
+    static RouteBuilder createRouteBuilder3() {
+        return new RouteBuilder() {
+            public void configure() {
+                from("direct:normalRoute")
+                .process(new Processor() {
+                    public void process(Exchange msg) {
+                        LOG.info("Processing normal file: " + msg);
+                    }
+                });
+            }
+        };
+    }
+}
+</code></pre></div></div>
+
+<p>Here I have created 3 <code class="language-plaintext highlighter-rouge">Route</code>’s and re-used the <code class="language-plaintext highlighter-rouge">file</code> component I have introduced in the past. The first <code class="language-plaintext highlighter-rouge">Route</code> polls a directory, and then based on the name of the file found, we send it to either to <strong>special</strong> or <strong>normal</strong><code class="language-plaintext highlighter-rouge">Route</code> for processing. Because these <code class="language-plaintext highlighter-rouge">Route</code>’s are separated, we need a bridge channel to pass the messages through, hence it’s what the <code class="language-plaintext highlighter-rouge">direct</code> component does. The usage is simply use any <strong>unique name</strong> within the <code class="language-plaintext highlighter-rouge">CamelContext</code>, and it will serve as a direct memory queue to pass messages. You may read from or send to these queues. So as you can see, the <code class="language-plaintext highlighter-rouge">direct</code> component let you easily breakup a complex route workflow into smaller part.</p>
+
+<p>In above demo, I have also introduced a bit of Camel core features: <code class="language-plaintext highlighter-rouge">ProducerTemplate</code>. Within a <code class="language-plaintext highlighter-rouge">CamelContext</code> you may create an instance of <code class="language-plaintext highlighter-rouge">ProducerTemplate</code> and it will allow you to send any messages to any endpoints dynamically at runtime. Usually you would probably want to store this producer object as member field instead of per each message processing. But for demo purpose, I will leave it as simple as that, and leave you as exercise to explore more on your own.</p>
+
+<p>There are more options availabe from <a href="http://camel.apache.org/direct.html">Direct</a> component
+that you may explore.
+<a href="http://saltnlight5.blogspot.com/2013/08/getting-started-with-apache-camel-using.html">Try it out with a Route</a>
+and see it for yourself.</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2013/09/04/exploring-apache-camel-core-file-component/">
+        Exploring Apache Camel Core - File Component
+      </a>
+    </h1>
+
+    <span class="post-date">04 Sep 2013</span>
+
+    <p>A file poller is a very useful mechanism to solve common IT problems. Camel’s built-in <code class="language-plaintext highlighter-rouge">file</code> component is extremely flexible, and there are many options available for configuration. Let’s cover few common usages here.</p>
+
+<h2 id="polling-a-directory-for-input-files">Polling a directory for input files</h2>
+
+<p>Here is a typical Camel <code class="language-plaintext highlighter-rouge">Route</code> used to poll a directory for input files on every second.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import org.slf4j.*;
+import org.apache.camel.*;
+import org.apache.camel.builder.*;
+import java.io.*;
+
+public class FileRouteBuilder extends RouteBuilder {
+    static Logger LOG = LoggerFactory.getLogger(FileRouteBuilder.class);
+    public void configure() {
+        from("file://target/input?delay=1000")
+        .process(new Processor() {
+            public void process(Exchange msg) {
+                File file = msg.getIn().getBody(File.class);
+                LOG.info("Processing file: " + file);
+            }
+        });
+    }
+}
+</code></pre></div></div>
+
+<p>Run this with following</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mvn compile exec:java -Dexec.mainClass=org.apache.camel.main.Main -Dexec.args='-r camelcoredemo.FileRouteBuilder'
+</code></pre></div></div>
+
+<p>The program will begin to poll your <code class="language-plaintext highlighter-rouge">target/input</code> folder under your current directory, and wait for incoming files. To test with input files, you would need to open another terminal, and then create some files as follow.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>echo 'Hello 1' &gt; target/input/test1.txt
+echo 'Hello 2' &gt; target/input/test2.txt
+</code></pre></div></div>
+
+<p>You should now see the first prompt window start to picking up the files and pass to the next <code class="language-plaintext highlighter-rouge">Processor</code> step. In the <code class="language-plaintext highlighter-rouge">Processor</code>, we obtain the <code class="language-plaintext highlighter-rouge">File</code> object from the message body. It then simply logs it’s file name. You may hit <code class="language-plaintext highlighter-rouge">CTRL+C</code> when you are done.</p>
+
+<p>There many configurable options from <code class="language-plaintext highlighter-rouge">file</code> componet you may use in the URL, but most of the default settings are enough to get you going as simple case above. Some of these default behavior is such that if the input folder doesn’t exists, it will create it. And when the file is done processing by the <code class="language-plaintext highlighter-rouge">Route</code>, it will be moved into a <code class="language-plaintext highlighter-rouge">.camel</code> folder. If you don’t want the file at all after processing, then set <code class="language-plaintext highlighter-rouge">delete=true</code> in the URL.</p>
+
+<h2 id="read-in-the-file-content-and-converting-to-different-types">Read in the file content and converting to different types</h2>
+
+<p>By default, the <code class="language-plaintext highlighter-rouge">file</code> component will create a <code class="language-plaintext highlighter-rouge">org.apache.camel.component.file.GenericFile</code> object for each file found and pass it down your <code class="language-plaintext highlighter-rouge">Route</code> as message body. You may retrieve all your file information through this object. Or alternatively, you may also use the <code class="language-plaintext highlighter-rouge">Exchange</code> API to auto convert the message body object to a type you expect to receive (eg: as with <code class="language-plaintext highlighter-rouge">msg.getIn().getBody(File.class)</code>). In above example, the <code class="language-plaintext highlighter-rouge">File</code> is a type you expect to get from the message body, and Camel hence will try to convert it for you. The Camel uses the context’s registry space to pre-registered many <code class="language-plaintext highlighter-rouge">TypeConverter</code>’s that can handle most of the common data types (like Java primative etc) conversion. These <code class="language-plaintext highlighter-rouge">TypeConverter</code><em>s</em> are powerful way to make your <code class="language-plaintext highlighter-rouge">Route</code> and <code class="language-plaintext highlighter-rouge">Processor</code> more flexbile and portable.</p>
+
+<p>Camel will not only convert just your <code class="language-plaintext highlighter-rouge">File</code> object from message body, but it can also read the file content. If your files are character text based, then you can simply do this.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>        from("file://target/input?charset=UTF-8")
+        .process(new Processor() {
+            public void process(Exchange msg) {
+                String text = msg.getIn().getBody(String.class);
+                LOG.info("Processing text: " + text);
+            }
+        });
+</code></pre></div></div>
+
+<p>That’s it! Simply specify <code class="language-plaintext highlighter-rouge">String</code> type, and Camel will read your file in and pass the entire file text content as body message. You may even use the <code class="language-plaintext highlighter-rouge">charset</code> to change the encoding.</p>
+
+<p>If you are dealing with binary file, then simply try <code class="language-plaintext highlighter-rouge">byte[] bytes = msg.getIn().getBody(byte[].class);</code> conversion instead. Pretty cool huh?</p>
+
+<h2 id="polling-and-processing-large-files">Polling and processing large files</h2>
+
+<p>When working with large files, there few options in <code class="language-plaintext highlighter-rouge">file</code> componet that you might want to use to ensure proper handling. For example, you might want to move the input file into a <code class="language-plaintext highlighter-rouge">staging</code> folder before the <code class="language-plaintext highlighter-rouge">Route</code> starts the processing; and when it’s done, move it to a <code class="language-plaintext highlighter-rouge">.completed</code> folder.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>        from("file://target/input?preMove=staging&amp;move=.completed")
+        .process(new Processor() {
+            public void process(Exchange msg) {
+                File file = msg.getIn().getBody(File.class);
+                LOG.info("Processing file: " + file);
+            }
+        });
+</code></pre></div></div>
+
+<p>To feed input files properly into the polling folder, it’s best if the sender generates the input files in a temporary folder first, and only when it’s ready then move it into the polling folder. This will minimize reading an incomplete file by the <code class="language-plaintext highlighter-rouge">Route</code> if the input file might take times to generate. Also another solution to this is to config <code class="language-plaintext highlighter-rouge">file</code> endpoint to only read the polling folder when there is a signal or ready marker file exists. For example:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>        from("file://target/input?preMove=staging&amp;move=.completed&amp;doneFileName=ReadyFile.txt")
+        .process(new Processor() {
+            public void process(Exchange msg) {
+                File file = msg.getIn().getBody(File.class);
+                LOG.info("Processing file: " + file);
+            }
+        });
+</code></pre></div></div>
+
+<p>Above will only read the <code class="language-plaintext highlighter-rouge">target/input</code> folder when there is a <code class="language-plaintext highlighter-rouge">ReadyFile.txt</code> file exists. The marker file can be just an empty file, and it will be removed by Camel after polling. This solution would allow the sender to generate input files in however long time it might take.</p>
+
+<p>Another concern with large file processing is to avoid loading entire file content into memory for processing. To be more practical, you want to split the file into records (eg: per line) and process it one by one (or called “streaming”). Here is how you would do that using Camel.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>        from("file://target/input?preMove=staging&amp;move=.completed")
+        .split(body().tokenize("\n"))
+        .streaming()
+        .process(new Processor() {
+            public void process(Exchange msg) {
+                String line = msg.getIn().getBody(String.class);
+                LOG.info("Processing line: " + line);
+            }
+        });
+</code></pre></div></div>
+
+<p>This <code class="language-plaintext highlighter-rouge">Route</code> will allow you to process large size file without cosuming too much memory and process it line by line very efficiently.</p>
+
+<h2 id="writing-messages-back-into-file">Writing messages back into file</h2>
+
+<p>The <code class="language-plaintext highlighter-rouge">file</code> component can also be used to write messages into files. Recall that we may use <code class="language-plaintext highlighter-rouge">dataset</code> component to generate sample messages. We will use that to feed the <code class="language-plaintext highlighter-rouge">Route</code> and send to the <code class="language-plaintext highlighter-rouge">file</code> component so you can see that each message generated will be saved into a file.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>package camelcoredemo;
+
+import org.slf4j.*;
+import org.apache.camel.*;
+import org.apache.camel.builder.*;
+import org.apache.camel.main.Main;
+import org.apache.camel.component.dataset.*;
+
+public class FileDemoCamel extends Main {
+    static Logger LOG = LoggerFactory.getLogger(FileDemoCamel.class);
+    public static void main(String[] args) throws Exception {
+        FileDemoCamel main = new FileDemoCamel();
+        main.enableHangupSupport();
+        main.addRouteBuilder(createRouteBuilder());
+        main.bind("sampleGenerator", createDataSet());
+        main.run(args);
+    }
+    static RouteBuilder createRouteBuilder() {
+        return new RouteBuilder() {
+            public void configure() {
+                from("dataset://sampleGenerator")
+                .to("file://target/output");
+            }
+        };
+    }
+    static DataSet createDataSet() {
+        return new SimpleDataSet();
+    }
+}
+</code></pre></div></div>
+
+<p>Compile and run it</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mvn compile exec:java -Dexec.mainClass=camelcoredemo.FileDemoCamel
+</code></pre></div></div>
+
+<p>Upon complete you will see that 10 files would be generated in <code class="language-plaintext highlighter-rouge">target/output</code> folder with
+file name in <code class="language-plaintext highlighter-rouge">ID-&lt;hostname&gt;-&lt;unique-number&gt;-&lt;msg-seq-num&gt;</code> format.</p>
+
+<p>There are more options availabe from <a href="http://camel.apache.org/file2.html">File</a> component
+that you may explore.
+<a href="http://saltnlight5.blogspot.com/2013/08/getting-started-with-apache-camel-using.html">Try it out with a Route</a>
+and see it for yourself.</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2013/09/03/exploring-apache-camel-core-dataset-component/">
+        Exploring Apache Camel Core - DataSet Component
+      </a>
+    </h1>
+
+    <span class="post-date">03 Sep 2013</span>
+
+    <p>A good sample data generator can help you test program more throughly and help measure
+the processing throughput. The <code class="language-plaintext highlighter-rouge">camel-core</code> comes with a <code class="language-plaintext highlighter-rouge">dataset</code> component that can
+help you do this easily. All you need is to provide a bean that implements
+<code class="language-plaintext highlighter-rouge">org.apache.camel.component.dataset.DataSet</code> interface and bind it in
+CamelContext registry. Here is an example:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>package camelcoredemo;
+
+import org.slf4j.*;
+import org.apache.camel.*;
+import org.apache.camel.builder.*;
+import org.apache.camel.main.Main;
+import org.apache.camel.component.dataset.*;
+
+public class DataSetDemoCamel extends Main {
+    static Logger LOG = LoggerFactory.getLogger(DataSetDemoCamel.class);
+    public static void main(String[] args) throws Exception {
+        DataSetDemoCamel main = new DataSetDemoCamel();
+        main.enableHangupSupport();
+        main.addRouteBuilder(createRouteBuilder());
+        main.bind("sampleGenerator", createDataSet());
+        main.run(args);
+    }
+    static RouteBuilder createRouteBuilder() {
+        return new RouteBuilder() {
+            public void configure() {
+                from("dataset://sampleGenerator")
+                .to("log://demo");
+            }
+        };
+    }
+    static DataSet createDataSet() {
+        return new SimpleDataSet();
+    }
+}
+</code></pre></div></div>
+
+<p>Compile and run it.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mvn compile exec:java -Dexec.mainClass=camelcoredemo.DataSetDemoCamel
+</code></pre></div></div>
+
+<p>In here we have used the built-in <code class="language-plaintext highlighter-rouge">org.apache.camel.component.dataset.SimpleDataSet</code>
+implementation, which by default will generate 10 messages with a text body set
+to <code class="language-plaintext highlighter-rouge">&lt;hello&gt;world!&lt;/hello&gt;</code>. You may easily change the value, or even provide your own
+implementation starting with <code class="language-plaintext highlighter-rouge">org.apache.camel.component.dataset.DataSetSupport</code> base
+class to customize your data set.</p>
+
+<h2 id="use-dataset-component-to-measure-throughput">Use DataSet Component to measure throughput</h2>
+
+<p>One useful feature of <code class="language-plaintext highlighter-rouge">dataset</code> component I found is using it to load test your <code class="language-plaintext highlighter-rouge">Route</code>.
+To do this, you have to adjust couple settings though. Let’s say if I want to load
+a large text file as sample input data and feed it to the <code class="language-plaintext highlighter-rouge">Route</code>, and then measure its
+throughout.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    static RouteBuilder createRouteBuilder() {
+        return new RouteBuilder() {
+            public void configure() {
+                from("dataset://sampleGenerator?produceDelay=0")
+                .to("log://demo?groupSize=100");
+            }
+        };
+    }
+    static DataSet createDataSet() {
+        SimpleDataSet result = new SimpleDataSet();
+        result.setSize(500);
+        result.setDefaultBody(readFileToString("my-large-sample.txt");
+        return result;
+    }
+</code></pre></div></div>
+
+<p>Replace above in the <code class="language-plaintext highlighter-rouge">Main</code> class and you will notice that it will pump 500 messages
+into the <code class="language-plaintext highlighter-rouge">Route</code>, and it samples every 100 messages and display its throught rates. I
+have to add <code class="language-plaintext highlighter-rouge">produceDelay=0</code> option so the generator so it will not pause between messages.
+Then I have added <code class="language-plaintext highlighter-rouge">groupSize=100</code> option to <code class="language-plaintext highlighter-rouge">log</code> component for throughput measurement.
+I skipped <code class="language-plaintext highlighter-rouge">readFileToString(String)</code> demo code since I assume you can easily figured that
+out on your own. (Hint: checkout Apache <code class="language-plaintext highlighter-rouge">commons-io</code> library.)</p>
+
+<p>There is another side of <code class="language-plaintext highlighter-rouge">dataset</code> component that you may use, and that is to receive and
+verify message content. You would simply use the same URL in a
+<code class="language-plaintext highlighter-rouge">to(url)</code> line. Internally Camel would assert your message body against your original.</p>
+
+<p>There are more options availabe from <a href="http://camel.apache.org/dataset.html">DataSet</a> component
+that you may explore.
+<a href="http://saltnlight5.blogspot.com/2013/08/getting-started-with-apache-camel-using.html">Try it out with a Route</a>
+and see it for yourself.</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="http://localhost:4000/2013/09/02/exploring-apache-camel-core-log-component/">
+        Exploring Apache Camel Core - Log Component
+      </a>
+    </h1>
+
+    <span class="post-date">02 Sep 2013</span>
+
+    <p>There are many ways to log and inspect the messages as it pass through your
+Camel <code class="language-plaintext highlighter-rouge">Route</code>. The <code class="language-plaintext highlighter-rouge">camel-core</code> comes with a <code class="language-plaintext highlighter-rouge">log</code> component that let
+you inspect the message. So instead of write a separate
+<code class="language-plaintext highlighter-rouge">Processor</code> just to log a line as got processed, try using this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>from("timer://timer1?period=1s")
+.to("log:demo")
+</code></pre></div></div>
+
+<p>By default, the <code class="language-plaintext highlighter-rouge">log</code> component will record your message body content
+through your logger name, <code class="language-plaintext highlighter-rouge">demo</code> in above case, at INFO level. Since you can give any
+name, you can control the logging LEVEL anyway you like through a Camel
+<a href="http://saltnlight5.blogspot.com/2013/08/how-to-configure-slf4j-with-different.html">SLF4J logger implementation</a>.</p>
+
+<p>To log the message in DEBUG level, try this</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>from("timer://timer1?period=1s")
+.to("log:demo?level=DEBUG")
+</code></pre></div></div>
+
+<p>Now if you use <code class="language-plaintext highlighter-rouge">log4j</code> as logger implementation, then ensure to add a
+logger config like this.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>log4j.logger.demo = DEBUG
+log4j.logger.org.apache.camel = INFO
+</code></pre></div></div>
+
+<p>The Camel message may have Properties and Headers as well, so to display
+these, you may add <code class="language-plaintext highlighter-rouge">showAll=true</code>.</p>
+
+<p>When you process messages that have large body text, it might be more
+practical to just dislay certain number of characters. To do this, add
+<code class="language-plaintext highlighter-rouge">maxChars=256</code> to URL.</p>
+
+<h2 id="how-to-measure-camel-messages-throughput-rate">How to measure Camel messages throughput rate</h2>
+
+<p>One of the hidden gem of the <code class="language-plaintext highlighter-rouge">log</code> componet is its ability to log messages
+throughput! You may specific group of messages to be logged, and once it
+reached that count, it will print the msgs/sec rate output. To enable
+this, just add <code class="language-plaintext highlighter-rouge">groupSize</code> option to URL.</p>
+
+<p>To demo this, I will create a <code class="language-plaintext highlighter-rouge">SampleGenerator</code> bean processor
+that would flood the <code class="language-plaintext highlighter-rouge">Route</code> with sample messages. I will use the Camel
+context registry to bind the bean, and then reference it in the <code class="language-plaintext highlighter-rouge">Route</code>. Here
+is the demo code.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>package camelcoredemo;
+
+import org.slf4j.*;
+import org.apache.camel.*;
+import org.apache.camel.builder.*;
+import org.apache.camel.main.Main;
+
+public class LogDemoCamel extends Main {
+    static Logger LOG = LoggerFactory.getLogger(LogDemoCamel.class);
+    public static void main(String[] args) throws Exception {
+        LogDemoCamel main = new LogDemoCamel();
+        main.enableHangupSupport();
+        main.addRouteBuilder(createRouteBuilder());
+        main.bind("sampleGenerator", new SampleGenerator());
+        main.run(args);
+    }
+    static RouteBuilder createRouteBuilder() {
+        return new RouteBuilder() {
+            public void configure() {
+                from("bean:sampleGenerator")
+                .to("log://demo?groupSize=100");
+            }
+        };
+    }
+    static class SampleGenerator implements Processor{
+        int count = 0;
+        public void process(Exchange msg) throws Exception {
+            if (count &gt;= 500){
+                LOG.info("Max count has reached. Do nothing.");
+                Thread.sleep(Long.MAX_VALUE);
+                return;
+            }
+
+            // Let's generate sample message.
+            count++;
+            LOG.trace("Generating sample msg #{}", count);
+            msg.getOut().setBody("Sample msg");
+        }
+    }
+}
+</code></pre></div></div>
+
+<p>Now you should able to compile and run this demo.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mvn compile exec:java -Dexec.mainClass=camelcoredemo.LogDemoCamel
+</code></pre></div></div>
+
+<p>When running this demo, you will notice the rate will be displayed on console
+and how fast you can pump message to <code class="language-plaintext highlighter-rouge">Route</code> and to process it. This is a
+very useful feature to help you measure and have a quick view on your <code class="language-plaintext highlighter-rouge">Route</code>’s
+capability.</p>
+
+<p>There are more options availabe from <a href="http://camel.apache.org/log.html">Log</a> component
+that you may explore.
+<a href="http://saltnlight5.blogspot.com/2013/08/getting-started-with-apache-camel-using.html">Try it out with a Route</a>
+and see it for yourself.</p>
+
+  </div>
+  
+</div>
+
+<div class="pagination">
+  
+    <a class="pagination-item older" href="http://localhost:4000/page20">Older</a>
+  
+  
+    
+      <a class="pagination-item newer" href="http://localhost:4000/page18">Newer</a>
+    
+  
+</div>
+
+      </div>
+    </div>
+
+    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+    <script src='/public/js/script.js'></script>
+  </body>
+</html>

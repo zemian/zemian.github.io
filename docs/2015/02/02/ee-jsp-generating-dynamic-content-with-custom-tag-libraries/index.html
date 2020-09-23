@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      EE JSP - Generating Dynamic Content with Custom Tag Libraries &middot; Zemian's Blog
+    
+  </title>
+
+  
+  <link rel="canonical" href="http://localhost:4000/2015/02/02/ee-jsp-generating-dynamic-content-with-custom-tag-libraries/">
+  
+
+  <link rel="stylesheet" href="http://localhost:4000/public/css/poole.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/syntax.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/lanyon.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700%7CPT+Sans:400">
+
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/public/apple-touch-icon-precomposed.png">
+  <link rel="shortcut icon" href="http://localhost:4000/public/favicon.ico">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="http://localhost:4000/atom.xml">
+
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-135626598-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  
+</head>
+
+
+  <body>
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p>A weblog on software development.</p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item" href="http://localhost:4000/">Home</a>
+
+    
+
+    
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="http://localhost:4000/about/">About</a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+
+  </nav>
+
+  <div class="sidebar-item">
+    <p>
+      &copy; 2020. All rights reserved.
+    </p>
+  </div>
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <h3 class="masthead-title">
+            <a href="/" title="Home">Zemian's Blog</a>
+            <small>Life in programming world!</small>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+        <div class="post">
+  <h1 class="post-title">EE JSP - Generating Dynamic Content with Custom Tag Libraries</h1>
+  <span class="post-date">02 Feb 2015</span>
+  <p>When developing View layer in a web application, you want to try not to duplicate content in JSP files as much as possible. The JSP spec API allows you to reduce this duplication by using tag libraries. A custom JSP tag is a user defined xml tag element that you can insert into JSP file to replace with some dynamic content.</p>
+
+<p>Here is an simple <a href="https://github.com/saltnlight5/java-ee6-examples/blob/master/jsp-example/">jsp-example</a> using a custom JSP tag that insert a server time stamp value:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;%@ taglib prefix="myapp" tagdir="/WEB-INF/myappTags" %&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+    &lt;body&gt;
+        &lt;h1&gt;Hello World!&lt;/h1&gt;
+        &lt;p&gt;Page served on &lt;myapp:serverTime pattern="yyyy-MM-dd HH:mm:ss"/&gt;&lt;/p&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+</code></pre></div></div>
+<p>JSP tags can also allow you to pass in parameters as attributes of the tag. In the example above <myapp:serverTime> tag uses a custom pattern attribute to control how the date string should be formatted.</myapp:serverTime></p>
+
+<p>JSP tags can also be nested with sub tags, or any HTML content elements. The nested JSP tags can provide a way for you to conditionally render the enclosed content. Using tag to render conditional content is more verbose due to XML structure, but it eliminates the use of direct Scriptlet code in JSP.</p>
+
+<p>There are two ways you can create custom JSP tags. The first method is to implement the tag using pure Java code and then register it with a XML taglib definition file. I will skip this method for now and show you another easier way.</p>
+
+<p>The second method uses “Tag Files” that are similar to JSP pages to construct a tag (remember that JSP tag is nothing more than just a placeholder for some content!). I am going to show you how the second method is done for above example. First create a serverTime.tag file under your src/main/webapp/WEB-INF/tags/myapp project folder.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;%@ attribute name="pattern" required="true" %&gt;
+&lt;%@ tag import="java.util.Date, java.text.SimpleDateFormat" %&gt;
+&lt;%= new SimpleDateFormat(pattern).format(new Date()) %&gt;
+</code></pre></div></div>
+<p>The Tag File implementation depends on simple convention of file naming and location. Note that the src/main/webapp/WEB-INF/tags directory is a required path. Inside this folder,  you may create any sub folder you want to organize the tag files. In our case, it’s the myapp directory. A Tag File can be just like any JSP file you would normally create, except the tag directives are little different. You can see the JSP spec for a complete list of them. Whatever you output from the Tag File, it will be inserted and replaced the caller of the tag. Notice how I use the pattern attribute parameter to allow user change the date pattern, and it’s available in the Tag File inside the Scriptlet Java code as variable.</p>
+
+<p>Since you can write Tag Files just as you would with JSP, I will again caution the excessive use of Java code Scriptlet even inside Tag Files. If you must call Java code, try to wrap the code and replace by single line call, or write the Tag implementation with pure Java code; especially if you have very complex business logic involve. This would bring debugging much easier on your code and to maintain.</p>
+
+<p>JSP tags provide a powerful way to construct your View layer in the web application. It helps you reuse code or content, and generating a specific piece of response.</p>
+
+</div>
+
+
+<div class="related">
+  <h2>Related posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2020/09/20/world-of-php/">
+            The World of PHP Development
+            <small>20 Sep 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/09/19/multiple-jquery/">
+            How to Load Multiple jQuery
+            <small>19 Sep 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/08/15/switched-to-vuepress/">
+            Switched Blogging to VuePress
+            <small>15 Aug 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+
+      </div>
+    </div>
+
+    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+    <script src='/public/js/script.js'></script>
+  </body>
+</html>
