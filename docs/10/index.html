@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Zemian's Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/asciidoctor.css" rel="stylesheet">
+    <link href="../css/base.css" rel="stylesheet">
+    <link href="../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../about.html">About</a></li>
+            <li><a href="../archive.html">Archive</a></li>
+            <li><a href="..//tags">Tags</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">
+  			<a href="blog/2015/11/conemu-a-terminal-windows-or-tab-manager.html"><h1>ConEmu - a Terminal Windows or Tab Manager</h1></a>
+  			<p>01 November 2015, tags: 
+			    <a href="../tags/shell.html">shell</a> 
+  			</p>
+  			<p><p>Just learned about ConEmu project at <a href="https://conemu.github.io">https://conemu.github.io</a> and it’s<br />
+pretty awesome!</p>
+<p>Thanks Onur for the tips!</p>
+</p>
+  			<a href="blog/2015/10/how-to-view-unix-man-pages-with-browser.html"><h1>How to view Unix man pages with browser</h1></a>
+  			<p>24 October 2015, tags: 
+			    <a href="../tags/mac.html">mac</a> 
+
+			    <a href="../tags/unix.html">unix</a> 
+  			</p>
+  			<p><p>I have come across this wonderful project called Bwana (<a href="https://www.bruji.com/bwana/">https://www.bruji.com/bwana/</a>) for Mac. Install it and you can view any man page on the browser. For example try typing the following address on the Safari:</p>
+<p>man:find</p>
+<p>And you will see something like this:</p>
+<p><a href="http://1.bp.blogspot.com/-hJtb8OSJUcY/Vi0NzuU1aqI/AAAAAAAAArk/VxH6rcjZE6g/s1600/grab1.tiff"><img src="http://1.bp.blogspot.com/-hJtb8OSJUcY/Vi0NzuU1aqI/AAAAAAAAArk/VxH6rcjZE6g/s320/grab1.tiff" alt="" /></a></p>
+</p>
+  			<a href="blog/2015/10/how-to-setup-a-new-trac-issue-tracking-system.html"><h1>How to setup a new Trac issue tracking system</h1></a>
+  			<p>21 October 2015, tags: 
+			    <a href="../tags/python.html">python</a> 
+
+			    <a href="../tags/issue-tracker.html">issue-tracker</a> 
+  			</p>
+  			<p><p>Here is how I setup a local instance of Trac (a python based issue tracking web application) on my Mac.</p>
+<p>Prerequisite: MySQL 5.6 and Python 2.7 (Python3 will not work with Trac yet!)</p>
+<p>Step1: Setup a Trac database and a user</p>
+<pre><code>sql&gt; CREATE DATABASE trac DEFAULT CHARACTER SET utf8 COLLATE utf8_bin;
+sql&gt; CREATE USER 'dev'@'localhost' IDENTIFIED BY 'dev123';
+sql&gt; GRANT ALL ON trac.* TO 'dev'@'localhost';
+
+
+Step2: Install MySQL adaptor for Python and Trac
+
+bash&gt; pip install Genshi trac mysqlclient
+
+
+Step3: Setup a Track instance
+
+bash&gt; trac-admin /Users/zemian/dev/mytrac intent
+
+bash&gt; # Above will prompt you to enter a backend string. Use
+bash&gt; # this connection string: 
+
+bash&gt; #   mysql://dev:dev123@localhost:3306/trac
+
+Step3: Create a Trac admin user
+
+bash&gt; htpasswd -c /Users/zemian/dev/mytrac/.htpasswd admin
+
+Step4: Run Track
+
+bash&gt; tracd -p 8000 --basic-auth=&quot;mytrac,/Users/zemian/dev/mytrac/.htpasswd,mytrac&quot; /Users/zemian/dev/metric
+</code></pre>
+</p>
+  			<a href="blog/2015/10/mysqlclient-gives-library-not-loaded-libmysqlclient-18-dylib-error.html"><h1>mysqlclient gives &quot;Library not loaded: libmysqlclient.18.dylib&quot; error</h1></a>
+  			<p>16 October 2015, tags: 
+			    <a href="../tags/python.html">python</a> 
+
+			    <a href="../tags/mysql.html">mysql</a> 
+  			</p>
+  			<p><p>If you want to use python MySQLdb module (eg: if you run Trac with MySQL backend), you would need first install MySQL server on MacOSX, then install the mysqlclient python package using pip. However upon verifying it, you may encounter error like this:</p>
+<p>(mypy-test)Zemians-Air:dev zemian$ pip install mysqlclient</p>
+<p>Collecting mysqlclient</p>
+<p>Using cached mysqlclient-1.3.6.tar.gz</p>
+<p>Building wheels for collected packages: mysqlclient</p>
+<p>Running setup.py bdist_wheel for mysqlclient</p>
+<p>Stored in directory: /Users/zemian/Library/Caches/pip/wheels/9c/3b/73/8f16f45dc76999dafc2af06b0d6e1e669bc0e1594f41fcc2e8</p>
+<p>Successfully built mysqlclient</p>
+<p>Installing collected packages: mysqlclient</p>
+<p>Successfully installed mysqlclient-1.3.6</p>
+<p>(mypy-test)Zemians-Air:dev zemian$ python</p>
+<p>Python 2.7.10 (default, Aug 22 2015, 20:33:39)</p>
+<p>[GCC 4.2.1 Compatible Apple LLVM 7.0.0 (clang-700.0.59.1)] on darwin</p>
+<p>Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information.</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>import MySQLdb</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Traceback (most recent call last):</p>
+<p>File &quot;<stdin>&quot;, line 1, in <module></p>
+<p>File &quot;/Users/zemian/dev/mypy-test/lib/python2.7/site-packages/MySQLdb/<strong>init</strong>.py&quot;, line 19, in <module></p>
+<pre><code>import _mysql
+</code></pre>
+<p>ImportError: dlopen(/Users/zemian/dev/mypy-test/lib/python2.7/site-packages/_mysql.so, 2): Library not loaded: libmysqlclient.18.dylib</p>
+<p>Referenced from: /Users/zemian/dev/mypy-test/lib/python2.7/site-packages/_mysql.so</p>
+<p>Reason: image not found</p>
+<p>To resolve this, you need to add the following to your shell environment</p>
+<p>export DYLD_LIBRARY_PATH=/usr/local/mysql/lib</p>
+<p>Update 2016-06-17</p>
+<p>To install mysqlclient on Ubuntu 14, you might need to first install the mysql_config first:</p>
+<p>bash&gt; sudo apt-get install libmysqlclient-dev</p>
+</p>
+  			<a href="blog/2015/10/how-to-specify-same-target-table-for-update-in-from-clause.html"><h1>How to specify SAME target table for update in FROM clause</h1></a>
+  			<p>11 October 2015, tags: 
+			    <a href="../tags/mysql.html">mysql</a> 
+  			</p>
+  			<p><p>Have you tried updating something simple as following?</p>
+<p>update category_tmp set last_update=NOW()<br />
+where category_id in (<br />
+select category_id from category_tmp where name like 'A%'<br />
+);</p>
+<p>In MySQL you will get an error like this:</p>
+<p>Error Code: 1093. You can't specify target table 'category_tmp' for update in FROM clause.</p>
+<p>So it says that you can't use the same update TABLE name within the sub query in where condition. The trick to get around this is to use another sub query in the where clause so it won't see the TABLE name being used! Here is a workaround:</p>
+<p>update category_tmp set last_update=NOW()<br />
+where category_id in (<br />
+select category_id from (<br />
+select category_id from category_tmp where name like 'A%'<br />
+) ID_LIST<br />
+);</p>
+<p>Noticed that in MySQL, you must name your sub query result such as ID_LIST, in order for it to be re-select it again on the outer query! Otherwise it will error out with this:</p>
+<p>Error Code: 1248. Every derived table must have its own alias</p>
+</p>
+  			<a href="blog/2015/10/setup-python-on-mac.html"><h1>Setup Python on Mac</h1></a>
+  			<p>10 October 2015, tags: 
+			    <a href="../tags/python.html">python</a> 
+
+			    <a href="../tags/mac.html">mac</a> 
+  			</p>
+  			<p><h2></h2>
+<p>Setup Python 2</p>
+<p>The default MacOS should already come with latest Python 2.7. It will be pre-installed along with some pyobjc packages as well.</p>
+<p>If you like to play around with python and external packages, it's best not to touch the original Python install from the System. Unfortunately, this Python 2.7 does not come with pip nor virtualenv packages to help setup separate environment! So it's okay to install these two into the system first. The easiest to setup is simply download get-pip.py from <a href="https://bootstrap.pypa.io/get-pip.py">https://bootstrap.pypa.io/get-pip.py</a>, then run</p>
+<p>bash&gt; sudo python get-pip.py</p>
+<p>With this, you may now able install virtualenv</p>
+<p>bash&gt; sudo /usr/local/bin/pip install virtualenv</p>
+<p>Now you can setup Python2 virtual env on a separate directory.</p>
+<p>bash&gt; python -m virtualenv mypy</p>
+<p>bash&gt; source mypy/bin/activate</p>
+<p>(mypy) bash&gt; python -c 'import sys; print sys.path'</p>
+<p>You should able to verify the output above that you are indeed using your own setup of an isolated  Python2 env, and it even has your own pip installed list, so you won't mess up the built-in System version of python!</p>
+<h2></h2>
+<p>Setup Python 3</p>
+<p>The MacOS comes with latest Python 2.7, but no Python3. You can download the latest Python3 from python.org site and install it. It will give you a new 'python3' command so not to conflict with your existing Python. (NOTE: It's best not to remove or override the default Python2.7 that comes with the system!) But if you want to use 'python' command for Python3 for dev, then I suggest you create a new virtual environment of your own. The Python3 install should come with a 'pyvenv' command. For Example</p>
+<p>bash&gt; pyvenv mypy3<br />
+bash&gt; source mypy3/bin/activate<br />
+(mypy3) bash&gt; python -c 'import sys; print(sys.path)'</p>
+</p>
+  			<a href="blog/2015/10/macbook-air-is-not-displaying-scroll-bar-on-finder.html"><h1>MacBook Air is not displaying scroll bar on Finder</h1></a>
+  			<p>10 October 2015, tags: 
+			    <a href="../tags/mac.html">mac</a> 
+  			</p>
+  			<p><p>For odd reason that I don’t see scrollbar shows up on Finder in MacBook<br />
+Air when I have a long list of files. Can’t scroll down with my<br />
+trackpad, but I can do it with <code>Fn + Down Arrow</code> key though. To fix<br />
+this, I have to go into System Preference, General and set &quot;Show scroll<br />
+bar&quot; to &quot;Always&quot;.</p>
+</p>
+  			<a href="blog/2015/10/checking-mysql-database-connection-with-mysql-connector-python.html"><h1>Checking MySQL database connection with mysql-connector-python</h1></a>
+  			<p>09 October 2015, tags: 
+			    <a href="../tags/python.html">python</a> 
+
+			    <a href="../tags/mysql.html">mysql</a> 
+  			</p>
+  			<p><p>First install the MySQL package</p>
+<p>bash&gt;pip install --allow-all-external mysql-connector-python</p>
+<p>Now you may test the database connection with this Python code</p>
+<p>from mysql.connector import connect</p>
+<p>conn = connect(user='dev', password='dev123', database='mysql')<br />
+cur = conn.cursor()<br />
+cur.execute('select 1+1')<br />
+for row in cur:<br />
+print(row)</p>
+</p>
+  			<a href="blog/2015/10/setup-mysql-datasource-on-wls.html"><h1>Setup MySQL DataSource on WLS</h1></a>
+  			<p>04 October 2015, tags: 
+			    <a href="../tags/weblogic.html">weblogic</a> 
+
+			    <a href="../tags/mysql.html">mysql</a> 
+  			</p>
+  			<p><p>Here is a WLST script to setup MySQL DataSource in WebLogic server after you have created a domain. The script will also assign this DataSource to one or more servers you pass in at the end of arguments.</p>
+<h1>Update an existing domain to setup a DataSource and assign it to servers</h1>
+<h1>Example</h1>
+<h1>wlst.cmd setupDataSource.py C:\data\wls11g_domains\dev MYTESTDB jdbc/MYTESTDB com.mysql.jdbc.Driver jdbc:<a href="mysql://localhost/mytestdb">mysql://localhost/mytestdb</a> test test123 AdminServer</h1>
+<p>import os, sys, os.path<br />
+(domain_home, ds_name, jndi_name, driver_name, url, user, password) = sys.argv[1:8]<br />
+servers = sys.argv[8:]</p>
+<p>domain_home = os.path.abspath(domain_home)</p>
+<p>readDomain(domain_home)</p>
+<p>print(&quot;Setting up WLS DataSource: %s&quot; % ds_name)<br />
+create(ds_name, 'JDBCSystemResource')<br />
+cd('/JDBCSystemResource/%s/JdbcResource/%s' %(ds_name, ds_name))<br />
+create('myJdbcDriverParams','JDBCDriverParams')<br />
+cd('JDBCDriverParams/NO_NAME_0')<br />
+set('DriverName',driver_name)<br />
+set('URL', url)<br />
+set('PasswordEncrypted', password)<br />
+set('UseXADataSourceInterface', 'false')<br />
+create('myProps','Properties')<br />
+cd('Properties/NO_NAME_0')<br />
+create('user', 'Property')<br />
+create('characterEncoding', 'Property')<br />
+create('connectionCollation', 'Property')<br />
+create('useUnicode', 'Property')<br />
+cd('Property/user')<br />
+cmo.setValue(user)<br />
+cd('../characterEncoding')<br />
+cmo.setValue('utf-8')<br />
+cd('../connectionCollation')<br />
+cmo.setValue('utf8_general_ci')<br />
+cd('../useUnicode')<br />
+cmo.setValue('true')</p>
+<p>cd('/JDBCSystemResource/%s/JdbcResource/%s' %(ds_name, ds_name))<br />
+create('myJdbcDataSourceParams','JDBCDataSourceParams')<br />
+cd('JDBCDataSourceParams/NO_NAME_0')<br />
+set('JNDIName', java.lang.String(jndi_name))</p>
+<p>cd('/')<br />
+for server in servers:<br />
+print(&quot;Assigning DS to server: %s&quot; % server)<br />
+assign('JDBCSystemResource', ds_name, 'Target', server)</p>
+<p>updateDomain()<br />
+exit()</p>
+</p>
+  			<a href="blog/2015/10/creating-new-weblogic-domain-using-wlst-script.html"><h1>Creating new WebLogic domain using WLST script</h1></a>
+  			<p>02 October 2015, tags: 
+			    <a href="../tags/weblogic.html">weblogic</a> 
+  			</p>
+  			<p><p>Here is how to creating new WebLogic domain using WLST script without starting up a WebLogic server instance. The default AdminServer console login username is 'weblogic', and the script allow you to change its password and a port number for the AdminServer instance.</p>
+<h1>Usage: wlst.cmd createDomain.py &lt;domain_home&gt; <port> <password></h1>
+<h1>Example:</h1>
+<h1>cd D:\apps\wls1036_dev\wlserver\common\bin</h1>
+<h1>wlst.cmd scripts\createDomain.py C:\data\wls11g_domains\dev 7001 weblogic1</h1>
+<p>import os, sys, os.path<br />
+domain_home, port_s, password = sys.argv[1:]</p>
+<p>port = int(port_s)<br />
+domain_home = os.path.abspath(domain_home)<br />
+domain_name = os.path.basename(os.path.normpath(domain_home))<br />
+template = &quot;%s/wlserver/common/templates/domains/wls.jar&quot; % os.environ['MW_HOME']</p>
+<p>print(&quot;Creating WLS domain: %s&quot; % domain_name)</p>
+<h1>MW_HOME should be auto set by wlst.cmd script</h1>
+<p>readTemplate(template)</p>
+<h1>Set domain name</h1>
+<p>set('Name', domain_name)</p>
+<h1>Set AdminServer port</h1>
+<p>cd('Servers/AdminServer')<br />
+set('ListenAddress','')<br />
+set('ListenPort', port)</p>
+<h1>Set weblogic password</h1>
+<p>cd('/Security/%s/User/weblogic' % domain_name)<br />
+cmo.setPassword(password)</p>
+<h1>Write domain</h1>
+<h1>setOption('OverwriteDomain', 'true')</h1>
+<p>writeDomain(domain_home)<br />
+closeTemplate()<br />
+exit()</p>
+</p>
+
+	<hr />
+
+	<ul class="pager">
+		<li class="previous"><a href="https://zemian.github.io/9">Previous</a></li>
+		<li>Page: 10/28</li>
+		<li class="next"><a href="https://zemian.github.io/11">Next</a></li>
+	</ul>
+
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">&copy; 2011 - Present Zemian Deng All Rights Reserved | Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.5</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../js/jquery-1.11.1.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/prettify.js"></script>
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-135626598-1');
+    </script>
+
+  </body>
+</html>

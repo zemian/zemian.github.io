@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Zemian's Blog - How to zip up a release from a hg repository</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../css/asciidoctor.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link href="../../../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../../../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../about.html">About</a></li>
+            <li><a href="../../../archive.html">Archive</a></li>
+            <li><a href="../../..//tags">Tags</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">	
+	<div class="page-header">
+		<h1>How to zip up a release from a hg repository</h1>
+	</div>
+
+	<p><em>17 June 2013</em>, tags: 
+	    <a href="../../../tags/hg.html">hg</a> 
+	</p>
+
+	<p><h2>How to zip up a release from a hg repository</h2>
+<p>Did you know <code>hg archive</code> command can quickly zip up your project by given a revision or release<br />
+name? This is very handy to package up a distribution and share with other who is refusing to use<br />
+the same client.</p>
+<p>I wrote a simple bash script to do this with couple extras. It will create a zip file with a nice<br />
+basename so it’s easy for unzipping. It also auto generate and append the given revision or tag<br />
+name into the RELEASE.txt file, so you know what’s been released.</p>
+<p>Just add the following file into any root of your <code>hg</code> based project’s <code>bin</code> directory and it’s<br />
+ready to use.</p>
+<p>Note</p>
+<p>This script will not tag your repository. It assumed you already have tagged. It simply<br />
+will package up a release into a nice little zip file.</p>
+<p>bin/zip-release.sh</p>
+<pre><code>#!/usr/bin/env bash
+#
+# Package a release or snapshot from Hg repository for distribution.
+# :Author: Zemian Deng
+# :Date: 2013/02/01
+#
+# Usage example:
+#   # release a specific tag
+#   cd /path/to/project
+#   bin/zip-release.sh 1.0.1
+#
+#   # release a snapshot
+#   bin/zip-release.sh
+#
+
+# Command line arguments and options
+# Assume this script is in bin, which one directory up.
+APP_HOME=`cd $(dirname $0)/.. &amp;&amp; pwd`
+if [[ `command -v realpath` != &quot;&quot; ]]; then
+	# resolve symbolic link if possible.
+    APP_HOME=`realpath $APP_HOME`
+fi
+HG_REVISION=`hg id -i`
+REL_VERSION=$1
+if [[ &quot;$REL_VERSION&quot; == &quot;&quot; ]]; then
+    REL_VERSION=$HG_REVISION
+fi
+REL_NAME=&quot;`basename $APP_HOME`-$REL_VERSION&quot;
+REL_DIR=$APP_HOME/target/$REL_NAME
+REL_ZIPFILE=$REL_DIR/../$REL_NAME.zip
+
+# Generate the zip package
+printf &quot;Generating $REL_NAME in directory=`pwd`\n&quot;
+mkdir -p $REL_DIR
+hg archive -r $REL_VERSION $REL_ZIPFILE
+
+# Auto append revision id to release file.
+if [[ -e $APP_HOME/RELEASE.txt ]]; then
+	cp $APP_HOME/RELEASE.txt $REL_DIR/RELEASE.txt
+fi
+printf &quot;$REL_NAME revsion=$HG_REVISION date=`date`\n&quot; &gt;&gt; $REL_DIR/RELEASE.txt
+zip -u $REL_ZIPFILE $REL_DIR/RELEASE.txt
+
+# Clean up the tmp rel dir.
+rm -r $REL_DIR
+
+printf &quot;$REL_ZIPFILE created.\n&quot;
+</code></pre>
+<p>Last updated 2013-06-18 19:18:48 EDT</p>
+</p>
+
+	<hr />
+
+<div id="disqus_thread"></div>
+	
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://zemian-github-io.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">&copy; 2011 - Present Zemian Deng All Rights Reserved | Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.5</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../../../js/jquery-1.11.1.min.js"></script>
+    <script src="../../../js/bootstrap.min.js"></script>
+    <script src="../../../js/prettify.js"></script>
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-135626598-1');
+    </script>
+
+  </body>
+</html>

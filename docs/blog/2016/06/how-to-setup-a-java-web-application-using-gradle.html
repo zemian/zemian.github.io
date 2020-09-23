@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Zemian's Blog - How to setup a Java web application using Gradle</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../css/asciidoctor.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link href="../../../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../../../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../about.html">About</a></li>
+            <li><a href="../../../archive.html">Archive</a></li>
+            <li><a href="../../..//tags">Tags</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">	
+	<div class="page-header">
+		<h1>How to setup a Java web application using Gradle</h1>
+	</div>
+
+	<p><em>14 June 2016</em>, tags: 
+	    <a href="../../../tags/gradle.html">gradle</a> 
+	</p>
+
+	<p><p>For basic java and Gradle, it's really simple. All you need is one line in build.gradle file and you can start compiling Java source under src/main/java folder.</p>
+<p>apply plugin: 'java'</p>
+<p>But to setup a useful web application,  you would need little more. Here I have another example of Gradle 2.7 script file for building a Java web application. I also have noted few things I have discovered in the comments.</p>
+<h1>A Java web app project</h1>
+<h1>There should be a src/main/webapp as web content directory</h1>
+<p>apply plugin: 'war'<br />
+apply plugin: 'jetty'</p>
+<h1>Change jetty default port from 8080</h1>
+<p>httpPort = 9000</p>
+<h1>A repository must be given to fetch dependencies below.</h1>
+<p>repositories {<br />
+mavenCentral()<br />
+}</p>
+<h1>Library dependencies</h1>
+<p>dependencies {<br />
+// JDK lang support<br />
+// Ouch! Gradle does not support 'provided' scope! Let's use compile for now.<br />
+//provided 'org.projectlombok:lombok:1.16.6'<br />
+compile 'org.projectlombok:lombok:1.16.6'</p>
+<pre><code>// Testing
+testCompile 'junit:junit:4.12',
+    'org.hamcrest:hamcrest-library:1.3'
+
+// Database
+runtime 'mysql:mysql-connector-java:5.1.37'   
+
+// Scripting
+//runtime 'org.codehaus.groovy:groovy-all:2.4.5'
+/*
+NOTE: Error if you include groovy with gradle+jetty!!!
+java.lang.ExceptionInInitializerError:
+</code></pre>
+<p>groovy.lang.GroovyRuntimeException: Conflicting module versions. Module [groovy-all is loaded in version 2.3.10 and you are trying to load version 2.4.5<br />
+// Verify your groovy version using the following:<br />
+import javax.script.*<br />
+out.println(new ScriptEngineManager().getEngineFactories())<br />
+out.println(org.codehaus.groovy.jsr223.GroovyScriptEngineFactory.class.getProtectionDomain().getCodeSource().getLocation())<br />
+*/<br />
+}</p>
+<p>I also have this JSP in src/main/webapp/script.jsp folder</p>
+<p>&lt;%@ page import=&quot;javax.script.<em>, java.io.</em>&quot; %&gt;</p>
+<p>&lt;%<br />
+// Initialize parameters<br />
+String engineName = request.getParameter(&quot;engine&quot;);<br />
+if (engineName == null) engineName = &quot;Groovy&quot;;<br />
+String code = request.getParameter(&quot;code&quot;);<br />
+if (code == null) code = &quot;&quot;;<br />
+%&gt;</p>
+<!-- form: Script input code -->
+<h1>Scripting</h1>
+<form method="POST">
+<textarea name="code" cols="120" rows="25"><%= code %></textarea>
+<p/><input type="submit" value="Submit"/>
+</form>
+<pre>
+<%
+if (request.getMethod().equals("POST")) {
+// Process form and evaluate script code
+ScriptEngine se = new ScriptEngineManager().getEngineByName(engineName);
+if (se == null) {
+out.println("ERROR: " + engineName + " engine not found! Use 'engine' parameter to change it.");
+} else {
+try {
+Bindings b = se.createBindings();
+b.put("request", request);
+b.put("out", out);
+Object result = se.eval(code, b);
+<p>out.println(engineName + &quot; script result:&quot;);<br />
+out.println(&quot;&quot; + result);<br />
+} catch (Exception e) {<br />
+out.println(&quot;ERROR: &quot; + engineName + &quot; script failed to evaluate!&quot;);<br />
+e.printStackTrace(new PrintWriter(out));<br />
+}<br />
+}<br />
+}<br />
+%&gt;</p>
+</pre>
+<p>With this script.jsp, you can write something like this to test out your db connection.</p>
+<p>// Groovy script:<br />
+import java.sql*<br />
+conn = DriverManager.getConnection('jdbc:<a href="mysql://localhost/test">mysql://localhost/test</a>', 'dev', 'dev123')<br />
+out.println(&quot;conn=&quot; + conn)<br />
+conn.close()</p>
+<p>And just for fun, I have created a data class using ProjectLombok generator in src/main/java/myjava/MyData.java</p>
+<p>package myjava;<br />
+import java.util.*;</p>
+<p>@lombok.Data<br />
+public class MyData {<br />
+private Integer id;<br />
+private String name;<br />
+private Date createdDate;<br />
+private List<MyData> dataList;<br />
+private Map&lt;String, MyData&gt; dataMap;</p>
+<p>}</p>
+<p>I also have a unit test in src/test/java/myjava/MyDataTest.java</p>
+<p>package myjava;</p>
+<p>import org.junit.Test;<br />
+import static org.junit.Assert.assertThat;<br />
+import static org.hamcrest.Matchers.*;</p>
+<p>public class MyDataTest {<br />
+@Test<br />
+public void tesGeneratedGetterSettersAndToString() {<br />
+MyData d = new MyData();<br />
+d.setId(12345);<br />
+d.setName(&quot;foo&quot;);<br />
+assertThat(d.getId(), is(12345));<br />
+assertThat(d.getName(), is(&quot;foo&quot;));<br />
+assertThat(d.toString(), is(&quot;MyData(id=12345, name=foo, createdDate=null, dataList=null, dataMap=null)&quot;));<br />
+}</p>
+<p>}</p>
+<p>To compile code, type command: gradle compileJava</p>
+<p>To run test, type command: gradle test(A nice feature of Gradle is that it auto generate test reports! Look for them in your build/reports folder.)</p>
+<p>To run web app, type command: gradle jettyRun</p>
+</p>
+
+	<hr />
+
+<div id="disqus_thread"></div>
+	
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://zemian-github-io.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">&copy; 2011 - Present Zemian Deng All Rights Reserved | Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.5</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../../../js/jquery-1.11.1.min.js"></script>
+    <script src="../../../js/bootstrap.min.js"></script>
+    <script src="../../../js/prettify.js"></script>
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-135626598-1');
+    </script>
+
+  </body>
+</html>

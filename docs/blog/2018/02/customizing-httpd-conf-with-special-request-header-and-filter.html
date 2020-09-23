@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Zemian's Blog - Customizing httpd conf with special request header and filter</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../css/asciidoctor.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link href="../../../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../../../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../about.html">About</a></li>
+            <li><a href="../../../archive.html">Archive</a></li>
+            <li><a href="../../..//tags">Tags</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">	
+	<div class="page-header">
+		<h1>Customizing httpd conf with special request header and filter</h1>
+	</div>
+
+	<p><em>26 February 2018</em>, tags: 
+	    <a href="../../../tags/httpd.html">httpd</a> 
+
+	    <a href="../../../tags/proxy.html">proxy</a> 
+
+	    <a href="../../../tags/filter.html">filter</a> 
+	</p>
+
+	<p><h1>How to setup httpd reverse proxy for Tomcat</h1>
+<p><strong>Enable modules.</strong></p>
+<p># NOTE: If you are using Cygwin, these module requires cygserver to<br />
+run! # else you get the following error: # #[Mon Feb 26<br />
+09:26:50.308620 2018] [proxy:crit] [pid 7564] (88)Function not<br />
+implemented: AH02478: #failed to create proxy mutex #AH00016:<br />
+Configuration Failed # LoadModule proxy_module modules/mod_proxy.so<br />
+LoadModule proxy_http_module modules/mod_proxy_http.so</p>
+<p><strong>Setup reverse proxy.</strong></p>
+<p># Reverse Proxy Setup # NOTE: The ending slash '/' is important!<br />
+&lt;IfModule proxy_module&gt; ProxyPass &quot;/&quot; &quot;<a href="http://localhost:8080/">http://localhost:8080/</a>&quot;<br />
+ProxyPassReverse &quot;/&quot; &quot;<a href="http://localhost/">http://localhost/</a>&quot; &lt;/IfModule&gt;</p>
+<h1>How to add custom headers to requests</h1>
+<p><strong>Enable modules.</strong></p>
+<p>LoadModule headers_module modules/mod_headers.so</p>
+<p><strong>Add headers to all requests.</strong></p>
+<p>&lt;Location &quot;/&quot;&gt; # Add custom headers RequestHeader set appuser<br />
+&quot;test&quot; # Or add custom headers based on env variables exist<br />
+RequestHeader set appuser2 &quot;%{APPUSER}e&quot; env=APPUSER &lt;/Location&gt;</p>
+<h1>How to setup Httpd Filter</h1>
+<p><strong>Enable modules.</strong></p>
+<p>LoadModule ext_filter_module modules/mod_ext_filter.so LoadModule<br />
+request_module modules/mod_request.so</p>
+<p><strong>Windows Example.</strong></p>
+<p># Setup external script to run request filter ExtFilterDefine my-filter<br />
+mode=input \ cmd=&quot;C:/Python36/pythonw.exe<br />
+C:/Apache24/cgi-bin/my-filter.py&quot; &lt;Directory &quot;cgi-bin&quot;&gt;<br />
+SetInputFilter my-filter &lt;/Directory&gt;</p>
+<p><strong>Cygwin Example.</strong></p>
+<p># Setup external script to run request filter ExtFilterDefine my-filter<br />
+mode=input \ cmd=&quot;/usr/bin/python3<br />
+/srv/www/cgi-bin/my-filter/my-filter.py&quot; &lt;Directory<br />
+&quot;/srv/www/cgi-bin/my-filter&quot;&gt; SetInputFilter my-filter<br />
+&lt;/Directory&gt;</p>
+<p><strong>File my-filter.py.</strong></p>
+<p>#!/usr/bin/python3 import datetime log = '/var/log/httpd/my-filter.log'<br />
+with open(log, 'a') as file: file.write(f'{datetime.datetime.now()}<br />
+hello filter\n')</p>
+<p><strong>File my-filter2.py.</strong></p>
+<p>#!/usr/bin/python3 import datetime, sys, os log =<br />
+'/var/log/httpd/my-filter.log' with open(log, 'a') as file:<br />
+file.write(f'== {datetime.datetime.now()} hello filter\n')<br />
+file.write(f'arguments: {sys.argv}\n') file.write(f'STDOIUT:\n') for<br />
+line in sys.stdin: file.write(f'{line}\n')<br />
+file.write(f'os.environments:\n') for k,v in os.environ.items():<br />
+file.write(f'os.env: {k} = {v}\n')</p>
+</p>
+
+	<hr />
+
+<div id="disqus_thread"></div>
+	
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://zemian-github-io.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">&copy; 2011 - Present Zemian Deng All Rights Reserved | Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.5</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../../../js/jquery-1.11.1.min.js"></script>
+    <script src="../../../js/bootstrap.min.js"></script>
+    <script src="../../../js/prettify.js"></script>
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-135626598-1');
+    </script>
+
+  </body>
+</html>

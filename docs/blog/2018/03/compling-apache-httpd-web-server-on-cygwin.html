@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Zemian's Blog - Compling Apache HTTPD Web Server on Cygwin</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../css/asciidoctor.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link href="../../../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../../../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../about.html">About</a></li>
+            <li><a href="../../../archive.html">Archive</a></li>
+            <li><a href="../../..//tags">Tags</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">	
+	<div class="page-header">
+		<h1>Compling Apache HTTPD Web Server on Cygwin</h1>
+	</div>
+
+	<p><em>07 March 2018</em>, tags: 
+	    <a href="../../../tags/httpd.html">httpd</a> 
+
+	    <a href="../../../tags/cygwin.html">cygwin</a> 
+	</p>
+
+	<p><p>I have noted the instructions on how to build the HTTPD web server from<br />
+scratch in a Cygwin platoform in a Windows 7 PC.</p>
+<p>Note that compiling full HTTPD on Cygwin is very slow compare to other<br />
+system such as Linux or MacOSX! If you are looking to do full HTTPD<br />
+server development, it’s recommend to use a real Linux env instead.</p>
+<h1>Requirements:</h1>
+<ul>
+<li>
+<p>Apache HTTPD version 2.4.9</p>
+</li>
+<li>
+<p>CYGWIN_NT-6.1 L328BDS002096US 2.10.0(0.325/5/3) 2018-02-02 15:16<br />
+x86_64 Cygwin</p>
+</li>
+<li>
+<p>Install the following cygwin packges:</p>
+<pre><code>autoconf
+make
+automake
+m4
+gcc-core
+libtool
+bison
+flex
+perl
+libapr1-devel
+libaprutil1-devel
+libiconv-devel
+libpcre-devel
+libgdbm-devel
+openssl-devel
+</code></pre>
+</li>
+</ul>
+<h1>Compiling the server</h1>
+<p>Step 1. Get the source:</p>
+<pre><code>git clone git://git.apache.org/httpd.git
+cd httpd
+git checkout 2.4.9
+
+# You also need to get the required library sources
+cd srclib
+git clone git://git.apache.org/apr.git
+cd apr
+git checkout 1.6.3
+cd ../
+git clone git://git.apache.org/apr-util.git
+cd apr-util
+git checkout 1.6.1
+cd ../../
+</code></pre>
+<p>Note that unlike the source pre-package you download from Apache site,<br />
+the <code>httpd</code> source repo does not have <code>configure</code> script, and you need<br />
+to generate it with <code>buildconf</code>. See next step for further instruction.</p>
+<p>Note that the current <code>apr-util</code> repository is empty in master branch!<br />
+This is because they moved the code to <code>apr</code> starting version 2.0 dev,<br />
+but we still be using version 1.6.x, so we need to explicitly checkout<br />
+the tag or branch.</p>
+<p>Step 2. Compiling</p>
+<pre><code>./buildconf
+./configure --prefix=/usr/local/apache2 \
+  --with-included-apr \
+  --enable-mpms-shared \
+  --with-mpm=worker \
+  --enable-mods-shared=most
+make
+make install
+</code></pre>
+<p>The option <code>--prefix=/usr/local/apache2</code> tells the build to install the<br />
+software into a user specific location.</p>
+<p>The option <code>enable-mpms-shared</code> will make the mpm_module to be shared<br />
+library so you can switch to different threading model if you want.<br />
+Default to <code>worker</code> which should work nicely in Cygwin env.</p>
+<p>The option <code>enable-mods-shared</code> will make most of the modules as shared<br />
+libraries. You can use <code>all</code> for full server.</p>
+<p>The option <code>--with-included-apr</code> tells the build to use the <code>srclib/apr</code><br />
+we have downloaded. Here you can use system installed <code>apr</code> if you like.<br />
+For an example:</p>
+<pre><code>./configure --prefix=/usr/local/apache2 \
+--with-apr=/usr/bin/apr-1-config \
+--with-apr-util=/usr/bin/apu-1-config \
+--enable-mpms-shared \
+--with-mpm=worker \
+--enable-mods-shared=most
+</code></pre>
+<p>For more details, see</p>
+<ul>
+<li>
+<p><a href="http://httpd.apache.org/docs/2.4/install.html">http://httpd.apache.org/docs/2.4/install.html</a> or the INSTALL file<br />
+from source.</p>
+</li>
+<li>
+<p><a href="https://httpd.apache.org/docs/2.4/programs/configure.html">https://httpd.apache.org/docs/2.4/programs/configure.html</a></p>
+</li>
+</ul>
+</p>
+
+	<hr />
+
+<div id="disqus_thread"></div>
+	
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://zemian-github-io.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">&copy; 2011 - Present Zemian Deng All Rights Reserved | Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.5</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../../../js/jquery-1.11.1.min.js"></script>
+    <script src="../../../js/bootstrap.min.js"></script>
+    <script src="../../../js/prettify.js"></script>
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-135626598-1');
+    </script>
+
+  </body>
+</html>

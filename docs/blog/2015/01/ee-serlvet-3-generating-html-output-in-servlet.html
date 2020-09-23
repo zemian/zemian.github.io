@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Zemian's Blog - EE Serlvet 3: Generating HTML output in Servlet</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../css/asciidoctor.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link href="../../../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../../../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../about.html">About</a></li>
+            <li><a href="../../../archive.html">Archive</a></li>
+            <li><a href="../../..//tags">Tags</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">	
+	<div class="page-header">
+		<h1>EE Serlvet 3: Generating HTML output in Servlet</h1>
+	</div>
+
+	<p><em>01 January 2015</em>, tags: 
+	    <a href="../../../tags/servlet.html">servlet</a> 
+	</p>
+
+	<p><p>If you just need to handle a handful of requests URI in your EE web module, then it might be easier to generate your own HTML response in your Servlet code instead of using a full blown template library. As part of my examples, I tried out a very simple Java DSL that generate html output when writing your own Serlvet. The code looks like this:</p>
+<p>package zemian.servlet3example.web;</p>
+<p>import java.io.IOException;<br />
+import javax.servlet.ServletException;<br />
+import javax.servlet.annotation.WebServlet;<br />
+import javax.servlet.http.HttpServletRequest;<br />
+import javax.servlet.http.HttpServletResponse;</p>
+<p>@WebServlet(&quot;/index&quot;)<br />
+public class IndexServlet extends HtmlWriterServlet {</p>
+<pre><code>@Override
+protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    HtmlWriter html = createHtmlWriter(req, resp);
+    String message = getMessage(req, html);
+    
+    html.header()
+        .h(1, &quot;Welcome to Servlet 3 Example&quot;)
+        .p(&quot;Let's explore Java Servlet 3.x Features.&quot;)
+        .p(message)
+        .ul(
+            html.link(&quot;Index&quot;, &quot;/index&quot;),
+            html.link(&quot;Hello&quot;, &quot;/hello&quot;),
+            html.link(&quot;Sys Props&quot;, &quot;/sys-props&quot;)
+        )
+        .footer();
+} 
+</code></pre>
+<p>}</p>
+<p>I wrote a base HtmlWriterServlet class that provide a method where you can get an instance of a HtmlWriter builder. The benefit of wrapping the HTML like builder is that it's more easier to read and helps generate correct well form tags. For example the &quot;ul&quot; and &quot;table&quot; accepts Java List or Map object, and it generates the correct html tags.</p>
+<p>Here is another example how I generate a table view of Java System Properties page with few lines of code:</p>
+<p>package zemian.servlet3example.web;</p>
+<p>import java.io.IOException;<br />
+import java.util.TreeMap;<br />
+import javax.servlet.ServletException;<br />
+import javax.servlet.annotation.WebServlet;<br />
+import javax.servlet.http.HttpServletRequest;<br />
+import javax.servlet.http.HttpServletResponse;</p>
+<p>@WebServlet(&quot;/sys-props&quot;)<br />
+public class SysPropsServlet extends HtmlWriterServlet {</p>
+<pre><code>@Override
+protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    HtmlWriter html = createHtmlWriter(req, resp);
+    TreeMap sysProps = new TreeMap(System.getProperties());
+    html.header()
+        .h(1, &quot;Java System Properties&quot;)
+        .table(sysProps)
+        .footer();
+}
+</code></pre>
+<p>}</p>
+<p>The simple <a href="https://github.com/saltnlight5/java-ee6-examples/blob/master/servlet3-example/src/main/java/zemian/servlet3example/web/HtmlWriter.java">HtmlWriter</a>class provide few html builder methods and it can help generate HTML links with relative context paths. You can easily further improve it to help generate more HTML code such as form tags etc.</p>
+<p>Also, note that ServletResponse object let you have full control on writing custom responses, so you are not restricted to only returing HTML. You can write binary output such as PDF or even MP3 files. You simply need to control the Response Writer and the correct corresponding content mime type and size that will return.</p>
+<p>You can get these code at <a href="https://github.com/saltnlight5/java-ee6-examples/tree/master/servlet3-example">servlet3-example</a></p>
+</p>
+
+	<hr />
+
+<div id="disqus_thread"></div>
+	
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://zemian-github-io.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">&copy; 2011 - Present Zemian Deng All Rights Reserved | Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.5</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../../../js/jquery-1.11.1.min.js"></script>
+    <script src="../../../js/bootstrap.min.js"></script>
+    <script src="../../../js/prettify.js"></script>
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-135626598-1');
+    </script>
+
+  </body>
+</html>

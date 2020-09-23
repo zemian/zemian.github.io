@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Zemian's Blog - TimeMachine Scheduler Tour: Part2</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../css/asciidoctor.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link href="../../../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../../../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../about.html">About</a></li>
+            <li><a href="../../../archive.html">Archive</a></li>
+            <li><a href="../../..//tags">Tags</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">	
+	<div class="page-header">
+		<h1>TimeMachine Scheduler Tour: Part2</h1>
+	</div>
+
+	<p><em>10 June 2012</em>, tags: 
+	    <a href="../../../tags/timemachine.html">timemachine</a> 
+	</p>
+
+	<p><p>This is part 2 of 7 in a series of articles that will give you a tour of the <a href="https://bitbucket.org/timemachine/scheduler/wiki/Home">TimeMachine Scheduler</a> project. These articles will introduce you to the scheduler, how to load jobs and schedules, and explore some of its advanced features. For the most current and accurate instructions, please visit the ReferenceManual from the project site.</p>
+<h2></h2>
+<p>Scripting the Scheduler with Groovy</p>
+<p>Scripting language is a great way to extend an application, and with Java 6 or higher it has ScriptingEngine API baked right in. There are many solid JVM based scripting engines available out there today. For example Groovy, Ruby or Jython are just few popular open source ones. The TimeMachine Scheduler embraced the easy and flexibility of scripting. I will be covering some of these features in this tour.</p>
+<p>Starting JVM 6 or higher, it already comes with JavaScript engine implementation, and there is no external dependency with this. So TimeMachine has default to use &quot;JavaScript&quot; as scripting engine. You may add any other script engine jars in to the &quot;lib&quot; directory and specify the scriptEngineName parameter to change it.</p>
+<p>We have found the <a href="http://groovy.codehaus.org/">Groovy</a> scripting engine to be very productive, and its syntax are very similar to Java language itself, but yet very concise and expressive. So we decided to make TimeMachine distribution zip file pre-packaged the Groovy jars for user convenient. (Note that Groovy is only an optional dependency for TimeMachine scheduler itself, and we have properly set our maven pom.xml as such.)</p>
+<p>All the demo code in this tour will use Groovy. You are free to choose other engine if you want to explore it further.</p>
+<h2></h2>
+<p>The ScriptingService</p>
+<p>You may initialize the scheduler along with a script file and let it execute and prepare jobs or anything you would need before the scheduler is started. You will start by create a config/scheduler.properties file like this:</p>
+<p>timemachine.scheduler.userservice.scriptingService.class = timemachine.scheduler.userservice.ScriptingService</p>
+<p>ScriptingService.scriptEngineName = Groovy</p>
+<p>ScriptingService.initScript = config/myscript.groovy</p>
+<p>In your config/myscript.groovy file, you may try this:</p>
+<p>logger.info(&quot;Hello World!&quot;)</p>
+<p>logger.info(&quot;I have access to &quot; + scheduler)</p>
+<p>Now you can fire off the scheduler:</p>
+<p>$ bin/scheduler.sh config/scheduler.properties</p>
+<p>You should see the scheduler started with the hello world message printed on log output.</p>
+<h2></h2>
+<p>The Scheduler API</p>
+<p>From above  you can see that we give you two variables to play with in the script. The logger is simple one, and you probably don't do anything more than logging info message. The more interesting one is the scheduler variable. This variable would have full access to the scheduler; it  is an instance of  <a href="http://tmschedulersite-zdeng.rhcloud.com/scheduler-site/timemachine-scheduler/target/site-deploy/timemachine-scheduler/apidocs/timemachine/scheduler/Scheduler.html">timemachine.scheduler.Scheduler</a> class. Let's use this variable to create a cron job in the following Groovy initScript:</p>
+<p>import timemachine.scheduler.*<br />
+import timemachine.scheduler.schedule.*<br />
+import timemachine.scheduler.jobtask.*</p>
+<p>jobDef = new JobDef()</p>
+<p>jobDef.setJobTaskClass(LoggerJobTask.class)</p>
+<p>schedule = new CronSchedule()<br />
+schedule.setExpression(&quot;* * * * * ?&quot;)</p>
+<p>jobDef.addSchedule(schedule)</p>
+<p>scheduler.schedule(jobDef)</p>
+<p>The scheduler API is pretty self explanatory, but let me be more explicit to help along. We imported all the packages and classes that we need first, then we created a job definition object. We told it what task to do and how often to do it. We created 3 schedules/jobs that will run the task. We finally scheduled and stored this job definition to the scheduler. These jobs will run according to the schedule (every second) as soon as your scheduler starts. You may verify through the output log.</p>
+<p>For convenience sake, we also provide factory classes that can make above program even shorter.</p>
+<p>import timemachine.scheduler.*<br />
+jobDef = JobDefs.loggerJobDef()<br />
+jobDef.add(Schedules.cron(&quot;* * * * * ?&quot;))<br />
+scheduler.schedule(jobDef)</p>
+<h2></h2>
+<p>Schedule Types</p>
+<p>Besides the CronSchedule, we also have RepeatSchedule and DateListSchedule schedule types. We have created a nice factory methods in Schedules that return one of these schedule. For example, we may create a minutely repeat schedule and an explicit date list schedules in the initScript like this:</p>
+<p>import timemachine.scheduler.*<br />
+jobDef = JobDefs.osCommandJobDef(&quot;cmd.exe /c echo 'Hello World.'&quot;)<br />
+jobDef.addSchedule(Schedules.minutely(5))<br />
+jobDef.addSchedule(Schedules.datelist(*[Schedules.datetime(&quot;01/01/2013 08:00:00&quot;), Schedules.datetime(&quot;01/01/2014 08:00:00&quot;)]))</p>
+<p>scheduler.schedule(jobDef)</p>
+<p>In above, we have scheduled one job definition with two schedules to run. First one runs every 5 mins, and the second one runs twice on an explicit given dates.</p>
+<p>Note: The asterisk in front of left bracket is needed due to Groovy syntax on passing an list object into Java's wildcard variable argument.</p>
+<h2></h2>
+<p>JobTask Types</p>
+<p>Besides the LoggerJobTask and OsCommandJobTask built-in JobTask you have seen above, we also have a powerful ScriptingJobTask that let you build a job task in Groovy code! This means you may add a new job without even compiling Java code! Here is an example of Groovy initScript script that will create a new &quot;scripting&quot; job.</p>
+<p>import timemachine.scheduler.*<br />
+jobDef = JobDefs.groovyJobDef('''<br />
+file= new File(&quot;/tmp/counter.data&quot;)<br />
+if (!file.exists())<br />
+num = 1<br />
+else<br />
+num  = file.text.toInteger() + 1<br />
+logger.info(&quot;Incrementing counter $num in $file&quot;)<br />
+file.write(num)<br />
+''')<br />
+jobDef.addSchedule(Schedules.secondly(1)) // run every second.</p>
+<p>scheduler.schedule(jobDef)</p>
+<p>In above example, we created a job that runs every second. The job task will increment a counter in a file and re-save it every time the job runs.</p>
+<h2></h2>
+<p>Pretty Groovy ...</p>
+<p>There you go. Above is your first custom job in TimeMachine Scheduler! The Groovy language is very similar to Java in syntax, yet minus all the noises, so it's very productive. Groovy also access and integrate with existing <a href="http://docs.oracle.com/javase/6/docs/api/">Java API</a> seamlessly, so you may access and control the scheduler with easy.</p>
+<p>Interested? Go and <a href="https://bitbucket.org/timemachine/scheduler/downloads">download</a>the scheduler today and give it a try!</p>
+<p>End of part 2. You may continue <a href="http://saltnlight5.blogspot.com/2012/06/timemachine-scheduler-tour-part3.html">next tour</a>, or see <a href="http://saltnlight5.blogspot.com/2012/06/timemachine-scheduler-tour-part1.html">previous tour</a>.</p>
+</p>
+
+	<hr />
+
+<div id="disqus_thread"></div>
+	
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://zemian-github-io.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">&copy; 2011 - Present Zemian Deng All Rights Reserved | Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.5</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../../../js/jquery-1.11.1.min.js"></script>
+    <script src="../../../js/bootstrap.min.js"></script>
+    <script src="../../../js/prettify.js"></script>
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-135626598-1');
+    </script>
+
+  </body>
+</html>

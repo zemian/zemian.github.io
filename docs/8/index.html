@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Zemian's Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/asciidoctor.css" rel="stylesheet">
+    <link href="../css/base.css" rel="stylesheet">
+    <link href="../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../about.html">About</a></li>
+            <li><a href="../archive.html">Archive</a></li>
+            <li><a href="..//tags">Tags</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">
+  			<a href="blog/2016/07/how-to-install-cx-oracle-module-on-linux.html"><h1>How to install cx_Oracle module on Linux</h1></a>
+  			<p>23 July 2016, tags: 
+			    <a href="../tags/python.html">python</a> 
+
+			    <a href="../tags/oracle.html">oracle</a> 
+  			</p>
+  			<p><p>Here are my notes on installing <a href="http://cx-oracle.sourceforge.net/"><code>cx_Oracle</code> python<br />
+module</a> to access Oracle Database<br />
+12c. First, you need to download these two packages from <a href="http://www.oracle.com/technetwork/database/features/instant-client">Oracle Instant<br />
+Client</a><br />
+site.</p>
+<ul>
+<li>
+<p>Instant Client Package - Basic</p>
+</li>
+<li>
+<p>Instant Client Package - SDK</p>
+</li>
+</ul>
+<p>I’ve tried their <code>.rpm</code> packages and it did not work for me on Linux, so<br />
+I would suggest you use the <code>.zip</code> packages instead.</p>
+<p>Once you downloaded these two, unzip them into a single directory (eg:<br />
+<code>$HOME/apps/instantclient</code>). You then need to follow these instructions<br />
+to install the module itself.</p>
+<pre><code>cd $HOME/apps/instantclient
+ln -s libclntsh.so.12.1 libclntsh.so
+export ORACLE_HOME=$HOME/apps/instantclient
+export LD_LIBRARY_PATH=$ORACLE_HOME:$LD_LIBRARY_PATH
+
+pip install cx_Oracle
+</code></pre>
+<p>Here are some quick python test code to verify <code>cx_Oracle</code> is working.</p>
+<pre><code>import cx_Oracle as db
+dsn='(DESCRIPTION=(ADDRESS=(HOST=myhost)(PORT=1521)(PROTOCOL=TCP))(CONNECT_DATA=(SERVER=DEDICATED)(SID=orcl)))'
+conn = db.connect('zemian', 'Welcome1', dsn)
+cur = conn.cursor()
+cur.execute('SELECT 1+1')
+print(cur.fetchone()[0])
+cur.close()
+conn.close()
+</code></pre>
+<p>Using the <code>dsn</code> form above can connect directly to database without the<br />
+need to setup further entry in Oracle’s <code>tnsnames.ora</code> file.</p>
+<h1>Optionally installing sqlplus client</h1>
+<p>The <code>sqlplus</code> is a classic client you may use to connect to the Oracle<br />
+database. You may install this to perform adhoc query and verify your<br />
+data. Download the following from the same download site above.</p>
+<ul>
+<li>Instant Client Package - SQL*Plus</li>
+</ul>
+<p>Unzip and then add the following to your <code>PATH</code></p>
+<pre><code>export $ORACLE_HOME/bin:$PATH
+
+sqlplus mydbuser@(DESCRIPTION=(ADDRESS=(HOST=myhost)(PORT=1521)(PROTOCOL=TCP))(CONNECT_DATA=(SERVER=DEDICATED)(SID=orcl)))
+</code></pre>
+<p>For more information, see <a href="https://docs.oracle.com/database/121/SQPUG/toc.htm"><code>sqlplus</code><br />
+doc</a></p>
+</p>
+  			<a href="blog/2016/07/simple-http-server-with-cgi-scripts-enabled.html"><h1>Simple http server with CGI scripts enabled</h1></a>
+  			<p>14 July 2016, tags: 
+			    <a href="../tags/python.html">python</a> 
+  			</p>
+  			<p><p>If you want to experiment some python code as CGI script to serve by a HTTP server,<br />
+you can get started by these steps:</p>
+<ol>
+<li>Create a <code>cgi-bin</code> directory.</li>
+<li>Ready!</li>
+</ol>
+<p>No, really, it's that simple! Try these CGI scripts out.</p>
+<h2></h2>
+<p>Example 1: <code>cgi-bin/hello.py</code></p>
+<pre><code>#!/usr/bin/env python3
+
+localvars_table = ''
+for x in dir():
+  localvars_table += '%s' % x
+localvars_table += ''
+
+print(&quot;Content-type: text/html&quot;)
+print(&quot;&quot;)
+print(&quot;&quot;&quot;
+Hello World! Your custom CGI script is working. Here are your current Python local variables.
+
+%s
+
+NOTE: If you want to write useful CGI script, try the Python 'cgi' module. See cgitest.py script.
+&quot;&quot;&quot; % (localvars_table))
+</code></pre>
+<p>To test and run this, you simply invoke these couple commands:</p>
+<pre><code>bash&gt; chmod a+x cgi-bin/hello.py
+bash&gt; python3 -m http.server --cgi
+</code></pre>
+<p>You may now test it on your browser with <a href="http://localhost:8000/cgi-bin/hello.py">http://localhost:8000/cgi-bin/hello.py</a>. Hit <code>CTRL+C</code> to stop the server.</p>
+<p>If you want to do more with fancy CGI scripts, try the Python's <code>cgi</code> module. Here is another example.</p>
+<h2></h2>
+<p>Example 2: <code>cgi-bin/cgitest.py</code></p>
+<pre><code>#!/usr/bin/env python3
+
+import cgi
+cgi.test()
+</code></pre>
+<p>Again <code>chmod</code> your <code>cgitest.py</code> script and visit <a href="http://localhost:8000/cgi-bin/cgitest.py">http://localhost:8000/cgi-bin/cgitest.py</a>. You will see all the<br />
+HTTP related data as expected when working with a CGI script. See <a href="https://docs.python.org/3/library/cgi.html">https://docs.python.org/3/library/cgi.html</a><br />
+for more details.</p>
+</p>
+  			<a href="blog/2016/07/how-to-install-posgresql-server-with-yum-on-linux.html"><h1>How to install posgresql-server with yum on Linux</h1></a>
+  			<p>08 July 2016, tags: 
+			    <a href="../tags/postgres.html">postgres</a> 
+  			</p>
+  			<p><p>If you have a RedHat/CentOS/OracleLinux distro of Linux, then <code>yum</code> should be available as your package manager. Here are the notes I have to get PostgreSQL server up running.</p>
+<pre><code>bash&gt; yum info postgresql-server
+bash&gt; # Verify that's the version you want to install
+
+bash&gt; # Ready to install
+bash&gt; sudo su -
+bash&gt; yum -y install postgresql-server
+bash&gt; service postgresql initdb
+
+bash&gt; # Startup the server manually
+bash&gt; service postgresql start
+
+bash&gt; # Make server startup at system reboot
+bash&gt; chkconfig postgresql on
+
+bash&gt; # Verify postgres DB is working
+bash&gt; su - postgres -c psql
+postgres=# \du
+postgres=# \q
+
+bash&gt; # We are done, exit root user shell
+bash&gt; exit
+</code></pre>
+<p>If you can't find <code>service</code> or <code>chkconfig</code> commands, then check to ensure you have have <code>/sbin</code> in your <code>$PATH</code>.</p>
+</p>
+  			<a href="blog/2016/07/how-to-switch-linux-account-user-without-the-target-users-password.html"><h1>How to switch Linux account user without the target user&apos;s password</h1></a>
+  			<p>07 July 2016, tags: 
+			    <a href="../tags/linux.html">linux</a> 
+  			</p>
+  			<p><p>Did you know if you have been granted <code>sudo</code> access to a remote<br />
+host with <code>su</code> command, then you may switch to any user without the<br />
+need to type in their password?</p>
+<p>Try this out:</p>
+<pre><code>zemian@myhost bash&gt; sudo su - postgres
+# When prompted for password, enter your own user account password.
+
+# Now you are in as `postgres` user!
+postgres@myhost bash&gt;
+</code></pre>
+<p>Or if you want to switch to the root user directly, simply try:</p>
+<pre><code>bash&gt; sudo su -
+</code></pre>
+<p>This is very useful when you need to switch to a user account that<br />
+was only setup just to run applications (eg: <code>postgres</code>, <code>mysql</code>,<br />
+<code>oracle</code>, or <code>weblogic</code> etc.) and not intented for real user. In this<br />
+case, you might not even know what the real password is. Above<br />
+trick should get you switch into that target user account.</p>
+</p>
+  			<a href="blog/2016/07/migrating-django-1-6-to-1-9.html"><h1>Migrating Django 1.6 to 1.9</h1></a>
+  			<p>06 July 2016, tags: 
+			    <a href="../tags/django.html">django</a> 
+  			</p>
+  			<p><p>Couple years ago, I wrote a simple Events and Signin management app<br />
+using django 1.6. It was fun to write and it worked really well. Just<br />
+recently I have to write another quick simple CRM webapp and I decided<br />
+to use Django again, but they current release is 1.9 now and I quickly<br />
+found few differences.</p>
+<ul>
+<li>
+<p>The <code>INSTALLED_APPS</code> now takes <code>AppCofig</code> instead of package name.<br />
+And there is a new <code>apps.py</code> file for it.</p>
+</li>
+<li>
+<p>There is now <code>makemigration</code> and <code>migrate</code> command to create<br />
+database table.</p>
+</li>
+</ul>
+</p>
+  			<a href="blog/2016/07/login-to-remote-host-without-password.html"><h1>Login to remote host without password</h1></a>
+  			<p>06 July 2016, tags: 
+			    <a href="../tags/linux.html">linux</a> 
+
+			    <a href="../tags/ssh.html">ssh</a> 
+  			</p>
+  			<p><p>Most of remote systems are secured by SSH, and to gain remote control with terminal, you would need to <code>ssh</code> into the server. You will be prompted to login with your password on every session. To avoid typing password everytime, you need to setup as authorized client. Here is how you can do that with ssh key.</p>
+<p>First on your own client machine, generate the <code>$HOME/.ssh/id_rsa.pub</code> file:</p>
+<pre><code>bash&gt; ssh-keygen
+# When prompted to enter password, simply hit ENTER key to skip it!
+bash&gt; cat  ~/.ssh/id_rsa.pub
+xxxyyyzzz zemian@myhost
+# You will see a very long string instead of &quot;xxxyyyzzz&quot;.
+</code></pre>
+<p>Now you need to copy this public key string into your remote host. You need to <code>ssh</code> into the remote host with your valid password first to setup. If successful, the subsequent <code>ssh</code> into the remote host will not prompt you for password!</p>
+<pre><code>bash&gt; ssh myremotehost
+# Enter password to gain access
+</code></pre>
+<p>After you are in the remote host:</p>
+<pre><code>myremotehost&gt; vim ~/.ssh/authorized_keys
+#Paste and append the &quot;xxxyyyzzz&quot; into above file.
+</code></pre>
+<p>If you don’t already have the <code>~/.ssh/authorized_keys</code> file on remote host, then create it, but ensure you don’t let other users or groups to access it. Use command like this to change the permission:</p>
+<pre><code>bash&gt; chmod g-rw,o-rw ~/.ssh/authorized_keys
+</code></pre>
+<p>The cool thing about this is that it affects all <code>ssh</code> related commands, such as <code>scp</code> will now work without prompting you for password!</p>
+<p>Have a productive day!</p>
+</p>
+  			<a href="blog/2016/07/how-to-import-ssl-cert-into-wls-demotrust-jks-keystore-file.html"><h1>How to import SSL cert into WLS DemoTrust.jks keystore file</h1></a>
+  			<p>05 July 2016, tags: 
+			    <a href="../tags/weblogic.html">weblogic</a> 
+  			</p>
+  			<p><p>In WLS, you can import your own SSL cert into its trust keystore file to invoke &quot;https&quot; contents. Here is how you do that with the default WLS <code>DemoTrust.jks</code> file.</p>
+<pre><code>bash&gt; cd $WL_HOME/server/lib
+bash&gt; keytool -keystore DemoTrust.jks -storepass DemoTrustKeyStorePassPhrase -list
+bash&gt; keytool -keystore DemoTrust.jks -storepass DemoTrustKeyStorePassPhrase -importcert -alias mycert -file mycert.pem
+
+# Or to delete the entry
+bash&gt; keytool -keystore DemoTrust.jks -storepass DemoTrustKeyStorePassPhrase -delete -alias mycert
+</code></pre>
+<p>The file <code>mycert.pem</code> can be obtained by any modern browser when you visit the &quot;https&quot; site. For example using Firefox, you can follow these steps to export the cert file:</p>
+<ol>
+<li></li>
+</ol>
+<p>Click on the Lock icon next to the URL in the broswer</p>
+<ol>
+<li></li>
+</ol>
+<p>Click More Information button, then go to the &quot;Security Tab&quot;</p>
+<ol>
+<li></li>
+</ol>
+<p>Click View Certificate button, then go to the Details tab</p>
+<ol>
+<li></li>
+</ol>
+<p>Click Export ​ button</p>
+<ol>
+<li></li>
+</ol>
+<p>On the bottom right corner dropdown, select X.509 Cerificate with chain (PEM)</p>
+<ol>
+<li></li>
+</ol>
+<p>Type name of file to save (eg: <code>mycert.pem</code>) and then click Save button</p>
+</p>
+  			<a href="blog/2016/07/inspect-oracle-database-schema-and-tables-with-kotlin.html"><h1>Inspect Oracle Database Schema and Tables with Kotlin</h1></a>
+  			<p>05 July 2016, tags: 
+			    <a href="../tags/kotlin.html">kotlin</a> 
+  			</p>
+  			<p><pre><code>// Filename: conn.kts
+// Usage: kotlinc -cp /home/zedeng/Downloads/ojdbc7.jar -script conn.kts
+
+import java.sql.*
+
+Class.forName(&quot;oracle.jdbc.driver.OracleDriver&quot;)
+val conn = DriverManager.getConnection(&quot;jdbc:oracle:thin:@myremotehost:1521:MYDB&quot;, &quot;system&quot;, &quot;mypassword123&quot;)
+
+println(&quot;Database connection established $conn&quot;)
+println(&quot;Database Default Catalog: ${conn.getCatalog()}&quot;)
+println(&quot;Database Default Schema: ${conn.getSchema()}&quot;)
+
+val m = conn.getMetaData()
+println(&quot;${m.getDatabaseProductName()} ${m.getDatabaseMajorVersion()} ${m.getDatabaseMinorVersion()}&quot;)
+
+println(&quot;List of Schemas&quot;)
+var rs: ResultSet
+rs = m.getSchemas()
+while(rs.next()) {
+    println(&quot;  ${rs.getObject(1)}&quot;)
+}
+rs.close()
+
+val listSchemaName = conn.getSchema()
+println(&quot;List of Tables for ${listSchemaName}&quot;)
+rs = m.getTables(conn.getCatalog(), listSchemaName, null, null)
+while(rs.next()) {
+    val name = rs.getObject(&quot;TABLE_NAME&quot;)
+    println(&quot;  $name&quot;)
+}
+rs.close()
+
+println(&quot;Execute query:&quot;)
+val stmt = conn.createStatement()
+rs = stmt.executeQuery(&quot;SELECT 1+1 FROM DUAL&quot;)
+while(rs.next()) {
+    val v = rs.getObject(1)
+    println(&quot;  1 + 1 from DB=$v&quot;)
+}
+rs.close()
+stmt.close()
+
+conn.close()
+</code></pre>
+</p>
+  			<a href="blog/2016/06/some-of-my-old-projects.html"><h1>Some of my old projects</h1></a>
+  			<p>30 June 2016  			</p>
+  			<p><p>Here are some of interesting side projects I have worked on in the past</p>
+<h1>Django Developer at SHIFT Ministry</h1>
+<p>Orlando, FL Feb 2013 to Present</p>
+<p>Eventful web application</p>
+<ul>
+<li>Technologies used: Python 2.7, Django 1.6, Bootstrap, JQuery,<br />
+SublimeText, MySQL, Mercurial(hg).</li>
+</ul>
+<p>Simple CRM web application</p>
+<ul>
+<li>Technologies used: Python 3.5, Django 1.9, PyCharm, PostgreSQL,<br />
+Mercurial(hg).</li>
+</ul>
+<h1>Quartz Scheduler</h1>
+<p><a href="http://quartz-scheduler.org">http://quartz-scheduler.org</a></p>
+<p>I am a committer for Quartz Scheduler project, and I often help users on<br />
+their forums. I have fixed many bug issues and implemented new features<br />
+during the quartz 2.1 release. You may find my commits with svn username<br />
+id <code>light5</code> in their repository, or <code>zemian</code> after they moved to<br />
+github.com.</p>
+<h1>MySchedule</h1>
+<p><a href="https://github.com/zemian/myschedule">https://github.com/zemian/myschedule</a></p>
+<p>I have written a UI front-end web application to managing quartz<br />
+schedulers. I am the owner of this project, and I have done build,<br />
+release, and written full documentation on how to use the application.<br />
+There are several thousands of downloads since the first release.</p>
+<h1>TimeMachine Scheduler</h1>
+<p><a href="https://bitbucket.org/zemian/timemachine-scheduler">https://bitbucket.org/zemian/timemachine-scheduler</a> (Inactive!)</p>
+<p>Ive created a Java scheduler project that is fully scalable for<br />
+enterprise use. Its a scheduler application that has easy job<br />
+configuration and flexible scheduling with plugable data storage.</p>
+<h1>SweetScala Web Framework</h1>
+<p><a href="https://code.google.com/archive/p/sweetscala">https://code.google.com/archive/p/sweetscala</a> (Inactive!)</p>
+<p>Sweet is a MVC based web application framework for building dynamic web<br />
+applications. The framework is made with Scala, an Object Oriented and<br />
+Functional programming language that runs on JVM.</p>
+</p>
+  			<a href="blog/2016/06/how-to-install-venv-and-pip-with-a-python-3-4-distribution.html"><h1>How to install venv and pip with a python 3.4 distribution</h1></a>
+  			<p>27 June 2016, tags: 
+			    <a href="../tags/python.html">python</a> 
+  			</p>
+  			<p><p>If you are unfortunate enough to have stuck with a Python 3.4 distribution and you want to setup a virtual env, then likely you will get the ensurepip module not found error:</p>
+<p>bash&gt; python3.4 -m venv mypy<br />
+Error: Command '['/home/zedeng/py-dev/mypy/bin/python3.4', '-Im', 'ensurepip', '--upgrade', '--default-pip']' returned non-zero exit status 1</p>
+<p>I found someone posted a nice solution [1] to this. So first remove the dir first.<br />
+bash&gt; rm -r mypy</p>
+<p>Now do it again like this:<br />
+bash&gt; python3.4 -m venv mypy --without-pip<br />
+bash&gt; . mypy/bin/activate</p>
+<p>mypy&gt; wget <a href="https://bootstrap.pypa.io/get-pip.py">https://bootstrap.pypa.io/get-pip.py</a><br />
+mypy&gt; python get-pip.py<br />
+mypy&gt; pip list</p>
+<p>Now the problem is solved. I believe this problem is gone if you upgrade to Python 3.5</p>
+<p>[1] <a href="http://www.thefourtheye.in/2014/12/Python-venv-problem-with-ensurepip-in-Ubuntu.html">http://www.thefourtheye.in/2014/12/Python-venv-problem-with-ensurepip-in-Ubuntu.html</a></p>
+</p>
+
+	<hr />
+
+	<ul class="pager">
+		<li class="previous"><a href="https://zemian.github.io/7">Previous</a></li>
+		<li>Page: 8/28</li>
+		<li class="next"><a href="https://zemian.github.io/9">Next</a></li>
+	</ul>
+
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">&copy; 2011 - Present Zemian Deng All Rights Reserved | Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.5</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../js/jquery-1.11.1.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/prettify.js"></script>
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-135626598-1');
+    </script>
+
+  </body>
+</html>

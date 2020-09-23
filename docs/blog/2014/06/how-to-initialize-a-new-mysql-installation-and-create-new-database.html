@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Zemian's Blog - How to initialize a new MySQL installation and create new database</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../css/asciidoctor.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link href="../../../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../../../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../about.html">About</a></li>
+            <li><a href="../../../archive.html">Archive</a></li>
+            <li><a href="../../..//tags">Tags</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">	
+	<div class="page-header">
+		<h1>How to initialize a new MySQL installation and create new database</h1>
+	</div>
+
+	<p><em>11 June 2014</em>, tags: 
+	    <a href="../../../tags/mysql.html">mysql</a> 
+	</p>
+
+	<p><p>For a freshly installed MySQL server, you would need to initialize the system tables and data directory like this:</p>
+<pre><code>cd mysql-&lt;version&gt; 
+
+scripts/mysql_install_db --basedir=. --datadir=data
+bin/mysqld_safe --defaults-file=my.cnf &amp;
+</code></pre>
+<p>Before MySQL 5.6, this will setup a &quot;root&quot; with empty password that you can immediately login. For MySQL 5.7 however, it creates a random password for &quot;root&quot; user now. The password is generated under $HOME/.mysql_secret. You need to login and run &quot;SET PASSWORD = PASSWORD('secret')&quot; to change it.</p>
+<p>After above, you may login using &quot;root&quot; and start creating your own database and users. For example:</p>
+<pre><code>CREATE DATABASE mydb;
+GRANT ALL PRIVILEGES ON mydb.* TO 'myuser'@'%' IDENTIFIED BY 'secret';
+GRANT ALL PRIVILEGES ON mydb.* TO 'myuser'@'localhost' IDENTIFIED BY 'secret';
+</code></pre>
+<p>UPDATE 2015-01-26</p>
+<p>Here are more notes to replace/upgrade existing mysql server and install to init.d to auto start by OS.</p>
+<p>= Install and Setup new MySQL into an exiting Linux.</p>
+<p>== To remove/dislable old existing mysqld init.d (one usually defualt installed under /usr/mysql)<br />
+sudo /sbin/chkconfig --del mysqld</p>
+<p>== Install new mysql server (5.6.16)<br />
+* Ensure mysql user exists and installation files are owned by this user</p>
+<h1>Setup and initial the new mysql server</h1>
+<p>groupadd mysql<br />
+useradd -r -g mysql mysql<br />
+cd /apps/mysql<br />
+sudo chown -R mysql:mysql .<br />
+sudo scripts/mysql_install_db --basedir=/apps/mysql --datadir=/apps/mysql/data --user=mysql</p>
+<h1>Optional: Manually start the server and see if it works</h1>
+<h1>sudo bin/mysqld_safe --defaults-file=/apps/mysql/my.cnf --user=mysql</h1>
+<h1>sudo bin/mysqladmin shutdown -u root</h1>
+<h1>Install the init.d script to start server upon system reboot</h1>
+<p>sudo ln -s support-file/mysql.server /etc/init.d/mysql.server<br />
+sudo vim support-file/mysql.server<br />
+* Ensure these vars are set correctly in your env<br />
+basedir=/apps/mysql<br />
+datadir=/apps/mysql/data<br />
+cnffile=/apps/mysql/my.cnf<br />
+user=mysql<br />
+* modify the mysqld_safe command line to add (ENSURE --user option comes last!)<br />
+--defaults-file=$cnffile --user=$user</p>
+<p>sudo /sbin/chkconfig --add mysql.server<br />
+sudo /sbin/service mysql.server start</p>
+<p>== Change MySQL root password<br />
+sudo bin/mysqladmin password 'new_password'</p>
+<p>Ref:<br />
+<a href="https://dev.mysql.com/doc/refman/5.6/en/binary-installation.html">https://dev.mysql.com/doc/refman/5.6/en/binary-installation.html</a></p>
+</p>
+
+	<hr />
+
+<div id="disqus_thread"></div>
+	
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://zemian-github-io.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">&copy; 2011 - Present Zemian Deng All Rights Reserved | Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.5</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../../../js/jquery-1.11.1.min.js"></script>
+    <script src="../../../js/bootstrap.min.js"></script>
+    <script src="../../../js/prettify.js"></script>
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-135626598-1');
+    </script>
+
+  </body>
+</html>

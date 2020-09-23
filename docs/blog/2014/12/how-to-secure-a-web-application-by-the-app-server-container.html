@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Zemian's Blog - How to secure a web application by the app server container</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../css/asciidoctor.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link href="../../../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../../../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../about.html">About</a></li>
+            <li><a href="../../../archive.html">Archive</a></li>
+            <li><a href="../../..//tags">Tags</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">	
+	<div class="page-header">
+		<h1>How to secure a web application by the app server container</h1>
+	</div>
+
+	<p><em>01 December 2014</em>, tags: 
+	    <a href="../../../tags/security.html">security</a> 
+	</p>
+
+	<p><p>There are many benefits to allow a container in managing users, groups and authentication policies. You may configure your WAR application to take advantage of this by adding the following in the WEB-INF/web.xml file</p>
+<p><security-constraint><br />
+<web-resource-collection><br />
+<web-resource-name>webuser</web-resource-name><br />
+<url-pattern>/*</url-pattern><br />
+</web-resource-collection><br />
+<auth-constraint><br />
+<role-name>webuser</role-name><br />
+</auth-constraint><br />
+</security-constraint><br />
+<login-config><br />
+<auth-method>BASIC</auth-method><br />
+<realm-name>default</realm-name><br />
+</login-config><br />
+<security-role><br />
+<role-name>webuser</role-name><br />
+</security-role></p>
+<p>Above will secure the entire application and allow only users with &quot;webuser&quot; role to access it. The name &quot;webuser&quot; can be any name you want.</p>
+<p>Each app server will manage users differently. In the case of WLS, it lets you create &quot;user&quot; and &quot;user group&quot;, and then you can map the defined role above to the group. To do this, add the following to the  WEB-INF/weblogic.xml file.</p>
+<p><weblogic-web-app 
+xmlns="http://xmlns.oracle.com/weblogic/weblogic-web-app" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://xmlns.oracle.com/weblogic/weblogic-web-app 
+http://xmlns.oracle.com/weblogic/weblogic-web-app/1.2/weblogic-web-app.xsd"><br />
+<security-role-assignment><br />
+<role-name>webuser</role-name><br />
+<principal-name>webusergroup</principal-name><br />
+</security-role-assignment><br />
+</weblogic-web-app></p>
+<p>Here we tell WLS that we map the &quot;webuser&quot; role defined in web.xml to use the &quot;webusergroup&quot;, a WLS user group.</p>
+<p>To create  user or user group in WLS, you may use the WLS Admin console web application. Go to the Security Realm and select the default &quot;myrealm&quot;, and then select User or Group tab. Go ahead and add a user with password under a new group named &quot;webusergroup&quot;. After this you can deploy your app, and it would prompt you for user and password whenever you try to access its URL.</p>
+<p>You can find out more security info at <a href="https://docs.oracle.com/cd/E23943_01/web.1111/e13711/thin_client.htm#SCPRG171">https://docs.oracle.com/cd/E23943_01/web.1111/e13711/thin_client.htm#SCPRG171</a>.</p>
+</p>
+
+	<hr />
+
+<div id="disqus_thread"></div>
+	
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://zemian-github-io.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">&copy; 2011 - Present Zemian Deng All Rights Reserved | Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.5</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../../../js/jquery-1.11.1.min.js"></script>
+    <script src="../../../js/bootstrap.min.js"></script>
+    <script src="../../../js/prettify.js"></script>
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-135626598-1');
+    </script>
+
+  </body>
+</html>

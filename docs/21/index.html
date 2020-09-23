@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Zemian's Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/asciidoctor.css" rel="stylesheet">
+    <link href="../css/base.css" rel="stylesheet">
+    <link href="../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../about.html">About</a></li>
+            <li><a href="../archive.html">Archive</a></li>
+            <li><a href="..//tags">Tags</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">
+  			<a href="blog/2013/02/hg-shortcuts-for-bash-profile.html"><h1>Hg shortcuts for bash .profile</h1></a>
+  			<p>28 February 2013, tags: 
+			    <a href="../tags/bash.html">bash</a> 
+  			</p>
+  			<p><p>Some shortcuts I used most often when working with Mecurial (hg) source control.</p>
+<pre><code># Hg shortcuts
+function splithgfiles() { ruby -ne 'if $_ =~ /files: / then puts $_.split else puts $_ end' ; }
+alias hgpu='hg pull -u'
+alias hgl='hg log -v -l 5 | splithgfiles'
+alias hgl1='hg log -v -l 1 | splithgfiles'
+alias hgu='hg update'
+alias hgc='hg commit -m'
+alias hgb='hg branches'
+alias hgbm='hg bookmarks'
+alias hgt='hg tags'
+alias hgs='hg status'
+alias hgsu='echo &quot;# Summary&quot; &amp;&amp; hg summary &amp;&amp; echo &quot;# Heads&quot; &amp;&amp; hg heads'
+alias hgr='hg revert -C'
+
+# Remove unversion files from Hg repository dir.
+function hgrmnew {
+ rm -vfr `hg st | cut -d ' ' -f 2`
+}
+</code></pre>
+<p>One worth special mentioning is that default &quot;hg log -v&quot; shows files with space separator. I find it easier to view with one file per line instead, hence I added the &quot;splithgfiles&quot; helper function.</p>
+</p>
+  			<a href="blog/2013/02/few-notes-about-java-clone-method.html"><h1>Few notes about Java clone() method</h1></a>
+  			<p>20 February 2013, tags: 
+			    <a href="../tags/java.html">java</a> 
+  			</p>
+  			<p><p>Did you know you can create new Java instance without constructor? That's right, and this feature is brought to you by the Java clone() method. I personally don't like to use it much because it has many pitfalls, and it feels very broken in many ways. You probably can write better &quot;clone&quot; by using copy constructor or a static copy factory methods.</p>
+<p>Anyrate, here is a unit test that highlights few notes I have gathered about Java clone. Look for the &quot;Note&quot; comments below.</p>
+<pre><code>package atest;
+
+import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.hamcrest.Matchers.hasItems;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+
+public class CloneTest {
+    @Test
+    public void testFooClone() throws Exception {
+        Foo a = new Foo();
+        Foo b = a.clone();
+
+        assertThat(a != b, is(true));
+        assertThat(a.constructorCallsCount, is(1));
+        assertThat(a.name, is(&quot;foo&quot;));
+        assertThat(b.constructorCallsCount, is(1)); // Note1: Wow, a new instance without calling constructor!
+        assertThat(b.name, is(&quot;foo&quot;));
+
+        a.name = &quot;fooX&quot;;
+        assertThat(a.name, is(&quot;fooX&quot;));
+        assertThat(b.name, is(&quot;foo&quot;));
+
+        Foo2 c = new Foo2();
+        c.ids.add(&quot;a&quot;);
+        Foo2 d = c.clone();
+        d.ids.add(&quot;b&quot;);
+
+        c.ids.clear();
+        c.ids.add(&quot;A&quot;);
+
+        assertThat(c != d, is(true));
+        assertThat(c.constructorCallsCount, is(2));
+        assertThat(c.name, is(&quot;foo&quot;));
+        assertThat(d.constructorCallsCount, is(2));
+        assertThat(d.name, is(&quot;foo&quot;));
+
+        assertThat(c.ids, hasItems(&quot;A&quot;));
+        assertThat(c.ids.size(), is(1));
+        assertThat(d.ids, hasItems(&quot;a&quot;, &quot;b&quot;));
+        assertThat(d.ids.size(), is(2));
+    }
+
+    /** A simple clone examples with simple type fields. */
+    public static class Foo implements Cloneable {
+        static int constructorCallsCount = 0;
+        String name = &quot;foo&quot;;
+        public Foo() {
+            constructorCallsCount++;
+        }
+        public Foo clone() {
+            // Note2: Catch checked exception here so client or subclass doesn't need to.
+            Foo result = null;
+            try {
+                result = (Foo)super.clone();
+            } catch (CloneNotSupportedException e) {
+                throw new RuntimeException(&quot;Unable to clone.&quot;, e);
+            }
+            return result;
+        }
+    }
+
+    /** A clone example that needs to fix field afterward super.clone(). */
+    public static class Foo2 extends Foo {
+        List&lt;String&gt; ids = new ArrayList();
+        public Foo2 clone() {
+            Foo2 result = (Foo2)super.clone(); // Note3: Some how, super clone will auto return the correct type!
+            result.ids = new ArrayList(ids);   // Note4: need to fix non-simple field.
+            return result;
+        }
+    }
+}
+</code></pre>
+</p>
+  			<a href="blog/2013/02/learn-how-to-grep-by-context-will-give-you-better-result.html"><h1>Learn how to grep by context will give you better result</h1></a>
+  			<p>03 February 2013, tags: 
+			    <a href="../tags/linux.html">linux</a> 
+  			</p>
+  			<p><p>I learned that <code>grep</code> command supports few options called &quot;context&quot; searching. Basically it can print lines around the matching string! For example, you can use this feature to perform a quick Java threads stack analysis like this (assuming you have a java process PID=12345).</p>
+<pre><code>bash&gt; jstack 12345 | grep --color 'State: BLOCKED' -B 1
+&quot;A-Bad-Boy-Thread&quot; prio=5 tid=0x00007fcfbc895800 nid=0xcd03 waiting on condition [0x00000001657cb000]
+   java.lang.Thread.State: BLOCKED (on object monitor)
+</code></pre>
+<p>See, without the &quot;-B 1&quot; option, which show one line before match, you won't know which name of the tread that's acting up! Now isn't that a gem!</p>
+<p>You may also use &quot;-A 5&quot; to see 5 more lines after the match. Or you may use the &quot;-C 5&quot; to see 5 lines before and after the match.</p>
+<p>PS: There is nothing wrong with a &quot;BLOCKED&quot; thread in Java, however if you got one that won't go away, then it's a good indicator that something is fishy about that thread in your application; because in a well designed app, threads should be in BLOCKED state as briefly as possible. Read the javadoc on <code>java.lang.Thread.State</code> for more details.</p>
+</p>
+  			<a href="blog/2013/01/fast-shell-utilities-to-report-mavens-unit-tests-results.html"><h1>Fast shell utilities to report Maven&apos;s unit tests results</h1></a>
+  			<p>28 January 2013, tags: 
+			    <a href="../tags/maven.html">maven</a> 
+  			</p>
+  			<p><p>I would like to share couple shell utilities that I have collected. These are for fast Maven multi modules reporting from your unit tests results, without having you to run entire Maven site reports, which can take a LONG time to generate if you have a large project! They should work on Linux or Window's Cygwin shell.</p>
+<pre><code># Show failed tests among all the surefire results.
+function failedtests() {
+    for DIR in $(find . -maxdepth 3 -type d -name &quot;surefire-reports&quot;) ; do
+        ruby -ne 'puts &quot;#$FILENAME : #$&amp;&quot; if $_ =~ /(Failures: [1-9][0-9]*.*|Errors: [1-9][0-9]*.*)/' $DIR/*.txt
+    done
+}
+
+# Show the top tests that took the longest time to run from maven surefire reports
+function slowtests() {
+    FILES=''
+    for DIR in $(find . -maxdepth 3 -type d -name &quot;surefire-reports&quot;) ; do
+        FILES=&quot;$FILES $DIR/*.txt&quot;
+    done
+    head -q -n 4 $FILES \
+        | ruby -ne 'gets; print $_.chomp + &quot; &quot;; gets; print gets' \
+        | ruby -ane 'printf &quot;%8.03f sec: &quot;, $F[-2].to_f; puts $_' \
+        | sort -r \
+        | head -10
+}
+</code></pre>
+<p>When developing with Maven, you often want to see a summary of failed tests, and you want those surefire TXT file content to see what's going on. The <code>failedtests</code> function will give you a list of all the failed tests filenames in all modules; and then you can cat each one to investigate.</p>
+<p>With <code>slowtests</code> function you may quickly see the top 10 most time consuming tests from your project!</p>
+<p>Enjoy!</p>
+<hr />
+<h2>Updated (2013/01/30)</h2>
+<p>I found out that the <code>head</code> command on MacOSX doesn't have the &quot;-q&quot; option and it always prints the &quot;==&gt; filename `# Replace this<br />
+head -q -n 4 $FILES \</p>
+<h1>With this</h1>
+<p>ruby -e 'ARGV.each{ |n| File.open(n) {|f| 4.times{ puts f.readline}} }' $FILES <br />
+`<br />
+It's a tad longer, but it's PORTABLE!</p>
+</p>
+  			<a href="blog/2013/01/apache-tapestry-5-makes-java-web-development-easy.html"><h1>Apache Tapestry 5 makes Java web development easy</h1></a>
+  			<p>11 January 2013, tags: 
+			    <a href="../tags/tapestry.html">tapestry</a> 
+  			</p>
+  			<p><p>I went through the <a href="http://tapestry.apache.org">Apache Tapestry 5</a> tutorial today and found it surprisingly easy to use. The two most productive features I love are auto class reloading and rich built-in components! I can edit the model/controller/view in a java IDE that auto compiles upon file save, and then reload browser to see immediate changes. I think any Java web framework should have this feature in order to be count as productive. (Yes there is JRebel, but it's commercial, and nothing more simpler than a framework supports it directly. Well to be fair JRebel is much more advance and richer in support your Java classes reloading, however for purpose of web dev, Tapestry seems to provide a sweet spot and boot productivity  tremendously.)</p>
+<p>I was intrigued enough to continue reading the rest of their documentation for advance usage and architecture design. I love simple and yet productive libraries/framework design principles, and I think Tapestry fits into that category. Their documentation is rich and well organized. I browsed their forums and user communities and they seem to be active and plenty of usage in the field. I also found these <a href="http://jumpstart.doublenegative.com.au/jumpstart/">jumpstart examples</a> to be extremely helpful.</p>
+<p>I am happy that I spent the time in learning this framework. I think it makes web development easy, fast and fun to work with. If you haven't tried it before, or have not tried their latest version 5 lately, I would highly recommend you to give it a try.</p>
+</p>
+  			<a href="blog/2012/12/java-implementation-of-string-next-successor.html"><h1>Java implementation of String#next() successor</h1></a>
+  			<p>31 December 2012, tags: 
+			    <a href="../tags/java.html">java</a> 
+  			</p>
+  			<p><p>I've found the <a href="http://www.ruby-doc.org/core-1.9.3/String.html#method-i-succ">Ruby's <code>String#next()</code> or <code>#succ</code></a> very useful and productive, specially when generating data for testing. Here is what the Ruby doc says:</p>
+<blockquote>
+<p>succ -&gt; new_str</p>
+<p>next -&gt; new_str</p>
+<p>Returns the successor to str. The successor is calculated by incrementing characters starting from the rightmost alphanumeric (or the rightmost character &gt; if there are no alphanumerics) in the string. Incrementing a digit always results in another digit, and incrementing a letter results in another letter &gt; of the same case. Incrementing nonalphanumerics uses the underlying character sets collating sequence.</p>
+<p>If the increment generates a carry, the character to the left of it is incremented. This process repeats until there is no carry, adding an additional &gt; character if necessary.</p>
+<pre><code>&quot;abcd&quot;.succ        #=&gt; &quot;abce&quot;
+&quot;THX1138&quot;.succ     #=&gt; &quot;THX1139&quot;
+&quot;&lt;&lt;koala&gt;&gt;&quot;.succ   #=&gt; &quot;&lt;&lt;koalb&gt;&gt;&quot;
+&quot;1999zzz&quot;.succ     #=&gt; &quot;2000aaa&quot;
+&quot;ZZZ9999&quot;.succ     #=&gt; &quot;AAAA0000&quot;
+&quot;***&quot;.succ         #=&gt; &quot;**+&quot;
+</code></pre>
+</blockquote>
+<p>So when I saw Groovy actually has provided a <a href="http://groovy.codehaus.org/groovy-jdk/java/lang/String.html#next()">String extension <code>#next()</code></a> method, I was happy to try it out. But then I was quickly disappointed when the behavior is very different. The Groovy version is very simple and actually not very productive since it simply <a href="https://github.com/groovy/groovy-core/blob/master/src/main/org/codehaus/groovy/runtime/StringGroovyMethods.java">loop through Character set range in incrementally</a> (including non-printable characters blindly!). The Ruby's version, however, is much more productive since it produce visible characters. For examples:</p>
+<pre><code>bash&gt; ruby -e 'puts &quot;Z&quot;.next()'
+AA
+bash&gt; groovy -e 'println(&quot;Z&quot;.next())'
+[
+</code></pre>
+<p>I wish Groovy version would improve in future as it's not very useful at the moment. Just for fun, I wrote a Java implementation version that mimics the Ruby's behavior:</p>
+<p>And here is my unit test for sanity check:</p>
+</p>
+  			<a href="blog/2012/12/reading-https-url-from-a-self-signed-cert.html"><h1>Reading https url from a self-signed cert</h1></a>
+  			<p>26 December 2012, tags: 
+			    <a href="../tags/groovy.html">groovy</a> 
+  			</p>
+  			<p><p>Groovy has made fetching data from URL a snap:</p>
+<pre><code>println(new URL(&quot;http://www.google.com&quot;).text)
+</code></pre>
+<p>But have you ever try to get data from an <code>https</code> of an site that's using a self signed certificate? A browser will prompt you a risk warning, but it let you trust it and still continue. But it's much more hassle if we want to fetch the data programmatically. For example, try fetching <a href="https://www.pcwebshop.co.uk/">https://www.pcwebshop.co.uk</a> and you will see that it failed miserably:</p>
+<pre><code>Caught: javax.net.ssl.SSLHandshakeException: sun.security.validator.ValidatorException: PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target
+javax.net.ssl.SSLHandshakeException: sun.security.validator.ValidatorException: PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target
+    at com.sun.net.ssl.internal.ssl.Alerts.getSSLException(Alerts.java:174)
+    at com.sun.net.ssl.internal.ssl.SSLSocketImpl.fatal(SSLSocketImpl.java:1762)
+    at com.sun.net.ssl.internal.ssl.Handshaker.fatalSE(Handshaker.java:241)
+    at com.sun.net.ssl.internal.ssl.Handshaker.fatalSE(Handshaker.java:235)
+    at com.sun.net.ssl.internal.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1206)
+    at com.sun.net.ssl.internal.ssl.ClientHandshaker.processMessage(ClientHandshaker.java:136)
+    at com.sun.net.ssl.internal.ssl.Handshaker.processLoop(Handshaker.java:593)
+    at com.sun.net.ssl.internal.ssl.Handshaker.process_record(Handshaker.java:529)
+    at com.sun.net.ssl.internal.ssl.SSLSocketImpl.readRecord(SSLSocketImpl.java:958)
+    at com.sun.net.ssl.internal.ssl.SSLSocketImpl.performInitialHandshake(SSLSocketImpl.java:1203)
+    at com.sun.net.ssl.internal.ssl.SSLSocketImpl.startHandshake(SSLSocketImpl.java:1230)
+    at com.sun.net.ssl.internal.ssl.SSLSocketImpl.startHandshake(SSLSocketImpl.java:1214)
+    at test.run(test.groovy:2)
+Caused by: sun.security.validator.ValidatorException: PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target
+    at com.sun.net.ssl.internal.ssl.X509TrustManagerImpl.validate(X509TrustManagerImpl.java:126)
+    at com.sun.net.ssl.internal.ssl.X509TrustManagerImpl.checkServerTrusted(X509TrustManagerImpl.java:209)
+    at com.sun.net.ssl.internal.ssl.X509TrustManagerImpl.checkServerTrusted(X509TrustManagerImpl.java:249)
+    at com.sun.net.ssl.internal.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1185)
+    ... 8 more
+Caused by: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target
+    ... 12 more
+</code></pre>
+<p>This is due to Java API won't let you get data if your certs is not in the keystore or &quot;trusted&quot;. Now if you have your own testing site and did a self-signed like above, then sure you just want to trust it temporary and simply want to fetch the data. However configuring the Java API to do such simple task is a nightmare.</p>
+<p>Today, I found a library that allow you to perform exactly this: <a href="https://github.com/kevinsawicki/http-request">https://github.com/kevinsawicki/http-request</a> Trying this out using Groovy is pretty sweet:</p>
+<pre><code>@Grab('com.github.kevinsawicki:http-request:3.1')
+import com.github.kevinsawicki.http.*
+def req = HttpRequest.get(&quot;https://www.pcwebshop.co.uk&quot;)
+req.trustAllCerts()
+req.trustAllHosts()
+println(req.body())
+</code></pre>
+<p>And Voila! We read the URL context without the pesky exception. This <code>http-request</code> is awesome! Now I wish JDK let you do simple thing like this. This is extremely useful for testing.</p>
+</p>
+  			<a href="blog/2012/12/a-strange-case-of-java-generic-and-inheritage-parameter-passing.html"><h1>A strange case of Java generic and inheritage parameter passing</h1></a>
+  			<p>20 December 2012, tags: 
+			    <a href="../tags/java.html">java</a> 
+  			</p>
+  			<p><p>I came a cross some strange Java code and I would like to share it here. Take a look few of classes I have here:</p>
+<pre><code>// file: AFoo.java
+package atest.deng;
+public abstract class AFoo&lt;T&gt; {
+}
+
+// file: Foo.java
+package atest.deng;
+public class Foo extends AFoo&lt;String&gt; {
+}
+
+// file: FooProcessor.java
+package atest.deng;
+public class FooProcessor&lt;T&gt; {
+    public void process(Class&lt;AFoo&lt;?&gt;&gt; cls) {
+        System.out.println(cls);
+    }
+}
+
+// file: FooMain.java
+package atest.deng;
+public class FooMain {
+    public static void main(String[] args) {
+        new FooProcessor().process(Foo.class);
+    }
+}
+
+bash&gt; mvn compile
+bash&gt; [INFO] BUILD SUCCESS
+</code></pre>
+<p>I tried this with JDK6 + Maven and it compiles without problem. But try to remove the <code>&lt;T&gt;</code> part from <code>FooProcessor</code> and it will fail to compile!</p>
+<pre><code>// file: FooProcessor.java
+package atest.deng;
+public class FooProcessor {
+    public void process(Class&lt;AFoo&lt;?&gt;&gt; cls) {
+        System.out.println(cls);
+    }
+}
+
+bash&gt; mvn clean compile
+bash&gt; [ERROR] java-demo\src\main\java test\deng\FooMain.java:[4,26] process(java.lang.Class&lt;atest.deng.AFoo&lt;?&gt;&gt;) in atest.deng.FooProcessor cannot be applied to (java.lang.Class&lt;atest.deng.Foo&gt;)
+</code></pre>
+<p>Without the <code>&lt;T&gt;</code> the code won't compile, and yet we are not even using it in this case. How and why <code>&lt;T&gt;</code> affects the method parameters invocation?</p>
+<p>Now, we can improve the <code>FooProcessor</code> in this way so that the presence of <code>&lt;T&gt;</code> doesn't have any affect.</p>
+<pre><code>package atest.deng;
+public class FooProcessor {
+    public void process(Class&lt;? extends AFoo&lt;?&gt;&gt; cls) {
+        System.out.println(cls);
+    }
+}
+</code></pre>
+<p>That's a more proper way to write the generic parameter anyway. But despite a better solution, the puzzle is that the original code compiled under the compiler, but only with the <code>&lt;T&gt;</code> presented, and yet it's not used. Wouldn't you consider this as a Java compiler bug?</p>
+</p>
+  			<a href="blog/2012/12/a-simple-groovy-issue-tracker-using-file-system.html"><h1>A simple Groovy issue tracker using file system</h1></a>
+  			<p>18 December 2012, tags: 
+			    <a href="../tags/groovy.html">groovy</a> 
+  			</p>
+  			<p><p>It will be a chaos not to track bugs and feature requests when you developing software. Having a simple issue tracker would make managing the project much more successful. Now I like simple stuff, and I think for small project, having this tracker right inside the source control (especially with DSVC like Mercurial/Git etc) repository is not only doable, but very convenient as well. You don't have to go crazy with all the fancy features, but just enough to track issues are fine. I would like to propose this layout for you.</p>
+<p>Let's say you have a project that looks like this</p>
+<pre><code>project
+ +- src/main/java/Hello.java
+ +- issues/issue-001.md
+ +- pom.xml
+</code></pre>
+<p>All I need is a simple directory <code>issues</code> to get going. Now I have a place to track my issue! First issue <code>issue-000.md</code> should be what your project is about. For example:</p>
+<pre><code>/id=issue-001
+/createdon=2012-12-16 18:07:08
+/type=bug
+/status=new
+/resolution=
+/from=Zemian
+/to=
+/found=
+/fixed=
+/subject=A simple Java Hello program
+
+# Updated on 2012-12-16 18:07:08
+
+We want to create a Maven based Hello world program. It should print &quot;Hello World.&quot;
+</code></pre>
+<p>I choose <code>.md</code> as file extension for intending to write comments in Markdown format. Since it's a text file, you do what you want. To be more structured, I have added some headers metadata for issue tracking. Let's define some here. I would propose to use these and formatting:</p>
+<pre><code> /id=issue-&lt;NUM&gt;
+ /createdon=&lt;TIMESTAMP&gt;
+ /type=feature|bug|question
+ /status=new|reviewing|working|onhold|testing|resolved
+ /resolution=fixed|rejected|duplicated
+ /from=&lt;REPORTER_FROM_NAME&gt;
+ /to=&lt;ASSIGNEE_TO_NAME&gt;
+ /found=&lt;VERSION_FOUND&gt;
+ /fixed=&lt;VERSION_FIXED&gt;
+</code></pre>
+<p>That should cover most of the bug and feature development issues. It's not cool to write software without a history of changes, including these issues created. So let's use a source control. I highly recommend you to use Mercurial <code>hg</code>. You can create and initialize a new repository like this.</p>
+<pre><code>bash&gt; cd project
+bash&gt; hg init
+bash&gt; hg add
+bash&gt; hg commit -m &quot;My hello world project&quot;
+</code></pre>
+<p>Now your project is created and we have a place to track your issues. Now it's simple text file, so use your favorite text editor and edit away. However, creating new issue with those header tags is boring. It will be nice to have a script that manage it a little. I have a Groovy script <code>issue.groovy</code> (see at the end of this article) that let you run reports and create new issues. You can add this script into your <code>project/issues</code> directory and you can instantly creating new issue and querying reports! Here is an example output on my PC:</p>
+<pre><code>bash&gt; cd project
+bash&gt; groovy scripts/issue.groovy
+
+Searching for issues with /status!=resolved
+Issue: /id=issue-001 /status=new /subject=A simple Java Hello program
+1 issues found.
+
+bash&gt; groovy scripts/issue.groovy --new /type=feature /subject='Add a unit test.'
+
+project/issues/issue-002.md created.
+/id=issue-002
+/createdon=2012-12-16 19:10:00
+/type=feature
+/status=new
+/resolution=
+/from=Zemian
+/to=
+/found=
+/fixed=
+/subject=Add a unit test.
+
+bash&gt; groovy scripts/issue.groovy
+
+Searching for issues with /status!=resolved
+Issue: /id=issue-000 /status=new /subject=A simple Java Hello program
+Issue: /id=issue-002 /status=new /subject=Add a unit test.
+2 issues found.
+
+bash&gt; groovy scripts/issue.groovy --details /id=002
+
+Searching for issues with /id=002
+Issue: /id=issue-002
+  /createdon=2012-12-16 19:10:00 /found= /from=Zemian /resolution= /status=new /type=feature
+  /subject=Add a unit test.
+1 issues found.
+
+bash&gt; groovy scripts/issue.groovy --update /id=001 /status=resolved /resolution=fixed 'I fixed this thang.'
+Updating issue /id=issue-001
+Updating /status=resolved
+Updating /resolution=fixed
+
+Update issue-001 completed.
+</code></pre>
+<p>The script give you some quick and consistent way to create/update/search issues. But they are just plain text files! You can just as well fire up your favorite text editor and change any any thing you want. Save and even commit it into your source repository. All will not lost.</p>
+<p>I hope this issue tracking script can get your next project started quickly. Let me know what you do you think!</p>
+<p>Enjoy!</p>
+<p>Zemian</p>
+<p>And here is my <code>issue.groovy</code> script.</p>
+<hr />
+<p>Oh, and of course I eat my own *dog food. Here are few issues that I started to track the <code>issue.grooy</code> itself.</p>
+<ul>
+<li>
+<p>v1.0.0 (2012/12/19)</p>
+</li>
+<li>
+<p><a href="https://bitbucket.org/saltnlight5/sandbox/src/tip/scripts/issue-001.md">issue-001</a></p>
+</li>
+<li>
+<p>v1.0.1 (2012/12/20)</p>
+</li>
+<li>
+<p><a href="https://bitbucket.org/saltnlight5/sandbox/src/tip/scripts/issue-002.md">issue-002</a></p>
+</li>
+<li><a href="https://bitbucket.org/saltnlight5/sandbox/src/tip/scripts/issue-003.md">issue-003</a></li>
+</ul>
+</p>
+  			<a href="blog/2012/12/getting-started-with-quartz-scheduler-on-mysql-database.html"><h1>Getting started with Quartz Scheduler on MySQL database</h1></a>
+  			<p>14 December 2012, tags: 
+			    <a href="../tags/quartz.html">quartz</a> 
+  			</p>
+  			<p><p>Here are some simple steps to get you fully started with Quartz Scheduler on MySQL database using Groovy. The script below will allow you to quickly experiment different Quartz configuration settings using an external file.</p>
+<p>First step is to setup the database with tables. Assuming you already have installed MySQL and have access to create database and tables.</p>
+<pre><code>bash&gt; mysql -u root -p
+
+sql&gt; create database quartz2;
+sql&gt; create user 'quartz2'@'localhost' identified by 'quartz2123';
+sql&gt; grant all privileges on quartz2.* to 'quartz2'@'localhost';
+sql&gt; exit;
+
+bash&gt; mysql -u root -p quartz2 &lt; /path/to/quartz-dist/docs/dbTables/tables_mysql.sql
+</code></pre>
+<p>The <code>tables_mysql.sql</code> can be found from Quartz distribution download, or directly from their source <a href="http://svn.terracotta.org/svn/quartz/tags/quartz-2.1.6/docs/dbTables">here</a>.</p>
+<p>Once the database is up, you need to write some code to start up the Quartz Scheduler. Here is a simply Groovy script <code>quartzServer.groovy</code> that will run as a tiny scheduler server.</p>
+<pre><code>// Run Quartz Scheduler as a server
+// Author: Author: Zemian Deng, Date: 2012-12-15_16:46:09
+@GrabConfig(systemClassLoader=true)
+@Grab('mysql:mysql-connector-java:5.1.22')
+@Grab('org.slf4j:slf4j-simple:1.7.1')
+@Grab('org.quartz-scheduler:quartz:2.1.6')
+import org.quartz.*
+import org.quartz.impl.*
+import org.quartz.jobs.*
+
+config = args.length &gt; 0 ? args[0] : &quot;quartz.properties&quot;
+scheduler = new StdSchedulerFactory(config).getScheduler()
+scheduler.start()
+
+// Register shutdown
+addShutdownHook {
+  scheduler.shutdown()
+}
+
+// Quartz has its own thread, so now put this script thread to sleep until
+// user hit CTRL+C
+while (!scheduler.isShutdown()) {
+ Thread.sleep(Long.MAX_VALUE)
+}
+</code></pre>
+<p>And now you just need a config file <code>quartz-mysql.properties</code> that looks like this:</p>
+<pre><code># Main Quartz configuration
+org.quartz.scheduler.skipUpdateCheck = true
+org.quartz.scheduler.instanceName = DatabaseScheduler
+org.quartz.scheduler.instanceId = NON_CLUSTERED
+org.quartz.scheduler.jobFactory.class = org.quartz.simpl.SimpleJobFactory
+org.quartz.jobStore.class = org.quartz.impl.jdbcjobstore.JobStoreTX
+org.quartz.jobStore.driverDelegateClass = org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+org.quartz.jobStore.dataSource = quartzDataSource
+org.quartz.jobStore.tablePrefix = QRTZ_
+org.quartz.threadPool.class = org.quartz.simpl.SimpleThreadPool
+org.quartz.threadPool.threadCount = 5
+
+# JobStore: JDBC jobStoreTX
+org.quartz.dataSource.quartzDataSource.driver = com.mysql.jdbc.Driver
+org.quartz.dataSource.quartzDataSource.URL = jdbc:mysql://localhost:3306/quartz2
+org.quartz.dataSource.quartzDataSource.user = quartz2
+org.quartz.dataSource.quartzDataSource.password = quartz2123
+org.quartz.dataSource.quartzDataSource.maxConnections = 8
+</code></pre>
+<p>You can run the Groovy script as usual</p>
+<pre><code>bash&gt; groovy quartzServer.groovy quartz-mysql.properties
+Dec 15, 2012 6:20:26 PM com.mchange.v2.log.MLog 
+INFO: MLog clients using java 1.4+ standard logging.
+Dec 15, 2012 6:20:27 PM com.mchange.v2.c3p0.C3P0Registry banner
+INFO: Initializing c3p0-0.9.1.1 [built 15-March-2007 01:32:31; debug? true; trace:10]
+[main] INFO org.quartz.impl.StdSchedulerFactory - Using default implementation for ThreadExecutor
+[main] INFO org.quartz.core.SchedulerSignalerImpl - Initialized Scheduler Signaller of type: class org.quartz.core.SchedulerSignalerImpl
+[main] INFO org.quartz.core.QuartzScheduler - Quartz Scheduler v.2.1.6 created.
+[main] INFO org.quartz.core.QuartzScheduler - JobFactory set to: org.quartz.simpl.SimpleJobFactory@1a40247
+[main] INFO org.quartz.impl.jdbcjobstore.JobStoreTX - Using thread monitor-based data access locking (synchronization).
+[main] INFO org.quartz.impl.jdbcjobstore.JobStoreTX - JobStoreTX initialized.
+[main] INFO org.quartz.core.QuartzScheduler - Scheduler meta-data: Quartz Scheduler (v2.1.6) 'DatabaseScheduler' with instanceId 'NON_CLUSTERED'
+  Scheduler class: 'org.quartz.core.QuartzScheduler' - running locally.
+  NOT STARTED.
+  Currently in standby mode.
+  Number of jobs executed: 0
+  Using thread pool 'org.quartz.simpl.SimpleThreadPool' - with 5 threads.
+  Using job-store 'org.quartz.impl.jdbcjobstore.JobStoreTX' - which supports persistence. and is not clustered.
+
+[main] INFO org.quartz.impl.StdSchedulerFactory - Quartz scheduler 'DatabaseScheduler' initialized from the specified file : 'quartz-mysql.properties' from the class resource path.
+[main] INFO org.quartz.impl.StdSchedulerFactory - Quartz scheduler version: 2.1.6
+Dec 15, 2012 6:20:27 PM com.mchange.v2.c3p0.impl.AbstractPoolBackedDataSource getPoolManager
+INFO: Initializing c3p0 pool... com.mchange.v2.c3p0.ComboPooledDataSource [ acquireIncrement -&gt; 3, acquireRetryAttempts
+-&gt; 30, acquireRetryDelay -&gt; 1000, autoCommitOnClose -&gt; false, automaticTestTable -&gt; null, breakAfterAcquireFailure -&gt; false, checkoutTimeout -&gt; 0, connectionCustomizerClassName -&gt; null, connectionTesterClassName -&gt; com.mchange.v2.c3p0.impl.DefaultConnectionTester, dataSourceName -&gt; 1hge16k8r18mveoq1iqtotg|1486306, debugUnreturnedConnectionStackTraces -&gt; fals
+e, description -&gt; null, driverClass -&gt; com.mysql.jdbc.Driver, factoryClassLocation -&gt; null, forceIgnoreUnresolvedTransactions -&gt; false, identityToken -&gt; 1hge16k8r18mveoq1iqtotg|1486306, idleConnectionTestPeriod -&gt; 0, initialPoolSize -&gt; 3, jdbcUrl -&gt; jdbc:mysql://localhost:3306/quartz2, lastAcquisitionFailureDefaultUser -&gt; null, maxAdministrativeTaskTime -&gt; 0
+, maxConnectionAge -&gt; 0, maxIdleTime -&gt; 0, maxIdleTimeExcessConnections -&gt; 0, maxPoolSize -&gt; 8, maxStatements -&gt; 0, maxStatementsPerConnection -&gt; 120, minPoolSize -&gt; 1, numHelperThreads -&gt; 3, numThreadsAwaitingCheckoutDefaultUser -&gt; 0, pref
+erredTestQuery -&gt; null, properties -&gt; {user=******, password=******}, propertyCycle -&gt; 0, testConnectionOnCheckin -&gt; false, testConnectionOnCheckout -&gt; false, unreturnedConnectionTimeout -&gt; 0, usesTraditionalReflectiveProxies -&gt; false ]
+[main] INFO org.quartz.impl.jdbcjobstore.JobStoreTX - Freed 0 triggers from 'acquired' / 'blocked' state.[main] INFO org.quartz.impl.jdbcjobstore.JobStoreTX - Recovering 0 jobs that were in-progress at the time of the last shut-down.
+[main] INFO org.quartz.impl.jdbcjobstore.JobStoreTX - Recovery complete.
+[main] INFO org.quartz.impl.jdbcjobstore.JobStoreTX - Removed 0 'complete' triggers.
+[main] INFO org.quartz.impl.jdbcjobstore.JobStoreTX - Removed 0 stale fired job entries.
+[main] INFO org.quartz.core.QuartzScheduler - Scheduler DatabaseScheduler_$_NON_CLUSTERED started.
+
+
+... CTRL+C
+[Thread-6] INFO org.quartz.core.QuartzScheduler - Scheduler DatabaseScheduler_$_NON_CLUSTERED shutting down.
+[Thread-6] INFO org.quartz.core.QuartzScheduler - Scheduler DatabaseScheduler_$_NON_CLUSTERED paused.
+[Thread-6] INFO org.quartz.core.QuartzScheduler - Scheduler DatabaseScheduler_$_NON_CLUSTERED shutdown complete.
+</code></pre>
+<p>That's a full run of above setup. Go ahead and play with different config. Read <a href="http://quartz-scheduler.org/documentation/quartz-2.1.x/configuration/">http://quartz-scheduler.org/documentation/quartz-2.1.x/configuration</a> for more details.</p>
+<hr />
+<p>Here I will post couple more easy config that will get you started in a commonly used config set.</p>
+<p>A MySQL cluster enabled configuration. With this, you can start one or more shell terminal and run different instance of <code>quartzServer.groovy</code> with the same config. All the quartz scheduler instances should cluster themselve and distribute your jobs evenly.</p>
+<pre><code># Main Quartz configuration
+org.quartz.scheduler.skipUpdateCheck = true
+org.quartz.scheduler.instanceName = DatabaseClusteredScheduler
+org.quartz.scheduler.instanceId = AUTO
+org.quartz.scheduler.jobFactory.class = org.quartz.simpl.SimpleJobFactory
+org.quartz.jobStore.class = org.quartz.impl.jdbcjobstore.JobStoreTX
+org.quartz.jobStore.driverDelegateClass = org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+org.quartz.jobStore.dataSource = quartzDataSource
+org.quartz.jobStore.tablePrefix = QRTZ_
+org.quartz.jobStore.isClustered = true
+org.quartz.threadPool.class = org.quartz.simpl.SimpleThreadPool
+org.quartz.threadPool.threadCount = 5
+
+# JobStore: JDBC jobStoreTX
+org.quartz.dataSource.quartzDataSource.driver = com.mysql.jdbc.Driver
+org.quartz.dataSource.quartzDataSource.URL = jdbc:mysql://localhost:3306/quartz2
+org.quartz.dataSource.quartzDataSource.user = quartz2
+org.quartz.dataSource.quartzDataSource.password = quartz2123
+org.quartz.dataSource.quartzDataSource.maxConnections = 8
+</code></pre>
+<p>Here is another config set for a simple in-memory scheduler.</p>
+<pre><code># Main Quartz configuration
+org.quartz.scheduler.skipUpdateCheck = true
+org.quartz.scheduler.instanceName = InMemoryScheduler
+org.quartz.scheduler.jobFactory.class = org.quartz.simpl.SimpleJobFactory
+org.quartz.threadPool.class = org.quartz.simpl.SimpleThreadPool
+org.quartz.threadPool.threadCount = 5
+</code></pre>
+<p>Now, if you need more fancy UI management of Quartz, give <a href="http://code.google.com/p/myschedule">MySchedule</a> a try.</p>
+<p>Happy scheduling!</p>
+</p>
+
+	<hr />
+
+	<ul class="pager">
+		<li class="previous"><a href="https://zemian.github.io/20">Previous</a></li>
+		<li>Page: 21/28</li>
+		<li class="next"><a href="https://zemian.github.io/22">Next</a></li>
+	</ul>
+
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">&copy; 2011 - Present Zemian Deng All Rights Reserved | Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.5</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../js/jquery-1.11.1.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/prettify.js"></script>
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-135626598-1');
+    </script>
+
+  </body>
+</html>

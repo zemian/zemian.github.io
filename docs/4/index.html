@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Zemian's Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/asciidoctor.css" rel="stylesheet">
+    <link href="../css/base.css" rel="stylesheet">
+    <link href="../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../about.html">About</a></li>
+            <li><a href="../archive.html">Archive</a></li>
+            <li><a href="..//tags">Tags</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">
+  			<a href="blog/2018/04/starting-sublimetext-on-cygwin.html"><h1>Starting SublimeText on Cygwin</h1></a>
+  			<p>09 April 2018, tags: 
+			    <a href="../tags/sublimetext-cygwin.html">sublimetext-cygwin</a> 
+  			</p>
+  			<p><p>I edit files a lot from command line Cygwin, and I usually use an alias<br />
+<code>e</code> to my favorite editor. For SublimeText, I found it more useful to<br />
+start a new windows on files I pass in like this:</p>
+<pre><code>function subl() { &quot;/C/Users/zemian/apps/Sublime-Text-Build-3143-x64/subl.exe&quot; --new-window $(cygpath -am &quot;$@&quot;) ; }
+alias e=subl
+</code></pre>
+<p>Now in terminal, I can edit any files by simply running this: $ e<br />
+~/.bashrc</p>
+</p>
+  			<a href="blog/2018/03/java-versions.html"><h1>Java versions</h1></a>
+  			<p>26 March 2018, tags: 
+			    <a href="../tags/javap-version.html">javap-version</a> 
+  			</p>
+  			<p><p>How to check Java version from compiled classes</p>
+<pre><code>javap -cp target/classes -verbose com.zemian.hellojava.App | grep 'major version'
+major version: 49
+</code></pre>
+<p>You may use this forumla to get the JDK version:<br />
+<code>&lt;class_file_major_ver&gt; - 44 = JDK version</code>. So this means above class<br />
+is targeted for JDK 5 (1.5).</p>
+<p>Here are more examples of different class format versions matching to<br />
+JDK versions.</p>
+<pre><code>major version: 45.3 = Java 1.1
+major version: 46 = Java 1.2
+major version: 47 = Java 1.3
+major version: 48 = Java 1.4
+major version: 49 = Java 1.5
+major version: 50 = Java 1.6
+major version: 51 = Java 1.7
+major version: 52 = Java 1.8
+major version: 53 = Java 9
+major version: 54 = Java 10
+</code></pre>
+<p>Ref: <a href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html">https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html</a></p>
+</p>
+  			<a href="blog/2018/03/switching-different-jdk-in-cygwin.html"><h1>Switching Different JDK in Cygwin</h1></a>
+  			<p>24 March 2018, tags: 
+			    <a href="../tags/cygwin-jdk.html">cygwin-jdk</a> 
+  			</p>
+  			<p><p>I love to use bash shell terminal. It’s a much more powerful terminal to<br />
+do everyday tasks. Even in Windows, I can get most of what I need using<br />
+Cygwin. Unfortunately Java executable are native to OS only, and for<br />
+Windows, it would still work under Cygwin, but all the file system paths<br />
+are still native. Java can understand the mixed-path though, and it has<br />
+made somewhat easier than the Windows native backward slash path like<br />
+typing. This means we can define <code>JAVA_HOME</code> variable using mixed path<br />
+mode. In Cygwin, I define my <code>.bashrc</code> like this:</p>
+<pre><code>export JAVA_HOME=C:/Users/zemian/apps/jdk-8u161
+PATH=$HOME/apps/jdk-8u161/bin:$PATH
+</code></pre>
+<p>I sometimes work with different version of JDK for various application<br />
+testing. In this case, I need a way to quicly switch JDK version in my<br />
+shell env. To make it easier, I have installed all of my JDK in a<br />
+<code>$HOME/apps</code> directory, and created symbolic links to each JDKs like<br />
+this:</p>
+<pre><code>cd $HOME/apps
+ls -ld jdk*
+
+drwx------+ 1 zemian staff 0 Mar 24 16:58 jdk-8u161
+drwx------+ 1 zemian staff 0 Mar 24 10:57 jdk-9.0.4
+drwx------+ 1 zemian staff 0 Mar 24 10:48 jdk-10
+
+lrwxrwxrwx  1 zemian staff 9 Mar 24 16:55 jdk8 -&gt; jdk-8u161
+lrwxrwxrwx  1 zemian staff 9 Mar 24 11:02 jdk9 -&gt; jdk-9.0.4
+lrwxrwxrwx  1 zemian staff 6 Mar 24 11:00 jdk10 -&gt; jdk-10
+</code></pre>
+<p>Now that each JDK has a nice consistent version number in path, then I<br />
+create a shell function like this to switch between them:</p>
+<pre><code># Switching Multiple JDK
+switchjava() {
+        JDK=&quot;jdk$1&quot;
+        if [[ ! -d $APPS_DIR/$JDK ]]; then
+                echo &quot;ERROR: JDK path not found: $APPS_DIR/$JDK&quot;
+                return
+        fi
+        export JAVA_HOME=`cygpath -wm $APPS_DIR/$JDK`
+        export PATH=$APPS_DIR/$JDK/bin:$PATH
+
+        # Verifying java
+        echo &quot;Switched JAVA_HOME to $JAVA_HOME&quot;
+        echo &quot;Java Path:&quot;
+        which java
+        echo &quot;Java Version:&quot;
+        java -version
+}
+</code></pre>
+<p>To put it in use, it looks like this:</p>
+<pre><code>$ switchjava 9
+Switched JAVA_HOME to C:/Users/zemian/apps/jdk-9.0.4
+Java Path:
+/home/zemian/apps/jdk9/bin/java
+Java Version:
+openjdk version &quot;9.0.4&quot;
+OpenJDK Runtime Environment (build 9.0.4+11)
+OpenJDK 64-Bit Server VM (build 9.0.4+11, mixed mode)
+
+$ switchjava 8
+Switched JAVA_HOME to C:/Users/zemian/apps/jdk-8u161
+Java Path:
+/home/zemian/apps/jdk8/bin/java
+Java Version:
+java version &quot;1.8.0_161&quot;
+Java(TM) SE Runtime Environment (build 1.8.0_161-b12)
+Java HotSpot(TM) 64-Bit Server VM (build 25.161-b12, mixed mode)
+</code></pre>
+</p>
+  			<a href="blog/2018/03/compare-multiple-jdk-versions-startup-time.html"><h1>Compare Multiple JDK Versions Startup Time</h1></a>
+  			<p>24 March 2018, tags: 
+			    <a href="../tags/jdk-startup-time.html">jdk-startup-time</a> 
+
+			    <a href="../tags/python.html">python</a> 
+  			</p>
+  			<p><p><strong><code>jdk-startup-time-test.py</code>.</strong></p>
+<pre><code>#!/usr/bin/env python3
+# Author: Zemian Deng 2018-03-24
+#
+# This script will test multiple JDK versions of startup time in your system
+# We assume all JDK are installed in $HOME/apps directory with
+# names matching in 'jdk_versions' list.
+# Also we asusme you compiled `hello.java` with lowest JDK
+# you have in the same directory as this script. This is
+# used for testing the JVM loading time.
+#
+# NOTE: Running the script using Cygwin is a LOT slower than
+# running it natively in cmd.exe shell! This is because
+# time for Cygwin to start Java is very slow!
+#
+
+import time, subprocess, os
+home_dir = os.path.expanduser('~')
+app_dir = home_dir + '/apps'
+jdk_versions = [
+'jdk-6u29',
+'jdk-7u80',
+'jdk-8u161',
+'jdk-9.0.4',
+'jdk-10']
+def test_jdk_startup(jdk):
+        runs = []
+        java_cmd = app_dir + '/' + jdk + '/bin/java'
+        #print(f&quot;Testing {java_cmd}&quot;)
+        for _ in range(10):
+                t1 = time.time()
+                subprocess.check_output([java_cmd, 'hello'])
+                t2 = time.time()
+                runs.append(t2 - t1)
+        return sum(runs) / len(runs)
+
+# Now test it
+for jdk in jdk_versions:
+        t = test_jdk_startup(jdk)
+        print(f&quot;{jdk:20} avg start-time {t:.3}s&quot;)
+</code></pre>
+<p>Here is a sample of output:</p>
+<pre><code>python3 jdk-startup-time-test.py
+
+jdk-6u29             avg start-time 0.301s
+jdk-7u80             avg start-time 0.122s
+jdk-8u161            avg start-time 0.178s
+jdk-9.0.4            avg start-time 0.359s
+jdk-10               avg start-time 0.323s
+</code></pre>
+</p>
+  			<a href="blog/2018/03/oracle-java-se-jdk-vs-openjdk.html"><h1>Oracle Java SE JDK vs OpenJDK</h1></a>
+  			<p>24 March 2018, tags: 
+			    <a href="../tags/openjdk.html">openjdk</a> 
+  			</p>
+  			<p><p>In general:</p>
+<ul>
+<li>
+<p>JRE - Java Runtime Environment. It comes with the Java (<code>java</code>)<br />
+executable for running Java application. This is typical for end<br />
+users who use it to run compiled Java applications (in jar file<br />
+distribution), and not doing any development. JRE is smaller to<br />
+download than JDK.</p>
+</li>
+<li>
+<p>JDK - Java Development Kit. It comes with Java compiler (<code>javac</code>)<br />
+and many other development tools; and it also include the JRE as<br />
+well. This is for Java development and running Java applications<br />
+together. As a developer, you usually want to get this as single<br />
+package.</p>
+</li>
+</ul>
+<p>Oracle sponsors and drives the official open source<br />
+<a href="http://jdk.java.net/">OpenJDK</a> project, where new Java edition are<br />
+develope. It provides binary releases that developers may download for<br />
+various OS envs. (Note starting JDK9, you may download binary package<br />
+that simply untar/unzip into a directory without need of installer!)</p>
+<p>Oracle also provides commercial version of the <a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">Java SE<br />
+JDK</a>.<br />
+These JDK packages has different licenses for usage, and are built with<br />
+different installer format. Users usually require local Admin Rights to<br />
+install it.</p>
+</p>
+  			<a href="blog/2018/03/install-windows-jdk-without-admin-rights.html"><h1>Install Windows JDK Without Admin Rights</h1></a>
+  			<p>23 March 2018, tags: 
+			    <a href="../tags/jdk.html">jdk</a> 
+  			</p>
+  			<p><h1>Installing JDK 7</h1>
+<ol>
+<li>
+<p>Download <a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">Oracle Java SE JDK<br />
+7</a><br />
+In this example, we will use <code>jdk-7u80-windows-x64.exe</code></p>
+</li>
+<li>
+<p>Extract <code>jdk-7u80-windows-x64.exe</code> using 7-zip tool. Right click the<br />
+file then select context menu 7-zip &gt; Extract to<br />
+<code>jdk-7u80-windows-x64</code></p>
+</li>
+<li>
+<p>Go to the directory <code>jdk-7u80-windows-x64/.rsrc/1033/JAVA_CAB10</code></p>
+<ul>
+<li>
+<p>Step 1: Extract the file <code>111</code> using 7-zip again, which will<br />
+result a <code>tools.zip</code> file</p>
+<pre><code>Right click the file then select context menu 7-zip &gt; Extract here
+</code></pre>
+</li>
+<li>
+<p>Step 2: Extract tools.zip using 7-zip tool again</p>
+<pre><code>Right click the file then select context menu 7-zip &gt; Extract to `tools`
+</code></pre>
+</li>
+<li>
+<p>Step 3: Open <code>cmd.exe</code> and cd into <code>tools</code> directory above, then<br />
+run the following:</p>
+<pre><code>for /r %i in (*.pack) do bin\unpack200 -r -v %i %~pi%~ni.jar
+</code></pre>
+</li>
+</ul>
+</li>
+</ol>
+<p>Or if you use Cygwin Bash, you can run this:</p>
+<p>+</p>
+<pre><code>find . -name '*.pack' -type f -exec sh -c 'bin/unpack200 -r -v $0 ${0/.pack/.jar}' {} \;
+</code></pre>
+<ul>
+<li>
+<p>Step 4: Copy <code>tools</code> folder and rename it to<br />
+<code>%USERPROFILE%/apps/jdk-7u80</code></p>
+<ol>
+<li>Optionally, if you want the JDK source code, following these<br />
+instruction:</li>
+</ol>
+</li>
+<li>
+<p>Step 1: Go to the directory Go to the directory<br />
+<code>jdk-7u80-windows-x64/.rsrc/1033/JAVA_CAB9</code></p>
+</li>
+<li>
+<p>Step 2: Extract the file <code>110</code>, which contains <code>src.zip</code></p>
+</li>
+<li>
+<p>Step 3: Copy <code>src.zip</code> into <code>%USERPROFILE%/apps/jdk-7u80</code></p>
+</li>
+</ul>
+<p>Refs:<br />
+<a href="http://stackoverflow.com/questions/10891405/installing-jdk-without-administrator-privileges">http://stackoverflow.com/questions/10891405/installing-jdk-without-administrator-privileges</a></p>
+<h1>Installing JDK 8</h1>
+<p>The JDK8 update 102 or higher has different file structure!</p>
+<ol>
+<li>
+<p>Use 7-zip to unpack <code>jdk-8u131-windows-x64.exe</code></p>
+</li>
+<li>
+<p><code>cd .rsrc/1033/JAVA_CAB10</code></p>
+</li>
+<li>
+<p>Use 7-zip to unpack <code>111</code> file and extract <code>tools.zip</code></p>
+</li>
+<li>
+<p>Use same instructions as above to unpack <code>tools.zip</code></p>
+</li>
+</ol>
+<p>Java source <code>src.zip</code> is within the file <code>110</code> located inside<br />
+<code>.rsrc/1033/JAVA_CAB9</code>.</p>
+<h1>Installing JDK 9</h1>
+<p>Staring JDK9, the <a href="http://jdk.java.net/9">OpenJDK</a> provides binary tar<br />
+ball (zipped) executable JDK package that can unpack in Windows in any<br />
+directory. But if you still want Oracle Java SE JDK, then you still use<br />
+above instruction to get around installing without admin rights.</p>
+<h1>Refs</h1>
+<p><a href="https://stackoverflow.com/questions/10891405/installing-jdk-without-administrator-privileges">https://stackoverflow.com/questions/10891405/installing-jdk-without-administrator-privileges</a></p>
+</p>
+  			<a href="blog/2018/03/parsing-arguments-and-options-with-python-script.html"><h1>Parsing Arguments and Options With Python Script</h1></a>
+  			<p>22 March 2018, tags: 
+			    <a href="../tags/python-argparse.html">python-argparse</a> 
+  			</p>
+  			<p><pre><code>import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument('--file')
+parser.add_argument('--debug', action='store_true')
+args = parser.parse_args()
+
+if args.debug:
+        print(f&quot;Options: {args}&quot;)
+
+if args.file:
+        with open(args.file) as fh:
+                for line in fh:
+                        print(line, end='')
+</code></pre>
+</p>
+  			<a href="blog/2018/03/print-python-runtime-information.html"><h1>Print Python Runtime Information</h1></a>
+  			<p>22 March 2018, tags: 
+			    <a href="../tags/python.html">python</a> 
+  			</p>
+  			<p><pre><code># Print python runtime information
+import os, sys
+print(f&quot;CWD={os.getcwd()}&quot;)
+print(f&quot;Python={sys.version}&quot;)
+paths = '\n'.join(sys.path)
+print(f&quot;Lib={paths}&quot;)
+</code></pre>
+</p>
+  			<a href="blog/2018/03/init-and-start-postgresql-in-cygwin.html"><h1>Init and Start PostgreSQL in Cygwin</h1></a>
+  			<p>22 March 2018, tags: 
+			    <a href="../tags/postgres.html">postgres</a> 
+  			</p>
+  			<p><h1>Run Postgres Server</h1>
+<pre><code># Start /usr/sbin/cygserver first if you haven't already done so
+mkdir /srv/pgdata
+export PGDATA=/srv/pgdata
+pg_ctl init
+pg_ctl start
+</code></pre>
+<h2>Test Posgres Using Client</h2>
+<pre><code>psql postgres
+
+postgres=# create table test_ratings(username varchar(200), rating int);
+postgres=# insert into test_ratings values('tester1', 5), ('tester2', 4);
+postgres=# select * from test_ratings;
+ username | rating
+----------+--------
+ tester1  |      5
+ tester2  |      4
+</code></pre>
+<h2>Test connectivity using Python</h2>
+<p>Run <code>pip install psycopg2</code> if you haven’t already install the driver.</p>
+<p><strong><code>testdb.py</code>.</strong></p>
+<pre><code>import psycopg2
+with psycopg2.connect('dbname=postgres') as conn:
+        with conn.cursor() as cur:
+                cur.execute('select * from test_ratings')
+                while True:
+                        row = cur.fetchmany()
+                        if len(row) == 0:
+                                break
+                        print(row)
+</code></pre>
+<h1>Postgres Windows Installation</h1>
+<p>The official download is provided by EnterpriseDB (EDB) You can get a<br />
+zip package from:</p>
+<p><a href="https://www.enterprisedb.com/download-postgresql-binaries">https://www.enterprisedb.com/download-postgresql-binaries</a></p>
+<p>To install, just unzip it.</p>
+<pre><code>mkdir $HOME/apps/postgresql-10.3-2
+cd $HOME/apps/postgresql-10.3-2
+unzip postgresql-10.3-2-windows-x64-binaries.zip
+</code></pre>
+<p>Server can be started manually like this in cmd.exe prompt:</p>
+<pre><code>bin\pg_ctl -D data -o &quot;--encoding=UTF8 --auth=trust&quot; initdb
+mkdir logs
+bin\pg_ctl -D data -l logs\postgres.log start
+
+bin\createdb %USERNAME%
+chcp 1252
+bin\psql
+
+zemian=# select version();
+                          version
+------------------------------------------------------------
+ PostgreSQL 10.3, compiled by Visual C++ build 1800, 64-bit
+(1 row)
+</code></pre>
+<p>By default inidb will create a &quot;postgres&quot; database, but user is your<br />
+Windows login name, and it will not match. It’s more convient to create<br />
+a database that match your username, and use that as default.</p>
+<p>You should be careful with &quot;--auth=trust&quot;, which can get you started<br />
+quickly but not very secure.</p>
+</p>
+  			<a href="blog/2018/03/how-to-create-windows-context-menu-without-admin-rights.html"><h1>How To Create Windows Context Menu Without Admin Rights</h1></a>
+  			<p>16 March 2018, tags: 
+			    <a href="../tags/windows.html">windows</a> 
+  			</p>
+  			<p><pre><code>@REM Base on tips here:
+@REM https://stackoverflow.com/questions/48138681/how-to-add-sublime-text-to-contextual-menu-without-admin-privileges-on-windows
+
+@reg add &quot;HKEY_CURRENT_USER\Software\Classes\*\shell\Open with Sublime Text 3&quot;         /t REG_SZ /v &quot;&quot; /d &quot;Open with Sublime Text 3&quot;   /f
+@reg add &quot;HKEY_CURRENT_USER\Software\Classes\*\shell\Open with Sublime Text 3&quot;         /t REG_EXPAND_SZ /v &quot;Icon&quot; /d &quot;%st3Path%,0&quot; /f
+@reg add &quot;HKEY_CURRENT_USER\Software\Classes\*\shell\Open with Sublime Text 3\command&quot; /t REG_SZ /v &quot;&quot; /d &quot;C:\Users\zemian\apps\Sublime-Text-Build-3143-x64\sublime_text.exe \&quot;%%1\&quot;&quot; /f
+
+@REM If you want to remove above
+@REM @reg delete  &quot;HKEY_CURRENT_USER\Software\Classes\*\shell\Open with Sublime Text 3\command&quot; /f &gt;nul 2&gt;&amp;1
+@REM @reg delete  &quot;HKEY_CURRENT_USER\Software\Classes\*\shell\Open with Sublime Text 3&quot; /f &gt;nul 2&gt;&amp;1
+</code></pre>
+</p>
+
+	<hr />
+
+	<ul class="pager">
+		<li class="previous"><a href="https://zemian.github.io/3">Previous</a></li>
+		<li>Page: 4/28</li>
+		<li class="next"><a href="https://zemian.github.io/5">Next</a></li>
+	</ul>
+
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">&copy; 2011 - Present Zemian Deng All Rights Reserved | Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.5</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../js/jquery-1.11.1.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/prettify.js"></script>
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-135626598-1');
+    </script>
+
+  </body>
+</html>

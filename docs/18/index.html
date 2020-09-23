@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Zemian's Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/asciidoctor.css" rel="stylesheet">
+    <link href="../css/base.css" rel="stylesheet">
+    <link href="../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../about.html">About</a></li>
+            <li><a href="../archive.html">Archive</a></li>
+            <li><a href="..//tags">Tags</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">
+  			<a href="blog/2014/02/developing-java-ee-applications-with-maven-and-weblogic-12c.html"><h1>Developing Java EE applications with Maven and WebLogic 12c</h1></a>
+  			<p>21 February 2014, tags: 
+			    <a href="../tags/weblogic.html">weblogic</a> 
+
+			    <a href="../tags/maven.html">maven</a> 
+  			</p>
+  			<p><p>The WebLogic Server 12c has very nice support for Maven now. The doc for this is kinda hidden though, so here is a direct link <a href="http://docs.oracle.com/middleware/1212/core/MAVEN">http://docs.oracle.com/middleware/1212/core/MAVEN</a></p>
+<p>To summarize the doc, Oracle did not provide a public Maven repository manager hosting for their server artifacts. However they do now provide a tool for you to create and populate your own. You can setup either your local repository (if you are working mostly on your own in a single computer), or you may deploy them into your own internal Maven repository manager such as Archiva or Nexus.</p>
+<p>Here I would show how the local repository is done. First step is use a maven plugin provided by WLS to populate the repository. I am using a MacOSX for this demo and my WLS is installed in $HOME/apps/wls12120. If you are on Windows, you may install it under C:/apps/wls12120.</p>
+<p>$ cd $HOME/apps/wls12120/oracle_common/plugins/maven/com/oracle/maven/oracle-maven-sync/12.1.2/</p>
+<p>$ mvn install:install-file -DpomFile=oracle-maven-sync.12.1.2.pom -Dfile=oracle-maven-sync.12.1.2.jar</p>
+<p>$ mvn com.oracle.maven:oracle-maven-sync:push -Doracle-maven-sync.oracleHome=$HOME/apps/wls12120 -Doracle-maven-sync.testingOnly=false</p>
+<p>The artifacts are placed under your local $HOME/.m2/repository/com/oracle. Now you may use Maven to build Java EE application with these WebLogic artifact as dependencies. Not only these are available, the push also populated some additional maven plugins that helps development more easy. For example, you can generate a template project using their archetype plugin.</p>
+<p>$ cd $HOME</p>
+<p>$ mvn archetype:generate \</p>
+<pre><code>-DarchetypeGroupId=com.oracle.weblogic.archetype \
+
+-DarchetypeArtifactId=basic-webapp \
+
+-DarchetypeVersion=12.1.2-0-0 \
+
+-DgroupId=org.mycompany \
+
+-DartifactId=my-basic-webapp-project \
+
+-Dversion=1.0-SNAPSHOT
+</code></pre>
+<p>Type 'Y' to confirm to finish. Notice that pom.xml it generated; it is using the &quot;javax:javaee-web-api:6.0:provided&quot; dependency. This is working because we setup the repository earlier. Now you may build it.</p>
+<p>$ cd my-basic-webapp-project</p>
+<p>$ mvn package</p>
+<p>After this build you should have the war file under the target directory. You may manually copy and deploy this into your WebLogic server domain. Or you may continue to configure the maven pom to do this all with maven. Here is how I do it. Edit the my-basic-webapp-project/pom.xml file and replace the weblogic-maven-plugin plugin like this:</p>
+<pre><code>  &lt;plugin&gt;
+
+    &lt;groupId&gt;com.oracle.weblogic&lt;/groupId&gt; 
+
+    &lt;artifactId&gt;weblogic-maven-plugin&lt;/artifactId&gt; 
+
+    &lt;version&gt;12.1.2-0-0&lt;/version&gt; 
+
+    &lt;configuration&gt; 
+
+      &lt;middlewareHome&gt;${oracleMiddlewareHome}&lt;/middlewareHome&gt;
+
+      &lt;adminurl&gt;${oracleServerUrl}&lt;/adminurl&gt;
+
+      &lt;user&gt;${oracleUsername}&lt;/user&gt; 
+
+      &lt;password&gt;${oraclePassword}&lt;/password&gt;
+
+      &lt;source&gt;${project.build.directory}/${project.build.finalName}.${project.packaging}&lt;/source&gt;
+
+      &lt;targets&gt;${oracleServerName}&lt;/targets&gt;
+
+      &lt;verbose&gt;true&lt;/verbose&gt; 
+
+      &lt;name&gt;${project.build.finalName}&lt;/name&gt;
+
+    &lt;/configuration&gt;
+
+  &lt;/plugin&gt;  
+</code></pre>
+<p>With this change, you may deploy the webapp into WebLogic server (well, assuming you already started your &quot;mydomain&quot; with &quot;myserver&quot; server running locally. See my previous blog for instructions)</p>
+<p>$ cd my-basic-webapp-project</p>
+<p>$ mvn weblogic:deploy -DoracleMiddlewareHome=$HOME/apps/wls12120 -DoracleServerName=myserver -DoracleUsername=admin -DoraclePassword=admin123</p>
+<p>After the &quot;BUILD SUCCESS&quot; message, you may visit the <a href="http://localhost:7001/basicWebapp">http://localhost:7001/basicWebapp</a> URL.</p>
+<p>Revisit the WLS doc again and you will find that they also provide other project templates (Maven calls these archetypes) for building EJB, MDB, or WebService projects. These should help you get your EE projects started quickly.</p>
+</p>
+  			<a href="blog/2014/02/using-intellij-idea-12-for-weblogic-server-12c.html"><h1>Using Intellij IDEA 12 for WebLogic Server 12c</h1></a>
+  			<p>01 February 2014, tags: 
+			    <a href="../tags/intellij.html">intellij</a> 
+
+			    <a href="../tags/weblogic.html">weblogic</a> 
+  			</p>
+  			<p><p>If you want to explore the latest EE features, you would need WebLogic Server 12c. However if you still have the IDEA 12 Ultimate edition, you will quickly find that it only supports up to WebLogic<br />
+Server 11g (10.x)! However you can still make your IDEA 12 U to work with WLS 12c, and all you need is an extra &quot;registry.xml&quot; file under WLS home directory (eg: C:/apps/wls12120/registry.xml). This file will allow the IDEA to pickup and recognize your latest WLS 12c installation.</p>
+<?xml version="1.0" encoding="UTF-8"?>
+<bea-product-information>
+  <host home="C:\apps\wls12120" name="${env.HOST}">
+    <product format="1.0" name="WebLogic Platform">
+      <release level="12.0"
+        ServicePackLevel="6" PatchLevel="0"
+        Status="installed" BeaProgramGroup="BEA WebLogic Platform 12.0" StartMenu=""
+        InstallTime="@INSTALL_TIME@"
+        InstallDir="C:\apps\wls12120\wlserver"
+        JavaHome="C:\apps\jdk7" JavaVersion="1.7.0" JavaVendor="@JAVA_VENDOR@">
+        <component name="WebLogic Server" version="12.1.2.0">
+          <component name="Server"/>
+          <component name="Server Examples"/>
+        </component>
+     </release>
+    </product>
+ </host>
+</bea-product-information>
+<p>I have learned this from reading the IntelliJ forum. Also note that the latest IDEA 13 will support WebLogic Server 12c out of the box now.</p>
+</p>
+  			<a href="blog/2014/01/getting-started-with-intellij-idea-and-weblogic-server.html"><h1>Getting started with Intellij IDEA and WebLogic Server</h1></a>
+  			<p>31 January 2014, tags: 
+			    <a href="../tags/intellij.html">intellij</a> 
+
+			    <a href="../tags/weblogic.html">weblogic</a> 
+  			</p>
+  			<p><p>Before starting, you would need the Ultimate version of IDEA to run WebLogic Server (yes, the paid version or the 30 days trial). The Community edition of IDEA will not support Application Server deployment.</p>
+<p>I also assume you have already setup WebLogic Server and a user domain as per my <a href="http://saltnlight5.blogspot.com/2014/01/getting-started-with-weblogic-server.html">previous blog instructions</a>. So now let's setup the IDE to boost your development.</p>
+<ol>
+<li>Create a simple HelloWorld web application in IDEA.</li>
+<li>For your HelloWorld, you can go into the Project Settings &gt; Artifacts, and add &quot;web:war exploded&quot; entry for your application. You will add this into your app server later.</li>
+<li>Ensure you have added the Application Server Views plugin with WebLogic Server. (It's under Settings &gt; IDE Settings &gt; Application Server)</li>
+<li>
+<p>Click + and enter Name: WebLogic 12.1.2</p>
+</li>
+<li>WebLogic Home: C:\apps\wls12120</li>
+<li>
+<p>Back to your editor, select Menu: Run &gt; Edit Configuration</p>
+</li>
+<li>
+<p>Click + and add &quot;WebLogic Server&quot; &gt; Local</p>
+</li>
+<li>Name: WLS</li>
+<li>On Server tab, ensure DomainPath is set: C:\apps\wls12120\mydomain</li>
+<li>On Deployment tab, select &quot;web:war exploded&quot; for your HelloWorld project.</li>
+<li>Click OK</li>
+<li>
+<p>Now Menu: Run &gt; &quot;Run WLS&quot;</p>
+</li>
+</ol>
+<p>Your WebLogic Server should now start and running your web application inside. You may visit the browser on <a href="http://localhost:7001/web_war_exploded">http://localhost:7001/web_war_exploded</a></p>
+<p>Some goodies with Intellij IDEA and WLS are:</p>
+<ul>
+<li>Redeploy WAR only without restarting server</li>
+<li>Deploy application in exploded mode and have IDE auto make and sync</li>
+<li>Debug application with server running within IDE</li>
+<li>Full control on server settings</li>
+</ul>
+<p>NOTE: As noted in previous blog, if you do not set MW_HOME as system variable, then you must add this in IDEA's Run Configuration. Or you edit your &quot;mydomain/bin/startWebLogic.cmd&quot; and &quot;stopWebLogic.cmd&quot; scripts directly.</p>
+</p>
+  			<a href="blog/2014/01/getting-started-with-weblogic-server.html"><h1>Getting started with WebLogic Server</h1></a>
+  			<p>30 January 2014, tags: 
+			    <a href="../tags/weblogic.html">weblogic</a> 
+  			</p>
+  			<p><p>Here are some quick tips on how to get started with WebLogic Server on Windows OS:</p>
+<ol>
+<li>Download wls1212.zip from <a href="http://www.oracle.com/technetwork/middleware/weblogic/downloads/index.html">http://www.oracle.com/technetwork/middleware/weblogic/downloads/index.html</a></li>
+<li>Unzip it under C:\apps\wls12120</li>
+<li>set MW_HOME=C:\apps\wls12120</li>
+<li>set JAVA_HOME=C:\apps\jdk1.7.0_51</li>
+<li>cd C:\apps\wls12120</li>
+<li>configure.cmd</li>
+<li>mkdir user_projects\domains\mydomain</li>
+<li>cd user_projects\domains\mydomain</li>
+<li>%JAVA_HOME%\bin\java -Xmx1024m -XX:MaxPermSize=256m weblogic.Server</li>
+</ol>
+<p>By default, the last step should create a domain with all the nessary files in your current working directory. It will also prompt you to create a config.xml (enter 'y' to continue) and then prompting for a username and password to manage the server. Optionally you may also setup username/password part by using additional sys props like this:<br />
+-Dweblogic.management.username=weblogic -Dweblogic.management.password=Welcome1</p>
+<p>Use CTRL+C to stop the server. The next time you start, you can just invoke &quot;mydomain\bin\startWebLogic.cmd&quot;</p>
+<p>TIPS1: If you omit -Xmx1024m -XX:MaxPermSize=256m you will likely can start the server but as soon as you activate the /console webapp, you will run into out of memory issue.</p>
+<p>TIPS2: If you have access, try to add Windows Environment variables for MW_HOME and JAVA_HOME into your system. If not, then you can easily add it into &quot;mydomain\bin\setDomainEnv.cmd&quot; as well (it's generated so you can edit all you like.) Without these two variables, you will likely get a class not found error.</p>
+<p>TIPS3: The default server name created by this initial setup is called myserver. If you like to name it something else, then add sys props such as this: -Dweblogic.Name=admin-server</p>
+<p>TIPS4: To change the domain name from mydomain to something else, use: -Dweblogic.Domain=dev-domain</p>
+<p>TIPS5: The default admin server listening port is 7001. To change this, use: -Dweblogic.ListenPort=7002</p>
+</p>
+  			<a href="blog/2013/10/exploring-spring-controller-with-spring-form-tag.html"><h1>Exploring Spring Controller with Spring Form Tag</h1></a>
+  			<p>29 October 2013, tags: 
+			    <a href="../tags/spring.html">spring</a> 
+  			</p>
+  			<p><p>In the past <a href="http://saltnlight5.blogspot.com/2013/10/exploring-spring-controller-with-jstl.html">article</a>, I have shown you how to process an plain HTML form with Spring controller. But a more powerful way to process form is to use Spring’s <code>@ModelAttribute</code> and its <code>spring:form</code> tags. I will show you how to get that started here by modifying last article’s project setup. We will simply modify the Comment form and controller to use this feature.</p>
+<p>In the same project, modify the <code>src/webapp/comment.jsp</code> view file into this:</p>
+<pre><code>&lt;%@ taglib prefix=&quot;spring&quot; uri=&quot;http://www.springframework.org/tags/form&quot; %&gt;
+&lt;spring:form modelAttribute=&quot;comment&quot;&gt;
+  &lt;table&gt;
+    &lt;tr&gt;
+        &lt;td&gt;&lt;spring:textarea path=&quot;text&quot; rows=&quot;20&quot; cols=&quot;80&quot;/&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;td colspan=&quot;2&quot;&gt;
+        &lt;input type=&quot;submit&quot; value=&quot;Post&quot;/&gt;
+        &lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/table&gt;
+&lt;/spring:form&gt;
+</code></pre>
+<p>This view now use the <code>spring:form</code> tag to render the comment form instead of plain HTML. I have only shown you one element here, but the <code>spring:form</code> tag library also comes with all the matching HTML form elements that helps you quickly render the form with data binded. This automatically triggers the <code>CommentController</code> when you submit. We will need to modify that to capture the form.</p>
+<pre><code>package springweb.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
+import springweb.data.Comment;
+import springweb.data.CommentService;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+
+@Controller
+public class CommentController {
+
+    @Autowired
+    private CommentService commentService;
+
+    @RequestMapping(value=&quot;/comments&quot;)
+    public ModelAndView comments() {
+        List&lt;Comment&gt; comments = commentService.findComments();
+        ModelAndView result = new ModelAndView(&quot;/comments&quot;);
+        result.addObject(&quot;comments&quot;, comments);
+        return result;
+    }
+
+    @ModelAttribute(&quot;comment&quot;)
+    public Comment createFormModelAttribute() {
+        return Comment.create(&quot;&quot;);
+    }
+
+    @RequestMapping(value=&quot;/comment&quot;)
+    public String comment() {
+        return &quot;comment&quot;;
+    }
+
+    @RequestMapping(value=&quot;/comment&quot;, method = RequestMethod.POST)
+    public ModelAndView postComment(HttpServletRequest req,
+                                @ModelAttribute(&quot;comment&quot;) Comment comment) {
+        String fromUrl = req.getRequestURI();
+        String user = req.getRemoteUser();
+        String userIp = req.getRemoteAddr();
+        comment.setFromUserIp(userIp);
+        comment.setFromUser(user);
+        comment.setFromUrl(fromUrl);
+        commentService.insert(comment);
+        ModelAndView result = new ModelAndView(&quot;comment-posted&quot;);
+        result.addObject(&quot;comment&quot;, comment);
+        return result;
+    }
+}
+</code></pre>
+<p>The difference in this controller compare to the old one is we used <code>@ModelAttribute</code> with an <code>form</code> object (or Spring calls it a <code>command</code> object.) We can name it, which I called <code>comment</code> here. It’s just a java POJO class, nothing special. But it is used to capture all the form input and then pass to Controller, which is called data binding. Notice that it will instanciate by <code>createFormModelAttribute()</code> method as you request the form view first. If you pre-populate the pojo with text, then it will automatically shows in the form! When user submit the controller will process in <code>postComment()</code> method, and the form object is re-populated with new form input again for processing. This allows you to work with form in pure Object style, and in many ways, it’s shorter and cleaner compare to plain HTML form.</p>
+<p>There are much to the Spring MVC form processing. One powerful feature is it able to help you orgainze the <code>form</code> object validation and collect the error messages. Spring also helps localize your error message text etc. You may read more on their reference doc.</p>
+</p>
+  			<a href="blog/2013/10/exploring-spring-controller-with-jstl-view.html"><h1>Exploring Spring Controller with JSTL view</h1></a>
+  			<p>16 October 2013, tags: 
+			    <a href="../tags/spring.html">spring</a> 
+  			</p>
+  			<p><p>Let’s improve <a href="http://saltnlight5.blogspot.com/2013/10/getting-started-with-spring-jdbc-in-web.html">our previous Spring JDBC application</a> with some more exploration on Spring MVC’s Controller development. I will show another exercise of writing a new Controller that processes a HTML form and use JSTL tags in JSP view pages.</p>
+<p>To enable JSTL in Spring MVC application, you would need to add the following to the <code>WebAppConfig</code> config class. Let’s move it outside of <code>WebApp.java</code> and into it’s own top level class file in <code>src/main/java/springweb/WebAppConfig.java</code>.</p>
+<pre><code>package springweb;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
+
+@Configuration
+@EnableWebMvc
+@ComponentScan(&quot;springweb.controller&quot;)
+public class WebAppConfig {
+    @Bean
+    public InternalResourceViewResolver viewResolver() {
+        InternalResourceViewResolver result = new InternalResourceViewResolver();
+        result.setPrefix(&quot;/&quot;);
+        result.setSuffix(&quot;.jsp&quot;);
+        return result;
+    }
+}
+</code></pre>
+<p>Inside the <code>InternalResourceViewResolver</code> bean, you define where to find your JSP pages that may have JSTL tags in them. The <code>prefix</code> setter is a path in relative to your <code>src/webapp</code> location. This allow you to hide your JSP files completely if you want to. For example, by setting it to <code>&quot;/WEB-INF/jsp&quot;</code> then you may move and store all JSP files into <code>src/webapp/WEB-INF/jsp</code> which is private in the web application. The <code>suffix</code> is just the file extension. These two values allow you to return a view name inside the controller with just the basename of your JSP file, which can be short as &quot;/myform&quot; or &quot;/index&quot; etc.</p>
+<p>If you are to use Tomcat as your web container, you would need to add JSTL jar dependency as well, since the Tomcat server doesn’t come with standard tag library! So add this into the <code>pom.xml</code> file now.</p>
+<pre><code>        &lt;dependency&gt;
+            &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
+            &lt;artifactId&gt;jstl&lt;/artifactId&gt;
+            &lt;version&gt;1.2&lt;/version&gt;
+        &lt;/dependency&gt;
+</code></pre>
+<p>While you’re at the <code>pom.xml</code> file, you might want to add the Tomcat maven plugin so you can type less in command line when running your web application.</p>
+<pre><code>&lt;project&gt;
+...
+    &lt;build&gt;
+        &lt;plugins&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.apache.tomcat.maven&lt;/groupId&gt;
+                &lt;artifactId&gt;tomcat7-maven-plugin&lt;/artifactId&gt;
+                &lt;version&gt;2.1&lt;/version&gt;
+            &lt;/plugin&gt;
+        &lt;/plugins&gt;
+    &lt;/build&gt;
+...
+&lt;/project&gt;
+</code></pre>
+<p>With that, you should able to run <code>mvn tomcat7:run</code> in root of your project without plugin prefix.</p>
+<p>So what does JSTL bring to your application? Well, quite a bit actually. It lets you use some standard JSP tags that’s frequently used when writing JSP views. I will demonstrate this with a set of Controller and views to capture user comments from the application. Note that I will try to show you how to work with Spring Controller in the most basic way only. The Spring actually comes with a custom <code>form</code> JSP tag that is much more powerful to use. I will reserve that as another article in another time. Today let us focus on learning more about basic Spring Controller and JSTL, and a bit more on Spring JDBC data service as well.</p>
+<p>We want to capture user comment, so let’s add a database table to store that information. Add the following DDL into your <code>src/main/resources/schema.sql</code> file. Again, this is for H2 database per last article project setup.</p>
+<pre><code>CREATE TABLE COMMENT (
+  ID INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  TEXT VARCHAR(10240) NOT NULL,
+  FROM_USER VARCHAR(15) NULL,
+  FROM_USER_IP VARCHAR(15) NULL,
+  FROM_URL VARCHAR(1024) NULL,
+  TAG VARCHAR(1024) NULL,
+  TS DATETIME NOT NULL
+);
+</code></pre>
+<p>This time, we will write a data model class to match this table. Let’s add <code>src/main/java/springweb/data/Comment.java</code></p>
+<pre><code>package springweb.data;
+
+import java.util.Date;
+
+public class Comment {
+    Long id;
+    String text;
+    String fromUrl;
+    String fromUser;
+    String fromUserIp;
+    String tag;
+    Date ts;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public String getFromUrl() {
+        return fromUrl;
+    }
+
+    public void setFromUrl(String fromUrl) {
+        this.fromUrl = fromUrl;
+    }
+
+    public String getFromUser() {
+        return fromUser;
+    }
+
+    public void setFromUser(String fromUser) {
+        this.fromUser = fromUser;
+    }
+
+    public String getFromUserIp() {
+        return fromUserIp;
+    }
+
+    public void setFromUserIp(String fromUserIp) {
+        this.fromUserIp = fromUserIp;
+    }
+
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
+
+    public Date getTs() {
+        return ts;
+    }
+
+    public void setTs(Date ts) {
+        this.ts = ts;
+    }
+
+    private String getTrimedComment(int maxLen) {
+        if (text == null)
+            return null;
+        if (text.length() &lt;= maxLen)
+            return text;
+        return text.substring(0, maxLen);
+    }
+
+    @Override
+    public String toString() {
+        return &quot;Comment{&quot; +
+                &quot;id=&quot; + id +
+                &quot;, ts=&quot; + ts +
+                &quot;, text='&quot; + getTrimedComment(12) + '\'' +
+                '}';
+    }
+
+    public static Comment create(String commentText) {
+        Comment result = new Comment();
+        result.setText(commentText);
+        result.setTs(new Date());
+        return result;
+    }
+}
+</code></pre>
+<p>Just as previous artcicle, we will write a data service to handle insert and retrieve of the data model. We add a new <code>src/main/java/springweb/data/CommentService.java</code> file</p>
+<pre><code>package springweb.data;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.stereotype.Repository;
+
+import javax.sql.DataSource;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+@Repository
+public class CommentService {
+    public static Log LOG = LogFactory.getLog(CommentService.class);
+
+    private JdbcTemplate jdbcTemplate;
+    private SimpleJdbcInsert insertActor;
+    private RowMapper&lt;Comment&gt; commentBeanRowMapper = new BeanPropertyRowMapper&lt;Comment&gt;(Comment.class);
+
+    @Autowired
+    public void setDataSource(DataSource dataSource) {
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
+        this.insertActor = new SimpleJdbcInsert(dataSource)
+            .withTableName(&quot;COMMENT&quot;)
+            .usingGeneratedKeyColumns(&quot;ID&quot;);
+    }
+
+    public void insert(Comment comment) {
+        LOG.info(&quot;Inserting Comment + &quot; + comment);
+
+        Map&lt;String, Object&gt; parameters = new HashMap&lt;String, Object&gt;(2);
+        parameters.put(&quot;TEXT&quot;, comment.getText());
+        parameters.put(&quot;FROM_USER&quot;, comment.getFromUser());
+        parameters.put(&quot;FROM_USER_IP&quot;, comment.getFromUserIp());
+        parameters.put(&quot;FROM_URL&quot;, comment.getFromUrl());
+        parameters.put(&quot;TAG&quot;, comment.getTag());
+        parameters.put(&quot;TS&quot;, comment.getTs());
+        Number newId = insertActor.executeAndReturnKey(parameters);
+        comment.setId(newId.longValue());
+
+        LOG.info(&quot;New Comment inserted. Id=&quot; + comment.getId());
+    }
+
+    public List&lt;Comment&gt; findComments() {
+        String sql = &quot;SELECT &quot; +
+                &quot;ID as id, &quot; +
+                &quot;TEXT as text, &quot; +
+                &quot;TAG as tag, &quot; +
+                &quot;TS as ts, &quot; +
+                &quot;FROM_USER as fromUser, &quot; +
+                &quot;FROM_USER_IP as fromUserIp, &quot; +
+                &quot;FROM_URL as fromUrl &quot; +
+                &quot;FROM COMMENT ORDER BY TS&quot;;
+        List&lt;Comment&gt; result = jdbcTemplate.query(sql, commentBeanRowMapper);
+        LOG.info(&quot;Found &quot; + result.size() + &quot; Comment records.&quot;);
+        return result;
+    }
+}
+</code></pre>
+<p>Since we did not use any fancy ORM but just plain JDBC, we will have to write SQL in the data service. But thanks to Spring goodies, it makes life much easier with helpers such as <code>SimpleJdbcInsert</code>, which handles DB insert and retrieval of auto generated key etc. And also notice that in query, we use the Spring’s <code>BeanPropertyRowMapper</code> to automatically convert JDBC resultset into a java bean <code>Comment</code> object! Simple, direct and quick.</p>
+<p>Now we add the Spring controller in <code>src/main/java/springweb/controller/CommentController.java</code> to handle web requests.</p>
+<pre><code>package springweb.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
+import springweb.data.Comment;
+import springweb.data.CommentService;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+
+@Controller
+public class CommentController {
+
+    @Autowired
+    private CommentService commentService;
+
+    @RequestMapping(value=&quot;/comments&quot;)
+    public ModelAndView comments() {
+        List&lt;Comment&gt; comments = commentService.findComments();
+        ModelAndView result = new ModelAndView(&quot;/comments&quot;);
+        result.addObject(&quot;comments&quot;, comments);
+        return result;
+    }
+
+    @RequestMapping(value=&quot;/comment&quot;)
+    public String comment() {
+        return &quot;comment&quot;;
+    }
+
+    @RequestMapping(value=&quot;/comment&quot;, method = RequestMethod.POST)
+    public ModelAndView postComment(HttpServletRequest req, @RequestParam String commentText) {
+        String fromUrl = req.getRequestURI();
+        String user = req.getRemoteUser();
+        String userIp = req.getRemoteAddr();
+        Comment comment = Comment.create(commentText);
+        comment.setFromUserIp(userIp);
+        comment.setFromUser(user);
+        comment.setFromUrl(fromUrl);
+        commentService.insert(comment);
+        ModelAndView result = new ModelAndView(&quot;comment-posted&quot;);
+        result.addObject(&quot;comment&quot;, comment);
+        return result;
+    }
+}
+</code></pre>
+<p>In this controller we map <code>/comment</code> URL to handle display of the HTML form, which returns the <code>comment.jsp</code> view. The method default to handle a HTTP <code>GET</code>. Note that we remapped same <code>/comment</code> URL to handle HTTP <code>POST</code> on a separated <code>postComment()</code> method! See how clean the Spring Controller can be in this demo to handle HTTP request. Pay very close attention to the parameters declared in the <code>postComment()</code> method. Spring automatically handles the HTTP request object and map to your method just based upon the types you declared! On some cases you need to be explicit with the help of annotation such as <code>@RequestParam</code>, but Spring does the parsing of HTTP request and extraction for you! This saves you tons of repeated boiler plate code if we were to write a direct Servlet code.</p>
+<p>Now let’s see the view and how to use JSTL. The <code>/comments</code> URL is mapped to <code>src/main/webapp/comments.jsp</code> view file, which will list all <code>Comment</code> model objects.</p>
+<pre><code>&lt;%@ taglib prefix=&quot;c&quot; uri=&quot;http://java.sun.com/jsp/jstl/core&quot; %&gt;
+&lt;c:choose&gt;
+&lt;c:when test=&quot;${empty comments}&quot;&gt;
+    &lt;p&gt;There are no comments in system yet.&lt;/p&gt;
+&lt;/c:when&gt;
+&lt;c:otherwise&gt;
+    &lt;table border=&quot;1&quot;&gt;
+    &lt;tr&gt;
+        &lt;td&gt;INDEX&lt;/td&gt;
+        &lt;td&gt;TIME&lt;/td&gt;
+        &lt;td&gt;FROM&lt;/td&gt;
+        &lt;td&gt;COMMENT&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;c:forEach items=&quot;${comments}&quot; var=&quot;comment&quot; varStatus=&quot;status&quot;&gt;
+    &lt;tr valign=&quot;top&quot;&gt;
+        &lt;td&gt;${status.index}&lt;/td&gt;
+        &lt;td&gt;${comment.ts}&lt;/td&gt;
+        &lt;td&gt;${comment.fromUserIp}&lt;/td&gt;
+        &lt;%-- The c:out will escape html/xml characters. --%&gt;
+        &lt;td&gt;&lt;pre&gt;&lt;c:out value=&quot;${comment.text}&quot;/&gt;&lt;/pre&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;/c:forEach&gt;
+    &lt;/table&gt;
+&lt;/c:otherwise&gt;
+&lt;/c:choose&gt;
+</code></pre>
+<p>Pretty standard stuff on JSTL. Next is the HTML form to post comment in <code>src/main/webapp/comment.jsp</code> file.</p>
+<pre><code>&lt;form action=&quot;comment&quot; method=&quot;POST&quot;&gt;
+&lt;textarea name=&quot;commentText&quot; rows=&quot;20&quot; cols=&quot;80&quot;&gt;&lt;/textarea&gt;
+&lt;br/&gt;
+&lt;input type=&quot;submit&quot; value=&quot;Post&quot;/&gt;
+&lt;/form&gt;
+</code></pre>
+<p>When form is posted and processed successful, we simply return to a new page in <code>src/main/webapp/comment-posted.jsp</code> file as output.</p>
+<pre><code>&lt;p&gt;Your comment has been posted. Comment ID=${comment.id}&lt;/p&gt;
+</code></pre>
+<p>If you've done these right, you should able to run <code>mvn tomcat7:run</code> and browse <code>http://localhost:8080/spring-web-annotation/comment</code> to see the form. Go to <code>/comments</code> URL to verify all the comments posted.</p>
+<p>Note that despite I used Spring Controller as backend, all the views are in basic JSTL, and even the form are just basic HTML elements! I did this so you can see how flexible Spring Controller can be.</p>
+<p>I know these are lot of code to post as a blog article today, but I wanted to be complete and try to show a  working demo with tutorial notes. I choose to make it into a single post with file content instead of having you download a project somewhere else. It makes my notes and explanation easier to match onto the code.</p>
+<p>And that will conclude our tutorial for today. Please leave a note if you find this helpful.</p>
+</p>
+  			<a href="blog/2013/10/getting-started-with-spring-jdbc-in-a-web-application.html"><h1>Getting started with Spring JDBC in a web application</h1></a>
+  			<p>09 October 2013, tags: 
+			    <a href="../tags/spring.html">spring</a> 
+
+			    <a href="../tags/jdbc.html">jdbc</a> 
+  			</p>
+  			<p><p>I have shown you how to setup a <a href="http://saltnlight5.blogspot.com/2013/10/getting-started-with-annotation-based.html">basic Spring 3 MVC web application</a> in my previous article. Reusing that project setup as template, I will show you how to enhance it to work with JDBC. With this you can store and retrieve data from database. We will add a new controller and a data service through Spring so you can see how Spring injection and annotation configuration works together.</p>
+<p>A direct JDBC based application is easy to setup in comparison to a full ORM such as Hibernate. You don’t need to worry AOP, TranactionManager, Entity mapping and full array of other configurations. On top of the JDK’s <code>java.jdbc</code> API, the Spring comes with <code>spring-jdbc</code> module that can boots your productively with their well known <code>JdbcTemplate</code> class. Let’s explore how this can be setup and run as web application.</p>
+<h2>Getting started and project setup</h2>
+<p>For demo purpose, I will use the in-memory version of H2Database as JDBC store. It’s simple to use and setup. And if you decided to use their FILE or TCP based database, you would simply have to re-set the datasource, and you may continue to explore more.</p>
+<p>We will start by adding new dependencies to your existing <code>spring-web-annotation/pom.xml</code> file.</p>
+<pre><code>  &lt;dependency&gt;
+   &lt;groupId&gt;com.h2database&lt;/groupId&gt;
+   &lt;artifactId&gt;h2&lt;/artifactId&gt;
+   &lt;version&gt;1.3.163&lt;/version&gt;
+  &lt;/dependency&gt;
+  &lt;dependency&gt;
+   &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+   &lt;artifactId&gt;spring-jdbc&lt;/artifactId&gt;
+   &lt;version&gt;3.2.4.RELEASE&lt;/version&gt;
+  &lt;/dependency&gt;
+</code></pre>
+<p>With this, you will have access to Spring module classes for configuration. Find the previous <code>src/main/java/springweb/WebApp.java</code> file in your existing project and add what’s new compare to below:</p>
+<pre><code>package springweb;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
+
+import javax.sql.DataSource;
+
+public class WebApp extends AbstractAnnotationConfigDispatcherServletInitializer {
+    @Override
+    protected Class&lt;?&gt;[] getRootConfigClasses() {
+        return new Class&lt;?&gt;[]{ RootConfig.class };
+    }
+
+    @Override
+    protected Class&lt;?&gt;[] getServletConfigClasses() {
+        return new Class&lt;?&gt;[]{ WebAppConfig.class };
+    }
+
+    @Override
+    protected String[] getServletMappings() {
+        return new String[]{ &quot;/&quot; };
+    }
+
+    @Configuration
+    @EnableWebMvc
+    @ComponentScan(&quot;springweb.controller&quot;)
+    public static class WebAppConfig {
+    }
+
+    @Configuration
+    @ComponentScan(&quot;springweb.data&quot;)
+    public static class RootConfig {
+      @Bean
+      public DataSource dataSource() {
+        DataSource bean = new EmbeddedDatabaseBuilder()
+          .setType(EmbeddedDatabaseType.H2)
+          .addScript(&quot;classpath:schema.sql&quot;)
+          .build();
+        return bean;
+      }
+    }
+}
+</code></pre>
+<p>What’s new in here is we introduced a new <code>RootConfig</code> class that will be loaded inside <code>getRootConfigClasses()</code> method. The <code>RootConfig</code> is just another Spring annotation based configuration that creates a new Spring context for bean definitions. We’ve created a bean there that will run the in-memory database. The bean returned by the builder also conveniently implemented the <code>javax.sql.DataSource</code> interface, so we can actually inject this into any data service and start using it immediately.</p>
+<p>One more cool thing about the Spring embedded database builder is that it also runs any SQL script as part of the startup! For this demo, we will create a <code>PING</code> table in the <code>src/main/resources/schema.sql</code> file. This file is visible to Spring as in root of the CLASSPATH due to Maven standard source structure.</p>
+<pre><code>CREATE TABLE PING (
+  ID INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  TAG VARCHAR(1024) NOT NULL,
+  TS DATETIME NOT NULL
+);
+</code></pre>
+<p>That’s the datasource setup. Now notice that I did not add this datasource Spring bean definition into existing <code>WebAppConfig</code> class. The reason is that we want a separate Spring context to configure all service level beans, while reserving the <code>WebAppConfig</code> for all Spring MVC related beans (such as Controller, URL mapping etc). This helps organize your bean definitions in hierarchical order of Spring contexts; with <code>RootConfig</code> as parent and <code>WebAppConfig</code> as child layers. This also means that all service beans in <code>RootConfig</code> are automatically visible to <code>WebAppConfig</code>; for the purpose of injection etc.</p>
+<p>Also notice that with separated config classes, we are able to specify two distinct packages to scan for service components; we use <code>springweb.controller</code> for <code>WebAppConfig</code> and <code>springweb.data</code> for <code>RootConfig</code>. This is important and it can save you some troubles by letting Spring auto detecting your annotation based components.</p>
+<h2>Creating Data Service</h2>
+<p>Now it’s time we use the JDBC, so let’s write a data service class under <code>src/main/java/springweb/data/PingService.java</code> file.</p>
+<pre><code>package springweb.data;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
+
+import javax.sql.DataSource;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+@Repository
+public class PingService {
+    public static Log LOG = LogFactory.getLog(PingService.class);
+
+    private JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    public void setDataSource(DataSource dataSource) {
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
+    }
+
+    public void insert(String tag) {
+        LOG.info(&quot;Inserting Ping tag: &quot; + tag);
+        jdbcTemplate.update(&quot;INSERT INTO PING(TAG, TS) VALUES(?, ?)&quot;, tag, new Date());
+    }
+
+    public List&lt;Map&lt;String, Object&gt;&gt; findAllPings() {
+        return jdbcTemplate.queryForList(&quot;SELECT * FROM PING ORDER BY TS&quot;);
+    }
+}
+</code></pre>
+<p>The service is very straight forward. I expose two methods: one for insert and one for retrieve all Ping data. Noticed that I used <code>@Repository</code> to indicate to Spring that this class is a component service that perform data service. Also note how we inject the <code>DataSource</code> using a setter method, and then instantiate the <code>JdbcTemplate</code> as member field. From that we can take full advantage of the Spring JDBC API for query and update.</p>
+<p>A note on logging. Spring core itself uses Apache <code>common-logging</code>, so I reused that API without even explicitly declare them in my <code>pom.xml</code>. If you want to see more details from log output, you should add <code>log4j</code> logger implementation to the project, and it should automatically work. I will leave that as your exercise.</p>
+<p>Next we will need to write a Controller that can bring data to web UI page. We will create this under <code>src/main/java/springweb/controller/PingController.java</code> file.</p>
+<pre><code>package springweb.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import springweb.data.PingService;
+
+import java.util.List;
+import java.util.Map;
+
+@Controller
+public class PingController {
+
+    @Autowired
+    private PingService pingService;
+
+    @RequestMapping(value=&quot;/ping/{tag}&quot;, produces=&quot;text/plain&quot;)
+    @ResponseBody
+    public String pingTag(@PathVariable(&quot;tag&quot;) String tag) {
+        pingService.insert(tag);
+        return &quot;Ping tag '&quot; + tag + &quot;' has been inserted. &quot;;
+    }
+
+    @RequestMapping(value=&quot;/pings&quot;, produces=&quot;text/plain&quot;)
+    @ResponseBody
+    public String pings() {
+        List&lt;Map&lt;String, Object&gt;&gt; result = pingService.findAllPings();
+  if (result.size() == 0)
+   return &quot;No record found.&quot;;
+
+        StringBuilder sb = new StringBuilder();
+        for (Map&lt;String, Object&gt; row : result) {
+            sb.append(&quot;Ping&quot; + row).append(&quot;\n&quot;);
+        }
+        return sb.toString();
+    }
+}
+</code></pre>
+<p>In this controller, you can easily see that the Ping data is fetched and updated through our data service by injection. I’ve declared and map URL <code>/ping/{tag}</code> to insert Ping data into the database. Spring has this very nice shorthand syntax annotation that can extract parameter from your URL path. In this case it let user to pass a simple tag keyword to be inserted as Ping record; so we can identify the source in database.</p>
+<p>The other controller handler <code>/pings</code> URL is very straight forward; it simply returns all the records from PING table.</p>
+<p>For demo purpose, I choose to not use JSP as view, but to return plain text directly from the Controller. Spring let you do this by adding <code>@ResponseBody</code> to the handler method. Notice also we can specify the content type as <code>text/plain</code> as output directly using the annotation.</p>
+<h2>Testing</h2>
+<p>To see your hard labor with above, you simply need to run the Maven tomcat plugin. The previous article has shown you an command to do that. Once you restarted it, you should able to open a browser and use these URLS for testing.</p>
+<ul>
+<li></li>
+</ul>
+<p><a href="http://localhost:8081/spring-web-annotation/ping/tester1">http://localhost:8081/spring-web-annotation/ping/tester1</a></p>
+<ul>
+<li></li>
+</ul>
+<p><a href="http://localhost:8081/spring-web-annotation/ping/tester2">http://localhost:8081/spring-web-annotation/ping/tester2</a></p>
+<ul>
+<li></li>
+</ul>
+<p><a href="http://localhost:8081/spring-web-annotation/ping/tester3">http://localhost:8081/spring-web-annotation/ping/tester3</a></p>
+<ul>
+<li></li>
+</ul>
+<p><a href="http://localhost:8081/spring-web-annotation/pings">http://localhost:8081/spring-web-annotation/pings</a></p>
+<h2>Happing programming</h2>
+<p>From this simple exercise, you can quickly see Spring MVC brings you many benefits; and a lot of fun in developing web application. Spring, by design principles, tends to be developers friendly, boots productivity and un-intrusively in your environment. It’s one of the reason I like to work with it a lot. I hope you enjoy this tutorial and go further explore on your own.</p>
+<p>Happy programming!</p>
+</p>
+  			<a href="blog/2013/10/getting-started-with-annotation-based-spring-mvc-web-application.html"><h1>Getting started with annotation based Spring MVC web application</h1></a>
+  			<p>04 October 2013, tags: 
+			    <a href="../tags/spring.html">spring</a> 
+  			</p>
+  			<p><p>Here is a minimal way to get a Spring 3 MVC project started with Maven.</p>
+<p>First create <code>spring-web-annotation/pom.xml</code> file and include the Spring dependency:</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+    xsi:schemaLocation=&quot;
+        http://maven.apache.org/POM/4.0.0
+        http://maven.apache.org/maven-v4_0_0.xsd&quot;&gt;
+
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;groupId&gt;spring-web-annotation&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-web-annotation&lt;/artifactId&gt;
+    &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+    &lt;packaging&gt;war&lt;/packaging&gt;
+
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
+            &lt;artifactId&gt;javax.servlet-api&lt;/artifactId&gt;
+            &lt;version&gt;3.1.0&lt;/version&gt;
+            &lt;scope&gt;provided&lt;/scope&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-webmvc&lt;/artifactId&gt;
+            &lt;version&gt;3.2.4.RELEASE&lt;/version&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+&lt;/project&gt;
+</code></pre>
+<p>Now create the Servlet 3 web initializer and the Spring annotation config for the MVC parts in <code>spring-web-annotation/src/main/java/springweb/WebApp.java</code></p>
+<pre><code>package springweb;
+
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
+
+public class WebApp extends AbstractAnnotationConfigDispatcherServletInitializer {
+    @Override
+    protected Class&lt;?&gt;[] getRootConfigClasses() {
+        return new Class&lt;?&gt;[0];
+    }
+
+    @Override
+    protected Class&lt;?&gt;[] getServletConfigClasses() {
+        return new Class&lt;?&gt;[]{ WebAppConfig.class };
+    }
+
+    @Override
+    protected String[] getServletMappings() {
+        return new String[]{ &quot;/&quot; };
+    }
+
+    @Configuration
+    @EnableWebMvc
+    @ComponentScan(&quot;springweb.controller&quot;)
+    public static class WebAppConfig {
+    }
+}
+</code></pre>
+<p>The <code>WebApp</code> class extends Spring's built in Servlet3 web initializer code. It allows Servlet3 container such as Tomcat7 to auto detect this web application without the need of <code>web.xml</code> configuration setup. Because of we do not use <code>web.xml</code>, we need this class to allow Spring to hook into the Servlet container to bootstrap their dispatcher servlet. Also instead of typical Spring beans xml file configuration, we now can use all annotation based using <code>WebAppConfig</code>.</p>
+<p>Noticed that I have combined the <code>WebAppConfig</code> as inner class, but you can easily move it out as top level class in a full scale application. This is the Spring annotation version of container configuration. You can easily customize the application by adding new <code>@Bean</code> here.</p>
+<p>Note: Do not forget to overwrite <code>getServletMappings</code> method with <code>&quot;/&quot;</code>, or else your URL request will not direct to the Spring dispatcher for processing! A step that can easily forgotten and you might find your self chasing why Spring controllers are not working.</p>
+<p>Above are really the minmal setup you need to start a war project. Next you want to add at least one controller to have some output to verify. Create this controller file <code>spring-web-annotation/src/main/java/springweb/controller/IndexController.java</code></p>
+<pre><code>package springweb.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+@Controller
+public class IndexController {
+    @RequestMapping(value=&quot;/&quot;)
+    public String index() {
+        return &quot;index&quot;;
+    }
+}
+</code></pre>
+<p>And now you would need the JSP view <code>spring-web-annotation/src/main/webapp/index.jsp</code></p>
+<pre><code>Hello World.
+</code></pre>
+<p>Now cd into <code>spring-web-annotation</code> and execute <code>mvn org.apache.tomcat.maven:tomcat7-maven-plugin:run</code>. You should see your Spring application starting and be able to browse <code>http://localhost:8080/spring-web-annotation</code> URL.</p>
+<p>There are lot of cool stuff you can do with Spring MVC. Checkout their awesome docs for more details.</p>
+</p>
+  			<a href="blog/2013/09/the-apache-camel-2-12-0-has-been-released.html"><h1>The Apache Camel 2.12.0 has been released!</h1></a>
+  			<p>10 September 2013, tags: 
+			    <a href="../tags/camel.html">camel</a> 
+  			</p>
+  			<p><p>The Apache Camel 2.12.0 has been released! Yeh!</p>
+<p>This is a special release to me mainly because I have help fixed few   <a href="https://issues.apache.org/jira/issues/?jql=project%20%3D%20CAMEL%20AND%20status%20in%20(Resolved%2C%20Closed)%20AND%20text%20~%20%22Zemian%22">Jira Issues</a>. :-P</p>
+<p>Among these, I have helped ported the old <code>quartz</code> component into <a href="http://camel.apache.org/quartz2.html">quartz2</a> using the new Quartz 2.0 API. As far as for Camel users concern, it should work just as old one, except it will now use the <code>quartz2://</code> URL prefix instead. But the implementation uses Quartz2 library that's not backward compatible with old Quartz1.8, which is very old. In addition, the <code>quartz2</code> component now has a new option <code>deleteJob=false</code> that will allow you to NOT delete the job created by Camel on shutdown, and it will also reuse existing job found with the same name in the Quartz scheduler if it exists during startup.</p>
+<p>Obviously my contribution seems tiny compare to what the <a href="http://camel.apache.org/camel-2120-release.html">full release</a> brings you, but it’s a start in helping out the project. I am glad the Camel folks accepted these patches and found it into their release.</p>
+<p>Try out the latest Camel and see what you think.</p>
+<p>Happing programming!</p>
+</p>
+  			<a href="blog/2013/09/exploring-apache-camel-core-seda-component.html"><h1>Exploring Apache Camel Core - Seda Component</h1></a>
+  			<p>08 September 2013, tags: 
+			    <a href="../tags/camel.html">camel</a> 
+  			</p>
+  			<p><p>The <code>seda</code> component in Apache Camel is very similar to the <code>direct</code> component that I’ve presented in previous blog, but in a asynchronous manner. To do this, it uses a <code>java.util.concurrent.BlockingQueue</code> as default implementation to queue up messages and disconnect from your main <code>Route</code> thread and then processing the messages in a separated thread. Because of this <code>BlockingQueue</code>, you need to be aware of the usage and config option.</p>
+<p>One option needs to be aware of asynchronous processing is the it default to queue size is unbound, meaning it will grow as much as your memory allowed. To cap this, set <code>size=1000</code>. Let’s see an example.</p>
+<pre><code>package camelcoredemo;
+
+import org.slf4j.*;
+import org.apache.camel.*;
+import org.apache.camel.builder.*;
+import org.apache.camel.main.Main;
+import java.io.*;
+
+public class SedaDemoCamel extends Main {
+    static Logger LOG = LoggerFactory.getLogger(SedaDemoCamel.class);
+    public static void main(String[] args) throws Exception {
+        SedaDemoCamel main = new SedaDemoCamel();
+        main.enableHangupSupport();
+        main.addRouteBuilder(createRouteBuilder1());
+        main.addRouteBuilder(createRouteBuilder2());
+        main.addRouteBuilder(createRouteBuilder3());
+        main.run(args);
+    }
+    // The file poller route
+    static RouteBuilder createRouteBuilder1() {
+        return new RouteBuilder() {
+            public void configure() {
+                from(&quot;file://target/input?preMove=staging&amp;move=.processed&quot;)
+                .process(new Processor() {
+                    public void process(Exchange msg) {
+                        CamelContext camelContext = msg.getContext();
+                        ProducerTemplate producer = camelContext.createProducerTemplate();
+                        String text = msg.getIn().getBody(String.class);
+                        String fileName = (String)msg.getIn().getHeader(&quot;CamelFileName&quot;);
+                        boolean specialFile = fileName.endsWith(&quot;_SPECIAL.dat&quot;);
+                        if (specialFile)
+                            producer.sendBody(&quot;seda:specialRoute&quot;, text);
+                        else
+                            producer.sendBody(&quot;seda:normalRoute&quot;, text);
+                    }
+                });
+            }
+        };
+    }
+    // The special file processing route
+    static RouteBuilder createRouteBuilder2() {
+        return new RouteBuilder() {
+            public void configure() {
+                from(&quot;seda:specialRoute&quot;)
+                .process(new Processor() {
+                    public void process(Exchange msg) {
+                        LOG.info(&quot;Processing special file: &quot; + msg);
+                    }
+                });
+            }
+        };
+    }
+    // The normal file processing route
+    static RouteBuilder createRouteBuilder3() {
+        return new RouteBuilder() {
+            public void configure() {
+                from(&quot;seda:normalRoute&quot;)
+                .process(new Processor() {
+                    public void process(Exchange msg) {
+                        LOG.info(&quot;Processing normal file: &quot; + msg);
+                    }
+                });
+            }
+        };
+    }
+}
+</code></pre>
+<p>You will notice that this demo code is very similar to the <code>direct</code> component demo, with few differences. First, we use <code>seda</code> endpoints. Second, in file poller, we read in the entire file content text. We do this because we are now passing to an asynchronous <code>Route</code> that will runs on separate threads. The poller is configured to move the processed file into different folder right after the first <code>Route</code> has ended. So we must ensure the processing <code>Route</code> is not depended on the path of the File, hence we will load entire text in instead.</p>
+<p>Another interesting <code>seda</code> option is you may set the number of concurrent threads to receive the messages to process them! Let’s say if your <strong>normal</strong> files are heavy in traffic, then you can configure to use more threads on that part (default is just one thread.)</p>
+<pre><code>from(&quot;seda:normalRoute?concurrentConsumers=10&quot;)
+.process(new Processor() {
+    public void process(Exchange msg) {
+        LOG.info(&quot;Processing normal file: &quot; + msg);
+    }
+});
+</code></pre>
+<p>To verify that your are running concurrently, you can easily configure your logger to display thread name. For<br />
+example with <code>log4j</code>, you can use this pattern:</p>
+<pre><code>log4j.rootLogger=INFO, stdout
+log4j.appender.stdout=org.apache.log4j.ConsoleAppender
+log4j.appender.stdout.layout=org.apache.log4j.PatternLayout
+log4j.appender.stdout.layout.ConversionPattern=%d %p %t [%c] - %m%n
+</code></pre>
+<p>There are more options availabe from <a href="http://camel.apache.org/seda.html">Seda</a> component<br />
+that you may explore.<br />
+<a href="http://saltnlight5.blogspot.com/2013/08/getting-started-with-apache-camel-using.html">Try it out with a Route</a><br />
+and see it for yourself.</p>
+</p>
+
+	<hr />
+
+	<ul class="pager">
+		<li class="previous"><a href="https://zemian.github.io/17">Previous</a></li>
+		<li>Page: 18/28</li>
+		<li class="next"><a href="https://zemian.github.io/19">Next</a></li>
+	</ul>
+
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">&copy; 2011 - Present Zemian Deng All Rights Reserved | Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.5</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../js/jquery-1.11.1.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/prettify.js"></script>
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-135626598-1');
+    </script>
+
+  </body>
+</html>

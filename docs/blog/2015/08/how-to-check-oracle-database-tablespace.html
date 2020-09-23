@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Zemian's Blog - How to check Oracle Database tablespace</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../css/asciidoctor.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link href="../../../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../../../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../about.html">About</a></li>
+            <li><a href="../../../archive.html">Archive</a></li>
+            <li><a href="../../..//tags">Tags</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">	
+	<div class="page-header">
+		<h1>How to check Oracle Database tablespace</h1>
+	</div>
+
+	<p><em>14 August 2015</em>, tags: 
+	    <a href="../../../tags/oracle.html">oracle</a> 
+	</p>
+
+	<p><p>When creating a new users in Oracle database (new schema), you need to verify the existing tablespace availability. This query will show you what's there and how much space are free to use.</p>
+<p>SELECT df.tablespace_name &quot;Tablespace&quot;,</p>
+<p>totalusedspace &quot;Used MB&quot;,</p>
+<p>(df.totalspace - tu.totalusedspace) &quot;Free MB&quot;,</p>
+<p>df.totalspace &quot;Total MB&quot;,</p>
+<p>ROUND(100 * ( (df.totalspace - tu.totalusedspace)/ df.totalspace)) &quot;% Free&quot;</p>
+<p>FROM</p>
+<p>(SELECT tablespace_name,</p>
+<pre><code>ROUND(SUM(bytes) / 1048576) TotalSpace
+</code></pre>
+<p>FROM dba_data_files</p>
+<p>GROUP BY tablespace_name</p>
+<p>) df,</p>
+<p>(SELECT ROUND(SUM(bytes)/(1024*1024)) totalusedspace,</p>
+<pre><code>tablespace_name
+</code></pre>
+<p>FROM dba_segments</p>
+<p>GROUP BY tablespace_name</p>
+<p>) tu</p>
+<p>WHERE df.tablespace_name = tu.tablespace_name;</p>
+<p>Also, this query will show where the tablespace file are located:</p>
+<p>SELECT  FILE_NAME, BLOCKS, TABLESPACE_NAME</p>
+<p>FROM DBA_DATA_FILES;</p>
+<p>Here are some references on how Oracle manages user, schema and tablespace.</p>
+<p><a href="https://community.oracle.com/message/1832920">https://community.oracle.com/message/1832920</a></p>
+<p><a href="http://docs.oracle.com/cd/B28359_01/server.111/b28310/tspaces014.htm#ADMIN11412">http://docs.oracle.com/cd/B28359_01/server.111/b28310/tspaces014.htm#ADMIN11412</a><br />
+<a href="http://docs.oracle.com/cd/B28359_01/server.111/b28286/statements_8003.htm">http://docs.oracle.com/cd/B28359_01/server.111/b28286/statements_8003.htm</a><br />
+<a href="http://stackoverflow.com/questions/880230/difference-between-a-user-and-a-schema-in-oracle">http://stackoverflow.com/questions/880230/difference-between-a-user-and-a-schema-in-oracle</a><br />
+<a href="https://asktom.oracle.com/pls/asktom/f?p=100:11:0::::P11_QUESTION_ID:6162110256950">https://asktom.oracle.com/pls/asktom/f?p=100:11:0::::P11_QUESTION_ID:6162110256950</a></p>
+</p>
+
+	<hr />
+
+<div id="disqus_thread"></div>
+	
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://zemian-github-io.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">&copy; 2011 - Present Zemian Deng All Rights Reserved | Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.5</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../../../js/jquery-1.11.1.min.js"></script>
+    <script src="../../../js/bootstrap.min.js"></script>
+    <script src="../../../js/prettify.js"></script>
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-135626598-1');
+    </script>
+
+  </body>
+</html>

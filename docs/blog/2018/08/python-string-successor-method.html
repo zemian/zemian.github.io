@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Zemian's Blog - Python string successor method</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../css/asciidoctor.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link href="../../../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../../../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../about.html">About</a></li>
+            <li><a href="../../../archive.html">Archive</a></li>
+            <li><a href="../../..//tags">Tags</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">	
+	<div class="page-header">
+		<h1>Python string successor method</h1>
+	</div>
+
+	<p><em>24 August 2018</em>, tags: 
+	    <a href="../../../tags/python.html">python</a> 
+	</p>
+
+	<p><pre><code># A simple implementation of Ruby's String#next() successor method in Python
+# See https://ruby-doc.org/core-2.4.1/String.html#method-i-next
+def next(id_template, id_chars = &quot;0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;):
+        first_ch = id_chars[0]
+        last_ch = id_chars[-1]
+        new_id = list(id_template)
+
+        idx = len(new_id) - 1
+        while idx &gt;= 0:
+                ch = new_id[idx]
+                if ch == last_ch:
+                        new_id[idx] = first_ch
+                else:
+                        next_idx = id_chars.index(ch) + 1
+                        new_id[idx] = id_chars[next_idx]
+                        break
+                idx -= 1
+
+        return ''.join(new_id)
+
+# Tests
+import unittest
+class StringNextTest(unittest.TestCase):
+        def test_next(self):
+                self.assertEqual(next(&quot;0&quot;), &quot;1&quot;);
+                self.assertEqual(next(&quot;9&quot;), &quot;A&quot;);
+                self.assertEqual(next(&quot;A&quot;), &quot;B&quot;);
+                self.assertEqual(next(&quot;Y&quot;), &quot;Z&quot;);
+                self.assertEqual(next(&quot;Z&quot;), &quot;0&quot;);
+
+                self.assertEqual(next(&quot;AAA&quot;), &quot;AAB&quot;);
+                self.assertEqual(next(&quot;AAB&quot;), &quot;AAC&quot;);
+                self.assertEqual(next(&quot;AAC&quot;), &quot;AAD&quot;);
+                self.assertEqual(next(&quot;ZZ0&quot;), &quot;ZZ1&quot;);
+                self.assertEqual(next(&quot;ZZ1&quot;), &quot;ZZ2&quot;);
+                self.assertEqual(next(&quot;ZZ2&quot;), &quot;ZZ3&quot;);
+                self.assertEqual(next(&quot;ZZY&quot;), &quot;ZZZ&quot;);
+                self.assertEqual(next(&quot;ZZZ&quot;), &quot;000&quot;);
+                self.assertEqual(next(&quot;ZZZZZZ&quot;), &quot;000000&quot;);
+                self.assertEqual(next(&quot;ZZZZZZZZZ&quot;), &quot;000000000&quot;);
+
+                self.assertEqual(next(&quot;ABC999GHI&quot;), &quot;ABC999GHJ&quot;);
+                self.assertEqual(next(&quot;ABC999GZZ&quot;), &quot;ABC999H00&quot;);
+
+        def samples(self):
+                id = &quot;ZZX&quot;
+                print(id)
+                for i in range(10):
+                        id = next(id)
+                        print(id)
+
+                id = &quot;FF9&quot;
+                print(id)
+                for i in range(10):
+                        id = next(id, &quot;0123456789ABCDEF&quot;)
+                        print(id)
+
+if __name__ == '__main__':
+        #StringNextTest().samples()
+        unittest.main()
+</code></pre>
+</p>
+
+	<hr />
+
+<div id="disqus_thread"></div>
+	
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://zemian-github-io.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">&copy; 2011 - Present Zemian Deng All Rights Reserved | Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.5</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../../../js/jquery-1.11.1.min.js"></script>
+    <script src="../../../js/bootstrap.min.js"></script>
+    <script src="../../../js/prettify.js"></script>
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-135626598-1');
+    </script>
+
+  </body>
+</html>

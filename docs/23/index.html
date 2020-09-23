@@ -1,0 +1,1507 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Zemian's Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/asciidoctor.css" rel="stylesheet">
+    <link href="../css/base.css" rel="stylesheet">
+    <link href="../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../about.html">About</a></li>
+            <li><a href="../archive.html">Archive</a></li>
+            <li><a href="..//tags">Tags</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">
+  			<a href="blog/2012/10/running-maven-commands-with-multi-modules-project.html"><h1>Running maven commands with multi modules project</h1></a>
+  			<p>14 October 2012, tags: 
+			    <a href="../tags/maven.html">maven</a> 
+  			</p>
+  			<p><p>Have you ever tried running Maven commands inside a sub-module of a multi modules Maven project, and get <code>Could not resolve dependencies for project</code> error msg? And you checked the dependencies that it's missing are those sister modules within the same project! So what gives? It turns out you have to give few more options to get this running correctly, and you have to remember always stays in the parent pom directory to run it!</p>
+<p>For exmaple if you checkout the TimeMachine scheduler project, you can invoke the <code>timemachine-hibernate</code> module with maven commands like this:</p>
+<pre><code>bash&gt; hg clone https://bitbucket.org/timemachine/scheduler
+bash&gt; cd scheduler
+bash&gt; mvn -pl timemachine-hibernate -am clean test-compile
+</code></pre>
+<p>You can start the scheduler using Maven like this (remember to stay in the parent pom directory!):</p>
+<pre><code>bash &gt; mvn -pl timemachine-scheduler exec:java -Dexec.mainClass=timemachine.scheduler.tool.SchedulerServer -Dexec.classpathScope=test
+</code></pre>
+<p>I have added the <code>-Dexec.classpathScope=test</code> so you will see logging output, because there is an <code>log4j.properties</code> in the classpath for testing.</p>
+<p>Without these, you can always run <code>mvn install</code> in the project root directory, then you can cd into any sub-module and run Maven commands. However you will have to keep a tab on what changed in the dependencies, even if they are in sister modules.</p>
+<p>You can read more from this <a href="http://www.sonatype.com/people/2009/10/maven-tips-and-tricks-advanced-reactor-options">article</a> from Sonatype.</p>
+</p>
+  			<a href="blog/2012/10/whats-up-with-the-junit-and-hamcrest-dependencies.html"><h1>What&apos;s up with the JUnit and Hamcrest dependencies?</h1></a>
+  			<p>06 October 2012, tags: 
+			    <a href="../tags/java.html">java</a> 
+
+			    <a href="../tags/junit.html">junit</a> 
+  			</p>
+  			<p><p>It's awesome that <a href="http://www.junit.org/">JUnit</a> is recognizing the usefulness of <a href="http://code.google.com/p/hamcrest/">Hamcrest</a>, because I use these two a lot. However, I find JUnit packaging of their dependencies odd, and can cause class loading problem if you are not careful.</p>
+<p>Let's take a closer look. If you look at <code>junit:junit:4.10</code> from Maven Central, you will see that it has this dependencies graph:</p>
+<pre><code>+- junit:junit:jar:4.10:test
+    |  - org.hamcrest:hamcrest-core:jar:1.1:test
+</code></pre>
+<p>This is great, except that inside the <code>junit-4.10.jar</code>, you will also find the <code>hamcrest-core-1.1.jar</code> content are <em>embedded</em>!</p>
+<p>But <strong>why???</strong></p>
+<p>I suppose it's a convenient for folks who use Ant, so that they save one jar to package in their <code>lib</code> folder, but it's not very Maven friendly. And you also expect classloading trouble if you want to upgrade Hamcrest or use extra Hamcrest modules.</p>
+<p>Now if you use Hamcrest long enough, you know that most of their goodies are in the second module named <code>hamcrest-library</code>, but this JUnit didn't package in. JUnit however chose to include some JUnit+Hamcrest extension of their own. Now including duplicated classes in jar are very trouble maker, so JUnit has a separated module <code>junit-dep</code> that doesn't include Hamcrest core package and help you avoid this issue. So if you are using Maven project, you should use this instead.</p>
+<pre><code>&lt;dependency&gt;
+    &lt;groupId&gt;junit&lt;/groupId&gt;
+    &lt;artifactId&gt;junit-dep&lt;/artifactId&gt;
+    &lt;version&gt;4.10&lt;/version&gt;
+    &lt;scope&gt;test&lt;/scope&gt;
+    &lt;exclusions&gt;
+        &lt;exclusion&gt;
+            &lt;groupId&gt;org.hamcrest&lt;/groupId&gt;
+            &lt;artifactId&gt;hamcrest-core&lt;/artifactId&gt;
+        &lt;/exclusion&gt;
+    &lt;/exclusions&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.hamcrest&lt;/groupId&gt;
+    &lt;artifactId&gt;hamcrest-library&lt;/artifactId&gt;
+    &lt;version&gt;1.2.1&lt;/version&gt;
+    &lt;scope&gt;test&lt;/scope&gt;
+&lt;/dependency&gt;
+</code></pre>
+<p>Notice that's a <code>junit-dep</code>, and also on how I have to exclude hamcrest from it. This is needed if you want <code>hamcrest-library</code> that has higher version than the one JUnit comes with, which is <code>1.1</code>.</p>
+<p>Interesting enough, Maven's dependencies in pom is order sensitive when it comes to auto resolving conflicting versions dependencies. Actually it would just pick the first one found and ignore the rest. So you can shorten above without exclusion if, only if, you place the Hamcrest bofore JUnit like this:</p>
+<pre><code>&lt;dependency&gt;
+    &lt;groupId&gt;org.hamcrest&lt;/groupId&gt;
+    &lt;artifactId&gt;hamcrest-library&lt;/artifactId&gt;
+    &lt;version&gt;1.2.1&lt;/version&gt;
+    &lt;scope&gt;test&lt;/scope&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;junit&lt;/groupId&gt;
+    &lt;artifactId&gt;junit-dep&lt;/artifactId&gt;
+    &lt;version&gt;4.10&lt;/version&gt;
+    &lt;scope&gt;test&lt;/scope&gt;
+&lt;/dependency&gt;
+</code></pre>
+<p>This should make Maven use the following dependencies:</p>
+<pre><code>+- org.hamcrest:hamcrest-library:jar:1.2.1:test
+|  \- org.hamcrest:hamcrest-core:jar:1.2.1:test
++- junit:junit-dep:jar:4.10:test
+</code></pre>
+<p>However I think using the exclusion tag would probably give you more stable build and not rely on Maven implicit ordering rule. And it avoid easy mistake for Maven beginer users. However I wish JUnit would do a better job at packaging and remove duplicated classes in jar. I personally think it's more productive for JUnit to also include <code>hamcrest-libray</code> instead of just the <code>hamcrest-core</code> jar.</p>
+<p>What do you think?</p>
+</p>
+  			<a href="blog/2012/09/high-level-design-diagrams-for-timemachine-scheduler.html"><h1>High Level Design Diagrams for TimeMachine Scheduler</h1></a>
+  			<p>29 September 2012, tags: 
+			    <a href="../tags/timemachine.html">timemachine</a> 
+  			</p>
+  			<p><p>Despite the advance of all the computers, I am one of those guys who still carry a pen and composition notebook around. I am far from those who has photographic memories, nor one who can digest every thing in their heads. Especially when it comes to doing software design. I still find my self scribbling on my notebook quite a bit, or even on piece of napkin if no paper is available. I am also one of those who only need high level ideas drawn out, then I can usually go directly to code, map it to some API and then write some simple implementations to get started.</p>
+<p>That's how I started with the <a href="https://bitbucket.org/timemachine/scheduler">TimeMachine Scheduler</a> project a while back. However, as we come to a point where we have a solid runnable code, we must also start to present it to others. Showing my composition notebook is not the prettier thing in the world, specially when I have no gift in penmenship at all. This is a time to look into some professional diagram and design tools to draw up the high level architecture.</p>
+<p>I was contacted by <a href="http://www.architexa.com">Architexa</a> to give them some review of their tool. I think this is a great opportunity for me to try it to draw up some diagrams on the TimeMachine project. Most of what I have diagrammed here are explained in details in the project <a href="https://bitbucket.org/timemachine/scheduler/wiki/ReferenceManual">reference manual</a>, so if you want to know more, please do read it up for further reference.</p>
+<h1>TimeMachine top level packages</h1>
+<p>First, the Architexa provides their software as an Eclipse plugin, and after installing it, it can analysis an existing project. I did that and here is the package level view it presents me for the TimeMachine.</p>
+<p><img src="https://bitbucket.org/saltnlight5/images/raw/84cde5b1e9ba/timemachine-diagrams/package-dependencies.png" alt="TimeMachine packages dependencies diagram" /></p>
+<p>The graph is not very clear on why everything depends on <code>schedule</code> package, but perhaps Schedule is used through the code. Any way the TimeMachine has been carefully separating out the pakcages so it's easy for user to use. All the interfaces you need to scheduler jobs are in <code>timemachine.scheduler</code>. In it, there are couple static factories class: <code>Schedules</code> and <code>JobTasks</code> provide majority of the functionity you need. So the goal is you can do quiet a bit with just <code>import timemachine.scheduler.*;</code>; then as you need each layer functionality, you can import them explicitly the sub-packages.</p>
+<h1>TimeMachine main classes diagrams</h1>
+<p>In TimeMachine, you have few major class hierarchy that you must need to get familiar in order to write effective scheduling jobs.</p>
+<p>A job in TimeMachine is implemented by a class with <code>JobTask</code> interface. The project provide few for you to get started.</p>
+<p><img src="https://bitbucket.org/saltnlight5/images/raw/84cde5b1e9ba/timemachine-diagrams/jobtask-class-hierarchy.png" alt="TimeMachine JobTask class diagram" /></p>
+<p>How often and frequent to run your job in the scheduler is provided by a <code>Schedule</code>. Here we provided some most used implementations, including the customizable <code>DateListSchedule</code> that uses a <code>provider</code> generator.</p>
+<p><img src="https://bitbucket.org/saltnlight5/images/raw/84cde5b1e9ba/timemachine-diagrams/schedule-class-hierarchy.png" alt="TimeMachine Schedule class diagram" /></p>
+<p>The TimeMachine is a scheduler composed by a stackable service container. Here are some of the services that power the scheduler as a whole. The user/developer can write their own user <code>Service</code> and add into the container as well.</p>
+<p><img src="https://bitbucket.org/saltnlight5/images/raw/84cde5b1e9ba/timemachine-diagrams/service-class-hierarchy.png" alt="TimeMachine SchedulerEngine class diagram" /></p>
+<p>The services above are then combined together to form the scheduler engine.</p>
+<p><img src="https://bitbucket.org/saltnlight5/images/raw/84cde5b1e9ba/timemachine-diagrams/scheduler-engine-class-hierarchy.png" alt="TimeMachine SchedulerEngine class diagram" /></p>
+<h1>TimeMachine in action diagrams</h1>
+<p>Depicting sequence diagram is pretty challenging. The Architexa plugin is pretty good in this area, especially when you already have code already done. The Architexa plugin would take advantage of existing code and Java reflection and give you a selectable choice on what and to where as action. Here I will highlight couple actions in TimeMachine.</p>
+<p>The most basic startup of the TimeMachine sequence would look something like this.</p>
+<p><img src="https://bitbucket.org/saltnlight5/images/raw/84cde5b1e9ba/timemachine-diagrams/scheduler-start-up-sequence.png" alt="TimeMachine Scheduler startup up sequence diagram" /></p>
+<p>In the heart of the scheduler logic is in the <code>PollingScheduleRunner</code> service, and here are some of the actions depicted.</p>
+<p><img src="https://bitbucket.org/saltnlight5/images/raw/84cde5b1e9ba/timemachine-diagrams/polling-schedule-runner-sequence.png" alt="TimeMachine PollingScheduleRunner sequence diagram" /></p>
+<h1>Using Architexa</h1>
+<p>Over all, I think Architexa provided a pretty good plugin for Eclipse. I have some problems when generating the sequence diagrams. For example, I can't resize the width between two actors(classes) to display full method name. And in some actions there are no lines drawn! I suspect it's due to the tool is using code inspection, and some of the call are called by different threads.</p>
+<p>The plugin itself seems pretty solid. You can install and uninstall without harm. They currently offer free download for small number of users, which I think it's a great way for you to explorer.</p>
+<p>I am not too sure how effective of Architexa on builing a collabration of sharing these diagrams as platform. I treat these diagrams as supplement to the project. It certainly helps in explaining high level architeture, but it's far from the complete documentation. No documentation can get any closer to the code. I think the strength of Java being static already provided some level of documentation when just reading the code alone. I would rather Architexa to focus and perfecting the plugin that draw the diagram, because these are more important to me.</p>
+</p>
+  			<a href="blog/2012/09/enhancing-spring-test-framework-with-beforeclass-and-afterclass-setup.html"><h1>Enhancing Spring Test Framework with beforeClass and afterClass setup</h1></a>
+  			<p>28 September 2012, tags: 
+			    <a href="../tags/java.html">java</a> 
+
+			    <a href="../tags/spring.html">spring</a> 
+  			</p>
+  			<p><h1>How to allow instance methods to run as JUnit BeforeClass behavior</h1>
+<p>JUnit allows you to setup methods on the class level once before and after all tests methods invocation. However, by design on purpose that they restrict this to only <em>static</em> methods using <code>@BeforeClass</code> and <code>@AfterClass</code> annotations. For example this simple demo shows the typical Junit setup:</p>
+<pre><code>package deng.junitdemo;
+
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+public class DemoTest {
+
+    @Test
+    public void testOne() {
+        System.out.println(&quot;Normal test method #1.&quot;);
+    }
+
+    @Test
+    public void testTwo() {
+        System.out.println(&quot;Normal test method #2.&quot;);
+    }
+
+    @BeforeClass
+    public static void beforeClassSetup() {
+        System.out.println(&quot;A static method setup before class.&quot;);
+    }
+
+    @AfterClass
+    public static void afterClassSetup() {
+        System.out.println(&quot;A static method setup after class.&quot;);
+    }
+}
+</code></pre>
+<p>And above should result the following output:</p>
+<pre><code>A static method setup before class.
+Normal test method #1.
+Normal test method #2.
+A static method setup after class.
+</code></pre>
+<p>This usage is fine for most of the time, but there are times you want to use non-static methods to setup the test. I will show you a more detailed use case later, but for now, let's see how we can solve this naughty problem with JUnit first. We can solve this by making the test<br />
+implements a Listener that provide the before and after callbacks, and we will need to digg into JUnit to detect this Listener to invoke our methods. This is a solution I came up with:</p>
+<pre><code>package deng.junitdemo;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+@RunWith(InstanceTestClassRunner.class)
+public class Demo2Test implements InstanceTestClassListener {
+
+    @Test
+    public void testOne() {
+        System.out.println(&quot;Normal test method #1&quot;);
+    }
+
+    @Test
+    public void testTwo() {
+        System.out.println(&quot;Normal test method #2&quot;);
+    }
+
+    @Override
+    public void beforeClassSetup() {
+        System.out.println(&quot;An instance method setup before class.&quot;);
+    }
+
+    @Override
+    public void afterClassSetup() {
+        System.out.println(&quot;An instance method setup after class.&quot;);
+    }
+}
+</code></pre>
+<p>As stated above, our Listener is a simple contract:</p>
+<pre><code>package deng.junitdemo;
+
+public interface InstanceTestClassListener {
+    void beforeClassSetup();
+    void afterClassSetup();
+}
+</code></pre>
+<p>Our next task is to provide the JUnit runner implementation that will trigger the setup methods.</p>
+<pre><code>package deng.junitdemo;
+
+import org.junit.runner.notification.RunNotifier;
+import org.junit.runners.BlockJUnit4ClassRunner;
+import org.junit.runners.model.InitializationError;
+
+public class InstanceTestClassRunner extends BlockJUnit4ClassRunner {
+
+    private InstanceTestClassListener instanceSetupListener;
+
+    public InstanceTestClassRunner(Class&lt;?&gt; klass) throws InitializationError {
+        super(klass);
+    }
+
+    @Override
+    protected Object createTest() throws Exception {
+        Object test = super.createTest();
+        // Note that JUnit4 will call this createTest() multiple times for each
+        // test method, so we need to ensure to call &quot;beforeClassSetup&quot; only once.
+        if (test instanceof InstanceTestClassListener &amp;&amp; instanceSetupListener == null) {
+            instanceSetupListener = (InstanceTestClassListener) test;
+            instanceSetupListener.beforeClassSetup();
+        }
+        return test;
+    }
+
+    @Override
+    public void run(RunNotifier notifier) {
+        super.run(notifier);
+        if (instanceSetupListener != null)
+            instanceSetupListener.afterClassSetup();
+    }
+}
+</code></pre>
+<p>Now we are in business. If we run above test, it should give us similar result, but this time we are using instance methods instead!</p>
+<pre><code>An instance method setup before class.
+Normal test method #1
+Normal test method #2
+An instance method setup after class.
+</code></pre>
+<h1>A concrete use case: Working with Spring Test Framework</h1>
+<p>Now let me show you a real use case with above. If you use Spring Test Framework, you would normally setup a test like this so that you may have test fixture injected as member instance.</p>
+<pre><code>package deng.junitdemo.spring;
+
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+
+import java.util.List;
+
+import javax.annotation.Resource;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration
+public class SpringDemoTest {
+
+    @Resource(name=&quot;myList&quot;)
+    private List&lt;String&gt; myList;
+
+    @Test
+    public void testMyListInjection() {
+        assertThat(myList.size(), is(2));
+    }
+}
+</code></pre>
+<p>You would also need a spring xml under that same package for above to run:</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+     xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+     xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd&quot;&gt;
+     &lt;bean id=&quot;myList&quot; class=&quot;java.util.ArrayList&quot;&gt;
+        &lt;constructor-arg&gt;
+            &lt;list&gt;
+                &lt;value&gt;one&lt;/value&gt;
+                &lt;value&gt;two&lt;/value&gt;
+            &lt;/list&gt;
+        &lt;/constructor-arg&gt;
+     &lt;/bean&gt;
+&lt;/beans&gt;
+</code></pre>
+<p>Pay very close attention to member instance <code>List&lt;String&gt; myList</code>. When running JUnit test, that field will be injected by Spring, and it can be used in any test method. However, if you ever want a one time setup of some code and get a reference to a Spring injected field, then you are in bad luck. This is because the JUnit <code>@BeforeClass</code> will force your method to be static; and if you make your field static, Spring injection won't work in your test!</p>
+<p>Now if you are a frequent Spring user, you should know that Spring Test Framework already provided a way for you to handle this type of use case. Here is a way for you to do class level setup with Spring's style:</p>
+<pre><code>package deng.junitdemo.spring;
+
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+
+import java.util.List;
+
+import javax.annotation.Resource;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestContext;
+import org.springframework.test.context.TestExecutionListeners;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.AbstractTestExecutionListener;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@TestExecutionListeners(listeners = {
+        DependencyInjectionTestExecutionListener.class, 
+        SpringDemo2Test.class})
+@ContextConfiguration
+public class SpringDemo2Test extends AbstractTestExecutionListener {
+
+    @Resource(name=&quot;myList&quot;)
+    private List&lt;String&gt; myList;
+
+    @Test
+    public void testMyListInjection() {
+        assertThat(myList.size(), is(2));
+    }
+
+    @Override
+    public void afterTestClass(TestContext testContext) {
+        List&lt;?&gt; list = testContext.getApplicationContext().getBean(&quot;myList&quot;, List.class);
+        assertThat((String)list.get(0), is(&quot;one&quot;));
+    }
+
+    @Override
+    public void beforeTestClass(TestContext testContext) {
+        List&lt;?&gt; list = testContext.getApplicationContext().getBean(&quot;myList&quot;, List.class);
+        assertThat((String)list.get(1), is(&quot;two&quot;));
+    }
+}
+</code></pre>
+<p>As you can see, Spring offers the <code>@TestExecutionListeners</code> annotation to allow you to write any Listener, and in it you will have a reference to the <code>TestContext</code> which has the <code>ApplicationContext</code> for you to get to the injected field reference. This works, but I find it not very elegant. It forces you to look up the bean, while your injected field is already available as field. But you can't use it unless you go through the <code>TestContext</code> parameter.</p>
+<p>Now if you mix the solution we provided in the beginning, we will see a more prettier test setup. Let's see it:</p>
+<pre><code>package deng.junitdemo.spring;
+
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+
+import java.util.List;
+
+import javax.annotation.Resource;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.ContextConfiguration;
+
+import deng.junitdemo.InstanceTestClassListener;
+
+@RunWith(SpringInstanceTestClassRunner.class)
+@ContextConfiguration
+public class SpringDemo3Test implements InstanceTestClassListener {
+
+    @Resource(name=&quot;myList&quot;)
+    private List&lt;String&gt; myList;
+
+    @Test
+    public void testMyListInjection() {
+        assertThat(myList.size(), is(2));
+    }
+
+    @Override
+    public void beforeClassSetup() {
+        assertThat((String)myList.get(0), is(&quot;one&quot;));
+    }
+
+    @Override
+    public void afterClassSetup() {
+        assertThat((String)myList.get(1), is(&quot;two&quot;));
+    }
+}
+</code></pre>
+<p>Now JUnit only allow you to use single <code>Runner</code>, so we must extends the Spring's version to insert what we did before.</p>
+<pre><code>package deng.junitdemo.spring;
+
+import org.junit.runner.notification.RunNotifier;
+import org.junit.runners.model.InitializationError;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import deng.junitdemo.InstanceTestClassListener;
+
+public class SpringInstanceTestClassRunner extends SpringJUnit4ClassRunner {
+
+    private InstanceTestClassListener instanceSetupListener;
+
+    public SpringInstanceTestClassRunner(Class&lt;?&gt; clazz) throws InitializationError {
+        super(clazz);
+    }
+
+    @Override
+    protected Object createTest() throws Exception {
+        Object test = super.createTest();
+        // Note that JUnit4 will call this createTest() multiple times for each
+        // test method, so we need to ensure to call &quot;beforeClassSetup&quot; only once.
+        if (test instanceof InstanceTestClassListener &amp;&amp; instanceSetupListener == null) {
+            instanceSetupListener = (InstanceTestClassListener) test;
+            instanceSetupListener.beforeClassSetup();
+        }
+        return test;
+    }
+
+    @Override
+    public void run(RunNotifier notifier) {
+        super.run(notifier);
+        if (instanceSetupListener != null)
+            instanceSetupListener.afterClassSetup();
+    }
+}
+</code></pre>
+<p>That should do the trick. Running the test will give use this output:</p>
+<pre><code>12:58:48 main INFO  org.springframework.test.context.support.AbstractContextLoader:139 | Detected default resource location &quot;classpath:/deng/junitdemo/spring/SpringDemo3Test-context.xml&quot; for test class [deng.junitdemo.spring.SpringDemo3Test].
+12:58:48 main INFO  org.springframework.test.context.support.DelegatingSmartContextLoader:148 | GenericXmlContextLoader detected default locations for context configuration [ContextConfigurationAttributes@74b23210 declaringClass = 'deng.junitdemo.spring.SpringDemo3Test', locations = '{classpath:/deng/junitdemo/spring/SpringDemo3Test-context.xml}', classes = '{}', inheritLocations = true, contextLoaderClass = 'org.springframework.test.context.ContextLoader'].
+12:58:48 main INFO  org.springframework.test.context.support.AnnotationConfigContextLoader:150 | Could not detect default configuration classes for test class [deng.junitdemo.spring.SpringDemo3Test]: SpringDemo3Test does not declare any static, non-private, non-final, inner classes annotated with @Configuration.
+12:58:48 main INFO  org.springframework.test.context.TestContextManager:185 | @TestExecutionListeners is not present for class [class deng.junitdemo.spring.SpringDemo3Test]: using defaults.
+12:58:48 main INFO  org.springframework.beans.factory.xml.XmlBeanDefinitionReader:315 | Loading XML bean definitions from class path resource [deng/junitdemo/spring/SpringDemo3Test-context.xml]
+12:58:48 main INFO  org.springframework.context.support.GenericApplicationContext:500 | Refreshing org.springframework.context.support.GenericApplicationContext@44c9d92c: startup date [Sat Sep 29 12:58:48 EDT 2012]; root of context hierarchy
+12:58:49 main INFO  org.springframework.beans.factory.support.DefaultListableBeanFactory:581 | Pre-instantiating singletons in org.springframework.beans.factory.support.DefaultListableBeanFactory@73c6641: defining beans [myList,org.springframework.context.annotation.internalConfigurationAnnotationProcessor,org.springframework.context.annotation.internalAutowiredAnnotationProcessor,org.springframework.context.annotation.internalRequiredAnnotationProcessor,org.springframework.context.annotation.internalCommonAnnotationProcessor,org.springframework.context.annotation.ConfigurationClassPostProcessor$ImportAwareBeanPostProcessor#0]; root of factory hierarchy
+12:58:49 Thread-1 INFO  org.springframework.context.support.GenericApplicationContext:1025 | Closing org.springframework.context.support.GenericApplicationContext@44c9d92c: startup date [Sat Sep 29 12:58:48 EDT 2012]; root of context hierarchy
+12:58:49 Thread-1 INFO  org.springframework.beans.factory.support.DefaultListableBeanFactory:433 | Destroying singletons in org.springframework.beans.factory.support.DefaultListableBeanFactory@73c6641: defining beans [myList,org.springframework.context.annotation.internalConfigurationAnnotationProcessor,org.springframework.context.annotation.internalAutowiredAnnotationProcessor,org.springframework.context.annotation.internalRequiredAnnotationProcessor,org.springframework.context.annotation.internalCommonAnnotationProcessor,org.springframework.context.annotation.ConfigurationClassPostProcessor$ImportAwareBeanPostProcessor#0]; root of factory hierarchy
+</code></pre>
+<p>Obviously the output shows nothing interesting here, but the test should run with all assertion passed. The point is that now we have a more elegant way to invoking a before and after test setup that are at class level, and they can be instance methods to allow Spring injection.</p>
+<h1>Download the demo code</h1>
+<p>You may get above demo code in a working Maven project from <a href="https://bitbucket.org/saltnlight5/sandbox/src/8d545b15fbbd/junit-examples">my sandbox</a>.</p>
+</p>
+  			<a href="blog/2012/09/timemachine-scheduler-1-2-2-release.html"><h1>TimeMachine Scheduler 1.2.2 Release</h1></a>
+  			<p>25 September 2012, tags: 
+			    <a href="../tags/timemachine.html">timemachine</a> 
+  			</p>
+  			<p><p>This is a bug fix release for couple of issues:</p>
+<ol>
+<li>
+<p>Fixed an issue with parsing release date string with &quot;EDT&quot; timezone that can cause the scheduler fail to startup</p>
+</li>
+<li>
+<p>Added the optional slf4j-log4j binding to view log output in war file.</p>
+</li>
+</ol>
+<p>You may download the latest here: <a href="https://bitbucket.org/timemachine/scheduler/downloads">https://bitbucket.org/timemachine/scheduler/downloads</a></p>
+</p>
+  			<a href="blog/2012/09/where-did-git-go.html"><h1>Where did Git go?</h1></a>
+  			<p>18 September 2012, tags: 
+			    <a href="../tags/git.html">git</a> 
+  			</p>
+  			<p><p>My git is gone after I upgraded to latest MacOSX updates! What a annoying thing.</p>
+<p>Appearently it's in here now: <code>/usr/local/git/bin/git</code></p>
+<p>You can edit your <code>$PATH</code> like it says <a href="http://stackoverflow.com/questions/6810059/git-on-mac-os-x-lion">here</a>, or you could just relink it.</p>
+<pre><code>ln -s /usr/local/git/bin/git /usr/local/bin/git
+</code></pre>
+</p>
+  			<a href="blog/2012/09/building-message-based-application-using-camel.html"><h1>Building message based application using Camel</h1></a>
+  			<p>14 September 2012, tags: 
+			    <a href="../tags/camel.html">camel</a> 
+  			</p>
+  			<p><p>This is a long article that contains three separate topics:</p>
+<ul>
+<li>Getting started with Apache Camel with Java</li>
+<li>Improving startup of routes with a CamelRunner</li>
+<li>Building message based application using Camel</li>
+</ul>
+<p>But since I've prepared a <a href="https://bitbucket.org/saltnlight5/sandbox/downloads">camel-demo-1.0.0-SNAPSHOT-project.zip</a> that has all these materials included, I thought it would easier to combine them and present it as whole.</p>
+<h1>Getting started with Apache Camel with Java</h1>
+<p>Trying out <a href="http://saltnlight5.blogspot.com/2012/08/getting-started-with-apache-camel-using.html">Camel with few Groovy lines</a> is one thing, but<br />
+getting a full scale project in Java is another matter. Today, I will show you how to get things started on <a href="http://camel.apache.org/">Apache Camel</a> with<br />
+<a href="http://maven.apache.org/">Maven</a> based project. You may also use the provided <code>camel-demo</code> as project template to jump start your own Apache Camel<br />
+project. You would just need to rename the Java package and rename the pom's group and artifact id's to match your need.</p>
+<h2>Preparing a Maven based project with Camel dependencies</h2>
+<p>Unzip the <code>camel-demo</code> project source, and you will see the basic directory layout.</p>
+<pre><code>camel-demo
+    +- bin
+    +- config
+    +- data
+    +- src
+    +- pom.xml
+    +- README.txt
+</code></pre>
+<p>What makes this demo a Camel based project is just the declaration in <code>pom.xml</code>. Let's take a look the file and its dependencies.</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+    xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0   http://maven.apache.org/maven-v4_0_0.xsd&quot;&gt;
+
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;groupId&gt;deng.cameldemo&lt;/groupId&gt;
+    &lt;artifactId&gt;camel-demo&lt;/artifactId&gt;
+    &lt;version&gt;1.0.0-SNAPSHOT&lt;/version&gt;
+    &lt;packaging&gt;jar&lt;/packaging&gt;
+
+    &lt;properties&gt;
+        &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+        &lt;slf4j.version&gt;1.6.6&lt;/slf4j.version&gt;
+        &lt;camel.version&gt;2.10.1&lt;/camel.version&gt;
+    &lt;/properties&gt;
+
+    &lt;build&gt;
+        &lt;plugins&gt;
+            &lt;plugin&gt;
+                &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+                &lt;version&gt;2.3.2&lt;/version&gt;
+                &lt;configuration&gt;
+                    &lt;source&gt;1.6&lt;/source&gt;
+                    &lt;target&gt;1.6&lt;/target&gt;
+                &lt;/configuration&gt;
+            &lt;/plugin&gt;
+            &lt;plugin&gt;
+                &lt;artifactId&gt;maven-assembly-plugin&lt;/artifactId&gt;
+                &lt;version&gt;2.3&lt;/version&gt;
+                &lt;configuration&gt;
+                    &lt;descriptorRefs&gt;
+                        &lt;descriptorRef&gt;project&lt;/descriptorRef&gt;
+                        &lt;descriptorRef&gt;jar-with-dependencies&lt;/descriptorRef&gt;
+                    &lt;/descriptorRefs&gt;
+                &lt;/configuration&gt;
+                &lt;executions&gt;
+                    &lt;execution&gt;
+                        &lt;id&gt;make-assembly&lt;/id&gt;
+                        &lt;phase&gt;package&lt;/phase&gt;
+                        &lt;goals&gt;
+                            &lt;goal&gt;single&lt;/goal&gt;
+                        &lt;/goals&gt;
+                    &lt;/execution&gt;
+                &lt;/executions&gt;
+            &lt;/plugin&gt;
+        &lt;/plugins&gt;
+    &lt;/build&gt;
+
+    &lt;dependencies&gt;
+
+        &lt;!-- Unit testing lib --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;junit&lt;/groupId&gt;
+            &lt;artifactId&gt;junit-dep&lt;/artifactId&gt;
+            &lt;version&gt;4.10&lt;/version&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.hamcrest&lt;/groupId&gt;
+            &lt;artifactId&gt;hamcrest-library&lt;/artifactId&gt;
+            &lt;version&gt;1.2.1&lt;/version&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+
+        &lt;!-- Logging lib --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.slf4j&lt;/groupId&gt;
+            &lt;artifactId&gt;slf4j-api&lt;/artifactId&gt;
+            &lt;version&gt;${slf4j.version}&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.slf4j&lt;/groupId&gt;
+            &lt;artifactId&gt;slf4j-log4j12&lt;/artifactId&gt;
+            &lt;version&gt;${slf4j.version}&lt;/version&gt;
+            &lt;scope&gt;runtime&lt;/scope&gt;
+            &lt;optional&gt;true&lt;/optional&gt;
+        &lt;/dependency&gt;
+
+        &lt;!-- Apache Commons lib --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;commons-lang&lt;/groupId&gt;
+            &lt;artifactId&gt;commons-lang&lt;/artifactId&gt;
+            &lt;version&gt;2.6&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;commons-io&lt;/groupId&gt;
+            &lt;artifactId&gt;commons-io&lt;/artifactId&gt;
+            &lt;version&gt;2.0.1&lt;/version&gt;
+        &lt;/dependency&gt;
+
+        &lt;!-- Apache Camel --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.apache.camel&lt;/groupId&gt;
+            &lt;artifactId&gt;camel-core&lt;/artifactId&gt;
+            &lt;version&gt;${camel.version}&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.apache.camel&lt;/groupId&gt;
+            &lt;artifactId&gt;camel-spring&lt;/artifactId&gt;
+            &lt;version&gt;${camel.version}&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.apache.camel&lt;/groupId&gt;
+            &lt;artifactId&gt;camel-groovy&lt;/artifactId&gt;
+            &lt;version&gt;${camel.version}&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.apache.camel&lt;/groupId&gt;
+            &lt;artifactId&gt;camel-jackson&lt;/artifactId&gt;
+            &lt;version&gt;${camel.version}&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.apache.camel&lt;/groupId&gt;
+            &lt;artifactId&gt;camel-mina&lt;/artifactId&gt;
+            &lt;version&gt;${camel.version}&lt;/version&gt;
+        &lt;/dependency&gt;
+
+    &lt;/dependencies&gt;
+
+&lt;/project&gt;
+</code></pre>
+<p>This <code>pom.xml</code> decalares a Java based application and it will produce <code>jar</code>. It requires minimal of JDK 6 or higher. Besides the typical <code>junit</code> and <code>hamcrest</code> for unit testing, I also added <code>slf4j</code> for logging. I have added couple Apache's <code>commons-lang/io</code> to the project as well. I think these are basic settings that any Java based application should use them.</p>
+<p>The <code>maven-assembly-plugin</code> I have declared is only for this demo packging purpose, and you may change or remove to suite your own project need.</p>
+<p>For Camel dependencies, you would need minimal <code>camel-core</code> for routes building. And then you can add any additional components you plan to use in your project. I have added the following for building typical message based application development:</p>
+<ol>
+<li>The <code>camel-spring</code> - we want to have option to declare Camel routes in xml files as configuration. See <code>camel-demo/config</code> directory for samples.</li>
+<li>The <code>camel-jackson</code> - we want to process messaging data in our application as JSON format.</li>
+<li>The <code>camel-mina</code> - we want to send messaging data accross network through TCP socket.</li>
+<li>The <code>camel-groovy</code> - [optional] we want to be able to add dynamic scripting to route, even inside the xml config. This is great for debug and POC.</li>
+</ol>
+<p>Note that since we use multiple camel components dependencies, I choose to set a Maven property <code>${camel.version}</code> so that when we upgrade Camel,<br />
+it's easier to maintain the <code>pom.xml</code> file in one place.</p>
+<p>You should able to cd into the project directory and run <code>mvn compile</code> to verify that the project. It should compile without error.</p>
+<h1>Improving startup of routes with a CamelRunner</h1>
+<p>With the project <code>pom.xml</code> file ready, you can start creating Camel routes to handle your own business logics. Before we get too excited, let's try out<br />
+a simple <code>HelloRoute</code> to see how it works and how we can run it first. Here is the route defnition code in <code>src/main/java/deng/cameldemo/HelloRoute.java</code>.</p>
+<pre><code>package deng.cameldemo;
+
+import org.apache.camel.builder.RouteBuilder;
+
+public class HelloRoute extends RouteBuilder {
+    @Override
+    public void configure() throws Exception {
+        from(&quot;timer://helloTimer?period=3000&quot;).
+            to(&quot;log:&quot; + getClass().getName());
+    }
+}
+</code></pre>
+<h2>Take a test ride with the Camel</h2>
+<p>To see above in action, we need to add it into a <code>CamelContext</code> and start the context. For Java standalone program, we would write this setup code<br />
+in a <code>Main</code> class. The Camel actually comes with a <code>org.apache.camel.main.MainSupport</code> abstract class that you may use to extend your own <code>Main</code>.<br />
+However, I think it would be even nicer if Camel would provide a <code>CamelRunner</code> that can run like this.</p>
+<pre><code>$ java CamelRunner deng.cameldemo.HelloRoute
+</code></pre>
+<p>Such <code>CamelRunner</code> would be very user friendly and re-usable to have, so that's what I did. I wrote one like this:</p>
+<pre><code>package deng.cameldemo;
+
+import org.apache.camel.CamelContext;
+import org.apache.camel.builder.RouteBuilder;
+import org.apache.camel.impl.DefaultCamelContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.support.FileSystemXmlApplicationContext;
+
+/** 
+ * A main program to start Camel and run as a server using RouteBuilder class names or 
+ * Spring config files.
+ * 
+ * &lt;p&gt;Usage:
+ * 
+ * java deng.cameldemo.CamelRunner deng.cameldemo.HelloRoute
+ * 
+ * or
+ * 
+ * java -Dspring=true deng.cameldemo.CamelRunner /path/to/camel-spring.xml
+ * 
+ * @author Zemian Deng
+ */
+public class CamelRunner {
+    public static void main(String[] args) throws Exception {
+        CamelRunner runner = new CamelRunner();
+        runner.run(args);
+    }
+
+    private static Logger logger = LoggerFactory.getLogger(CamelRunner.class);
+    public void run(String[] args) throws Exception {
+        if (Boolean.parseBoolean(System.getProperty(&quot;spring&quot;, &quot;false&quot;)))
+            runWithSpringConfig(args);
+        else
+            runWithCamelRoutes(args);
+
+        // Wait for user to hit CRTL+C to stop the service
+        synchronized(this) {
+            this.wait();
+        }
+    }
+
+    private void runWithSpringConfig(String[] args) {
+        final ConfigurableApplicationContext springContext = new FileSystemXmlApplicationContext(args);
+
+        // Register proper shutdown.
+        Runtime.getRuntime().addShutdownHook(new Thread() { 
+            @Override
+            public void run() {
+                try {
+                    springContext.close();
+                    logger.info(&quot;Spring stopped.&quot;);
+                } catch (Exception e) {
+                    logger.error(&quot;Failed to stop Spring.&quot;, e);
+                }
+            }
+        });
+
+        // Start spring
+        logger.info(&quot;Spring started.&quot;);
+    }
+
+    private void runWithCamelRoutes(String[] args) throws Exception {
+        final CamelContext camelContext = new DefaultCamelContext();        
+        // Register proper shutdown.
+        Runtime.getRuntime().addShutdownHook(new Thread() { 
+            @Override
+            public void run() {
+                try {
+                    camelContext.stop();
+                    logger.info(&quot;Camel stopped for {}&quot;, camelContext);
+                } catch (Exception e) {
+                    logger.error(&quot;Failed to stop Camel.&quot;, e);
+                }
+            }
+        });
+
+        // Added RouteBuilder from args
+        for (String className : args) {
+            Class&lt;?&gt; cls = Class.forName(className);
+            if (RouteBuilder.class.isAssignableFrom(cls)) {
+                Object obj = cls.newInstance();
+                RouteBuilder routeBuilder = (RouteBuilder)obj;
+                camelContext.addRoutes(routeBuilder);
+            } else {
+                throw new RuntimeException(&quot;Unable to add Camel RouteBuilder &quot; + className);
+            }
+        }
+
+        // Start camel
+        camelContext.start();
+        logger.info(&quot;Camel started for {}&quot;, camelContext);
+    }
+}
+</code></pre>
+<p>To help you run the main class, I have provided a <a href="http://saltnlight5.blogspot.com/2012/08/a-better-java-shell-script-wrapper.html">run-java</a><br />
+wrapper script under the project's <code>bin</code> directory, so that you may quickly test it without having to setup classpath.</p>
+<pre><code>$ mvn package
+$ bin/run-java deng.cameldemo.CamelRunner deng.cameldemo.HelloRoute
+</code></pre>
+<p>You will see that the program will load the <code>HelloRoute</code> in a <code>DefaultCamelContext</code> and start it as a server. The <code>HelloRoute</code> itself will<br />
+generate a 3 seconds timer message and send it to a logger, which should be printing onto your console screen. This will continue forever<br />
+until you hit <code>CTRL+C</code> to end it.</p>
+<p>NOTE: You only have to invoke <code>mvn package</code> command once, so that it will package up all the dependencies jars in order for <code>run-java</code> to auto-detect<br />
+them. If you are not going to use <code>maven-assembly-plugin</code> during <code>package</code> phase, then use <code>mvn dependency:copy-dependencies</code> command<br />
+explicitly will work fine as well.</p>
+<h2>Take a test ride with the Camel, Part 2: running Camel with Spring xml configuration</h2>
+<p>The <code>HelloRoute</code> example above would simply provide route definition that formed by using component URI's. It will be nice if<br />
+we can configure the route in a declarative manner so that we may change the route without re-compile a class file. This will be very handy especially<br />
+if you are not familiar with each component's options and want to explore and try things out. Well, that's what the <code>camel-spring</code> is for. Beside<br />
+giving you an option to load route in xml config file, it also provides a very flexible way to register custom services/processors bean in the Spring<br />
+IoC container.</p>
+<p>If you are a keen reader, you will notice in the <code>CamelRunner</code> code above that it has an extra <code>runWithSpringConfig</code> part. So the <code>CamelRunner</code><br />
+can actually bootstrap any Spring xml file and start a context as a server. You may use it like this:</p>
+<pre><code>$ bin/run-java deng.cameldemo.CamelRunner -Dspring=true config/hellocamel-spring.xml
+</code></pre>
+<p>The <code>config/hellocamel-spring.xml</code> is just an equivalent of our <code>HelloRoute</code> code but in Spring xml form:</p>
+<pre><code>&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+    xsi:schemaLocation=&quot;
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd&quot;&gt;
+
+    &lt;camelContext id=&quot;helloCamel&quot; xmlns=&quot;http://camel.apache.org/schema/spring&quot;&gt;
+        &lt;route&gt;
+            &lt;from uri=&quot;timer://jdkTimer?period=3000&quot;/&gt;
+            &lt;to uri=&quot;log://deng.cameldemo.HelloCamel&quot;/&gt;
+        &lt;/route&gt;
+    &lt;/camelContext&gt;
+
+&lt;/beans&gt;
+</code></pre>
+<p>This remove the need to compile/re-compile <code>HelloRoute</code> to define the Camel route to run.</p>
+<h1>Building message based application using Camel</h1>
+<p>To present you with a more practical demo, I would show you further on how to setup Camel to process message based application. In many IT<br />
+shops, it's common that you would have a server to take message data as input and process them. A practical use case is to take any JSON<br />
+formated message and transform it into object and process it. To do this in Camel, what you want to build is a route that will take<br />
+input messages from a TCP port, and then process it in a pipeflow with any business logic you may have. You will run the route as a server,<br />
+and then client may use any mean to submit the message to the TCP port. Client may even be another thin Camel client app to submit data as well.<br />
+Let me show you how to get started.</p>
+<h2>Writing the server side code with Camel route</h2>
+<p>The server side would need a route to listen from a TCP port, and this is provided by <code>camel-mina</code> component. The first step is you need a route.</p>
+<pre><code>package deng.cameldemo;
+
+import org.apache.camel.builder.RouteBuilder;
+
+public class TcpMsgRoute extends RouteBuilder {
+    @Override
+    public void configure() throws Exception {
+        String port = System.getProperty(&quot;port&quot;, &quot;12345&quot;);
+        from(&quot;mina:tcp://localhost:&quot; + port + &quot;?sync=false&quot;).
+            to(&quot;log:&quot; + getClass().getName());
+    }
+}
+</code></pre>
+<p>Then the next step is ... done! No way, you mean that's all there to it for a server? Too good to be true? Well, let's try it out</p>
+<pre><code>$ bin/run-java deng.cameldemo.CamelRunner deng.cameldemo.TcpMsgRoute -Dport=12345
+15:21:41 main INFO  org.apache.camel.impl.DefaultCamelContext:1391 | Apache Camel 2.10.1 (CamelContext: camel-1) is starting
+15:21:41 main INFO  org.apache.camel.management.ManagementStrategyFactory:43 | JMX enabled.
+15:21:42 main INFO  org.apache.camel.impl.converter.DefaultTypeConverter:45 | Loaded 172 type converters
+15:21:42 main INFO  org.apache.camel.component.mina.MinaConsumer:59 | Binding to server address: localhost/127.0.0.1:12345 using acceptor: org.apache.mina.transport.socket.nio.SocketAcceptor@2ffad8fe
+15:21:42 main INFO  org.apache.camel.impl.DefaultCamelContext:2045 | Route: route1 started and consuming from: Endpoint[mina://tcp://localhost:12345?sync=true]
+15:21:42 main INFO  org.apache.camel.management.DefaultManagementLifecycleStrategy:859 | StatisticsLevel at All so enabling load performance statistics
+15:21:42 main INFO  org.apache.camel.impl.DefaultCamelContext:1426 | Total 1 routes, of which 1 is started.
+15:21:42 main INFO  org.apache.camel.impl.DefaultCamelContext:1427 | Apache Camel 2.10.1 (CamelContext: camel-1) started in 0.505 seconds
+15:21:42 main INFO  deng.cameldemo.CamelRunner:93 | Camel started for CamelContext(camel-1)
+</code></pre>
+<p>Voila! The server is up and waiting for your users to send messages through port <code>12345</code>. Not too bad for few lines of code.</p>
+<h2>Writing the client side code with Camel ProducerTemplate</h2>
+<p>Since our server expose a TCP port and take in any text content message, you can create any client that's capable writing to a TCP socket. In here,<br />
+I will show you how to use Camel to write a thin client.</p>
+<pre><code>package deng.cameldemo.client;
+
+import java.io.FileReader;
+import org.apache.camel.CamelContext;
+import org.apache.camel.ProducerTemplate;
+import org.apache.camel.impl.DefaultCamelContext;
+import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class TcpMsgSender {
+    public static void main(String[] args) throws Exception {
+        TcpMsgSender runner = new TcpMsgSender();
+        runner.run(args);
+    }
+
+    private static Logger logger = LoggerFactory.getLogger(TcpMsgSender.class);
+    public void run(String[] args) throws Exception {
+        String fileName = args.length &gt; 0 ? args[0] : &quot;data/msg.txt&quot;;
+        String[] hostPort = (args.length &gt; 1 ? args[1] : &quot;localhost:12345&quot;).split(&quot;:&quot;);
+        String host = hostPort[0];
+        String port = hostPort.length &gt; 1 ? hostPort[1] : &quot;12345&quot;;
+        logger.info(&quot;Sending tcp message {} to host={}, port={}&quot;, new Object[]{ fileName, host, port});
+
+        String text = IOUtils.toString(new FileReader(fileName));
+        logger.debug(&quot;File size={}&quot;, text.length());
+
+        CamelContext camelContext = new DefaultCamelContext();
+        ProducerTemplate producer = camelContext.createProducerTemplate();
+        producer.sendBody(&quot;mina:tcp://&quot; + host + &quot;:&quot; + port + &quot;?sync=false&quot;, text);
+        logger.info(&quot;Message sent.&quot;);
+    }
+}
+</code></pre>
+<p>This <code>TcpMsgSender</code> can send any text file to your server endpoint. Try this out while your server is running:</p>
+<pre><code>$ bin/run-java deng.cameldemo.client.TcpMsgSender data/test-msg.json localhost:12345
+15:22:35 main INFO  deng.cameldemo.client.TcpMsgSender:24 | Sending tcp message data/test-msg.json to host=localhost, port=12345
+15:22:35 main DEBUG deng.cameldemo.client.TcpMsgSender:27 | File size=47
+15:22:35 main INFO  org.apache.camel.impl.converter.DefaultTypeConverter:45 | Loaded 172 type converters
+15:22:35 main INFO  org.apache.camel.management.ManagementStrategyFactory:43 | JMX enabled.
+15:22:35 main INFO  deng.cameldemo.client.TcpMsgSender:32 | Message sent.
+</code></pre>
+<p>You should able to verify from your server console output that it received the msg. The msg I sent is in <code>data/test-msg.json</code>, which<br />
+contains this simple text:</p>
+<pre><code>{ &quot;firstName&quot; : &quot;Zemian&quot;, &quot;lastName&quot; : &quot;Deng&quot; }
+</code></pre>
+<p>Note that our server simply receive plain text and log it. We will discuss how to process the message next.</p>
+<h2>Processing message data in JSON format with Camel and Spring xml config</h2>
+<p>You thought the server code was easy from above, guess again. You can actually replace the <code>TcpMsgRoute</code> with just some simple xml lines!</p>
+<pre><code>&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+    xsi:schemaLocation=&quot;
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd&quot;&gt;
+
+    &lt;camelContext id=&quot;tcpMsgServer&quot; xmlns=&quot;http://camel.apache.org/schema/spring&quot;&gt;
+        &lt;route&gt;
+            &lt;from uri=&quot;mina:tcp://localhost:12345?sync=false&quot;/&gt;
+            &lt;to uri=&quot;log://deng.cameldemo.TcpMsgServer&quot;/&gt;
+        &lt;/route&gt;
+    &lt;/camelContext&gt;
+
+&lt;/beans&gt;
+</code></pre>
+<p>Save it as <code>config/tcpmsgserver-spring.xml</code>. Then re-run the server, and you should get the same result as above.</p>
+<pre><code>$ bin/run-java deng.cameldemo.CamelRunner -Dspring=true config/tcpmsgserver-spring.xml
+</code></pre>
+<p>Now let us improve the above xml to further process the JSON message data. We will like to transform the plain text to a Java object then process<br />
+by a custom bean. To do that, we first would need to add unmarshal component to the route. This is where the <code>camel-jackson</code> comes into play.<br />
+In our demo, the unmarshalling step would convert the JSON text into a <code>java.util.Map</code> and then pass it to a processor bean named <code>myMsgProcessor</code>.<br />
+Let's create a new xml file named <code>config/tcpmsgserver-json-spring.xml</code> as follow.</p>
+<pre><code>&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+    xsi:schemaLocation=&quot;
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd&quot;&gt;
+
+    &lt;camelContext id=&quot;tcpMsgServer&quot; xmlns=&quot;http://camel.apache.org/schema/spring&quot;&gt;
+        &lt;route&gt;
+            &lt;from uri=&quot;mina:tcp://localhost:12345?sync=false&quot;/&gt;
+            &lt;to uri=&quot;log://deng.cameldemo.TcpMsgServer&quot;/&gt;
+            &lt;unmarshal&gt;
+                &lt;json library=&quot;Jackson&quot;/&gt;
+            &lt;/unmarshal&gt;
+            &lt;to uri=&quot;bean:myMsgProcessor?method=process&quot;/&gt;
+        &lt;/route&gt;
+    &lt;/camelContext&gt;
+
+    &lt;bean id=&quot;myMsgProcessor&quot; class=&quot;deng.cameldemo.MyMsgProcessor&quot;&gt;
+    &lt;/bean&gt;
+
+&lt;/beans&gt;
+</code></pre>
+<p>The <code>myMsgProcessor</code> is an Spring bean that we provide custom logic code to process the data. At this point we have a full Java object<br />
+to manipulate. The content of the processor can be any POJO with the method name specified in the URI. Here is an example one:</p>
+<pre><code>package deng.cameldemo;
+
+import org.apache.camel.builder.RouteBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import java.util.Map;
+
+public class MyMsgProcessor {
+    private static Logger logger = LoggerFactory.getLogger(MyMsgProcessor.class);
+    public void process(Map&lt;String, String&gt; data) {
+        logger.info(&quot;We should slice and dice the data: &quot; + data);
+    }
+}
+</code></pre>
+<p>Try re-run the server with the new xml file above, and you should able to re-invoke the same client command to test it out. Here is a sample<br />
+output of my server:</p>
+<pre><code>$ bin/run-java deng.cameldemo.CamelRunner -Dspring=true config/tcpmsgserver-json-spring.xml
+17:05:25 main INFO  org.springframework.context.support.FileSystemXmlApplicationContext:456 | Refreshing org.springframework.context.support.FileSystemXmlApplicationContext@4200309: startup date [Sat Sep 15 17:05:25 EDT 2012]; root of context hierarchy
+17:05:25 main INFO  org.springframework.beans.factory.xml.XmlBeanDefinitionReader:315 | Loading XML bean definitions from file [/Users/zemian/projects/sandbox/camel-demo/config/tcpmsgserver-json-spring.xml]
+17:05:27 main INFO  org.springframework.beans.factory.support.DefaultListableBeanFactory:557 | Pre-instantiating singletons in org.springframework.beans.factory.support.DefaultListableBeanFactory@27b75165: defining beans [template,consumerTemplate,tcpMsgServer:beanPostProcessor,tcpMsgServer,myMsgProcessor]; root of factory hierarchy
+17:05:27 main INFO  org.apache.camel.spring.SpringCamelContext:1391 | Apache Camel 2.10.1 (CamelContext: tcpMsgServer) is starting
+17:05:27 main INFO  org.apache.camel.management.ManagementStrategyFactory:43 | JMX enabled.
+17:05:27 main INFO  org.apache.camel.impl.converter.DefaultTypeConverter:45 | Loaded 172 type converters
+17:05:28 main INFO  org.apache.camel.component.mina.MinaConsumer:59 | Binding to server address: localhost/127.0.0.1:12345 using acceptor: org.apache.mina.transport.socket.nio.SocketAcceptor@5a3cae4a
+17:05:28 main INFO  org.apache.camel.spring.SpringCamelContext:2045 | Route: route1 started and consuming from: Endpoint[mina://tcp://localhost:12345?sync=false]
+17:05:28 main INFO  org.apache.camel.management.DefaultManagementLifecycleStrategy:859 | StatisticsLevel at All so enabling load performance statistics
+17:05:28 main INFO  org.apache.camel.spring.SpringCamelContext:1426 | Total 1 routes, of which 1 is started.
+17:05:28 main INFO  org.apache.camel.spring.SpringCamelContext:1427 | Apache Camel 2.10.1 (CamelContext: tcpMsgServer) started in 0.695 seconds
+17:05:28 main INFO  deng.cameldemo.CamelRunner:61 | Spring started.
+17:05:35 Camel (tcpMsgServer) thread #3 - MinaThreadPool INFO  deng.cameldemo.TcpMsgServer:96 | Exchange[ExchangePattern:InOnly, BodyType:String, Body:{ &quot;firstName&quot; : &quot;Zemian&quot;, &quot;lastName&quot; : &quot;Deng&quot; }]
+17:05:35 Camel (tcpMsgServer) thread #3 - MinaThreadPool INFO  deng.cameldemo.MyMsgProcessor:11 | We should slice and dice the data: {lastName=Deng, firstName=Zemian}
+</code></pre>
+<p>Pay attention that Camel will auto convert the data format in your route! Our client only sends the plain text as JSON format, but when<br />
+server receives it, it unmarshals it using Jackson library, and then converts it into a java Map object. It then passes the map object into our<br />
+processor bean. Also, in this demo, I choose to use a generic <code>java.util.Map</code> as processor method argument (which is output of the JSON unmarshal), but<br />
+you can easily define your own business data type, such as <code>MyCustomerData</code>. This reveals the power of Camel, since you don't need to push the message<br />
+in your flow, but only worry about writing your &quot;processor&quot; as a POJO. The Camel will &quot;glue&quot; components together to form a route and carry the message data through the pipeline flow.</p>
+<p>On the same token, when you write your business logic in one or more processors, it's a good idea that you limit your POJO logic to be as small<br />
+unit as possible. When you do this, then you can maximize the reusability of the processors. The bigger POJO you make, with many business logics mixed in, it will also make it<br />
+difficult to test. So I recommend you when developing these processor beans, try to think them as LEGO pieces -- small POJO. You want to let Camel define the route and glue the LEGO<br />
+pieces togther. Once you get into this habit of thiking, then you can use Camel in a more effectively way to solve many of your domain problems.</p>
+<p>Well, that's all for today folks. I hope you enjoyed the Camel ride. Happy programming!</p>
+</p>
+  			<a href="blog/2012/09/boost-your-groovy-with-nailgun.html"><h1>Boost your Groovy with NailGun</h1></a>
+  			<p>13 September 2012, tags: 
+			    <a href="../tags/groovy.html">groovy</a> 
+  			</p>
+  			<p><p>Are you working on a large Hibernate project that takes long time to load up all the <code>hbm.xml</code> files when creating the<br />
+<code>Session</code> object? This is fine during deployment and runtime because it only loads it once. However, often time we also<br />
+need to the same <code>Session</code> object to do some ad-hoc <code>HQL</code> queries to debug or validate data. Loading and re-loading<br />
+large mapping files in a <code>Session</code> to just execute single query is very painful.</p>
+<p>Now, I like to poke around Java things with <code>Groovy</code>, and it's a great tool to peek at your data as ad-hoc queries as well.<br />
+You can easily do this with their <code>groovyConsole</code> GUI tool and add <code>--classpath</code> option to include your project classes. This<br />
+will bring up a tiny Editor, and you can script to load your hibernate <code>Session</code> there. Once the first run is loaded (the<br />
+hibenrate <code>Session</code> created), then second run is almost in an instant.</p>
+<p>Running the little <code>groovyConsole</code> had wet my appetite, and I was hungry for a better text editor, but yet I don't really<br />
+want a full blow IDE for scripting. I like do my scripting in a plain editor. Now if you have an editor such as <a href="http://sublimetext.com">Sublime Text 2</a> (ST2) that has a &quot;build&quot; feature to execute a external command, then you will enjoy scripting much more. With<br />
+ST2, I can have it call <code>groovy.bat</code> from inside the editor on the script that I am editing. However, there is another problem: the external command will restart a new JVM process on each run! Now I am back to square one.</p>
+<p>To solve this problem, and still have my cake (editor), I recalled an awesome tool called <a href="http://www.martiansoftware.com/nailgun/index.html">NailGun</a>. This works perfectly with Groovy and my problem. I can start a server like this</p>
+<pre><code>java -cp &quot;groovy-all-2.0.1.jar:nailgun-0.7.1.jar&quot; -server com.martiansoftware.nailgun.NGServer
+</code></pre>
+<p>And then in my ST2 editor, I can run an external command like this as the NailGun client:</p>
+<pre><code>/path/to/nailgun-0.7.1/ng groovy.ui.GroovyMain test.groovy
+</code></pre>
+<p>Nail gun client sends the script file content to the server and prints the result. Again, after first run, the second run should<br />
+be instantaneously.</p>
+<p>There, I scratched my itch.</p>
+<h1>Details on how to setup Sublime Text 2 to run NailGun client</h1>
+<ol>
+<li>Go to menu: &quot;Preference &gt; Browse Packages&quot;</li>
+<li>Open the Groovy folder</li>
+<li>Save a file named &quot;GroovyNailGunClient.sublime-build&quot; with the following:
+<pre><code>   {
+     &quot;cmd&quot;: [&quot;/path/to/nailgun-0.7.1/ng&quot;, &quot;groovy.ui.GroovyMain&quot;, &quot;$file&quot;],
+     &quot;file_regex&quot;: &quot;^(...*?):([0-9]*):?([0-9]*)&quot;,
+     &quot;selector&quot;: &quot;source.groovy&quot;
+   }
+</code></pre>
+</li>
+<li>Select menu &quot;Tool &gt; Build System &gt; GroovyNailGunClient&quot;</li>
+<li>Press <code>CTRL+B</code> to run any groovy file in your editor.</li>
+</ol>
+</p>
+  			<a href="blog/2012/09/improving-java-util-properties.html"><h1>Improving java.util.Properties</h1></a>
+  			<p>07 September 2012, tags: 
+			    <a href="../tags/java.html">java</a> 
+  			</p>
+  			<p><p>The Java built-in <code>java.util.Properties</code> class could really use some love. I have written a slightly improved version called<br />
+<a href="https://bitbucket.org/timemachine/scheduler/src/15f066cc6dad/timemachine-scheduler/src/main/java/timemachine/scheduler/support/Props.java">timemachine.scheduler.support.Props</a>, and below are some features that I use often.</p>
+<h1>You can use it as a &quot;String Map&quot; of properties</h1>
+<pre><code>Props props1 = new Props();
+props1.put(&quot;foo&quot;, &quot;bar&quot;);
+
+// It can load from/to the Java Properties
+Props props2 = new Props(System.getProperties());
+java.util.Properties javaProps = props3.toProperties();
+
+// It can load from/to a basic java.util.Map
+Props props3 = new Props(System.getenv());
+
+// Props is a HashMap&lt;String, String&gt;, so no need to convert. Just use it
+for(Map.Entry&lt;String, String&gt; entry : props3.entrySet())
+    System.our.println(entry.getKey() + &quot;: &quot; + entry.getValue());
+</code></pre>
+<h1>You can load from a file in a single line</h1>
+<pre><code>Props props1 = new Props(&quot;config.properties&quot;);
+Props props2 = new Props(&quot;/path/to/config.properties&quot;);
+Props props3 = new Props(new java.net.URL(&quot;http://myhost/config/config.properties&quot;));
+Props props4 = new Props(ClasspathURLStreamHandler.createURL(&quot;classpath://config/config.properties&quot;));
+
+// You can re-load on top of existing instance to override values
+props4.load(&quot;config2.properties&quot;);
+</code></pre>
+<p>NOTE: The <code>ClasspathURLStreamHandler</code> is a utility class from the same package under <code>timemachine.scheduler.support</code> that can load any resources that's in the classpath.</p>
+<h1>You can get many basic types conversion</h1>
+<pre><code>Props props = new Props();
+props.put(&quot;str&quot;, &quot;foo&quot;);
+props.put(&quot;num&quot;, &quot;123&quot;);
+props.put(&quot;dec&quot;, &quot;99.99&quot;);
+props.put(&quot;flag&quot;, &quot;true&quot;);
+
+String str = props.getString(&quot;str&quot;);
+int num = props.getInt(&quot;num&quot;);
+double dec = props.getDouble(&quot;dec&quot;);
+boolean flag = props.getBoolean(&quot;flag&quot;);
+
+// You can even get default value when key is not found too
+int num2 = props.getInt(&quot;num2&quot;, -1);
+</code></pre>
+<h1>You can auto expand ${variable} from any existing properties</h1>
+<pre><code>Props props = new Props(System.getProperties());
+props.put(&quot;configDir&quot;, &quot;${user.home}/myapp/config&quot;);
+props.expandVariables();
+
+// The ${user.home} should be expanded to actual user home dir value.
+File dir = new File(props.get(&quot;configDir&quot;));
+</code></pre>
+<p>There you have it. You see more code than words in this post, but I believe simple code speak louder than words and docs. I find these features very convenient and practical<br />
+for many Java applications to use. I wish the JDK would provide these out of the box, and make the <code>java.util.Properties</code> more<br />
+developer friendly.</p>
+</p>
+  			<a href="blog/2012/09/how-to-write-better-pojo-services.html"><h1>How to write better POJO Services</h1></a>
+  			<p>01 September 2012, tags: 
+			    <a href="../tags/java.html">java</a> 
+  			</p>
+  			<p><p>In Java, you can easily implement some business logic in Plain Old Java Object (POJO) classes, and then able to run them in a fancy<br />
+server or framework without much hassle. There many server/frameworks, such as JBossAS, Spring or Camel etc, that<br />
+would allow you to deploy POJO without even hardcoding to their API. Obviously you would get advance features if you willing to couple to<br />
+their API specifics, but even if you do, you can keep these to minimal by encapsulating your own POJO and their API in a wrapper.<br />
+By writing and designing your own application as simple POJO as possible, you will have the most flexible ways in choose a framework or server to<br />
+deploy and run your application. One effective way to write your business logic in these environments is to use <em>Service</em> component.<br />
+In this article I will share few things I learned in writing <em>Services</em>.</p>
+<h1>What is a Service?</h1>
+<p>The word <em>Service</em> is overly used today, and it could mean many things to different people. When I say <em>Service</em>, my definition is a software<br />
+component that has minimal of life-cycles such as <code>init</code>, <code>start</code>, <code>stop</code>, and <code>destroy</code>. You may not need all these<br />
+stages of life-cycles in every service you write, but you can simply ignore ones that don't apply. When writing large application that<br />
+intended for long running such as a server component, definining these life-cycles and ensure they are excuted in proper order is crucial!</p>
+<p>I will be walking you through a Java demo project that I have prepared. It's very basic and it should run as stand-alone. The only dependency it has is<br />
+the <a href="http://www.slf4j.org">SLF4J</a> logger. If you don't know how to use logger, then simply replace them with <code>System.out.println</code>. However I would strongly<br />
+encourage you to learn how to use logger effectively during application development though. Also if you want to try out the<br />
+<a href="http://www.springsource.org/spring-framework">Spring</a> related demos, then obviously you would need their jars as well.</p>
+<h1>Writing basic POJO service</h1>
+<p>You can quickly define a contract of a Service with life-cycles as below in an interface.</p>
+<pre><code>package servicedemo;
+
+public interface Service {
+    void init();
+    void start();
+    void stop();
+    void destroy();
+    boolean isInited();
+    boolean isStarted();
+}
+</code></pre>
+<p>Developers are free to do what they want in their Service implementation, but you might want to give them an adapter class so that<br />
+they don't have to re-write same basic logic on each Service. I would provide an abstract service like this:</p>
+<pre><code>package servicedemo;
+
+import java.util.concurrent.atomic.*;
+import org.slf4j.*;
+public abstract class AbstractService implements Service {
+    protected Logger logger = LoggerFactory.getLogger(getClass());
+    protected AtomicBoolean started = new AtomicBoolean(false);
+    protected AtomicBoolean inited = new AtomicBoolean(false);
+
+    public void init() {
+        if (!inited.get()) {
+            initService();
+            inited.set(true);
+            logger.debug(&quot;{} initialized.&quot;, this);
+        }
+    }
+
+    public void start() {
+        // Init service if it has not done so.
+        if (!inited.get()) {
+            init();
+        }
+        // Start service now.
+        if (!started.get()) {
+            startService();
+            started.set(true);
+            logger.debug(&quot;{} started.&quot;, this);
+        }
+    }
+
+    public void stop() {
+        if (started.get()) {
+            stopService();
+            started.set(false);
+            logger.debug(&quot;{} stopped.&quot;, this);
+        }
+    }
+
+    public void destroy() {
+        // Stop service if it is still running.
+        if (started.get()) {
+            stop();
+        }
+        // Destroy service now.
+        if (inited.get()) {
+            destroyService();
+            inited.set(false);
+            logger.debug(&quot;{} destroyed.&quot;, this);
+        }
+    }
+
+    public boolean isStarted() {
+        return started.get();
+    }
+
+    public boolean isInited() {
+        return inited.get();
+    }
+
+    @Override
+    public String toString() {
+            return getClass().getSimpleName() + &quot;[id=&quot; + System.identityHashCode(this) + &quot;]&quot;;
+    }
+
+    protected void initService() {
+    }
+
+    protected void startService() {
+    }
+
+    protected void stopService() {
+    }
+
+    protected void destroyService() {
+    }
+}
+</code></pre>
+<p>This abstract class provide the basic of most services needs. It has a logger and states to keep track of the life-cycles. It then delegate new<br />
+sets of life-cycle methods so subclass can choose to override. Notice that the <code>start()</code> method is checking auto calling <code>init()</code> if it hasn't<br />
+already done so. Same is done in <code>destroy()</code> method to the <code>stop()</code> method. This is important if we're to use it in a container that only have<br />
+two stages life-cycles invocation. In this case, we can simply invoke <code>start()</code> and <code>destroy()</code> to match to our service's life-cycles.</p>
+<p>Some frameworks might go even further and create separate interfaces for each stage of the life-cycles, such as <code>InitableService</code> or<br />
+<code>StartableService</code> etc. But I think that would be too much in a typical app. In most of the cases, you want something simple, so I like it just<br />
+one interface. User may choose to ignore methods they don't want, or simply use an adaptor class.</p>
+<p>Before we end this section, I would throw in a silly Hello world service that can be used in our demo later.</p>
+<pre><code>package servicedemo;
+
+public class HelloService extends AbstractService {
+    public void initService() {
+        logger.info(this + &quot; inited.&quot;);
+    }
+    public void startService() {
+        logger.info(this + &quot; started.&quot;);
+    }
+    public void stopService() {
+        logger.info(this + &quot; stopped.&quot;);
+    }
+    public void destroyService() {
+        logger.info(this + &quot; destroyed.&quot;);
+    }
+}
+</code></pre>
+<h1>Managing multiple POJO Services with a container</h1>
+<p>Now we have the basic of <em>Service</em> definition defined, your development team may start writing business logic code! Before long, you will have<br />
+a library of your own services to re-use. To be able group and control these services into an effetive way, we want also provide a container<br />
+to manage them. The idea is that we typically want to control and manage multiple services with a container as a group in a higher level. Here<br />
+is a simple implementation for you to get started:</p>
+<pre><code>package servicedemo;
+
+import java.util.*;
+public class ServiceContainer extends AbstractService {
+    private List&lt;Service&gt; services = new ArrayList&lt;Service&gt;();
+
+    public void setServices(List&lt;Service&gt; services) {
+        this.services = services;
+    }
+    public void addService(Service service) {
+        this.services.add(service);
+    }
+
+    public void initService() {
+        logger.debug(&quot;Initializing &quot; + this + &quot; with &quot; + services.size() + &quot; services.&quot;);
+        for (Service service : services) {
+            logger.debug(&quot;Initializing &quot; + service);
+            service.init();
+        }
+        logger.info(this + &quot; inited.&quot;);
+    }
+    public void startService() {
+            logger.debug(&quot;Starting &quot; + this + &quot; with &quot; + services.size() + &quot; services.&quot;);
+            for (Service service : services) {
+                logger.debug(&quot;Starting &quot; + service);
+                service.start();
+            }
+            logger.info(this + &quot; started.&quot;);
+    }
+    public void stopService() {
+            int size = services.size();
+            logger.debug(&quot;Stopping &quot; + this + &quot; with &quot; + size + &quot; services in reverse order.&quot;);
+            for (int i = size - 1; i &gt;= 0; i--) {
+                Service service = services.get(i);
+                logger.debug(&quot;Stopping &quot; + service);
+                service.stop();
+            }
+            logger.info(this + &quot; stopped.&quot;);
+    }
+    public void destroyService() {
+            int size = services.size();
+            logger.debug(&quot;Destroying &quot; + this + &quot; with &quot; + size + &quot; services in reverse order.&quot;);
+            for (int i = size - 1; i &gt;= 0; i--) {
+                Service service = services.get(i);
+                logger.debug(&quot;Destroying &quot; + service);
+                service.destroy();
+            }
+            logger.info(this + &quot; destroyed.&quot;);
+    }
+}
+</code></pre>
+<p>From above code, you will notice few important things:</p>
+<ol>
+<li>We extends the AbstractService, so a container is a service itself.</li>
+<li>We would invoke all service's life-cycles before moving to next. No services will start unless all others are inited.</li>
+<li>We should stop and destroy services in reverse order for most general use cases.</li>
+</ol>
+<p>The above container implementation is simple and run in synchronized fashion. This mean, you start container, then all services<br />
+will start in order you added them. Stop should be same but in reverse order.</p>
+<p>I also hope you would able to see that there is plenty of room for you to improve this container as well. For example, you may<br />
+add thread pool to control the execution of the services in asynchronized fashion.</p>
+<h1>Running POJO Services</h1>
+<h2>Running services with a simple runner program.</h2>
+<p>In the simplest form, we can run our POJO services on our own without any fancy server or frameworks. Java programs start its life from a<br />
+static <code>main</code> method, so we surely can invoke <code>init</code> and <code>start</code> of our services in there. But we also need to address the <code>stop</code> and <code>destroy</code><br />
+life-cycles when user shuts down the program (usually by hitting <code>CTRL+C</code>.) For this, the Java has the <code>java.lang.Runtime#addShutdownHook()</code><br />
+facility. You can create a simple stand-alone server to bootstrap <em>Service</em> like this:</p>
+<pre><code>package servicedemo;
+
+import org.slf4j.*;
+public class ServiceRunner {
+    private static Logger logger = LoggerFactory.getLogger(ServiceRunner.class);
+
+    public static void main(String[] args) {
+        ServiceRunner main = new ServiceRunner();
+        main.run(args);
+    }
+
+    public void run(String[] args) {
+        if (args.length &lt; 1)
+            throw new RuntimeException(&quot;Missing service class name as argument.&quot;);
+
+        String serviceClassName = args[0];
+        try {
+            logger.debug(&quot;Creating &quot; + serviceClassName);
+            Class&lt;?&gt; serviceClass = Class.forName(serviceClassName);
+            if (!Service.class.isAssignableFrom(serviceClass)) {
+                throw new RuntimeException(&quot;Service class &quot; + serviceClassName + &quot; did not implements &quot; + Service.class.getName());
+            }
+            Object serviceObject = serviceClass.newInstance();
+            Service service = (Service)serviceObject;
+
+            registerShutdownHook(service);
+
+            logger.debug(&quot;Starting service &quot; + service);
+            service.init();
+            service.start();
+            logger.info(service + &quot; started.&quot;);
+
+            synchronized(this) {
+                this.wait();
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(&quot;Failed to create and run &quot; + serviceClassName, e);
+        }
+    }
+
+    private void registerShutdownHook(final Service service) {
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            public void run() {
+                logger.debug(&quot;Stopping service &quot; + service);
+                service.stop();
+                service.destroy();
+                logger.info(service + &quot; stopped.&quot;);
+            }
+        });
+    }
+}
+</code></pre>
+<p>With abover runner, you should able to run it with this command:</p>
+<pre><code>$ java demo.ServiceRunner servicedemo.HelloService
+</code></pre>
+<p>Look carefully, and you'll see that you have many options to run multiple services with above runner. Let me highlight couple:</p>
+<ol>
+<li>Improve above runner directly and make all <code>args</code> for each new service class name, instead of just first element.</li>
+<li>Or write a <code>MultiLoaderService</code> that will load multiple services you want. You may control argument passing using System Properties.</li>
+</ol>
+<p>Can you think of other ways to improve this runner?</p>
+<h2>Running services with Spring</h2>
+<p>The Spring framework is an IoC container, and it's well known to be easy to work POJO, and Spring lets you wire your application<br />
+together. This would be a perfect fit to use in our POJO services. However, with all the features Spring brings, it missed a easy<br />
+to use, out of box <em>main</em> program to bootstrap spring config xml context files. But with what we built so far, this is actually an<br />
+easy thing to do. Let's write one of our POJO <em>Service</em> to bootstrap a spring context file.</p>
+<pre><code>package servicedemo;
+
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.support.FileSystemXmlApplicationContext;
+
+public class SpringService extends AbstractService {
+    private ConfigurableApplicationContext springContext;
+
+    public void startService() {
+        String springConfig = System.getProperty(&quot;springContext&quot;, &quot;spring.xml);
+        springContext = new FileSystemXmlApplicationContext(springConfig);
+        logger.info(this + &quot; started.&quot;);
+    }
+    public void stopService() {
+        springContext.close();
+        logger.info(this + &quot; stopped.&quot;);
+    }
+}
+</code></pre>
+<p>With that simple <code>SpringService</code> you can run and load any spring xml file. For example try this:</p>
+<pre><code>$ java -DspringContext=config/service-demo-spring.xml demo.ServiceRunner servicedemo.SpringService
+</code></pre>
+<p>Inside the <code>config/service-demo-spring.xml</code> file, you can easily create our container that hosts one or more service in Spring beans.</p>
+<pre><code>&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+     xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+     xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd&quot;&gt;
+
+    &lt;bean id=&quot;helloService&quot; class=&quot;servicedemo.HelloService&quot;&gt;
+    &lt;/bean&gt;
+
+    &lt;bean id=&quot;serviceContainer&quot; class=&quot;servicedemo.ServiceContainer&quot; init-method=&quot;start&quot; destroy-method=&quot;destroy&quot;&gt;
+        &lt;property name=&quot;services&quot;&gt;
+            &lt;list&gt;
+                &lt;ref bean=&quot;helloService&quot;/&gt;
+            &lt;/list&gt;
+        &lt;/property&gt;
+    &lt;/bean&gt;
+
+&lt;/beans&gt;
+</code></pre>
+<p>Notice that I only need to setup <code>init-method</code> and <code>destroy-method</code> once on the <code>serviceContainer</code> bean. You can then add one or more<br />
+other service such as the <code>helloService</code> as much as you want. They will all be started, managed, and then shutdown when you close the<br />
+Spring context.</p>
+<p>Note that Spring context container did not explicitly have the same life-cycles as our services. The Spring context will automatically<br />
+instanciate all your dependency beans, and then invoke all beans who's <code>init-method</code> is set. All that is done inside the constructor<br />
+of <code>FileSystemXmlApplicationContext</code>. No explicit init method is called from user. However at the end, during stop of the service, Spring provide<br />
+the <code>springContext#close()</code> to clean things up. Again, they do not differentiate <code>stop</code> from <code>destroy</code>. Because of this, we must merge our<br />
+<code>init</code> and <code>start</code> into Spring's <code>init</code> state, and then merge <code>stop</code> and <code>destroy</code> into Spring's <code>close</code> state. Recall our<br />
+<code>AbstractService#destory</code> will auto invoke <code>stop</code> if it hasn't already done so. So this is trick that we need to understand<br />
+in order to use Spring effectively.</p>
+<h2>Running services with JEE app server</h2>
+<p>In a corporate env, we usually do not have the freedom to run what we want as a stand-alone program. Instead they usually have some<br />
+infrustructure and stricter standard technology stack in place already, such as using a JEE application server. In these situation, the most<br />
+portable way to run POJO services is in a <code>war</code> web application. In a Servlet web application, you can write a class that implements<br />
+<code>javax.servlet.ServletContextListener</code> and this will provide you the life-cycles hook via <code>contextInitialized</code> and <code>contextDestroyed</code>.<br />
+In there, you can instanciate your <code>ServiceContainer</code> object and call <code>start</code> and <code>destroy</code> methods accordingly.</p>
+<p>Here is an example that you can explore:</p>
+<pre><code>package servicedemo;
+import java.util.*;
+import javax.servlet.*;
+public class ServiceContainerListener implements ServletContextListener {
+    private static Logger logger = LoggerFactory.getLogger(ServiceContainerListener.class);
+    private ServiceContainer serviceContainer;
+
+    public void contextInitialized(ServletContextEvent sce) {
+        serviceContainer = new ServiceContainer();
+        List&lt;Service&gt; services = createServices();
+        serviceContainer.setServices(services);
+        serviceContainer.start();
+        logger.info(serviceContainer + &quot; started in web application.&quot;);
+    }
+
+    public void contextDestroyed(ServletContextEvent sce) {
+        serviceContainer.destroy();
+        logger.info(serviceContainer + &quot; destroyed in web application.&quot;);
+    }
+
+    private List&lt;Service&gt; createServices() {
+        List&lt;Service&gt; result = new ArrayList&lt;Service&gt;();
+        // populate services here.
+        return result;
+    }
+}
+</code></pre>
+<p>You may configure above in the <code>WEB-INF/web.xml</code> like this:</p>
+<pre><code>    &lt;listener&gt;
+        &lt;listener-class&gt;servicedemo.ServiceContainerListener&lt;/listener-class&gt;
+    &lt;/listener&gt;
+
+&lt;/web-app&gt;
+</code></pre>
+<p>The demo provided a placeholder that you must add your services in code. But you can easily make that configurable using the <code>web.xml</code> for<br />
+context parameters.</p>
+<p>If you were to use Spring inside a Servlet container, you may directly use their <code>org.springframework.web.context.ContextLoaderListener</code><br />
+class that does pretty much same as above, except they allow you to specify their xml configuration file using the<br />
+<code>contextConfigLocation</code> context parameter. That's how a typical Spring MVC based application is configure. Once you have this setup, you<br />
+can experiment our POJO service just as the Spring xml sample given above to test things out. You should see our service in action by<br />
+your logger output.</p>
+<p>PS: Actually what we described here are simply related to Servlet web application, and not JEE specific. So you can use Tomcat server just<br />
+fine as well.</p>
+<h1>The importance of Service's life-cycles and it's real world usage</h1>
+<p>All the information I presented here are not novelty, nor a killer design pattern. In fact they have been used in many popular open source projects.<br />
+However, in my past experience at work, folks always manage to make these extremely complicated, and worse case is that they completely disregard the<br />
+importance of life-cycles when writing services. It's true that not everything you going to write needs to be fitted into a service, but if you find<br />
+the need, please do pay attention to them, and take good care that they do invoked properly. The last thing you want is to exit JVM without clean up<br />
+in services that you allocated precious resources for. These would become more disastrous if you allow your application to be dynamically reloaded during<br />
+deployment without exiting JVM, in which will lead to system resources leakage.</p>
+<p>The above <em>Service</em> practice has been put into use in the <a href="https://bitbucket.org/timemachine/scheduler">TimeMachine</a> project. In fact, if you<br />
+look at the <code>timemachine.scheduler.service.SchedulerEngine</code>, it would just be a container of many <a href="https://bitbucket.org/timemachine/scheduler/src/15f066cc6dad/timemachine-scheduler/src/main/java/timemachine/scheduler/service">services</a><br />
+running together. And that's how user can extend the scheduler functionalities as well, by writing a <em>Service</em>. You can load these services dynamically by a simple properties file.</p>
+</p>
+
+	<hr />
+
+	<ul class="pager">
+		<li class="previous"><a href="https://zemian.github.io/22">Previous</a></li>
+		<li>Page: 23/28</li>
+		<li class="next"><a href="https://zemian.github.io/24">Next</a></li>
+	</ul>
+
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">&copy; 2011 - Present Zemian Deng All Rights Reserved | Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.5</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../js/jquery-1.11.1.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/prettify.js"></script>
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-135626598-1');
+    </script>
+
+  </body>
+</html>

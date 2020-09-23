@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Zemian's Blog - A plain and simple Jdbc service for Java8</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../css/asciidoctor.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link href="../../../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../../../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../about.html">About</a></li>
+            <li><a href="../../../archive.html">Archive</a></li>
+            <li><a href="../../..//tags">Tags</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">	
+	<div class="page-header">
+		<h1>A plain and simple Jdbc service for Java8</h1>
+	</div>
+
+	<p><em>28 July 2018</em>, tags: 
+	    <a href="../../../tags/java.html">java</a> 
+
+	    <a href="../../../tags/jdbc.html">jdbc</a> 
+	</p>
+
+	<p><p>With Java8, we can create simple and thin Jdbc service that’s productive<br />
+and easy to use. This service implementation is inspired by Spring’s<br />
+JdbcTemplate, but much lighter and has zero dependency.</p>
+<pre><code>package zemian.jdbc;
+
+import javax.sql.DataSource;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.sql.*;
+import java.util.*;
+import java.util.stream.Collectors;
+
+/**
+ * This class provide an easier interface to run SQLs and retrieve data than direct Java JDBC API.
+ *
+ * You can instantiate this class in two ways:
+ *
+ * - Method1: Using a DataSource. Each operation will get a Connection object from the #dataSource.
+ * - Method2: Using a direct Connection object. Use this to reuse a single connection to perform all
+ *            JDBC operations.
+ *
+ * Both methods above will not directly close the Connection object per Jdbc instance. It's user
+ * responsibility to close it after use. For pooled DataSource, it should be automatic, else you
+ * might want to use the Jdbc.withJdbc() convenient method. This method will let you quickly start a single
+ * new DB connection and Jdbc instance, and it will auto close connection when method is exited.
+ *
+ * This class provide these easy methods to work with DB data:
+ * - #execute() perform update SQLs that returns number of records updated.
+ * - #query() perform select SQLs that returns a list of records.
+ * - #get() perform select SQLs that return a single object element.
+ * - #insert() perform table insert using a Map as record.
+ * - #update() perform table update using a Map as record.
+ *
+ * The #query() and #get() methods allow you to provide custom RSMapper to convert ResultSet instance
+ * into any user object.
+ *
+ * @author Zemian Deng 2018-07-28
+ */
+public class Jdbc {
+    // == Static utility methods and supporting inner classes
+    public static void withJdbc(String propsResourceName, JdbcAction task) {
+        Properties props = new Properties();
+        URL propsUrl = Thread.currentThread().getContextClassLoader().getResource(propsResourceName);
+        try (InputStream ins = propsUrl.openStream()) {
+            props.load(ins);
+        } catch (IOException e) {
+            throw new RuntimeException(&quot;Unable to open properties from resource: &quot; + propsResourceName, e);
+        }
+        withJdbc(props, task);
+    }
+
+    public static void withJdbc(String url, String user, String password, JdbcAction task) {
+        Properties props = new Properties();
+        props.setProperty(&quot;url&quot;, url);
+        props.setProperty(&quot;user&quot;, user);
+        props.setProperty(&quot;password&quot;, password);
+        withJdbc(props, task);
+    }
+
+    public static void withJdbc(Properties jdbcProps, JdbcAction task) {
+        try (Connection conn = DriverManager.getConnection(jdbcProps.getProperty(&quot;url&quot;), jdbcProps)) {
+            Jdbc jdbc = new Jdbc(conn);
+            task.runJdbc(jdbc);
+        } catch (Exception e) {
+            if (e instanceof RuntimeException)
+                throw (RuntimeException) e;
+            throw new RuntimeException(&quot;Failed to process Jdbc&quot;, e);
+        }
+    }
+
+    public static List&lt;String&gt; getFieldNames(ResultSet rs) throws SQLException {
+        List&lt;String&gt; names = new ArrayList&lt;&gt;();
+        ResultSetMetaData md = rs.getMetaData();
+        for (int i = 1, max = md.getColumnCount(); i &lt;= max; i++) {
+            names.add(md.getColumnName(i));
+        }
+        return names;
+    }
+
+    public static void setParams(PreparedStatement st, Object[] params) throws SQLException {
+        for (int i = 0; i &lt; params.length; i++) {
+            st.setObject(i + 1, params[i]);
+        }
+    }
+
+    interface JdbcAction {
+        void runJdbc(Jdbc jdbc) throws Exception;
+    }
+
+    interface ConnAction&lt;T&gt; {
+        T runConn(Connection conn) throws Exception;
+    }
+
+    interface ConnActionNoRet {
+        void runConn(Connection conn) throws Exception;
+    }
+
+    interface RSMapper&lt;T&gt; {
+        T map(ResultSet rs, int idx) throws Exception;
+    }
+
+    public static class Record extends HashMap&lt;String, Object&gt; {
+        public Record() {}
+        public Record(ResultSet rs) throws SQLException {
+            this(rs, Jdbc.getFieldNames(rs));
+        }
+        public Record(ResultSet rs, List&lt;String&gt; names) throws SQLException {
+            for (String name : names) {
+                Object val = rs.getObject(name);
+                put(name, val);
+            }
+        }
+        public Record(Object ... entries) {
+            for (int i = 0; i &lt; entries.length; i+= 2) {
+                Object key = entries[i];
+                Object val = entries[i + 1];
+                put(key.toString(), val);
+            }
+        }
+        public &lt;T&gt; T getValue(String key) {
+            return (T) get(key);
+        }
+        public List&lt;String&gt; getFieldNames() {
+            return new ArrayList&lt;&gt;(keySet());
+        }
+        @Override
+        public String toString() {
+            return &quot;Record&quot; + super.toString();
+        }
+    }
+
+    // == Jdbc Service implementation
+    private DataSource dataSource;
+    private Connection conn;
+
+    public Jdbc(Connection conn) {
+        this.conn = conn;
+    }
+
+    public Jdbc(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+
+    public Connection getConn() throws SQLException {
+        if (conn != null) {
+            return conn;
+        } else {
+            return dataSource.getConnection();
+        }
+    }
+
+    public &lt;T&gt; T withConn(ConnAction&lt;T&gt; action) {
+        try {
+            return action.runConn(getConn());
+        } catch (Exception e) {
+            if (e instanceof RuntimeException)
+                throw (RuntimeException) e;
+            throw new RuntimeException(&quot;Failed to process DB conn&quot;, e);
+        }
+    }
+
+    public void withConnNoRet(ConnActionNoRet action) {
+        withConn(conn -&gt; {
+            action.runConn(conn);
+            return null;
+        });
+    }
+
+    public &lt;T&gt; T get(String sql, Object ... params) {
+        return get((rs, idx) -&gt; (T) rs.getObject(1), sql, params);
+    }
+
+    public &lt;T&gt; T get(RSMapper&lt;T&gt; mapper, String sql, Object ... params) {
+        return withConn(conn -&gt; {
+            try (PreparedStatement st = conn.prepareStatement(sql)) {
+                setParams(st, params);
+                st.executeQuery();
+                try (ResultSet rs = st.getResultSet()) {
+                    if (rs.next()) {
+                        return mapper.map(rs, 0);
+                    }
+                }
+            }
+            throw new RuntimeException(&quot;There is no unique record from query.&quot;);
+        });
+    }
+
+    public Record getRecord(String sql, Object ... params) {
+        return get((rs, idx) -&gt; new Record(rs), sql, params);
+    }
+
+    public List&lt;Record&gt; query(String sql, Object ... params) {
+        final List&lt;String&gt; names = new ArrayList&lt;&gt;();
+        return query((rs, idx) -&gt; {
+            if (idx == 0) {
+                names.addAll(getFieldNames(rs));
+            }
+            return new Record(rs, names);
+        }, sql, params);
+    }
+
+    public &lt;T&gt; List&lt;T&gt; query(RSMapper&lt;T&gt; mapper, String sql, Object ... params) {
+        return withConn(conn -&gt; {
+            List&lt;T&gt; list = new ArrayList&lt;&gt;();
+            try (PreparedStatement st = conn.prepareStatement(sql)) {
+                setParams(st, params);
+                st.executeQuery();
+                try (ResultSet rs = st.getResultSet()) {
+                    int idx = 0;
+                    while (rs.next()) {
+                        T t = mapper.map(rs, idx++);
+                        list.add(t);
+                    }
+                }
+            }
+            return list;
+        });
+    }
+
+    public int execute(String sql, Object ... params) {
+        return withConn(conn -&gt; {
+            try (PreparedStatement st = conn.prepareStatement(sql)) {
+                setParams(st, params);
+                return st.executeUpdate();
+            }
+        });
+    }
+
+    public int insert(String table, Record record) {
+        return insert(table, record, record.getFieldNames());
+    }
+
+    public int insert(String table, Record record, List&lt;String&gt; insertFields) {
+        String fields = insertFields.stream().collect(Collectors.joining(&quot;, &quot;));
+        String qMarks = insertFields.stream().map(e -&gt; &quot;?&quot;).collect(Collectors.joining(&quot;, &quot;));
+        String sql = &quot;INSERT INTO &quot; + table + &quot;(&quot; + fields + &quot;) VALUES (&quot; + qMarks + &quot;)&quot;;
+        List&lt;Object&gt; params = insertFields.stream().map(e -&gt; record.get(e)).collect(Collectors.toList());
+        return withConn(conn -&gt; {
+            try (PreparedStatement st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+                setParams(st, params.toArray());
+                int uc = st.executeUpdate();
+                // Check for auto generated keys, if present add into the record.
+                // NOTE it will not override existing fields in record!
+                try (ResultSet rs = st.getGeneratedKeys()) {
+                    if (rs.next()) {
+                        List&lt;String&gt; names = getFieldNames(rs);
+                        for (String name : names) {
+                            if (!record.containsKey(name))
+                                record.put(name, rs.getObject(name));
+                        }
+                    }
+                }
+                return uc;
+            }
+        });
+    }
+
+    public int update(String table, Record record, String ... keyFields) {
+        List&lt;String&gt; updateFields = record.getFieldNames();
+        for (String key : keyFields)
+            updateFields.remove(key);
+        return update(table, record, updateFields, Arrays.asList(keyFields));
+    }
+
+    public int update(String table, Record record, List&lt;String&gt; updateFields, List&lt;String&gt; keyFields) {
+        String updateFieldsNames = updateFields.stream().map(e -&gt; e + &quot; = ?&quot;).collect(Collectors.joining(&quot;, &quot;));
+        String keyFieldsNames = keyFields.stream().map(e -&gt; e + &quot; = ?&quot;).collect(Collectors.joining(&quot;, &quot;));
+        String sql = &quot;UPDATE &quot; + table + &quot; SET &quot; + updateFieldsNames + &quot; WHERE &quot; + keyFieldsNames;
+        List&lt;Object&gt; params = updateFields.stream().map(e -&gt; record.get(e)).collect(Collectors.toList());
+        for (String key : keyFields)
+            params.add(record.get(key));
+        return execute(sql, params.toArray());
+    }
+
+    // Test Jdbc with Postgres DB
+    public static void main(String[] args) {
+        String url = System.getProperty(&quot;url&quot;, &quot;jdbc:postgresql://localhost:5432/postgres&quot;);
+        String user = System.getProperty(&quot;user&quot;, &quot;postgres&quot;);
+        String password = System.getProperty(&quot;password&quot;, &quot;&quot;);
+
+        Jdbc.withJdbc(url, user, password, jdbc -&gt; {
+            jdbc.withConnNoRet(conn -&gt; System.out.println(conn));
+        });
+
+        Jdbc.withJdbc(url, user, password, jdbc -&gt; {
+            // Execute
+            jdbc.execute(&quot;create temp table test(id varchar(10) primary key, seq serial, amount numeric(19,4))&quot;);
+            int uc = jdbc.execute(&quot;insert into test(id, amount) values(?, ?)&quot;, &quot;T01&quot;, 0.01);
+            System.out.println(&quot;test record inserted: uc=&quot; + uc);
+
+            Record record = jdbc.getRecord(&quot;select * from test where id = ?&quot;, &quot;T01&quot;);
+            System.out.println(record);
+
+            // Get
+            Integer seq = jdbc.get(&quot;select seq from test where id = ?&quot;, &quot;T01&quot;);
+            System.out.println(&quot;seq = &quot; + seq);
+
+            java.math.BigDecimal amount = jdbc.get(&quot;select amount from test where id = ?&quot;, &quot;T01&quot;);
+            System.out.println(&quot;amount = &quot; + amount);
+
+            // Update
+            record.put(&quot;amount&quot;, amount.doubleValue() + 0.20);
+            System.out.println(&quot;amount to be updated: &quot; + record.getValue(&quot;amount&quot;));
+            uc = jdbc.update(&quot;test&quot;, record, &quot;id&quot;);
+            System.out.println(&quot;amount udpated. uc=&quot; + uc);
+
+            amount = jdbc.get(&quot;select amount from test where id = ?&quot;, &quot;T01&quot;);
+            System.out.println(&quot;after update from db: amount = &quot; + amount);
+
+            // Insert
+            record = new Record(&quot;id&quot;, &quot;T02&quot;, &quot;amount&quot;, 0.30);
+            jdbc.insert(&quot;test&quot;, record);
+            int newSeq = (Integer) record.get(&quot;seq&quot;);
+            System.out.println(&quot;generated column seq=&quot; + newSeq);
+            Record record2 = jdbc.getRecord(&quot;select * from test where id = ?&quot;, &quot;T02&quot;);
+            System.out.println(record2);
+
+            // Query
+            List&lt;Record&gt; records = jdbc.query(&quot;select * from test order by id&quot;);
+            System.out.println(records);
+        });
+    }
+}
+</code></pre>
+</p>
+
+	<hr />
+
+<div id="disqus_thread"></div>
+	
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://zemian-github-io.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">&copy; 2011 - Present Zemian Deng All Rights Reserved | Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.5</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../../../js/jquery-1.11.1.min.js"></script>
+    <script src="../../../js/bootstrap.min.js"></script>
+    <script src="../../../js/prettify.js"></script>
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-135626598-1');
+    </script>
+
+  </body>
+</html>

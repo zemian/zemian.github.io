@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Zemian's Blog - How to configure SLF4J with different logger implementations</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../css/asciidoctor.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link href="../../../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../../../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../about.html">About</a></li>
+            <li><a href="../../../archive.html">Archive</a></li>
+            <li><a href="../../..//tags">Tags</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">	
+	<div class="page-header">
+		<h1>How to configure SLF4J with different logger implementations</h1>
+	</div>
+
+	<p><em>18 August 2013</em>, tags: 
+	    <a href="../../../tags/slf4j.html">slf4j</a> 
+
+	    <a href="../../../tags/logging.html">logging</a> 
+	</p>
+
+	<p><p>There are many good benefits in using <code>slf4j</code> library as your Java<br />
+application logging API layer. Here I will show few examples on how<br />
+to use and configure it with different loggers.</p>
+<p>You can think of <code>slf4j</code> as an Java interface, and then you would<br />
+need an implementation (ONLY ONE) at runtime to provide the actual<br />
+logging details, such as writing to STDOUT or to a file etc. Each<br />
+logging implementation (or called binding) would obviously have their<br />
+own way of configuring the log output, but your application will remain<br />
+agnostic and always use the same <code>org.slf4j.Logger</code> API. Lets see how<br />
+this works in practice.</p>
+<h2></h2>
+<p>Using <code>slf4j</code> with Simple logger</p>
+<p>Create a Maven based project and this in your <code>pom.xml</code>.</p>
+<pre><code>    &lt;dependency&gt;
+        &lt;groupId&gt;org.slf4j&lt;/groupId&gt;
+        &lt;artifactId&gt;slf4j-api&lt;/artifactId&gt;
+        &lt;version&gt;1.7.5&lt;/version&gt;
+    &lt;/dependency&gt;
+</code></pre>
+<p>Now you may use <code>Logger</code> in your Java code like this.</p>
+<pre><code>package deng;
+import org.slf4j.*;
+public class Hello {
+    static Logger LOGGER = LoggerFactory.getLogger(Hello.class);
+    public static void main(String[] args) {
+        for (int i = 0; i &lt; 10; i++)
+            if (i % 2 == 0)
+                LOGGER.info(&quot;Hello {}&quot;, i);
+            else
+                LOGGER.debug(&quot;I am on index {}&quot;, i);
+    }
+}
+</code></pre>
+<p>The above will get your program compiled, but when you run it, you will see these output.</p>
+<pre><code>bash&gt; java deng.Hello
+SLF4J: Failed to load class &quot;org.slf4j.impl.StaticLoggerBinder&quot;.
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+</code></pre>
+<p>What its saying is that at runtime, you are missing the logging &quot;implementation&quot; (or the<br />
+logger binding), so <code>slf4j</code> simply use a &quot;NOP&quot; implmentation, which does nothing. In order<br />
+to see the output properly, you may try use an simple implementation that does not require<br />
+any configuration at all! Just go back to your <code>pom.xml</code> and add the following:</p>
+<pre><code>    &lt;dependency&gt;
+        &lt;groupId&gt;org.slf4j&lt;/groupId&gt;
+        &lt;artifactId&gt;slf4j-simple&lt;/artifactId&gt;
+        &lt;version&gt;1.7.5&lt;/version&gt;
+    &lt;/dependency&gt;
+</code></pre>
+<p>Now you see logging output on STDOUT with INFO level. This simple logger will default<br />
+show any INFO level message or higher. In order to see DEBUG messages, you would<br />
+need to pass in this System Property <code>-Dorg.slf4j.simpleLogger.defaultLogLevel=DEBUG</code><br />
+at your Java startup.</p>
+<h2></h2>
+<p>Using <code>slf4j</code> with Log4j logger</p>
+<p>Now we can experiment and swap different logger implementations, but your application code<br />
+can remain the same. All we need is to replace <code>slf4j-simple</code> with another popular logger<br />
+implementation, such as the Log4j.</p>
+<pre><code>    &lt;dependency&gt;
+        &lt;groupId&gt;org.slf4j&lt;/groupId&gt;
+        &lt;artifactId&gt;slf4j-log4j12&lt;/artifactId&gt;
+        &lt;version&gt;1.7.5&lt;/version&gt;
+    &lt;/dependency&gt;
+</code></pre>
+<p>Again, we must configure logging per implementation that we picked.<br />
+In this case, we need an <code>src/main/resources/log4j.properties</code> file.</p>
+<pre><code>    log4j.rootLogger=DEBUG, STDOUT
+    log4j.logger.deng=INFO
+    log4j.appender.STDOUT=org.apache.log4j.ConsoleAppender
+    log4j.appender.STDOUT.layout=org.apache.log4j.PatternLayout
+    log4j.appender.STDOUT.layout.ConversionPattern=%5p [%t] (%F:%L) - %m%n
+</code></pre>
+<p>Re-run your program, and you should see similar output.</p>
+<h2></h2>
+<p>Using <code>slf4j</code> with JDK logger</p>
+<p>The JDK actually comes with a logger package, and you can replace <code>pom.xml</code><br />
+with this logger implementation.</p>
+<pre><code>    &lt;dependency&gt;
+        &lt;groupId&gt;org.slf4j&lt;/groupId&gt;
+        &lt;artifactId&gt;slf4j-jdk14&lt;/artifactId&gt;
+        &lt;version&gt;1.7.5&lt;/version&gt;
+    &lt;/dependency&gt;
+</code></pre>
+<p>Now the configuration for JDK logging is a bit difficult to work with. Not only need a<br />
+config file, such as <code>src/main/resources/logging.properties</code>, but you would also need<br />
+to add a System properties <code>-Djava.util.logging.config.file=logging.properties</code><br />
+in order to have it pick it up. Here is an example to get you started:</p>
+<pre><code>.level=INFO
+
+handlers=java.util.logging.ConsoleHandler
+java.util.logging.ConsoleHandler.level=FINEST
+deng.level=FINEST
+</code></pre>
+<h2></h2>
+<p>Using <code>slf4j</code> with Logback logger</p>
+<p>The logback logger implementation is a super dupa quality implementation. If you intend<br />
+to write serious code that go into production, you may want to evaluate this option. Again<br />
+modify your <code>pom.xml</code> to replace with this:</p>
+<pre><code>    &lt;dependency&gt;
+        &lt;groupId&gt;ch.qos.logback&lt;/groupId&gt;
+        &lt;artifactId&gt;logback-classic&lt;/artifactId&gt;
+        &lt;version&gt;1.0.13&lt;/version&gt;
+    &lt;/dependency&gt;
+</code></pre>
+<p>Here is a sample of configuration <code>src/main/resources/logback.xml</code> to get things started.</p>
+<pre><code>&lt;configuration&gt;
+  &lt;appender name=&quot;STDOUT&quot; class=&quot;ch.qos.logback.core.ConsoleAppender&quot;&gt;
+    &lt;encoder&gt;
+      &lt;pattern&gt;%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n&lt;/pattern&gt;
+    &lt;/encoder&gt;
+  &lt;/appender&gt;
+
+  &lt;logger name=&quot;deng&quot; level=&quot;DEBUG&quot;/&gt;
+
+  &lt;root level=&quot;INFO&quot;&gt;
+    &lt;appender-ref ref=&quot;STDOUT&quot; /&gt;
+  &lt;/root&gt;
+&lt;/configuration&gt;
+</code></pre>
+<h2></h2>
+<p>Writing your own library with <code>slf4j</code> logger</p>
+<p>If you are providing an Java library for large end users consumption, its good idea to<br />
+set your project to depend on <code>slf4j-api</code> only, and then let your user choose any<br />
+logger implementation at their development or runtime environment. As end users, they<br />
+may quickly select one of option above and take advatage of their own favorite logging<br />
+implementation features.</p>
+<h2></h2>
+<p>References</p>
+<ul>
+<li>
+<p><a href="http://slf4j.org/">http://slf4j.org/</a></p>
+</li>
+<li>
+<p><a href="http://logging.apache.org/log4j/1.2/">http://logging.apache.org/log4j/1.2/</a></p>
+</li>
+<li>
+<p><a href="http://docs.oracle.com/javase/7/docs/technotes/guides/logging/">http://docs.oracle.com/javase/7/docs/technotes/guides/logging/</a></p>
+</li>
+<li>
+<p><a href="http://logback.qos.ch/">http://logback.qos.ch/</a></p>
+</li>
+</ul>
+</p>
+
+	<hr />
+
+<div id="disqus_thread"></div>
+	
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://zemian-github-io.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">&copy; 2011 - Present Zemian Deng All Rights Reserved | Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.5</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../../../js/jquery-1.11.1.min.js"></script>
+    <script src="../../../js/bootstrap.min.js"></script>
+    <script src="../../../js/prettify.js"></script>
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-135626598-1');
+    </script>
+
+  </body>
+</html>

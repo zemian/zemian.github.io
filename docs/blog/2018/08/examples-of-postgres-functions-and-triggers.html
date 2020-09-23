@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Zemian's Blog - Examples of Postgres Functions and Triggers</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../css/asciidoctor.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link href="../../../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../../../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../about.html">About</a></li>
+            <li><a href="../../../archive.html">Archive</a></li>
+            <li><a href="../../..//tags">Tags</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">	
+	<div class="page-header">
+		<h1>Examples of Postgres Functions and Triggers</h1>
+	</div>
+
+	<p><em>09 August 2018</em>, tags: 
+	    <a href="../../../tags/postgres.html">postgres</a> 
+
+	    <a href="../../../tags/function.html">function</a> 
+
+	    <a href="../../../tags/trigger.html">trigger</a> 
+	</p>
+
+	<p><pre><code>-- Simple Function
+create or replace function rand_range(a int, b int) returns int
+as $$
+  -- return a random range of int between a and b, both inclusive!;
+  select cast(floor(random()*((b + 1)-a)+a) as int);
+$$ language sql;
+select rand_range(1, 10);
+select rand_range(90, 95) from generate_series(1, 10);
+
+-- Function to print message on DB server
+create or replace function print_msg(msg text, lev text default 'notice') returns void
+  as $$
+  begin
+    case
+      when lev = 'debug' then
+        raise debug '%', msg;
+      when lev = 'info' then
+        raise info '%', msg;
+      else
+        raise notice '%', msg;
+    end case;
+  end;
+$$ language plpgsql;
+select print_msg('hello world');
+
+-- Log Function
+drop table log;
+create table log(
+  id serial,
+  msg text not null,
+  ts timestamptz default current_timestamp not null,
+  category varchar(50) default 'INFO' not null,
+  user_id varchar(50) default 'system' not null,
+  source_info text null
+);
+create or replace function add_log(
+  msg text,
+  category varchar(50) default 'INFO'
+) returns void
+as $$
+begin
+  insert into log(msg, category, source_info, user_id)
+    values(msg, category, 'client=' || inet_client_addr(), current_user);
+end;
+$$ language plpgsql;
+
+select add_log('hello2');
+select public.add_log('hello3');
+select * from log;
+
+-- Triggers to log data entry or update
+drop table test;
+create table test(id serial, f1 real);
+create or replace function log_test_update() returns trigger
+as $$
+begin
+  perform add_log('Insert or Update on test table');
+  return NEW;
+end
+$$ language plpgsql;
+create trigger test_logging_trigger
+  after insert or update on test
+  for each row
+  execute procedure log_test_update();
+insert into test(f1) values(0.10), (0.20), (0.30);
+update test set f1 = 3.5 where id = 1;
+select * from test;
+select * from log;
+</code></pre>
+</p>
+
+	<hr />
+
+<div id="disqus_thread"></div>
+	
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://zemian-github-io.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">&copy; 2011 - Present Zemian Deng All Rights Reserved | Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.5</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../../../js/jquery-1.11.1.min.js"></script>
+    <script src="../../../js/bootstrap.min.js"></script>
+    <script src="../../../js/prettify.js"></script>
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-135626598-1');
+    </script>
+
+  </body>
+</html>

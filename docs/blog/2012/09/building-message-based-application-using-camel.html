@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Zemian's Blog - Building message based application using Camel</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../css/asciidoctor.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link href="../../../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../../../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../about.html">About</a></li>
+            <li><a href="../../../archive.html">Archive</a></li>
+            <li><a href="../../..//tags">Tags</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">	
+	<div class="page-header">
+		<h1>Building message based application using Camel</h1>
+	</div>
+
+	<p><em>14 September 2012</em>, tags: 
+	    <a href="../../../tags/camel.html">camel</a> 
+	</p>
+
+	<p><p>This is a long article that contains three separate topics:</p>
+<ul>
+<li>Getting started with Apache Camel with Java</li>
+<li>Improving startup of routes with a CamelRunner</li>
+<li>Building message based application using Camel</li>
+</ul>
+<p>But since I've prepared a <a href="https://bitbucket.org/saltnlight5/sandbox/downloads">camel-demo-1.0.0-SNAPSHOT-project.zip</a> that has all these materials included, I thought it would easier to combine them and present it as whole.</p>
+<h1>Getting started with Apache Camel with Java</h1>
+<p>Trying out <a href="http://saltnlight5.blogspot.com/2012/08/getting-started-with-apache-camel-using.html">Camel with few Groovy lines</a> is one thing, but<br />
+getting a full scale project in Java is another matter. Today, I will show you how to get things started on <a href="http://camel.apache.org/">Apache Camel</a> with<br />
+<a href="http://maven.apache.org/">Maven</a> based project. You may also use the provided <code>camel-demo</code> as project template to jump start your own Apache Camel<br />
+project. You would just need to rename the Java package and rename the pom's group and artifact id's to match your need.</p>
+<h2>Preparing a Maven based project with Camel dependencies</h2>
+<p>Unzip the <code>camel-demo</code> project source, and you will see the basic directory layout.</p>
+<pre><code>camel-demo
+    +- bin
+    +- config
+    +- data
+    +- src
+    +- pom.xml
+    +- README.txt
+</code></pre>
+<p>What makes this demo a Camel based project is just the declaration in <code>pom.xml</code>. Let's take a look the file and its dependencies.</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+    xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0   http://maven.apache.org/maven-v4_0_0.xsd&quot;&gt;
+
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;groupId&gt;deng.cameldemo&lt;/groupId&gt;
+    &lt;artifactId&gt;camel-demo&lt;/artifactId&gt;
+    &lt;version&gt;1.0.0-SNAPSHOT&lt;/version&gt;
+    &lt;packaging&gt;jar&lt;/packaging&gt;
+
+    &lt;properties&gt;
+        &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+        &lt;slf4j.version&gt;1.6.6&lt;/slf4j.version&gt;
+        &lt;camel.version&gt;2.10.1&lt;/camel.version&gt;
+    &lt;/properties&gt;
+
+    &lt;build&gt;
+        &lt;plugins&gt;
+            &lt;plugin&gt;
+                &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+                &lt;version&gt;2.3.2&lt;/version&gt;
+                &lt;configuration&gt;
+                    &lt;source&gt;1.6&lt;/source&gt;
+                    &lt;target&gt;1.6&lt;/target&gt;
+                &lt;/configuration&gt;
+            &lt;/plugin&gt;
+            &lt;plugin&gt;
+                &lt;artifactId&gt;maven-assembly-plugin&lt;/artifactId&gt;
+                &lt;version&gt;2.3&lt;/version&gt;
+                &lt;configuration&gt;
+                    &lt;descriptorRefs&gt;
+                        &lt;descriptorRef&gt;project&lt;/descriptorRef&gt;
+                        &lt;descriptorRef&gt;jar-with-dependencies&lt;/descriptorRef&gt;
+                    &lt;/descriptorRefs&gt;
+                &lt;/configuration&gt;
+                &lt;executions&gt;
+                    &lt;execution&gt;
+                        &lt;id&gt;make-assembly&lt;/id&gt;
+                        &lt;phase&gt;package&lt;/phase&gt;
+                        &lt;goals&gt;
+                            &lt;goal&gt;single&lt;/goal&gt;
+                        &lt;/goals&gt;
+                    &lt;/execution&gt;
+                &lt;/executions&gt;
+            &lt;/plugin&gt;
+        &lt;/plugins&gt;
+    &lt;/build&gt;
+
+    &lt;dependencies&gt;
+
+        &lt;!-- Unit testing lib --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;junit&lt;/groupId&gt;
+            &lt;artifactId&gt;junit-dep&lt;/artifactId&gt;
+            &lt;version&gt;4.10&lt;/version&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.hamcrest&lt;/groupId&gt;
+            &lt;artifactId&gt;hamcrest-library&lt;/artifactId&gt;
+            &lt;version&gt;1.2.1&lt;/version&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+
+        &lt;!-- Logging lib --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.slf4j&lt;/groupId&gt;
+            &lt;artifactId&gt;slf4j-api&lt;/artifactId&gt;
+            &lt;version&gt;${slf4j.version}&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.slf4j&lt;/groupId&gt;
+            &lt;artifactId&gt;slf4j-log4j12&lt;/artifactId&gt;
+            &lt;version&gt;${slf4j.version}&lt;/version&gt;
+            &lt;scope&gt;runtime&lt;/scope&gt;
+            &lt;optional&gt;true&lt;/optional&gt;
+        &lt;/dependency&gt;
+
+        &lt;!-- Apache Commons lib --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;commons-lang&lt;/groupId&gt;
+            &lt;artifactId&gt;commons-lang&lt;/artifactId&gt;
+            &lt;version&gt;2.6&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;commons-io&lt;/groupId&gt;
+            &lt;artifactId&gt;commons-io&lt;/artifactId&gt;
+            &lt;version&gt;2.0.1&lt;/version&gt;
+        &lt;/dependency&gt;
+
+        &lt;!-- Apache Camel --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.apache.camel&lt;/groupId&gt;
+            &lt;artifactId&gt;camel-core&lt;/artifactId&gt;
+            &lt;version&gt;${camel.version}&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.apache.camel&lt;/groupId&gt;
+            &lt;artifactId&gt;camel-spring&lt;/artifactId&gt;
+            &lt;version&gt;${camel.version}&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.apache.camel&lt;/groupId&gt;
+            &lt;artifactId&gt;camel-groovy&lt;/artifactId&gt;
+            &lt;version&gt;${camel.version}&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.apache.camel&lt;/groupId&gt;
+            &lt;artifactId&gt;camel-jackson&lt;/artifactId&gt;
+            &lt;version&gt;${camel.version}&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.apache.camel&lt;/groupId&gt;
+            &lt;artifactId&gt;camel-mina&lt;/artifactId&gt;
+            &lt;version&gt;${camel.version}&lt;/version&gt;
+        &lt;/dependency&gt;
+
+    &lt;/dependencies&gt;
+
+&lt;/project&gt;
+</code></pre>
+<p>This <code>pom.xml</code> decalares a Java based application and it will produce <code>jar</code>. It requires minimal of JDK 6 or higher. Besides the typical <code>junit</code> and <code>hamcrest</code> for unit testing, I also added <code>slf4j</code> for logging. I have added couple Apache's <code>commons-lang/io</code> to the project as well. I think these are basic settings that any Java based application should use them.</p>
+<p>The <code>maven-assembly-plugin</code> I have declared is only for this demo packging purpose, and you may change or remove to suite your own project need.</p>
+<p>For Camel dependencies, you would need minimal <code>camel-core</code> for routes building. And then you can add any additional components you plan to use in your project. I have added the following for building typical message based application development:</p>
+<ol>
+<li>The <code>camel-spring</code> - we want to have option to declare Camel routes in xml files as configuration. See <code>camel-demo/config</code> directory for samples.</li>
+<li>The <code>camel-jackson</code> - we want to process messaging data in our application as JSON format.</li>
+<li>The <code>camel-mina</code> - we want to send messaging data accross network through TCP socket.</li>
+<li>The <code>camel-groovy</code> - [optional] we want to be able to add dynamic scripting to route, even inside the xml config. This is great for debug and POC.</li>
+</ol>
+<p>Note that since we use multiple camel components dependencies, I choose to set a Maven property <code>${camel.version}</code> so that when we upgrade Camel,<br />
+it's easier to maintain the <code>pom.xml</code> file in one place.</p>
+<p>You should able to cd into the project directory and run <code>mvn compile</code> to verify that the project. It should compile without error.</p>
+<h1>Improving startup of routes with a CamelRunner</h1>
+<p>With the project <code>pom.xml</code> file ready, you can start creating Camel routes to handle your own business logics. Before we get too excited, let's try out<br />
+a simple <code>HelloRoute</code> to see how it works and how we can run it first. Here is the route defnition code in <code>src/main/java/deng/cameldemo/HelloRoute.java</code>.</p>
+<pre><code>package deng.cameldemo;
+
+import org.apache.camel.builder.RouteBuilder;
+
+public class HelloRoute extends RouteBuilder {
+    @Override
+    public void configure() throws Exception {
+        from(&quot;timer://helloTimer?period=3000&quot;).
+            to(&quot;log:&quot; + getClass().getName());
+    }
+}
+</code></pre>
+<h2>Take a test ride with the Camel</h2>
+<p>To see above in action, we need to add it into a <code>CamelContext</code> and start the context. For Java standalone program, we would write this setup code<br />
+in a <code>Main</code> class. The Camel actually comes with a <code>org.apache.camel.main.MainSupport</code> abstract class that you may use to extend your own <code>Main</code>.<br />
+However, I think it would be even nicer if Camel would provide a <code>CamelRunner</code> that can run like this.</p>
+<pre><code>$ java CamelRunner deng.cameldemo.HelloRoute
+</code></pre>
+<p>Such <code>CamelRunner</code> would be very user friendly and re-usable to have, so that's what I did. I wrote one like this:</p>
+<pre><code>package deng.cameldemo;
+
+import org.apache.camel.CamelContext;
+import org.apache.camel.builder.RouteBuilder;
+import org.apache.camel.impl.DefaultCamelContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.support.FileSystemXmlApplicationContext;
+
+/** 
+ * A main program to start Camel and run as a server using RouteBuilder class names or 
+ * Spring config files.
+ * 
+ * &lt;p&gt;Usage:
+ * 
+ * java deng.cameldemo.CamelRunner deng.cameldemo.HelloRoute
+ * 
+ * or
+ * 
+ * java -Dspring=true deng.cameldemo.CamelRunner /path/to/camel-spring.xml
+ * 
+ * @author Zemian Deng
+ */
+public class CamelRunner {
+    public static void main(String[] args) throws Exception {
+        CamelRunner runner = new CamelRunner();
+        runner.run(args);
+    }
+
+    private static Logger logger = LoggerFactory.getLogger(CamelRunner.class);
+    public void run(String[] args) throws Exception {
+        if (Boolean.parseBoolean(System.getProperty(&quot;spring&quot;, &quot;false&quot;)))
+            runWithSpringConfig(args);
+        else
+            runWithCamelRoutes(args);
+
+        // Wait for user to hit CRTL+C to stop the service
+        synchronized(this) {
+            this.wait();
+        }
+    }
+
+    private void runWithSpringConfig(String[] args) {
+        final ConfigurableApplicationContext springContext = new FileSystemXmlApplicationContext(args);
+
+        // Register proper shutdown.
+        Runtime.getRuntime().addShutdownHook(new Thread() { 
+            @Override
+            public void run() {
+                try {
+                    springContext.close();
+                    logger.info(&quot;Spring stopped.&quot;);
+                } catch (Exception e) {
+                    logger.error(&quot;Failed to stop Spring.&quot;, e);
+                }
+            }
+        });
+
+        // Start spring
+        logger.info(&quot;Spring started.&quot;);
+    }
+
+    private void runWithCamelRoutes(String[] args) throws Exception {
+        final CamelContext camelContext = new DefaultCamelContext();        
+        // Register proper shutdown.
+        Runtime.getRuntime().addShutdownHook(new Thread() { 
+            @Override
+            public void run() {
+                try {
+                    camelContext.stop();
+                    logger.info(&quot;Camel stopped for {}&quot;, camelContext);
+                } catch (Exception e) {
+                    logger.error(&quot;Failed to stop Camel.&quot;, e);
+                }
+            }
+        });
+
+        // Added RouteBuilder from args
+        for (String className : args) {
+            Class&lt;?&gt; cls = Class.forName(className);
+            if (RouteBuilder.class.isAssignableFrom(cls)) {
+                Object obj = cls.newInstance();
+                RouteBuilder routeBuilder = (RouteBuilder)obj;
+                camelContext.addRoutes(routeBuilder);
+            } else {
+                throw new RuntimeException(&quot;Unable to add Camel RouteBuilder &quot; + className);
+            }
+        }
+
+        // Start camel
+        camelContext.start();
+        logger.info(&quot;Camel started for {}&quot;, camelContext);
+    }
+}
+</code></pre>
+<p>To help you run the main class, I have provided a <a href="http://saltnlight5.blogspot.com/2012/08/a-better-java-shell-script-wrapper.html">run-java</a><br />
+wrapper script under the project's <code>bin</code> directory, so that you may quickly test it without having to setup classpath.</p>
+<pre><code>$ mvn package
+$ bin/run-java deng.cameldemo.CamelRunner deng.cameldemo.HelloRoute
+</code></pre>
+<p>You will see that the program will load the <code>HelloRoute</code> in a <code>DefaultCamelContext</code> and start it as a server. The <code>HelloRoute</code> itself will<br />
+generate a 3 seconds timer message and send it to a logger, which should be printing onto your console screen. This will continue forever<br />
+until you hit <code>CTRL+C</code> to end it.</p>
+<p>NOTE: You only have to invoke <code>mvn package</code> command once, so that it will package up all the dependencies jars in order for <code>run-java</code> to auto-detect<br />
+them. If you are not going to use <code>maven-assembly-plugin</code> during <code>package</code> phase, then use <code>mvn dependency:copy-dependencies</code> command<br />
+explicitly will work fine as well.</p>
+<h2>Take a test ride with the Camel, Part 2: running Camel with Spring xml configuration</h2>
+<p>The <code>HelloRoute</code> example above would simply provide route definition that formed by using component URI's. It will be nice if<br />
+we can configure the route in a declarative manner so that we may change the route without re-compile a class file. This will be very handy especially<br />
+if you are not familiar with each component's options and want to explore and try things out. Well, that's what the <code>camel-spring</code> is for. Beside<br />
+giving you an option to load route in xml config file, it also provides a very flexible way to register custom services/processors bean in the Spring<br />
+IoC container.</p>
+<p>If you are a keen reader, you will notice in the <code>CamelRunner</code> code above that it has an extra <code>runWithSpringConfig</code> part. So the <code>CamelRunner</code><br />
+can actually bootstrap any Spring xml file and start a context as a server. You may use it like this:</p>
+<pre><code>$ bin/run-java deng.cameldemo.CamelRunner -Dspring=true config/hellocamel-spring.xml
+</code></pre>
+<p>The <code>config/hellocamel-spring.xml</code> is just an equivalent of our <code>HelloRoute</code> code but in Spring xml form:</p>
+<pre><code>&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+    xsi:schemaLocation=&quot;
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd&quot;&gt;
+
+    &lt;camelContext id=&quot;helloCamel&quot; xmlns=&quot;http://camel.apache.org/schema/spring&quot;&gt;
+        &lt;route&gt;
+            &lt;from uri=&quot;timer://jdkTimer?period=3000&quot;/&gt;
+            &lt;to uri=&quot;log://deng.cameldemo.HelloCamel&quot;/&gt;
+        &lt;/route&gt;
+    &lt;/camelContext&gt;
+
+&lt;/beans&gt;
+</code></pre>
+<p>This remove the need to compile/re-compile <code>HelloRoute</code> to define the Camel route to run.</p>
+<h1>Building message based application using Camel</h1>
+<p>To present you with a more practical demo, I would show you further on how to setup Camel to process message based application. In many IT<br />
+shops, it's common that you would have a server to take message data as input and process them. A practical use case is to take any JSON<br />
+formated message and transform it into object and process it. To do this in Camel, what you want to build is a route that will take<br />
+input messages from a TCP port, and then process it in a pipeflow with any business logic you may have. You will run the route as a server,<br />
+and then client may use any mean to submit the message to the TCP port. Client may even be another thin Camel client app to submit data as well.<br />
+Let me show you how to get started.</p>
+<h2>Writing the server side code with Camel route</h2>
+<p>The server side would need a route to listen from a TCP port, and this is provided by <code>camel-mina</code> component. The first step is you need a route.</p>
+<pre><code>package deng.cameldemo;
+
+import org.apache.camel.builder.RouteBuilder;
+
+public class TcpMsgRoute extends RouteBuilder {
+    @Override
+    public void configure() throws Exception {
+        String port = System.getProperty(&quot;port&quot;, &quot;12345&quot;);
+        from(&quot;mina:tcp://localhost:&quot; + port + &quot;?sync=false&quot;).
+            to(&quot;log:&quot; + getClass().getName());
+    }
+}
+</code></pre>
+<p>Then the next step is ... done! No way, you mean that's all there to it for a server? Too good to be true? Well, let's try it out</p>
+<pre><code>$ bin/run-java deng.cameldemo.CamelRunner deng.cameldemo.TcpMsgRoute -Dport=12345
+15:21:41 main INFO  org.apache.camel.impl.DefaultCamelContext:1391 | Apache Camel 2.10.1 (CamelContext: camel-1) is starting
+15:21:41 main INFO  org.apache.camel.management.ManagementStrategyFactory:43 | JMX enabled.
+15:21:42 main INFO  org.apache.camel.impl.converter.DefaultTypeConverter:45 | Loaded 172 type converters
+15:21:42 main INFO  org.apache.camel.component.mina.MinaConsumer:59 | Binding to server address: localhost/127.0.0.1:12345 using acceptor: org.apache.mina.transport.socket.nio.SocketAcceptor@2ffad8fe
+15:21:42 main INFO  org.apache.camel.impl.DefaultCamelContext:2045 | Route: route1 started and consuming from: Endpoint[mina://tcp://localhost:12345?sync=true]
+15:21:42 main INFO  org.apache.camel.management.DefaultManagementLifecycleStrategy:859 | StatisticsLevel at All so enabling load performance statistics
+15:21:42 main INFO  org.apache.camel.impl.DefaultCamelContext:1426 | Total 1 routes, of which 1 is started.
+15:21:42 main INFO  org.apache.camel.impl.DefaultCamelContext:1427 | Apache Camel 2.10.1 (CamelContext: camel-1) started in 0.505 seconds
+15:21:42 main INFO  deng.cameldemo.CamelRunner:93 | Camel started for CamelContext(camel-1)
+</code></pre>
+<p>Voila! The server is up and waiting for your users to send messages through port <code>12345</code>. Not too bad for few lines of code.</p>
+<h2>Writing the client side code with Camel ProducerTemplate</h2>
+<p>Since our server expose a TCP port and take in any text content message, you can create any client that's capable writing to a TCP socket. In here,<br />
+I will show you how to use Camel to write a thin client.</p>
+<pre><code>package deng.cameldemo.client;
+
+import java.io.FileReader;
+import org.apache.camel.CamelContext;
+import org.apache.camel.ProducerTemplate;
+import org.apache.camel.impl.DefaultCamelContext;
+import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class TcpMsgSender {
+    public static void main(String[] args) throws Exception {
+        TcpMsgSender runner = new TcpMsgSender();
+        runner.run(args);
+    }
+
+    private static Logger logger = LoggerFactory.getLogger(TcpMsgSender.class);
+    public void run(String[] args) throws Exception {
+        String fileName = args.length &gt; 0 ? args[0] : &quot;data/msg.txt&quot;;
+        String[] hostPort = (args.length &gt; 1 ? args[1] : &quot;localhost:12345&quot;).split(&quot;:&quot;);
+        String host = hostPort[0];
+        String port = hostPort.length &gt; 1 ? hostPort[1] : &quot;12345&quot;;
+        logger.info(&quot;Sending tcp message {} to host={}, port={}&quot;, new Object[]{ fileName, host, port});
+
+        String text = IOUtils.toString(new FileReader(fileName));
+        logger.debug(&quot;File size={}&quot;, text.length());
+
+        CamelContext camelContext = new DefaultCamelContext();
+        ProducerTemplate producer = camelContext.createProducerTemplate();
+        producer.sendBody(&quot;mina:tcp://&quot; + host + &quot;:&quot; + port + &quot;?sync=false&quot;, text);
+        logger.info(&quot;Message sent.&quot;);
+    }
+}
+</code></pre>
+<p>This <code>TcpMsgSender</code> can send any text file to your server endpoint. Try this out while your server is running:</p>
+<pre><code>$ bin/run-java deng.cameldemo.client.TcpMsgSender data/test-msg.json localhost:12345
+15:22:35 main INFO  deng.cameldemo.client.TcpMsgSender:24 | Sending tcp message data/test-msg.json to host=localhost, port=12345
+15:22:35 main DEBUG deng.cameldemo.client.TcpMsgSender:27 | File size=47
+15:22:35 main INFO  org.apache.camel.impl.converter.DefaultTypeConverter:45 | Loaded 172 type converters
+15:22:35 main INFO  org.apache.camel.management.ManagementStrategyFactory:43 | JMX enabled.
+15:22:35 main INFO  deng.cameldemo.client.TcpMsgSender:32 | Message sent.
+</code></pre>
+<p>You should able to verify from your server console output that it received the msg. The msg I sent is in <code>data/test-msg.json</code>, which<br />
+contains this simple text:</p>
+<pre><code>{ &quot;firstName&quot; : &quot;Zemian&quot;, &quot;lastName&quot; : &quot;Deng&quot; }
+</code></pre>
+<p>Note that our server simply receive plain text and log it. We will discuss how to process the message next.</p>
+<h2>Processing message data in JSON format with Camel and Spring xml config</h2>
+<p>You thought the server code was easy from above, guess again. You can actually replace the <code>TcpMsgRoute</code> with just some simple xml lines!</p>
+<pre><code>&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+    xsi:schemaLocation=&quot;
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd&quot;&gt;
+
+    &lt;camelContext id=&quot;tcpMsgServer&quot; xmlns=&quot;http://camel.apache.org/schema/spring&quot;&gt;
+        &lt;route&gt;
+            &lt;from uri=&quot;mina:tcp://localhost:12345?sync=false&quot;/&gt;
+            &lt;to uri=&quot;log://deng.cameldemo.TcpMsgServer&quot;/&gt;
+        &lt;/route&gt;
+    &lt;/camelContext&gt;
+
+&lt;/beans&gt;
+</code></pre>
+<p>Save it as <code>config/tcpmsgserver-spring.xml</code>. Then re-run the server, and you should get the same result as above.</p>
+<pre><code>$ bin/run-java deng.cameldemo.CamelRunner -Dspring=true config/tcpmsgserver-spring.xml
+</code></pre>
+<p>Now let us improve the above xml to further process the JSON message data. We will like to transform the plain text to a Java object then process<br />
+by a custom bean. To do that, we first would need to add unmarshal component to the route. This is where the <code>camel-jackson</code> comes into play.<br />
+In our demo, the unmarshalling step would convert the JSON text into a <code>java.util.Map</code> and then pass it to a processor bean named <code>myMsgProcessor</code>.<br />
+Let's create a new xml file named <code>config/tcpmsgserver-json-spring.xml</code> as follow.</p>
+<pre><code>&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+    xsi:schemaLocation=&quot;
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd&quot;&gt;
+
+    &lt;camelContext id=&quot;tcpMsgServer&quot; xmlns=&quot;http://camel.apache.org/schema/spring&quot;&gt;
+        &lt;route&gt;
+            &lt;from uri=&quot;mina:tcp://localhost:12345?sync=false&quot;/&gt;
+            &lt;to uri=&quot;log://deng.cameldemo.TcpMsgServer&quot;/&gt;
+            &lt;unmarshal&gt;
+                &lt;json library=&quot;Jackson&quot;/&gt;
+            &lt;/unmarshal&gt;
+            &lt;to uri=&quot;bean:myMsgProcessor?method=process&quot;/&gt;
+        &lt;/route&gt;
+    &lt;/camelContext&gt;
+
+    &lt;bean id=&quot;myMsgProcessor&quot; class=&quot;deng.cameldemo.MyMsgProcessor&quot;&gt;
+    &lt;/bean&gt;
+
+&lt;/beans&gt;
+</code></pre>
+<p>The <code>myMsgProcessor</code> is an Spring bean that we provide custom logic code to process the data. At this point we have a full Java object<br />
+to manipulate. The content of the processor can be any POJO with the method name specified in the URI. Here is an example one:</p>
+<pre><code>package deng.cameldemo;
+
+import org.apache.camel.builder.RouteBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import java.util.Map;
+
+public class MyMsgProcessor {
+    private static Logger logger = LoggerFactory.getLogger(MyMsgProcessor.class);
+    public void process(Map&lt;String, String&gt; data) {
+        logger.info(&quot;We should slice and dice the data: &quot; + data);
+    }
+}
+</code></pre>
+<p>Try re-run the server with the new xml file above, and you should able to re-invoke the same client command to test it out. Here is a sample<br />
+output of my server:</p>
+<pre><code>$ bin/run-java deng.cameldemo.CamelRunner -Dspring=true config/tcpmsgserver-json-spring.xml
+17:05:25 main INFO  org.springframework.context.support.FileSystemXmlApplicationContext:456 | Refreshing org.springframework.context.support.FileSystemXmlApplicationContext@4200309: startup date [Sat Sep 15 17:05:25 EDT 2012]; root of context hierarchy
+17:05:25 main INFO  org.springframework.beans.factory.xml.XmlBeanDefinitionReader:315 | Loading XML bean definitions from file [/Users/zemian/projects/sandbox/camel-demo/config/tcpmsgserver-json-spring.xml]
+17:05:27 main INFO  org.springframework.beans.factory.support.DefaultListableBeanFactory:557 | Pre-instantiating singletons in org.springframework.beans.factory.support.DefaultListableBeanFactory@27b75165: defining beans [template,consumerTemplate,tcpMsgServer:beanPostProcessor,tcpMsgServer,myMsgProcessor]; root of factory hierarchy
+17:05:27 main INFO  org.apache.camel.spring.SpringCamelContext:1391 | Apache Camel 2.10.1 (CamelContext: tcpMsgServer) is starting
+17:05:27 main INFO  org.apache.camel.management.ManagementStrategyFactory:43 | JMX enabled.
+17:05:27 main INFO  org.apache.camel.impl.converter.DefaultTypeConverter:45 | Loaded 172 type converters
+17:05:28 main INFO  org.apache.camel.component.mina.MinaConsumer:59 | Binding to server address: localhost/127.0.0.1:12345 using acceptor: org.apache.mina.transport.socket.nio.SocketAcceptor@5a3cae4a
+17:05:28 main INFO  org.apache.camel.spring.SpringCamelContext:2045 | Route: route1 started and consuming from: Endpoint[mina://tcp://localhost:12345?sync=false]
+17:05:28 main INFO  org.apache.camel.management.DefaultManagementLifecycleStrategy:859 | StatisticsLevel at All so enabling load performance statistics
+17:05:28 main INFO  org.apache.camel.spring.SpringCamelContext:1426 | Total 1 routes, of which 1 is started.
+17:05:28 main INFO  org.apache.camel.spring.SpringCamelContext:1427 | Apache Camel 2.10.1 (CamelContext: tcpMsgServer) started in 0.695 seconds
+17:05:28 main INFO  deng.cameldemo.CamelRunner:61 | Spring started.
+17:05:35 Camel (tcpMsgServer) thread #3 - MinaThreadPool INFO  deng.cameldemo.TcpMsgServer:96 | Exchange[ExchangePattern:InOnly, BodyType:String, Body:{ &quot;firstName&quot; : &quot;Zemian&quot;, &quot;lastName&quot; : &quot;Deng&quot; }]
+17:05:35 Camel (tcpMsgServer) thread #3 - MinaThreadPool INFO  deng.cameldemo.MyMsgProcessor:11 | We should slice and dice the data: {lastName=Deng, firstName=Zemian}
+</code></pre>
+<p>Pay attention that Camel will auto convert the data format in your route! Our client only sends the plain text as JSON format, but when<br />
+server receives it, it unmarshals it using Jackson library, and then converts it into a java Map object. It then passes the map object into our<br />
+processor bean. Also, in this demo, I choose to use a generic <code>java.util.Map</code> as processor method argument (which is output of the JSON unmarshal), but<br />
+you can easily define your own business data type, such as <code>MyCustomerData</code>. This reveals the power of Camel, since you don't need to push the message<br />
+in your flow, but only worry about writing your &quot;processor&quot; as a POJO. The Camel will &quot;glue&quot; components together to form a route and carry the message data through the pipeline flow.</p>
+<p>On the same token, when you write your business logic in one or more processors, it's a good idea that you limit your POJO logic to be as small<br />
+unit as possible. When you do this, then you can maximize the reusability of the processors. The bigger POJO you make, with many business logics mixed in, it will also make it<br />
+difficult to test. So I recommend you when developing these processor beans, try to think them as LEGO pieces -- small POJO. You want to let Camel define the route and glue the LEGO<br />
+pieces togther. Once you get into this habit of thiking, then you can use Camel in a more effectively way to solve many of your domain problems.</p>
+<p>Well, that's all for today folks. I hope you enjoyed the Camel ride. Happy programming!</p>
+</p>
+
+	<hr />
+
+<div id="disqus_thread"></div>
+	
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://zemian-github-io.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">&copy; 2011 - Present Zemian Deng All Rights Reserved | Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.5</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../../../js/jquery-1.11.1.min.js"></script>
+    <script src="../../../js/bootstrap.min.js"></script>
+    <script src="../../../js/prettify.js"></script>
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-135626598-1');
+    </script>
+
+  </body>
+</html>

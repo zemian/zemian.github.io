@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Zemian's Blog - EE Servlet 3: Getting started with web application module and a landing page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../css/asciidoctor.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link href="../../../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../../../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../about.html">About</a></li>
+            <li><a href="../../../archive.html">Archive</a></li>
+            <li><a href="../../..//tags">Tags</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">	
+	<div class="page-header">
+		<h1>EE Servlet 3: Getting started with web application module and a landing page</h1>
+	</div>
+
+	<p><em>27 December 2014</em>, tags: 
+	    <a href="../../../tags/servlet.html">servlet</a> 
+	</p>
+
+	<p><h2></h2>
+<p>Getting started with Servlet 3</p>
+<p>Web application module in Java EE is probably the most common type of application module that a developer would encounter and work on. That's because not only it can provide users the UI, but it also supoprt many common web application patterns: Model View Controller, Filter, Session, Context Listener, Http Request, Paramters, Query, and Form handling, Http Response writer, redirect, error etc. You can do all these with Servlet spec alone, so getting to know it well is an important part of learning in writing good web application.</p>
+<p>Servlet has been around for a long time, and many developers are already familiar with it. There are many other web frameworks such as Tapestry or Spring MVC that are built on top of Servlet. These frameworks provide separate programming models that suppose to easy development process, but nontheless the core concept is still based on the Servlet technologies (or at least tightly integrated if it were to run by any web container server). In this post, I will try to highlight how to get a web module application started, and configure a typical need: a default landing page.</p>
+<h2></h2>
+<p>Hello World</p>
+<p>Like many things in EE environment, you would write small components as Java class and then deploy them onto a server and let the server manage it's lifecycle and execution. So as with Servlet, you would write a simple Java class that implements Servlet interface, package it and deploy, and server will do it's magic.</p>
+<p>Before Servlet 3.0, your servlet component is configured and mapped in web.xml file, but now you can just add an annotation directly on your servlet class and the app server should be able to automatically deploy and run it. Here is an example of a classic hello world.</p>
+<p>package zemian.servlet3example.web;</p>
+<p>import java.io.IOException;<br />
+import java.io.PrintWriter;<br />
+import javax.servlet.ServletException;<br />
+import javax.servlet.annotation.WebServlet;<br />
+import javax.servlet.http.HttpServlet;<br />
+import javax.servlet.http.HttpServletRequest;<br />
+import javax.servlet.http.HttpServletResponse;</p>
+<p>@WebServlet(&quot;/hello&quot;)<br />
+public class HelloServlet extends HttpServlet {</p>
+<pre><code>@Override
+protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    PrintWriter writer = resp.getWriter();
+    writer.println(&quot;&lt;!DOCTYPE html&gt;&quot;);
+    writer.println(&quot;&lt;html&gt;&quot;);
+    writer.println(&quot;&lt;body&gt;&quot;);
+    writer.println(&quot;&lt;p&gt;Hello World!&lt;/p&gt;&quot;);
+    writer.println(&quot;&lt;/body&gt;&quot;);
+    writer.println(&quot;&lt;/html&gt;&quot;);
+}
+</code></pre>
+<p>}</p>
+<p>In this Servlet, I simply extends an existing base<br />
+HttpServlet class that should be available in all Serlvet spec. and in<br />
+response to a http GET request, I write a Hello World message out<br />
+as html response.</p>
+<p>You may find above code in  <a href="https://github.com/saltnlight5/java-ee6-examples/tree/master/servlet3-example">servlet3-example</a>. Build and deploy it and then you can access it with <a href="http://localhost/servlet3-exmaple/hello">http://localhost/servlet3-exmaple/hello</a>. (I have many other servlet examples in the project, but you may just concentrate in this class for now.)</p>
+<h2></h2>
+<p>How to configure a default landing page in Servlet 3</p>
+<p>A typical application server will likely default a landing page to &quot;index.html&quot; or &quot;index.jsp&quot; if it exists. For example, if I have written a IndexSerlvet class and mapped to &quot;/index&quot; instead, then you need to tell the server default to there. This will happen if users only type <a href="http://localhost/servlet3-example">http://localhost/servlet3-example</a> with context path in URL only.</p>
+<p>Despite you can can do just about most things in Java annotations with Servlet 3.0 as equivalent to the content found web.xml file, but not the welcome file though. So to do this, you would still need to create this good old web.xml. Here is an example</p>
+<p><web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" 
+version="3.0"><br />
+<welcome-file-list><br />
+<welcome-file>index</welcome-file><br />
+</welcome-file-list><br />
+</web-app></p>
+<p>Above example will default the landing page to a Servlet url mapping with &quot;/index&quot; path.</p>
+<p>TIPS: Do NOT to use &quot;/&quot; prefix when definining welcome-file element, else you will get a page not found error and likely your server won't even print any error message in the log!</p>
+<p>Another alternate solution instead of overrite welcome-file is simply add a &quot;index.jsp&quot; file in root of webapp folder and do a redirect like this:</p>
+<p>&lt;% response.sendRedirect(request.getContextPath() + &quot;/index&quot;); %&gt;</p>
+</p>
+
+	<hr />
+
+<div id="disqus_thread"></div>
+	
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://zemian-github-io.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">&copy; 2011 - Present Zemian Deng All Rights Reserved | Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.5</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../../../js/jquery-1.11.1.min.js"></script>
+    <script src="../../../js/bootstrap.min.js"></script>
+    <script src="../../../js/prettify.js"></script>
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-135626598-1');
+    </script>
+
+  </body>
+</html>

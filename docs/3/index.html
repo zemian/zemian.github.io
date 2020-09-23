@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Zemian's Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/asciidoctor.css" rel="stylesheet">
+    <link href="../css/base.css" rel="stylesheet">
+    <link href="../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../about.html">About</a></li>
+            <li><a href="../archive.html">Archive</a></li>
+            <li><a href="..//tags">Tags</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">
+  			<a href="blog/2018/08/mysql-data-types-and-test-table.html"><h1>MySQL Data Types and Test Table</h1></a>
+  			<p>17 August 2018, tags: 
+			    <a href="../tags/sql.html">sql</a> 
+
+			    <a href="../tags/mysql.html">mysql</a> 
+  			</p>
+  			<p><pre><code>-- Notes for MySQL (8)
+-- https://dev.mysql.com/doc/refman/8.0/en/
+
+-- Data Types
+-- https://dev.mysql.com/doc/refman/8.0/en/data-types.html
+
+/*
+
+CHAR          Fixed length and space padded character string (sql: CHAR)
+VARCHAR       Variable length character string (sql: VARCHAR)
+TEXT          Variable length character large string (sql: TEXT)
+
+INT           Declare integer number (sql: INT 32 bits)
+SMALLINT      16 bits
+BIGINT        64 bits
+SERIAL        Auto increment integer (INT with sequence)
+              An alias for BIGINT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE.
+
+REAL             Declare floating-point number 32 bits
+DOUBLE PRECISION Declare floating-point number 64 bits
+
+NUMERIC(p,s)     Declare fixed-point number (sql: NUMERIC)
+
+DATE          Declare date
+TIME          Declare time
+TIMESTAMP     Declare datetime (stored as UTC but convert to client session timezone)
+
+BLOB          Binary data
+
+ */
+
+-- test table
+create table test(
+  id       serial primary key,
+  ts       timestamp default current_timestamp,
+  cat      varchar(10),
+
+  price    numeric(19,4),
+  qty      int,
+
+  txtdata  text,
+  bindata  blob,
+
+  distx    real,
+  disty    double precision
+);
+insert into test(cat, price, qty) values ('test', 100000.10, 50000),
+                                         ('test', 100000.20, 0),
+                                         ('test', 100000.00, 1),
+                                         ('test', 9977000.3333, 179),
+                                         ('test', 104729.1129, 104729);
+insert into test(cat, bindata, txtdata) values ('test2', X'CAFEBABE', 'CAFEBABE');
+insert into test(cat, bindata) values ('test3', unhex(replace(uuid(), '-','')));
+insert into test(cat, bindata) values ('test3', unhex(replace(uuid(), '-','')));
+insert into test(cat, bindata) values ('test3', unhex(replace(uuid(), '-','')));
+update test set txtdata = hex(bindata) where cat = 'test3';
+insert into test(cat, distx, disty) values ('test4', rand(), rand());
+insert into test(cat, distx, disty) values ('test4', rand(), rand());
+insert into test(cat, distx, disty) values ('test4', rand(), rand());
+select sum(price) from test where cat = 'test';
+select * from test order by cat, ts desc;
+</code></pre>
+</p>
+  			<a href="blog/2018/08/a-simple-java-command-line-options-parser.html"><h1>A simple Java command line options parser</h1></a>
+  			<p>13 August 2018, tags: 
+			    <a href="../tags/commandline_parser.html">commandline_parser</a> 
+  			</p>
+  			<p><pre><code>package com.zemian.hellojava;
+
+import java.util.*;
+
+/**
+ * A simple command line arguments and options parser in the format of &quot;--optionName=optionValue&quot; or
+ * &quot;-optionName=optionValue&quot;.
+ *
+ * The optionName can be one ore more characters. The equals sign must be used when providing optionValue;
+ * else it will be treated as program arguments instead! If you ommit the &quot;=optionValue&quot; part, then it
+ * will default to &quot;=true&quot; for that optionName. The optionValue must be a single string. Any other argument
+ * that are not part of options are store in a new args list.
+ *
+ * The constructor will immediately parse the input arguments, and it should not throw any exceptions. In case
+ * user did not use correct format, by above rule, it will go into the argument list instead. We purposely made
+ * this class simple, and let end user to perform any validation they need for their program.
+ *
+ * Usage example:
+ *   Hello --help
+ *   Hello --num=101 --verbose one two three
+ * ----
+ * public class Hello {}
+ *     public static void main(String[] args) {
+ *         CmdOpts opts = new CmdOpts(args);
+ *         if (opts.hasOpt(&quot;help&quot;))
+ *           System.out.println(&quot;You need help&quot;);
+ *         int num = opts.getIntOpt(&quot;num&quot;, 0);
+ *         System.out.println(&quot;Using num=&quot; + num);
+ *         System.out.println(&quot;Using new args=&quot; + opts.getArgs());
+ *     }
+ * }
+ * ----
+ *
+ * Created by Zemian Deng 2017.
+ */
+public class CmdOpts {
+    private Map&lt;String, Object&gt; opts = new HashMap&lt;&gt;();
+    private List&lt;String&gt; args = new ArrayList&lt;&gt;();
+
+    public CmdOpts(String[] arguments) {
+        parse(arguments);
+    }
+
+    private void parse(String[] arguments) {
+        for (String arg : arguments) {
+            if (arg.startsWith(&quot;--&quot;)) {
+                addOpt(arg.substring(2));
+            } else if (arg.startsWith(&quot;-&quot;)) {
+                addOpt(arg.substring(1));
+            } else {
+                args.add(arg);
+            }
+
+        }
+    }
+
+    private void addOpt(String option) {
+        if (option != null &amp;&amp; !&quot;&quot;.equals(option)) {
+            String[] options = option.split(&quot;=&quot;, 2);
+            String optionName = options[0];
+            String optionValue = &quot;true&quot;;
+            if (options.length == 2) {
+                optionValue = options[1];
+            }
+
+            Object existingOpt = opts.get(optionName);
+            if (existingOpt == null) {
+                opts.put(optionName, optionValue);
+            } else {
+                // Support multi options with same key
+                if (existingOpt instanceof List) {
+                    // Third + items
+                    ((List&lt;String&gt;) existingOpt).add(optionValue);
+                } else {
+                    // Second items
+                    List&lt;String&gt; list = new ArrayList&lt;&gt;();
+                    list.add((String) existingOpt);
+                    list.add(optionValue);
+                    opts.put(optionName, list);
+                }
+            }
+        }
+    }
+
+    public int getOptsSize() {
+        return opts.size();
+    }
+
+    public Set&lt;String&gt; getOptsNames() {
+        return opts.keySet();
+    }
+
+    public boolean hasOpt(String name) {
+        return opts.containsKey(name);
+    }
+
+    public Map&lt;String, Object&gt; getOpts() {
+        return opts;
+    }
+
+    public void setOpts(Map&lt;String, Object&gt; opts) {
+        this.opts = opts;
+    }
+
+    public String getOpt(String name) {
+        return (String) opts.get(name);
+    }
+
+    public String getOpt(String name, String def) {
+        String result = getOpt(name);
+        if (result == null)
+            result = def;
+        return result;
+    }
+
+    public boolean getBooleanOpt(String name) {
+        if (hasOpt(name)) {
+            return true;
+        }
+        return Boolean.parseBoolean(getOpt(name));
+    }
+
+    public boolean getBooleanOpt(String name, boolean def) {
+        if (hasOpt(name)) {
+            return true;
+        }
+        String result = getOpt(name);
+        if (result == null)
+            return def;
+        return Boolean.parseBoolean(result);
+    }
+
+    public int getIntOpt(String name) {
+        return Integer.parseInt(getOpt(name));
+    }
+
+    public int getIntOpt(String name, int def) {
+        String result = getOpt(name);
+        if (result == null)
+            return def;
+        return Integer.parseInt(result);
+    }
+
+    public long getLongOpt(String name) {
+        return Long.parseLong(getOpt(name));
+    }
+
+    public long getLongOpt(String name, long def) {
+        String result = getOpt(name);
+        if (result == null)
+            return def;
+        return Long.parseLong(result);
+    }
+
+    public List&lt;String&gt; getMultiOpts(String name) {
+        List&lt;String&gt; list = new ArrayList&lt;&gt;();
+        Object optVal = opts.get(name);
+        if (optVal == null) {
+            return list;
+        } else if (optVal instanceof String) {
+            list.add((String) optVal);
+            return list;
+        }
+
+        list.addAll((List&lt;String&gt;) optVal);
+        return list;
+    }
+
+    public int getArgsSize() {
+        return args.size();
+    }
+    public List&lt;String&gt; getArgs() {
+        return args;
+    }
+    public String[] getArgsArray() {
+        return args.toArray(new String[args.size()]);
+    }
+
+    public String getArgOrError(int index, String errorIfMissing) {
+        if (index &gt;= args.size() || index &lt; 0) {
+            throw new IllegalArgumentException(errorIfMissing);
+        }
+        return args.get(index);
+    }
+
+    public String getArg(int index) {
+        return args.get(index);
+    }
+
+    /** A test class to try out CmdOpts. */
+    public static void main(String[] args) {
+        CmdOpts opts = new CmdOpts(args);
+        if (opts.hasOpt(&quot;help&quot;))
+            System.out.println(&quot;You need help&quot;);
+        int num = opts.getIntOpt(&quot;num&quot;, 0);
+        System.out.println(&quot;Using num=&quot; + num);
+        System.out.println(&quot;Using new args=&quot; + opts.getArgs());
+    }
+}
+</code></pre>
+</p>
+  			<a href="blog/2018/08/examples-of-postgres-functions-and-triggers.html"><h1>Examples of Postgres Functions and Triggers</h1></a>
+  			<p>09 August 2018, tags: 
+			    <a href="../tags/postgres.html">postgres</a> 
+
+			    <a href="../tags/function.html">function</a> 
+
+			    <a href="../tags/trigger.html">trigger</a> 
+  			</p>
+  			<p><pre><code>-- Simple Function
+create or replace function rand_range(a int, b int) returns int
+as $$
+  -- return a random range of int between a and b, both inclusive!;
+  select cast(floor(random()*((b + 1)-a)+a) as int);
+$$ language sql;
+select rand_range(1, 10);
+select rand_range(90, 95) from generate_series(1, 10);
+
+-- Function to print message on DB server
+create or replace function print_msg(msg text, lev text default 'notice') returns void
+  as $$
+  begin
+    case
+      when lev = 'debug' then
+        raise debug '%', msg;
+      when lev = 'info' then
+        raise info '%', msg;
+      else
+        raise notice '%', msg;
+    end case;
+  end;
+$$ language plpgsql;
+select print_msg('hello world');
+
+-- Log Function
+drop table log;
+create table log(
+  id serial,
+  msg text not null,
+  ts timestamptz default current_timestamp not null,
+  category varchar(50) default 'INFO' not null,
+  user_id varchar(50) default 'system' not null,
+  source_info text null
+);
+create or replace function add_log(
+  msg text,
+  category varchar(50) default 'INFO'
+) returns void
+as $$
+begin
+  insert into log(msg, category, source_info, user_id)
+    values(msg, category, 'client=' || inet_client_addr(), current_user);
+end;
+$$ language plpgsql;
+
+select add_log('hello2');
+select public.add_log('hello3');
+select * from log;
+
+-- Triggers to log data entry or update
+drop table test;
+create table test(id serial, f1 real);
+create or replace function log_test_update() returns trigger
+as $$
+begin
+  perform add_log('Insert or Update on test table');
+  return NEW;
+end
+$$ language plpgsql;
+create trigger test_logging_trigger
+  after insert or update on test
+  for each row
+  execute procedure log_test_update();
+insert into test(f1) values(0.10), (0.20), (0.30);
+update test set f1 = 3.5 where id = 1;
+select * from test;
+select * from log;
+</code></pre>
+</p>
+  			<a href="blog/2018/07/a-plain-and-simple-jdbc-service-for-java8.html"><h1>A plain and simple Jdbc service for Java8</h1></a>
+  			<p>28 July 2018, tags: 
+			    <a href="../tags/java.html">java</a> 
+
+			    <a href="../tags/jdbc.html">jdbc</a> 
+  			</p>
+  			<p><p>With Java8, we can create simple and thin Jdbc service that’s productive<br />
+and easy to use. This service implementation is inspired by Spring’s<br />
+JdbcTemplate, but much lighter and has zero dependency.</p>
+<pre><code>package zemian.jdbc;
+
+import javax.sql.DataSource;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.sql.*;
+import java.util.*;
+import java.util.stream.Collectors;
+
+/**
+ * This class provide an easier interface to run SQLs and retrieve data than direct Java JDBC API.
+ *
+ * You can instantiate this class in two ways:
+ *
+ * - Method1: Using a DataSource. Each operation will get a Connection object from the #dataSource.
+ * - Method2: Using a direct Connection object. Use this to reuse a single connection to perform all
+ *            JDBC operations.
+ *
+ * Both methods above will not directly close the Connection object per Jdbc instance. It's user
+ * responsibility to close it after use. For pooled DataSource, it should be automatic, else you
+ * might want to use the Jdbc.withJdbc() convenient method. This method will let you quickly start a single
+ * new DB connection and Jdbc instance, and it will auto close connection when method is exited.
+ *
+ * This class provide these easy methods to work with DB data:
+ * - #execute() perform update SQLs that returns number of records updated.
+ * - #query() perform select SQLs that returns a list of records.
+ * - #get() perform select SQLs that return a single object element.
+ * - #insert() perform table insert using a Map as record.
+ * - #update() perform table update using a Map as record.
+ *
+ * The #query() and #get() methods allow you to provide custom RSMapper to convert ResultSet instance
+ * into any user object.
+ *
+ * @author Zemian Deng 2018-07-28
+ */
+public class Jdbc {
+    // == Static utility methods and supporting inner classes
+    public static void withJdbc(String propsResourceName, JdbcAction task) {
+        Properties props = new Properties();
+        URL propsUrl = Thread.currentThread().getContextClassLoader().getResource(propsResourceName);
+        try (InputStream ins = propsUrl.openStream()) {
+            props.load(ins);
+        } catch (IOException e) {
+            throw new RuntimeException(&quot;Unable to open properties from resource: &quot; + propsResourceName, e);
+        }
+        withJdbc(props, task);
+    }
+
+    public static void withJdbc(String url, String user, String password, JdbcAction task) {
+        Properties props = new Properties();
+        props.setProperty(&quot;url&quot;, url);
+        props.setProperty(&quot;user&quot;, user);
+        props.setProperty(&quot;password&quot;, password);
+        withJdbc(props, task);
+    }
+
+    public static void withJdbc(Properties jdbcProps, JdbcAction task) {
+        try (Connection conn = DriverManager.getConnection(jdbcProps.getProperty(&quot;url&quot;), jdbcProps)) {
+            Jdbc jdbc = new Jdbc(conn);
+            task.runJdbc(jdbc);
+        } catch (Exception e) {
+            if (e instanceof RuntimeException)
+                throw (RuntimeException) e;
+            throw new RuntimeException(&quot;Failed to process Jdbc&quot;, e);
+        }
+    }
+
+    public static List&lt;String&gt; getFieldNames(ResultSet rs) throws SQLException {
+        List&lt;String&gt; names = new ArrayList&lt;&gt;();
+        ResultSetMetaData md = rs.getMetaData();
+        for (int i = 1, max = md.getColumnCount(); i &lt;= max; i++) {
+            names.add(md.getColumnName(i));
+        }
+        return names;
+    }
+
+    public static void setParams(PreparedStatement st, Object[] params) throws SQLException {
+        for (int i = 0; i &lt; params.length; i++) {
+            st.setObject(i + 1, params[i]);
+        }
+    }
+
+    interface JdbcAction {
+        void runJdbc(Jdbc jdbc) throws Exception;
+    }
+
+    interface ConnAction&lt;T&gt; {
+        T runConn(Connection conn) throws Exception;
+    }
+
+    interface ConnActionNoRet {
+        void runConn(Connection conn) throws Exception;
+    }
+
+    interface RSMapper&lt;T&gt; {
+        T map(ResultSet rs, int idx) throws Exception;
+    }
+
+    public static class Record extends HashMap&lt;String, Object&gt; {
+        public Record() {}
+        public Record(ResultSet rs) throws SQLException {
+            this(rs, Jdbc.getFieldNames(rs));
+        }
+        public Record(ResultSet rs, List&lt;String&gt; names) throws SQLException {
+            for (String name : names) {
+                Object val = rs.getObject(name);
+                put(name, val);
+            }
+        }
+        public Record(Object ... entries) {
+            for (int i = 0; i &lt; entries.length; i+= 2) {
+                Object key = entries[i];
+                Object val = entries[i + 1];
+                put(key.toString(), val);
+            }
+        }
+        public &lt;T&gt; T getValue(String key) {
+            return (T) get(key);
+        }
+        public List&lt;String&gt; getFieldNames() {
+            return new ArrayList&lt;&gt;(keySet());
+        }
+        @Override
+        public String toString() {
+            return &quot;Record&quot; + super.toString();
+        }
+    }
+
+    // == Jdbc Service implementation
+    private DataSource dataSource;
+    private Connection conn;
+
+    public Jdbc(Connection conn) {
+        this.conn = conn;
+    }
+
+    public Jdbc(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+
+    public Connection getConn() throws SQLException {
+        if (conn != null) {
+            return conn;
+        } else {
+            return dataSource.getConnection();
+        }
+    }
+
+    public &lt;T&gt; T withConn(ConnAction&lt;T&gt; action) {
+        try {
+            return action.runConn(getConn());
+        } catch (Exception e) {
+            if (e instanceof RuntimeException)
+                throw (RuntimeException) e;
+            throw new RuntimeException(&quot;Failed to process DB conn&quot;, e);
+        }
+    }
+
+    public void withConnNoRet(ConnActionNoRet action) {
+        withConn(conn -&gt; {
+            action.runConn(conn);
+            return null;
+        });
+    }
+
+    public &lt;T&gt; T get(String sql, Object ... params) {
+        return get((rs, idx) -&gt; (T) rs.getObject(1), sql, params);
+    }
+
+    public &lt;T&gt; T get(RSMapper&lt;T&gt; mapper, String sql, Object ... params) {
+        return withConn(conn -&gt; {
+            try (PreparedStatement st = conn.prepareStatement(sql)) {
+                setParams(st, params);
+                st.executeQuery();
+                try (ResultSet rs = st.getResultSet()) {
+                    if (rs.next()) {
+                        return mapper.map(rs, 0);
+                    }
+                }
+            }
+            throw new RuntimeException(&quot;There is no unique record from query.&quot;);
+        });
+    }
+
+    public Record getRecord(String sql, Object ... params) {
+        return get((rs, idx) -&gt; new Record(rs), sql, params);
+    }
+
+    public List&lt;Record&gt; query(String sql, Object ... params) {
+        final List&lt;String&gt; names = new ArrayList&lt;&gt;();
+        return query((rs, idx) -&gt; {
+            if (idx == 0) {
+                names.addAll(getFieldNames(rs));
+            }
+            return new Record(rs, names);
+        }, sql, params);
+    }
+
+    public &lt;T&gt; List&lt;T&gt; query(RSMapper&lt;T&gt; mapper, String sql, Object ... params) {
+        return withConn(conn -&gt; {
+            List&lt;T&gt; list = new ArrayList&lt;&gt;();
+            try (PreparedStatement st = conn.prepareStatement(sql)) {
+                setParams(st, params);
+                st.executeQuery();
+                try (ResultSet rs = st.getResultSet()) {
+                    int idx = 0;
+                    while (rs.next()) {
+                        T t = mapper.map(rs, idx++);
+                        list.add(t);
+                    }
+                }
+            }
+            return list;
+        });
+    }
+
+    public int execute(String sql, Object ... params) {
+        return withConn(conn -&gt; {
+            try (PreparedStatement st = conn.prepareStatement(sql)) {
+                setParams(st, params);
+                return st.executeUpdate();
+            }
+        });
+    }
+
+    public int insert(String table, Record record) {
+        return insert(table, record, record.getFieldNames());
+    }
+
+    public int insert(String table, Record record, List&lt;String&gt; insertFields) {
+        String fields = insertFields.stream().collect(Collectors.joining(&quot;, &quot;));
+        String qMarks = insertFields.stream().map(e -&gt; &quot;?&quot;).collect(Collectors.joining(&quot;, &quot;));
+        String sql = &quot;INSERT INTO &quot; + table + &quot;(&quot; + fields + &quot;) VALUES (&quot; + qMarks + &quot;)&quot;;
+        List&lt;Object&gt; params = insertFields.stream().map(e -&gt; record.get(e)).collect(Collectors.toList());
+        return withConn(conn -&gt; {
+            try (PreparedStatement st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+                setParams(st, params.toArray());
+                int uc = st.executeUpdate();
+                // Check for auto generated keys, if present add into the record.
+                // NOTE it will not override existing fields in record!
+                try (ResultSet rs = st.getGeneratedKeys()) {
+                    if (rs.next()) {
+                        List&lt;String&gt; names = getFieldNames(rs);
+                        for (String name : names) {
+                            if (!record.containsKey(name))
+                                record.put(name, rs.getObject(name));
+                        }
+                    }
+                }
+                return uc;
+            }
+        });
+    }
+
+    public int update(String table, Record record, String ... keyFields) {
+        List&lt;String&gt; updateFields = record.getFieldNames();
+        for (String key : keyFields)
+            updateFields.remove(key);
+        return update(table, record, updateFields, Arrays.asList(keyFields));
+    }
+
+    public int update(String table, Record record, List&lt;String&gt; updateFields, List&lt;String&gt; keyFields) {
+        String updateFieldsNames = updateFields.stream().map(e -&gt; e + &quot; = ?&quot;).collect(Collectors.joining(&quot;, &quot;));
+        String keyFieldsNames = keyFields.stream().map(e -&gt; e + &quot; = ?&quot;).collect(Collectors.joining(&quot;, &quot;));
+        String sql = &quot;UPDATE &quot; + table + &quot; SET &quot; + updateFieldsNames + &quot; WHERE &quot; + keyFieldsNames;
+        List&lt;Object&gt; params = updateFields.stream().map(e -&gt; record.get(e)).collect(Collectors.toList());
+        for (String key : keyFields)
+            params.add(record.get(key));
+        return execute(sql, params.toArray());
+    }
+
+    // Test Jdbc with Postgres DB
+    public static void main(String[] args) {
+        String url = System.getProperty(&quot;url&quot;, &quot;jdbc:postgresql://localhost:5432/postgres&quot;);
+        String user = System.getProperty(&quot;user&quot;, &quot;postgres&quot;);
+        String password = System.getProperty(&quot;password&quot;, &quot;&quot;);
+
+        Jdbc.withJdbc(url, user, password, jdbc -&gt; {
+            jdbc.withConnNoRet(conn -&gt; System.out.println(conn));
+        });
+
+        Jdbc.withJdbc(url, user, password, jdbc -&gt; {
+            // Execute
+            jdbc.execute(&quot;create temp table test(id varchar(10) primary key, seq serial, amount numeric(19,4))&quot;);
+            int uc = jdbc.execute(&quot;insert into test(id, amount) values(?, ?)&quot;, &quot;T01&quot;, 0.01);
+            System.out.println(&quot;test record inserted: uc=&quot; + uc);
+
+            Record record = jdbc.getRecord(&quot;select * from test where id = ?&quot;, &quot;T01&quot;);
+            System.out.println(record);
+
+            // Get
+            Integer seq = jdbc.get(&quot;select seq from test where id = ?&quot;, &quot;T01&quot;);
+            System.out.println(&quot;seq = &quot; + seq);
+
+            java.math.BigDecimal amount = jdbc.get(&quot;select amount from test where id = ?&quot;, &quot;T01&quot;);
+            System.out.println(&quot;amount = &quot; + amount);
+
+            // Update
+            record.put(&quot;amount&quot;, amount.doubleValue() + 0.20);
+            System.out.println(&quot;amount to be updated: &quot; + record.getValue(&quot;amount&quot;));
+            uc = jdbc.update(&quot;test&quot;, record, &quot;id&quot;);
+            System.out.println(&quot;amount udpated. uc=&quot; + uc);
+
+            amount = jdbc.get(&quot;select amount from test where id = ?&quot;, &quot;T01&quot;);
+            System.out.println(&quot;after update from db: amount = &quot; + amount);
+
+            // Insert
+            record = new Record(&quot;id&quot;, &quot;T02&quot;, &quot;amount&quot;, 0.30);
+            jdbc.insert(&quot;test&quot;, record);
+            int newSeq = (Integer) record.get(&quot;seq&quot;);
+            System.out.println(&quot;generated column seq=&quot; + newSeq);
+            Record record2 = jdbc.getRecord(&quot;select * from test where id = ?&quot;, &quot;T02&quot;);
+            System.out.println(record2);
+
+            // Query
+            List&lt;Record&gt; records = jdbc.query(&quot;select * from test order by id&quot;);
+            System.out.println(records);
+        });
+    }
+}
+</code></pre>
+</p>
+  			<a href="blog/2018/07/adding-new-cacert-entry-into-adoptopenjdk.html"><h1>Adding new cacert entry into AdoptOpenJDK</h1></a>
+  			<p>23 July 2018, tags: 
+			    <a href="../tags/cacert.html">cacert</a> 
+
+			    <a href="../tags/keytool.html">keytool</a> 
+
+			    <a href="../tags/openjdk.html">openjdk</a> 
+  			</p>
+  			<p><p>I downloaded latest Tomcat source and it failed to get the dependencies.</p>
+<pre><code>  cd src/github/tomcat
+  ant download-test-compile
+        [get] Error getting https://repo.maven.apache.org/maven2/junit/junit/4.12/junit-4.12.jar to C:\Users\zemian\tomcat-build-libs\download-2000731528.tmp
+
+BUILD FAILED
+C:\Users\zemian\src\github\tomcat\build.xml:2705: The following error occurred while executing this line:
+C:\Users\zemian\src\github\tomcat\build.xml:3051: javax.net.ssl.SSLException: java.lang.RuntimeException: Unexpected error: java.security.InvalidAlgorithmParameterException: the trustAnchors parameter must be non-empty
+        at sun.security.ssl.Alerts.getSSLException(Alerts.java:208)
+</code></pre>
+<p>It turns out this error is caused by the OpenJDK 8 that I am using. The<br />
+one I got is from <a href="https://adoptopenjdk.net/">https://adoptopenjdk.net/</a>, and the<br />
+$JAVA_HOME/jre/lib/security/cacert file has no entries for trusted CA<br />
+certs!</p>
+<p>So I found few solutions:</p>
+<ol>
+<li>
+<p>Find a copy of OracleJDK and copy their <code>cacerts</code> over.</p>
+</li>
+<li>
+<p>If you are on Linux, you can try installing cacerts using tools the<br />
+OS provided. (eg: Ubuntu can be done like here:<br />
+<a href="https://stackoverflow.com/questions/6784463/error-trustanchors-parameter-must-be-non-empty">https://stackoverflow.com/questions/6784463/error-trustanchors-parameter-must-be-non-empty</a>)</p>
+</li>
+<li>
+<p>Upgrade OpenJDK to 10</p>
+</li>
+<li>
+<p>Or the quick way, go to the site that gives you problem, export<br />
+their cert using the browser, and then import into to the <code>cacerts</code><br />
+file.</p>
+</li>
+</ol>
+<p>So for me, I went to <a href="https://repo.maven.apache.org/">https://repo.maven.apache.org/</a> and exported<br />
+<code>repomavenapacheorg.crt</code>, and then I ran the following:</p>
+<pre><code>cd $JAVA_HOME/jre/lib/security
+keytool -keystore cacerts -storepasswd changeit -importcert -file 'Downloads/repomavenapacheorg.crt' -trustcacerts
+keytool -keystore cacerts -storepasswd changeit -list
+</code></pre>
+<p>This fixed my problem.</p>
+</p>
+  			<a href="blog/2018/06/run-tomcat-with-webapp-runner-jar.html"><h1>Run Tomcat with webapp-runner.jar</h1></a>
+  			<p>21 June 2018, tags: 
+			    <a href="../tags/tomcat.html">tomcat</a> 
+
+			    <a href="../tags/webapp-runner.html">webapp-runner</a> 
+  			</p>
+  			<p><p>I have used <a href="https://github.com/jsimone/webapp-runner">https://github.com/jsimone/webapp-runner</a> in several<br />
+projects now, and I find it really useful.</p>
+<p>You can start a Tomcat instance as simple as this:</p>
+<pre><code>java -jar target/webapp-runner.jar target/adocblog.war
+</code></pre>
+<p>However if you need to run it with extra classpath entries, then you<br />
+would need to use the <code>-cp</code> instead of <code>-jar</code> Java option. Like this:</p>
+<pre><code>java -cp &quot;target/extra-classes:target/webapp-runner.jar&quot; webapp.runner.launch.Main target/adocblog.war
+</code></pre>
+</p>
+  			<a href="blog/2018/06/installing-python-on-windows-without-admin-rights.html"><h1>Installing Python on Windows Without Admin Rights</h1></a>
+  			<p>06 June 2018, tags: 
+			    <a href="../tags/python-install.html">python-install</a> 
+  			</p>
+  			<p><p>To install Python on Windows without Admin Rights:</p>
+<ol>
+<li>
+<p>Download binary from <a href="https://www.python.org/downloads/windows/">https://www.python.org/downloads/windows/</a></p>
+</li>
+<li>
+<p>Run the following in <code>cmd.exe</code> terminal.</p>
+<pre><code>mkdir %USERPROFILE%\apps\python-2.6.6
+msiexec /a python-2.6.6.amd64.msi /qb TARGETDIR=%USERPROFILE%\apps\python-2.6.6
+</code></pre>
+</li>
+</ol>
+<p>Starting Python 3.5 the official downloads site already has &quot;Windows<br />
+x86-64 embeddable zip file&quot; version you may download. This you may<br />
+install without Admin Rights already.</p>
+<p>Ref:<br />
+<a href="https://stackoverflow.com/questions/2678702/install-python-2-6-without-using-installer-on-win32">https://stackoverflow.com/questions/2678702/install-python-2-6-without-using-installer-on-win32</a></p>
+</p>
+  			<a href="blog/2018/06/python-argparse-with-multiple-occurance-of-an-option.html"><h1>Python argparse with multiple occurance of an option</h1></a>
+  			<p>06 June 2018, tags: 
+			    <a href="../tags/python-argparse.html">python-argparse</a> 
+  			</p>
+  			<p><p><strong>test.py.</strong></p>
+<pre><code>import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument(&quot;prog_args&quot;, nargs='*')
+parser.add_argument(&quot;-e&quot;, action='append')
+args = parser.parse_args()
+prog_args = args.prog_args
+env = dict([e.split('=') for e in args.e])
+
+print(f&quot;Program args: {prog_args}&quot;)
+print(f&quot;Env options: {env}&quot;)
+</code></pre>
+<p><strong>Example.</strong></p>
+<pre><code>$ python3 test.py one two three -ek1=1 -e k2=foo
+Program args: ['one', 'two', 'three']
+Env options: {'k1': '1', 'k2': 'foo'}
+</code></pre>
+</p>
+  			<a href="blog/2018/05/how-to-setup-ssh-folder-permissions.html"><h1>How to setup .ssh folder permissions</h1></a>
+  			<p>24 May 2018, tags: 
+			    <a href="../tags/ssh.html">ssh</a> 
+
+			    <a href="../tags/linux.html">linux</a> 
+  			</p>
+  			<p><h1>How to setup .ssh folder permissions</h1>
+<pre><code>chmod 700 ~/.ssh                # (drwx------)
+chmod 600 ~/.ssh/authorized_key # (-rw-------)
+chmod 600 ~/.ssh/id_rsa         # (-rw-------)
+chmod 644 ~/.ssh/id_rsa.pub     # (-rw-r--r--)
+chmod 755 ~                     # (drwxr-xr-x)
+</code></pre>
+<p>ref:<br />
+<a href="https://superuser.com/questions/215504/permissions-on-private-key-in-ssh-folder">https://superuser.com/questions/215504/permissions-on-private-key-in-ssh-folder</a></p>
+</p>
+  			<a href="blog/2018/05/create-multiple-vms-using-vagrant.html"><h1>Create multiple VMs using Vagrant</h1></a>
+  			<p>19 May 2018, tags: 
+			    <a href="../tags/vagrant.html">vagrant</a> 
+
+			    <a href="../tags/virtualbox.html">virtualbox</a> 
+
+			    <a href="../tags/vm.html">vm</a> 
+
+			    <a href="../tags/ubuntu.html">ubuntu</a> 
+  			</p>
+  			<p><p>Vagrant is a great tool to automate and setup VMs. Here is a config file<br />
+that can setup multiple VMs in your own PC to simulate a<br />
+controller(admin), db, and app servers farm env. I will setup so that<br />
+it’s ready to install Ansible in a the control server, and ensure all<br />
+other servers is accessible by a private virtual IP with default python<br />
+executable.</p>
+<ol>
+<li>
+<p>Install VirtualBox and Vagrant in your development PC. (These two<br />
+requires elevated admin rights!)</p>
+</li>
+<li>
+<p>Now as normal user open a terminal and run the following:</p>
+<pre><code>$ mkdir vm-serversfarm
+$ vagrant init ubuntu/xenial64
+</code></pre>
+</li>
+</ol>
+<p>Now edit <code>Vagrantfile</code> with the following:</p>
+<pre><code># This file is to setup Ubuntu VM servers
+Vagrant.configure(&quot;2&quot;) do |config|
+  vm_box = &quot;ubuntu/xenial64&quot;
+  config.vm.define &quot;admin&quot; do |admin|
+    admin.vm.box = vm_box
+    admin.vm.hostname = 'ubuntu-xenial-admin'
+    admin.vm.network &quot;private_network&quot;, ip: &quot;192.168.56.200&quot;
+    admin.vm.provision &quot;shell&quot;, privileged: false,
+      inline: &lt;&lt;-SCRIPT_DOC
+        ssh-keygen -f ~vagrant/.ssh/id_rsa -t rsa -N ''
+        cp -v ~vagrant/.ssh/id_rsa.pub /vagrant/admin_id_rsa.pub
+      SCRIPT_DOC
+    admin.vm.provision &quot;shell&quot;,
+      inline: &lt;&lt;-SCRIPT_DOC
+        apt-get update
+        apt-get install -y ansible
+      SCRIPT_DOC
+  end
+
+  config.vm.define &quot;db1&quot; do |db1|
+    db1.vm.box = vm_box
+    db1.vm.hostname = 'ubuntu-xenial-db1'
+    db1.vm.network &quot;private_network&quot;, ip: &quot;192.168.56.211&quot;
+    db1.vm.provision &quot;shell&quot;, inline: &quot;cat /vagrant/admin_id_rsa.pub &gt;&gt; ~vagrant/.ssh/authorized_keys&quot;
+    db1.vm.provision &quot;shell&quot;,
+      inline: &lt;&lt;-SCRIPT_DOC
+        #apt-get update
+        apt-get install -y python
+        apt-get install -y postgresql
+      SCRIPT_DOC
+  end
+
+  config.vm.define &quot;app1&quot; do |app1|
+    app1.vm.box = vm_box
+    app1.vm.hostname = 'ubuntu-xenial-app1'
+    app1.vm.network &quot;private_network&quot;, ip: &quot;192.168.56.221&quot;
+    app1.vm.provision &quot;shell&quot;, inline: &quot;cat /vagrant/admin_id_rsa.pub &gt;&gt; ~vagrant/.ssh/authorized_keys&quot;
+    app1.vm.provision &quot;shell&quot;,
+      inline: &lt;&lt;-SCRIPT_DOC
+        #apt-get update
+        apt-get install -y python
+      SCRIPT_DOC
+  end
+
+  config.vm.define &quot;app2&quot; do |app2|
+    app2.vm.box = vm_box
+    app2.vm.hostname = 'ubuntu-xenial-app2'
+    app2.vm.network &quot;private_network&quot;, ip: &quot;192.168.56.222&quot;
+    app2.vm.provision &quot;shell&quot;, inline: &quot;cat /vagrant/admin_id_rsa.pub &gt;&gt; ~vagrant/.ssh/authorized_keys&quot;
+    app2.vm.provision &quot;shell&quot;,
+      inline: &lt;&lt;-SCRIPT_DOC
+        #apt-get update
+        apt-get install -y python
+      SCRIPT_DOC
+  end
+end
+</code></pre>
+<p>Now you can bring them up by running just this command:</p>
+<pre><code>$ vagrant up
+</code></pre>
+<p>When all is done, you may ssh into any box by their name like this</p>
+<pre><code>$ vagrant ssh admin
+$ # Or any of other boxes: db1, app1, app2
+</code></pre>
+<h1>Using CentOS VMs</h1>
+<pre><code># This file is to setup CentOS VM servers
+Vagrant.configure(&quot;2&quot;) do |config|
+  vm_box = &quot;generic/centos7&quot;
+
+  # Server app1 is the admin server. We will also host the DB server here.
+  config.vm.define &quot;app1&quot; do |app1|
+    app1.vm.box = vm_box
+    app1.vm.hostname = 'app1'
+    app1.vm.network &quot;private_network&quot;, ip: &quot;192.168.56.201&quot;
+    app1.vm.synced_folder &quot;.&quot;, &quot;/vagrant_data&quot;
+    app1.vm.provision &quot;shell&quot;, inline: &lt;&lt;-SCRIPT_DOC
+      yum install -y python-virtualenv python36 ansible postgresql
+    SCRIPT_DOC
+    app1.vm.provision &quot;shell&quot;, privileged: false, inline: &lt;&lt;-SCRIPT_DOC
+      ssh-keygen -f ~vagrant/.ssh/id_rsa -t rsa -N ''
+      cp -v ~vagrant/.ssh/id_rsa.pub /vagrant_data/app1_id_rsa.pub
+    SCRIPT_DOC
+  end
+
+  # Server app2 is a application workhorse server
+  config.vm.define &quot;app2&quot; do |app2|
+    app2.vm.box = vm_box
+    app2.vm.hostname = 'app2'
+    app2.vm.network &quot;private_network&quot;, ip: &quot;192.168.56.202&quot;
+    app2.vm.synced_folder &quot;.&quot;, &quot;/vagrant_data&quot;
+    app2.vm.provision &quot;shell&quot;, inline: &lt;&lt;-SCRIPT_DOC
+      yum install -y python36
+    SCRIPT_DOC
+    app2.vm.provision &quot;shell&quot;, privileged: false, inline: &lt;&lt;-SCRIPT_DOC
+      cat /vagrant_data/app1_id_rsa.pub &gt;&gt; ~vagrant/.ssh/authorized_keys
+      chmod 600 ~vagrant/.ssh/authorized_keys
+      chmod 700 ~vagrant/.ssh
+    SCRIPT_DOC
+  end
+
+  # Server app3 is a application workhorse server
+  config.vm.define &quot;app3&quot; do |app3|
+    app3.vm.box = vm_box
+    app3.vm.hostname = 'app3'
+    app3.vm.network &quot;private_network&quot;, ip: &quot;192.168.56.203&quot;
+    app3.vm.synced_folder &quot;.&quot;, &quot;/vagrant_data&quot;
+    app3.vm.provision &quot;shell&quot;, inline: &lt;&lt;-SCRIPT_DOC
+      yum install -y python36
+    SCRIPT_DOC
+    app3.vm.provision &quot;shell&quot;, privileged: false, inline: &lt;&lt;-SCRIPT_DOC
+      cat /vagrant_data/app1_id_rsa.pub &gt;&gt; ~vagrant/.ssh/authorized_keys
+      chmod 600 ~vagrant/.ssh/authorized_keys
+      chmod 700 ~vagrant/.ssh
+    SCRIPT_DOC
+  end
+end
+</code></pre>
+</p>
+
+	<hr />
+
+	<ul class="pager">
+		<li class="previous"><a href="https://zemian.github.io/2">Previous</a></li>
+		<li>Page: 3/28</li>
+		<li class="next"><a href="https://zemian.github.io/4">Next</a></li>
+	</ul>
+
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">&copy; 2011 - Present Zemian Deng All Rights Reserved | Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.5</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../js/jquery-1.11.1.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/prettify.js"></script>
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-135626598-1');
+    </script>
+
+  </body>
+</html>

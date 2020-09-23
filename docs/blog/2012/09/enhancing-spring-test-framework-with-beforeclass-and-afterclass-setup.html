@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Zemian's Blog - Enhancing Spring Test Framework with beforeClass and afterClass setup</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../css/asciidoctor.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link href="../../../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../../../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../about.html">About</a></li>
+            <li><a href="../../../archive.html">Archive</a></li>
+            <li><a href="../../..//tags">Tags</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">	
+	<div class="page-header">
+		<h1>Enhancing Spring Test Framework with beforeClass and afterClass setup</h1>
+	</div>
+
+	<p><em>28 September 2012</em>, tags: 
+	    <a href="../../../tags/java.html">java</a> 
+
+	    <a href="../../../tags/spring.html">spring</a> 
+	</p>
+
+	<p><h1>How to allow instance methods to run as JUnit BeforeClass behavior</h1>
+<p>JUnit allows you to setup methods on the class level once before and after all tests methods invocation. However, by design on purpose that they restrict this to only <em>static</em> methods using <code>@BeforeClass</code> and <code>@AfterClass</code> annotations. For example this simple demo shows the typical Junit setup:</p>
+<pre><code>package deng.junitdemo;
+
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+public class DemoTest {
+
+    @Test
+    public void testOne() {
+        System.out.println(&quot;Normal test method #1.&quot;);
+    }
+
+    @Test
+    public void testTwo() {
+        System.out.println(&quot;Normal test method #2.&quot;);
+    }
+
+    @BeforeClass
+    public static void beforeClassSetup() {
+        System.out.println(&quot;A static method setup before class.&quot;);
+    }
+
+    @AfterClass
+    public static void afterClassSetup() {
+        System.out.println(&quot;A static method setup after class.&quot;);
+    }
+}
+</code></pre>
+<p>And above should result the following output:</p>
+<pre><code>A static method setup before class.
+Normal test method #1.
+Normal test method #2.
+A static method setup after class.
+</code></pre>
+<p>This usage is fine for most of the time, but there are times you want to use non-static methods to setup the test. I will show you a more detailed use case later, but for now, let's see how we can solve this naughty problem with JUnit first. We can solve this by making the test<br />
+implements a Listener that provide the before and after callbacks, and we will need to digg into JUnit to detect this Listener to invoke our methods. This is a solution I came up with:</p>
+<pre><code>package deng.junitdemo;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+@RunWith(InstanceTestClassRunner.class)
+public class Demo2Test implements InstanceTestClassListener {
+
+    @Test
+    public void testOne() {
+        System.out.println(&quot;Normal test method #1&quot;);
+    }
+
+    @Test
+    public void testTwo() {
+        System.out.println(&quot;Normal test method #2&quot;);
+    }
+
+    @Override
+    public void beforeClassSetup() {
+        System.out.println(&quot;An instance method setup before class.&quot;);
+    }
+
+    @Override
+    public void afterClassSetup() {
+        System.out.println(&quot;An instance method setup after class.&quot;);
+    }
+}
+</code></pre>
+<p>As stated above, our Listener is a simple contract:</p>
+<pre><code>package deng.junitdemo;
+
+public interface InstanceTestClassListener {
+    void beforeClassSetup();
+    void afterClassSetup();
+}
+</code></pre>
+<p>Our next task is to provide the JUnit runner implementation that will trigger the setup methods.</p>
+<pre><code>package deng.junitdemo;
+
+import org.junit.runner.notification.RunNotifier;
+import org.junit.runners.BlockJUnit4ClassRunner;
+import org.junit.runners.model.InitializationError;
+
+public class InstanceTestClassRunner extends BlockJUnit4ClassRunner {
+
+    private InstanceTestClassListener instanceSetupListener;
+
+    public InstanceTestClassRunner(Class&lt;?&gt; klass) throws InitializationError {
+        super(klass);
+    }
+
+    @Override
+    protected Object createTest() throws Exception {
+        Object test = super.createTest();
+        // Note that JUnit4 will call this createTest() multiple times for each
+        // test method, so we need to ensure to call &quot;beforeClassSetup&quot; only once.
+        if (test instanceof InstanceTestClassListener &amp;&amp; instanceSetupListener == null) {
+            instanceSetupListener = (InstanceTestClassListener) test;
+            instanceSetupListener.beforeClassSetup();
+        }
+        return test;
+    }
+
+    @Override
+    public void run(RunNotifier notifier) {
+        super.run(notifier);
+        if (instanceSetupListener != null)
+            instanceSetupListener.afterClassSetup();
+    }
+}
+</code></pre>
+<p>Now we are in business. If we run above test, it should give us similar result, but this time we are using instance methods instead!</p>
+<pre><code>An instance method setup before class.
+Normal test method #1
+Normal test method #2
+An instance method setup after class.
+</code></pre>
+<h1>A concrete use case: Working with Spring Test Framework</h1>
+<p>Now let me show you a real use case with above. If you use Spring Test Framework, you would normally setup a test like this so that you may have test fixture injected as member instance.</p>
+<pre><code>package deng.junitdemo.spring;
+
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+
+import java.util.List;
+
+import javax.annotation.Resource;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration
+public class SpringDemoTest {
+
+    @Resource(name=&quot;myList&quot;)
+    private List&lt;String&gt; myList;
+
+    @Test
+    public void testMyListInjection() {
+        assertThat(myList.size(), is(2));
+    }
+}
+</code></pre>
+<p>You would also need a spring xml under that same package for above to run:</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+     xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+     xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd&quot;&gt;
+     &lt;bean id=&quot;myList&quot; class=&quot;java.util.ArrayList&quot;&gt;
+        &lt;constructor-arg&gt;
+            &lt;list&gt;
+                &lt;value&gt;one&lt;/value&gt;
+                &lt;value&gt;two&lt;/value&gt;
+            &lt;/list&gt;
+        &lt;/constructor-arg&gt;
+     &lt;/bean&gt;
+&lt;/beans&gt;
+</code></pre>
+<p>Pay very close attention to member instance <code>List&lt;String&gt; myList</code>. When running JUnit test, that field will be injected by Spring, and it can be used in any test method. However, if you ever want a one time setup of some code and get a reference to a Spring injected field, then you are in bad luck. This is because the JUnit <code>@BeforeClass</code> will force your method to be static; and if you make your field static, Spring injection won't work in your test!</p>
+<p>Now if you are a frequent Spring user, you should know that Spring Test Framework already provided a way for you to handle this type of use case. Here is a way for you to do class level setup with Spring's style:</p>
+<pre><code>package deng.junitdemo.spring;
+
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+
+import java.util.List;
+
+import javax.annotation.Resource;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestContext;
+import org.springframework.test.context.TestExecutionListeners;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.AbstractTestExecutionListener;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@TestExecutionListeners(listeners = {
+        DependencyInjectionTestExecutionListener.class, 
+        SpringDemo2Test.class})
+@ContextConfiguration
+public class SpringDemo2Test extends AbstractTestExecutionListener {
+
+    @Resource(name=&quot;myList&quot;)
+    private List&lt;String&gt; myList;
+
+    @Test
+    public void testMyListInjection() {
+        assertThat(myList.size(), is(2));
+    }
+
+    @Override
+    public void afterTestClass(TestContext testContext) {
+        List&lt;?&gt; list = testContext.getApplicationContext().getBean(&quot;myList&quot;, List.class);
+        assertThat((String)list.get(0), is(&quot;one&quot;));
+    }
+
+    @Override
+    public void beforeTestClass(TestContext testContext) {
+        List&lt;?&gt; list = testContext.getApplicationContext().getBean(&quot;myList&quot;, List.class);
+        assertThat((String)list.get(1), is(&quot;two&quot;));
+    }
+}
+</code></pre>
+<p>As you can see, Spring offers the <code>@TestExecutionListeners</code> annotation to allow you to write any Listener, and in it you will have a reference to the <code>TestContext</code> which has the <code>ApplicationContext</code> for you to get to the injected field reference. This works, but I find it not very elegant. It forces you to look up the bean, while your injected field is already available as field. But you can't use it unless you go through the <code>TestContext</code> parameter.</p>
+<p>Now if you mix the solution we provided in the beginning, we will see a more prettier test setup. Let's see it:</p>
+<pre><code>package deng.junitdemo.spring;
+
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+
+import java.util.List;
+
+import javax.annotation.Resource;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.ContextConfiguration;
+
+import deng.junitdemo.InstanceTestClassListener;
+
+@RunWith(SpringInstanceTestClassRunner.class)
+@ContextConfiguration
+public class SpringDemo3Test implements InstanceTestClassListener {
+
+    @Resource(name=&quot;myList&quot;)
+    private List&lt;String&gt; myList;
+
+    @Test
+    public void testMyListInjection() {
+        assertThat(myList.size(), is(2));
+    }
+
+    @Override
+    public void beforeClassSetup() {
+        assertThat((String)myList.get(0), is(&quot;one&quot;));
+    }
+
+    @Override
+    public void afterClassSetup() {
+        assertThat((String)myList.get(1), is(&quot;two&quot;));
+    }
+}
+</code></pre>
+<p>Now JUnit only allow you to use single <code>Runner</code>, so we must extends the Spring's version to insert what we did before.</p>
+<pre><code>package deng.junitdemo.spring;
+
+import org.junit.runner.notification.RunNotifier;
+import org.junit.runners.model.InitializationError;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import deng.junitdemo.InstanceTestClassListener;
+
+public class SpringInstanceTestClassRunner extends SpringJUnit4ClassRunner {
+
+    private InstanceTestClassListener instanceSetupListener;
+
+    public SpringInstanceTestClassRunner(Class&lt;?&gt; clazz) throws InitializationError {
+        super(clazz);
+    }
+
+    @Override
+    protected Object createTest() throws Exception {
+        Object test = super.createTest();
+        // Note that JUnit4 will call this createTest() multiple times for each
+        // test method, so we need to ensure to call &quot;beforeClassSetup&quot; only once.
+        if (test instanceof InstanceTestClassListener &amp;&amp; instanceSetupListener == null) {
+            instanceSetupListener = (InstanceTestClassListener) test;
+            instanceSetupListener.beforeClassSetup();
+        }
+        return test;
+    }
+
+    @Override
+    public void run(RunNotifier notifier) {
+        super.run(notifier);
+        if (instanceSetupListener != null)
+            instanceSetupListener.afterClassSetup();
+    }
+}
+</code></pre>
+<p>That should do the trick. Running the test will give use this output:</p>
+<pre><code>12:58:48 main INFO  org.springframework.test.context.support.AbstractContextLoader:139 | Detected default resource location &quot;classpath:/deng/junitdemo/spring/SpringDemo3Test-context.xml&quot; for test class [deng.junitdemo.spring.SpringDemo3Test].
+12:58:48 main INFO  org.springframework.test.context.support.DelegatingSmartContextLoader:148 | GenericXmlContextLoader detected default locations for context configuration [ContextConfigurationAttributes@74b23210 declaringClass = 'deng.junitdemo.spring.SpringDemo3Test', locations = '{classpath:/deng/junitdemo/spring/SpringDemo3Test-context.xml}', classes = '{}', inheritLocations = true, contextLoaderClass = 'org.springframework.test.context.ContextLoader'].
+12:58:48 main INFO  org.springframework.test.context.support.AnnotationConfigContextLoader:150 | Could not detect default configuration classes for test class [deng.junitdemo.spring.SpringDemo3Test]: SpringDemo3Test does not declare any static, non-private, non-final, inner classes annotated with @Configuration.
+12:58:48 main INFO  org.springframework.test.context.TestContextManager:185 | @TestExecutionListeners is not present for class [class deng.junitdemo.spring.SpringDemo3Test]: using defaults.
+12:58:48 main INFO  org.springframework.beans.factory.xml.XmlBeanDefinitionReader:315 | Loading XML bean definitions from class path resource [deng/junitdemo/spring/SpringDemo3Test-context.xml]
+12:58:48 main INFO  org.springframework.context.support.GenericApplicationContext:500 | Refreshing org.springframework.context.support.GenericApplicationContext@44c9d92c: startup date [Sat Sep 29 12:58:48 EDT 2012]; root of context hierarchy
+12:58:49 main INFO  org.springframework.beans.factory.support.DefaultListableBeanFactory:581 | Pre-instantiating singletons in org.springframework.beans.factory.support.DefaultListableBeanFactory@73c6641: defining beans [myList,org.springframework.context.annotation.internalConfigurationAnnotationProcessor,org.springframework.context.annotation.internalAutowiredAnnotationProcessor,org.springframework.context.annotation.internalRequiredAnnotationProcessor,org.springframework.context.annotation.internalCommonAnnotationProcessor,org.springframework.context.annotation.ConfigurationClassPostProcessor$ImportAwareBeanPostProcessor#0]; root of factory hierarchy
+12:58:49 Thread-1 INFO  org.springframework.context.support.GenericApplicationContext:1025 | Closing org.springframework.context.support.GenericApplicationContext@44c9d92c: startup date [Sat Sep 29 12:58:48 EDT 2012]; root of context hierarchy
+12:58:49 Thread-1 INFO  org.springframework.beans.factory.support.DefaultListableBeanFactory:433 | Destroying singletons in org.springframework.beans.factory.support.DefaultListableBeanFactory@73c6641: defining beans [myList,org.springframework.context.annotation.internalConfigurationAnnotationProcessor,org.springframework.context.annotation.internalAutowiredAnnotationProcessor,org.springframework.context.annotation.internalRequiredAnnotationProcessor,org.springframework.context.annotation.internalCommonAnnotationProcessor,org.springframework.context.annotation.ConfigurationClassPostProcessor$ImportAwareBeanPostProcessor#0]; root of factory hierarchy
+</code></pre>
+<p>Obviously the output shows nothing interesting here, but the test should run with all assertion passed. The point is that now we have a more elegant way to invoking a before and after test setup that are at class level, and they can be instance methods to allow Spring injection.</p>
+<h1>Download the demo code</h1>
+<p>You may get above demo code in a working Maven project from <a href="https://bitbucket.org/saltnlight5/sandbox/src/8d545b15fbbd/junit-examples">my sandbox</a>.</p>
+</p>
+
+	<hr />
+
+<div id="disqus_thread"></div>
+	
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://zemian-github-io.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">&copy; 2011 - Present Zemian Deng All Rights Reserved | Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.5</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../../../js/jquery-1.11.1.min.js"></script>
+    <script src="../../../js/bootstrap.min.js"></script>
+    <script src="../../../js/prettify.js"></script>
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-135626598-1');
+    </script>
+
+  </body>
+</html>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Zemian's Blog - Exploring More on RequireJS</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../css/asciidoctor.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link href="../../../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../../../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../about.html">About</a></li>
+            <li><a href="../../../archive.html">Archive</a></li>
+            <li><a href="../../..//tags">Tags</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">	
+	<div class="page-header">
+		<h1>Exploring More on RequireJS</h1>
+	</div>
+
+	<p><em>22 April 2020</em>, tags: 
+	    <a href="../../../tags/requirejs.html">requirejs</a> 
+	</p>
+
+	<p><h2>Configuring RequireJS</h2>
+<p>You can use either <code>requirejs.config()</code> or <code>require.config()</code> to setup RequireJS. I preferred the <code>requirejs.config()</code> and <code>require()</code> to load modules just so to give them some distinction on usage. A typical config usage is like this:</p>
+<pre><code>requirejs.config({
+    baseUrl: &quot;js/&quot;,
+    paths: {
+        'foo': 'path/foo',
+        'bar': 'path/bar',
+    }
+});
+</code></pre>
+<p>You can actually run <code>requirejs.config()</code> multiple times! Most of the options will be appended together. But the last <code>baseUrl</code> will override all.</p>
+<h2>Use Shim for Library that has no AMD support</h2>
+<p>If you are loading a library (eg: CKEDITOR4), then you need to work with <code>shim</code> because it expose a global variable named CKEDITOR. Examples:</p>
+<pre><code>requirejs.config({
+    paths: {
+        ckeditor: 'https://cdn.jsdelivr.net/npm/ckeditor4@4.14.0/ckeditor'
+    },
+    shims: {
+        ckeditor: {
+            exports: 'CKEDITOR'
+        }
+    }
+});
+require(['ckeditor'], () =&gt; {
+    // Notice that CKEDITOR variable is automatically available due to our shims' export.
+    CKEDITOR.replace('editor', {width: '100%', height: '85%'});
+});
+</code></pre>
+<h2>Writing Modules</h2>
+<p>It’s recommended you don’t explicitly name your module, but simply let your filename be the module name. Example:</p>
+<pre><code>//file: mymodule.js
+define('mymodule', [], function() {
+    return {
+        uniqueId() {
+            return Math.random().toString(16).substring(2);
+        }
+    }
+});
+</code></pre>
+<p>You can create many internal functions and variable you want and they do need to be all returned (or exported). Another popular export data is simply the JS function constructor. Example:</p>
+<pre><code>//file: MyService.js
+define(['mylib', function(mylib) {
+  function MyService () {
+    // ... define your service here.
+    // note that 'mylib' is loaded and availabe to use here.
+  }
+  return MyService;
+});require(['MyService'], (MyService) =&gt; {
+  let service = new MyService();
+  // Use service here...
+});
+</code></pre>
+<h2>Loading Modules</h2>
+<p>You should know that when you use <code>require()</code> to load modules, they are all loaded asynchronously, and all the dependency are loaded accordingly in the proper order!</p>
+<p>You can configure RequireJS with <code>paths</code> that setup hundreds of ready to use libraries, but if you don’t invoke <code>require()</code>, it will not be loaded into your browser at runtime!</p>
+<p>The <code>require()</code> can be use anywhere in your HTML script code. One popular way to organize the code is that you place your application entry file (usually named <code>main.js</code>) with entry point of <code>require()</code> to start your application. Then you can load it in browser like this:</p>
+<pre><code>&lt;script data-main=&quot;main&quot; src=&quot;https://unpkg.com/requirejs@2.3.6/require.js&quot;&gt;&lt;/script&gt;
+</code></pre>
+<p>Note that <code>.js</code> is optional when you use <code>data-main</code> attribute. Above can also be loaded in your old fashion way like this:</p>
+<pre><code>&lt;script src=&quot;https://unpkg.com/requirejs@2.3.6/require.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;main.js&quot;&gt;&lt;/script&gt;
+</code></pre>
+<h2>Troubleshooting Tips</h2>
+<ol>
+<li>The usage and syntax of <code>require()</code> and <code>define()</code> is the same, so ensure you use the correct one! Using <code>define()</code> instead of <code>require()</code> will obviously fail your application, but the error might not be so straight forward.</li>
+<li>RequireJS loads modules in relative to the <code>baseUrl</code> path value setup in your config options. Ensure the value it’s loaded properly. Especially if you are using relative path. It default value is relative to the <code>.html</code> file where you include the <code>require.js</code> file in script tag. Triple check this if you see error not able to find your modules.</li>
+<li>The <code>paths</code> configuration option accept value of module with out <code>.js</code> extension! If you include it, it will fail to find your module.</li>
+<li>If you have large modules that you use all of the time. Try reduce the number of dependency modules your user need to import by writing a wrapper module.</li>
+<li>When loading large dependency module list, use a consistent formatting to help. Also, ensure you match up your array of dependency module names with the function callback parameters correctly. Else you get all sort of weird errors. For example:
+<pre><code>require(['mymodulelib',
+  'mymodulelib2',
+  'mymodulelib3',
+  'mymodulelib4',
+  'mymodulelib5'
+], function(lib, lib2, lib3) {// write your module here...});
+</code></pre>
+</li>
+</ol>
+</p>
+
+	<hr />
+
+<div id="disqus_thread"></div>
+	
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://zemian-github-io.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">&copy; 2011 - Present Zemian Deng All Rights Reserved | Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.5</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../../../js/jquery-1.11.1.min.js"></script>
+    <script src="../../../js/bootstrap.min.js"></script>
+    <script src="../../../js/prettify.js"></script>
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-135626598-1');
+    </script>
+
+  </body>
+</html>

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Zemian's Blog - Exploring different scheduling types with Quartz 2</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../css/asciidoctor.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link href="../../../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../../../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../about.html">About</a></li>
+            <li><a href="../../../archive.html">Archive</a></li>
+            <li><a href="../../..//tags">Tags</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">	
+	<div class="page-header">
+		<h1>Exploring different scheduling types with Quartz 2</h1>
+	</div>
+
+	<p><em>22 October 2012</em>, tags: 
+	    <a href="../../../tags/quartz.html">quartz</a> 
+	</p>
+
+	<p><p>We often think of Cron when we want to schedule a job. Cron is very flexible in expressing an repeating occurance of an event/job in a very compact expression. However it's not answer for everything, as I often see people are asking for help in the Quartz user forum. Did you know that the popular <a href="http://quartz-scheduler.org">Quartz 2</a> library provide many other schedule types (called Trigger) besides cron? I will show you each of the Quartz 2 built-in schedule types here within a complete, standalone Groovy script that you can run and test it out. Let's start with a simple one.</p>
+<pre><code>@Grab('org.quartz-scheduler:quartz:2.1.6')
+@Grab('org.slf4j:slf4j-simple:1.7.1')
+import org.quartz.*
+import org.quartz.impl.*
+import org.quartz.jobs.*
+
+import static org.quartz.DateBuilder.*
+import static org.quartz.JobBuilder.*
+import static org.quartz.TriggerBuilder.*
+import static org.quartz.SimpleScheduleBuilder.*
+
+def trigger = newTrigger()
+    .withSchedule(
+        simpleSchedule()
+        .withIntervalInSeconds(3)
+        .repeatForever())
+    .startNow()
+    .build()
+dates = TriggerUtils.computeFireTimes(trigger, null, 20)
+dates.each{ println it }
+</code></pre>
+<p>This is the Quartz's <code>SimpleTrigger</code>, and it allows you to create a fixed rate repeating job. You can even limit to certain number of count if you like. I have imported all the nessary classes the script needs, and I use the latest Quartz 2.x builder API to create an instance of the trigger.</p>
+<p>The quickest way to explore and test out whether a scheduling fits your need is to print out its future execution times. Hence you see me using <code>TriggerUtils.computeFireTimes</code> in the script. Run the above and you should get the datetimes as scheduled to be run, in this case every 3 seconds.</p>
+<pre><code>bash&gt; $ groovy simpleTrigger.groovy
+    Tue Oct 23 20:28:01 EDT 2012
+    Tue Oct 23 20:28:04 EDT 2012
+    Tue Oct 23 20:28:07 EDT 2012
+    Tue Oct 23 20:28:10 EDT 2012
+    Tue Oct 23 20:28:13 EDT 2012
+    Tue Oct 23 20:28:16 EDT 2012
+    Tue Oct 23 20:28:19 EDT 2012
+    Tue Oct 23 20:28:22 EDT 2012
+    Tue Oct 23 20:28:25 EDT 2012
+    Tue Oct 23 20:28:28 EDT 2012
+    Tue Oct 23 20:28:31 EDT 2012
+    Tue Oct 23 20:28:34 EDT 2012
+    Tue Oct 23 20:28:37 EDT 2012
+    Tue Oct 23 20:28:40 EDT 2012
+    Tue Oct 23 20:28:43 EDT 2012
+    Tue Oct 23 20:28:46 EDT 2012
+    Tue Oct 23 20:28:49 EDT 2012
+    Tue Oct 23 20:28:52 EDT 2012
+    Tue Oct 23 20:28:55 EDT 2012
+    Tue Oct 23 20:28:58 EDT 2012
+</code></pre>
+<p>The most frequent used scheduling type is the <code>CronTrigger</code>, and you can test it out in similar way.</p>
+<pre><code>@Grab('org.quartz-scheduler:quartz:2.1.6')
+@Grab('org.slf4j:slf4j-simple:1.7.1')
+import org.quartz.*
+import org.quartz.impl.*
+import org.quartz.jobs.*
+
+import static org.quartz.DateBuilder.*
+import static org.quartz.JobBuilder.*
+import static org.quartz.TriggerBuilder.*
+import static org.quartz.CronScheduleBuilder.*
+
+def trigger = newTrigger()
+    .withSchedule(cronSchedule(&quot;0 30 08 * * ?&quot;))
+    .startNow()
+    .build()
+dates = TriggerUtils.computeFireTimes(trigger, null, 20)
+dates.each{ println it }
+</code></pre>
+<p>The javadoc for <a href="http://quartz-scheduler.org/api/2.1.5/org/quartz/CronExpression.html">CronExpression</a> is very good and you should definately read it throughly to use it effectively. With the script, you can explore all the combination you want easily and verify future fire times before your job is invoked.</p>
+<p>Now, if you have some odd scheduling needs such as run a job every 30 mins from MON to FRI and only between 8:00AM to 10:00AM, then don't try to cramp all that into the Cron expression. The Quartz 2.x has a dedicated trigger type just for this use, and it's<br />
+called <code>DailyTimeIntervalTrigger</code>! Check this out:</p>
+<pre><code>@Grab('org.quartz-scheduler:quartz:2.1.6')
+@Grab('org.slf4j:slf4j-simple:1.7.1')
+import org.quartz.*
+import org.quartz.impl.*
+import org.quartz.jobs.*
+
+import static org.quartz.DateBuilder.*
+import static org.quartz.JobBuilder.*
+import static org.quartz.TriggerBuilder.*
+import static org.quartz.DailyTimeIntervalScheduleBuilder.*
+import static java.util.Calendar.*
+
+def trigger = newTrigger()
+    .withSchedule(
+        dailyTimeIntervalSchedule()
+        .startingDailyAt(TimeOfDay.hourMinuteAndSecondOfDay(8, 0, 0))
+        .endingDailyAt(TimeOfDay.hourMinuteAndSecondOfDay(10, 0, 0))
+        .onDaysOfTheWeek(MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY)
+        .withInterval(10, IntervalUnit.MINUTE))
+    .startNow()
+    .build()
+dates = TriggerUtils.computeFireTimes(trigger, null, 20)
+dates.each{ println it }
+</code></pre>
+<p>Another hidden Trigger type from Quartz is <code>CalendarIntervalTrigger</code>, and you would use this if you need to repeat job that's in every interval of a calendar period, such as every year or month etc, where the interval is not fixed, but calendar specific. Here is a test script for that.</p>
+<pre><code>@Grab('org.quartz-scheduler:quartz:2.1.6')
+@Grab('org.slf4j:slf4j-simple:1.7.1')
+import org.quartz.*
+import org.quartz.impl.*
+import org.quartz.jobs.*
+
+import static org.quartz.DateBuilder.*
+import static org.quartz.JobBuilder.*
+import static org.quartz.TriggerBuilder.*
+import static org.quartz.CalendarIntervalScheduleBuilder.*
+import static java.util.Calendar.*
+
+def trigger = newTrigger()
+    .withSchedule(
+        calendarIntervalSchedule()
+        .withInterval(2, IntervalUnit.MONTH))
+    .startAt(futureDate(10, IntervalUnit.MINUTE))
+    .build()
+dates = TriggerUtils.computeFireTimes(trigger, null, 20)
+dates.each{ println it }
+</code></pre>
+<p>I hope these will help you get started on most of your scheduling need with Quartz 2. Try these out and see your future fire times before even scheduling a job into the scheduler should save you some times and troubles.</p>
+</p>
+
+	<hr />
+
+<div id="disqus_thread"></div>
+	
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://zemian-github-io.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">&copy; 2011 - Present Zemian Deng All Rights Reserved | Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.5</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../../../js/jquery-1.11.1.min.js"></script>
+    <script src="../../../js/bootstrap.min.js"></script>
+    <script src="../../../js/prettify.js"></script>
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-135626598-1');
+    </script>
+
+  </body>
+</html>

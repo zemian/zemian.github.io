@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Zemian's Blog - Getting started with Apache HTTPD Web Server on Windows</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../css/asciidoctor.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link href="../../../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../../../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../about.html">About</a></li>
+            <li><a href="../../../archive.html">Archive</a></li>
+            <li><a href="../../..//tags">Tags</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">	
+	<div class="page-header">
+		<h1>Getting started with Apache HTTPD Web Server on Windows</h1>
+	</div>
+
+	<p><em>27 February 2018</em>, tags: 
+	    <a href="../../../tags/httpd.html">httpd</a> 
+
+	    <a href="../../../tags/cygwin.html">cygwin</a> 
+	</p>
+
+	<p><h1>Using native Windows Binary (without admin rights)</h1>
+<ol>
+<li>
+<p>Download one of binary from<br />
+<a href="https://httpd.apache.org/docs/current/platform/windows.html#down">https://httpd.apache.org/docs/current/platform/windows.html#down</a></p>
+</li>
+<li>
+<p>Unzip a portable version (zip file) into <code>C:\Apache24</code></p>
+</li>
+<li>
+<p>cd <code>C:\Apache24\bin</code> and run httpd.exe</p>
+</li>
+<li>
+<p>Open browser to <a href="http://localhost">http://localhost</a></p>
+</li>
+</ol>
+<p>Press <code>CTRL+C</code> to stop the server.</p>
+<h2>Where is the <code>httpd.conf</code>?</h2>
+<p>The web server config file is located at <code>C:\Apache24\conf\httpd.conf</code></p>
+<p>The default document root should be at <code>C:\Apache24\htdocs</code></p>
+<p>The default error log file is at <code>C:\Apache24\logs\error.log</code></p>
+<h2>How to enable cgi-bin scripts</h2>
+<p>There is a default <code>perl</code> test script under<br />
+<code>C:\Apache24\cgi-bin\printenv.pl</code>, and if you have native Windows Perl<br />
+installed, you need to modify the first line in the script. Example:<br />
+<code>#!/C:/perl5/perl.exe</code></p>
+<p>Now test it on <a href="http://localhost/cgi-bin/printenv.pl">http://localhost/cgi-bin/printenv.pl</a></p>
+<h2>Using Python as <code>cgi-bin</code> test script</h2>
+<p>Create <code>C:\Apache24\cgi-bin\printenv.py</code> script:</p>
+<pre><code>#!C:/Python36/python.exe
+import cgi
+cgi.test()
+</code></pre>
+<p>Test it on <a href="http://localhost/cgi-bin/printenv.py">http://localhost/cgi-bin/printenv.py</a></p>
+<h1>Using Cygwin for Windows</h1>
+<ol>
+<li>
+<p>Install <code>httpd</code> and <code>httpd-tool</code> packages in your cygwin</p>
+</li>
+<li>
+<p>If you have not started <code>cygserver</code>, run it now in the background.</p>
+</li>
+<li>
+<p>Run <code>apachectl -k start</code></p>
+</li>
+<li>
+<p>Open browser to <a href="http://localhost">http://localhost</a></p>
+</li>
+</ol>
+<p>Run <code>apachectl -k stop</code> to stop the server.</p>
+<h2>Where is the <code>httpd.conf</code> ?</h2>
+<p>The web server config file is located at <code>/etc/httpd/conf/httpd.conf</code></p>
+<p>The default document root should be at <code>/srv/www/htdocs</code></p>
+<p>The default error log file is at <code>/var/log/httpd/error_log</code></p>
+<h2>How to enable cgi-bin scripts</h2>
+<ol>
+<li>
+<p>Ensure you have installed <code>perl</code> package in Cygwin.</p>
+</li>
+<li>
+<p>Modify <code>/srv/www/cgi-bin/printenv</code> file first line with<br />
+<code>#!/usr/bin/perl</code></p>
+</li>
+<li>
+<p>Run <code>chmod a+x</code></p>
+</li>
+<li>
+<p>Modify <code>httpd.conf</code> to enable <code>mod_cgi</code>:</p>
+<pre><code>&lt;IfModule mpm_prefork_module&gt;
+        LoadModule cgi_module modules/mod_cgi.so
+&lt;/IfModule&gt;
+</code></pre>
+</li>
+<li>
+<p>Restart httpd server</p>
+</li>
+</ol>
+<p>Now test it on <a href="http://localhost/cgi-bin/printenv">http://localhost/cgi-bin/printenv</a></p>
+<p>You can also test the <code>/srv/www/cgi-bin/test-cgi</code> script, but it uses<br />
+<code>#!/usr/bin/sh</code> instead of <code>perl</code>!</p>
+<p>If you use default <code>cgi-bin</code> folder that are setup with <code>ScriptAlias</code>,<br />
+then you do not need to add <code>Options +ExecCGI</code> line to the conf file.</p>
+<h2>Using Python as <code>cgi-bin</code> test script</h2>
+<p>Create <code>/srv/www/cgi-bin/printenv.py</code> script:</p>
+<pre><code>#!/usr/bin/python3
+import cgi
+cgi.test()
+</code></pre>
+</p>
+
+	<hr />
+
+<div id="disqus_thread"></div>
+	
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://zemian-github-io.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">&copy; 2011 - Present Zemian Deng All Rights Reserved | Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.5</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../../../js/jquery-1.11.1.min.js"></script>
+    <script src="../../../js/bootstrap.min.js"></script>
+    <script src="../../../js/prettify.js"></script>
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-135626598-1');
+    </script>
+
+  </body>
+</html>

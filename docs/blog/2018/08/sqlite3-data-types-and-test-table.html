@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Zemian's Blog - SQLite3 Data Types and Test Table</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="../../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../css/asciidoctor.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link href="../../../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../../../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/index.html">Zemian's Blog</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../about.html">About</a></li>
+            <li><a href="../../../archive.html">Archive</a></li>
+            <li><a href="../../..//tags">Tags</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">	
+	<div class="page-header">
+		<h1>SQLite3 Data Types and Test Table</h1>
+	</div>
+
+	<p><em>21 August 2018</em>, tags: 
+	    <a href="../../../tags/sql.html">sql</a> 
+
+	    <a href="../../../tags/sqlite3.html">sqlite3</a> 
+	</p>
+
+	<p><pre><code>-- Notes for SQLite3 Database (3.24)
+-- https://www.sqlite.org/docs.html
+
+-- Data Types
+-- https://www.sqlite.org/datatype3.html
+
+-- Functions
+-- https://www.sqlite.org/lang_corefunc.html
+
+/*
+SQLite does not have strong data type, but dynamic type that define by value rather than by schema/container.
+
+SQLite only has 5 storage class that it can be used to store data (desc their doc):
+
+NULL. The value is a NULL value.
+INTEGER. The value is a signed integer, stored in 1, 2, 3, 4, 6, or 8 bytes depending on the magnitude of the value.
+REAL. The value is a floating point value, stored as an 8-byte IEEE floating point number.
+TEXT. The value is a text string, stored using the database encoding (UTF-8, UTF-16BE or UTF-16LE).
+BLOB. The value is a blob of data, stored exactly as it was input.
+
+SQLite can conform to standard SQL types by mapping what's called &quot;affinity&quot; type.
+
+CHAR          Map to TEXT
+VARCHAR       Map to TEXT
+TEXT          Map to TEXT
+
+INT           Map to INTEGER
+
+REAL             Map to REAL
+DOUBLE PRECISION Map to REAL
+
+NUMERIC       Map to INTEGER, REAL, TEXT or BLOB
+
+DATE          Map to INTEGER, REAL, TEXT or BLOB
+DATETIME      Map to INTEGER, REAL, TEXT or BLOB
+
+NOTE: Despite there is a &quot;NUMERIC&quot; affinity type, it's not a fixed-point type! SQLite
+does not have native NUMERIC. It will dynamically choose a best fit storage class
+instead (REAL if it can keep 15 digits accuracy). If you need true fixed point data type,
+you may try to use TEXT data stored instead. Same as with DATETIME types. For example you
+can store DATETIME as TEXT, and then SQLite provides many built-in functions that help you
+manipulate dates instead. Note also that precision and scale such as VARCHAR(n) or
+NUMERIC(p, s) has no real meaning other than DDL schema documentation only!
+
+The SQLite INT size can auto grow into 64-bits (like sql: BIGINT) if needed. The REAL type
+is 64-bits size! (unlike many other DB that use REAL for 32-bits and DOUBLE PRECISION for
+64 bits).
+ */
+
+-- Test table
+create table test(
+  id      integer primary key,
+  ts      text default (datetime('now')),
+  cat     text,
+
+  price   text,
+  qty     int,
+
+  txtdata text,
+  bindata blob,
+
+  distx   real,
+  disty   real
+);
+insert into test(cat, price, qty) values ('test', 100000.10, 50000),
+                                         ('test', 100000.20, 0),
+                                         ('test', 100000.00, 1),
+                                         ('test', 9977000.3333, 179),
+                                         ('test', 104729.1129, 104729);
+insert into test(cat, bindata, txtdata) values ('test2', x'CAFEBABE', 'CAFEBABE');
+insert into test(cat, bindata) values ('test3', randomblob(16));
+insert into test(cat, bindata) values ('test3', randomblob(16));
+insert into test(cat, bindata) values ('test3', randomblob(16));
+update test set txtdata = hex(bindata) where cat = 'test3';
+insert into test(cat, distx, disty) values ('test4', random(), random());
+insert into test(cat, distx, disty) values ('test4', random(), random());
+insert into test(cat, distx, disty) values ('test4', random(), random());
+select sum(price) from test where cat = 'test';
+select * from test order by cat, ts desc;
+</code></pre>
+</p>
+
+	<hr />
+
+<div id="disqus_thread"></div>
+	
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://zemian-github-io.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">&copy; 2011 - Present Zemian Deng All Rights Reserved | Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.6.5</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../../../js/jquery-1.11.1.min.js"></script>
+    <script src="../../../js/bootstrap.min.js"></script>
+    <script src="../../../js/prettify.js"></script>
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-135626598-1');
+    </script>
+
+  </body>
+</html>
