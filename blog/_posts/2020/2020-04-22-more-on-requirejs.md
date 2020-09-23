@@ -9,7 +9,7 @@ tags:
 
 You can use either `requirejs.config()` or `require.config()` to setup RequireJS. I preferred the `requirejs.config()` and `require()` to load modules just so to give them some distinction on usage. A typical config usage is like this:
 
-```
+```js
 requirejs.config({
     baseUrl: "js/",
     paths: {
@@ -25,7 +25,7 @@ You can actually run `requirejs.config()` multiple times! Most of the options wi
 
 If you are loading a library (eg: CKEDITOR4), then you need to work with `shim` because it expose a global variable named CKEDITOR. Examples:
 
-```
+```js
 requirejs.config({
     paths: {
         ckeditor: 'https://cdn.jsdelivr.net/npm/ckeditor4@4.14.0/ckeditor'
@@ -46,7 +46,7 @@ require(['ckeditor'], () => {
 
 It’s recommended you don’t explicitly name your module, but simply let your filename be the module name. Example:
 
-```
+```js
 //file: mymodule.js
 define('mymodule', [], function() {
     return {
@@ -59,7 +59,7 @@ define('mymodule', [], function() {
 
 You can create many internal functions and variable you want and they do need to be all returned (or exported). Another popular export data is simply the JS function constructor. Example:
 
-```
+```js
 //file: MyService.js
 define(['mylib', function(mylib) {
   function MyService () {
@@ -81,13 +81,13 @@ You can configure RequireJS with `paths` that setup hundreds of ready to use lib
 
 The `require()` can be use anywhere in your HTML script code. One popular way to organize the code is that you place your application entry file (usually named `main.js`) with entry point of `require()` to start your application. Then you can load it in browser like this:
 
-```
+```html
 <script data-main="main" src="https://unpkg.com/requirejs@2.3.6/require.js"></script>
 ```
 
 Note that `.js` is optional when you use `data-main` attribute. Above can also be loaded in your old fashion way like this:
 
-```
+```html
 <script src="https://unpkg.com/requirejs@2.3.6/require.js"></script>
 <script src="main.js"></script>
 ```
@@ -100,11 +100,11 @@ Note that `.js` is optional when you use `data-main` attribute. Above can also b
 4.  If you have large modules that you use all of the time. Try reduce the number of dependency modules your user need to import by writing a wrapper module.
 5.  When loading large dependency module list, use a consistent formatting to help. Also, ensure you match up your array of dependency module names with the function callback parameters correctly. Else you get all sort of weird errors. For example:
 
-	```
-	require(['mymodulelib',
-	  'mymodulelib2',
-	  'mymodulelib3',
-	  'mymodulelib4',
-	  'mymodulelib5'
-	], function(lib, lib2, lib3) {// write your module here...});
-	```
+```js
+require(['mymodulelib',
+  'mymodulelib2',
+  'mymodulelib3',
+  'mymodulelib4',
+  'mymodulelib5'
+], function(lib, lib2, lib3) {// write your module here...});
+```

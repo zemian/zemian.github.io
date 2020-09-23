@@ -11,7 +11,7 @@ The [Bulma CSS](https://bulma.io/) library is a very nice project with work with
 
 Here is a small hello world example that gets you stared. It gives you a nice clean reset of HTML document and you may start style your world away.
 
-```
+```html
 <link rel="stylesheet" href="https://unpkg.com/bulma@0.8.1/css/bulma.css">
 
 <div class="container">
@@ -22,7 +22,7 @@ Here is a small hello world example that gets you stared. It gives you a nice cl
 
 Here is how a table looks like in Bulma:
 
-```
+```html
 <table class="table is-fullwidth">
     <thead>
     <tr>
@@ -63,7 +63,7 @@ Here is how a table looks like in Bulma:
 
 And here is a quick form:
 
-```
+```html
 <div class="field">
     <label class="label">Name</label>
     <div class="control">
@@ -81,7 +81,7 @@ And here is a quick form:
 
 Add buttons!
 
-```
+```html
 <div class="buttons">
   <button class="button is-primary">Primary</button>
   <button class="button is-link">Link</button>

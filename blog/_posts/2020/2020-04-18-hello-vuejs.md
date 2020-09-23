@@ -9,7 +9,7 @@ I like [VueJS](http://vuejs.org/) because it’s similar to [KnockoutJS](hello-k
 
 Get started on [VueJS](https://vuejs.org/) with single JS script.
 
-```
+```html
 <div id="app">
     <span v-text="message"></span>
 </div>
@@ -27,7 +27,7 @@ Get started on [VueJS](https://vuejs.org/) with single JS script.
 
 If you run this in browser, you should see “Hello”. Then open the Developer Console and change the model like this:
 
-```
+```js
 app.message = "Hello VueJS";
 ```
 

@@ -10,7 +10,7 @@ A new Oracle [JET 8.2.0](https://www.npmjs.com/package/@oracle/oraclejet/v/8.2.0
 
 You might have noticed that Oracle JET is published under NPM package, and hence you may get it through any CDN network that serve NPM packages directly. A popular one for developer is UNPKG.com. So here I will create a simple ClickCount application that uses external public CDN.
 
-```
+```html
 <div id="app" class="oj-web-padding">
     Count: <oj-bind-text value="[[count]]"></oj-bind-text>
     <oj-button on-oj-action="[[onClick]]">Click</oj-button>

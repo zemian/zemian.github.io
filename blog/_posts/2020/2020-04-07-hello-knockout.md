@@ -9,7 +9,7 @@ One cool thing about [KnockoutJS](https://knockoutjs.com/) library is that you c
 
 Here is a hello KnockoutJS example app:
 
-```
+```html
 <div id="app">
     <span data-bind="text: message"></span>
 </div>
@@ -25,7 +25,7 @@ Here is a hello KnockoutJS example app:
 
 If you run this in browser, you should see “Hello”. Then open the Developer Console and change the model like this:
 
-```
+```js
 app.message("Hello KnockoutJS");
 ```
 
