@@ -31,7 +31,7 @@ module.exports = {
             },
             {
                 text: 'About',
-                link: '/about-zemian',
+                link: '/about',
             }
         ],
         dateFormat: 'dddd, MMMM D, YYYY',
@@ -51,7 +51,7 @@ module.exports = {
             copyright: [
                 {
                     text: 'Copyright © 2011-present Zemian Deng',
-                    link: '/about-zemian',
+                    link: '/about',
                 }
             ],
         }
