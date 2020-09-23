@@ -19,7 +19,8 @@ My blog content.
 ```
 
 Then preview it:
-
+	
+	npm install
 	npm run dev
 
 ## How to build it
