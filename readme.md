@@ -25,12 +25,9 @@ Then preview it:
 
 ## How to build it
 
-Clone another copy this repository with `gh-pages` branch checkout first, then generate the output there:
+Clone another another copy this repository under `temp` folder, and checkout `gh-pages` branch. This is that we can publish files under the `docs` folder.
 
-	cd workspace
-	git clone git@github.com:zemian/zemian.github.io.git
-	git clone -b gh-pages git@github.com:zemian/zemian.github.io.git zemian.github.io_gh-pages
-	cd zemian.github.io
+	git clone -b gh-pages git@github.com:zemian/zemian.github.io.git temp/zemian.github.io_gh-pages
 	npm run build
 
 ## Todo
