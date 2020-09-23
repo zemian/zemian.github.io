@@ -1,0 +1,20 @@
+{
+  "name": "zemian.github.io",
+  "version": "1.0.0",
+  "description": "This repository contains files for https://zemian.github.io site.",
+  "keywords": [],
+  "author": "Zemian Deng",
+  "license": "MIT",
+  "scripts": {
+    "dev": "npx vuepress dev --host localhost --no-clear-screen blog",
+    "build": "npx vuepress build -d docs blog"
+  },
+  "bugs": {
+    "url": "https://github.com/zemian/zemian.github.io/issues"
+  },
+  "dependencies": {
+    "@vuepress/plugin-google-analytics": "^1.5.3",
+    "@vuepress/theme-blog": "^2.3.1",
+    "vuepress": "^1.5.3"
+  }
+}
