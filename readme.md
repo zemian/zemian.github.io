@@ -23,20 +23,24 @@ Then preview it:
 	npm install
 	npm run dev
 
-## How to build it
+## How to build and publish site manually
 
-Clone another another copy this repository under `temp` folder, and checkout `gh-pages` branch. This is that we can publish files under the `docs` folder.
+Clone another another copy this repository under `temp` folder, and checkout `gh-pages` branch. This is the branch we publish files.
 
 	git clone -b gh-pages git@github.com:zemian/zemian.github.io.git temp/zemian.github.io_gh-pages
-	npm run build-docs
+	npm run build-gh-pages
+	cd temp/zemian.github.io_gh-pages
+	git add .
+	git commit -m 'Publish site manually'
+	git push
 
-## Todo
+## How to build and publish site using Travis
 
-* How to exclude folder from build?
-* Can I add images in the `_posts` directory?
-* Add next/prev link on blog Post?
-* Add RSS to blog?
-* Add user comments (disqus or simply GitHub issues) to blog?
-* Add vuepress-plugin-container support to blog?
-* Can we disable server side SSR generation step during build?
-* Does a build always need to update so many files in output directory?
+1. Add `.travis.yml` file in master branch and configure it to deploy using a `pages` provider
+1. Setup Account in https://travis-ci.com/
+1. Go to github.com and create a GitHub token by going to user settings: "Personal Access Token"
+	NOTE: It only display onces, so ensure to copy it
+1. Go to travis-ci.com and Add `GITHUB_TOKEN` environment variable under the project with the value copied.
+1. Trigger a build
+
+From this point forward, any commits pushed to master will auto trigger build and all the output under `docs` folder will be copy to `gh-pages` branch, commit and push form Travis.
