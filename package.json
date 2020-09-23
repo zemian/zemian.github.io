@@ -7,8 +7,8 @@
   "license": "MIT",
   "scripts": {
     "dev": "npx vuepress dev --host localhost --no-clear-screen blog",
-    "build": "npx vuepress build blog",
-    "build-docs": "npx vuepress build -d temp/zemian.github.io_gh-pages/docs blog"
+    "build": "npx vuepress build -d docs blog",
+    "build-gh-pages": "npx vuepress build -d temp/zemian.github.io_gh-pages/docs blog"
   },
   "bugs": {
     "url": "https://github.com/zemian/zemian.github.io/issues"
