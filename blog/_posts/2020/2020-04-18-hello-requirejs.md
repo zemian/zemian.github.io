@@ -2,7 +2,7 @@
 title: Hello RequiredJS
 date: 2020-04-18T00:00:00-05:00
 tags:
-  - vue
+  - requirejs
 ---
 
 The [RequiredJS](https://requirejs.org/) is a JavaScript library that helps you separate your code into modules as namespaces, and it helps to load them as dependencies when need it. Here is a simple html demo:
