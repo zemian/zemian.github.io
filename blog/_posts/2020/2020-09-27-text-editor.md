@@ -4,18 +4,7 @@ date: 2020-09-27
 tags:
 - texteditor
 - editor
-- vim
-- sublime_text
-- atom
-- ultraedit
-- notepad++
-- datagrip
-- intellij
-- idea
-- webstorm
-- phpstorm
-- eclipse
-- vscode
+- programming
 ---
 
 A text editor is a programmer must have tool. Like many developers, I have used quite a few text editors over the years. Here are some that got me through many projects.
@@ -26,7 +15,7 @@ A text editor is a programmer must have tool. Like many developers, I have used 
 
 * Then around year 2000, I've used [UltaEdit](https://www.ultraedit.com/) (It's a Windows only text editor back then). It's the first true programmer Editor I actually pay for it! I was writing lots of Perl code back then, for an online auction site. I have used this for several years. Mainly it's clean and fast. The search and replace that supports Regular Expression, and it lets you search through a folder recursively was awesome!
 
-* I worked with Microsoft C++ projects for some time, and their [Visual Studio](https://visualstudio.microsoft.com/) was great. Heard of IntelliSense? Oh it was bleeding edge stuff back then. Now a days, just about any IDE has this feature. (Note this is not the modern Open source [VSCode](https://code.visualstudio.com/) that Microsoft has. Back then Microsoft does not do open source stuff.)
+* I worked with Microsoft C++ projects for some time, and their [Visual Studio](https://visualstudio.microsoft.com/) was great. Heard of IntelliSense? Oh it was bleeding edge stuff back then. Now a days, just about any IDE has this feature.
 
 * Then I got into Java programming. A large Java project needed more help than a simple text editor (but I learned all the basics through a plain editor though). I started using [Eclipse IDE](https://www.eclipse.org/). Due to the need of cross platform (Unix and Windows), and I need something lighter than IDE, I also started using [jEdit](http://www.jedit.org/). This lasted for many years.
 
@@ -38,7 +27,9 @@ A text editor is a programmer must have tool. Like many developers, I have used 
 
 * Python is one my favorite programming language. It's through python programmers, that I heard about [Sublime Text](https://www.sublimetext.com/). It's a cross platform that's truly beautify, fast and light to use for any text and programming coding. I still use this today for any quick text editing.
 
-* [Atom](https://atom.io/) is yet another cross platform text editor that recently I have been trying out. It looks great, runs on multiple OS (MacOSX, Windows, Linux etc) and it's open source!
+* Microsoft has released an open source version of light IDE editor named [VSCode](https://code.visualstudio.com/). If you are doing web development, you should check it out.
+
+* [Atom](https://atom.io/) is yet another cross platform text editor that recently I have been trying out lately. It looks great, runs on multiple OS (MacOSX, Windows, Linux etc) and it's open source!
 
 So as you see, I tried many text editors. I have come to learned that you should keep a simple, clean and fast text editor that's native to your OS platform. This allows you to edit any text files for any programming languages, read logs, edit system config files etc. Then on top of this, you want to invest in a full feature IDE that supports the main programming language that your project is using. The IDE will provide quick tools setup, environment integration, language refactoring, source control integration to inspect code change and diff, intelli-sense code editing and browsing, and much more. These give you a powerful and productive boost toward a large and demanding project.
 
