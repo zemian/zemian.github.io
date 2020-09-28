@@ -26,3 +26,7 @@ I use this blog as my personal journal to record tips and notes on what I have l
 - [Java DZone](https://dzone.com/users/saltnlight5)
 - [Blogger](http://saltnlight5.blogspot.com)
 - ~~[jroller](http://www.jroller.com/thebugslayer)~~ - jroller is gone?
+
+## How to Contact Me
+
+Leave me message [here](https://github.com/zemian/zemian.github.io/issues).
