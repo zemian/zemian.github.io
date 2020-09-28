@@ -1,5 +1,5 @@
 ---
-title: Which Programmer Text Editor You Use?
+title: Which Programmer Text Editor Do You Use?
 date: 2020-09-27
 tags:
 - editor
