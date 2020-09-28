@@ -27,9 +27,9 @@ A text editor is a programmer must have tool. Like many developers, I have used 
 
 * Python is one my favorite programming language. It's through python programmers, that I heard about [Sublime Text](https://www.sublimetext.com/). It's a cross platform that's truly beautify, fast and light to use for any text and programming coding. I still use this today for any quick text editing.
 
-* Microsoft has released an open source version of light IDE editor named [VSCode](https://code.visualstudio.com/). If you are doing web development, you should check it out.
+* Microsoft has released an open source version of light IDE editor named [VSCode](https://code.visualstudio.com/). This is very comparable to the WebStorm, except the Git client UI is terrible.
 
-* [Atom](https://atom.io/) is yet another cross platform text editor that recently I have been trying out lately. It looks great, runs on multiple OS (MacOSX, Windows, Linux etc) and it's open source!
+* [Atom](https://atom.io/) is yet another cross platform text editor that recently I have been trying out lately. It looks great, runs on multiple OS (MacOSX, Windows, Linux etc) and it's open source! It can be the SublimeText replacement, except one biggest issue is that it's slow in comparison.
 
 So as you see, I tried many text editors. I have come to learned that you should keep a simple, clean and fast text editor that's native to your OS platform. This allows you to edit any text files for any programming languages, read logs, edit system config files etc. Then on top of this, you want to invest in a full feature IDE that supports the main programming language that your project is using. The IDE will provide quick tools setup, environment integration, language refactoring, source control integration to inspect code change and diff, intelli-sense code editing and browsing, and much more. These give you a powerful and productive boost toward a large and demanding project.
 
