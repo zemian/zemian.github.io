@@ -18,4 +18,5 @@ Here is a simple HTML that can convert a JS object literal into JSON string:
 
 <<< @/blog/.vuepress/public/apps/js-to-json.html
 
-You can run it [here](/apps/js-to-json.html).
+<!-- Due to VuePress is a single page app, this link needs to be external to work! -->
+You can run it <a href="/apps/js-to-json.html" target="_blank">here</a>
