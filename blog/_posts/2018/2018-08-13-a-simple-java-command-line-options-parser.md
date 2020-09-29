@@ -3,6 +3,7 @@ title: A simple Java command line options parser
 date: 2018-08-13T00:00:00-05:00
 tags:
   - optparse
+  - java
 ---
 
 ```java
