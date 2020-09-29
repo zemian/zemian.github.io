@@ -6,6 +6,16 @@ tags:
   - json
 ---
 
-Wrote a [tiny JSON converter](https://raw.githack.com/zemian/html-starter/master/tools/js-to-json.html) that you can check it out!
+A well formed JSON string can be an JS Object, but not the other way around due to JS allow you to use keys without quotes, or use single quotes.
 
-The source is [here](https://github.com/zemian/html-starter/blob/master/tools/js-to-json.html).
+Example:
+
+| JS Object Literal | JSON |
+| ------------- | ------------- |
+| ```{foo: 'bar'}```  | ```{"foo": "bar"}```  |
+
+Here is a simple HTML that can convert a JS object literal into JSON string:
+
+<<< @/blog/.vuepress/public/apps/js-to-json.html
+
+You can run it [here](/apps/js-to-json.html).
