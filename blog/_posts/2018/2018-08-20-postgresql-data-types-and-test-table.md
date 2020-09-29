@@ -10,7 +10,7 @@ tags:
 A quick sql table setup to test most common data types.
 
 
-```
+```sql
 -- Notes for PostgreSQL Database (9.6)
 -- https://www.postgresql.org/docs/9.6/static/index.html
 

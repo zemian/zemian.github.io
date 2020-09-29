@@ -2,7 +2,8 @@
 title: Java versions
 date: 2018-03-26T00:00:00-05:00
 tags:
-  - javap-version
+  - java
+  - javap
 ---
 
 How to check Java version from compiled classes

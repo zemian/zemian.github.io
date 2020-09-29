@@ -10,7 +10,7 @@ tags:
 A quick sql table setup to test most common data types.
 
 
-```
+```sql
 -- Notes for SQLite3 Database (3.24)
 -- https://www.sqlite.org/docs.html
 

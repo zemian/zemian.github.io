@@ -4,6 +4,7 @@ date: 2018-06-21T00:00:00-05:00
 tags:
   - tomcat
   - webapp-runner
+  - java
 ---
 
 I have used <https://github.com/jsimone/webapp-runner> in several

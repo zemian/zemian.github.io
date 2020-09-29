@@ -2,7 +2,8 @@
 title: Java Logging Properties
 date: 2018-03-16T00:00:00-05:00
 tags:
-  - java-logging
+  - java
+  - logging
 ---
 
 Example:

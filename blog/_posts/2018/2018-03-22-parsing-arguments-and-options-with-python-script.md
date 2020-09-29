@@ -2,7 +2,9 @@
 title: Parsing Arguments and Options With Python Script
 date: 2018-03-22T00:00:00-05:00
 tags:
-  - python-argparse
+  - python
+  - argparse
+  - optparse
 ---
 
     import argparse

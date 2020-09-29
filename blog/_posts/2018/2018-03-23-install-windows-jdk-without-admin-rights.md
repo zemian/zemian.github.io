@@ -3,6 +3,7 @@ title: Install Windows JDK Without Admin Rights
 date: 2018-03-23T00:00:00-05:00
 tags:
   - jdk
+  - java
 ---
 
 Installing JDK 7

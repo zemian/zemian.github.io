@@ -10,7 +10,7 @@ tags:
 A quick sql table setup to test most common data types.
 
 
-```
+```sql
 -- Notes for Sybase Database 16
 -- http://infocenter.sybase.com/help/index.jsp?topic=/com.sybase.infocenter.dc70202.1570/html/quickref/title.htm
 

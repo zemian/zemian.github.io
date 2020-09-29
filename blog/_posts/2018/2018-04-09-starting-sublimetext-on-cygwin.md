@@ -2,7 +2,9 @@
 title: Starting SublimeText on Cygwin
 date: 2018-04-09T00:00:00-05:00
 tags:
-  - sublimetext-cygwin
+  - sublimetext
+  - cygwin
+  - editor
 ---
 
 I edit files a lot from command line Cygwin, and I usually use an alias
@@ -14,4 +16,4 @@ start a new windows on files I pass in like this:
 
 Now in terminal, I can edit any files by simply running this: 
 
-`$ e ~/.bashrc`
+    $ e ~/.bashrc

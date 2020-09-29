@@ -9,7 +9,7 @@ tags:
 A quick sql table setup to test most common data types.
 
 
-```
+```sql
 -- Notes for MySQL (8)
 -- https://dev.mysql.com/doc/refman/8.0/en/
 

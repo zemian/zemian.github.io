@@ -3,6 +3,8 @@ title: Oracle Java SE JDK vs OpenJDK
 date: 2018-03-24T00:00:00-05:00
 tags:
   - openjdk
+  - jdk
+  - java
 ---
 
 In general:

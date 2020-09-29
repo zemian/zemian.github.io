@@ -9,7 +9,7 @@ tags:
 A quick sql table setup to test most common data types.
 
 
-```
+```sql
 --
 -- Notes on Oracle Database 12.2
 -- https://docs.oracle.com/en/database/oracle/oracle-database/12.2/administration.html

@@ -5,10 +5,13 @@ tags:
   - cacert
   - keytool
   - openjdk
+  - jdk
+  - java
 ---
 
 I downloaded latest Tomcat source and it failed to get the dependencies.
 
+```
       cd src/github/tomcat
       ant download-test-compile
             [get] Error getting https://repo.maven.apache.org/maven2/junit/junit/4.12/junit-4.12.jar to C:\Users\zemian\tomcat-build-libs\download-2000731528.tmp
@@ -17,10 +20,11 @@ I downloaded latest Tomcat source and it failed to get the dependencies.
     C:\Users\zemian\src\github\tomcat\build.xml:2705: The following error occurred while executing this line:
     C:\Users\zemian\src\github\tomcat\build.xml:3051: javax.net.ssl.SSLException: java.lang.RuntimeException: Unexpected error: java.security.InvalidAlgorithmParameterException: the trustAnchors parameter must be non-empty
             at sun.security.ssl.Alerts.getSSLException(Alerts.java:208)
+```
 
 It turns out this error is caused by the OpenJDK 8 that I am using. The
 one I got is from <https://adoptopenjdk.net/>, and the
-$JAVA\_HOME/jre/lib/security/cacert file has no entries for trusted CA
+`$JAVA_HOME/jre/lib/security/cacert` file has no entries for trusted CA
 certs!
 
 So I found few solutions:
