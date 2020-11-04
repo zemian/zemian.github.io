@@ -37,7 +37,7 @@ Clone another another copy this repository under `temp` folder, and checkout `gh
 
 1. Add `.travis.yml` file in master branch and configure it to deploy using a `pages` provider
 1. Setup Account in https://travis-ci.com/
-1. Go to github.com and create a GitHub token by going to user settings: "Personal Access Token"
+1. Go to github.com and create a GitHub token by going to user settings: > Developer settings > "Personal Access Token" (https://github.com/settings/tokens)
 	NOTE: It only display onces, so ensure to copy it
 1. Go to travis-ci.com and Add `GITHUB_TOKEN` environment variable under the project with the value copied.
 1. Trigger a build
