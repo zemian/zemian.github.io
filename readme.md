@@ -35,6 +35,8 @@ Clone another another copy this repository under `temp` folder, and checkout `gh
 
 ## How to build and publish site using Travis
 
+See https://travis-ci.com/github/zemian/zemian.github.io
+
 1. Add `.travis.yml` file in master branch and configure it to deploy using a `pages` provider
 1. Setup Account in https://travis-ci.com/
 1. Go to github.com and create a GitHub token by going to user settings: > Developer settings > "Personal Access Token" (https://github.com/settings/tokens)
