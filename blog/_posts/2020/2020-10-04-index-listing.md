@@ -3,6 +3,7 @@ title: Directory Listing Project
 date: 2020-10-04
 tags:
 - php
+- web-development
 ---
 
 A directory listing index page is a very useful for development. It gives you 
