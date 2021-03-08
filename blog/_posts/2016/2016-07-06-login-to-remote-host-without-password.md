@@ -28,7 +28,7 @@ After you are in the remote host:
 
 If you don&#8217;t already have the `~/.ssh/authorized_keys` file on remote host, then create it, but ensure you don&#8217;t let other users or groups to access it. Use command like this to change the permission:
 
-    bash> chmod g-rw,o-rw ~/.ssh/authorized_keys
+    bash> chmod 600 ~/.ssh/authorized_keys
 
 The cool thing about this is that it affects all `ssh` related commands, such as `scp` will now work without prompting you for password!
 
