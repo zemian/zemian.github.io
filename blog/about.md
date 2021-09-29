@@ -115,7 +115,7 @@ I have worked with quite of few programming languages and related technologies i
 	* Microft SQL Database
 	* Microft Access
 
-- Operatin Systems
+- Operating Systems (OS)
 	* MacOS
 	* Linux (RedHat, OracleLinux, Debian and Ubuntu)
 	* Unix/Solaris
@@ -141,7 +141,7 @@ I have worked with quite of few programming languages and related technologies i
 	* Pharma Supply Chain - Rotech
 	* Airline Kiosk - Kenetics
 	* USA Government Finger Prints Identification System - Lockeed Martin
-	* USA DoD Satellite and Radios - Harris
+	* USA DoD Satellite and Radios Communication - Harris
 
 ## Other Related Articles and Blogs
 
