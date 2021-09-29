@@ -50,7 +50,7 @@ I have worked with quite of few programming languages and related technologies i
 
 - JavaScript
 	* Vanilla JS for Browsers
-	* NodeJS, Grunt and Webpack
+	* NodeJS, NPM, Grunt and Webpack
 	* VueJS
 	* BulmaCSS/TailwindCSS
 	* RequireJS
