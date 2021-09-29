@@ -40,6 +40,12 @@ I have worked with quite of few programming languages and related technologies i
 	* Jenkins
 	* Groovy Programming
 	* Scala Programming
+	* Confluence WIKI
+	* Jira Issues Tracking
+	* OpenLDAP
+	* JavaSwing/AWT
+	* ColdFusion
+	* Adobe Flex
 
 - JavaScript
 	* Vanilla JS for Browsers
@@ -85,6 +91,7 @@ I have worked with quite of few programming languages and related technologies i
 	* jEdit
 	* VIM
 	* Notepad++
+	* UltaEdit
 
 - Microsoft Products
 	* Microsoft VisualBasic programming
