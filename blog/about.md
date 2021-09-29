@@ -39,6 +39,7 @@ I have worked with quite of few programming languages and related technologies i
 	* Gradle
 	* Jenkins
 	* Groovy Programming
+	* JRuby Programming
 	* Scala Programming
 	* Confluence WIKI
 	* Jira Issues Tracking
