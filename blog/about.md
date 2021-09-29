@@ -2,24 +2,147 @@
 title: About Zemian's Blog
 date: 2019-03-09T00:00:00-05:00
 tags:
-	- zemian
+- zemian
+- deng
+- blog
+- aboutme
 ---
 
 <img align="left" src="/images/zemian-300.jpg" alt="Zemian Deng" style="margin-right: 1em;">
 
-Hi there, 
+Hello, 
 
-My name is Zemian Deng, and this is my programming blog. My interests are developing software and sharing knowledge. The first programming language I learned is `C` back in 1995. Today, I use `Java` as my primary programming language, but I also enjoy using other scripting such as `Python` and `Bash`. I like to be pragmatic when it comes to software design. I think simple code makes less buggy software.
+My name is Zemian Deng, and this is my personal blog site. My interests are in software development and sharing knowledge. The first programming language I learned is `C` back in 1995. Since then I have spent 20+ years using `Java` programming language and related technologies in various industries. In between I have also enjoyed using other scripting languages such as `Python` and `Bash` in automation and creating productive tools. Recently (since 2019) I have gotten into Front-End development with `JavaScript`.
+
+In general, I like to be pragmatic when it comes to software design. I think simple code makes less buggy software.
 
 I use this blog as my personal journal to record tips and notes on what I have learned. Feel free to leave a comment below if you share the same interests. You will also find more about me through my [LinkedIn](https://www.linkedin.com/in/zemian-deng-profile) profile and Open Source project contributions at my [GitHub](https://github.com/zemian/) account.
 
 > NOTE:
-> This is a personal weblog. The opinions expressed here represent my own and not those of my employer. All data and information provided on this site is for informational purposes only. I make no representations as to accuracy, completeness, correctness, suitability, or validity of any information on this site and will not be liable for any errors, omissions, or delays in this information or any losses, injuries, or damages arising from its display or use. All information is provided on an as-is basis.
+> This is a personal weblog. The opinions expressed here represent my own and not those of my employer(s). All data and information provided on this site is for informational purposes only. I make no representations as to accuracy, completeness, correctness, suitability, or validity of any information on this site and will not be liable for any errors, omissions, or delays in this information or any losses, injuries, or damages arising from its display or use. All information is provided on an as-is basis.
 
-## Work Experience
+## Technologies Experience
+
+I have worked with quite of few programming languages and related technologies in the past. While some experiences are more extensive than others, but I will only mention ones I actually have worked with in my past. Some tools and frameworks are already obsolete, while others I am no longer actively using. But I have worked with these at one point in my past, and I have attained from proficient to expert level with them.
+
+- Java
+	* JDK API
+	* Spring Framework (Core, Web MVC, Security, Session, Data, REST, Testing and SprintBoot)
+	* JUnit
+	* Apache Tomcat
+	* Apache Camel
+	* Quartz Scheduler
+	* Java EE
+	* Oracle WebLogic Application Server
+	* RedHat JBoss/WildFly Application Server
+	* Apache Maven/Ant
+	* Gradle
+	* Jenkins
+	* Groovy Programming
+	* Scala Programming
+
+- JavaScript
+	* Vanilla JS for Browsers
+	* NodeJS, Grunt and Webpack
+	* VueJS
+	* BulmaCSS/TailwindCSS
+	* RequireJS
+	* Oracle JET (JavaScript Extension Toolkit)
+	* Oracle VisualBuilder (a LowCode platform for Cloud Development)
+	* jQuery, jQueryUI and Bootstrap
+
+- PHP
+	* PHP + MySQL for web development
+	* WordPress & CMS developement
+	* Scripting and Automation
+	* Apache HTTPD web server
+	* Lighty (lighttpd) web server
+	* NGINX web server
+
+- Python
+	* Core Python built-in Modules
+	* Scripting and Automation
+	* Django
+	* Pip and VirtualEnv
+	* Ansible
+	* Flask
+	* MoinMoin Wiki
+
+- Ruby
+	* Ruby on Rails for web development
+	* Scripting and Automation
+	* Jekyll (static site generator)
+
+- Perl
+	* Perl + MySQL for web development
+	* Scripting and Automation
+	* Perl TWIKI
+
+- IDE and TextEditors
+	* JetBrains - IntelliJ IDEA, WebStorm, PHPStorm and DataGrip
+	* EclipseIDE
+	* NetBeans
+	* SublimeText
+	* jEdit
+	* VIM
+	* Notepad++
+
+- Microsoft Products
+	* Microsoft VisualBasic programming
+	* Microsoft Excel + VB programming
+	* Microsoft .NET Framework
+	* Microsoft Visual Studio - MFC (Foundation Classes) for C++
+	* Microsoft PowerPoint
+	* Microsoft Visio
+	* Microsoft Outlook
+
+- Source Control Systems
+	* Git
+	* Mercurial (hg)
+	* Subversion (svn)
+	* Microsoft Visual Source Safe
+	* Perforce
+	* ClearCase
+	* Oracle ADE
+	* CVS/RCS - Concurrent Versions System
+
+- Databases
+	* MySQL
+	* PostgreSQL
+	* Oracle Database
+	* SQLite
+	* Sybase Database
+	* H2Database
+	* Microft SQL Database
+	* Microft Access
+
+- Operatin Systems
+	* MacOS
+	* Linux (RedHat, OracleLinux, Debian and Ubuntu)
+	* Unix/Solaris
+	* Microsoft DOS
+	* Microsoft Windows/NT
+
+- OS Shells
+	* Bourne shell
+	* Bash shell
+	* Korn shell
+	* Microsoft DOS shell
+
+## Professional Work Experience
 
 - [GitHub](https://github.com/zemian) - Open Source Contributions
 - [LinkedIn](https://www.linkedin.com/in/zemian-deng-profile) - Professional Work Experience
+
+- Software Industries & Companies
+	* Cloud SaaS/CX B2B Service with Knowledge Management System - Oracle
+	* Banking & Finance with Tri-Parties Trade System - BNYMellon
+	* Warehouse Supply Chain - Connextions
+	* Healthcare Call Centers - Connextions
+	* Pharma Supply Chain - Rotech
+	* Airline Kiosk - Kenetics
+	* USA Government Finger Prints Identification System - Lockeed Martin
+	* USA DoD Satellite and Radios - Harris
 
 ## Other Related Articles and Blogs
 
