@@ -23,7 +23,7 @@ I use this blog as my personal journal to record tips and notes on what I have l
 
 ## Technologies Experience
 
-I have worked with quite of few programming languages and related technologies in the past. While some experiences are more extensive than others, but I will only mention ones I actually have worked with in my past. Some tools and frameworks are already obsolete, while others I am no longer actively using. But I have worked with these at one point in my past, and I have attained from proficient to expert level with them.
+I have worked with quite of few programming languages and related technologies in the past. While some experiences are more extensive than others, but I will only mention ones I actually have worked with in my past. Some tools and frameworks are already obsolete, while others I am no longer actively using. But I have worked with these at one point in my past, and I have attained ranging from proficient to expert level with some them.
 
 - Java
 	* JDK API
