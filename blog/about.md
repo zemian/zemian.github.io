@@ -63,7 +63,6 @@ I have worked with quite of few programming languages and related technologies i
 	* Core Python built-in Modules
 	* Scripting and Automation
 	* Django
-	* Pip and VirtualEnv
 	* Ansible
 	* Flask
 	* MoinMoin Wiki
