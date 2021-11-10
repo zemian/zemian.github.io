@@ -72,7 +72,7 @@
                 }
             },
             created() {
-                fetch('./posts.json').then(resp => resp.json()).then(data => {
+                fetch('../export/posts.json').then(resp => resp.json()).then(data => {
                     console.log('Data loaded', data);
                     this.posts = data;
                 });

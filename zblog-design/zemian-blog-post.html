@@ -58,10 +58,10 @@
                 }
             },
             created() {
-                fetch('./posts.json').then(resp => resp.json()).then(data => {
+                fetch('../export/posts.json').then(resp => resp.json()).then(data => {
                     console.log('Data loaded', data);
-                    const post_name = 'which-programmer-text-editor-to-use';
-                    this.post = data.find(e => e.post_name === post_name);
+                    const postID = 4;
+                    this.post = data.find(e => e.ID === postID);
                     if (this.post)
                         console.log("Found post: ", post_name);
                 });
