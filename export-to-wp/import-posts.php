@@ -1,5 +1,5 @@
 <?php
-// This script should be run inside zemian-blog-import
+// This script should be run inside export-to-wp with "composer install" setup first.
 // This script will import all Markdown blogs into WP.
 
 require "vendor/autoload.php";

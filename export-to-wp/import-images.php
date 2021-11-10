@@ -1,6 +1,6 @@
 <?php
-// This script should be run inside zemian-blog-import
-// This script will import all Markdown blogs into WP.
+// This script should be run inside export-to-wp with "composer install" setup first.
+// This script will import all images into WP
 
 require "../wordpress/wp-load.php";
 require $_SERVER['HOME'] . "/my-php/learn-wordpress/wordpress/wp-load.php";
