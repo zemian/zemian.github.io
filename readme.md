@@ -1,59 +1,88 @@
-## About this project
+Sculpin Blog Skeleton
+=====================
 
-Hi, this is my personal blog site source repository.
+A skeleton for a Sculpin based blog.
 
-My blog site is on https://zemian.github.io/
+Powered by [Sculpin](http://sculpin.io). =)
 
-The site is generated using [VuePress](https://vuepress.vuejs.org/), and it is hosted by 
-[GitHub Pages](https://docs.github.com/en/github/working-with-github-pages) service.
 
-## How to write a new post
+Features
+--------
 
-Write a new file under `blog/_posts` like this
+A very basic Sculpin based blog supporting the following features:
 
+ * Very minimal Bootstrap based theme.
+ * A handful of existing posts in `source/_posts/` to get you started. Feel
+   free to remove these when you are ready.
+ * An about page at `/about`.
+ * An index page at `/`. It displays all posts and paginates them.
+ * A blog archive page at `/blog`. It displays post titles broken down by
+   month and is paginated.
+ * A blog categories page at `/blog/categories`.
+ * A blog category index at `/blog/categories/$category`. Similar to the blog
+   archive except broken down by each category.
+ * A blog tags page at `/blog/tags`.
+ * A blog tag index at `/blog/tags/$tag`. Similar to the blog archive
+   except broken down by each tag.
+
+Prerequisites
+-------------
+
+Sculpin is a PHP application and installed with the PHP package manager `composer`.
+See https://getcomposer.org/ for installation instructions.
+
+Unless you do a very basic website, you want some CSS and Javascript assets. Sculpin
+uses `yarn` to manage them. See https://yarnpkg.com/en/docs/install for installation
+instructions.
+
+Install
+-------
+
+Create a new project using composer:
+
+```bash
+$ composer create-project -s dev sculpin/blog-skeleton my-blog
 ```
----
-title: Blog Title
-date: 2020-01-01
-tags: 
-  - blog
----
 
-My blog content goes here.
+This application uses [Symfony's Webpack Encore](https://symfony.com/doc/current/frontend.html)
+to manage CSS, JavaScript and image assets. Install the JS dependencies:
+
+```bash
+$ cd my-blog
+$ yarn install
 ```
 
-Then preview it:
-	
-	npm install
-	npm run dev
-	open http://localhost:8080
+Build
+-----
 
-## How to build and publish site manually
+First, start Encore to compile and update the assets in `source/assets/` into
+`source/build/`. The watcher keeps running until you exit it manually:
 
-Checkout `gh-pages` branch. This is the branch used to publish files.
-
-```
-git checkout gh-pages
-npm run build-gh-pages
-git add .
-git commit -m 'Publish site manually'
-git push
+```bash
+$ composer yarn-watch
 ```
 
-## How to build and publish site automatically using Travis CI
+In a new console, start the sculpin watcher to have your content updated as
+soon as you save changes:
 
-1. Add `.travis.yml` file in master branch and configure it to deploy using the 
-   `pages` provider
-2. Setup Account in https://travis-ci.com/
-3. Go to github.com and create a GitHub token by going to user settings:
-	   `Developer settings > Personal Access Token` (See https://github.com/settings/tokens)
-	   NOTE: The token only displays once, so ensure to copy it
-4. Go to travis-ci.com and add `GITHUB_TOKEN` environment variable under the project 
-   with the Github token value copied in previous step.
-5. Now trigger a test build.
+```bash
+$ composer sculpin-watch
+```
 
-From this point forward, any commits pushed to master will auto trigger a build and all 
-the output under `docs` folder will be copy to `gh-pages` branch, commit and push 
-from Travis CI.
+Your newly generated clone of sculpin-blog-skeleton should now be accessible
+at `http://localhost:8000/`.
 
-See https://travis-ci.com/github/zemian/zemian.github.io
+Documentation
+-------------
+
+The skeleton provides you with useful configuration and some example data for
+a Sculpin installation.
+
+For more information about getting started with Sculpin, check out the
+[Get Started page](https://sculpin.io/getstarted/) and have a look at the full
+[documentation](https://sculpin.io/documentation/).
+
+
+## Install fix
+
+The `yarn install` command failed with node-sass. You need to update the version in `package.json` to `"node-sass": "^6.0.1"` first.
