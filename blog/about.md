@@ -141,15 +141,15 @@ I have worked with quite of few programming languages and related technologies i
 - [GitHub](https://github.com/zemian) - Open Source Contributions
 - [LinkedIn](https://www.linkedin.com/in/zemian-deng-profile) - Professional Work Experience
 
-- Software Industries & Companies
-	* Cloud SaaS/CX B2B Service with Knowledge Management System - Oracle
-	* Banking & Finance with Tri-Parties Trade System - BNYMellon
-	* Warehouse Supply Chain - Connextions
-	* Healthcare Call Centers - Connextions
-	* Pharma Supply Chain - Rotech
-	* Airline Kiosk - Kenetics
-	* USA Government Finger Prints Identification System - Lockeed Martin
-	* USA DoD Satellite and Radios Communication - Harris
+- Software Industries
+	* Cloud SaaS/CX B2B Service with Knowledge Management System
+	* Banking & Finance with Tri-Parties Trade System
+	* Warehouse Supply Chain
+	* Healthcare Call Centers
+	* Pharma Supply Chain
+	* Airline Kiosk
+	* USA Government Finger Prints Identification System
+	* USA DoD Satellite and Radios Communication
 
 ## Other Related Articles and Blogs
 
