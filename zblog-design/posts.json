@@ -1,0 +1,152 @@
+[
+    {
+        "post_name": "how-to-trust-a-self-signed-ssl-certificate-on-macos",
+        "post_title": "How to Trust a Self-Signed SSL certificate on MacOS",
+        "post_content": "<p>Sometimes we use a self-sign certificate on web server for development. If you are\nusing a MacOS system, you would need the following to get pass the Trust certificate.<\/p>\n<ol>\n<li>\n<p>Visit the site and the click the URL icon to show the Certificate.<\/p>\n<\/li>\n<li>\n<p>Drag the certificate onto the Desktop and save it as <code>.cer<\/code> file.<\/p>\n<\/li>\n<li>\n<p>Open &quot;Keychain Access&quot; app and import the <code>.cer<\/code> file.<\/p>\n<\/li>\n<li>\n<p>Double click the import cerficate and expand &quot;Trust&quot; selection and set to &quot;Always Trust&quot;<\/p>\n<\/li>\n<li>\n<p>Save and exit &quot;Keychain Access&quot;<\/p>\n<\/li>\n<li>\n<p>Restart browser (eg: Chrome) and revisit site again.<\/p>\n<\/li>\n<\/ol>\n<p>NOTE: If you don't restart browser, the certificate will continue to fail!<\/p>\n",
+        "post_date": "2021-04-17T00:00:00+00:00",
+        "post_type": "post",
+        "post_status": "publish",
+        "tags_input": [
+            "macos",
+            "SSL-certificate",
+            "self-signed"
+        ],
+        "post_author": 6,
+        "post_author_display_name": "Zemian Deng"
+    },
+    {
+        "post_name": "take-notes-with-marknotes",
+        "post_title": "Take Notes with MarkNotes",
+        "post_content": "<p>I wrote a simple notes taking web application called <a href=\"https:\/\/github.com\/zemian\/marknotes\">MarkNotes<\/a>. It's a single <code>index.php<\/code> page application for managing Markdown notes. Try it out and let me know what you think!<\/p>\n<p>Here are few screenshots on how it looks like:<\/p>\n<h2>Home Page<\/h2>\n<p><img src=\"\/images\/posts\/2020\/marknotes1.png\" alt=\"\" \/><\/p>\n<h2>Admin Page<\/h2>\n<p><img src=\"\/images\/posts\/2020\/marknotes2.png\" alt=\"\" \/><\/p>\n<h2>Editing a Note<\/h2>\n<p><img src=\"\/images\/posts\/2020\/marknotes3.png\" alt=\"\" \/><\/p>\n",
+        "post_date": "2020-11-07T00:00:00+00:00",
+        "post_type": "post",
+        "post_status": "publish",
+        "tags_input": [
+            "php",
+            "web-development",
+            "markdown",
+            "notes",
+            "marknotes"
+        ],
+        "post_author": 6,
+        "post_author_display_name": "Zemian Deng"
+    },
+    {
+        "post_name": "directory-listing-project",
+        "post_title": "Directory Listing Project",
+        "post_content": "<p>A directory listing index page is a very useful for development. It gives you\na quick overview of your project content and able to verify your site is up and\nrunning.<\/p>\n<p>While learning PHP, I have created the smallest project called <a href=\"https:\/\/github.com\/zemian\/purple-index\">purple-index<\/a>.<\/p>\n<p>Here are some screenshots. Enjoy!<\/p>\n<p><img src=\"https:\/\/raw.githubusercontent.com\/zemian\/index-listing\/main\/docs\/screenshot.png\" alt=\"Screenshot\" \/><\/p>\n<p><img src=\"https:\/\/raw.githubusercontent.com\/zemian\/index-listing\/main\/docs\/screenshot2.png\" alt=\"Screenshot\" \/><\/p>\n<p><img src=\"https:\/\/raw.githubusercontent.com\/zemian\/index-listing\/main\/docs\/screenshot3.png\" alt=\"Screenshot\" \/><\/p>\n",
+        "post_date": "2020-10-04T00:00:00+00:00",
+        "post_type": "post",
+        "post_status": "publish",
+        "tags_input": [
+            "php",
+            "web-development"
+        ],
+        "post_author": 6,
+        "post_author_display_name": "Zemian Deng"
+    },
+    {
+        "post_name": "which-programmer-text-editor-to-use",
+        "post_title": "Which Programmer Text Editor To Use?",
+        "post_content": "<p>A text editor is a programmer must have tool. Like many developers, I have used quite a few text editors over the years. Here are some that got me through many projects.<\/p>\n<ul>\n<li>\n<p>I started learning QBasic back in the 90's that comes with editor. It was in the old Microsoft DOS command line though. Then I ventured into the C programming. Remember that there is no internet back then. I have used various pre-package editors that comes with the C compiler. Back then the Turbo C comes with an editor that I am not sure what's called. Then later I used one from Borland C++ Builder for Windows 3.1.<\/p>\n<\/li>\n<li>\n<p>Then I had been introduced to Linux and Unix environments, and I learned about <a href=\"https:\/\/www.vim.org\/\">Vim<\/a> editor. It's a stand alone editor you can use to write any code. (It's actually called Vi, but at that time, there is already a popular Vi IMproved version, so I jumped on it.) I remembered I've spent a long time trying to master it. I even got many customized shortcuts and scripts for it, but after a while I realized that it was just too taxing to try maintain it. I focus on the editor more than on my code! However I didn't regret learning this tool because even today, I am able to move about in Linux terminal and edit what I need with ease. The Vim works in terminal and it's everywhere.<\/p>\n<\/li>\n<li>\n<p>Then around year 2000, I've used <a href=\"https:\/\/www.ultraedit.com\/\">UltaEdit<\/a> (It's a Windows only text editor back then). It's the first true programmer Editor I actually pay for it! I was writing lots of Perl code back then, for an online auction site. I have used this for several years. Mainly it's clean and fast. The search and replace that supports Regular Expression, and it lets you search through a folder recursively was awesome!<\/p>\n<\/li>\n<li>\n<p>I worked with Microsoft C++ projects for some time, and their <a href=\"https:\/\/visualstudio.microsoft.com\/\">Visual Studio<\/a> was great. Heard of IntelliSense? Oh it was bleeding edge stuff back then. Now a days, just about any IDE has this feature.<\/p>\n<\/li>\n<li>\n<p>Then I got into Java programming. A large Java project needed more help than a simple text editor (but I learned all the basics through a plain editor though). I started using <a href=\"https:\/\/www.eclipse.org\/\">Eclipse IDE<\/a>. Due to the need of cross platform (Unix and Windows), and I need something lighter than IDE, I also started using <a href=\"http:\/\/www.jedit.org\/\">jEdit<\/a>. This lasted for many years.<\/p>\n<\/li>\n<li>\n<p>When I started using MacOSX and learned a new language called Ruby, it's then I heard about <a href=\"https:\/\/macromates.com\/\">TextMate<\/a>. I didn't know a Text Editor can be so slick and smooth and beautiful!<\/p>\n<\/li>\n<li>\n<p>I also had to work with Windows platform at lot at point, and I've found the open source <a href=\"https:\/\/notepad-plus-plus.org\/downloads\/\">Notepad++<\/a> a good editor to do just about any programming now. It replaced my UltraEdit at this point. If you only have to work on Windows, then this is the editor you should keep around you.<\/p>\n<\/li>\n<li>\n<p>Java has been the bread and butter of my career. Many years of Eclipse usage has lead me  yearning for more speed and stability. I started trying out <a href=\"https:\/\/netbeans.org\/\">NetBeans<\/a> and <a href=\"https:\/\/www.jetbrains.com\/idea\/\">IntelliJ IDEA<\/a>. The IDEA has won me over at the end. It's like one of those thing that once you tried, you can't go back. It is truly a great and productive IDE. Today I bought their entire tool suite that covers Java (IntelliJ IDEA), Python (PyCharm), JavaScript (WebStorm), PHP (PhpStorm) and SQL Explore (DataGrip).<\/p>\n<\/li>\n<li>\n<p>Python is one my favorite programming language. It's through python programmers, that I heard about <a href=\"https:\/\/www.sublimetext.com\/\">Sublime Text<\/a>. It's a cross platform that's truly beautify, fast and light to use for any text and programming coding. I still use this today for any quick text editing.<\/p>\n<\/li>\n<li>\n<p>Microsoft has released an open source version of light IDE editor named <a href=\"https:\/\/code.visualstudio.com\/\">VSCode<\/a>. This is very comparable to the WebStorm, except the Git client UI is terrible.<\/p>\n<\/li>\n<li>\n<p><a href=\"https:\/\/atom.io\/\">Atom<\/a> is yet another cross platform text editor that recently I have been trying out lately. It looks great, runs on multiple OS (MacOSX, Windows, Linux etc) and it's open source! It can be the SublimeText replacement, except one biggest issue is that it's slow in comparison.<\/p>\n<\/li>\n<\/ul>\n<p>So as you see, I tried many text editors. I have come to learned that you should always keep a simple, clean and fast text editor. This allows you to edit any text files for any programming languages, read logs, edit system config files etc. Then on top of this, you want to invest in a full feature IDE that supports the main programming language that your project is using. The IDE will provide quick tools setup, environment integration, language refactoring, source control integration to inspect code change and diff, intelli-sense code editing and browsing, and much more. These give you a powerful and productive boost toward a large and demanding project.<\/p>\n<p>Many popular tools out there are created for a purpose and if you're willing to learn it, you can use it in a productive way. If you are a beginner programmer, try some open source text editors. Spend few months on the one that you like. Better yet, work on a real project with your text editor. Spend some time to know it better, read the docs, and learn from other users etc. Now if you are a professional programmer, you shouldn't be afraid to pay a text editor or IDE. A commercial IDE such as Sublime Text or IntelliJ IDEA can really boost your performance. The amount of money you pay is very nominal compare to the money you will earn through the code. Writing good code is a craft of art, so invest on good tools to do the job well. With a good text editor on hand, you will enjoy coding more, and the quality of your code should get better as well.<\/p>\n",
+        "post_date": "2020-09-27T00:00:00+00:00",
+        "post_type": "post",
+        "post_status": "publish",
+        "tags_input": [
+            "texteditor",
+            "editor",
+            "programming"
+        ],
+        "post_author": 6,
+        "post_author_display_name": "Zemian Deng"
+    },
+    {
+        "post_name": "which-cms-to-use",
+        "post_title": "Which CMS to Use?",
+        "post_content": "<p>What is a CMS? Accoridng to <a href=\"https:\/\/en.wikipedia.org\/wiki\/Content_management_system\">Wikipedia<\/a><\/p>\n<blockquote>\n<p>A content management system (CMS) is a computer software used to manage the creation and modification of digital content. CMSs are typically used for enterprise content management (ECM) and web content management (WCM). ECM typically supports multiple users in a collaborative environment by integrating document management, digital asset management and record retention.<\/p>\n<\/blockquote>\n<p>A CMS (or sometimes it can be called Knowledge Mangaement System, KMS) such as ECM can be very complex and requires a team of developers and a company to support it! In fact I am currently working for <a href=\"https:\/\/www.oracle.com\/cx\/service\/knowledge-management\/\">Oracle CX Knowledge Management<\/a> that provides such service.<\/p>\n<p>Outside of ECM, many smaller business would use CMS (or the WCM) to create and host their own website. Now a days, a CMS can do more than just hosting static pages. It can be extended to include dynamic features such as ecommerce store that sells product or manage community of users etc. Another usage of CMS is just for personal blogging. It helps keep track and displaying someone's weblog in a form of digital Post.<\/p>\n<p>I have <a href=\"https:\/\/github.com\/zemian\/cms-eval\">evaluated<\/a> and used quite of few CMS applications for my own personal blogging. Here I would highlight few that I like with their pros and cons. I hope these help you in selecting your own CMS to use.<\/p>\n<h2>Static Site Generator<\/h2>\n<p>If you are a developer, you should definately try a &quot;Static Site Generator&quot; to generate a site. It helps you understand more on the tools and way to create site differently compare to a traditional web development with a server. Currently GitHub provide &quot;Pages&quot; services that host static html files for free.<\/p>\n<p>There are many generator to choose from. See my <code>cms-eval<\/code> repo for details. Currently I found <a href=\"http:\/\/vuepress.vuejs.org\/\">VuePress<\/a> to be very promising.<\/p>\n<p>PROS:<\/p>\n<ul>\n<li>Generators are usually easy to setup and run using a dynamic scripting language.<\/li>\n<li>Content data are usually store as files. And it can use markup syntax such as Markdown or Asciidoc for input.<\/li>\n<li>Simple layout and template processing to generate output that usually use a certain folders structure. Minial configuration is needed.<\/li>\n<li>Site output is just plain static HTML\/CSS\/JavaScript files.<\/li>\n<li>No server side processing needed to host the site.<\/li>\n<li>No need database<\/li>\n<\/ul>\n<p>CONS<\/p>\n<ul>\n<li>It's more work to create new post and publish it.<\/li>\n<li>New content data is created using your text editor locally, save, and then Git commit.<\/li>\n<li>New site needs to be generated, then push and update host server.<\/li>\n<li>You can automate publishing using CI server (like Travis) but require more setup.<\/li>\n<li>You usually want to use source control tool to version changes, so more tool to learn.<\/li>\n<li>A change in source could generate many changes in the output static files. (Specially if you use pagination).<\/li>\n<li>Dynamic feature such as search feature is more difficult to do. You usually need to integrate third party serice (eg: Disqus for user comments)<\/li>\n<\/ul>\n<h2>Web based CMS applications<\/h2>\n<p>This usually mean you would use a CMS web application that made created using one of server side programming language. Some example of these applications are:<\/p>\n<ul>\n<li>WordPress (PHP)<\/li>\n<li>WagtailCMS (Python)<\/li>\n<li>RandiantCMS (Ruby)<\/li>\n<li>MagnoliaCMS (Java)<\/li>\n<li>Gridsome(JS)<\/li>\n<\/ul>\n<p>These CMS application setup usually require a database and server env that specific to that programming language.<\/p>\n<p>PROS:<\/p>\n<ul>\n<li>Rich CMS features<\/li>\n<li>Take advantage of database storage and performance<\/li>\n<li>Scalable<\/li>\n<li>Customizable<\/li>\n<li>Full control on your own data and content<\/li>\n<\/ul>\n<p>CONS:<\/p>\n<ul>\n<li>Learning curve is high<\/li>\n<li>Costly to host<\/li>\n<li>Need to maintain database and applications<\/li>\n<\/ul>\n<h2>SAAS\/Cloud based CMS<\/h2>\n<p>You can use one of cloud provider that provide CMS application that you do not need to host your own. Usually this type CMS can be full application, or headless API based that only provide backedn services, and then you build your own UI.<\/p>\n<p>Example are: ButterCMS  and ContentfulCMS.<\/p>\n<p>PROS:<\/p>\n<ul>\n<li>Fast setup and usually all you need is a browser to get started (and a credit card. ^_^)<\/li>\n<li>No need to setup custom server, maintain database or applications<\/li>\n<\/ul>\n<p>CONS:<\/p>\n<ul>\n<li>Costly<\/li>\n<li>Remote debugging and support<\/li>\n<li>Data and content are hosted remotely in vendor facility<\/li>\n<\/ul>\n<h2>Custom site development<\/h2>\n<p>In this case you just build a web site from scratch using one of your favorite programming language.<\/p>\n<ul>\n<li>Java - scalable, high perforamance, higher learning curve, slower in development<\/li>\n<li>Python\/PHP\/Ruby\/JavaScript - easy to learn and quick to develope<\/li>\n<\/ul>\n<p>PROS:<\/p>\n<ul>\n<li>Fully customizable and take advantage of a programming language eco system.<\/li>\n<li>We can do just about anythig we can dream of!<\/li>\n<\/ul>\n<p>CONS:<\/p>\n<ul>\n<li>Learning curve is higher compare to using an existing CMS application<\/li>\n<li>Costly to maintain<\/li>\n<\/ul>\n",
+        "post_date": "2020-09-23T00:00:00+00:00",
+        "post_type": "post",
+        "post_status": "publish",
+        "tags_input": [
+            "cms",
+            "blog",
+            "knowledge-management",
+            "site-development"
+        ],
+        "post_author": 6,
+        "post_author_display_name": "Zemian Deng"
+    },
+    {
+        "post_name": "the-world-of-php-development",
+        "post_title": "The World of PHP Development",
+        "post_content": "<p>I have gotten into PHP lately in order to help a friend who runs a Joomla site with a custom component. Thinking to myself now that I have some <a href=\"\/2020\/03\/22\/front-end\">Front End Experience<\/a>, I shouldn't have trouble doing this. But I have never seriuosly got into PHP in the past though, and now I need to learn enough to debug and fix few bugs in the Joomla env. I have gathered and learned quite a few things and like to write it down.<\/p>\n<h2>Learning PHP<\/h2>\n<p>I started <a href=\"https:\/\/github.com\/zemian\/learn-php\">Learn PHP<\/a> repository to familiar with PHP first. I want to setup PHP locally in my machine so I can learn some syntax and programming construct. I was suprised their documentation is pretty good. I even watched a old video on <a href=\"https:\/\/www.youtube.com\/watch?v=rKXFgWP-2xQ\">PHP in 2018 by the Creator of PHP<\/a> by Rasmus Lerdorf. It was very informative and encouraging to see PHP is still thriving and doing good.<\/p>\n<p>PHP is not much use without a database and a web server, so I learned how to setup and connect PHP to those two. It seems PHP loves MySQL, and getting that running is pretty easy. As far as web server, there are few major ones to choose: Apache Httpd, Nginx or Lighttpd. The Lighttpd is the easiest to setup. I like it how I can just use one config file and bring up the server in foreground process, and the DocumentRoot can be set to your CWD. No need to setup any background PHP daemon process (like Nginx requires one). Apache Httpd can also start without a PHP daemon but the setup is complicated. Then later I learned that PHP itself comes with a web server for development! Just run <code>php -S localhost:3000<\/code> and it serves your current working directory. No setup needed! Sweet!<\/p>\n<p>NOTE: For production, it's recommended to use either Apache Httpd or Nginx.<\/p>\n<p>Later, I also found there are different versions of PHP that I would need to fix the site, and settting up multiple versions of PHP in a single web server is pretty complicated. I gathered a lot of notes on each of these subject in my repository, so check it out.<\/p>\n<h2>Learning Joomla<\/h2>\n<p>My goal is to help my friend's site, so next I started <a href=\"https:\/\/github.com\/zemian\/learn-joomla\">Learn Joomla<\/a> project. My friend site is actually quite old (Joomla 3.5.1 with PHP 5.6 and MySQL 5.7). Because of this and the PHP was compiled with some special extension in server, I actually had hard time setting it up in my Mac for local development. I ended up had to compile my own PHP from source to get a setup working! It was a painful exercise since compiling PHP 5.6 on latest MacOS has many hiccups.<\/p>\n<p>Once the environment is up, installing Joomla itself is not too bad. I got it up running in short time. Joomla documentation site is only so so though. I think this CMS design is overly complex. Their concept of Menus, Articles and Extensions are confusing, feel bulky and a lot to learn. A simple MVC based component extension will take over 10+ files to write! I just want to learn enough to use it to support a site, not experts, so this repository have gotten me through what I need to know about Joomla.<\/p>\n<p>One interesting I learned about Joomla is that its &quot;System Debug&quot; feature is pretty good. When enabled, it shows a &quot;Debug Console&quot; footer in your site that shows session, request, SQL queries and application debug messages. Great tool to debug the application. (If your site or component uses their full MVC model that is.)<\/p>\n<h2>Fixing a PHP application<\/h2>\n<p>When I got into my friend's site, I had a pretty good idea about the PHP env. So I thought I was pretty prepared. Boy, I was wrong! The site has a custom component that started out as nice self-contained extension. But through many years of abuse, it is now old with many unmaintained dependencies. It has many developers touched it over the years without any consistency. The code was badly formatted (PHP mixed with HTML in the worse way you can think of), files scattered everywhere, and worse of it all there are lots of repeated codes. Through all these, there were no version control used. So dead code eveywhere, and backup unused files literred all over the place. This is a one big mess of an app.<\/p>\n<p>Prowling through large, new code base is a daunting task. I've found the JetBrains' PHPStorm IDE helps a little bit there. I was able to jump functions and searching in directory is a breeze. The IDE also supports PHP debugger, but unfortunately it only works with latest PHP7 well. The PHP 5.6 is harder to get it setup that in the end I gave up.<\/p>\n<p>Without a debugger, the next resort in debugging an app is print message as you trace through code. The PHP is notoriously easy to allow developers litter code with <code>echo<\/code> lines and then comment it out after debug. The Joomla actually has a nice <code>JLog<\/code> logging function that let you dynamically turns on\/off and to file output. But this application that I am supporting didn't use that, and there is zero log message. I also learned that logging to file is essential when tracing a AJAX supported PHP code. Here you can't simply <code>echo<\/code> your debug message out, or it will break the JSON payload. So I have to write some of these debugging code to help myself to troubleshoot the application.<\/p>\n<p>At the end, I was able to fix few of the pressing issues due to their multiple version of jQuery loading conflicts and some bad SQL in their dynamic query builder. I have to say that nothing teaches you more than jumping into a badly coded site that's somehow working, and yet you need to fix few naughty issues! It's a hair pulling experience, but I learned a lot.<\/p>\n",
+        "post_date": "2020-09-20T05:00:00+00:00",
+        "post_type": "post",
+        "post_status": "publish",
+        "tags_input": [
+            "php",
+            "mysql",
+            "webserver",
+            "joomla"
+        ],
+        "post_author": 6,
+        "post_author_display_name": "Zemian Deng"
+    },
+    {
+        "post_name": "how-to-load-multiple-jquery",
+        "post_title": "How to Load Multiple jQuery",
+        "post_content": "<p>Sometimes, your site might need to load mulitple versions of jQuery to support some legacy libraries. Here I will provide two ways to do that.<\/p>\n<h2>Using plain HTML\/JS<\/h2>\n<pre><code class=\"language-js\">&lt;script src=&quot;https:\/\/unpkg.com\/jquery@3.5.1\/dist\/jquery.js&quot;&gt;&lt;\/script&gt;\n&lt;script&gt;let jq3 = jQuery.noConflict(true);&lt;\/script&gt;\n&lt;script src=&quot;https:\/\/unpkg.com\/jquery@1.12.4\/dist\/jquery.js&quot;&gt;&lt;\/script&gt;\n&lt;script&gt;let jq1 = jQuery.noConflict(true);&lt;\/script&gt;\n\n\n&lt;script&gt;\n\/\/ Now we can use each jQuery with the name assigned.\nconsole.log(&quot;jQuery 3 version &quot; + jq3.fn.jquery);\nconsole.log(&quot;jQuery 1 version &quot; + jq1.fn.jquery);\n\nconsole.log(&quot;jQuery 3 document &quot;, jq3(document));\nconsole.log(&quot;jQuery 1 document &quot;, jq1(document));\n&lt;\/script&gt;\n<\/code><\/pre>\n<p>NOTE: You need to call <code>noConflict()<\/code> immediately after the script tag load of the jQuery. If you are dealing with multiple jQuery, it's best not to use the <code>$<\/code> global variable to avoid confusion.<\/p>\n<h2>Using RequireJS<\/h2>\n<pre><code class=\"language-js\">&lt;script src=&quot;https:\/\/unpkg.com\/requirejs@2.3.6\/require.js&quot;&gt;&lt;\/script&gt;\n&lt;script&gt;\n\tdefine('jq3', ['https:\/\/unpkg.com\/jquery@3.5.1\/dist\/jquery'], function() {\n\t\treturn jQuery.noConflict(true);\n\t});\n\tdefine('jq1', ['https:\/\/unpkg.com\/jquery@1.12.4\/dist\/jquery'], function() {\n\t\treturn jQuery.noConflict(true);\n\t});\n\n\trequire(['jq3', 'jq1'], function(jq3, jq1) {\n\t\tjq3(function () {\n\t\tconsole.log(&quot;jQuery 3 version &quot; + jq3.fn.jquery);\n\t\tconsole.log(&quot;jQuery 1 version &quot; + jq1.fn.jquery);\n\n\t\tconsole.log(&quot;jQuery 3 document &quot;, jq3(document));\n\t\tconsole.log(&quot;jQuery 1 document &quot;, jq1(document));\n\t\t});\n\t});\n&lt;\/script&gt;\n<\/code><\/pre>\n<p>NOTE: Do not load multiple versions of jQuery through the <code>paths<\/code> inside <code>requirejs.config()<\/code> method. As that will automatically bind the <code>jquery<\/code> module name and you can't change that.<\/p>\n",
+        "post_date": "2020-09-19T05:00:00+00:00",
+        "post_type": "post",
+        "post_status": "publish",
+        "tags_input": [
+            "js",
+            "jquery",
+            "requirejs"
+        ],
+        "post_author": 6,
+        "post_author_display_name": "Zemian Deng"
+    },
+    {
+        "post_name": "switched-blogging-to-vuepress",
+        "post_title": "Switched Blogging to VuePress",
+        "post_content": "<p>I have switched my blog publishing source from <a href=\"https:\/\/github.com\/zemian\/zemian.github.io\/tree\/jbake\">jbake<\/a> to <a href=\"https:\/\/github.com\/zemian\/zemian.github.io\/tree\/master\">vuepress<\/a>.<\/p>\n<p>When I started with <code>jbake<\/code>, I used <code>asccidoc<\/code> format for post content, then I come to learn that Markdown is much easier to write for my need. I usually just need to write few lines of thoughts and code examples. Markdown suited me just fine. I also have been learning and using <code>JavaScript<\/code> development a lot lately, so I decided to use a JS based site generator. I spent some time learning <a href=\"https:\/\/github.com\/zemian\/cms-eval\/tree\/master\/learn-vuepress\">VuePress<\/a> and find it very promising, so I decided to switch.<\/p>\n<p>To switch to it, I had to convert my <code>asciidoc<\/code> posts into Markdown format, and then I have to take care of the frontmatter metadata keys. Another area I needed was to move the posts files into different folders for better file organization. Then I also took the chance to cleanup many bad posts formatting along the way.<\/p>\n<p>Recently I also have been teaching my son, Kenny, on learning <code>JavaScript<\/code> programming, and I thought this is perfect chance to put some of his learning in to practical use. He actually helped me convert all the post files by writing some <a href=\"https:\/\/github.com\/zemian\/zemian.github.io\/pull\/2\">utility scripts<\/a>. He also got to use GitHub and Pull Request the for the first time!<\/p>\n<p>Thanks to Kenny, here we have a before and after blog screenshots!<\/p>\n<p>Before - Blog with JBake:\n<img src=\"\/images\/posts\/2020\/blog-jbake.png\" alt=\"\" title=\"Before - Blog with JBake\" \/><\/p>\n<p>After - Blog with VuePress:\n<img src=\"\/images\/posts\/2020\/blog-vuepress.png\" alt=\"\" title=\"After - Blog with VuePress\" \/><\/p>\n",
+        "post_date": "2020-08-15T05:00:00+00:00",
+        "post_type": "post",
+        "post_status": "publish",
+        "tags_input": [
+            "zemian",
+            "blog",
+            "vuepress"
+        ],
+        "post_author": 6,
+        "post_author_display_name": "Zemian Deng"
+    },
+    {
+        "post_name": "oracle-jet-9-released",
+        "post_title": "Oracle JET 9 Released",
+        "post_content": "<p>The Oracle JET 9 has been release short while ago. This release is a major release compare to version 8. The most noticable thing is their new <code>redwood<\/code> theme is the default when you generate a new project now. The old <code>alta<\/code> theme is still there, but you need to opt in\nto get it. Their <a href=\"https:\/\/www.oracle.com\/webfolder\/technetwork\/jet\/jetCookbook.html\">cookbook<\/a> has been updated to use this &quot;Redwood&quot; themme. So check it out!<\/p>\n<ul>\n<li>\n<a href=\"https:\/\/www.oracle.com\/webfolder\/technetwork\/jet\/index.html?_ojCoreRouter=releasenotes\">Release notes<\/a>\n<\/li>\n<li>\n<a href=\"https:\/\/docs.oracle.com\/en\/middleware\/developer-tools\/jet\/9\/reference-api\/index.html\">API Doc<\/a>\n<\/li>\n<li>\n<a href=\"https:\/\/docs.oracle.com\/en\/middleware\/developer-tools\/jet\/9\/develop\/index.html\">Developer Guide<\/a>\n<\/li>\n<\/ul>\n",
+        "post_date": "2020-08-09T05:00:00+00:00",
+        "post_type": "post",
+        "post_status": "publish",
+        "tags_input": [
+            "ojet"
+        ],
+        "post_author": 6,
+        "post_author_display_name": "Zemian Deng"
+    },
+    {
+        "post_name": "back-to-github",
+        "post_title": "Back To GitHub",
+        "post_content": "<p>Okay, I tried <a href=\"https:\/\/medium.com\/@zemiandeng\">Medium Blogging<\/a>, but still not very satisfied. So\nnow I am back on GitHub. I am currently <a href=\"https:\/\/github.com\/zemian\/cms-eval\">evaluating other CMS tools<\/a>.<\/p>\n",
+        "post_date": "2020-08-01T05:00:00+00:00",
+        "post_type": "post",
+        "post_status": "publish",
+        "tags_input": [
+            "blog",
+            "zemian"
+        ],
+        "post_author": 6,
+        "post_author_display_name": "Zemian Deng"
+    }
+]
