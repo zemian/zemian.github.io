@@ -6,7 +6,7 @@ tags:
 - zemian
 ---
 
-<img align="left" src="/images/zemian-300.jpg" alt="Zemian Deng" style="margin-right: 1em;">
+<img align="left" src="/assets/images/zemian-300.jpg" alt="Zemian Deng" style="margin-right: 1em;">
 
 Hello, 
 
