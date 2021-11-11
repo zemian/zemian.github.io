@@ -4,10 +4,11 @@ title: Tags
 use:
     - posts_tags
 ---
-<h2>Tags</h2>
+
+<h1 class="title">Tags</h1>
 
 <div>
 {% for tag,posts in data.posts_tags %}
-<a href="{{ site.url }}/blog/tags/{{ tag|url_encode(true) }}">{{ tag }}</a>
+<a class="tag mr-1" href="{{ site.url }}/blog/tags/{{ tag|url_encode(true) }}">{{ tag }}</a>
 {% endfor %}
 </div>
