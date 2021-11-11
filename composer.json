@@ -15,6 +15,14 @@
         "publish": [
             "./publish.sh"
         ],
+        "sculpin-dev": [
+            "Composer\\Config::disableProcessTimeout",
+            "sculpin generate --env=dev"
+        ],
+        "sculpin-prod": [
+            "Composer\\Config::disableProcessTimeout",
+            "sculpin generate --env=prod"
+        ],
         "sculpin-watch": [
             "Composer\\Config::disableProcessTimeout",
             "sculpin generate --watch --server"
