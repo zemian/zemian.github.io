@@ -29,6 +29,7 @@
                     <div class="navbar-start is-size-4">
                         <a href="{{ site.url }}/tags" class="navbar-item">Tags</a>
                         <a href="{{ site.url }}/about" class="navbar-item">About</a>
+                        <a href="{{ site.url }}/atom.xml" class="navbar-item">Feed</a>
                     </div>
                 </div>
             </div>
@@ -39,9 +40,7 @@
                 <div class="columns is-centered">
                     <div class="column is-two-thirds">
                         {% block content_wrapper %}
-                        <div class="content">
                             {% block content %}{% endblock %}
-                        </div>
                         {% endblock %}
                     </div>
                 </div>
