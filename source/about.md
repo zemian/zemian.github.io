@@ -78,9 +78,14 @@ I have worked with quite of few programming languages and related technologies i
 	* Jekyll (static site generator)
 
 - Perl
-	* Perl + MySQL for web development
-	* Scripting and Automation
-	* Perl TWIKI
+    * Perl + MySQL for web development
+    * Scripting and Automation
+    * Perl TWIKI
+  
+- C/C++
+    * C Programming - POSIX
+    * Microsoft Foundation Classes (MFC) for C++
+    * Borland Object Windows Library for C++
 
 - IDE and TextEditors
 	* JetBrains - IntelliJ IDEA, WebStorm, PHPStorm and DataGrip
@@ -153,7 +158,7 @@ I have worked with quite of few programming languages and related technologies i
 
 - [Java DZone](https://dzone.com/users/saltnlight5)
 - [Blogger](http://saltnlight5.blogspot.com)
-- [jroller](http://www.jroller.com/thebugslayer)
+- [Jroller](http://www.jroller.com/thebugslayer)
 
 ## How to Contact Me
 
