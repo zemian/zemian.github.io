@@ -22,6 +22,7 @@ git add .
 git commit -m 'Publish'
 git push -f origin gh-pages
 git checkout empty-branch
+git branch -D gh-pages
 rm -rf *
 popd
 
