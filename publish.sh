@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 echo "Building prod site"
+PUBLISH_VERSION=`git rev-parse HEAD`
 rm -rf output_prod
 ./vendor/bin/sculpin generate --env=prod
 if [ $? -ne 0 ]; then echo "Could not generate the site"; exit 1; fi
@@ -18,6 +19,7 @@ echo "Rebuild gh-pages branch and push to GitHub for publish"
 pushd $REPO
 git checkout --orphan gh-pages
 cp -rf ../../output_prod/* .
+echo $PUBLISH_VERSION > release.txt
 git add .
 git commit -m 'Publish'
 git push -f origin gh-pages
