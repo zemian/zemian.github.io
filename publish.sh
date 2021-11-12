@@ -10,9 +10,6 @@ REPO=temp/zemian.github.io.git_gh-pages
 if [[ ! -d $REPO ]]; then
     echo "Clone a temp git repo for publishing"
     git clone -b empty-branch git@github.com:zemian/zemian.github.io.git $REPO
-    pushd $REPO
-    git config user.email 'zemiandeng@gmail.com'
-    popd
 fi
 
 echo "Rebuild gh-pages branch and push to GitHub for publish"
