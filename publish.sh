@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 echo "Building prod site"
+rm -rf output_prod
 ./vendor/bin/sculpin generate --env=prod
 if [ $? -ne 0 ]; then echo "Could not generate the site"; exit 1; fi
 
@@ -15,7 +16,7 @@ fi
 
 echo "Rebuild gh-pages branch and push to GitHub for publish"
 pushd $REPO
-git checkout --orphan gh-branch
+git checkout --orphan gh-pages
 cp -rf ../../output_prod/* .
 git add .
 git commit -m 'Publish'
