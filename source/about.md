@@ -129,6 +129,7 @@ I have worked with quite of few programming languages and related technologies i
 - Operating Systems (OS)
 	* MacOS
 	* Linux (RedHat, OracleLinux, Debian and Ubuntu)
+	* Cygwin/MinGW - Unix on Windows
 	* Unix/Solaris
 	* Microsoft DOS
 	* Microsoft Windows/NT
