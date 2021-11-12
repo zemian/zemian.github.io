@@ -10,7 +10,7 @@ tags:
 
 Hello, 
 
-My name is Zemian Deng, and this is my personal blog site. My interests are in software development and sharing knowledge. The first programming language I learned is `C` back in 1995. Since then I have spent 20+ years using `Java` programming language and related technologies in various industries. In between I have also enjoyed using other scripting languages such as `Python` and `Bash` in automation and creating productive tools. Recently (since 2019) I have gotten into Front-End development with `JavaScript`.
+My name is Zemian Deng, and this is my personal blog site. My interests are in software development and sharing knowledge. The first programming language I learned is `C` back in 1995. Since then I have spent 20+ years using various programming languages in different industries. I have spent major part of my career working with `Java` programming language and related technologies. In between I have also enjoyed using other scripting languages such as `Python` and `Bash` for automation and creating productive tools etc. Recently I have also gotten into Front-End development with `JavaScript` and `NodeJS`.
 
 In general, I like to be pragmatic when it comes to software design. I think simple code makes less buggy software.
 
@@ -19,7 +19,7 @@ I use this blog as my personal journal to record tips and notes on what I have l
 > NOTE:
 > This is a personal weblog. The opinions expressed here represent my own and not those of my employer(s). All data and information provided on this site is for informational purposes only. I make no representations as to accuracy, completeness, correctness, suitability, or validity of any information on this site and will not be liable for any errors, omissions, or delays in this information or any losses, injuries, or damages arising from its display or use. All information is provided on an as-is basis.
 
-## Technologies Experience
+## My Programming Experience
 
 I have worked with quite of few programming languages and related technologies in the past. While some experiences are more extensive than others, but I will only mention ones I actually have worked with in my past. Some tools and frameworks are already obsolete, while others I am no longer actively using. But I have worked with these at one point in my past, and I have attained ranging from proficient to expert level with some them.
 
@@ -88,7 +88,7 @@ I have worked with quite of few programming languages and related technologies i
     * Borland Object Windows Library for C++
 
 - IDE and TextEditors
-	* JetBrains - IntelliJ IDEA, WebStorm, PHPStorm and DataGrip
+	* JetBrains - IntelliJ IDEA, WebStorm, PHPStorm, PyCharm and DataGrip
 	* EclipseIDE
 	* NetBeans
 	* SublimeText
@@ -140,7 +140,7 @@ I have worked with quite of few programming languages and related technologies i
 	* Korn shell
 	* Microsoft DOS shell
 
-## Professional Work Experience
+## My Professional Work Experience
 
 - [GitHub](https://github.com/zemian) - Open Source Contributions
 - [LinkedIn](https://www.linkedin.com/in/zemian-deng-profile) - Professional Work Experience
@@ -155,7 +155,7 @@ I have worked with quite of few programming languages and related technologies i
 	* USA Government Finger Prints Identification System
 	* USA DoD Satellite and Radios Communication
 
-## Other old and outdated blog sites
+## Older and outdated blog sites
 
 - [Java DZone](https://dzone.com/users/saltnlight5)
 - [Blogger](http://saltnlight5.blogspot.com)
