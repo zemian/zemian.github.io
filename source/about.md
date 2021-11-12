@@ -145,7 +145,7 @@ I have worked with quite of few programming languages and related technologies i
 - [LinkedIn](https://www.linkedin.com/in/zemian-deng-profile) - Professional Work Experience
 
 - Software Industries
-	* Cloud SaaS/CX B2B Service with Knowledge Management System
+	* Cloud Platform, SaaS, B2B Service and Enterprise Knowledge Management System
 	* Banking & Finance with Tri-Parties Trade System
 	* Warehouse Supply Chain
 	* Healthcare Call Centers
