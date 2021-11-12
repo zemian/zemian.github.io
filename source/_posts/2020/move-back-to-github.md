@@ -3,7 +3,6 @@ title: Back To GitHub
 date: 2020-08-01T00:00:00-05:00
 tags:
   - blog
-  - zemian
 ---
 
 Okay, I tried [Medium Blogging](https://medium.com/@zemiandeng), but still not very satisfied. So

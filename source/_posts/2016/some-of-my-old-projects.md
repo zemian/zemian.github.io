@@ -2,7 +2,6 @@
 title: Some of my old projects
 date: 2016-06-30T00:00:00-05:00
 tags:
-  - zemian
   - blog
 ---
 

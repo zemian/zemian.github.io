@@ -1,8 +1,7 @@
 ---
-title: Some of my googlecode projects
+title: Some of my old googlecode projects
 date: 2011-09-24T00:00:00-05:00
 tags:
-  - zemian
   - blog
 ---
 I have created number of googlecode projects in attempt to try out new codes and ideas in the past. I now have links to all of them in my consolidated playground area [http://code.google.com/p/zemiandeng/](http://code.google.com/p/zemiandeng/)

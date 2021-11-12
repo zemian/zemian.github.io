@@ -2,7 +2,8 @@
 title: From Back End to Front End Development
 date: 2020-03-22T00:00:00-05:00
 tags:
-  - zemian
+  - js
+  - nodejs
   - frontend
 ---
 

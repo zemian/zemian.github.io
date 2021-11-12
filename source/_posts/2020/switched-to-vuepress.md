@@ -2,7 +2,6 @@
 title: Switched Blogging to VuePress
 date: 2020-08-15T00:00:00-05:00
 tags:
-- zemian
 - blog
 - vuepress
 ---
