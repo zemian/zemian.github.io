@@ -95,7 +95,7 @@ I have worked with quite of few programming languages and related technologies i
 	* jEdit
 	* VIM
 	* Notepad++
-	* UltaEdit
+	* UltraEdit
 
 - Microsoft Products
 	* Microsoft VisualBasic programming
