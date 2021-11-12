@@ -3,7 +3,14 @@
 ./vendor/bin/sculpin generate --env=prod
 if [ $? -ne 0 ]; then echo "Could not generate the site"; exit 1; fi
 
-# Add --delete right before "output_prod" to have rsync remove files that are
-# deleted locally from the destination too. See README.md for an example.
-rsync -avze 'ssh -p 4668' output_prod/ username@yoursculpinsite:public_html
-if [ $? -ne 0 ]; then echo "Could not publish the site"; exit 1; fi
+git checkout --orphan gh-pages
+mv output_prod .output_prod
+rm -rf *
+mv .output_prod/* .
+rm -rf .output_prod
+rm .editorconfig
+git add .
+git commit -m 'Publish'
+git push -f origin gh-pages
+git checkout master
+git branch -D gh-pages
