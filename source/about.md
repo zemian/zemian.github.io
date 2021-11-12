@@ -149,11 +149,11 @@ I have worked with quite of few programming languages and related technologies i
 	* USA Government Finger Prints Identification System
 	* USA DoD Satellite and Radios Communication
 
-## Other Related Articles and Blogs
+## Other old and outdated blog sites
 
 - [Java DZone](https://dzone.com/users/saltnlight5)
 - [Blogger](http://saltnlight5.blogspot.com)
-- ~~[jroller](http://www.jroller.com/thebugslayer)~~ - jroller is gone?
+- [jroller](http://www.jroller.com/thebugslayer)
 
 ## How to Contact Me
 
