@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-echo "Building prod site"
 PUBLISH_VERSION=`git rev-parse HEAD`
+echo "Building prod site: $PUBLISH_VERSION"
 rm -rf output_prod
 ./vendor/bin/sculpin generate --env=prod
 if [ $? -ne 0 ]; then echo "Could not generate the site"; exit 1; fi
@@ -28,4 +28,4 @@ git branch -D gh-pages
 rm -rf *
 popd
 
-echo "Publish is complete"
+echo "Publish is complete: release=$PUBLISH_VERSION"
