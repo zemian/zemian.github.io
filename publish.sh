@@ -13,3 +13,5 @@ git push -f origin gh-pages
 git checkout master
 git branch -D gh-pages
 cp -rf temp/working_dir/* .
+
+echo "Publish is complete"
