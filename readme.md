@@ -29,7 +29,7 @@ NOTE: We are not using any custom css/js right now. The Bulma and VueJS files ar
 First start dev server
 
 ```
-$ composer sculpin-watch
+./dev.sh
 ```
 
 Your newly generated site should now be accessible at `http://localhost:8000/`
