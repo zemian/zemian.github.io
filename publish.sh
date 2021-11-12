@@ -4,13 +4,12 @@
 if [ $? -ne 0 ]; then echo "Could not generate the site"; exit 1; fi
 
 git checkout --orphan gh-pages
-mv output_prod .output_prod
-rm -rf *
-mv .output_prod/* .
-rm -rf .output_prod
-rm .editorconfig
+mkdir -p temp/working_dir
+mv * temp/working_dir
+mv temp/working_dir/output_prod/* .
 git add .
 git commit -m 'Publish'
 git push -f origin gh-pages
 git checkout master
 git branch -D gh-pages
+cp -rf temp/working_dir/* .
