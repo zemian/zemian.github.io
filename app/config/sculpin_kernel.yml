@@ -1,6 +1,10 @@
 sculpin_content_types:
     posts:
+        type: path
+        path: _posts
         permalink: blog/:year/:title
+        taxonomies:
+            - tags
 
 sculpin_markdown:
     parser_class: 'Sculpin\Bundle\MarkdownBundle\PhpMarkdownExtraParser'
