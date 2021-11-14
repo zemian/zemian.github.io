@@ -17,18 +17,24 @@ pushd $REPO
 git checkout --orphan gh-pages
 
 # Copy the prod output dir
+echo "Copying and preparing output_prod files"
 cp -rf ../../output_prod/* .
 # Remove extra generated folder
 rm -rf assets
 # Create release/version file
 echo $PUBLISH_VERSION > version.txt
 
+echo "Adding and committing new files to Git"
 git add .
 git commit -m 'Publish'
+echo "Publishing content to GitHub"
 git push -f origin gh-pages
+echo "Resetting back to empty-branch"
 git checkout empty-branch
 git branch -D gh-pages
+echo "Cleaning up temp git repo directory"
 rm -rf *
+echo "Done"
 popd
 
-echo "Publish is complete: release=$PUBLISH_VERSION"
+echo "Site is published with version: $PUBLISH_VERSION"
