@@ -15,8 +15,14 @@ fi
 echo "Rebuild gh-pages branch and push to GitHub for publish"
 pushd $REPO
 git checkout --orphan gh-pages
+
+# Copy the prod output dir
 cp -rf ../../output_prod/* .
-echo $PUBLISH_VERSION > release.txt
+# Remove extra generated folder
+rm -rf assets
+# Create release/version file
+echo $PUBLISH_VERSION > version.txt
+
 git add .
 git commit -m 'Publish'
 git push -f origin gh-pages
