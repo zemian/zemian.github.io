@@ -39,3 +39,9 @@ To publish, run
 ```
 ./publish.sh
 ```
+
+## ZBlog Logo
+
+* https://danmarshall.github.io/google-font-to-svg-path/
+  * Size: 50
+* https://fonts.google.com/?preview.text=ZBlog&preview.text_type=custom&category=Handwriting
