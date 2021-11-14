@@ -59,7 +59,7 @@ Here is how a table looks like in Bulma:
 </table>
 ```
 
-![](/assets/images/posts/2020/bulma1.png)
+![](/build/images/posts/2020/bulma1.png)
 
 And here is a quick form:
 
@@ -77,7 +77,7 @@ And here is a quick form:
 </div>
 ```
 
-![](/assets/images/posts/2020/bulma2.png)
+![](/build/images/posts/2020/bulma2.png)
 
 Add buttons!
 
@@ -95,4 +95,4 @@ Add buttons!
 </div>
 ```
 
-![](/assets/images/posts/2020/bulma3.png)
+![](/build/images/posts/2020/bulma3.png)

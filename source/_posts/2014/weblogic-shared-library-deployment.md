@@ -27,7 +27,7 @@ Now your Skinny WAR would need to add an WEB-INF/weblogic.xml extension file to 
 
 With these two packaged, now turn to your WLS admin console, you will find "Deployments" menu link on left, and on right, you click "Install" button. The next screen will prompt you to choose which type of deployment to install: "Library" (Shared Lib War) or "Application" (Skinny War). Re-run this twice, each with your two seperated WAR files you just built. 
 
-![](/assets/images/posts/2014/wls-shared-lib.png)
+![](/build/images/posts/2014/wls-shared-lib.png)
 
 The WLS will combine the two when running your WAR application. This comes handy if you are to deploy multiple instances of your Skinny war application, but now you only need one shared lib.
 

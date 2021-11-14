@@ -137,7 +137,7 @@ This is really***very***important text.
 1.  Open the file containing the Linux mascot.
 2.  Marvel at its beauty.
 
-    ![Tux, the Linux mascot](https://d33wubrfki0l68.cloudfront.net/e7ed9fe4bafe46e275c807d63591f85f9ab246ba/e2d28/assets/images/tux.png)
+    ![Tux, the Linux mascot](https://d33wubrfki0l68.cloudfront.net/e7ed9fe4bafe46e275c807d63591f85f9ab246ba/e2d28/build/images/tux.png)
 
 3.  Close the file.
 
@@ -199,7 +199,7 @@ eat: it was a [hobbit-hole][1], and that means comfort.
 (https://www.example.com/my%20great%20page)
 
 
-![Philadelphia's Magic Gardens. This place was so cool!](https://d33wubrfki0l68.cloudfront.net/eab45e25bb79970178fab7a2d10cba0209372a59/94d9e/assets/images/philly-magic-garden.jpg "Philadelphia's Magic Gardens")
+![Philadelphia's Magic Gardens. This place was so cool!](https://d33wubrfki0l68.cloudfront.net/eab45e25bb79970178fab7a2d10cba0209372a59/94d9e/build/images/philly-magic-garden.jpg "Philadelphia's Magic Gardens")
 
 \* Without the backslash, this would be a bullet in an unordered list.
 

@@ -10,7 +10,7 @@ tags:
 
 I redesigned my blog with the [Sculpin](https://sculpin.io/) Static Site Generator. I made a simple custom theme with BulmaCSS. Here is a screenshot:
 
-![](/assets/images/posts/2021/new-zblog-design-with-bulma-and-sculpin.png)
+![](/build/images/posts/2021/new-zblog-design-with-bulma-and-sculpin.png)
 
 Few things I like about Bulma and Sculpin:
 
