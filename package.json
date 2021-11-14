@@ -1,7 +1,9 @@
 {
   "dependencies": {
     "@symfony/webpack-encore": "^0.30",
-    "node-sass": "^6.0.1",
+    "bulma": "^0.9.3",
+    "dayjs": "^1.10.7",
+    "sass": "^1.43.4",
     "sass-loader": "^8.0"
   }
 }
