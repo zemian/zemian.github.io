@@ -12,7 +12,7 @@ The [WordPress installation](https://wordpress.org/support/article/how-to-instal
 
 The WordPress requires MySQL database server, and you need PHP and a web server to run it. Setting up web server such as Apache with PHP can be complicated, but if you want just to explore for local development, we can simply use the PHP built-int web server. This built-in PHP web server doesn't require setup and it's easy to use!
 
-If you are using macOS, then you may install the two items using `brew` command [package manager](https://brew.sh/) ) like this:
+If you are using macOS, then you may install the two items using `brew` command [package manager](https://brew.sh/) like this:
 
 ```
 brew install mysql@5.7 php@7.4
