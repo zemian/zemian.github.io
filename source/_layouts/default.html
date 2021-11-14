@@ -24,8 +24,14 @@
                     <div class="navbar-item">
                         <a href="{{ site.url }}/" class="is-size-1 has-text-weight-bold">{{ site.title }}</a>
                     </div>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
                 </div>
-                <div class="navbar-menu">
+                <div class="navbar-menu" id="navbarMenu">
                     <div class="navbar-start is-size-4">
                         <a href="{{ site.url }}/tags" class="navbar-item">Tags</a>
                         <a href="{{ site.url }}/about" class="navbar-item">About</a>
@@ -70,6 +76,18 @@
             </div>
         </div>
     </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
 
     {% block scripts %}
     <script src="{{ site.url }}/build/app.js"></script>
