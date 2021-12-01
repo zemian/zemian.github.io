@@ -2,7 +2,8 @@
 title: Using crontab to startup service
 date: 2014-06-08T00:00:00-05:00
 tags:
-  - crontab
+  - cron
+  - backup
 ---
 Did you know that crontab service has the "@reboot" schedule that would start a script during your system startup time? This is handy if you want something to run right after your system has stared. Try this:
 
