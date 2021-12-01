@@ -45,3 +45,8 @@ To publish, run
 * https://danmarshall.github.io/google-font-to-svg-path/
   * Size: 50
 * https://fonts.google.com/?preview.text=ZBlog&preview.text_type=custom&category=Handwriting
+
+## Google Search Engine for "Zemian's Blog"
+
+https://programmablesearchengine.google.com/cse/setup/basic?cx=5bfbcfd67681f7be8
+
