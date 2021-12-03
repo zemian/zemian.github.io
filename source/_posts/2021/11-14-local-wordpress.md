@@ -10,19 +10,54 @@ The [WordPress installation](https://wordpress.org/support/article/how-to-instal
 
 ## The Pre-Requisite Setup
 
-The WordPress requires MySQL database server, and you need PHP and a web server to run it. Setting up web server such as Apache with PHP can be complicated, but if you want just to explore for local development, we can simply use the PHP built-int web server. This built-in PHP web server doesn't require setup and it's easy to use!
+The WordPress requires MySQL database server, and you need PHP and a web server to run it. I will use the Apache HTTPD web server (or Apache for short) here.
 
-If you are using macOS, then you may install the two items using `brew` command [package manager](https://brew.sh/) like this:
+If you are using macOS, then you may install these items using `brew` command [package manager](https://brew.sh/) like this:
 
 ```
-brew install mysql@5.7 php@7.4
-brew services start mysql@5.7
+brew install httpd mysql php
+brew services start httpd
+brew services start mysql
 ```
 
-Or, alternatively, you may install them manually:
+If you want to learn each software in detail, checkout their website for their full documentation:
 
-1. Install [MySQL database server](https://dev.mysql.com/downloads/mysql/).
-2. Install [PHP](https://www.php.net/downloads.php).
+* [Apache HTTPD server](https://httpd.apache.org/)
+* [MySQL database server](https://dev.mysql.com/downloads/mysql/)
+* [PHP](https://www.php.net/downloads.php)
+
+## The Apache HTTPD Setup
+
+For Apache, you need some manual setup to get PHP working. Edit the Apache config 
+`/usr/local/etc/httpd/httpd.conf` file and append the following:
+
+```
+# To enable PHP in Apache add the following to httpd.conf and restart Apache:
+LoadModule php_module /usr/local/opt/php/lib/httpd/modules/libphp.so
+<FilesMatch \.php$>
+    SetHandler application/x-httpd-php
+</FilesMatch>
+
+# Finally, check DirectoryIndex includes index.php
+DirectoryIndex index.php index.html
+```
+
+NOTE: The path I have is from my installation. You may want to run `brew info httpd` and 
+`brew info php` to verify your actual installation paths.
+
+TIPS: For Windows users, you may want to try friendly [XAMPP package](https://www.apachefriends.org/index.html) that comes with all three software!
+
+To verify you have Apache & PHP installed correctly, you need to locate the DocumentRoot directory is.
+That's where it host all your HTML files for Apache server. For mine, it's under `/usr/local/var/www/`
+You can find your DocumentRoot path inside the Apache config `/usr/local/etc/httpd/httpd.conf` file.
+You will also noticed that default port Apache use is `8080`. So create a simple PHP script to test it like this:
+
+```
+# file: /usr/local/var/www/phpinfo.php
+<?php phpinfo(); ?>
+```
+
+Now open `http://localhost:8080/phpinfo.php` to verify. It should print many PHP information for you.
 
 ## The Database Setup
 
@@ -45,16 +80,9 @@ GRANT ALL PRIVILEGES ON wordpress.* TO 'myuser'@'localhost';
 
 ## The WordPress Install and Setup
 
-1. Download [WordPress](https://wordpress.org/download/#download-install) and unzip it under `$HOME/wordpress`
-
-2. Open a command prompt Terminal and cd into the directory and start the built-in PHP web server:
-
-    ```
-    cd $HOME/wordpress
-    php -S localhost:3000
-    ```
+1. Download [WordPress](https://wordpress.org/download/#download-install) and unzip it under the DocumentRoot folder (eg: `/usr/local/var/www/`). You should have the `/usr/local/var/www/wordpress` directory after complete.
         
-3. Open a browser and visit [http://localhost:3000/](http://localhost:3000/). This is where your "famous 5-minute installation" starts. Follow the prompt through several pages to get your WordPress up and running. I will give you some basic examples to get started:
+3. Open a browser and visit `http://localhost:8080/wordpress`. This is where your "famous 5-minute installation" starts. Follow the prompt through several pages to get your WordPress up and running. I will give you some basic examples to get started:
 
     1. A language selection page will greet you. Select `English (United States)` and then press "Continue" button.
     2. Next is an info page telling you that you need the database information to complete the setup. Press "Let's go" button.
@@ -80,7 +108,7 @@ GRANT ALL PRIVILEGES ON wordpress.* TO 'myuser'@'localhost';
     
     7. Now your WordPress is ready. You may access two areas of the site:
     
-        * [http://localhost:3000/](http://localhost:3000/) - The front-end site for public users. 
-        * [http://localhost:3000/wp-admin](http://localhost:3000/wp-admin) - The back-end site for admin users.
+        * `http://localhost:8080/wordpress` - The front-end site for public users. 
+        * `http://localhost:8080/wordpress/wp-admin` - The back-end site for admin users.
         
 And that's all! Enjoy creating content with WordPress!

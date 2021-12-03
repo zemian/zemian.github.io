@@ -14,7 +14,7 @@ to manage CSS, JavaScript and image assets. Install the JS dependencies:
 
 ```
 npm install
-node_modules/.bin/encore production
+node_modules/.bin/encore dev
 ```
 
 If CSS and JS are modify, you need to run:
