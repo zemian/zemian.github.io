@@ -25,6 +25,10 @@
           gtag('config', '{{site.google_analytics_tracking_id}}');
         </script>
         {% endif %}
+
+        {% if site.google_adsense_enabled %}
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1148923977922702" crossorigin="anonymous"></script>
+        {% endif %}
     </head>
     <body>
 
