@@ -13,13 +13,14 @@ This application uses [Symfony's Webpack Encore](https://symfony.com/doc/current
 to manage CSS, JavaScript and image assets. Install the JS dependencies:
 
 ```
-yarn install
+npm install
+node_modules/.bin/encore dev
 ```
 
 If CSS and JS are modify, you need to run:
 
 ```
-composer yarn-watch
+node_modules/.bin/encore dev --watch
 ```
 
 NOTE: We are not using any custom css/js right now. The Bulma and VueJS files are directly copy into assets folder.
