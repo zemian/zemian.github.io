@@ -15,4 +15,4 @@ To create article
 To preview
 
 	pelican content
-	cd output && python -m pelican.server
+	python -m http.server -d output
