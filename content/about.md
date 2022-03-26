@@ -2,11 +2,9 @@
 layout: page
 title: About Zemian's Blog
 date: 2021-09-29T00:00:00-05:00
-tags:
-- blog
 ---
 
-<img align="left" src="/build/images/zemian-300.jpg" alt="Zemian Deng" style="margin-right: 1em;">
+<img align="left" src="/resources/images/zemian-300.jpg" alt="Zemian Deng" style="margin-right: 1em;">
 
 Hello, 
 
@@ -158,7 +156,7 @@ I have worked with quite of few programming languages and related technologies i
 ## Older and outdated blog sites
 
 - [Java DZone](https://dzone.com/users/saltnlight5)
-- [Blogger](http://saltnlight5.blogspot.com)
+- [Blogger](https://zemian.github.io)
 - [Jroller](http://www.jroller.com/thebugslayer)
 
 ## How to Contact Me

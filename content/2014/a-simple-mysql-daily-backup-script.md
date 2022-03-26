@@ -6,7 +6,7 @@ tags:
   - backup
   - cron
 ---
-Using the MySQL export script I've showed from [last post](http://saltnlight5.blogspot.com/2014/05/how-to-export-and-import-mysql-database.html) (assume you saved it in a file named "$HOME/database-export.sh"), you may now perform a daily backup with your crontab service like this.
+Using the MySQL export script I've showed from [last post](https://zemian.github.io/2014/05/how-to-export-and-import-mysql-database.html) (assume you saved it in a file named "$HOME/database-export.sh"), you may now perform a daily backup with your crontab service like this.
 ```
 #file: mysql-backups.sh
 DIR=`dirname $0`

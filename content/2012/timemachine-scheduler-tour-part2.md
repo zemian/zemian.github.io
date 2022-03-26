@@ -119,4 +119,4 @@ There you go. Above is your first custom job in TimeMachine Scheduler! The Groov
 
 Interested? Go and [download](https://bitbucket.org/timemachine/scheduler/downloads)the scheduler today and give it a try!
 
-End of part 2. You may continue [next tour](http://saltnlight5.blogspot.com/2012/06/timemachine-scheduler-tour-part3.html), or see [previous tour](http://saltnlight5.blogspot.com/2012/06/timemachine-scheduler-tour-part1.html).
+End of part 2. You may continue [next tour](https://zemian.github.io/2012/06/timemachine-scheduler-tour-part3.html), or see [previous tour](https://zemian.github.io/2012/06/timemachine-scheduler-tour-part1.html).

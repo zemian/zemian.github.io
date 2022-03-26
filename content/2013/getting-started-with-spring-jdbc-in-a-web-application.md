@@ -6,7 +6,7 @@ tags:
   - jdbc
 ---
 
-I have shown you how to setup a [basic Spring 3 MVC web application](http://saltnlight5.blogspot.com/2013/10/getting-started-with-annotation-based.html) in my previous article. Reusing that project setup as template, I will show you how to enhance it to work with JDBC. With this you can store and retrieve data from database. We will add a new controller and a data service through Spring so you can see how Spring injection and annotation configuration works together.
+I have shown you how to setup a [basic Spring 3 MVC web application](https://zemian.github.io/2013/10/getting-started-with-annotation-based.html) in my previous article. Reusing that project setup as template, I will show you how to enhance it to work with JDBC. With this you can store and retrieve data from database. We will add a new controller and a data service through Spring so you can see how Spring injection and annotation configuration works together.
 
 A direct JDBC based application is easy to setup in comparison to a full ORM such as Hibernate. You don&#8217;t need to worry AOP, TranactionManager, Entity mapping and full array of other configurations. On top of the JDK&#8217;s `java.jdbc` API, the Spring comes with `spring-jdbc` module that can boots your productively with their well known `JdbcTemplate` class. Let&#8217;s explore how this can be setup and run as web application.
 

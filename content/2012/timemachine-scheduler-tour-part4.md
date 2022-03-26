@@ -145,4 +145,4 @@ Besides the SchedulerListener, there is also JobListener, `ConfigPropsListener`,
 
 In  this tour, I have introduced and setup a Java Maven based project for you to explore the TimeMachine Scheduler. Go ahead and give these API a try and let us know what you think. If there is any features you are looking for that's not in current scheduler, then please help file an Issue in the project site. We will be glad to evaluate and look forward to improve the project with you.
 
-End of part 4. You may continue [next tour](http://saltnlight5.blogspot.com/2012/06/timemachine-scheduler-tour-part5.html), or see [previous tour](http://saltnlight5.blogspot.com/2012/06/timemachine-scheduler-tour-part3.html).
+End of part 4. You may continue [next tour](https://zemian.github.io/2012/06/timemachine-scheduler-tour-part5.html), or see [previous tour](https://zemian.github.io/2012/06/timemachine-scheduler-tour-part3.html).

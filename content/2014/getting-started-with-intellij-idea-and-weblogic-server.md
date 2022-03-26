@@ -7,7 +7,7 @@ tags:
 ---
 Before starting, you would need the Ultimate version of IDEA to run WebLogic Server (yes, the paid version or the 30 days trial). The Community edition of IDEA will not support Application Server deployment.
 
-I also assume you have already setup WebLogic Server and a user domain as per my [previous blog instructions](http://saltnlight5.blogspot.com/2014/01/getting-started-with-weblogic-server.html). So now let's setup the IDE to boost your development.
+I also assume you have already setup WebLogic Server and a user domain as per my [previous blog instructions](https://zemian.github.io/2014/01/getting-started-with-weblogic-server.html). So now let's setup the IDE to boost your development.
 
 1. Create a simple HelloWorld web application in IDEA.
 2. For your HelloWorld, you can go into the Project Settings > Artifacts, and add "web:war exploded" entry for your application. You will add this into your app server later.

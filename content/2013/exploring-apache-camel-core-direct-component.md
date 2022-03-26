@@ -79,5 +79,5 @@ In above demo, I have also introduced a bit of Camel core features: `ProducerTem
 
 There are more options availabe from [Direct](http://camel.apache.org/direct.html) component
 that you may explore.
-[Try it out with a Route](http://saltnlight5.blogspot.com/2013/08/getting-started-with-apache-camel-using.html)
+[Try it out with a Route](https://zemian.github.io/2013/08/getting-started-with-apache-camel-using.html)
 and see it for yourself.

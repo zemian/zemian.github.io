@@ -5,7 +5,7 @@ tags:
   - java
 ---
 
-When I wrote about how to improve the Java Properties class using [Props](http://saltnlight5.blogspot.com/2012/09/improving-javautilproperties.html), I've shown
+When I wrote about how to improve the Java Properties class using [Props](https://zemian.github.io/2012/09/improving-javautilproperties.html), I've shown
 a feature where you can use variable substition such as `mypath=${user.home}` in your config file. The implementation underneath it uses the Apache Common Lang library with `org.apache.commons.lang.text.StrSubstitutor`. There is nothing wrong with this, but I was curious how bad would it be to remove such dependency, so the `Props` can be more standalone.
 
 Here is a quick implementation in Groovy, but you should able to translate to Java easily.

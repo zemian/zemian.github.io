@@ -35,5 +35,5 @@ message. Here is an example how to read them.
 
 There are more options availabe from [Timer](http://camel.apache.org/timer.html) component
 that you may explore.
-[Try it out with a Route](http://saltnlight5.blogspot.com/2013/08/getting-started-with-apache-camel-using.html)
+[Try it out with a Route](https://zemian.github.io/2013/08/getting-started-with-apache-camel-using.html)
 and see it for yourself.

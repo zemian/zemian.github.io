@@ -141,5 +141,5 @@ file name in `ID-<hostname>-<unique-number>-<msg-seq-num>` format.
 
 There are more options availabe from [File](http://camel.apache.org/file2.html) component
 that you may explore.
-[Try it out with a Route](http://saltnlight5.blogspot.com/2013/08/getting-started-with-apache-camel-using.html)
+[Try it out with a Route](https://zemian.github.io/2013/08/getting-started-with-apache-camel-using.html)
 and see it for yourself.

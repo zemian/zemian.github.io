@@ -82,7 +82,7 @@ The above will give you a good foundation to load a single config properties fil
 
 Now you would have the `configProps` object at your disposal to read any configuration keys and values set per an environment.
 
-NOTE: If you want a more flexible Java wrapper script, see my old post on [run-java](http://saltnlight5.blogspot.com/2012/08/a-better-java-shell-script-wrapper.html) wrapper.
+NOTE: If you want a more flexible Java wrapper script, see my old post on [run-java](https://zemian.github.io/2012/08/a-better-java-shell-script-wrapper.html) wrapper.
 
 ## Do not abuse CLASSPATH
 

@@ -4,7 +4,7 @@ date: 2014-03-21T00:00:00-05:00
 tags:
   - weblogic
 ---
-In my [previous post](http://saltnlight5.blogspot.com/2014/03/how-to-start-multiple-weblogic-managed.html), you have seen how we can start a WebLogic admin and multiple managed servers. One downside with that instruction is that those processes will start in foreground and the STDOUT are printed on terminal. If you intended to run these severs as background services, you might want to try the WebLogic node manager `wlscontrol.sh` tool. I will show you how you can get Node Manager started here.
+In my [previous post](https://zemian.github.io/2014/03/how-to-start-multiple-weblogic-managed.html), you have seen how we can start a WebLogic admin and multiple managed servers. One downside with that instruction is that those processes will start in foreground and the STDOUT are printed on terminal. If you intended to run these severs as background services, you might want to try the WebLogic node manager `wlscontrol.sh` tool. I will show you how you can get Node Manager started here.
 
 The easiest way is still to create the domain directory with the admin server running temporary and then create all your servers through the /console application as described in last post. Once you have these created, then you may shut down all these processes and start it with Node Manager.
 

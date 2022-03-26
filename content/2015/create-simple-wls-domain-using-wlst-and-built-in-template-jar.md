@@ -5,7 +5,7 @@ tags:
   - weblogic
 ---
 
-You can easily [start up a WebLogic Server](http://saltnlight5.blogspot.com/2014/01/getting-started-with-weblogic-server.html) on an empty directory and it will create a domain. Here is another way to create WLS domain structure folder without actually starting up a WLS server.
+You can easily [start up a WebLogic Server](https://zemian.github.io/2014/01/getting-started-with-weblogic-server.html) on an empty directory and it will create a domain. Here is another way to create WLS domain structure folder without actually starting up a WLS server.
 
 ```
 # Usage: wlst.cmd createDomain.py <domain_home> <port> <password>

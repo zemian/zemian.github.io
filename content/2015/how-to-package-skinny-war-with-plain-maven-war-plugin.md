@@ -23,7 +23,7 @@ If you are not using maven EAR plugin, then you can also use plain maven-war-plu
 
 ```
 
-However, if you ran into the problem I described in [last post](http://saltnlight5.blogspot.com/2015/05/getting-version-string-from-maven-based.html), then you want a Skinny war, but still want to include the jar it produced from your own web project. In this case, you can try this:
+However, if you ran into the problem I described in [last post](https://zemian.github.io/2015/05/getting-version-string-from-maven-based.html), then you want a Skinny war, but still want to include the jar it produced from your own web project. In this case, you can try this:
 ```
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

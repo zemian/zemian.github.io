@@ -5,7 +5,7 @@ tags:
   - spring
 ---
 
-Let&#8217;s improve [our previous Spring JDBC application](http://saltnlight5.blogspot.com/2013/10/getting-started-with-spring-jdbc-in-web.html) with some more exploration on Spring MVC&#8217;s Controller development. I will show another exercise of writing a new Controller that processes a HTML form and use JSTL tags in JSP view pages.
+Let&#8217;s improve [our previous Spring JDBC application](https://zemian.github.io/2013/10/getting-started-with-spring-jdbc-in-web.html) with some more exploration on Spring MVC&#8217;s Controller development. I will show another exercise of writing a new Controller that processes a HTML form and use JSTL tags in JSP view pages.
 
 To enable JSTL in Spring MVC application, you would need to add the following to the `WebAppConfig` config class. Let&#8217;s move it outside of `WebApp.java` and into it&#8217;s own top level class file in `src/main/java/springweb/WebAppConfig.java`.
 

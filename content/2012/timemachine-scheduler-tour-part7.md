@@ -35,4 +35,4 @@ This would make the MemoryDataStore service to use a singleton instance of the M
 
 This would conclude our tour with the TimeMachine Scheduler. We hope these articles have given you helpful information to explore more. Our goals are to provide a scheduler that can scale well, able to run high concurrent jobs, allow flexible schedules, and easy to configure. We love to hear your feedback. Please visit the project site and join the user forum to participate.
 
-End of part 7. You may see [previous tour](http://saltnlight5.blogspot.com/2012/06/timemachine-scheduler-tour-part6.html).
+End of part 7. You may see [previous tour](https://zemian.github.io/2012/06/timemachine-scheduler-tour-part6.html).

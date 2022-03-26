@@ -89,7 +89,7 @@ Now you should able to compile and run it.
 
 Another frequently asked question is how do they setup logging and see the DEBUG level
 messages. The Quartz Schedulers uses SLF4J, so you have many
-[loggers options](http://saltnlight5.blogspot.com/2013/08/how-to-configure-slf4j-with-different.html)
+[loggers options](https://zemian.github.io/2013/08/how-to-configure-slf4j-with-different.html)
 to choose. I will show you how to setup Log4j for example below.
 
 First, add this to your `pom.xml`

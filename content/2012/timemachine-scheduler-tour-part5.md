@@ -107,4 +107,4 @@ There, you just experienced a little bit of script within script! Pretty cool hu
 
 As you can see, our DateListSchedule can give you a very flexible way to customize any schedule needs, even with dynamic scripting. Since this DateListSchedule is already part of the built-in schedule, all the persistence layer would work correctly without modifying any classes nor database structure.
 
-End of part 5. You may continue [next tour](http://saltnlight5.blogspot.com/2012/06/timemachine-scheduler-tour-part6.html), or see [previous tour](http://saltnlight5.blogspot.com/2012/06/timemachine-scheduler-tour-part4.html).
+End of part 5. You may continue [next tour](https://zemian.github.io/2012/06/timemachine-scheduler-tour-part6.html), or see [previous tour](https://zemian.github.io/2012/06/timemachine-scheduler-tour-part4.html).

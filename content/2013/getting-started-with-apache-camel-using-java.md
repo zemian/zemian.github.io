@@ -51,7 +51,7 @@ Let&#8217;s start by creating a Maven project `pom.xml` file first.
 
 We are only going to explore the `camel-core`, which actually contains quite of few useful
 components that you may use. Also for logging purpose, I have added a `slf4j-simple` as
-[a logger implementation](http://saltnlight5.blogspot.com/2013/08/how-to-configure-slf4j-with-different.html)
+[a logger implementation](https://zemian.github.io/2013/08/how-to-configure-slf4j-with-different.html)
 so we may see output on console.
 
 Next you just need a class to construct an `Route`. A `Route` is like a instruction

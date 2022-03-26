@@ -16,7 +16,7 @@ you inspect the message. So instead of write a separate
 By default, the `log` component will record your message body content
 through your logger name, `demo` in above case, at INFO level. Since you can give any
 name, you can control the logging LEVEL anyway you like through a Camel
-[SLF4J logger implementation](http://saltnlight5.blogspot.com/2013/08/how-to-configure-slf4j-with-different.html).
+[SLF4J logger implementation](https://zemian.github.io/2013/08/how-to-configure-slf4j-with-different.html).
 
 To log the message in DEBUG level, try this
 
@@ -100,5 +100,5 @@ capability.
 
 There are more options availabe from [Log](http://camel.apache.org/log.html) component
 that you may explore.
-[Try it out with a Route](http://saltnlight5.blogspot.com/2013/08/getting-started-with-apache-camel-using.html)
+[Try it out with a Route](https://zemian.github.io/2013/08/getting-started-with-apache-camel-using.html)
 and see it for yourself.

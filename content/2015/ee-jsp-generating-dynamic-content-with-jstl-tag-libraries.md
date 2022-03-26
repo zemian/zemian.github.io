@@ -4,7 +4,7 @@ date: 2015-02-06T00:00:00-05:00
 tags:
   - jstl
 ---
-Besides writing your own [Custom Tags in JSP](http://saltnlight5.blogspot.com/2015/02/ee-jsp-generating-dynamic-content-with.html), you will find that Java EE actually provides a set of Java Standard Tag Library (JSTL) ready for you to use. These built-in tags include repeating (for-loop) tags, if condition tags, variable declaration and output tags etc. The Libraries also come with many utility functions and international message formatting tags. Here is an example how it looks like.
+Besides writing your own [Custom Tags in JSP](https://zemian.github.io/2015/02/ee-jsp-generating-dynamic-content-with.html), you will find that Java EE actually provides a set of Java Standard Tag Library (JSTL) ready for you to use. These built-in tags include repeating (for-loop) tags, if condition tags, variable declaration and output tags etc. The Libraries also come with many utility functions and international message formatting tags. Here is an example how it looks like.
 ```
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>

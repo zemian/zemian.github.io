@@ -4,7 +4,7 @@ date: 2012-08-11T00:00:00-05:00
 tags:
   - java
 ---
-For complete sake, here is a Java version of the http://saltnlight5.blogspot.com/2012/12/checking-db-connection-using-groovy.html[Groovy post] to test your Oracle Database connection.
+For complete sake, here is a Java version of the https://zemian.github.io/2012/12/checking-db-connection-using-groovy.html[Groovy post] to test your Oracle Database connection.
 
 ```
 package atest;

@@ -101,7 +101,7 @@ You should checkout the main config in `web.xml` file, and you'll see that there
     </web-app>
 ```    
 
-I've chosen to use `GroovyServlet` as a controller (it comes with Groovy!), and this let you use any scripts inside `/WEB-INF/groovy` directory. That's it, no further setup. That's about the only requirement you need to get a Groovy webapp started! See `console.groovy` as example and how it works. It's a groovy version of [this JVM console](http://saltnlight5.blogspot.com/2012/07/script-console-tool-for-any-war.html)
+I've chosen to use `GroovyServlet` as a controller (it comes with Groovy!), and this let you use any scripts inside `/WEB-INF/groovy` directory. That's it, no further setup. That's about the only requirement you need to get a Groovy webapp started! See `console.groovy` as example and how it works. It's a groovy version of [this JVM console](https://zemian.github.io/2012/07/script-console-tool-for-any-war.html)
 
 Now you can use Groovy to process any logic and even generate the HTML output if you like, but I find it even more easier to use `TemplateServlet`. This allow Groovy template files to be serve as view. It's very much like JSP, but it uses Groovy instead! And we know Groovy syntax are much shorter to write! See `console.gt` as exmaple and how it works.
 

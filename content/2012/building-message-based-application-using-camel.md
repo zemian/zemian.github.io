@@ -15,7 +15,7 @@ But since I've prepared a [camel-demo-1.0.0-SNAPSHOT-project.zip](https://bitbuc
 
 # Getting started with Apache Camel with Java
 
-Trying out [Camel with few Groovy lines](http://saltnlight5.blogspot.com/2012/08/getting-started-with-apache-camel-using.html) is one thing, but 
+Trying out [Camel with few Groovy lines](https://zemian.github.io/2012/08/getting-started-with-apache-camel-using.html) is one thing, but 
 getting a full scale project in Java is another matter. Today, I will show you how to get things started on [Apache Camel](http://camel.apache.org/) with 
 [Maven](http://maven.apache.org/) based project. You may also use the provided `camel-demo` as project template to jump start your own Apache Camel 
 project. You would just need to rename the Java package and rename the pom's group and artifact id's to match your need.
@@ -303,7 +303,7 @@ Such `CamelRunner` would be very user friendly and re-usable to have, so that's 
     }
 ```    
 
-To help you run the main class, I have provided a [run-java](http://saltnlight5.blogspot.com/2012/08/a-better-java-shell-script-wrapper.html) 
+To help you run the main class, I have provided a [run-java](https://zemian.github.io/2012/08/a-better-java-shell-script-wrapper.html) 
 wrapper script under the project's `bin` directory, so that you may quickly test it without having to setup classpath.
 
     $ mvn package

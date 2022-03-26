@@ -33,4 +33,4 @@ A Schedule may also support a missedRunPolicy that tells scheduler how to handle
 
 In a nutshell, that's about how the scheduler works internally with these data models. We have a very flexible API in managing our scheduler system services, and we also allow user to make custom services to be register with the scheduler. All of the system services have well defined interfaces, and you are allow to swap any implementation you wish. For example we provide MemoryDataStore and HiberanteDataStore services that you may choose on how to persist your data. All these are configurable through the simple scheduler properties file. We shall cover some of these settings in future tour.
 
-End of part 3. You may continue [next tour](http://saltnlight5.blogspot.com/2012/06/timemachine-scheduler-tour-part4.html), or see [previous tour](http://saltnlight5.blogspot.com/2012/06/timemachine-scheduler-tour-part2.html).
+End of part 3. You may continue [next tour](https://zemian.github.io/2012/06/timemachine-scheduler-tour-part4.html), or see [previous tour](https://zemian.github.io/2012/06/timemachine-scheduler-tour-part2.html).

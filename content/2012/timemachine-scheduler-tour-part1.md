@@ -77,4 +77,4 @@ One benefit of using our scheduler over a typical Unix cron is that you may cont
 
 Notice one feature of our scheduler configuration, it allow you to substitude an existing value with `${key}` format! We use this to set our thread name that reuse the value you already set as schedulerName.
 
-End of part 1. You may continue [next tour](http://saltnlight5.blogspot.com/2012/06/timemachine-scheduler-tour-part2.html).
+End of part 1. You may continue [next tour](https://zemian.github.io/2012/06/timemachine-scheduler-tour-part2.html).
