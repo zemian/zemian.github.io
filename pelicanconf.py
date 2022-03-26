@@ -7,6 +7,14 @@ ARTICLE_PATHS = ['blog']
 ARTICLE_SAVE_AS = '{date:%Y}/{slug}.html'
 ARTICLE_URL = '{date:%Y}/{slug}.html'
 
+USE_FOLDER_AS_CATEGORY = False
+DEFAULT_CATEGORY = 'Blog'
+DISPLAY_CATEGORIES_ON_MENU = False
+
+# Do not generate the following pages
+CATEGORY_SAVE_AS = ''
+AUTHOR_SAVE_AS = ''
+
 TIMEZONE = 'America/New_York'
 
 DEFAULT_LANG = 'en'
