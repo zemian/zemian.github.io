@@ -18,6 +18,6 @@ To preview
 
 To publish
 
-	pelican
+	pelican -s publishconf.py
 	rsync -avc --delete output/ host.example.com:/var/www/your-site/
 	

@@ -17,7 +17,7 @@ Recently I also have been teaching my son, Kenny, on learning `JavaScript` progr
 Thanks to Kenny, here we have a before and after blog screenshots!
 
 Before - Blog with JBake:
-![](/resources/images/posts/2020/blog-jbake.png "Before - Blog with JBake")
+![](/images/posts/2020/blog-jbake.png "Before - Blog with JBake")
 
 After - Blog with VuePress:
-![](/resources/images/posts/2020/blog-vuepress.png "After - Blog with VuePress")
+![](/images/posts/2020/blog-vuepress.png "After - Blog with VuePress")
