@@ -12,8 +12,8 @@ DEFAULT_CATEGORY = 'Blog'
 DISPLAY_CATEGORIES_ON_MENU = False
 
 # Do not generate the following pages
-CATEGORY_SAVE_AS = ''
-AUTHOR_SAVE_AS = ''
+#CATEGORY_SAVE_AS = ''
+#AUTHOR_SAVE_AS = ''
 
 TIMEZONE = 'America/New_York'
 
