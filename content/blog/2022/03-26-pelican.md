@@ -2,7 +2,7 @@ Title: Getting started with Pelican
 Date: 2022-03-26
 Tags: python,blog,ssg
 
-This blog is now using [Pelican](https://getpelican.com/) is a static site generator, written in Python.
+This blog is now using [Pelican](https://getpelican.com/), a static site generator written in Python.
 
 ## First time setup
 
