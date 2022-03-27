@@ -43,7 +43,7 @@
 
 <h2>How to use</h2>
 <p>To create article</p>
-<div class="highlight"><pre><span></span><code>echo &#39;Hello&#39; &gt; content/hello.md
+<div class="highlight"><pre><span></span><code>echo &#39;Hello&#39; &gt; content/blog/hello.md
 </code></pre></div>
 
 <p>To preview</p>
@@ -51,8 +51,9 @@
 </code></pre></div>
 
 <p>To publish</p>
-<div class="highlight"><pre><span></span><code><span class="n">pelican</span><span class="w"> </span><span class="o">-</span><span class="n">s</span><span class="w"> </span><span class="n">publishconf</span><span class="o">.</span><span class="n">py</span><span class="w"></span>
-<span class="n">rsync</span><span class="w"> </span><span class="o">-</span><span class="n">avc</span><span class="w"> </span><span class="o">--</span><span class="n">delete</span><span class="w"> </span><span class="n">output</span><span class="o">/</span><span class="w"> </span><span class="n">host</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="p">:</span><span class="o">/</span><span class="k">var</span><span class="o">/</span><span class="n">www</span><span class="o">/</span><span class="n">your</span><span class="o">-</span><span class="n">site</span><span class="o">/</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code>pelican -s publishconf.py -o docs
+git commit -m &#39;Publish site&#39;
+git push
 </code></pre></div>
     </div><!-- /.entry-content -->
 

@@ -20,6 +20,6 @@ To preview
 
 To publish
 
-	pelican -s publishconf.py -o docs
+	pelican -s publishconf.py -d -o docs
 	git commit -m 'Publish site'
 	git push
