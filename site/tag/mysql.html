@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>ZBlog - mysql</title>
+        <link rel="stylesheet" href="https://zemian.github.io/theme/css/main.css" />
+        <link href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="ZBlog Atom Feed" />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://zemian.github.io/">ZBlog</a></h1>
+                <nav><ul>
+                    <li><a href="https://zemian.github.io/pages/about-the-author.html">About The Author</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="https://zemian.github.io/2020/the-world-of-php-development.html">The World of PHP Development</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2020-09-20T00:00:00-05:00">
+                Published: Sun 20 September 2020
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/php.html">php</a> <a href="https://zemian.github.io/tag/mysql.html">mysql</a> <a href="https://zemian.github.io/tag/webserver.html">webserver</a> <a href="https://zemian.github.io/tag/joomla.html">joomla</a> </p>
+</footer><!-- /.post-info --><p>I have gotten into PHP lately in order to help a friend who runs a Joomla site with a custom component. Thinking to myself now that I have some <a href="/2020/03/22/front-end">Front End Experience</a>, I shouldn't have trouble doing this. But I have never seriuosly got into PHP in the past though, and now I need to learn enough to debug and fix few bugs in the Joomla env. I have gathered and learned quite a few things and like to write it down.</p>
+<h2>Learning PHP</h2>
+<p>I started <a href="https://github.com/zemian/learn-php">Learn PHP</a> repository to familiar with PHP first. I want to setup PHP locally in my machine so I can learn some syntax and programming construct. I was suprised their documentation is pretty good. I even watched a old video on <a href="https://www.youtube.com/watch?v=rKXFgWP-2xQ">PHP in 2018 by the Creator of PHP</a> by Rasmus Lerdorf. It was very informative and encouraging to see PHP is still thriving and doing good. </p>
+<p>PHP is not much use without a database and a web server, so I learned how to setup and connect PHP to those two. It seems PHP loves MySQL, and getting that running is pretty easy. As far as web server, there are few major ones to choose: Apache Httpd, Nginx or Lighttpd. The Lighttpd is the easiest to setup. I like it how I can just use one config file and bring up the server in foreground process, and the DocumentRoot can be set to your CWD. No need to setup any background PHP daemon process (like Nginx requires one). Apache Httpd can also start without a PHP daemon but the setup is complicated. Then later I learned that PHP itself comes with a web server for development! Just run <code>php -S localhost:3000</code> and it serves your current working directory. No setup needed! Sweet!</p>
+<p>NOTE: For production, it's recommended to use either Apache Httpd or Nginx.</p>
+<p>Later, I also found there are different versions of PHP that I would need to fix the site, and settting up multiple versions of PHP in a single web server is pretty complicated. I gathered a lot of notes on each of these subject in my repository, so check it out.</p>
+<h2>Learning Joomla</h2>
+<p>My goal is to help my friend's site, so next I started <a href="https://github.com/zemian/learn-joomla">Learn Joomla</a> project. My friend site is actually quite old (Joomla 3.5.1 with PHP 5.6 and MySQL 5.7). Because of this and the PHP was compiled with some special extension in server, I actually had hard time setting it up in my Mac for local development. I ended up had to compile my own PHP from source to get a setup working! It was a painful exercise since compiling PHP 5.6 on latest MacOS has many hiccups.</p>
+<p>Once the environment is up, installing Joomla itself is not too bad. I got it up running in short time. Joomla documentation site is only so so though. I think this CMS design is overly complex. Their concept of Menus, Articles and Extensions are confusing, feel bulky and a lot to learn. A simple MVC based component extension will take over 10+ files to write! I just want to learn enough to use it to support a site, not experts, so this repository have gotten me through what I need to know about Joomla.</p>
+<p>One interesting I learned about Joomla is that its "System Debug" feature is pretty good. When enabled, it shows a "Debug Console" footer in your site that shows session, request, SQL queries and application debug messages. Great tool to debug the application. (If your site or component uses their full MVC model that is.)</p>
+<h2>Fixing a PHP application</h2>
+<p>When I got into my friend's site, I had a pretty good idea about the PHP env. So I thought I was pretty prepared. Boy, I was wrong! The site has a custom component that started out as nice self-contained extension. But through many years of abuse, it is now old with many unmaintained dependencies. It has many developers touched it over the years without any consistency. The code was badly formatted (PHP mixed with HTML in the worse way you can think of), files scattered everywhere, and worse of it all there are lots of repeated codes. Through all these, there were no version control used. So dead code eveywhere, and backup unused files literred all over the place. This is a one big mess of an app.</p>
+<p>Prowling through large, new code base is a daunting task. I've found the JetBrains' PHPStorm IDE helps a little bit there. I was able to jump functions and searching in directory is a breeze. The IDE also supports PHP debugger, but unfortunately it only works with latest PHP7 well. The PHP 5.6 is harder to get it setup that in the end I gave up.</p>
+<p>Without a debugger, the next resort in debugging an app is print message as you trace through code. The PHP is notoriously easy to allow developers litter code with <code>echo</code> lines and then comment it out after debug. The Joomla actually has a nice <code>JLog</code> logging function that let you dynamically turns on/off and to file output. But this application that I am supporting didn't use that, and there is zero log message. I also learned that logging to file is essential when tracing a AJAX supported PHP code. Here you can't simply <code>echo</code> your debug message out, or it will break the JSON payload. So I have to write some of these debugging code to help myself to troubleshoot the application.</p>
+<p>At the end, I was able to fix few of the pressing issues due to their multiple version of jQuery loading conflicts and some bad SQL in their dynamic query builder. I have to say that nothing teaches you more than jumping into a badly coded site that's somehow working, and yet you need to fix few naughty issues! It's a hair pulling experience, but I learned a lot.</p>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2018/mysql-data-types-and-test-table.html" rel="bookmark"
+                           title="Permalink to MySQL Data Types and Test Table">MySQL Data Types and Test Table</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-08-17T00:00:00-05:00">
+                Published: Fri 17 August 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/sql.html">sql</a> <a href="https://zemian.github.io/tag/mysql.html">mysql</a> </p>
+</footer><!-- /.post-info -->                <p>A quick sql table setup to test most common data types.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Notes for MySQL (8)</span>
+<span class="c1">-- https://dev.mysql.com/doc/refman/8.0/en/</span>
+
+<span class="c1">-- Data Types</span>
+<span class="c1">-- https://dev.mysql.com/doc/refman/8.0/en/data-types.html</span>
+
+<span class="cm">/*</span>
+
+<span class="cm">CHAR          Fixed length and space padded character string (sql: CHAR)</span>
+<span class="cm">VARCHAR       Variable length …</span></code></pre></div>
+                <a class="readmore" href="https://zemian.github.io/2018/mysql-data-types-and-test-table.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2016/example-of-mysql-stored-procedure-to-insert-from-a-select-cursor-values.html" rel="bookmark"
+                           title="Permalink to Example of MySQL stored procedure to INSERT from a SELECT cursor values">Example of MySQL stored procedure to INSERT from a SELECT cursor values</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2016-06-26T00:00:00-05:00">
+                Published: Sun 26 June 2016
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/mysql.html">mysql</a> </p>
+</footer><!-- /.post-info -->                <div class="highlight"><pre><span></span><code><span class="n">DELIMITER</span> <span class="o">//</span>
+<span class="n">DROP</span> <span class="kr">PROCEDURE</span> <span class="kr">IF</span> <span class="n">EXISTS</span> <span class="n">proc_hotfix1</span> <span class="o">//</span>
+<span class="n">CREATE</span> <span class="kr">PROCEDURE</span> <span class="n">proc_hotfix1</span><span class="p">()</span>
+<span class="kr">BEGIN</span>
+  <span class="n">DECLARE</span> <span class="n">flag</span> <span class="n">INT</span> <span class="n">DEFAULT</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="n">DECLARE</span> <span class="n">CID</span> <span class="n">VARCHAR</span><span class="p">(</span><span class="mi">64</span><span class="p">);</span>
+  <span class="n">DECLARE</span> <span class="n">LOGIN</span> <span class="n">VARCHAR</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>
+  <span class="n">DECLARE</span> <span class="n">cur1</span> <span class="n">CURSOR</span> <span class="kr">FOR</span> 
+    <span class="n">SELECT</span> <span class="n">CID</span><span class="p">,</span> <span class="n">LOGIN</span> <span class="n">FROM</span> <span class="n">MYUSER</span> <span class="n">WHERE</span> <span class="n">LOGIN</span> <span class="n">LIKE</span> <span class="s">&#39;bad.guy%&#39;</span><span class="p">;</span>
+
+  <span class="n">OPEN</span> <span class="n">cur1</span><span class="p">;</span>
+  <span class="kr">REPEAT</span>
+    <span class="n">FETCH</span> <span class="n">cur1</span> <span class="n">INTO</span> <span class="n">CID</span><span class="p">,</span> <span class="n">LOGIN</span><span class="p">;</span>
+    <span class="n">INSERT</span> <span class="n">INTO</span> <span class="n">hotfix1 …</span></code></pre></div>
+                <a class="readmore" href="https://zemian.github.io/2016/example-of-mysql-stored-procedure-to-insert-from-a-select-cursor-values.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2015/mysqlclient-gives-library-not-loaded-libmysqlclient18dylib-error.html" rel="bookmark"
+                           title="Permalink to mysqlclient gives "Library not loaded - libmysqlclient.18.dylib" error">mysqlclient gives "Library not loaded - libmysqlclient.18.dylib" error</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2015-10-16T00:00:00-05:00">
+                Published: Fri 16 October 2015
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/python.html">python</a> <a href="https://zemian.github.io/tag/mysql.html">mysql</a> </p>
+</footer><!-- /.post-info -->                <p>If you want to use python MySQLdb module (eg: if you run Trac with MySQL backend), you would need first install MySQL server on MacOSX, then install the mysqlclient python package using pip. However upon verifying it, you may encounter error like this:</p>
+<div class="highlight"><pre><span></span><code><span class="p">(</span><span class="n">mypy</span><span class="o">-</span><span class="n">test</span><span class="p">)</span><span class="n">Zemians</span><span class="o">-</span><span class="n">Air</span><span class="p">:</span><span class="n">dev</span> <span class="n">zemian</span><span class="err">$</span> <span class="n">pip …</span></code></pre></div>
+                <a class="readmore" href="https://zemian.github.io/2015/mysqlclient-gives-library-not-loaded-libmysqlclient18dylib-error.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2015/how-to-specify-same-target-table-for-update-in-from-clause.html" rel="bookmark"
+                           title="Permalink to How to specify SAME target table for update in FROM clause">How to specify SAME target table for update in FROM clause</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2015-10-11T00:00:00-05:00">
+                Published: Sun 11 October 2015
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/mysql.html">mysql</a> </p>
+</footer><!-- /.post-info -->                <p>Have you tried updating something simple as following?</p>
+<div class="highlight"><pre><span></span><code>update category_tmp set last_update=NOW() 
+where category_id in (
+  select category_id from category_tmp where name like &#39;A%&#39;
+);
+</code></pre></div>
+
+<p>In MySQL you will get an error like this:</p>
+<div class="highlight"><pre><span></span><code><span class="nv">Error</span> <span class="nv">Code</span>: <span class="mi">1093</span>. <span class="nv">You</span> <span class="nv">can</span><span class="s1">&#39;</span><span class="s">t specify target table </span><span class="s1">&#39;</span><span class="nv">category_tmp</span><span class="s1">&#39;</span><span class="s"> for …</span></code></pre></div>
+                <a class="readmore" href="https://zemian.github.io/2015/how-to-specify-same-target-table-for-update-in-from-clause.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2015/checking-mysql-database-connection-with-mysql-connector-python.html" rel="bookmark"
+                           title="Permalink to Checking MySQL database connection with mysql-connector-python">Checking MySQL database connection with mysql-connector-python</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2015-10-09T00:00:00-05:00">
+                Published: Fri 09 October 2015
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/python.html">python</a> <a href="https://zemian.github.io/tag/mysql.html">mysql</a> </p>
+</footer><!-- /.post-info -->                <p>First install the MySQL package</p>
+<div class="highlight"><pre><span></span><code>bash&gt;pip install --allow-all-external mysql-connector-python
+</code></pre></div>
+
+<p>Now you may test the database connection with this Python code</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">mysql.connector</span> <span class="kn">import</span> <span class="n">connect</span>
+
+<span class="n">conn</span> <span class="o">=</span> <span class="n">connect</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="s1">&#39;dev&#39;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s1">&#39;dev123&#39;</span><span class="p">,</span> <span class="n">database</span><span class="o">=</span><span class="s1">&#39;mysql&#39;</span><span class="p">)</span>
+<span class="n">cur</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+<span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">&#39;select 1+1&#39;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">cur</span><span class="p">:</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+</code></pre></div>
+                <a class="readmore" href="https://zemian.github.io/2015/checking-mysql-database-connection-with-mysql-connector-python.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2015/setup-mysql-datasource-on-wls.html" rel="bookmark"
+                           title="Permalink to Setup MySQL DataSource on WLS">Setup MySQL DataSource on WLS</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2015-10-04T00:00:00-05:00">
+                Published: Sun 04 October 2015
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/weblogic.html">weblogic</a> <a href="https://zemian.github.io/tag/mysql.html">mysql</a> </p>
+</footer><!-- /.post-info -->                <p>Here is a WLST script to setup MySQL DataSource in WebLogic server after you have created a domain. The script will also assign this DataSource to one or more servers you pass in at the end of arguments.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Update an existing domain to setup a DataSource and assign it to …</span></code></pre></div>
+                <a class="readmore" href="https://zemian.github.io/2015/setup-mysql-datasource-on-wls.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2014/django-with-python-3-and-mysql-database.html" rel="bookmark"
+                           title="Permalink to Django with Python 3 and MySQL database">Django with Python 3 and MySQL database</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2014-09-04T00:00:00-05:00">
+                Published: Thu 04 September 2014
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/python.html">python</a> <a href="https://zemian.github.io/tag/mysql.html">mysql</a> <a href="https://zemian.github.io/tag/django.html">django</a> </p>
+</footer><!-- /.post-info -->                <p>I read many folks are having problems using MySQL db driver with Python 3, especially when setting up a Django app. The default Django 1.6.5 is only supporting the MySQLdb driver and that only works with Python 2.</p>
+<p>I have been using mysql-connector-python package with Python 3 and …</p>
+                <a class="readmore" href="https://zemian.github.io/2014/django-with-python-3-and-mysql-database.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2014/getting-django-started-on-windows-7-with-python-3-and-mysql-56.html" rel="bookmark"
+                           title="Permalink to Getting django started on Windows 7 with python 3 and MySQL 5.6">Getting django started on Windows 7 with python 3 and MySQL 5.6</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2014-06-18T00:00:00-05:00">
+                Published: Wed 18 June 2014
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/django.html">django</a> <a href="https://zemian.github.io/tag/python.html">python</a> <a href="https://zemian.github.io/tag/mysql.html">mysql</a> </p>
+</footer><!-- /.post-info -->                <p>Django is a python web framework library and it works on both python 2 or 3. I will show you how to get python 3 setup in Cygwin environment.</p>
+<p>If you're on a Windows OS, the best experience I have when working with Django on Windows is to use Cygwin …</p>
+                <a class="readmore" href="https://zemian.github.io/2014/getting-django-started-on-windows-7-with-python-3-and-mysql-56.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2014/how-to-initialize-a-new-mysql-installation-and-create-new-database.html" rel="bookmark"
+                           title="Permalink to How to initialize a new MySQL installation and create new database">How to initialize a new MySQL installation and create new database</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2014-06-11T00:00:00-05:00">
+                Published: Wed 11 June 2014
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/mysql.html">mysql</a> </p>
+</footer><!-- /.post-info -->                <p>For a freshly installed MySQL server, you would need to initialize the system tables and data directory like this:</p>
+<div class="highlight"><pre><span></span><code>cd mysql-&lt;version&gt;
+
+scripts/mysql_install_db --basedir=. --datadir=data
+bin/mysqld_safe --defaults-file=my.cnf &amp;
+</code></pre></div>
+
+<p>Before MySQL 5.6, this will setup a "root" with empty password that you can …</p>
+                <a class="readmore" href="https://zemian.github.io/2014/how-to-initialize-a-new-mysql-installation-and-create-new-database.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+                </ol><!-- /#posts-list -->
+<p class="paginator">
+    Page 1 / 2
+        <a href="https://zemian.github.io/tag/mysql2.html">&raquo;</a>
+        <a href="https://zemian.github.io/tag/mysql2.html">&#8649;</a>
+</p>
+                </section><!-- /#content -->
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

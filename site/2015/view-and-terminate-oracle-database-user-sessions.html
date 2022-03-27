@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>View and terminate Oracle Database user sessions</title>
+        <link rel="stylesheet" href="https://zemian.github.io/theme/css/main.css" />
+        <link href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="ZBlog Atom Feed" />
+        <meta name="description" content="Verify sessions: SELECT USERNAME FROM V$SESSION; SELECT USERNAME, SID, SERIAL#, STATUS FROM V$SESSION WHERE USERNAME like 'SCOTT%'; Generate SQL..." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://zemian.github.io/">ZBlog</a></h1>
+                <nav><ul>
+                    <li><a href="https://zemian.github.io/pages/about-the-author.html">About The Author</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://zemian.github.io/2015/view-and-terminate-oracle-database-user-sessions.html" rel="bookmark"
+           title="Permalink to View and terminate Oracle Database user sessions">View and terminate Oracle Database user sessions</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2015-08-21T00:00:00-05:00">
+                Published: Fri 21 August 2015
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/oracle.html">oracle</a> </p>
+</footer><!-- /.post-info -->      <div class="highlight"><pre><span></span><code><span class="nt">Verify</span><span class="w"> </span><span class="nt">sessions</span><span class="o">:</span><span class="w"></span>
+<span class="nt">SELECT</span><span class="w"> </span><span class="nt">USERNAME</span><span class="w"> </span><span class="nt">FROM</span><span class="w"> </span><span class="nt">V</span><span class="o">$</span><span class="nt">SESSION</span><span class="o">;</span><span class="w"></span>
+
+<span class="nt">SELECT</span><span class="w"> </span><span class="nt">USERNAME</span><span class="o">,</span><span class="w"> </span><span class="nt">SID</span><span class="o">,</span><span class="w"> </span><span class="nt">SERIAL</span><span class="err">#</span><span class="o">,</span><span class="w"> </span><span class="nt">STATUS</span><span class="w"></span>
+<span class="w">  </span><span class="nt">FROM</span><span class="w"> </span><span class="nt">V</span><span class="o">$</span><span class="nt">SESSION</span><span class="w"></span>
+<span class="w">  </span><span class="nt">WHERE</span><span class="w"> </span><span class="nt">USERNAME</span><span class="w"> </span><span class="nt">like</span><span class="w"> </span><span class="s1">&#39;SCOTT%&#39;</span><span class="o">;</span><span class="w"></span>
+
+<span class="nt">Generate</span><span class="w"> </span><span class="nt">SQL</span><span class="w"> </span><span class="nt">to</span><span class="w"> </span><span class="nt">terminate</span><span class="w"> </span><span class="nt">sessions</span><span class="o">:</span><span class="w"></span>
+<span class="nt">SELECT</span><span class="w"> </span><span class="s1">&#39;ALTER SYSTEM KILL SESSION &#39;&#39;&#39;</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nt">SID</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="s1">&#39;,&#39;</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nt">SERIAL</span><span class="err">#</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="s1">&#39;&#39;&#39;;&#39;</span><span class="w"></span>
+<span class="w">  </span><span class="nt">FROM</span><span class="w"> </span><span class="nt">V</span><span class="o">$</span><span class="nt">SESSION</span><span class="w"></span>
+<span class="w">  </span><span class="nt">WHERE</span><span class="w"> </span><span class="nt">USERNAME</span><span class="w"> </span><span class="nt">like</span><span class="w"> </span><span class="s1">&#39;SCOTT%&#39;</span><span class="o">;</span><span class="w"></span>
+</code></pre></div>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

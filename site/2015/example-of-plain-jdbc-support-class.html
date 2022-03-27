@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>Example of plain Jdbc Support Class</title>
+        <link rel="stylesheet" href="https://zemian.github.io/theme/css/main.css" />
+        <link href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="ZBlog Atom Feed" />
+        <meta name="description" content="Need to fetch some data from DB quickly with Java? Here is a quick example of plain JDBC JdbcSupport Class to help you. package zemian.jdbcexample..." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://zemian.github.io/">ZBlog</a></h1>
+                <nav><ul>
+                    <li><a href="https://zemian.github.io/pages/about-the-author.html">About The Author</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://zemian.github.io/2015/example-of-plain-jdbc-support-class.html" rel="bookmark"
+           title="Permalink to Example of plain Jdbc Support Class">Example of plain Jdbc Support Class</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2015-06-05T00:00:00-05:00">
+                Published: Fri 05 June 2015
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/java.html">java</a> <a href="https://zemian.github.io/tag/jdbc.html">jdbc</a> </p>
+</footer><!-- /.post-info -->      <p>Need to fetch some data from DB quickly with Java? Here is a quick example of plain JDBC JdbcSupport  Class to help you.</p>
+<div class="highlight"><pre><span></span><code><span class="n">package</span> <span class="n">zemian</span><span class="o">.</span><span class="n">jdbcexample</span>
+
+<span class="kn">import</span> <span class="nn">org.slf4j.Logger</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">org.slf4j.LoggerFactory</span><span class="p">;</span>
+
+<span class="kn">import</span> <span class="nn">javax.sql.DataSource</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">java.sql.Connection</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">java.sql.PreparedStatement</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">java.sql.ResultSet</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">java.sql.ResultSetMetaData</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">java.util.ArrayList</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">java.util.Arrays</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">java.util.List</span><span class="p">;</span>
+
+<span class="n">public</span> <span class="n">abstract</span> <span class="k">class</span> <span class="nc">JdbcSupport</span> <span class="p">{</span>
+    <span class="n">private</span> <span class="n">static</span> <span class="n">final</span> <span class="n">Logger</span> <span class="n">LOGGER</span> <span class="o">=</span> <span class="n">LoggerFactory</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">JdbcSupport</span><span class="o">.</span><span class="n">class</span><span class="p">);</span>
+
+    <span class="n">protected</span> <span class="n">DataSource</span> <span class="n">dataSource</span><span class="p">;</span>
+
+    <span class="n">public</span> <span class="n">JdbcSupport</span><span class="p">(</span><span class="n">DataSource</span> <span class="n">dataSource</span><span class="p">)</span> <span class="n">throws</span> <span class="ne">Exception</span> <span class="p">{</span>
+        <span class="n">this</span><span class="o">.</span><span class="n">dataSource</span> <span class="o">=</span> <span class="n">dataSource</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">protected</span> <span class="n">Row</span> <span class="n">toRowMap</span><span class="p">(</span><span class="n">ResultSet</span> <span class="n">rs</span><span class="p">)</span> <span class="n">throws</span> <span class="ne">Exception</span> <span class="p">{</span>
+        <span class="n">Row</span> <span class="n">row</span> <span class="o">=</span> <span class="n">new</span> <span class="n">Row</span><span class="p">();</span>
+        <span class="n">ResultSetMetaData</span> <span class="n">meta</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">getMetaData</span><span class="p">();</span>
+        <span class="nb">int</span> <span class="n">count</span> <span class="o">=</span> <span class="n">meta</span><span class="o">.</span><span class="n">getColumnCount</span><span class="p">();</span>
+        <span class="k">for</span> <span class="p">(</span><span class="nb">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">count</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">row</span><span class="o">.</span><span class="n">map</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">meta</span><span class="o">.</span><span class="n">getColumnName</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="n">rs</span><span class="o">.</span><span class="n">getObject</span><span class="p">(</span><span class="n">i</span><span class="p">));</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">row</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">protected</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">Row</span><span class="o">&gt;</span> <span class="n">queryRowList</span><span class="p">(</span><span class="n">Connection</span> <span class="n">conn</span><span class="p">,</span> <span class="n">String</span> <span class="n">sql</span><span class="p">,</span> <span class="n">Object</span><span class="o">...</span> <span class="n">params</span><span class="p">)</span> <span class="n">throws</span> <span class="ne">Exception</span> <span class="p">{</span>
+        <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Query sql=</span><span class="si">{}</span><span class="s2">, params=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">sql</span><span class="p">,</span> <span class="n">Arrays</span><span class="o">.</span><span class="n">asList</span><span class="p">(</span><span class="n">params</span><span class="p">));</span>
+        <span class="n">List</span><span class="o">&lt;</span><span class="n">Row</span><span class="o">&gt;</span> <span class="n">result</span> <span class="o">=</span> <span class="n">new</span> <span class="n">ArrayList</span><span class="o">&lt;&gt;</span><span class="p">();</span>
+        <span class="k">try</span><span class="p">(</span><span class="n">PreparedStatement</span> <span class="n">st</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">prepareStatement</span><span class="p">(</span><span class="n">sql</span><span class="p">))</span> <span class="p">{</span>
+            <span class="k">for</span> <span class="p">(</span><span class="nb">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">params</span><span class="o">.</span><span class="n">length</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">st</span><span class="o">.</span><span class="n">setObject</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">params</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span><span class="mi">1</span><span class="p">]);</span>
+            <span class="p">}</span>
+            <span class="k">try</span> <span class="p">(</span><span class="n">ResultSet</span> <span class="n">rs</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">executeQuery</span><span class="p">())</span> <span class="p">{</span>
+                <span class="k">while</span><span class="p">(</span><span class="n">rs</span><span class="o">.</span><span class="n">next</span><span class="p">())</span> <span class="p">{</span>
+                    <span class="n">result</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">toRowMap</span><span class="p">(</span><span class="n">rs</span><span class="p">));</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">protected</span> <span class="n">Row</span> <span class="n">queryRow</span><span class="p">(</span><span class="n">Connection</span> <span class="n">conn</span><span class="p">,</span> <span class="n">String</span> <span class="n">sql</span><span class="p">,</span> <span class="n">Object</span><span class="o">...</span> <span class="n">params</span><span class="p">)</span> <span class="n">throws</span> <span class="ne">Exception</span> <span class="p">{</span>
+        <span class="n">List</span><span class="o">&lt;</span><span class="n">Row</span><span class="o">&gt;</span> <span class="n">rowList</span> <span class="o">=</span> <span class="n">queryRowList</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="n">sql</span><span class="p">,</span> <span class="n">params</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">rowList</span><span class="o">.</span><span class="n">size</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">throw</span> <span class="n">new</span> <span class="n">RuntimeException</span><span class="p">(</span><span class="s2">&quot;No unique result from query.&quot;</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">rowList</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">public</span> <span class="n">static</span> <span class="k">class</span> <span class="nc">Row</span> <span class="p">{</span>
+        <span class="n">public</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span> <span class="n">Object</span><span class="o">&gt;</span> <span class="nb">map</span> <span class="o">=</span> <span class="n">new</span> <span class="n">HashMap</span><span class="o">&lt;&gt;</span><span class="p">();</span>
+
+        <span class="n">public</span> <span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">T</span> <span class="n">get</span><span class="p">(</span><span class="n">String</span> <span class="n">name</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">T</span> <span class="n">result</span> <span class="o">=</span> <span class="p">(</span><span class="n">T</span><span class="p">)</span><span class="nb">map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">);</span>
+            <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="n">public</span> <span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">T</span> <span class="n">get</span><span class="p">(</span><span class="n">String</span> <span class="n">name</span><span class="p">,</span> <span class="n">T</span> <span class="n">defVal</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">T</span> <span class="n">result</span> <span class="o">=</span> <span class="p">(</span><span class="n">T</span><span class="p">)</span><span class="nb">map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">);</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">result</span> <span class="o">==</span> <span class="n">null</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">defVal</span><span class="p">;</span>
+            <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>To use it, one may do something like this:</p>
+<div class="highlight"><pre><span></span><code><span class="n">public</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="n">AccountStore</span><span class="w"> </span><span class="k">extends</span><span class="w"> </span><span class="n">JdbcSupport</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">public</span><span class="w"> </span><span class="n">AccountStore</span><span class="p">(</span><span class="n">DataSource</span><span class="w"> </span><span class="n">dataSource</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">super</span><span class="p">(</span><span class="n">dataSource</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">public</span><span class="w"> </span><span class="nb nb-Type">void</span><span class="w"> </span><span class="n">printAccountProfiles</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">try</span><span class="p">(</span><span class="n">Connection</span><span class="w"> </span><span class="n">conn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dataSource</span><span class="o">.</span><span class="n">getConnection</span><span class="p">())</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="nb nb-Type">String</span><span class="w"> </span><span class="n">sql</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;SELECT ACCOUNTID FROM USERS WHERE USERNAME=?&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="n">Row</span><span class="w"> </span><span class="n">row</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">queryRow</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="n">sql</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;zemian&quot;</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">            </span><span class="nb nb-Type">String</span><span class="w"> </span><span class="n">accountId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">row</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ACCOUNTID&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">            </span><span class="nb nb-Type">String</span><span class="w"> </span><span class="n">department</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;IT&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="n">sql</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;SELECT * FROM ACCOUNTPROFILES WHERE ID=? AND DEPARTMENT=?&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="n">List</span><span class="o">&lt;</span><span class="n">Row</span><span class="o">&gt;</span><span class="w"> </span><span class="n">rowList</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">queryRowList</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="n">sql</span><span class="p">,</span><span class="w"> </span><span class="n">accountId</span><span class="p">,</span><span class="w"> </span><span class="n">department</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">            </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">Row</span><span class="w"> </span><span class="n">row</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">rowList</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">                </span><span class="n">System</span><span class="o">.</span><span class="n">out</span><span class="o">.</span><span class="n">println</span><span class="p">(</span><span class="s2">&quot;Got profile: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">row</span><span class="o">.</span><span class="n">map</span><span class="p">);</span><span class="w"></span>
+<span class="w">            </span><span class="p">}</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</code></pre></div>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

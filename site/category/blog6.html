@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>ZBlog - Blog</title>
+        <link rel="stylesheet" href="https://zemian.github.io/theme/css/main.css" />
+        <link href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="ZBlog Atom Feed" />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://zemian.github.io/">ZBlog</a></h1>
+                <nav><ul>
+                    <li><a href="https://zemian.github.io/pages/about-the-author.html">About The Author</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+                <section id="content" class="body">
+                    <ol id="posts-list" class="hfeed" start="9">
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2018/install-windows-jdk-without-admin-rights.html" rel="bookmark"
+                           title="Permalink to Install Windows JDK Without Admin Rights">Install Windows JDK Without Admin Rights</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-03-23T00:00:00-05:00">
+                Published: Fri 23 March 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/jdk.html">jdk</a> <a href="https://zemian.github.io/tag/java.html">java</a> </p>
+</footer><!-- /.post-info -->                <h1>Installing JDK 7</h1>
+<ol>
+<li>
+<p>Download <a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">Oracle Java SE JDK 7</a>
+    In this example, we will use <code>jdk-7u80-windows-x64.exe</code></p>
+</li>
+<li>
+<p>Extract <code>jdk-7u80-windows-x64.exe</code> using 7-zip tool. Right click the
+    file then select context menu 7-zip &gt; Extract to
+    <code>jdk-7u80-windows-x64</code></p>
+</li>
+<li>
+<p>Go to the directory <code>jdk-7u80-windows-x64/.rsrc/1033/JAVA_CAB10</code></p>
+<ul>
+<li>
+<p>Step 1: Extract the file <code>111 …</code></p></li></ul></li></ol>
+                <a class="readmore" href="https://zemian.github.io/2018/install-windows-jdk-without-admin-rights.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2018/init-and-start-postgresql-in-cygwin.html" rel="bookmark"
+                           title="Permalink to Init and Start PostgreSQL in Cygwin">Init and Start PostgreSQL in Cygwin</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-03-22T00:00:00-05:00">
+                Published: Thu 22 March 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/postgres.html">postgres</a> </p>
+</footer><!-- /.post-info -->                <h1>Run Postgres Server</h1>
+<div class="highlight"><pre><span></span><code><span class="c1"># Start /usr/sbin/cygserver first if you haven&#39;t already done so</span><span class="w"></span>
+<span class="n">mkdir</span><span class="w"> </span><span class="o">/</span><span class="n">srv</span><span class="o">/</span><span class="n">pgdata</span><span class="w"></span>
+<span class="k">export</span><span class="w"> </span><span class="n">PGDATA</span><span class="o">=/</span><span class="n">srv</span><span class="o">/</span><span class="n">pgdata</span><span class="w"></span>
+<span class="n">pg_ctl</span><span class="w"> </span><span class="n">init</span><span class="w"></span>
+<span class="n">pg_ctl</span><span class="w"> </span><span class="n">start</span><span class="w"></span>
+</code></pre></div>
+
+<h2>Test Posgres Using Client</h2>
+<div class="highlight"><pre><span></span><code><span class="n">psql</span><span class="w"> </span><span class="n">postgres</span><span class="w"></span>
+
+<span class="n">postgres</span><span class="o">=</span><span class="c1"># create table test_ratings(username varchar(200), rating int);</span><span class="w"></span>
+<span class="n">postgres</span><span class="o">=</span><span class="c1"># insert into test_ratings values …</span></code></pre></div>
+                <a class="readmore" href="https://zemian.github.io/2018/init-and-start-postgresql-in-cygwin.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2018/parsing-arguments-and-options-with-python-script.html" rel="bookmark"
+                           title="Permalink to Parsing Arguments and Options With Python Script">Parsing Arguments and Options With Python Script</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-03-22T00:00:00-05:00">
+                Published: Thu 22 March 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/python.html">python</a> <a href="https://zemian.github.io/tag/argparse.html">argparse</a> <a href="https://zemian.github.io/tag/optparse.html">optparse</a> </p>
+</footer><!-- /.post-info -->                <div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">argparse</span>
+<span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--file&#39;</span><span class="p">)</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--debug&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">)</span>
+<span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">debug</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Options: </span><span class="si">{</span><span class="n">args</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">file</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">file</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">fh</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+</code></pre></div>
+                <a class="readmore" href="https://zemian.github.io/2018/parsing-arguments-and-options-with-python-script.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2018/print-python-runtime-information.html" rel="bookmark"
+                           title="Permalink to Print Python Runtime Information">Print Python Runtime Information</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-03-22T00:00:00-05:00">
+                Published: Thu 22 March 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/python.html">python</a> </p>
+</footer><!-- /.post-info -->                <div class="highlight"><pre><span></span><code><span class="c1"># Print python runtime information</span>
+<span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">sys</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;CWD=</span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Python=</span><span class="si">{</span><span class="n">sys</span><span class="o">.</span><span class="n">version</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">paths</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Lib=</span><span class="si">{</span><span class="n">paths</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+                <a class="readmore" href="https://zemian.github.io/2018/print-python-runtime-information.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2018/how-to-create-windows-context-menu-without-admin-rights.html" rel="bookmark"
+                           title="Permalink to How To Create Windows Context Menu Without Admin Rights">How To Create Windows Context Menu Without Admin Rights</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-03-16T00:00:00-05:00">
+                Published: Fri 16 March 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/windows.html">windows</a> </p>
+</footer><!-- /.post-info -->                <div class="highlight"><pre><span></span><code><span class="nv">@REM</span><span class="w"> </span><span class="n">Base</span><span class="w"> </span><span class="k">on</span><span class="w"> </span><span class="n">tips</span><span class="w"> </span><span class="nl">here</span><span class="p">:</span><span class="w"></span>
+<span class="nv">@REM</span><span class="w"> </span><span class="nl">https</span><span class="p">:</span><span class="o">//</span><span class="n">stackoverflow</span><span class="p">.</span><span class="n">com</span><span class="o">/</span><span class="n">questions</span><span class="o">/</span><span class="mi">48138681</span><span class="o">/</span><span class="n">how</span><span class="o">-</span><span class="k">to</span><span class="o">-</span><span class="k">add</span><span class="o">-</span><span class="n">sublime</span><span class="o">-</span><span class="nc">text</span><span class="o">-</span><span class="k">to</span><span class="o">-</span><span class="n">contextual</span><span class="o">-</span><span class="n">menu</span><span class="o">-</span><span class="k">without</span><span class="o">-</span><span class="k">admin</span><span class="o">-</span><span class="k">privileges</span><span class="o">-</span><span class="k">on</span><span class="o">-</span><span class="n">windows</span><span class="w"></span>
+
+<span class="nv">@reg</span><span class="w"> </span><span class="k">add</span><span class="w"> </span><span class="ss">&quot;HKEY_CURRENT_USER\Software\Classes\*\shell\Open with Sublime Text 3&quot;</span><span class="w">         </span><span class="o">/</span><span class="n">t</span><span class="w"> </span><span class="n">REG_SZ</span><span class="w"> </span><span class="o">/</span><span class="n">v</span><span class="w"> </span><span class="ss">&quot;&quot;</span><span class="w"> </span><span class="o">/</span><span class="n">d</span><span class="w"> </span><span class="ss">&quot;Open with Sublime Text 3&quot;</span><span class="w">   </span><span class="o">/</span><span class="n">f</span><span class="w"></span>
+<span class="nv">@reg</span><span class="w"> </span><span class="k">add …</span></code></pre></div>
+                <a class="readmore" href="https://zemian.github.io/2018/how-to-create-windows-context-menu-without-admin-rights.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2018/java-http-proxy-with-user-and-password.html" rel="bookmark"
+                           title="Permalink to Java Http Proxy with User and Password">Java Http Proxy with User and Password</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-03-16T00:00:00-05:00">
+                Published: Fri 16 March 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/java-http-proxy.html">java-http-proxy</a> </p>
+</footer><!-- /.post-info -->                <p>File: <code>scratch\_1.java</code></p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">java.io.BufferedReader</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">java.io.InputStreamReader</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">java.net.Authenticator</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">java.net.PasswordAuthentication</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">java.net.URL</span><span class="p">;</span>
+
+<span class="n">public</span> <span class="k">class</span> <span class="nc">scratch_1</span><span class="p">{</span>
+    <span class="n">public</span> <span class="n">static</span> <span class="n">void</span> <span class="n">main</span><span class="p">(</span><span class="n">String</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span> <span class="n">throws</span> <span class="ne">Exception</span> <span class="p">{</span>
+        <span class="n">System</span><span class="o">.</span><span class="n">setProperty</span><span class="p">(</span><span class="s2">&quot;java.util.logging.config.file&quot;</span><span class="p">,</span> <span class="s2">&quot;java-logging.properties&quot;</span><span class="p">);</span>
+
+        <span class="n">System</span><span class="o">.</span><span class="n">setProperty</span><span class="p">(</span><span class="s2">&quot;http.proxyHost&quot;</span><span class="p">,</span> <span class="s2">&quot;proxy …</span></code></pre></div>
+                <a class="readmore" href="https://zemian.github.io/2018/java-http-proxy-with-user-and-password.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2018/java-logging-properties.html" rel="bookmark"
+                           title="Permalink to Java Logging Properties">Java Logging Properties</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-03-16T00:00:00-05:00">
+                Published: Fri 16 March 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/java.html">java</a> <a href="https://zemian.github.io/tag/logging.html">logging</a> </p>
+</footer><!-- /.post-info -->                <p>Example:</p>
+<p><code>java -Djava.util.logging.config.file=java-logging.properties myapp.Hello</code></p>
+<p><strong>java-logging.properties.</strong></p>
+<div class="highlight"><pre><span></span><code>handlers= java.util.logging.ConsoleHandler
+java.util.logging.ConsoleHandler.level = FINEST
+sun.net.www.protocol.http.HttpURLConnection.level = ALL
+myapp.Hello.level = ALL
+</code></pre></div>
+                <a class="readmore" href="https://zemian.github.io/2018/java-logging-properties.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2018/getting-project-file-stats-with-python.html" rel="bookmark"
+                           title="Permalink to Getting Project File Stats with Python">Getting Project File Stats with Python</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-03-14T00:00:00-05:00">
+                Published: Wed 14 March 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/python.html">python</a> </p>
+</footer><!-- /.post-info -->                <div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
+<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;.&#39;</span>
+<span class="k">else</span><span class="p">:</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Inspecting dir: </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">dir_count</span><span class="p">,</span> <span class="n">file_count</span><span class="p">,</span> <span class="n">size_count</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">file_type_counts</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="mi">0</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">dirpath</span><span class="p">,</span> <span class="n">dirnames</span><span class="p">,</span> <span class="n">filenames</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+        <span class="n">dir …</span></code></pre></div>
+                <a class="readmore" href="https://zemian.github.io/2018/getting-project-file-stats-with-python.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2018/how-to-find-linux-standard-base-release-info.html" rel="bookmark"
+                           title="Permalink to How to find Linux Standard Base release info">How to find Linux Standard Base release info</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-03-11T00:00:00-05:00">
+                Published: Sun 11 March 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/linux.html">linux</a> </p>
+</footer><!-- /.post-info -->                <div class="highlight"><pre><span></span><code><span class="n">zemian</span><span class="nv">@zemian</span><span class="o">-</span><span class="nl">VirtualBox</span><span class="p">:</span><span class="o">~</span><span class="err">$</span><span class="w"> </span><span class="n">lsb_release</span><span class="w"> </span><span class="o">-</span><span class="n">a</span><span class="w"></span>
+
+<span class="k">No</span><span class="w"> </span><span class="n">LSB</span><span class="w"> </span><span class="n">modules</span><span class="w"> </span><span class="k">are</span><span class="w"> </span><span class="n">available</span><span class="p">.</span><span class="w"></span>
+<span class="n">Distributor</span><span class="w"> </span><span class="nl">ID</span><span class="p">:</span><span class="w"> </span><span class="n">Ubuntu</span><span class="w"></span>
+<span class="nl">Description</span><span class="p">:</span><span class="w">    </span><span class="n">Ubuntu</span><span class="w"> </span><span class="mf">16.04.3</span><span class="w"> </span><span class="n">LTS</span><span class="w"></span>
+<span class="k">Release</span><span class="err">:</span><span class="w">        </span><span class="mf">16.04</span><span class="w"></span>
+<span class="nl">Codename</span><span class="p">:</span><span class="w">       </span><span class="n">xenial</span><span class="w"></span>
+</code></pre></div>
+                <a class="readmore" href="https://zemian.github.io/2018/how-to-find-linux-standard-base-release-info.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2018/linux-sublimetext-title-says-unregistered-despite-you-have-paid-license.html" rel="bookmark"
+                           title="Permalink to Linux SublimeText title says "Unregistered" despite you have paid license">Linux SublimeText title says "Unregistered" despite you have paid license</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-03-11T00:00:00-05:00">
+                Published: Sun 11 March 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/sublimetext.html">sublimetext</a> </p>
+</footer><!-- /.post-info -->                <p>Solution: Edit the "Name" line in
+<code>~/.local/share/applications/sublime_text.desktop</code> file.</p>
+<p>See
+<a href="https://askubuntu.com/questions/678133/sublime-text-3-says-unregistered-in-menu-title-bar">https://askubuntu.com/questions/678133/sublime-text-3-says-unregistered-in-menu-title-bar</a></p>
+                <a class="readmore" href="https://zemian.github.io/2018/linux-sublimetext-title-says-unregistered-despite-you-have-paid-license.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+                </ol><!-- /#posts-list -->
+<p class="paginator">
+        <a href="https://zemian.github.io/category/blog.html">&#8647;</a>
+        <a href="https://zemian.github.io/category/blog5.html">&laquo;</a>
+    Page 6 / 30
+        <a href="https://zemian.github.io/category/blog7.html">&raquo;</a>
+        <a href="https://zemian.github.io/category/blog30.html">&#8649;</a>
+</p>
+                </section><!-- /#content -->
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

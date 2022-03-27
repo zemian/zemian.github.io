@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>EE Servlet 3 - Getting started with web application module and a landing page</title>
+        <link rel="stylesheet" href="https://zemian.github.io/theme/css/main.css" />
+        <link href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="ZBlog Atom Feed" />
+        <meta name="description" content="Getting started with Servlet 3 Web application module in Java EE is probably the most common type of application module that a developer would..." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://zemian.github.io/">ZBlog</a></h1>
+                <nav><ul>
+                    <li><a href="https://zemian.github.io/pages/about-the-author.html">About The Author</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://zemian.github.io/2014/ee-servlet-3-getting-started-with-web-application-module-and-a-landing-page.html" rel="bookmark"
+           title="Permalink to EE Servlet 3 - Getting started with web application module and a landing page">EE Servlet 3 - Getting started with web application module and a landing page</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2014-12-27T00:00:00-05:00">
+                Published: Sat 27 December 2014
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/servlet.html">servlet</a> </p>
+</footer><!-- /.post-info -->      <h2>Getting started with Servlet 3</h2>
+<p>Web application module in Java EE is probably the most common type of application module that a developer would encounter and work on. That's because not only it can provide users the UI, but it also supoprt many common web application patterns: Model View Controller, Filter, Session, Context Listener, Http Request, Paramters, Query, and Form handling, Http Response writer, redirect, error etc. You can do all these with Servlet spec alone, so getting to know it well is an important part of learning in writing good web application.</p>
+<p>Servlet has been around for a long time, and many developers are already familiar with it. There are many other web frameworks such as Tapestry or Spring MVC that are built on top of Servlet. These frameworks provide separate programming models that suppose to easy development process, but nontheless the core concept is still based on the Servlet technologies (or at least tightly integrated if it were to run by any web container server). In this post, I will try to highlight how to get a web module application started, and configure a typical need: a default landing page.</p>
+<h2>Hello World</h2>
+<p>Like many things in EE environment, you would write small components as Java class and then deploy them onto a server and let the server manage it's lifecycle and execution. So as with Servlet, you would write a simple Java class that implements Servlet interface, package it and deploy, and server will do it's magic.</p>
+<p>Before Servlet 3.0, your servlet component is configured and mapped in web.xml file, but now you can just add an annotation directly on your servlet class and the app server should be able to automatically deploy and run it. Here is an example of a classic hello world.</p>
+<div class="highlight"><pre><span></span><code><span class="n">package</span> <span class="n">zemian</span><span class="o">.</span><span class="n">servlet3example</span><span class="o">.</span><span class="n">web</span><span class="p">;</span>
+
+<span class="kn">import</span> <span class="nn">java.io.IOException</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">java.io.PrintWriter</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">javax.servlet.ServletException</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">javax.servlet.annotation.WebServlet</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">javax.servlet.http.HttpServlet</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">javax.servlet.http.HttpServletRequest</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">javax.servlet.http.HttpServletResponse</span><span class="p">;</span>
+
+<span class="nd">@WebServlet</span><span class="p">(</span><span class="s2">&quot;/hello&quot;</span><span class="p">)</span>
+<span class="n">public</span> <span class="k">class</span> <span class="nc">HelloServlet</span> <span class="n">extends</span> <span class="n">HttpServlet</span> <span class="p">{</span>
+
+    <span class="nd">@Override</span>
+    <span class="n">protected</span> <span class="n">void</span> <span class="n">doGet</span><span class="p">(</span><span class="n">HttpServletRequest</span> <span class="n">req</span><span class="p">,</span> <span class="n">HttpServletResponse</span> <span class="n">resp</span><span class="p">)</span> <span class="n">throws</span> <span class="n">ServletException</span><span class="p">,</span> <span class="n">IOException</span> <span class="p">{</span>
+        <span class="n">PrintWriter</span> <span class="n">writer</span> <span class="o">=</span> <span class="n">resp</span><span class="o">.</span><span class="n">getWriter</span><span class="p">();</span>
+        <span class="n">writer</span><span class="o">.</span><span class="n">println</span><span class="p">(</span><span class="s2">&quot;&lt;!DOCTYPE html&gt;&quot;</span><span class="p">);</span>
+        <span class="n">writer</span><span class="o">.</span><span class="n">println</span><span class="p">(</span><span class="s2">&quot;&lt;html&gt;&quot;</span><span class="p">);</span>
+        <span class="n">writer</span><span class="o">.</span><span class="n">println</span><span class="p">(</span><span class="s2">&quot;&lt;body&gt;&quot;</span><span class="p">);</span>
+        <span class="n">writer</span><span class="o">.</span><span class="n">println</span><span class="p">(</span><span class="s2">&quot;&lt;p&gt;Hello World!&lt;/p&gt;&quot;</span><span class="p">);</span>
+        <span class="n">writer</span><span class="o">.</span><span class="n">println</span><span class="p">(</span><span class="s2">&quot;&lt;/body&gt;&quot;</span><span class="p">);</span>
+        <span class="n">writer</span><span class="o">.</span><span class="n">println</span><span class="p">(</span><span class="s2">&quot;&lt;/html&gt;&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>In this Servlet, I simply extends an existing base 
+HttpServlet class that should be available in all Serlvet spec. and in 
+response to a http GET request, I write a Hello World message out 
+as html response.</p>
+<p>You may find above code in  <a href="https://github.com/saltnlight5/java-ee6-examples/tree/master/servlet3-example">servlet3-example</a>. Build and deploy it and then you can access it with http://localhost/servlet3-exmaple/hello. (I have many other servlet examples in the project, but you may just concentrate in this class for now.)</p>
+<h2>How to configure a default landing page in Servlet 3</h2>
+<p>A typical application server will likely default a landing page to "index.html" or "index.jsp" if it exists. For example, if I have written a IndexSerlvet class and mapped to "/index" instead, then you need to tell the server default to there. This will happen if users only type http://localhost/servlet3-example with context path in URL only.</p>
+<p>Despite you can can do just about most things in Java annotations with Servlet 3.0 as equivalent to the content found web.xml file, but not the welcome file though. So to do this, you would still need to create this good old web.xml. Here is an example</p>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;web-app</span> <span class="na">xmlns:xsi=</span><span class="s">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span>
+         <span class="na">xsi:schemaLocation=</span><span class="s">&quot;http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd&quot;</span> 
+         <span class="na">version=</span><span class="s">&quot;3.0&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;welcome-file-list&gt;</span>
+        <span class="nt">&lt;welcome-file&gt;</span>index<span class="nt">&lt;/welcome-file&gt;</span>
+    <span class="nt">&lt;/welcome-file-list&gt;</span>
+<span class="nt">&lt;/web-app&gt;</span>
+</code></pre></div>
+
+<p>Above example will default the landing page to a Servlet url mapping with "/index" path.</p>
+<p>TIPS: Do NOT to use "/" prefix when definining welcome-file element, else you will get a page not found error and likely your server won't even print any error message in the log! </p>
+<p>Another alternate solution instead of overrite welcome-file is simply add a "index.jsp" file in root of webapp folder and do a redirect like this:</p>
+<div class="highlight"><pre><span></span><code><span class="cp">&lt;%</span> <span class="n">response</span><span class="o">.</span><span class="n">sendRedirect</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">getContextPath</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot;/index&quot;</span><span class="p">);</span> <span class="cp">%&gt;</span><span class="x"></span>
+</code></pre></div>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

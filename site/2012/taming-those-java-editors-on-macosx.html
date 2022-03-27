@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>Taming those Java editors on MacOSX</title>
+        <link rel="stylesheet" href="https://zemian.github.io/theme/css/main.css" />
+        <link href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="ZBlog Atom Feed" />
+        <meta name="description" content="Today, I learned that you can open multiple Eclipse instances in MacOSX like this $ open -n -a Eclipse This comes pretty handy if you want a..." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://zemian.github.io/">ZBlog</a></h1>
+                <nav><ul>
+                    <li><a href="https://zemian.github.io/pages/about-the-author.html">About The Author</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://zemian.github.io/2012/taming-those-java-editors-on-macosx.html" rel="bookmark"
+           title="Permalink to Taming those Java editors on MacOSX">Taming those Java editors on MacOSX</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2012-08-26T00:00:00-05:00">
+                Published: Sun 26 August 2012
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/editor.html">editor</a> </p>
+</footer><!-- /.post-info -->      <p>Today, I learned that you can open multiple Eclipse instances in MacOSX like this</p>
+<div class="highlight"><pre><span></span><code>$ open -n -a Eclipse
+</code></pre></div>
+
+<p>This comes pretty handy if you want a separate workspace per large project that has dozen or so modules (try importing the Camel or SpringFramework 
+project source and you will see what I mean!)</p>
+<p>The <code>-a</code> is for name of an application to open, and <code>-n</code> means to open with new instance.</p>
+<h1>Finding a programmer friendly text editor on MacOSX</h1>
+<p>Despite I use Eclipse for most of my large Java projects, I still often find myself the need of a plain text editor. I use plain text editor for most
+of my scripting programming. I also use it for notes taking, text file browsing, or even writing Blog post in markdown format!</p>
+<p>I guess for most programmers, choosing an Editor is a very personally thing. So I am not here to convert anybody. However, for those who never heard of 
+<a href="http://www.jedit.org">jEdit</a>, you ought to give it a try. It's open source, full features, programmers friendly text editor that works 
+across many of OS systems consistenly. It works because it's Java based! If you use one of decent computer now a day, the performance 
+is excellent as well.</p>
+<p>However, for some strange reason, the jedit installer on MacOSX doesn't comes with a normal java command line script wrapper. The only thing 
+I can see is the actual binary under <code>/Applications/jEdit.app/Contents/MacOS/jedit</code>. We can certainly run this as full jedit command, but then 
+it always liter the console with strange GUI warnings. So a better way to run it is actually to use the <code>open</code> command.</p>
+<div class="highlight"><pre><span></span><code>$ open -a jedit <span class="nv">$HOME</span>/.bash_profile
+</code></pre></div>
+
+<p>Or you can add this in your <code>.bash_profile</code> file:</p>
+<div class="highlight"><pre><span></span><code><span class="n">function</span><span class="w"> </span><span class="nf">jedit</span><span class="p">(){</span><span class="w"> </span><span class="n">open</span><span class="w"> </span><span class="o">-</span><span class="n">a</span><span class="w"> </span><span class="n">jedit</span><span class="w"> </span><span class="s">&quot;$@&quot;</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+</code></pre></div>
+
+<p>Now you can use <code>jedit</code> command on the terminal.</p>
+<h2>Some of my favorite features of jEdit</h2>
+<ul>
+<li>It's open source and has very active community of users.</li>
+<li>It works across MacOSX, Windows and Linux Desktop.</li>
+<li>Support many common programming language syntax highlights.</li>
+<li>Support multi columns editing.</li>
+<li>Support rich feature search (reg ex, hyper-search, all buffers search, search and replace etc.)</li>
+<li>Support multi buffers tabs editing.</li>
+<li>Supports Macro recording and scripting.</li>
+<li>Support plugin extension and there are many external plugins available (eg: XML formater, Diff viewer, SFTP client/editing, etc).</li>
+</ul>
+<h1>Openning other stuff on MacOSX</h1>
+<p>The little <code>open</code> command can open not just application, but it can also open directories or files by extension associations. For
+example, to configure any <code>.properties</code> files to be open by jEdit, try the the following.</p>
+<ol>
+<li>Use Finder to browse and find one of properties</li>
+<li>Right click, "Open With" &gt; "Other..."</li>
+<li>Choose "jEdit" under Applications folder.</li>
+<li>Enable "Always Open With", then click Open button.</li>
+</ol>
+<p>This change should affect your Terminal <code>open</code> command as well, and if you run <code>open my.properties</code>, your jEdit should pop up.</p>
+<p>You can find more options by running it without any options, and it will print you full help page.</p>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="k">Usage</span><span class="err">:</span><span class="w"> </span><span class="k">open</span><span class="w"> </span><span class="o">[</span><span class="n">-e</span><span class="o">]</span><span class="w"> </span><span class="o">[</span><span class="n">-t</span><span class="o">]</span><span class="w"> </span><span class="o">[</span><span class="n">-f</span><span class="o">]</span><span class="w"> </span><span class="o">[</span><span class="n">-W</span><span class="o">]</span><span class="w"> </span><span class="o">[</span><span class="n">-R</span><span class="o">]</span><span class="w"> </span><span class="o">[</span><span class="n">-n</span><span class="o">]</span><span class="w"> </span><span class="o">[</span><span class="n">-g</span><span class="o">]</span><span class="w"> </span><span class="o">[</span><span class="n">-h</span><span class="o">]</span><span class="w"> </span><span class="o">[</span><span class="n">-b &lt;bundle identifier&gt;</span><span class="o">]</span><span class="w"> </span><span class="o">[</span><span class="n">-a &lt;application&gt;</span><span class="o">]</span><span class="w"> </span><span class="o">[</span><span class="n">filenames</span><span class="o">]</span><span class="w"> </span><span class="o">[</span><span class="n">--args arguments</span><span class="o">]</span><span class="w"></span>
+<span class="w">    </span><span class="nl">Help</span><span class="p">:</span><span class="w"> </span><span class="k">Open</span><span class="w"> </span><span class="n">opens</span><span class="w"> </span><span class="n">files</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">shell</span><span class="p">.</span><span class="w"></span>
+<span class="w">          </span><span class="k">By</span><span class="w"> </span><span class="k">default</span><span class="p">,</span><span class="w"> </span><span class="n">opens</span><span class="w"> </span><span class="k">each</span><span class="w"> </span><span class="k">file</span><span class="w"> </span><span class="k">using</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="k">default</span><span class="w"> </span><span class="n">application</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="k">file</span><span class="p">.</span><span class="w">  </span>
+<span class="w">          </span><span class="k">If</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="k">file</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">form</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">URL</span><span class="p">,</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="k">file</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">opened</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">URL</span><span class="p">.</span><span class="w"></span>
+<span class="w">    </span><span class="nl">Options</span><span class="p">:</span><span class="w"> </span>
+<span class="w">          </span><span class="o">-</span><span class="n">a</span><span class="w">                </span><span class="n">Opens</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">specified</span><span class="w"> </span><span class="n">application</span><span class="p">.</span><span class="w"></span>
+<span class="w">          </span><span class="o">-</span><span class="n">b</span><span class="w">                </span><span class="n">Opens</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">specified</span><span class="w"> </span><span class="n">application</span><span class="w"> </span><span class="n">bundle</span><span class="w"> </span><span class="n">identifier</span><span class="p">.</span><span class="w"></span>
+<span class="w">          </span><span class="o">-</span><span class="n">e</span><span class="w">                </span><span class="n">Opens</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="n">TextEdit</span><span class="p">.</span><span class="w"></span>
+<span class="w">          </span><span class="o">-</span><span class="n">t</span><span class="w">                </span><span class="n">Opens</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="k">default</span><span class="w"> </span><span class="nc">text</span><span class="w"> </span><span class="n">editor</span><span class="p">.</span><span class="w"></span>
+<span class="w">          </span><span class="o">-</span><span class="n">f</span><span class="w">                </span><span class="k">Reads</span><span class="w"> </span><span class="k">input</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">standard</span><span class="w"> </span><span class="k">input</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="n">opens</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="n">TextEdit</span><span class="p">.</span><span class="w"></span>
+<span class="w">          </span><span class="o">-</span><span class="n">F</span><span class="w">  </span><span class="o">--</span><span class="n">fresh</span><span class="w">       </span><span class="n">Launches</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">app</span><span class="w"> </span><span class="n">fresh</span><span class="p">,</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="k">is</span><span class="p">,</span><span class="w"> </span><span class="k">without</span><span class="w"> </span><span class="n">restoring</span><span class="w"> </span><span class="n">windows</span><span class="p">.</span><span class="w"> </span><span class="n">Saved</span><span class="w"> </span><span class="n">persistent</span><span class="w"> </span><span class="k">state</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">lost</span><span class="p">,</span><span class="w"> </span><span class="n">excluding</span><span class="w"> </span><span class="n">Untitled</span><span class="w"> </span><span class="n">documents</span><span class="p">.</span><span class="w"></span>
+<span class="w">          </span><span class="o">-</span><span class="n">R</span><span class="p">,</span><span class="w"> </span><span class="o">--</span><span class="n">reveal</span><span class="w">      </span><span class="n">Selects</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">Finder</span><span class="w"> </span><span class="n">instead</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="n">opening</span><span class="p">.</span><span class="w"></span>
+<span class="w">          </span><span class="o">-</span><span class="n">W</span><span class="p">,</span><span class="w"> </span><span class="o">--</span><span class="n">wait</span><span class="o">-</span><span class="n">apps</span><span class="w">   </span><span class="n">Blocks</span><span class="w"> </span><span class="n">until</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">used</span><span class="w"> </span><span class="n">applications</span><span class="w"> </span><span class="k">are</span><span class="w"> </span><span class="n">closed</span><span class="w"> </span><span class="p">(</span><span class="n">even</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">they</span><span class="w"> </span><span class="n">were</span><span class="w"> </span><span class="n">already</span><span class="w"> </span><span class="n">running</span><span class="p">).</span><span class="w"></span>
+<span class="w">              </span><span class="o">--</span><span class="n">args</span><span class="w">        </span><span class="ow">All</span><span class="w"> </span><span class="n">remaining</span><span class="w"> </span><span class="n">arguments</span><span class="w"> </span><span class="k">are</span><span class="w"> </span><span class="n">passed</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">argv</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">application</span><span class="err">&#39;</span><span class="n">s</span><span class="w"> </span><span class="n">main</span><span class="p">()</span><span class="w"> </span><span class="k">function</span><span class="w"> </span><span class="n">instead</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="n">opened</span><span class="p">.</span><span class="w"></span>
+<span class="w">          </span><span class="o">-</span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="o">--</span><span class="k">new</span><span class="w">         </span><span class="k">Open</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">instance</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">application</span><span class="w"> </span><span class="n">even</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">one</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">already</span><span class="w"> </span><span class="n">running</span><span class="p">.</span><span class="w"></span>
+<span class="w">          </span><span class="o">-</span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="o">--</span><span class="n">hide</span><span class="w">        </span><span class="n">Launches</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">app</span><span class="w"> </span><span class="n">hidden</span><span class="p">.</span><span class="w"></span>
+<span class="w">          </span><span class="o">-</span><span class="n">g</span><span class="p">,</span><span class="w"> </span><span class="o">--</span><span class="n">background</span><span class="w">  </span><span class="n">Does</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">bring</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">application</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">foreground</span><span class="p">.</span><span class="w"></span>
+<span class="w">          </span><span class="o">-</span><span class="n">h</span><span class="p">,</span><span class="w"> </span><span class="c1">--header      Searches header file locations for headers matching the given filenames, and opens them.</span>
+</code></pre></div>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

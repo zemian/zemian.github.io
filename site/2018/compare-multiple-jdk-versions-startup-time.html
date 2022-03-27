@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>Compare Multiple JDK Versions Startup Time</title>
+        <link rel="stylesheet" href="https://zemian.github.io/theme/css/main.css" />
+        <link href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="ZBlog Atom Feed" />
+        <meta name="description" content="Script file: jdk-startup-time-test.py #!/usr/bin/env python3 # Author: Zemian Deng 2018-03-24 # # This script will test multiple JDK versions of..." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://zemian.github.io/">ZBlog</a></h1>
+                <nav><ul>
+                    <li><a href="https://zemian.github.io/pages/about-the-author.html">About The Author</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://zemian.github.io/2018/compare-multiple-jdk-versions-startup-time.html" rel="bookmark"
+           title="Permalink to Compare Multiple JDK Versions Startup Time">Compare Multiple JDK Versions Startup Time</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-03-24T00:00:00-05:00">
+                Published: Sat 24 March 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/jdk.html">jdk</a> <a href="https://zemian.github.io/tag/java.html">java</a> <a href="https://zemian.github.io/tag/python.html">python</a> </p>
+</footer><!-- /.post-info -->      <p>Script file: <code>jdk-startup-time-test.py</code></p>
+<div class="highlight"><pre><span></span><code><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># Author: Zemian Deng 2018-03-24</span>
+<span class="c1">#</span>
+<span class="c1"># This script will test multiple JDK versions of startup time in your system</span>
+<span class="c1"># We assume all JDK are installed in $HOME/apps directory with</span>
+<span class="c1"># names matching in &#39;jdk_versions&#39; list.</span>
+<span class="c1"># Also we asusme you compiled `hello.java` with lowest JDK</span>
+<span class="c1"># you have in the same directory as this script. This is</span>
+<span class="c1"># used for testing the JVM loading time.</span>
+<span class="c1">#</span>
+<span class="c1"># NOTE: Running the script using Cygwin is a LOT slower than</span>
+<span class="c1"># running it natively in cmd.exe shell! This is because</span>
+<span class="c1"># time for Cygwin to start Java is very slow!</span>
+<span class="c1">#</span>
+
+<span class="kn">import</span> <span class="nn">time</span><span class="o">,</span> <span class="nn">subprocess</span><span class="o">,</span> <span class="nn">os</span>
+<span class="n">home_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s1">&#39;~&#39;</span><span class="p">)</span>
+<span class="n">app_dir</span> <span class="o">=</span> <span class="n">home_dir</span> <span class="o">+</span> <span class="s1">&#39;/apps&#39;</span>
+<span class="n">jdk_versions</span> <span class="o">=</span> <span class="p">[</span>
+<span class="s1">&#39;jdk-6u29&#39;</span><span class="p">,</span>
+<span class="s1">&#39;jdk-7u80&#39;</span><span class="p">,</span>
+<span class="s1">&#39;jdk-8u161&#39;</span><span class="p">,</span>
+<span class="s1">&#39;jdk-9.0.4&#39;</span><span class="p">,</span>
+<span class="s1">&#39;jdk-10&#39;</span><span class="p">]</span>
+<span class="k">def</span> <span class="nf">test_jdk_startup</span><span class="p">(</span><span class="n">jdk</span><span class="p">):</span>
+        <span class="n">runs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">java_cmd</span> <span class="o">=</span> <span class="n">app_dir</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">jdk</span> <span class="o">+</span> <span class="s1">&#39;/bin/java&#39;</span>
+        <span class="c1">#print(f&quot;Testing {java_cmd}&quot;)</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+                <span class="n">t1</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+                <span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">([</span><span class="n">java_cmd</span><span class="p">,</span> <span class="s1">&#39;hello&#39;</span><span class="p">])</span>
+                <span class="n">t2</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+                <span class="n">runs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t2</span> <span class="o">-</span> <span class="n">t1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">runs</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">runs</span><span class="p">)</span>
+
+<span class="c1"># Now test it</span>
+<span class="k">for</span> <span class="n">jdk</span> <span class="ow">in</span> <span class="n">jdk_versions</span><span class="p">:</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">test_jdk_startup</span><span class="p">(</span><span class="n">jdk</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">jdk</span><span class="si">:</span><span class="s2">20</span><span class="si">}</span><span class="s2"> avg start-time </span><span class="si">{</span><span class="n">t</span><span class="si">:</span><span class="s2">.3</span><span class="si">}</span><span class="s2">s&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Here is a sample of output:</p>
+<div class="highlight"><pre><span></span><code>python3 jdk-startup-time-test.py
+
+jdk-6u29             avg start-time 0.301s
+jdk-7u80             avg start-time 0.122s
+jdk-8u161            avg start-time 0.178s
+jdk-9.0.4            avg start-time 0.359s
+jdk-10               avg start-time 0.323s
+</code></pre></div>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>Starting postgres server on Cygwin</title>
+        <link rel="stylesheet" href="https://zemian.github.io/theme/css/main.css" />
+        <link href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="ZBlog Atom Feed" />
+        <meta name="description" content="To run postgres database server on Cygwin, you need first run the cygserver. If not, you will get error similar to this: export..." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://zemian.github.io/">ZBlog</a></h1>
+                <nav><ul>
+                    <li><a href="https://zemian.github.io/pages/about-the-author.html">About The Author</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://zemian.github.io/2018/starting-postgres-server-on-cygwin.html" rel="bookmark"
+           title="Permalink to Starting postgres server on Cygwin">Starting postgres server on Cygwin</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-02-20T00:00:00-05:00">
+                Published: Tue 20 February 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/postgres.html">postgres</a> <a href="https://zemian.github.io/tag/cygwin.html">cygwin</a> </p>
+</footer><!-- /.post-info -->      <p>To run postgres database server on Cygwin, you need first run the
+<code>cygserver</code>. If not, you will get error similar to this:</p>
+<div class="highlight"><pre><span></span><code><span class="k">export</span><span class="w"> </span><span class="n">PGDATA</span><span class="o">=/</span><span class="n">cygdrive</span><span class="o">/</span><span class="n">c</span><span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">zemian</span><span class="o">/</span><span class="n">my</span><span class="o">-</span><span class="n">pgdata</span><span class="w"></span>
+<span class="n">pg_ctl</span><span class="w"> </span><span class="n">init</span><span class="w"></span>
+<span class="o">...</span><span class="w"></span>
+<span class="n">running</span><span class="w"> </span><span class="n">bootstrap</span><span class="w"> </span><span class="n">script</span><span class="w"> </span><span class="o">...</span><span class="w"> </span><span class="n">FATAL</span><span class="p">:</span><span class="w">  </span><span class="n">could</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">create</span><span class="w"> </span><span class="n">shared</span><span class="w"> </span><span class="n">memory</span><span class="w"> </span><span class="n">segment</span><span class="p">:</span><span class="w"> </span><span class="n">Function</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">implemented</span><span class="w"></span>
+<span class="n">DETAIL</span><span class="p">:</span><span class="w">  </span><span class="n">Failed</span><span class="w"> </span><span class="n">system</span><span class="w"> </span><span class="n">call</span><span class="w"> </span><span class="n">was</span><span class="w"> </span><span class="n">shmget</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="o">=</span><span class="mi">56</span><span class="p">,</span><span class="w"> </span><span class="mi">03600</span><span class="p">)</span><span class="o">.</span><span class="w"></span>
+<span class="n">child</span><span class="w"> </span><span class="n">process</span><span class="w"> </span><span class="n">exited</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">exit</span><span class="w"> </span><span class="n">code</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
+<span class="n">initdb</span><span class="p">:</span><span class="w"> </span><span class="n">removing</span><span class="w"> </span><span class="n">contents</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="n">directory</span><span class="w"> </span><span class="s2">&quot;/cygdrive/c/Users/zemian/my-pgdata&quot;</span><span class="w"></span>
+<span class="n">pg_ctl</span><span class="p">:</span><span class="w"> </span><span class="n">database</span><span class="w"> </span><span class="n">system</span><span class="w"> </span><span class="n">initialization</span><span class="w"> </span><span class="n">failed</span><span class="w"></span>
+</code></pre></div>
+
+<p>To resolve this, you first start <code>cygserver</code>. Even if you do not have
+admin rights to install as Windows service, you can still run it per
+shell session. This is needed for <strong>shared memory</strong> need.</p>
+<div class="highlight"><pre><span></span><code># <span class="k">For</span> <span class="nv">the</span> <span class="nv">first</span> <span class="nv">time</span>, <span class="nv">you</span> <span class="nv">need</span> <span class="nv">config</span>
+<span class="o">/</span><span class="nv">usr</span><span class="o">/</span><span class="nv">bin</span><span class="o">/</span><span class="nv">cygserver</span><span class="o">-</span><span class="nv">config</span>
+
+# <span class="nv">Now</span> <span class="nv">run</span> <span class="nv">it</span>
+<span class="nv">cygserver</span> <span class="o">&amp;</span>
+</code></pre></div>
+
+<p>After above then you can start postgres</p>
+<div class="highlight"><pre><span></span><code>pg_ctrl init
+pg_ctrl start
+</code></pre></div>
+
+<h1>Postgres Windows Installation</h1>
+<p>The official download is provided by EnterpriseDB (EDB) You can get a
+zip package from:</p>
+<p><a href="https://www.enterprisedb.com/download-postgresql-binaries">https://www.enterprisedb.com/download-postgresql-binaries</a></p>
+<p>To install, just unzip it.</p>
+<div class="highlight"><pre><span></span><code>mkdir $HOME/apps/postgresql-10.3-2
+cd $HOME/apps/postgresql-10.3-2
+unzip postgresql-10.3-2-windows-x64-binaries.zip
+</code></pre></div>
+
+<p>Server can be started manually like this in cmd.exe prompt:</p>
+<div class="highlight"><pre><span></span><code>bin\pg_ctl -D data -o &quot;--encoding=UTF8 --auth=trust&quot; initdb
+mkdir logs
+bin\pg_ctl -D data -l logs\postgres.log start
+
+bin\createdb %USERNAME%
+chcp 1252
+bin\psql
+
+zemian=# select version();
+                          version
+------------------------------------------------------------
+ PostgreSQL 10.3, compiled by Visual C++ build 1800, 64-bit
+(1 row)
+</code></pre></div>
+
+<p>By default inidb will create a "postgres" database, but user is your
+Windows login name, and it will not match. It’s more convient to create
+a database that match your username, and use that as default.</p>
+<p>You should be careful with "--auth=trust", which can get you started
+quickly but not very secure.</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

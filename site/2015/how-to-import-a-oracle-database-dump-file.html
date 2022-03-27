@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>How to import a Oracle database dump file</title>
+        <link rel="stylesheet" href="https://zemian.github.io/theme/css/main.css" />
+        <link href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="ZBlog Atom Feed" />
+        <meta name="description" content="Here is an example on how to import a Oracle database dump file (a binary file that's exported from a Oracle database using the Oracle data pump..." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://zemian.github.io/">ZBlog</a></h1>
+                <nav><ul>
+                    <li><a href="https://zemian.github.io/pages/about-the-author.html">About The Author</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://zemian.github.io/2015/how-to-import-a-oracle-database-dump-file.html" rel="bookmark"
+           title="Permalink to How to import a Oracle database dump file">How to import a Oracle database dump file</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2015-08-18T00:00:00-05:00">
+                Published: Tue 18 August 2015
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/oracle.html">oracle</a> </p>
+</footer><!-- /.post-info -->      <p>Here is an example on how to import a Oracle database dump file (a binary file that's exported from a Oracle database using the Oracle data pump utility). For this instruction example, let's say I was given a myapp.dmp.gz file.</p>
+<p>NOTE: If you do not use the same db user/tablespace for export and import, then you need to know its names used during export to perform the remapping during import.</p>
+<p>Step 1: If you don't have an Oracle database instance to work with, create one first. Or ask your DBA to create or allocate a instance for your import purpose.</p>
+<p>Step 2: Create a new tablespace and a DB user in an Oracle database instance. (For this example, I will call my new user <code>MYAPP08182015</code>, password <code>Password1</code>, and tablespace named <code>MY_TABLE_SPACE</code>.)</p>
+<div class="highlight"><pre><span></span><code><span class="nv">create</span> <span class="nv">tablespace</span> <span class="nv">MY_TABLE_SPACE</span> <span class="nv">datafile</span>
+  <span class="s1">&#39;</span><span class="s">/opt/myapp_datafiles/MY_TABLE_SPACE.dat</span><span class="s1">&#39;</span>
+  <span class="nv">size</span> <span class="mi">500</span><span class="nv">m</span> <span class="nv">autoextend</span> <span class="nv">on</span> <span class="k">next</span> <span class="mi">500</span><span class="nv">m</span>
+  <span class="nv">extent</span> <span class="nv">management</span> <span class="nv">local</span>
+  <span class="nv">segment</span> <span class="nv">space</span> <span class="nv">management</span> <span class="nv">auto</span><span class="c1">;</span>
+
+<span class="nv">create</span> <span class="nv">user</span> <span class="nv">MYAPP08182015</span> <span class="nv">identified</span> <span class="nv">by</span> <span class="nv">Password1</span>
+  <span class="nv">default</span> <span class="nv">tablespace</span> <span class="nv">MY_TABLE_SPACE</span>
+  <span class="nv">temporary</span> <span class="nv">tablespace</span> <span class="nv">TEMP</span>
+  <span class="nv">quota</span> <span class="nv">unlimited</span> <span class="nv">on</span> <span class="nv">MYTABLESPACE</span><span class="c1">;</span>
+
+<span class="nv">grant</span> <span class="nv">create</span> <span class="nv">session</span>, <span class="nv">grant</span> <span class="nv">any</span> <span class="nv">privilege</span> <span class="nv">to</span> <span class="nv">MYAPP08182015</span><span class="c1">;</span>
+<span class="nv">grant</span> <span class="nv">IMP_FULL_DATABASE</span> <span class="nv">to</span> <span class="nv">MYAPP08182015</span><span class="c1">;</span>
+
+<span class="nv">create</span> <span class="nv">directory</span> <span class="nv">MY_DATADUMP_DIR</span> <span class="nv">as</span> <span class="s1">&#39;</span><span class="s">/opt/myapp_datadump</span><span class="s1">&#39;</span><span class="c1">;</span>
+</code></pre></div>
+
+<p>Note that user must have <code>IMP_FULL_DATABASE</code> privilege to be able to used by import tool. And if you don't want to use default import data directory, then you would need to create the directory object to be used by import as shown above.</p>
+<p>Note also that your TEMP tablespace might not have enough disk space for large import. In this case, you may increase it like this:</p>
+<div class="highlight"><pre><span></span><code><span class="nv">alter</span> <span class="nv">tablespace</span> <span class="nv">temp</span> <span class="nv">add</span> <span class="nv">tempfile</span>
+  <span class="s1">&#39;</span><span class="s">/opt/myapp_datafiles/TEMP2.dat</span><span class="s1">&#39;</span>
+  <span class="nv">size</span> <span class="mi">500</span><span class="nv">m</span> <span class="nv">autoextend</span> <span class="nv">on</span> <span class="k">next</span> <span class="mi">500</span><span class="nv">m</span><span class="c1">;</span>
+</code></pre></div>
+
+<p>Step 3: Now you have a new db User (Schema) and password, you may start the data import using the command line prompt. Ssh into the database server where you can find the impdp command utility.</p>
+<div class="highlight"><pre><span></span><code><span class="n">scp</span><span class="w"> </span><span class="n">myapp</span><span class="p">.</span><span class="n">dmp</span><span class="p">.</span><span class="n">gz</span><span class="w"> </span><span class="n">zemian</span><span class="nv">@mydbserver</span><span class="err">:</span><span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">myapp_datadump</span><span class="w"></span>
+<span class="n">ssh</span><span class="w"> </span><span class="n">zemian</span><span class="nv">@mydbserver</span><span class="w"></span>
+<span class="n">cd</span><span class="w"> </span><span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">myapp_datafiles</span><span class="w"></span>
+<span class="n">gunzip</span><span class="w"> </span><span class="n">myapp</span><span class="p">.</span><span class="n">dmp</span><span class="p">.</span><span class="n">gz</span><span class="w"></span>
+<span class="o">/</span><span class="n">app</span><span class="o">/</span><span class="n">oracle</span><span class="o">/</span><span class="n">dbhome</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">impdp</span><span class="w"> </span><span class="n">MYAPP08182015</span><span class="o">/</span><span class="n">Password1</span><span class="w"> </span><span class="n">DIRECTORY</span><span class="o">=</span><span class="n">MY_DATADUMP_DIR</span><span class="w"> </span><span class="n">REMAP_SCHEMA</span><span class="o">=</span><span class="nl">MYAPP</span><span class="p">:</span><span class="n">MYAPP08182015</span><span class="w"> </span><span class="n">REMAP_TABLESPACE</span><span class="o">=</span><span class="nl">USERS</span><span class="p">:</span><span class="n">MY_TABLE_SPACE</span><span class="w"> </span><span class="n">LOGFILE</span><span class="o">=</span><span class="n">myapp</span><span class="o">-</span><span class="n">import</span><span class="p">.</span><span class="nf">log</span><span class="w"> </span><span class="n">DUMPFILE</span><span class="o">=</span><span class="n">myapp</span><span class="p">.</span><span class="n">dmp</span><span class="w"></span>
+</code></pre></div>
+
+<p>References:
+<a href="http://docs.oracle.com/cd/B19306_01/server.102/b14215/dp_overview.htm">http://docs.oracle.com/cd/B19306_01/server.102/b14215/dp_overview.htm</a></p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

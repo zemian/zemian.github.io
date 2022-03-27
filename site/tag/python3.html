@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>ZBlog - python</title>
+        <link rel="stylesheet" href="https://zemian.github.io/theme/css/main.css" />
+        <link href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="ZBlog Atom Feed" />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://zemian.github.io/">ZBlog</a></h1>
+                <nav><ul>
+                    <li><a href="https://zemian.github.io/pages/about-the-author.html">About The Author</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+                <section id="content" class="body">
+                    <ol id="posts-list" class="hfeed" start="9">
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2015/python-processing-each-line-from-stdin-or-files.html" rel="bookmark"
+                           title="Permalink to Python processing each line from stdin or files">Python processing each line from stdin or files</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2015-07-11T00:00:00-05:00">
+                Published: Sat 11 July 2015
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/python.html">python</a> </p>
+</footer><!-- /.post-info -->                <div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">fileinput</span><span class="o">,</span><span class="nn">re</span>
+<span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">fileinput</span><span class="o">.</span><span class="n">input</span><span class="p">():</span>
+<span class="n">line</span><span class="o">=</span><span class="n">line</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span>
+<span class="n">line</span><span class="o">=</span><span class="n">line</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;/&#39;</span><span class="p">)</span>
+<span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="o">*</span><span class="n">_</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;\s+&#39;</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+</code></pre></div>
+                <a class="readmore" href="https://zemian.github.io/2015/python-processing-each-line-from-stdin-or-files.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2015/python-fancy-cut-command.html" rel="bookmark"
+                           title="Permalink to python fancy cut command">python fancy cut command</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2015-07-09T00:00:00-05:00">
+                Published: Thu 09 July 2015
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/python.html">python</a> </p>
+</footer><!-- /.post-info -->                <div class="highlight"><pre><span></span><code><span class="c1"># file: cut.py</span>
+
+<span class="c1">#</span>
+<span class="c1"># Python port of the following perl command (fancy cut command)</span>
+<span class="c1">#   ls -l | tail -n +2 | perl -F&#39;/\s+/&#39; -ane &#39;print &quot;$F[-1]\n&quot;&#39;</span>
+<span class="c1"># but it works better with python index slicer and split by full regex delimiter.</span>
+<span class="c1">#</span>
+<span class="c1"># Examples:</span>
+<span class="c1">#   ls -l | tail -n +2 | python cut.py &#39;:&#39;</span>
+<span class="c1">#   ls …</span></code></pre></div>
+                <a class="readmore" href="https://zemian.github.io/2015/python-fancy-cut-command.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2014/django-with-python-3-and-mysql-database.html" rel="bookmark"
+                           title="Permalink to Django with Python 3 and MySQL database">Django with Python 3 and MySQL database</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2014-09-04T00:00:00-05:00">
+                Published: Thu 04 September 2014
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/python.html">python</a> <a href="https://zemian.github.io/tag/mysql.html">mysql</a> <a href="https://zemian.github.io/tag/django.html">django</a> </p>
+</footer><!-- /.post-info -->                <p>I read many folks are having problems using MySQL db driver with Python 3, especially when setting up a Django app. The default Django 1.6.5 is only supporting the MySQLdb driver and that only works with Python 2.</p>
+<p>I have been using mysql-connector-python package with Python 3 and …</p>
+                <a class="readmore" href="https://zemian.github.io/2014/django-with-python-3-and-mysql-database.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2014/getting-django-setup-on-windows.html" rel="bookmark"
+                           title="Permalink to Getting Django setup on Windows">Getting Django setup on Windows</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2014-06-18T00:00:00-05:00">
+                Published: Wed 18 June 2014
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/python.html">python</a> <a href="https://zemian.github.io/tag/django.html">django</a> </p>
+</footer><!-- /.post-info -->                <p>A friend asked me how to setup an Django enviroment on Windows without the Cygwin fuzz. Here is the shortest steps I can think of:</p>
+<ol>
+<li>
+<p>Install Python3.4 as default path. (It should be "C:\Python34").</p>
+</li>
+<li>
+<p>Open cmd.exe program on Windows and run the following commands:</p>
+</li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="nt">set</span><span class="w"> </span><span class="nt">PATH</span><span class="o">=%</span><span class="nt">PATH …</span></code></pre></div>
+                <a class="readmore" href="https://zemian.github.io/2014/getting-django-setup-on-windows.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2014/getting-django-started-on-windows-7-with-python-3-and-mysql-56.html" rel="bookmark"
+                           title="Permalink to Getting django started on Windows 7 with python 3 and MySQL 5.6">Getting django started on Windows 7 with python 3 and MySQL 5.6</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2014-06-18T00:00:00-05:00">
+                Published: Wed 18 June 2014
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/django.html">django</a> <a href="https://zemian.github.io/tag/python.html">python</a> <a href="https://zemian.github.io/tag/mysql.html">mysql</a> </p>
+</footer><!-- /.post-info -->                <p>Django is a python web framework library and it works on both python 2 or 3. I will show you how to get python 3 setup in Cygwin environment.</p>
+<p>If you're on a Windows OS, the best experience I have when working with Django on Windows is to use Cygwin …</p>
+                <a class="readmore" href="https://zemian.github.io/2014/getting-django-started-on-windows-7-with-python-3-and-mysql-56.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+                </ol><!-- /#posts-list -->
+<p class="paginator">
+        <a href="https://zemian.github.io/tag/python.html">&#8647;</a>
+        <a href="https://zemian.github.io/tag/python2.html">&laquo;</a>
+    Page 3 / 3
+</p>
+                </section><!-- /#content -->
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

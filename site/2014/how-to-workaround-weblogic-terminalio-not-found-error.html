@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>How to workaround WebLogic terminalio not found error</title>
+        <link rel="stylesheet" href="https://zemian.github.io/theme/css/main.css" />
+        <link href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="ZBlog Atom Feed" />
+        <meta name="description" content="In some PC environments, you may have encounter error like following when trying to create and start a WebLogic Server domain admin server <Mar..." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://zemian.github.io/">ZBlog</a></h1>
+                <nav><ul>
+                    <li><a href="https://zemian.github.io/pages/about-the-author.html">About The Author</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://zemian.github.io/2014/how-to-workaround-weblogic-terminalio-not-found-error.html" rel="bookmark"
+           title="Permalink to How to workaround WebLogic terminalio not found error">How to workaround WebLogic terminalio not found error</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2014-03-18T00:00:00-05:00">
+                Published: Tue 18 March 2014
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/weblogic.html">weblogic</a> </p>
+</footer><!-- /.post-info -->      <p>In some PC environments, you may have encounter error like following when trying to create and start a WebLogic Server domain admin server </p>
+<div class="highlight"><pre><span></span><code>&lt;Mar 10, 2014 9:40:58 AM EDT&gt; &lt;Error&gt; &lt;Security&gt; &lt;BEA-090783&gt; &lt;Server is Running in Development Mode and Native Library(terminalio) to read the password securely from commandline is not found.&gt;&lt;Mar 10, 2014 9:40:58 AM EDT&gt; &lt;Notice&gt; &lt;WebLogicServer&gt; &lt;BEA-000388&gt; &lt;JVM called WLS shutdown hook. The server will force shutdown now&gt;
+&lt;Mar 10, 2014 9:40:58 AM EDT&gt; &lt;Notice&gt; &lt;WebLogicServer&gt; &lt;BEA-000365&gt; &lt;Server state changed to FORCE_SHUTTING_DOWN&gt;
+</code></pre></div>
+
+<p>After this unfriendly message, your process will just exit and won't start at all! One quick fix for this is to try add this sys props -Dweblogic.management.allowPasswordEcho=true This will force the password prompt to echo out on console though, but at least it will start your server. And once the domain is created, you may restart it again without prompting password.</p>
+<p>Ref: https://community.oracle.com/thread/934173</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>ZBlog - jboss</title>
+        <link rel="stylesheet" href="https://zemian.github.io/theme/css/main.css" />
+        <link href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="ZBlog Atom Feed" />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://zemian.github.io/">ZBlog</a></h1>
+                <nav><ul>
+                    <li><a href="https://zemian.github.io/pages/about-the-author.html">About The Author</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="https://zemian.github.io/2012/getting-jboss-clish-to-work-on-macosx.html">Getting jboss-cli.sh to work on MacOSX</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2012-07-28T00:00:00-05:00">
+                Published: Sat 28 July 2012
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/jboss.html">jboss</a> </p>
+</footer><!-- /.post-info --><p>If you use MacOSX and JBossAS, then you might have encountered this problem when using the jboss-client.sh tool:</p>
+<div class="highlight"><pre><span></span><code>$ bin/jboss-cli.sh
+</code></pre></div>
+
+<p>You are disconnected at the moment. Type 'connect' to connect to the server or 'help' for the list of supported commands.</p>
+<div class="highlight"><pre><span></span><code>[<span class="nv">disconnected</span> <span class="o">/</span>] <span class="k">connect</span>
+<span class="nv">The</span> <span class="nv">controller</span> <span class="nv">is</span> <span class="nv">not</span> <span class="nv">available</span> <span class="nv">at</span> <span class="nv">localhost</span>:<span class="mi">9999</span>
+</code></pre></div>
+
+<p>Or you will get this:</p>
+<div class="highlight"><pre><span></span><code>$ bin/jboss-cli.sh --connect
+org.jboss.as.cli.CliInitializationException: Failed to connect to the controller
+at org.jboss.as.cli.impl.CliLauncher.initCommandContext<span class="o">(</span>CliLauncher.java:229<span class="o">)</span>
+at org.jboss.as.cli.impl.CliLauncher.main<span class="o">(</span>CliLauncher.java:207<span class="o">)</span>
+at org.jboss.as.cli.CommandLineMain.main<span class="o">(</span>CommandLineMain.java:34<span class="o">)</span>
+at sun.reflect.NativeMethodAccessorImpl.invoke0<span class="o">(</span>Native Method<span class="o">)</span>
+at sun.reflect.NativeMethodAccessorImpl.invoke<span class="o">(</span>NativeMethodAccessorImpl.java:57<span class="o">)</span>
+at sun.reflect.DelegatingMethodAccessorImpl.invoke<span class="o">(</span>DelegatingMethodAccessorImpl.java:43<span class="o">)</span>
+at java.lang.reflect.Method.invoke<span class="o">(</span>Method.java:601<span class="o">)</span>
+at org.jboss.modules.Module.run<span class="o">(</span>Module.java:260<span class="o">)</span>
+at org.jboss.modules.Main.main<span class="o">(</span>Main.java:291<span class="o">)</span>
+Caused by: org.jboss.as.cli.CommandLineException: The controller is not available at localhost:9999
+at org.jboss.as.cli.impl.CommandContextImpl.connectController<span class="o">(</span>CommandContextImpl.java:639<span class="o">)</span>
+at org.jboss.as.cli.impl.CommandContextImpl.connectController<span class="o">(</span>CommandContextImpl.java:613<span class="o">)</span>
+at org.jboss.as.cli.impl.CliLauncher.initCommandContext<span class="o">(</span>CliLauncher.java:227<span class="o">)</span>
+... <span class="m">8</span> more
+</code></pre></div>
+
+<p>It turns out this is bug on the JDK 1.7 that only appears on MacOSX JDK7! To be exact, I have the following: MacOSX 10.7.4 with JDK 1.7.0_05 and JBossAS 7.1.1.Final.</p>
+<p>This problem has already been discovered by these posts:</p>
+<p><a href="http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=7159361">http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=7159361</a></p>
+<p><a href="https://community.jboss.org/message/750861#750861">https://community.jboss.org/message/750861#750861</a></p>
+<p>Except after ready through all, and I can't still get it to work because no one listed a clear steps by steps solution. So I re-summarize it again. You need to use that bug's report workaround solution on both the server and client!</p>
+<p>Start the server: </p>
+<div class="highlight"><pre><span></span><code>    $ bin/standalone.sh -Djava.nio.channels.spi.SelectorProvider=sun.nio.ch.KQueueSelectorProvider 
+    ... 
+    18:37:22,555 INFO  [org.jboss.as] (Controller Boot Thread) JBAS015874: JBoss AS 7.1.1.Final &quot;Brontes&quot; started in 1686ms - Started 133 of 208 services (74 services are passive or on-demand)
+</code></pre></div>
+
+<p>And on separate terminal, run the CLI:</p>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="err">$</span><span class="n">JAVA_OPTS</span><span class="o">=</span><span class="ss">&quot;-Djava.nio.channels.spi.SelectorProvider=sun.nio.ch.KQueueSelectorProvider&quot;</span><span class="w"> </span><span class="n">bin</span><span class="o">/</span><span class="n">jboss</span><span class="o">-</span><span class="n">cli</span><span class="p">.</span><span class="n">sh</span><span class="w"> </span><span class="o">--</span><span class="k">connect</span><span class="w"> </span>
+<span class="w">    </span><span class="o">[</span><span class="n">standalone@localhost:9999 /</span><span class="o">]</span><span class="w"> </span>
+</code></pre></div>
+
+<p>There, now we may continue to explore the cool JBossAS on the fancy OS.</p>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2012/using-timemachine-scheduler-on-jbossas-7.html" rel="bookmark"
+                           title="Permalink to Using TimeMachine Scheduler on JBossAS 7">Using TimeMachine Scheduler on JBossAS 7</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2012-07-23T00:00:00-05:00">
+                Published: Mon 23 July 2012
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/jboss.html">jboss</a> <a href="https://zemian.github.io/tag/timemachine.html">timemachine</a> </p>
+</footer><!-- /.post-info -->                <p>I’ve written an article for MasterTheBoss.com on integrating
+<a href="http://mastertheboss.com/jboss-quartz/using-timemachine-scheduler-on-jbossas-7">TimeMachine Scheduler on
+JBossAS7</a></p>
+                <a class="readmore" href="https://zemian.github.io/2012/using-timemachine-scheduler-on-jbossas-7.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+                </ol><!-- /#posts-list -->
+                </section><!-- /#content -->
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

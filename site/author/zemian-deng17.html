@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>ZBlog - Zemian Deng</title>
+        <link rel="stylesheet" href="https://zemian.github.io/theme/css/main.css" />
+        <link href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="ZBlog Atom Feed" />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://zemian.github.io/">ZBlog</a></h1>
+                <nav><ul>
+                    <li><a href="https://zemian.github.io/pages/about-the-author.html">About The Author</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+                <section id="content" class="body">
+                    <ol id="posts-list" class="hfeed" start="9">
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2014/getting-django-setup-on-windows.html" rel="bookmark"
+                           title="Permalink to Getting Django setup on Windows">Getting Django setup on Windows</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2014-06-18T00:00:00-05:00">
+                Published: Wed 18 June 2014
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/python.html">python</a> <a href="https://zemian.github.io/tag/django.html">django</a> </p>
+</footer><!-- /.post-info -->                <p>A friend asked me how to setup an Django enviroment on Windows without the Cygwin fuzz. Here is the shortest steps I can think of:</p>
+<ol>
+<li>
+<p>Install Python3.4 as default path. (It should be "C:\Python34").</p>
+</li>
+<li>
+<p>Open cmd.exe program on Windows and run the following commands:</p>
+</li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="nt">set</span><span class="w"> </span><span class="nt">PATH</span><span class="o">=%</span><span class="nt">PATH …</span></code></pre></div>
+                <a class="readmore" href="https://zemian.github.io/2014/getting-django-setup-on-windows.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2014/getting-django-started-on-windows-7-with-python-3-and-mysql-56.html" rel="bookmark"
+                           title="Permalink to Getting django started on Windows 7 with python 3 and MySQL 5.6">Getting django started on Windows 7 with python 3 and MySQL 5.6</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2014-06-18T00:00:00-05:00">
+                Published: Wed 18 June 2014
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/django.html">django</a> <a href="https://zemian.github.io/tag/python.html">python</a> <a href="https://zemian.github.io/tag/mysql.html">mysql</a> </p>
+</footer><!-- /.post-info -->                <p>Django is a python web framework library and it works on both python 2 or 3. I will show you how to get python 3 setup in Cygwin environment.</p>
+<p>If you're on a Windows OS, the best experience I have when working with Django on Windows is to use Cygwin …</p>
+                <a class="readmore" href="https://zemian.github.io/2014/getting-django-started-on-windows-7-with-python-3-and-mysql-56.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2014/how-to-initialize-a-new-mysql-installation-and-create-new-database.html" rel="bookmark"
+                           title="Permalink to How to initialize a new MySQL installation and create new database">How to initialize a new MySQL installation and create new database</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2014-06-11T00:00:00-05:00">
+                Published: Wed 11 June 2014
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/mysql.html">mysql</a> </p>
+</footer><!-- /.post-info -->                <p>For a freshly installed MySQL server, you would need to initialize the system tables and data directory like this:</p>
+<div class="highlight"><pre><span></span><code>cd mysql-&lt;version&gt;
+
+scripts/mysql_install_db --basedir=. --datadir=data
+bin/mysqld_safe --defaults-file=my.cnf &amp;
+</code></pre></div>
+
+<p>Before MySQL 5.6, this will setup a "root" with empty password that you can …</p>
+                <a class="readmore" href="https://zemian.github.io/2014/how-to-initialize-a-new-mysql-installation-and-create-new-database.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2014/using-crontab-to-startup-service.html" rel="bookmark"
+                           title="Permalink to Using crontab to startup service">Using crontab to startup service</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2014-06-08T00:00:00-05:00">
+                Published: Sun 08 June 2014
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/cron.html">cron</a> <a href="https://zemian.github.io/tag/backup.html">backup</a> </p>
+</footer><!-- /.post-info -->                <p>Did you know that crontab service has the "@reboot" schedule that would start a script during your system startup time? This is handy if you want something to run right after your system has stared. Try this:</p>
+<div class="highlight"><pre><span></span><code><span class="err">#</span><span class="w"> </span><span class="n">crontab</span><span class="w"> </span><span class="o">-</span><span class="n">e</span><span class="w"></span>
+<span class="nv">@reboot</span><span class="w"> </span><span class="err">$</span><span class="n">HOME</span><span class="o">/</span><span class="n">crontab</span><span class="o">/</span><span class="n">runcmd</span><span class="p">.</span><span class="n">sh</span><span class="w"> </span><span class="o">/</span><span class="n">apps</span><span class="o">/</span><span class="k">start</span><span class="o">-</span><span class="n">myapp</span><span class="p">.</span><span class="n">sh</span><span class="w"></span>
+</code></pre></div>
+
+<p>The disadvantage …</p>
+                <a class="readmore" href="https://zemian.github.io/2014/using-crontab-to-startup-service.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2014/a-simple-cron-wrapper-script-with-logging.html" rel="bookmark"
+                           title="Permalink to A simple cron wrapper script with logging">A simple cron wrapper script with logging</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2014-06-04T00:00:00-05:00">
+                Published: Wed 04 June 2014
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/cron.html">cron</a> <a href="https://zemian.github.io/tag/logging.html">logging</a> </p>
+</footer><!-- /.post-info -->                <p>When working with crontab service, one thing I often need is to capture the ouput of the job. Having the job script aware of this output and logging is tedious, and often make the script harder to read. So I wrote a shell wrapper that will redirect all job script's …</p>
+                <a class="readmore" href="https://zemian.github.io/2014/a-simple-cron-wrapper-script-with-logging.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2014/a-simple-mysql-daily-backup-script.html" rel="bookmark"
+                           title="Permalink to A simple MySQL daily backup script">A simple MySQL daily backup script</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2014-06-03T00:00:00-05:00">
+                Published: Tue 03 June 2014
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/mysql.html">mysql</a> <a href="https://zemian.github.io/tag/backup.html">backup</a> <a href="https://zemian.github.io/tag/cron.html">cron</a> </p>
+</footer><!-- /.post-info -->                <p>Using the MySQL export script I've showed from <a href="https://zemian.github.io/2014/05/how-to-export-and-import-mysql-database.html">last post</a> (assume you saved it in a file named "$HOME/database-export.sh"), you may now perform a daily backup with your crontab service like this.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">#file: mysql-backups.sh</span><span class="w"></span>
+<span class="n">DIR</span><span class="o">=</span><span class="err">`</span><span class="n">dirname</span><span class="w"> </span><span class="o">$</span><span class="mi">0</span><span class="err">`</span><span class="w"></span>
+<span class="n">echo</span><span class="w"> </span><span class="s2">&quot;Backup DB with export script.&quot;</span><span class="w"></span>
+<span class="o">$</span><span class="n">DIR</span><span class="o">/</span><span class="n">database</span><span class="o">-</span><span class="k">export</span><span class="o">.</span><span class="n">sh …</span></code></pre></div>
+                <a class="readmore" href="https://zemian.github.io/2014/a-simple-mysql-daily-backup-script.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2014/how-to-export-and-import-mysql-database.html" rel="bookmark"
+                           title="Permalink to How to export and import MySQL database">How to export and import MySQL database</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2014-05-30T00:00:00-05:00">
+                Published: Fri 30 May 2014
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/mysql.html">mysql</a> </p>
+</footer><!-- /.post-info -->                <p>You can export the MySQL database with schema table definitions and data separated. Here is a simple bash shell script that will export an database.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># file: database-export.sh</span><span class="w"></span>
+<span class="n">DB_NAME</span><span class="o">=</span><span class="n">mydb</span><span class="w"></span>
+<span class="n">DB_SCHEMA_FILE</span><span class="o">=</span><span class="n">mydb</span><span class="p">.</span><span class="k">sql</span><span class="w"></span>
+<span class="n">DB_DATA_FILE</span><span class="o">=</span><span class="n">mydb</span><span class="o">-</span><span class="k">data</span><span class="p">.</span><span class="k">sql</span><span class="w"></span>
+<span class="n">DB_USERNAME</span><span class="o">=</span><span class="n">root</span><span class="w"></span>
+<span class="n">DB_PASSWORD</span><span class="o">=</span><span class="n">secret</span><span class="w"></span>
+
+<span class="c1"># export schema …</span></code></pre></div>
+                <a class="readmore" href="https://zemian.github.io/2014/how-to-export-and-import-mysql-database.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2014/how-to-enable-mysql-query-monitoring.html" rel="bookmark"
+                           title="Permalink to How to enable MySQL query monitoring">How to enable MySQL query monitoring</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2014-04-16T00:00:00-05:00">
+                Published: Wed 16 April 2014
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/mysql.html">mysql</a> </p>
+</footer><!-- /.post-info -->                <p>Do you need to monitor any SQL statements passing through your MySQL server? You would need to turn on the server logging. Edit your my.cnf file and add these:</p>
+<div class="highlight"><pre><span></span><code>log-output=FILE
+general-log=1
+general_log_file=mysql-general.log
+</code></pre></div>
+
+<p>You also need to restart the database server after these changes …</p>
+                <a class="readmore" href="https://zemian.github.io/2014/how-to-enable-mysql-query-monitoring.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2014/be-careful-with-java-pathendswithstring-usage.html" rel="bookmark"
+                           title="Permalink to Be careful with Java Path.endsWith(String) usage">Be careful with Java Path.endsWith(String) usage</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2014-04-15T00:00:00-05:00">
+                Published: Tue 15 April 2014
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/java.html">java</a> </p>
+</footer><!-- /.post-info -->                <p>If you need to compare the java.io.file.Path object, be aware that Path.endsWith(String) will ONLY match another sub-element of Path object in your original path, not the path name string portion! If you want to match the string name portion, you would need to call the …</p>
+                <a class="readmore" href="https://zemian.github.io/2014/be-careful-with-java-pathendswithstring-usage.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2014/how-to-disable-mysql-case-sensitive-with-table-names-in-queries.html" rel="bookmark"
+                           title="Permalink to How to disable MySQL case sensitive with table names in queries">How to disable MySQL case sensitive with table names in queries</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2014-04-13T00:00:00-05:00">
+                Published: Sun 13 April 2014
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/mysql.html">mysql</a> </p>
+</footer><!-- /.post-info -->                <p>My latest install of MySQL 5.16 on Windows 7 is case sensitive with table names. I much prefer it's case in-sensitive for faster typing and adhoc queries. To do that, I need to edit the my.cnf file (Try running "mysql --help" and it will tell you where it …</p>
+                <a class="readmore" href="https://zemian.github.io/2014/how-to-disable-mysql-case-sensitive-with-table-names-in-queries.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+                </ol><!-- /#posts-list -->
+<p class="paginator">
+        <a href="https://zemian.github.io/author/zemian-deng.html">&#8647;</a>
+        <a href="https://zemian.github.io/author/zemian-deng16.html">&laquo;</a>
+    Page 17 / 30
+        <a href="https://zemian.github.io/author/zemian-deng18.html">&raquo;</a>
+        <a href="https://zemian.github.io/author/zemian-deng30.html">&#8649;</a>
+</p>
+                </section><!-- /#content -->
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

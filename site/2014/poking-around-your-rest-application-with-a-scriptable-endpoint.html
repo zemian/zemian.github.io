@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>Poking around your REST application with a scriptable endpoint</title>
+        <link rel="stylesheet" href="https://zemian.github.io/theme/css/main.css" />
+        <link href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="ZBlog Atom Feed" />
+        <meta name="description" content="I love the fact that JDK comes with a ScriptEngine. It's so flexible when you want to evaluate and troubleshoot your application that's already..." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://zemian.github.io/">ZBlog</a></h1>
+                <nav><ul>
+                    <li><a href="https://zemian.github.io/pages/about-the-author.html">About The Author</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://zemian.github.io/2014/poking-around-your-rest-application-with-a-scriptable-endpoint.html" rel="bookmark"
+           title="Permalink to Poking around your REST application with a scriptable endpoint">Poking around your REST application with a scriptable endpoint</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2014-10-17T00:00:00-05:00">
+                Published: Fri 17 October 2014
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/restful.html">restful</a> <a href="https://zemian.github.io/tag/scripting.html">scripting</a> </p>
+</footer><!-- /.post-info -->      <p>I love the fact that JDK comes with a ScriptEngine. It's so flexible when you want to evaluate and troubleshoot your application that's already deployed in an server environment. Add this REST endpoint into a Java EE app, and it will give you instant access to internal states of the app.</p>
+<div class="highlight"><pre><span></span><code><span class="n">package</span> <span class="n">myrestapp</span><span class="p">;</span>
+
+<span class="kn">import</span> <span class="nn">java.io.StringReader</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">java.util.logging.Logger</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">javax.script.Bindings</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">javax.script.ScriptEngine</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">javax.script.ScriptEngineManager</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">javax.servlet.ServletContext</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">javax.servlet.http.HttpServletRequest</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">javax.ws.rs.POST</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">javax.ws.rs.Path</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">javax.ws.rs.core.Context</span><span class="p">;</span>
+
+<span class="o">/**</span>
+ <span class="o">*</span> <span class="n">Give</span> <span class="n">instant</span> <span class="n">access</span> <span class="n">to</span> <span class="n">your</span> <span class="n">internal</span> <span class="n">application</span> <span class="k">with</span> <span class="n">dynamic</span> <span class="n">scripting</span><span class="o">.</span>
+ <span class="o">*</span> 
+ <span class="o">*</span> <span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">Example</span> <span class="n">script</span><span class="p">:</span>
+ <span class="o">*</span> <span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;</span>
+ <span class="o">*</span> <span class="s2">&quot;sc&quot;</span> <span class="o">+</span> <span class="n">servletContext</span> <span class="o">+</span> <span class="s2">&quot;, req=&quot;</span> <span class="o">+</span> <span class="n">request</span><span class="p">;</span>
+ <span class="o">*</span> <span class="o">&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+ <span class="o">*</span> 
+ <span class="o">*</span> <span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">Example2</span>
+ <span class="o">*</span> <span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;</span>
+ <span class="o">*</span> <span class="n">names</span> <span class="o">=</span> <span class="n">servletContext</span><span class="o">.</span><span class="n">getAttributeNames</span><span class="p">();</span>
+ <span class="o">*</span> <span class="k">while</span><span class="p">(</span><span class="n">names</span><span class="o">.</span><span class="n">hasMoreElements</span><span class="p">())</span> <span class="p">{</span>
+ <span class="o">*</span>   <span class="n">name</span> <span class="o">=</span> <span class="n">names</span><span class="o">.</span><span class="n">nextElement</span><span class="p">();</span>
+ <span class="o">*</span>   <span class="n">println</span><span class="p">(</span><span class="n">name</span><span class="p">);</span>
+ <span class="o">*</span> <span class="p">}</span>
+ <span class="o">*</span> <span class="o">&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+ <span class="o">*</span> 
+ <span class="o">*</span> <span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">Example</span> <span class="n">on</span> <span class="n">how</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">Java</span> <span class="n">packages</span> <span class="ow">and</span> <span class="n">classes</span><span class="o">.</span>
+ <span class="o">*</span> <span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;</span>
+ <span class="o">*</span> <span class="n">importPackage</span><span class="p">(</span><span class="n">Packages</span><span class="o">.</span><span class="n">java</span><span class="o">.</span><span class="n">text</span><span class="p">);</span>
+ <span class="o">*</span> <span class="n">df</span> <span class="o">=</span> <span class="n">new</span> <span class="n">SimpleDateFormat</span><span class="p">(</span><span class="s2">&quot;MM/dd/yyyy&quot;</span><span class="p">);</span>
+ <span class="o">*</span> <span class="n">dt</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;01/01/2014&quot;</span><span class="p">);</span>
+ <span class="o">*</span> <span class="o">&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+ <span class="o">*/</span>
+<span class="nd">@Path</span><span class="p">(</span><span class="s2">&quot;script&quot;</span><span class="p">)</span>
+<span class="n">public</span> <span class="k">class</span> <span class="nc">ScriptResource</span> <span class="p">{</span>
+    <span class="n">private</span> <span class="n">static</span> <span class="n">final</span> <span class="n">Logger</span> <span class="n">logger</span> <span class="o">=</span> <span class="n">Logger</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">ScriptResource</span><span class="o">.</span><span class="n">class</span><span class="o">.</span><span class="n">getName</span><span class="p">());</span>
+
+    <span class="nd">@Context</span>
+    <span class="n">private</span> <span class="n">ServletContext</span> <span class="n">servletContext</span><span class="p">;</span>
+
+    <span class="nd">@POST</span>
+    <span class="n">public</span> <span class="n">String</span> <span class="n">script</span><span class="p">(</span><span class="nd">@Context</span> <span class="n">HttpServletRequest</span> <span class="n">request</span><span class="p">,</span> <span class="n">String</span> <span class="n">scriptText</span><span class="p">)</span> <span class="n">throws</span> <span class="ne">Exception</span> <span class="p">{</span>
+        <span class="n">String</span> <span class="n">engineName</span> <span class="o">=</span> <span class="s2">&quot;JavaScript&quot;</span><span class="p">;</span>
+        <span class="n">ScriptEngineManager</span> <span class="n">manager</span> <span class="o">=</span> <span class="n">new</span> <span class="n">ScriptEngineManager</span><span class="p">();</span>
+        <span class="n">ScriptEngine</span> <span class="n">engine</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">getEngineByName</span><span class="p">(</span><span class="n">engineName</span><span class="p">);</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Running script text length=&quot;</span> <span class="o">+</span> <span class="n">scriptText</span><span class="o">.</span><span class="n">length</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot;, engine=&quot;</span> <span class="o">+</span> <span class="n">engine</span><span class="p">);</span>
+        <span class="n">Object</span> <span class="n">result</span> <span class="o">=</span> <span class="n">null</span><span class="p">;</span>
+        <span class="k">try</span> <span class="p">(</span><span class="n">StringReader</span> <span class="n">reader</span> <span class="o">=</span> <span class="n">new</span> <span class="n">StringReader</span><span class="p">(</span><span class="n">scriptText</span><span class="p">))</span> <span class="p">{</span>
+            <span class="n">Bindings</span> <span class="n">bindings</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">createBindings</span><span class="p">();</span>
+            <span class="n">bindings</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="s2">&quot;servletContext&quot;</span><span class="p">,</span> <span class="n">servletContext</span><span class="p">);</span>
+            <span class="n">bindings</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="s2">&quot;request&quot;</span><span class="p">,</span> <span class="n">request</span><span class="p">);</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">reader</span><span class="p">,</span> <span class="n">bindings</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Result &quot;</span> <span class="o">+</span> <span class="n">result</span><span class="p">);</span>
+        <span class="k">return</span> <span class="s2">&quot;RESULT=&quot;</span> <span class="o">+</span> <span class="n">result</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Notice that I gave couple JavaScript examples in the comment area already. You will have access to two binding variables that should give you full access to many internal components of your application. And here is a <a href="http://docs.oracle.com/javase/7/docs/technotes/guides/scripting/programmer_guide">quick reference on scripting JDK 7</a>.</p>
+<p>Need an UI to test out this endpoint? How about give the "Advance Rest Client" Chrome Extension a try? (Thanks to my co-worker's Chris Griffith for showing me this cool extension. It's really handy tool to have!).</p>
+<p>UPDATES (12/8/2014) </p>
+<ul>
+<li>
+<p>If you are using FireFox, try the "RESTClient" add-ons.</p>
+</li>
+<li>
+<p>If you are using JDK7 Rhino JavaScript engine, here is a good ref for help: https://developer.mozilla.org/en-US/docs/Mozilla/Projects/Rhino/Scripting_Java </p>
+</li>
+<li>
+<p>If you're in a EE6 web application and doesn't have REST enabled yet, then simply add a class like this to your application. It should automatically configure an endpoint that you can access as "http://localhost/rest/script".</p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="n">package</span> <span class="n">myrestapp</span><span class="p">;</span>
+
+<span class="kn">import</span> <span class="nn">javax.ws.rs.ApplicationPath</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">javax.ws.rs.core.Application</span><span class="p">;</span>
+
+<span class="o">/**</span>
+ <span class="o">*</span> <span class="n">This</span> <span class="ow">is</span> <span class="n">the</span> <span class="n">main</span> <span class="n">entry</span> <span class="n">into</span> <span class="n">REST</span> <span class="n">Application</span> <span class="n">that</span> <span class="n">bootstrap</span> <span class="n">the</span> <span class="n">provider</span><span class="o">.</span>
+ <span class="o">*/</span>
+<span class="nd">@ApplicationPath</span><span class="p">(</span><span class="s2">&quot;rest&quot;</span><span class="p">)</span>
+<span class="n">public</span> <span class="k">class</span> <span class="nc">RestApplication</span> <span class="n">extends</span> <span class="n">Application</span> <span class="p">{</span>
+<span class="p">}</span>
+</code></pre></div>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>Deploying applications or libraries to WebLogic Server using command line</title>
+        <link rel="stylesheet" href="https://zemian.github.io/theme/css/main.css" />
+        <link href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="ZBlog Atom Feed" />
+        <meta name="description" content="Here is how you can automate deployment for WebLogic server using command line. First source the env settings from the server: $ source..." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://zemian.github.io/">ZBlog</a></h1>
+                <nav><ul>
+                    <li><a href="https://zemian.github.io/pages/about-the-author.html">About The Author</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://zemian.github.io/2014/deploying-applications-or-libraries-to-weblogic-server-using-command-line.html" rel="bookmark"
+           title="Permalink to Deploying applications or libraries to WebLogic Server using command line">Deploying applications or libraries to WebLogic Server using command line</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2014-08-20T00:00:00-05:00">
+                Published: Wed 20 August 2014
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/weblogic.html">weblogic</a> </p>
+</footer><!-- /.post-info -->      <p>Here is how you can automate deployment for WebLogic server using command line.</p>
+<p>First source the env settings from the server:</p>
+<div class="highlight"><pre><span></span><code>$ <span class="nb">source</span> <span class="nv">$ML_HOME</span>/server/bin/setWLSEnv.sh
+</code></pre></div>
+
+<p>Deploy Library:</p>
+<div class="highlight"><pre><span></span><code>$ java weblogic.Deployer -nostage -deploy -library <span class="se">\</span>
+-adminurl localhost:7001 <span class="se">\</span>
+-username weblogic -password my_secret <span class="se">\</span>
+-targets myserver <span class="se">\</span>
+my_shared_lib.war
+</code></pre></div>
+
+<p>Deploy Application:</p>
+<div class="highlight"><pre><span></span><code>$ java weblogic.Deployer -nostage -deploy <span class="se">\</span>
+-adminurl localhost:7001 <span class="se">\</span>
+-username weblogic -password my_secret <span class="se">\</span>
+-targets myserver <span class="se">\</span>
+-name myapp.war myapp.war
+</code></pre></div>
+
+<p>For development, you likely want to use the "-nostage" meaning to deploy the app or library directly from the file system. This means any changes to that file location and a reload from WLS will take effect immediately. </p>
+<p>For undeploy the command line options are same for library or app but with matching name.</p>
+<div class="highlight"><pre><span></span><code>$ java weblogic.Deployer -undeploy <span class="se">\</span>
+-adminurl localhost:7001 <span class="se">\</span>
+-username weblogic -password my_secret <span class="se">\</span>
+-targets myserver <span class="se">\</span>
+-name myapp_or_lib.war
+</code></pre></div>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

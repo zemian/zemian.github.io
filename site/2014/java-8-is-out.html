@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>Java 8 is out!</title>
+        <link rel="stylesheet" href="https://zemian.github.io/theme/css/main.css" />
+        <link href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="ZBlog Atom Feed" />
+        <meta name="description" content="You can watch webcast on March 25 here: http://eventreg.oracle.com/profile/web/index.cfm?PKWebId=0x637279c68 but you may download it now!..." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://zemian.github.io/">ZBlog</a></h1>
+                <nav><ul>
+                    <li><a href="https://zemian.github.io/pages/about-the-author.html">About The Author</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://zemian.github.io/2014/java-8-is-out.html" rel="bookmark"
+           title="Permalink to Java 8 is out!">Java 8 is out!</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2014-03-19T00:00:00-05:00">
+                Published: Wed 19 March 2014
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/java.html">java</a> </p>
+</footer><!-- /.post-info -->      <p>You can watch webcast on March 25 here: http://eventreg.oracle.com/profile/web/index.cfm?PKWebId=0x637279c68</p>
+<p>but you may download it now!</p>
+<p>http://www.oracle.com/technetwork/java/javase/downloads/index.html</p>
+<p>How exciting!</p>
+<p>A simple Java8 test </p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">org.junit.Test</span><span class="p">;</span>
+
+<span class="n">public</span> <span class="k">class</span> <span class="nc">LamdaTest</span> <span class="p">{</span>
+    <span class="nd">@Test</span>
+    <span class="n">public</span> <span class="n">void</span> <span class="n">lamdaExpression</span><span class="p">()</span> <span class="p">{</span>
+<span class="o">//</span>        <span class="n">Runnable</span> <span class="n">r</span> <span class="o">=</span> <span class="n">new</span> <span class="n">Runnable</span><span class="p">()</span> <span class="p">{</span>
+<span class="o">//</span>            <span class="n">public</span> <span class="n">void</span> <span class="n">run</span><span class="p">()</span> <span class="p">{</span>
+<span class="o">//</span>                <span class="n">System</span><span class="o">.</span><span class="n">out</span><span class="o">.</span><span class="n">println</span><span class="p">(</span><span class="s2">&quot;test&quot;</span><span class="p">);</span>                
+<span class="o">//</span>            <span class="p">}</span>            
+<span class="o">//</span>        <span class="p">};</span>
+        <span class="o">//</span><span class="n">new</span> <span class="n">Thread</span><span class="p">(</span><span class="n">r</span><span class="p">)</span><span class="o">.</span><span class="n">start</span><span class="p">();</span>
+
+        <span class="o">//</span><span class="n">new</span> <span class="n">Thread</span><span class="p">(()</span> <span class="o">-&gt;</span> <span class="n">System</span><span class="o">.</span><span class="n">out</span><span class="o">.</span><span class="n">println</span><span class="p">(</span><span class="s2">&quot;test&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">start</span><span class="p">();</span>
+
+        <span class="o">//</span><span class="n">Runnable</span> <span class="n">r</span> <span class="o">=</span> <span class="p">()</span> <span class="o">-&gt;</span> <span class="n">System</span><span class="o">.</span><span class="n">out</span><span class="o">.</span><span class="n">println</span><span class="p">(</span><span class="s2">&quot;test&quot;</span><span class="p">);</span>
+        <span class="n">Runnable</span> <span class="n">r</span> <span class="o">=</span> <span class="p">()</span> <span class="o">-&gt;</span> <span class="p">{</span>
+            <span class="n">System</span><span class="o">.</span><span class="n">out</span><span class="o">.</span><span class="n">println</span><span class="p">(</span><span class="s2">&quot;test1&quot;</span><span class="p">);</span> 
+            <span class="n">System</span><span class="o">.</span><span class="n">out</span><span class="o">.</span><span class="n">println</span><span class="p">(</span><span class="s2">&quot;test2&quot;</span><span class="p">);</span> 
+            <span class="n">System</span><span class="o">.</span><span class="n">out</span><span class="o">.</span><span class="n">println</span><span class="p">(</span><span class="s2">&quot;test3&quot;</span><span class="p">);</span> 
+        <span class="p">};</span>
+        <span class="n">System</span><span class="o">.</span><span class="n">out</span><span class="o">.</span><span class="n">println</span><span class="p">(</span><span class="s2">&quot;result=&quot;</span> <span class="o">+</span> <span class="n">r</span><span class="p">);</span>
+        <span class="n">new</span> <span class="n">Thread</span><span class="p">(</span><span class="n">r</span><span class="p">)</span><span class="o">.</span><span class="n">start</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>You can learn more from here: http://docs.oracle.com/javase/tutorial/java/javaOO/lambdaexpressions.html </p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

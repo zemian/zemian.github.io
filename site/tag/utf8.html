@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>ZBlog - utf8</title>
+        <link rel="stylesheet" href="https://zemian.github.io/theme/css/main.css" />
+        <link href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="ZBlog Atom Feed" />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://zemian.github.io/">ZBlog</a></h1>
+                <nav><ul>
+                    <li><a href="https://zemian.github.io/pages/about-the-author.html">About The Author</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="https://zemian.github.io/2012/what-does-utf-8-with-bom-mean.html">What does UTF-8 with BOM mean?</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2012-11-02T00:00:00-05:00">
+                Published: Fri 02 November 2012
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/string.html">string</a> <a href="https://zemian.github.io/tag/utf8.html">utf8</a> </p>
+</footer><!-- /.post-info --><p>Believe it or not, There is no such thing as Plain Text!</p>
+<p>All files in a modern Operating Sytems (Windows, Linux, or MacOSX) are saved with an encoding scheme! They are encoded (a table mapping of what each byte means) in such way so that other programs can read it back and understand how to get information out. It happens that US/ASCII encoding is earliest and widely used that people think it's just "Plain Tex". But even ASCII is an encoding! It uses 7 bits in mapping all US characters in saving the bytes into file. Obviously you are free to use any kind of encoding (mapping) scheme to save any files, but if you want other programs to read it back easily, then sticking to some standard ones would help a lot. Without an agreed upon encoding, programs will not able to read files and be any useful!</p>
+<p>The most useful and practical file encoding today is "UTF-8" because it support Unicode, and it's widely used in internet.</p>
+<p>I discovered something odd when using Eclipse and Notepadd++. In Ecilpse, if we set default encoding with UTF-8, it would use normal UTF-8 without the Byte Order Mark (BOM). But in Notepad++, it appears to support UTF-8 wihtout BOM, but it won't recoginze it when first open. You can check this by going Menu &gt; Encoding and see which one is selected. Notepad++ seems to only recognize UTF-8 wihtout BOM with ones it converted by it's own conversion utility. Perhaps it's a bug in notepad++.</p>
+<p>So what is BOM? The byte order mark is useless for UTF-8. They only used for UTF-16 so they know which byte order is first. But UTF-8 will allow you to save these BOM for conversion purpose... they are ineffective in encoding the doc itself. So a "normal" UTF-8, it won't have BOM, but Windows would like to use them anyway. The Windows NOTEPAD would automatically save BOM in UTF-8!</p>
+<p>So be-aware when viewing UTF-8 without BOM encoding files in Notepad++, as it can be deceiving at first glance.</p>
+<p>Ref: </p>
+<p><a href="http://en.wikipedia.org/wiki/UTF-8">http://en.wikipedia.org/wiki/UTF-8</a> </p>
+<p><a href="http://www.joelonsoftware.com/articles/Unicode.html">http://www.joelonsoftware.com/articles/Unicode.html</a></p>                </article>
+            </aside><!-- /#featured -->
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>EE Servlet 3 - Simple Form Processing</title>
+        <link rel="stylesheet" href="https://zemian.github.io/theme/css/main.css" />
+        <link href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="ZBlog Atom Feed" />
+        <meta name="description" content="Form handling in web application is like bread and butter for most Web developers. It will not be much use if we can not capture users input and..." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://zemian.github.io/">ZBlog</a></h1>
+                <nav><ul>
+                    <li><a href="https://zemian.github.io/pages/about-the-author.html">About The Author</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://zemian.github.io/2015/ee-servlet-3-simple-form-processing.html" rel="bookmark"
+           title="Permalink to EE Servlet 3 - Simple Form Processing">EE Servlet 3 - Simple Form Processing</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2015-01-06T00:00:00-05:00">
+                Published: Tue 06 January 2015
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/servlet.html">servlet</a> </p>
+</footer><!-- /.post-info -->      <p>Form handling in web application is like bread and butter for most Web developers. It will not be much use if we can not capture users input and process it. So I have included a simple <a href="https://github.com/saltnlight5/java-ee6-examples/blob/master/servlet3-example/src/main/java/zemian/servlet3example/web/FormServlet.java">FormServlet</a>in my servlet3-example  that demonstrated few frequently used form inputs you might encounter. Here is how it looks like:</p>
+<div class="highlight"><pre><span></span><code><span class="n">package</span> <span class="n">zemian</span><span class="o">.</span><span class="n">servlet3example</span><span class="o">.</span><span class="n">web</span><span class="p">;</span>
+
+<span class="kn">import</span> <span class="nn">java.io.IOException</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">java.util.ArrayList</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">java.util.Arrays</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">java.util.List</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">javax.servlet.ServletException</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">javax.servlet.annotation.WebServlet</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">javax.servlet.http.HttpServletRequest</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">javax.servlet.http.HttpServletResponse</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">zemian.service.logging.Logger</span><span class="p">;</span>
+
+<span class="nd">@WebServlet</span><span class="p">(</span><span class="s2">&quot;/form&quot;</span><span class="p">)</span>
+<span class="n">public</span> <span class="k">class</span> <span class="nc">FormServlet</span> <span class="n">extends</span> <span class="n">HtmlWriterServlet</span> <span class="p">{</span>
+    <span class="n">private</span> <span class="n">static</span> <span class="n">final</span> <span class="n">Logger</span> <span class="n">LOGGER</span> <span class="o">=</span> <span class="n">new</span> <span class="n">Logger</span><span class="p">(</span><span class="n">FormServlet</span><span class="o">.</span><span class="n">class</span><span class="p">);</span>
+
+    <span class="nd">@Override</span>
+    <span class="n">protected</span> <span class="n">void</span> <span class="n">doGet</span><span class="p">(</span><span class="n">HttpServletRequest</span> <span class="n">req</span><span class="p">,</span> <span class="n">HttpServletResponse</span> <span class="n">resp</span><span class="p">)</span> <span class="n">throws</span> <span class="n">ServletException</span><span class="p">,</span> <span class="n">IOException</span> <span class="p">{</span>
+        <span class="n">HtmlWriter</span> <span class="n">html</span> <span class="o">=</span> <span class="n">createHtmlWriter</span><span class="p">(</span><span class="n">req</span><span class="p">,</span> <span class="n">resp</span><span class="p">);</span>    
+        <span class="n">String</span> <span class="n">message</span> <span class="o">=</span> <span class="n">getMessage</span><span class="p">(</span><span class="n">req</span><span class="p">);</span>
+
+        <span class="n">html</span><span class="o">.</span><span class="n">header</span><span class="p">()</span>
+            <span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;User Data Form&quot;</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">p</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">println</span><span class="p">(</span><span class="s2">&quot;&lt;form method=&#39;post&#39; action=&#39;form&#39;&gt;&quot;</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">println</span><span class="p">(</span><span class="s2">&quot;&lt;p/&gt;Username: &lt;input type=&#39;text&#39; name=&#39;username&#39;/&gt;&quot;</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">println</span><span class="p">(</span><span class="s2">&quot;&lt;p/&gt;Password: &lt;input type=&#39;password&#39; name=&#39;password&#39;/&gt;&quot;</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">println</span><span class="p">(</span><span class="s2">&quot;&lt;p/&gt;Choose a country: &lt;select name=&#39;country&#39; size=&#39;1&#39;&gt;&quot;</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">println</span><span class="p">(</span><span class="s2">&quot;&lt;option default=&#39;true&#39;&gt;US&lt;/option&gt;&quot;</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">println</span><span class="p">(</span><span class="s2">&quot;&lt;option&gt;China&lt;/option&gt;&quot;</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">println</span><span class="p">(</span><span class="s2">&quot;&lt;option&gt;Korea&lt;/option&gt;&quot;</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">println</span><span class="p">(</span><span class="s2">&quot;&lt;/select&gt;&quot;</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">println</span><span class="p">(</span><span class="s2">&quot;&lt;p/&gt;Skills set: &lt;input type=&#39;checkbox&#39; name=&#39;skills&#39; value=&#39;Java&#39;/&gt; Java&quot;</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">println</span><span class="p">(</span><span class="s2">&quot;&lt;input type=&#39;checkbox&#39; name=&#39;skills&#39; value=&#39;Java EE&#39;/&gt;Java EE&quot;</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">println</span><span class="p">(</span><span class="s2">&quot;&lt;input type=&#39;checkbox&#39; name=&#39;skills&#39; value=&#39;MySQL Database&#39;/&gt; MySQL Database&quot;</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">println</span><span class="p">(</span><span class="s2">&quot;&lt;p/&gt;Notes: &lt;textarea name=&#39;notes&#39; cols=&#39;50&#39; rows=&#39;3&#39;&gt;&lt;/textarea&gt;&quot;</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">println</span><span class="p">(</span><span class="s2">&quot;&lt;p/&gt;&lt;input type=&#39;submit&#39; value=&#39;Submit&#39;/&gt;&quot;</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">println</span><span class="p">(</span><span class="s2">&quot;&lt;/form&gt;&quot;</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">println</span><span class="p">(</span><span class="n">html</span><span class="o">.</span><span class="n">link</span><span class="p">(</span><span class="s2">&quot;Back to Home&quot;</span><span class="p">,</span> <span class="s2">&quot;/index&quot;</span><span class="p">))</span>
+            <span class="o">.</span><span class="n">footer</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="n">protected</span> <span class="n">void</span> <span class="n">doPost</span><span class="p">(</span><span class="n">HttpServletRequest</span> <span class="n">req</span><span class="p">,</span> <span class="n">HttpServletResponse</span> <span class="n">resp</span><span class="p">)</span> <span class="n">throws</span> <span class="n">ServletException</span><span class="p">,</span> <span class="n">IOException</span> <span class="p">{</span>
+        <span class="n">LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Processing form.&quot;</span><span class="p">);</span>
+        <span class="n">Form</span> <span class="n">form</span> <span class="o">=</span> <span class="n">new</span> <span class="n">Form</span><span class="p">();</span>
+        <span class="n">form</span><span class="o">.</span><span class="n">setUsername</span><span class="p">(</span><span class="n">req</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">&quot;username&quot;</span><span class="p">));</span>
+        <span class="n">form</span><span class="o">.</span><span class="n">setPassword</span><span class="p">(</span><span class="n">req</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">&quot;password&quot;</span><span class="p">));</span>
+        <span class="n">form</span><span class="o">.</span><span class="n">setNotes</span><span class="p">(</span><span class="n">req</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">&quot;notes&quot;</span><span class="p">));</span>
+        <span class="n">form</span><span class="o">.</span><span class="n">setCountry</span><span class="p">(</span><span class="n">req</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">&quot;country&quot;</span><span class="p">));</span>
+        <span class="n">String</span><span class="p">[]</span> <span class="n">skills</span> <span class="o">=</span> <span class="n">req</span><span class="o">.</span><span class="n">getParameterValues</span><span class="p">(</span><span class="s2">&quot;skills&quot;</span><span class="p">);</span>
+        <span class="n">skills</span> <span class="o">=</span> <span class="p">(</span><span class="n">skills</span> <span class="o">==</span> <span class="n">null</span><span class="p">)</span> <span class="err">?</span> <span class="n">new</span> <span class="n">String</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">:</span> <span class="n">skills</span><span class="p">;</span>
+        <span class="n">form</span><span class="o">.</span><span class="n">setSkills</span><span class="p">(</span><span class="n">Arrays</span><span class="o">.</span><span class="n">asList</span><span class="p">(</span><span class="n">skills</span><span class="p">));</span>
+        <span class="n">req</span><span class="o">.</span><span class="n">setAttribute</span><span class="p">(</span><span class="s2">&quot;message&quot;</span><span class="p">,</span> <span class="s2">&quot;Processed: &quot;</span> <span class="o">+</span> <span class="n">form</span><span class="p">);</span>
+        <span class="n">doGet</span><span class="p">(</span><span class="n">req</span><span class="p">,</span> <span class="n">resp</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">private</span> <span class="n">String</span> <span class="n">getMessage</span><span class="p">(</span><span class="n">HttpServletRequest</span> <span class="n">req</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">String</span> <span class="n">message</span> <span class="o">=</span> <span class="p">(</span><span class="n">String</span><span class="p">)</span><span class="n">req</span><span class="o">.</span><span class="n">getAttribute</span><span class="p">(</span><span class="s2">&quot;message&quot;</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">message</span> <span class="o">==</span>  <span class="n">null</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">message</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>As usual, most forms are display with a http GET request and then process it with a POST action. Take a closer look, and pay close attention to how Servlet handle single vs multi values inputs. These exist because HTML form might allow users to choose multiple values from a single input tag/widget.</p>
+<p>One common pattern developers do in form handling is to capture the input data into a "command object", "transfer object", or (in my example) "form" object; so that data can be pass into another layer of your application for further processing. This is a good design becuase it decouples the Web layer dependencies from your backend tier service layers. </p>
+<p>Another frequent dealt with area in form processing is data validation. If you capture your data as form object, then you will likely have two layers of validations. One layer is when you extract it right off the http request (usually from a String input), then you would validate such as is it a required field or optional, is the String value convertable to the expected and desiable type (integer or date etc). Second layer of validation might be further down in your service layer where you already have the form object constructed with correct types, but their values might not be valid per your application requirement. Most common invalid data is due to not conforming to the database constraints and thus not able to persist it. I didn't provide example above on validation, but you can eaisly improve the Servlet and further explore this on your own.</p>
+<p>I like to mention one more note. There are many Java web frameworks out there that focus a LOT of attention on form handling, and they ought to help you develop application easier with less duplicated code. It is done usually with a very concrete programming model and style that, in many cases, shield you away from seing the HttpServletRequest object completly. All these are good (assuming the framework is a good quality one), but keep in mind that majority of cases when there is a problem occur, it's mostly at the framework specific layer, or even more likely your own code that use the framwork. And then you will be spending most of your debugging time learning the framework specific domain, rather than the Servlet spec layer.</p>
+<p>For my example purpose I am trying to focus on EE API alone, so I will stay away from any extra frameworks other than the standard API. If you are a beginner, I strongly encourage you to study the Servlet API and see how form is handled, this gives you a more solid understanding of how the data come about in a web application. If you look further into the Java EE stack, it actually already has a framework that's called JSF as part of EE 6 standards. It's design is to help construct web pages as components model; and it lets you capture form data and automatically bind to a bean object in a much more smoother and integrated fashion. JSF is worthy of its own topic for future posts.</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

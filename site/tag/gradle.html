@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>ZBlog - gradle</title>
+        <link rel="stylesheet" href="https://zemian.github.io/theme/css/main.css" />
+        <link href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="ZBlog Atom Feed" />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://zemian.github.io/">ZBlog</a></h1>
+                <nav><ul>
+                    <li><a href="https://zemian.github.io/pages/about-the-author.html">About The Author</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="https://zemian.github.io/2016/how-to-setup-a-java-web-application-using-gradle.html">How to setup a Java web application using Gradle</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2016-06-14T00:00:00-05:00">
+                Published: Tue 14 June 2016
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/gradle.html">gradle</a> </p>
+</footer><!-- /.post-info --><p>For basic java and Gradle, it's really simple. All you need is one line in build.gradle file and you can start compiling Java source under src/main/java folder.</p>
+<p>apply plugin: 'java'</p>
+<p>But to setup a useful web application,  you would need little more. Here I have another example of Gradle 2.7 script file for building a Java web application. I also have noted few things I have discovered in the comments.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># A Java web app project</span><span class="w"></span>
+
+<span class="c1"># There should be a src/main/webapp as web content directory</span><span class="w"></span>
+<span class="n">apply</span><span class="w"> </span><span class="n">plugin</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;war&#39;</span><span class="w"></span>
+<span class="n">apply</span><span class="w"> </span><span class="n">plugin</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;jetty&#39;</span><span class="w"></span>
+
+<span class="c1"># Change jetty default port from 8080</span><span class="w"></span>
+<span class="n">httpPort</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">9000</span><span class="w"></span>
+
+<span class="c1"># A repository must be given to fetch dependencies below.</span><span class="w"></span>
+<span class="n">repositories</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">mavenCentral</span><span class="p">()</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="c1"># Library dependencies</span><span class="w"></span>
+<span class="n">dependencies</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="o">//</span><span class="w"> </span><span class="n">JDK</span><span class="w"> </span><span class="n">lang</span><span class="w"> </span><span class="n">support</span><span class="w"></span>
+<span class="w">    </span><span class="o">//</span><span class="w"> </span><span class="n">Ouch</span><span class="o">!</span><span class="w"> </span><span class="n">Gradle</span><span class="w"> </span><span class="n">does</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">support</span><span class="w"> </span><span class="s1">&#39;provided&#39;</span><span class="w"> </span><span class="n">scope</span><span class="o">!</span><span class="w"> </span><span class="n">Let</span><span class="s1">&#39;s use compile for now.</span>
+<span class="w">    </span><span class="o">//</span><span class="n">provided</span><span class="w"> </span><span class="s1">&#39;org.projectlombok:lombok:1.16.6&#39;</span><span class="w"></span>
+<span class="w">    </span><span class="n">compile</span><span class="w"> </span><span class="s1">&#39;org.projectlombok:lombok:1.16.6&#39;</span><span class="w"></span>
+
+<span class="w">    </span><span class="o">//</span><span class="w"> </span><span class="n">Testing</span><span class="w"></span>
+<span class="w">    </span><span class="n">testCompile</span><span class="w"> </span><span class="s1">&#39;junit:junit:4.12&#39;</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="s1">&#39;org.hamcrest:hamcrest-library:1.3&#39;</span><span class="w"></span>
+
+<span class="w">    </span><span class="o">//</span><span class="w"> </span><span class="n">Database</span><span class="w"></span>
+<span class="w">    </span><span class="n">runtime</span><span class="w"> </span><span class="s1">&#39;mysql:mysql-connector-java:5.1.37&#39;</span><span class="w">   </span>
+
+<span class="w">    </span><span class="o">//</span><span class="w"> </span><span class="n">Scripting</span><span class="w"></span>
+<span class="w">    </span><span class="o">//</span><span class="n">runtime</span><span class="w"> </span><span class="s1">&#39;org.codehaus.groovy:groovy-all:2.4.5&#39;</span><span class="w"></span>
+<span class="w">    </span><span class="o">/*</span><span class="w"></span>
+<span class="w">    </span><span class="n">NOTE</span><span class="p">:</span><span class="w"> </span><span class="n">Error</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">you</span><span class="w"> </span><span class="n">include</span><span class="w"> </span><span class="n">groovy</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">gradle</span><span class="o">+</span><span class="n">jetty</span><span class="o">!!!</span><span class="w"></span>
+<span class="w">            </span><span class="n">java</span><span class="o">.</span><span class="n">lang</span><span class="o">.</span><span class="n">ExceptionInInitializerError</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="n">groovy</span><span class="o">.</span><span class="n">lang</span><span class="o">.</span><span class="n">GroovyRuntimeException</span><span class="p">:</span><span class="w"> </span><span class="n">Conflicting</span><span class="w"> </span><span class="n">module</span><span class="w"> </span><span class="n">versions</span><span class="o">.</span><span class="w"> </span><span class="n">Module</span><span class="w"> </span><span class="p">[</span><span class="n">groovy</span><span class="o">-</span><span class="n">all</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">loaded</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="mf">2.3</span><span class="o">.</span><span class="mi">10</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="n">you</span><span class="w"> </span><span class="n">are</span><span class="w"> </span><span class="n">trying</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="nb">load</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="mf">2.4</span><span class="o">.</span><span class="mi">5</span><span class="w"></span>
+<span class="w">             </span><span class="o">//</span><span class="w"> </span><span class="n">Verify</span><span class="w"> </span><span class="n">your</span><span class="w"> </span><span class="n">groovy</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="n">using</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">following</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="n">import</span><span class="w"> </span><span class="n">javax</span><span class="o">.</span><span class="n">script</span><span class="o">.*</span><span class="w"></span>
+<span class="w">        </span><span class="n">out</span><span class="o">.</span><span class="n">println</span><span class="p">(</span><span class="n">new</span><span class="w"> </span><span class="n">ScriptEngineManager</span><span class="p">()</span><span class="o">.</span><span class="n">getEngineFactories</span><span class="p">())</span><span class="w"></span>
+<span class="w">        </span><span class="n">out</span><span class="o">.</span><span class="n">println</span><span class="p">(</span><span class="n">org</span><span class="o">.</span><span class="n">codehaus</span><span class="o">.</span><span class="n">groovy</span><span class="o">.</span><span class="n">jsr223</span><span class="o">.</span><span class="n">GroovyScriptEngineFactory</span><span class="o">.</span><span class="k">class</span><span class="o">.</span><span class="n">getProtectionDomain</span><span class="p">()</span><span class="o">.</span><span class="n">getCodeSource</span><span class="p">()</span><span class="o">.</span><span class="n">getLocation</span><span class="p">())</span><span class="w"></span>
+<span class="w">    </span><span class="o">*/</span><span class="w"> </span>
+<span class="p">}</span><span class="w"></span>
+</code></pre></div>
+
+<p>I also have this JSP in <code>src/main/webapp/script.jsp</code> folder</p>
+<div class="highlight"><pre><span></span><code><span class="cp">&lt;%</span><span class="err">@</span> <span class="n">page</span> <span class="n">import</span><span class="o">=</span><span class="s2">&quot;javax.script.*, java.io.*&quot;</span> <span class="cp">%&gt;</span>
+
+<span class="cp">&lt;%</span>
+<span class="sr">//</span> <span class="no">Initialize</span> <span class="n">parameters</span>
+<span class="nb">String</span> <span class="n">engineName</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">&quot;engine&quot;</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">engineName</span> <span class="o">==</span> <span class="n">null</span><span class="p">)</span> <span class="n">engineName</span> <span class="o">=</span> <span class="s2">&quot;Groovy&quot;</span><span class="p">;</span>
+<span class="nb">String</span> <span class="n">code</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">&quot;code&quot;</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">code</span> <span class="o">==</span> <span class="n">null</span><span class="p">)</span> <span class="n">code</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">;</span>
+<span class="cp">%&gt;</span>
+
+<span class="cm">&lt;!-- form: Script input code --&gt;</span>
+<span class="nt">&lt;h1&gt;</span>Scripting<span class="nt">&lt;/h1&gt;</span>
+<span class="nt">&lt;form</span> <span class="na">method=</span><span class="s">&quot;POST&quot;</span><span class="nt">&gt;</span>
+<span class="nt">&lt;textarea</span> <span class="na">name=</span><span class="s">&quot;code&quot;</span> <span class="na">cols=</span><span class="s">&quot;120&quot;</span> <span class="na">rows=</span><span class="s">&quot;25&quot;</span><span class="nt">&gt;</span><span class="cp">&lt;%=</span> <span class="n">code</span> <span class="cp">%&gt;</span><span class="nt">&lt;/textarea&gt;</span>
+<span class="nt">&lt;p/&gt;&lt;input</span> <span class="na">type=</span><span class="s">&quot;submit&quot;</span> <span class="na">value=</span><span class="s">&quot;Submit&quot;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/form&gt;</span>
+
+<span class="nt">&lt;pre&gt;</span>
+<span class="cp">&lt;%</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">getMethod</span><span class="p">()</span><span class="o">.</span><span class="n">equals</span><span class="p">(</span><span class="s2">&quot;POST&quot;</span><span class="p">))</span> <span class="p">{</span>
+    <span class="sr">//</span> <span class="no">Process</span> <span class="n">form</span> <span class="ow">and</span> <span class="n">evaluate</span> <span class="n">script</span> <span class="n">code</span>
+    <span class="no">ScriptEngine</span> <span class="n">se</span> <span class="o">=</span> <span class="kp">new</span> <span class="no">ScriptEngineManager</span><span class="p">()</span><span class="o">.</span><span class="n">getEngineByName</span><span class="p">(</span><span class="n">engineName</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">se</span> <span class="o">==</span> <span class="n">null</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">println</span><span class="p">(</span><span class="s2">&quot;ERROR: &quot;</span> <span class="o">+</span> <span class="n">engineName</span> <span class="o">+</span> <span class="s2">&quot; engine not found! Use &#39;engine&#39; parameter to change it.&quot;</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="n">try</span> <span class="p">{</span>
+            <span class="no">Bindings</span> <span class="n">b</span> <span class="o">=</span> <span class="n">se</span><span class="o">.</span><span class="n">createBindings</span><span class="p">();</span>
+            <span class="n">b</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="s2">&quot;request&quot;</span><span class="p">,</span> <span class="n">request</span><span class="p">);</span>
+            <span class="n">b</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="s2">&quot;out&quot;</span><span class="p">,</span> <span class="n">out</span><span class="p">);</span>
+            <span class="no">Object</span> <span class="n">result</span> <span class="o">=</span> <span class="n">se</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="n">b</span><span class="p">);</span>
+
+            <span class="n">out</span><span class="o">.</span><span class="n">println</span><span class="p">(</span><span class="n">engineName</span> <span class="o">+</span> <span class="s2">&quot; script result:&quot;</span><span class="p">);</span>
+            <span class="n">out</span><span class="o">.</span><span class="n">println</span><span class="p">(</span><span class="s2">&quot;&quot;</span> <span class="o">+</span> <span class="n">result</span><span class="p">);</span>
+        <span class="p">}</span> <span class="kp">catch</span> <span class="p">(</span><span class="no">Exception</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">out</span><span class="o">.</span><span class="n">println</span><span class="p">(</span><span class="s2">&quot;ERROR: &quot;</span> <span class="o">+</span> <span class="n">engineName</span> <span class="o">+</span> <span class="s2">&quot; script failed to evaluate!&quot;</span><span class="p">);</span>
+            <span class="n">e</span><span class="o">.</span><span class="n">printStackTrace</span><span class="p">(</span><span class="kp">new</span> <span class="no">PrintWriter</span><span class="p">(</span><span class="n">out</span><span class="p">));</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="cp">%&gt;</span>
+
+<span class="nt">&lt;/pre&gt;</span>
+</code></pre></div>
+
+<p>With this script.jsp, you can write something like this to test out your db connection.</p>
+<div class="highlight"><pre><span></span><code><span class="o">//</span> <span class="n">Groovy</span> <span class="n">script</span><span class="p">:</span>
+<span class="kn">import</span> <span class="nn">java.sql</span><span class="o">*</span>
+<span class="n">conn</span> <span class="o">=</span> <span class="n">DriverManager</span><span class="o">.</span><span class="n">getConnection</span><span class="p">(</span><span class="s1">&#39;jdbc:mysql://localhost/test&#39;</span><span class="p">,</span> <span class="s1">&#39;dev&#39;</span><span class="p">,</span> <span class="s1">&#39;dev123&#39;</span><span class="p">)</span>
+<span class="n">out</span><span class="o">.</span><span class="n">println</span><span class="p">(</span><span class="s2">&quot;conn=&quot;</span> <span class="o">+</span> <span class="n">conn</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="n">And</span> <span class="n">just</span> <span class="k">for</span> <span class="n">fun</span><span class="p">,</span> <span class="n">I</span> <span class="n">have</span> <span class="n">created</span> <span class="n">a</span> <span class="n">data</span> <span class="k">class</span> <span class="nc">using</span> <span class="n">ProjectLombok</span> <span class="n">generator</span> <span class="ow">in</span> <span class="n">src</span><span class="o">/</span><span class="n">main</span><span class="o">/</span><span class="n">java</span><span class="o">/</span><span class="n">myjava</span><span class="o">/</span><span class="n">MyData</span><span class="o">.</span><span class="n">java</span>
+
+<span class="n">package</span> <span class="n">myjava</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">java.util.</span><span class="o">*</span><span class="p">;</span>
+
+<span class="nd">@lombok</span><span class="o">.</span><span class="n">Data</span>
+<span class="n">public</span> <span class="k">class</span> <span class="nc">MyData</span> <span class="p">{</span>
+<span class="n">private</span> <span class="n">Integer</span> <span class="nb">id</span><span class="p">;</span>
+<span class="n">private</span> <span class="n">String</span> <span class="n">name</span><span class="p">;</span>
+<span class="n">private</span> <span class="n">Date</span> <span class="n">createdDate</span><span class="p">;</span>
+<span class="n">private</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">MyData</span><span class="o">&gt;</span> <span class="n">dataList</span><span class="p">;</span>
+<span class="n">private</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span> <span class="n">MyData</span><span class="o">&gt;</span> <span class="n">dataMap</span><span class="p">;</span>
+
+<span class="p">}</span>
+
+<span class="n">I</span> <span class="n">also</span> <span class="n">have</span> <span class="n">a</span> <span class="n">unit</span> <span class="n">test</span> <span class="ow">in</span> <span class="n">src</span><span class="o">/</span><span class="n">test</span><span class="o">/</span><span class="n">java</span><span class="o">/</span><span class="n">myjava</span><span class="o">/</span><span class="n">MyDataTest</span><span class="o">.</span><span class="n">java</span>
+
+<span class="n">package</span> <span class="n">myjava</span><span class="p">;</span>
+
+<span class="kn">import</span> <span class="nn">org.junit.Test</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">static</span> <span class="n">org</span><span class="o">.</span><span class="n">junit</span><span class="o">.</span><span class="n">Assert</span><span class="o">.</span><span class="n">assertThat</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">static</span> <span class="n">org</span><span class="o">.</span><span class="n">hamcrest</span><span class="o">.</span><span class="n">Matchers</span><span class="o">.*</span><span class="p">;</span>
+
+<span class="n">public</span> <span class="k">class</span> <span class="nc">MyDataTest</span> <span class="p">{</span>
+<span class="nd">@Test</span>
+<span class="n">public</span> <span class="n">void</span> <span class="n">tesGeneratedGetterSettersAndToString</span><span class="p">()</span> <span class="p">{</span>
+<span class="n">MyData</span> <span class="n">d</span> <span class="o">=</span> <span class="n">new</span> <span class="n">MyData</span><span class="p">();</span>
+<span class="n">d</span><span class="o">.</span><span class="n">setId</span><span class="p">(</span><span class="mi">12345</span><span class="p">);</span>
+<span class="n">d</span><span class="o">.</span><span class="n">setName</span><span class="p">(</span><span class="s2">&quot;foo&quot;</span><span class="p">);</span>
+<span class="n">assertThat</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">getId</span><span class="p">(),</span> <span class="ow">is</span><span class="p">(</span><span class="mi">12345</span><span class="p">));</span>
+<span class="n">assertThat</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">getName</span><span class="p">(),</span> <span class="ow">is</span><span class="p">(</span><span class="s2">&quot;foo&quot;</span><span class="p">));</span>
+<span class="n">assertThat</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">toString</span><span class="p">(),</span> <span class="ow">is</span><span class="p">(</span><span class="s2">&quot;MyData(id=12345, name=foo, createdDate=null, dataList=null, dataMap=null)&quot;</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="p">}</span>
+</code></pre></div>
+
+<p>To compile code, type command: <code>gradle compileJava</code></p>
+<p>To run test, type command: gradle test(A nice feature of Gradle is that it auto generate test reports! Look for them in your build/reports folder.)</p>
+<p>To run web app, type command: gradle jettyRun</p>                </article>
+            </aside><!-- /#featured -->
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

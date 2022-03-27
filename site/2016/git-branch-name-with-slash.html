@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>Git Branch name with 'slash'</title>
+        <link rel="stylesheet" href="https://zemian.github.io/theme/css/main.css" />
+        <link href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="ZBlog Atom Feed" />
+        <meta name="description" content="Git allows you to use / slash in your branch name. It’s useful for grouping branches. However, you need to be careful that once a slashy branch..." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://zemian.github.io/">ZBlog</a></h1>
+                <nav><ul>
+                    <li><a href="https://zemian.github.io/pages/about-the-author.html">About The Author</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://zemian.github.io/2016/git-branch-name-with-slash.html" rel="bookmark"
+           title="Permalink to Git Branch name with 'slash'">Git Branch name with 'slash'</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2016-10-09T00:00:00-05:00">
+                Published: Sun 09 October 2016
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/git.html">git</a> </p>
+</footer><!-- /.post-info -->      <p>Git allows you to use <code>/</code> slash in your branch name. It’s useful for
+grouping branches. However, you need to be careful that once a slashy
+branch name is created, you can’t use its name as the "base" for another
+new nested slash name! For example:</p>
+<div class="highlight"><pre><span></span><code><span class="err">#</span><span class="w"> </span><span class="nt">this</span><span class="w"> </span><span class="nt">is</span><span class="w"> </span><span class="nt">fine</span><span class="w"></span>
+<span class="nt">git</span><span class="w"> </span><span class="nt">branch</span><span class="w"> </span><span class="nt">foo</span><span class="o">/</span><span class="nt">bar</span><span class="w"></span>
+<span class="nt">git</span><span class="w"> </span><span class="nt">branch</span><span class="w"> </span><span class="nt">foo</span><span class="o">/</span><span class="nt">bar2</span><span class="w"></span>
+
+<span class="err">#</span><span class="w"> </span><span class="nt">but</span><span class="w"> </span><span class="nt">this</span><span class="w"> </span><span class="nt">fails</span><span class="w"></span>
+<span class="nt">git</span><span class="w"> </span><span class="nt">branch</span><span class="w"> </span><span class="nt">foo</span><span class="o">/</span><span class="nt">bar</span><span class="o">/</span><span class="nt">cool</span><span class="w"></span>
+<span class="nt">fatal</span><span class="o">:</span><span class="w"> </span><span class="nt">cannot</span><span class="w"> </span><span class="nt">lock</span><span class="w"> </span><span class="nt">ref</span><span class="w"> </span><span class="s1">&#39;refs/heads/foo/bar/cool&#39;</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;refs/heads/foo/bar&#39;</span><span class="w"> </span><span class="nt">exists</span><span class="o">;</span><span class="w"> </span><span class="nt">cannot</span><span class="w"> </span><span class="nt">create</span><span class="w"> </span><span class="s1">&#39;refs/heads/foo/bar/cool&#39;</span><span class="w"></span>
+
+<span class="err">#</span><span class="w"> </span><span class="nt">So</span><span class="w"> </span><span class="nt">to</span><span class="w"> </span><span class="nt">use</span><span class="w"> </span><span class="nt">two</span><span class="w"> </span><span class="nt">level</span><span class="w"> </span><span class="nt">of</span><span class="w"> </span><span class="nt">slashes</span><span class="o">,</span><span class="w"> </span><span class="nt">you</span><span class="w"> </span><span class="nt">must</span><span class="w"> </span><span class="nt">first</span><span class="w"> </span><span class="nt">start</span><span class="w"> </span><span class="nt">a</span><span class="w"> </span><span class="nt">branch</span><span class="w"> </span><span class="nt">with</span><span class="w"> </span><span class="nt">two</span><span class="w"> </span><span class="nt">slashes</span><span class="o">!</span><span class="w"></span>
+<span class="nt">git</span><span class="w"> </span><span class="nt">branch</span><span class="w"> </span><span class="nt">foo2</span><span class="o">/</span><span class="nt">bar</span><span class="o">/</span><span class="nt">cool</span><span class="w"></span>
+<span class="nt">git</span><span class="w"> </span><span class="nt">branch</span><span class="w"> </span><span class="nt">foo2</span><span class="o">/</span><span class="nt">bar</span><span class="o">/</span><span class="nt">cool2</span><span class="w"></span>
+<span class="nt">git</span><span class="w"> </span><span class="nt">branch</span><span class="w"> </span><span class="nt">foo2</span><span class="o">/</span><span class="nt">bar2</span><span class="o">/</span><span class="nt">cool</span><span class="w"></span>
+<span class="nt">git</span><span class="w"> </span><span class="nt">branch</span><span class="w"> </span><span class="nt">foo2</span><span class="o">/</span><span class="nt">bar2</span><span class="o">/</span><span class="nt">cool2</span><span class="w"></span>
+</code></pre></div>
+
+<p>Here is a more concrete example. Let’s say you worked on an <code>issue-123</code>
+branch, and now you are done but want to rename under a subcategory
+<code>closed/issue-123</code>. If you were to create a bsranch <code>closed</code> first, then
+the rename will fail! You have to first ensure <code>closed</code> branch does not
+exist. In fact reate a <code>closed/zkeepme</code> first, then you can always move
+your completed branch into that sub category!</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

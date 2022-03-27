@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>Exploring Apache Camel Core - File Component</title>
+        <link rel="stylesheet" href="https://zemian.github.io/theme/css/main.css" />
+        <link href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="ZBlog Atom Feed" />
+        <meta name="description" content="A file poller is a very useful mechanism to solve common IT problems. Camel’s built-in file component is extremely flexible, and there are many..." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://zemian.github.io/">ZBlog</a></h1>
+                <nav><ul>
+                    <li><a href="https://zemian.github.io/pages/about-the-author.html">About The Author</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://zemian.github.io/2013/exploring-apache-camel-core-file-component.html" rel="bookmark"
+           title="Permalink to Exploring Apache Camel Core - File Component">Exploring Apache Camel Core - File Component</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2013-09-04T00:00:00-05:00">
+                Published: Wed 04 September 2013
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/camel.html">camel</a> </p>
+</footer><!-- /.post-info -->      <p>A file poller is a very useful mechanism to solve common IT problems. Camel&#8217;s built-in <code>file</code> component is extremely flexible, and there are many options available for configuration. Let&#8217;s cover few common usages here.</p>
+<h2>Polling a directory for input files</h2>
+<p>Here is a typical Camel <code>Route</code> used to poll a directory for input files on every second.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">org.slf4j.</span><span class="o">*</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.camel.</span><span class="o">*</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.camel.builder.</span><span class="o">*</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">java.io.</span><span class="o">*</span><span class="p">;</span>
+
+<span class="n">public</span> <span class="k">class</span> <span class="nc">FileRouteBuilder</span> <span class="n">extends</span> <span class="n">RouteBuilder</span> <span class="p">{</span>
+    <span class="n">static</span> <span class="n">Logger</span> <span class="n">LOG</span> <span class="o">=</span> <span class="n">LoggerFactory</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">FileRouteBuilder</span><span class="o">.</span><span class="n">class</span><span class="p">);</span>
+    <span class="n">public</span> <span class="n">void</span> <span class="n">configure</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">from</span><span class="p">(</span><span class="s2">&quot;file://target/input?delay=1000&quot;</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">new</span> <span class="n">Processor</span><span class="p">()</span> <span class="p">{</span>
+            <span class="n">public</span> <span class="n">void</span> <span class="n">process</span><span class="p">(</span><span class="n">Exchange</span> <span class="n">msg</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">File</span> <span class="n">file</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">getIn</span><span class="p">()</span><span class="o">.</span><span class="n">getBody</span><span class="p">(</span><span class="n">File</span><span class="o">.</span><span class="n">class</span><span class="p">);</span>
+                <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Processing file: &quot;</span> <span class="o">+</span> <span class="n">file</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">});</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Run this with following</p>
+<div class="highlight"><pre><span></span><code><span class="nv">mvn</span> <span class="nv">compile</span> <span class="k">exec</span>:<span class="nv">java</span> <span class="o">-</span><span class="nv">Dexec</span>.<span class="nv">mainClass</span><span class="o">=</span><span class="nv">org</span>.<span class="nv">apache</span>.<span class="nv">camel</span>.<span class="nv">main</span>.<span class="nv">Main</span> <span class="o">-</span><span class="nv">Dexec</span>.<span class="nv">args</span><span class="o">=</span><span class="s1">&#39;</span><span class="s">-r camelcoredemo.FileRouteBuilder</span><span class="s1">&#39;</span>
+</code></pre></div>
+
+<p>The program will begin to poll your <code>target/input</code> folder under your current directory, and wait for incoming files. To test with input files, you would need to open another terminal, and then create some files as follow.</p>
+<div class="highlight"><pre><span></span><code>echo &#39;Hello 1&#39; &gt; target/input/test1.txt
+echo &#39;Hello 2&#39; &gt; target/input/test2.txt
+</code></pre></div>
+
+<p>You should now see the first prompt window start to picking up the files and pass to the next <code>Processor</code> step. In the <code>Processor</code>, we obtain the <code>File</code> object from the message body. It then simply logs it&#8217;s file name. You may hit <code>CTRL+C</code> when you are done.</p>
+<p>There many configurable options from <code>file</code> componet you may use in the URL, but most of the default settings are enough to get you going as simple case above. Some of these default behavior is such that if the input folder doesn&#8217;t exists, it will create it. And when the file is done processing by the <code>Route</code>, it will be moved into a <code>.camel</code> folder. If you don&#8217;t want the file at all after processing, then set <code>delete=true</code> in the URL.</p>
+<h2>Read in the file content and converting to different types</h2>
+<p>By default, the <code>file</code> component will create a <code>org.apache.camel.component.file.GenericFile</code> object for each file found and pass it down your <code>Route</code> as message body. You may retrieve all your file information through this object. Or alternatively, you may also use the <code>Exchange</code> API to auto convert the message body object to a type you expect to receive (eg: as with <code>msg.getIn().getBody(File.class)</code>). In above example, the <code>File</code> is a type you expect to get from the message body, and Camel hence will try to convert it for you. The Camel uses the context&#8217;s registry space to pre-registered many <code>TypeConverter</code>'s that can handle most of the common data types (like Java primative etc) conversion. These <code>TypeConverter</code><em>s</em> are powerful way to make your <code>Route</code> and <code>Processor</code> more flexbile and portable.</p>
+<p>Camel will not only convert just your <code>File</code> object from message body, but it can also read the file content. If your files are character text based, then you can simply do this.</p>
+<div class="highlight"><pre><span></span><code><span class="w">        </span><span class="nt">from</span><span class="o">(</span><span class="s2">&quot;file://target/input?charset=UTF-8&quot;</span><span class="o">)</span><span class="w"></span>
+<span class="w">        </span><span class="p">.</span><span class="nc">process</span><span class="o">(</span><span class="nt">new</span><span class="w"> </span><span class="nt">Processor</span><span class="o">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="err">public</span><span class="w"> </span><span class="err">void</span><span class="w"> </span><span class="err">process(Exchange</span><span class="w"> </span><span class="err">msg)</span><span class="w"> </span><span class="err">{</span><span class="w"></span>
+<span class="w">                </span><span class="err">String</span><span class="w"> </span><span class="err">text</span><span class="w"> </span><span class="err">=</span><span class="w"> </span><span class="err">msg.getIn().getBody(String.class)</span><span class="p">;</span><span class="w"></span>
+<span class="w">                </span><span class="err">LOG.info(&quot;Processing</span><span class="w"> </span><span class="n">text</span><span class="p">:</span><span class="w"> </span><span class="err">&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="kc">text</span><span class="p">);</span><span class="w"></span>
+<span class="w">            </span><span class="p">}</span><span class="w"></span>
+<span class="w">        </span><span class="err">}</span><span class="o">);</span><span class="w"></span>
+</code></pre></div>
+
+<p>That&#8217;s it! Simply specify <code>String</code> type, and Camel will read your file in and pass the entire file text content as body message. You may even use the <code>charset</code> to change the encoding.</p>
+<p>If you are dealing with binary file, then simply try <code>byte[] bytes = msg.getIn().getBody(byte[].class);</code> conversion instead. Pretty cool huh?</p>
+<h2>Polling and processing large files</h2>
+<p>When working with large files, there few options in <code>file</code> componet that you might want to use to ensure proper handling. For example, you might want to move the input file into a <code>staging</code> folder before the <code>Route</code> starts the processing; and when it&#8217;s done, move it to a <code>.completed</code> folder.</p>
+<div class="highlight"><pre><span></span><code><span class="w">        </span><span class="nt">from</span><span class="o">(</span><span class="s2">&quot;file://target/input?preMove=staging&amp;move=.completed&quot;</span><span class="o">)</span><span class="w"></span>
+<span class="w">        </span><span class="p">.</span><span class="nc">process</span><span class="o">(</span><span class="nt">new</span><span class="w"> </span><span class="nt">Processor</span><span class="o">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="err">public</span><span class="w"> </span><span class="err">void</span><span class="w"> </span><span class="err">process(Exchange</span><span class="w"> </span><span class="err">msg)</span><span class="w"> </span><span class="err">{</span><span class="w"></span>
+<span class="w">                </span><span class="err">File</span><span class="w"> </span><span class="err">file</span><span class="w"> </span><span class="err">=</span><span class="w"> </span><span class="err">msg.getIn().getBody(File.class)</span><span class="p">;</span><span class="w"></span>
+<span class="w">                </span><span class="err">LOG.info(&quot;Processing</span><span class="w"> </span><span class="n">file</span><span class="p">:</span><span class="w"> </span><span class="err">&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">file</span><span class="p">);</span><span class="w"></span>
+<span class="w">            </span><span class="p">}</span><span class="w"></span>
+<span class="w">        </span><span class="err">}</span><span class="o">);</span><span class="w"></span>
+</code></pre></div>
+
+<p>To feed input files properly into the polling folder, it&#8217;s best if the sender generates the input files in a temporary folder first, and only when it&#8217;s ready then move it into the polling folder. This will minimize reading an incomplete file by the <code>Route</code> if the input file might take times to generate. Also another solution to this is to config <code>file</code> endpoint to only read the polling folder when there is a signal or ready marker file exists. For example:</p>
+<div class="highlight"><pre><span></span><code><span class="w">        </span><span class="nt">from</span><span class="o">(</span><span class="s2">&quot;file://target/input?preMove=staging&amp;move=.completed&amp;doneFileName=ReadyFile.txt&quot;</span><span class="o">)</span><span class="w"></span>
+<span class="w">        </span><span class="p">.</span><span class="nc">process</span><span class="o">(</span><span class="nt">new</span><span class="w"> </span><span class="nt">Processor</span><span class="o">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="err">public</span><span class="w"> </span><span class="err">void</span><span class="w"> </span><span class="err">process(Exchange</span><span class="w"> </span><span class="err">msg)</span><span class="w"> </span><span class="err">{</span><span class="w"></span>
+<span class="w">                </span><span class="err">File</span><span class="w"> </span><span class="err">file</span><span class="w"> </span><span class="err">=</span><span class="w"> </span><span class="err">msg.getIn().getBody(File.class)</span><span class="p">;</span><span class="w"></span>
+<span class="w">                </span><span class="err">LOG.info(&quot;Processing</span><span class="w"> </span><span class="n">file</span><span class="p">:</span><span class="w"> </span><span class="err">&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">file</span><span class="p">);</span><span class="w"></span>
+<span class="w">            </span><span class="p">}</span><span class="w"></span>
+<span class="w">        </span><span class="err">}</span><span class="o">);</span><span class="w"></span>
+</code></pre></div>
+
+<p>Above will only read the <code>target/input</code> folder when there is a <code>ReadyFile.txt</code> file exists. The marker file can be just an empty file, and it will be removed by Camel after polling. This solution would allow the sender to generate input files in however long time it might take.</p>
+<p>Another concern with large file processing is to avoid loading entire file content into memory for processing. To be more practical, you want to split the file into records (eg: per line) and process it one by one (or called "streaming"). Here is how you would do that using Camel.</p>
+<div class="highlight"><pre><span></span><code><span class="w">        </span><span class="nt">from</span><span class="o">(</span><span class="s2">&quot;file://target/input?preMove=staging&amp;move=.completed&quot;</span><span class="o">)</span><span class="w"></span>
+<span class="w">        </span><span class="p">.</span><span class="nc">split</span><span class="o">(</span><span class="nt">body</span><span class="o">()</span><span class="p">.</span><span class="nc">tokenize</span><span class="o">(</span><span class="s2">&quot;\n&quot;</span><span class="o">))</span><span class="w"></span>
+<span class="w">        </span><span class="p">.</span><span class="nc">streaming</span><span class="o">()</span><span class="w"></span>
+<span class="w">        </span><span class="p">.</span><span class="nc">process</span><span class="o">(</span><span class="nt">new</span><span class="w"> </span><span class="nt">Processor</span><span class="o">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="err">public</span><span class="w"> </span><span class="err">void</span><span class="w"> </span><span class="err">process(Exchange</span><span class="w"> </span><span class="err">msg)</span><span class="w"> </span><span class="err">{</span><span class="w"></span>
+<span class="w">                </span><span class="err">String</span><span class="w"> </span><span class="err">line</span><span class="w"> </span><span class="err">=</span><span class="w"> </span><span class="err">msg.getIn().getBody(String.class)</span><span class="p">;</span><span class="w"></span>
+<span class="w">                </span><span class="err">LOG.info(&quot;Processing</span><span class="w"> </span><span class="n">line</span><span class="p">:</span><span class="w"> </span><span class="err">&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">line</span><span class="p">);</span><span class="w"></span>
+<span class="w">            </span><span class="p">}</span><span class="w"></span>
+<span class="w">        </span><span class="err">}</span><span class="o">);</span><span class="w"></span>
+</code></pre></div>
+
+<p>This <code>Route</code> will allow you to process large size file without cosuming too much memory and process it line by line very efficiently.</p>
+<h2>Writing messages back into file</h2>
+<p>The <code>file</code> component can also be used to write messages into files. Recall that we may use <code>dataset</code> component to generate sample messages. We will use that to feed the <code>Route</code> and send to the <code>file</code> component so you can see that each message generated will be saved into a file.</p>
+<div class="highlight"><pre><span></span><code><span class="n">package</span> <span class="n">camelcoredemo</span><span class="p">;</span>
+
+<span class="kn">import</span> <span class="nn">org.slf4j.</span><span class="o">*</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.camel.</span><span class="o">*</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.camel.builder.</span><span class="o">*</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.camel.main.Main</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.camel.component.dataset.</span><span class="o">*</span><span class="p">;</span>
+
+<span class="n">public</span> <span class="k">class</span> <span class="nc">FileDemoCamel</span> <span class="n">extends</span> <span class="n">Main</span> <span class="p">{</span>
+    <span class="n">static</span> <span class="n">Logger</span> <span class="n">LOG</span> <span class="o">=</span> <span class="n">LoggerFactory</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">FileDemoCamel</span><span class="o">.</span><span class="n">class</span><span class="p">);</span>
+    <span class="n">public</span> <span class="n">static</span> <span class="n">void</span> <span class="n">main</span><span class="p">(</span><span class="n">String</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span> <span class="n">throws</span> <span class="ne">Exception</span> <span class="p">{</span>
+        <span class="n">FileDemoCamel</span> <span class="n">main</span> <span class="o">=</span> <span class="n">new</span> <span class="n">FileDemoCamel</span><span class="p">();</span>
+        <span class="n">main</span><span class="o">.</span><span class="n">enableHangupSupport</span><span class="p">();</span>
+        <span class="n">main</span><span class="o">.</span><span class="n">addRouteBuilder</span><span class="p">(</span><span class="n">createRouteBuilder</span><span class="p">());</span>
+        <span class="n">main</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;sampleGenerator&quot;</span><span class="p">,</span> <span class="n">createDataSet</span><span class="p">());</span>
+        <span class="n">main</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">args</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">static</span> <span class="n">RouteBuilder</span> <span class="n">createRouteBuilder</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">new</span> <span class="n">RouteBuilder</span><span class="p">()</span> <span class="p">{</span>
+            <span class="n">public</span> <span class="n">void</span> <span class="n">configure</span><span class="p">()</span> <span class="p">{</span>
+                <span class="n">from</span><span class="p">(</span><span class="s2">&quot;dataset://sampleGenerator&quot;</span><span class="p">)</span>
+                <span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;file://target/output&quot;</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">};</span>
+    <span class="p">}</span>
+    <span class="n">static</span> <span class="n">DataSet</span> <span class="n">createDataSet</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">new</span> <span class="n">SimpleDataSet</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Compile and run it</p>
+<div class="highlight"><pre><span></span><code><span class="nv">mvn</span> <span class="nv">compile</span> <span class="k">exec</span>:<span class="nv">java</span> <span class="o">-</span><span class="nv">Dexec</span>.<span class="nv">mainClass</span><span class="o">=</span><span class="nv">camelcoredemo</span>.<span class="nv">FileDemoCamel</span>
+</code></pre></div>
+
+<p>Upon complete you will see that 10 files would be generated in <code>target/output</code> folder with
+file name in <code>ID-&lt;hostname&gt;-&lt;unique-number&gt;-&lt;msg-seq-num&gt;</code> format.</p>
+<p>There are more options availabe from <a href="http://camel.apache.org/file2.html">File</a> component
+that you may explore.
+<a href="https://zemian.github.io/2013/08/getting-started-with-apache-camel-using.html">Try it out with a Route</a>
+and see it for yourself.</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

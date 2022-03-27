@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>ZBlog - Zemian Deng</title>
+        <link rel="stylesheet" href="https://zemian.github.io/theme/css/main.css" />
+        <link href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="ZBlog Atom Feed" />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://zemian.github.io/">ZBlog</a></h1>
+                <nav><ul>
+                    <li><a href="https://zemian.github.io/pages/about-the-author.html">About The Author</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+                <section id="content" class="body">
+                    <ol id="posts-list" class="hfeed" start="9">
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2018/how-to-find-httpd-config-file-location.html" rel="bookmark"
+                           title="Permalink to How to find httpd config file location">How to find httpd config file location</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-02-28T00:00:00-05:00">
+                Published: Wed 28 February 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/httpd.html">httpd</a> </p>
+</footer><!-- /.post-info -->                <div class="highlight"><pre><span></span><code>Zemians-MacBook-Air:~ zemian$ httpd -t -D DUMP_INCLUDES
+Included configuration files:
+  (*) /private/etc/apache2/httpd.conf
+    (498) /private/etc/apache2/extra/httpd-mpm.conf
+    (504) /private/etc/apache2/extra/httpd-autoindex.conf
+    (544) /private/etc/apache2/other/php7.conf
+</code></pre></div>
+                <a class="readmore" href="https://zemian.github.io/2018/how-to-find-httpd-config-file-location.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2018/getting-started-with-apache-httpd-web-server-on-windows.html" rel="bookmark"
+                           title="Permalink to Getting started with Apache HTTPD Web Server on Windows">Getting started with Apache HTTPD Web Server on Windows</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-02-27T00:00:00-05:00">
+                Published: Tue 27 February 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/httpd.html">httpd</a> <a href="https://zemian.github.io/tag/cygwin.html">cygwin</a> </p>
+</footer><!-- /.post-info -->                <h1>Using native Windows Binary (without admin rights)</h1>
+<ol>
+<li>
+<p>Download one of binary from
+    <a href="https://httpd.apache.org/docs/current/platform/windows.html#down">https://httpd.apache.org/docs/current/platform/windows.html#down</a></p>
+</li>
+<li>
+<p>Unzip a portable version (zip file) into <code>C:\Apache24</code></p>
+</li>
+<li>
+<p>cd <code>C:\Apache24\bin</code> and run httpd.exe</p>
+</li>
+<li>
+<p>Open browser to <a href="http://localhost">http://localhost</a></p>
+</li>
+</ol>
+<p>Press <code>CTRL+C</code> to stop the …</p>
+                <a class="readmore" href="https://zemian.github.io/2018/getting-started-with-apache-httpd-web-server-on-windows.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2018/how-to-setup-httpd-form-authentication-and-user-session-loginlogout.html" rel="bookmark"
+                           title="Permalink to How to setup httpd form authentication and user session login/logout">How to setup httpd form authentication and user session login/logout</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-02-27T00:00:00-05:00">
+                Published: Tue 27 February 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/httpd.html">httpd</a> <a href="https://zemian.github.io/tag/authentication.html">authentication</a> <a href="https://zemian.github.io/tag/session.html">session</a> </p>
+</footer><!-- /.post-info -->                <h2>Configuration setup for <code>httpd.conf</code></h2>
+<p>Enable modules</p>
+<div class="highlight"><pre><span></span><code>LoadModule auth_form_module modules/mod_auth_form.so
+LoadModule auth_digest_module modules/mod_auth_digest.so
+LoadModule session_module modules/mod_session.so
+LoadModule session_cookie_module modules/mod_session_cookie.so
+</code></pre></div>
+
+<p>NOTE: This configuration is only for tutorial purpose and …</p>
+                <a class="readmore" href="https://zemian.github.io/2018/how-to-setup-httpd-form-authentication-and-user-session-loginlogout.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2018/customizing-httpd-conf-with-special-request-header-and-filter.html" rel="bookmark"
+                           title="Permalink to Customizing httpd conf with special request header and filter">Customizing httpd conf with special request header and filter</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-02-26T00:00:00-05:00">
+                Published: Mon 26 February 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/httpd.html">httpd</a> <a href="https://zemian.github.io/tag/proxy.html">proxy</a> <a href="https://zemian.github.io/tag/filter.html">filter</a> </p>
+</footer><!-- /.post-info -->                <h2>How to setup httpd reverse proxy for Tomcat</h2>
+<p>Enable modules</p>
+<div class="highlight"><pre><span></span><code>    # <span class="nv">NOTE</span>: <span class="k">If</span> <span class="nv">you</span> <span class="nv">are</span> <span class="nv">using</span> <span class="nv">Cygwin</span>, <span class="nv">these</span> <span class="nv">module</span> <span class="nv">requires</span> <span class="nv">cygserver</span> <span class="nv">to</span> <span class="nv">run</span><span class="o">!</span>
+    #       <span class="k">else</span> <span class="nv">you</span> <span class="nv">get</span> <span class="nv">the</span> <span class="nv">following</span> <span class="nv">error</span>:
+    #
+    #[<span class="nv">Mon</span> <span class="nv">Feb</span> <span class="mi">26</span> <span class="mi">09</span>:<span class="mi">26</span>:<span class="mi">50</span>.<span class="mi">308620</span> <span class="mi">2018</span>] [<span class="nv">proxy</span>:<span class="nv">crit</span>] [<span class="nv">pid</span> <span class="mi">7564</span>] <span class="ss">(</span><span class="mi">88</span><span class="ss">)</span><span class="nv">Function</span> <span class="nv">not</span> <span class="nv">implemented</span>: <span class="nv">AH02478</span>: #<span class="nv">failed</span> <span class="nv">to</span> <span class="nv">create</span> <span class="nv">proxy</span> <span class="nv">mutex …</span></code></pre></div>
+                <a class="readmore" href="https://zemian.github.io/2018/customizing-httpd-conf-with-special-request-header-and-filter.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2018/how-to-turn-off-intellij-autoformat-on-a-block-of-code.html" rel="bookmark"
+                           title="Permalink to How to turn off IntelliJ autoformat on a block of code">How to turn off IntelliJ autoformat on a block of code</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-02-23T00:00:00-05:00">
+                Published: Fri 23 February 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/intellij.html">intellij</a> </p>
+</footer><!-- /.post-info -->                <p>When doing bug fix on old codes, you want least possible change set as
+possible. The IntelliJ IDE by default will auto reformat your code upon
+a <code>}</code> character you type. (Example: when you add a try/finally block to
+an existing block of code, then it will reformat that block …</p>
+                <a class="readmore" href="https://zemian.github.io/2018/how-to-turn-off-intellij-autoformat-on-a-block-of-code.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2018/starting-postgres-server-on-cygwin.html" rel="bookmark"
+                           title="Permalink to Starting postgres server on Cygwin">Starting postgres server on Cygwin</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-02-20T00:00:00-05:00">
+                Published: Tue 20 February 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/postgres.html">postgres</a> <a href="https://zemian.github.io/tag/cygwin.html">cygwin</a> </p>
+</footer><!-- /.post-info -->                <p>To run postgres database server on Cygwin, you need first run the
+<code>cygserver</code>. If not, you will get error similar to this:</p>
+<div class="highlight"><pre><span></span><code><span class="k">export</span><span class="w"> </span><span class="n">PGDATA</span><span class="o">=/</span><span class="n">cygdrive</span><span class="o">/</span><span class="n">c</span><span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">zemian</span><span class="o">/</span><span class="n">my</span><span class="o">-</span><span class="n">pgdata</span><span class="w"></span>
+<span class="n">pg_ctl</span><span class="w"> </span><span class="n">init</span><span class="w"></span>
+<span class="o">...</span><span class="w"></span>
+<span class="n">running</span><span class="w"> </span><span class="n">bootstrap</span><span class="w"> </span><span class="n">script</span><span class="w"> </span><span class="o">...</span><span class="w"> </span><span class="n">FATAL</span><span class="p">:</span><span class="w">  </span><span class="n">could</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">create</span><span class="w"> </span><span class="n">shared</span><span class="w"> </span><span class="n">memory</span><span class="w"> </span><span class="n">segment</span><span class="p">:</span><span class="w"> </span><span class="n">Function</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">implemented</span><span class="w"></span>
+<span class="n">DETAIL</span><span class="p">:</span><span class="w">  </span><span class="n">Failed</span><span class="w"> </span><span class="n">system</span><span class="w"> </span><span class="n">call …</span></code></pre></div>
+                <a class="readmore" href="https://zemian.github.io/2018/starting-postgres-server-on-cygwin.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2018/intellij-highlight-outprintln-in-jsp-as-red-error.html" rel="bookmark"
+                           title="Permalink to IntelliJ highlight "out.println" in JSP as red error">IntelliJ highlight "out.println" in JSP as red error</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-02-17T00:00:00-05:00">
+                Published: Sat 17 February 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/intellij.html">intellij</a> <a href="https://zemian.github.io/tag/jsp.html">jsp</a> </p>
+</footer><!-- /.post-info -->                <p>Some times you might have a Maven web application that deployes without
+problem into a Tomcat server, but when open in IntelliJ IDE, you will
+notice some of your JSP files have red error marks on lines such as
+<code>out.println("test");</code>. This problem can occur if your project <code>pom …</code></p>
+                <a class="readmore" href="https://zemian.github.io/2018/intellij-highlight-outprintln-in-jsp-as-red-error.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2018/intellij-displays-servers-certificate-is-not-trusted-pop-up.html" rel="bookmark"
+                           title="Permalink to IntelliJ displays Server's Certificate is not trusted pop-up">IntelliJ displays Server's Certificate is not trusted pop-up</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-02-11T00:00:00-05:00">
+                Published: Sun 11 February 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/intellij.html">intellij</a> </p>
+</footer><!-- /.post-info -->                <p>I get this "Server’s Certificate is not trusted" pop-up window once in a
+while when I am in different network. If you know your IDE is already
+working fine, then you can get rid of it by go to below location.</p>
+<p><code>File | Settings | Tools | Server Certificates for Windows and …</code></p>
+                <a class="readmore" href="https://zemian.github.io/2018/intellij-displays-servers-certificate-is-not-trusted-pop-up.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2018/using-java8-localdatetime-with-freemarker.html" rel="bookmark"
+                           title="Permalink to Using Java8 LocalDateTime with FreeMarker">Using Java8 LocalDateTime with FreeMarker</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-01-27T00:00:00-05:00">
+                Published: Sat 27 January 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/freemarker.html">freemarker</a> </p>
+</footer><!-- /.post-info -->                <p>It’s unfortunate that even latest FreeMarker 2.3.27 still does not
+support <code>java.time.LocalDateTime</code> as data model natively. If you want to
+use this in your template, you would either have to write your own, or
+use this friendly library:</p>
+<div class="highlight"><pre><span></span><code>        <span class="cm">&lt;!-- Web View: FTL Template Engine --&gt;</span>
+        <span class="nt">&lt;dependency&gt;</span>
+            <span class="nt">&lt;groupId …</span></code></pre></div>
+                <a class="readmore" href="https://zemian.github.io/2018/using-java8-localdatetime-with-freemarker.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2018/walk-resource-tree-as-directory-in-classpath.html" rel="bookmark"
+                           title="Permalink to Walk resource tree as directory in classpath">Walk resource tree as directory in classpath</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-01-27T00:00:00-05:00">
+                Published: Sat 27 January 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/java.html">java</a> <a href="https://zemian.github.io/tag/classpath.html">classpath</a> </p>
+</footer><!-- /.post-info -->                <p>The two most frequent type of classpath URL we get when get it through
+<code>ClassLoader#getResource(resourceName)</code> is either <code>file</code> or <code>jar</code>
+entries. If we want to walk a resources that are stored in a directory,
+then we need to parse these differently. For <code>file</code>, it’s easy to do …</p>
+                <a class="readmore" href="https://zemian.github.io/2018/walk-resource-tree-as-directory-in-classpath.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+                </ol><!-- /#posts-list -->
+<p class="paginator">
+        <a href="https://zemian.github.io/author/zemian-deng.html">&#8647;</a>
+        <a href="https://zemian.github.io/author/zemian-deng7.html">&laquo;</a>
+    Page 8 / 30
+        <a href="https://zemian.github.io/author/zemian-deng9.html">&raquo;</a>
+        <a href="https://zemian.github.io/author/zemian-deng30.html">&#8649;</a>
+</p>
+                </section><!-- /#content -->
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

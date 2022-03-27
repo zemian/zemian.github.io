@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>How to use SSH tunneling to get to your restricted servers</title>
+        <link rel="stylesheet" href="https://zemian.github.io/theme/css/main.css" />
+        <link href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="ZBlog Atom Feed" />
+        <meta name="description" content="Have you ever been told that in your network serverX can only be reached by a serverY via SSH? Now you have access to serverY from your own PC..." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://zemian.github.io/">ZBlog</a></h1>
+                <nav><ul>
+                    <li><a href="https://zemian.github.io/pages/about-the-author.html">About The Author</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://zemian.github.io/2014/how-to-use-ssh-tunneling-to-get-to-your-restricted-servers.html" rel="bookmark"
+           title="Permalink to How to use SSH tunneling to get to your restricted servers">How to use SSH tunneling to get to your restricted servers</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2014-11-01T00:00:00-05:00">
+                Published: Sat 01 November 2014
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/ssh.html">ssh</a> </p>
+</footer><!-- /.post-info -->      <p>Have you ever been told that in your network serverX can only be reached by a serverY via SSH? Now you have access to serverY from your own PC with normal SSH access as well, but just not directly to serverX.</p>
+<p>What can you do in situation like this if you need to access the restricted serverY? Well you can always ssh into serverY, then ssh again into serverX to check your work or log or whatever. But what happen if you have a database server or WebLogic Server instance running in serverX; and you want your local PC's fancy tools to access the serverX? (Eg: Accessing the WLS admin console, or using SqlDeveloper to connect to your DB etc). In this case, that's where ssh tunneling can help you, and here is how.</p>
+<ol>
+<li>
+<p>Establish a connection to your serverY that you have access to from your PC. On top of that and at the same time, you will create a tunnel to serverX (your restricted server) by letting serverY redirect all the network traffic data back to your local PC on a specific port. Sounds scary, but it can be done with single command. For example this is how I can access the WLS Admin Console app that was running on the restricted server X. On your own PC, open a terminal and run the following:</p>
+<p>bash&gt; ssh -L 12345:serverX:7001 serverY</p>
+</li>
+</ol>
+<p>Above will prompt you to access serverY with your normal ssh credential that you have access to. Once logged in, you need to keep the terminal open. Now the tunnel is established and redirecting traffic from port 7001 (where the WLS admin console is running) on serverX to your own PC on port 12345 via the tunnel of server Y.</p>
+<ol>
+<li>Open a browser on your own PC and type in address http://localhost:12345/console</li>
+</ol>
+<p>Now you should able to access your restricted serverX's WLS admin console!</p>
+<p>Same can be done with a database server such as MySQL. For example, you will run  ssh -L 12346:serverX:3306 serverY and then change your SqlDeveloper JDBC connection url string to the tunnel port <code>jdbc:mysql://localhost:12346/mydb</code></p>
+<p>This is a cool technique to get around a secured environment.</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

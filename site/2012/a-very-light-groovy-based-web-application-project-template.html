@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>A very light Groovy based web application project template</title>
+        <link rel="stylesheet" href="https://zemian.github.io/theme/css/main.css" />
+        <link href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="ZBlog Atom Feed" />
+        <meta name="description" content="You might have heard of the project Grails is a Groovy version of Ruby on Rails like framework that let you create web application much more..." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://zemian.github.io/">ZBlog</a></h1>
+                <nav><ul>
+                    <li><a href="https://zemian.github.io/pages/about-the-author.html">About The Author</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://zemian.github.io/2012/a-very-light-groovy-based-web-application-project-template.html" rel="bookmark"
+           title="Permalink to A very light Groovy based web application project template">A very light Groovy based web application project template</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2012-11-28T00:00:00-05:00">
+                Published: Wed 28 November 2012
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/groovy.html">groovy</a> </p>
+</footer><!-- /.post-info -->      <p>You might have heard of the project Grails is a Groovy version of Ruby on Rails like framework that let you create web application much more easier with
+Dynamic scripting. Despite all that power Grails provided, it is not "light" if you look under the hood. I am not saying Grails is bad or anything. Grails is actually pretty cool to write web application with. However I found myself often want something even lighter and yet still want to prototype with Groovy. So here I will show you a <a href="https://bitbucket.org/saltnlight5/sandbox/downloads/maven-webapp-groovy.zip">maven-groovy-webapp</a> project template that I use to get start any web application development. It's very simple, light, and yet very Groovy.</p>
+<h1>How to get started</h1>
+<p>Unzip <code>maven-webapp-groovy.zip</code> above and you should see these few files:</p>
+<div class="highlight"><pre><span></span><code>    bash&gt; cd maven-webapp-groovy
+    bash&gt; find .
+    bash&gt; ./pom.xml
+    bash&gt; ./README.txt
+    bash&gt; ./src
+    bash&gt; ./src/main
+    bash&gt; ./src/main/java
+    bash&gt; ./src/main/java/deng
+    bash&gt; ./src/main/java/deng/GroovyContextListener.java
+    bash&gt; ./src/main/resources
+    bash&gt; ./src/main/resources/log4j.properties
+    bash&gt; ./src/main/webapp
+    bash&gt; ./src/main/webapp/console.gt
+    bash&gt; ./src/main/webapp/health.gt
+    bash&gt; ./src/main/webapp/home.gt
+    bash&gt; ./src/main/webapp/WEB-INF
+    bash&gt; ./src/main/webapp/WEB-INF/classes
+    bash&gt; ./src/main/webapp/WEB-INF/classes/.keep
+    bash&gt; ./src/main/webapp/WEB-INF/groovy
+    bash&gt; ./src/main/webapp/WEB-INF/groovy/console.groovy
+    bash&gt; ./src/main/webapp/WEB-INF/groovy/health.groovy
+    bash&gt; ./src/main/webapp/WEB-INF/groovy/home.groovy
+    bash&gt; ./src/main/webapp/WEB-INF/groovy/init.groovy
+    bash&gt; ./src/main/webapp/WEB-INF/groovy/destroy.groovy
+    bash&gt; ./src/main/webapp/WEB-INF/web.xml
+</code></pre></div>
+
+<p>As you can see it's a maven based application, and I have configured tomcat plugin, so you may run it like this:</p>
+<div class="highlight"><pre><span></span><code>bash&gt; mvn tomcat7:run
+bash&gt; open http://localhost:8080/maven-webapp-groovy/home.groovy
+</code></pre></div>
+
+<p>And ofcourse, with maven, running package phase will let you deploy it into any real application servers when ready.</p>
+<div class="highlight"><pre><span></span><code>bash&gt; mvn package
+bash&gt; cp target/maven-webapp-groovy.war $APP_SERVER_HOME/autodeploy
+</code></pre></div>
+
+<h1>What's in it</h1>
+<p>You should checkout the main config in <code>web.xml</code> file, and you'll see that there couple built-in Groovy servlets and a custom listener.</p>
+<div class="highlight"><pre><span></span><code>    <span class="cp">&lt;?xml version=&quot;1.0&quot;?&gt;</span>
+    <span class="nt">&lt;web-app</span> <span class="na">xmlns=</span><span class="s">&quot;http://java.sun.com/xml/ns/javaee&quot;</span>
+            <span class="na">xmlns:xsi=</span><span class="s">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span>
+            <span class="na">xsi:schemaLocation=</span><span class="s">&quot;http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd&quot;</span>
+            <span class="na">version=</span><span class="s">&quot;2.5&quot;</span><span class="nt">&gt;</span>
+
+        <span class="nt">&lt;description&gt;</span>Groovy Web Application<span class="nt">&lt;/description&gt;</span>
+        <span class="nt">&lt;welcome-file-list&gt;</span>
+            <span class="nt">&lt;welcome-file&gt;</span>home.groovy<span class="nt">&lt;/welcome-file&gt;</span>
+        <span class="nt">&lt;/welcome-file-list&gt;</span>
+
+        <span class="nt">&lt;servlet&gt;</span>
+            <span class="nt">&lt;servlet-name&gt;</span>GroovyServlet<span class="nt">&lt;/servlet-name&gt;</span>
+            <span class="nt">&lt;servlet-class&gt;</span>groovy.servlet.GroovyServlet<span class="nt">&lt;/servlet-class&gt;</span>
+        <span class="nt">&lt;/servlet&gt;</span>
+        <span class="nt">&lt;servlet-mapping&gt;</span>
+            <span class="nt">&lt;servlet-name&gt;</span>GroovyServlet<span class="nt">&lt;/servlet-name&gt;</span>
+            <span class="nt">&lt;url-pattern&gt;</span>*.groovy<span class="nt">&lt;/url-pattern&gt;</span>
+        <span class="nt">&lt;/servlet-mapping&gt;</span>
+
+        <span class="nt">&lt;servlet&gt;</span>
+            <span class="nt">&lt;servlet-name&gt;</span>TemplateServlet<span class="nt">&lt;/servlet-name&gt;</span>
+            <span class="nt">&lt;servlet-class&gt;</span>groovy.servlet.TemplateServlet<span class="nt">&lt;/servlet-class&gt;</span>
+        <span class="nt">&lt;/servlet&gt;</span>
+        <span class="nt">&lt;servlet-mapping&gt;</span>
+            <span class="nt">&lt;servlet-name&gt;</span>TemplateServlet<span class="nt">&lt;/servlet-name&gt;</span>
+            <span class="nt">&lt;url-pattern&gt;</span>*.gt<span class="nt">&lt;/url-pattern&gt;</span>
+        <span class="nt">&lt;/servlet-mapping&gt;</span>
+
+        <span class="nt">&lt;listener&gt;</span>
+            <span class="nt">&lt;listener-class&gt;</span>deng.GroovyContextListener<span class="nt">&lt;/listener-class&gt;</span>
+        <span class="nt">&lt;/listener&gt;</span>
+        <span class="nt">&lt;context-param&gt;</span>  
+           <span class="nt">&lt;param-name&gt;</span>initScripts<span class="nt">&lt;/param-name&gt;</span>
+           <span class="nt">&lt;param-value&gt;</span>/WEB-INF/groovy/init.groovy<span class="nt">&lt;/param-value&gt;</span>
+        <span class="nt">&lt;/context-param&gt;</span>
+        <span class="nt">&lt;context-param&gt;</span>    
+           <span class="nt">&lt;param-name&gt;</span>destroyScripts<span class="nt">&lt;/param-name&gt;</span>
+           <span class="nt">&lt;param-value&gt;</span>/WEB-INF/groovy/destroy.groovy<span class="nt">&lt;/param-value&gt;</span>
+        <span class="nt">&lt;/context-param&gt;</span>
+
+    <span class="nt">&lt;/web-app&gt;</span>
+</code></pre></div>
+
+<p>I've chosen to use <code>GroovyServlet</code> as a controller (it comes with Groovy!), and this let you use any scripts inside <code>/WEB-INF/groovy</code> directory. That's it, no further setup. That's about the only requirement you need to get a Groovy webapp started! See <code>console.groovy</code> as example and how it works. It's a groovy version of <a href="https://zemian.github.io/2012/07/script-console-tool-for-any-war.html">this JVM console</a></p>
+<p>Now you can use Groovy to process any logic and even generate the HTML output if you like, but I find it even more easier to use <code>TemplateServlet</code>. This allow Groovy template files to be serve as view. It's very much like JSP, but it uses Groovy instead! And we know Groovy syntax are much shorter to write! See <code>console.gt</code> as exmaple and how it works.</p>
+<p>The <code>GroovyContextListener</code> is something I wrote, and it's optional. This allow you to run any scripts during the webapp startup or shutdown states. I've created an empty <code>init.groovy</code> and <code>destroy.groovy</code> placeholder. So now you have all the hooks you need to prototype just about any web application you need.</p>
+<h1>Simplicity wins</h1>
+<p>This setup is just plain Java Servlet with Groovy loaded. I often think the more simple you get, then less bug and faster you code. No heavy frameworks, no extra learning curve, (other than basic Servlet API and Groovy/Java skills ofcourse), and off you go.</p>
+<p>Go have fun with this Groovy webapp template! And let me know if you have some cool prototypes to show off after playing with this. :)</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>Setup Oracle JET With Public CDN</title>
+        <link rel="stylesheet" href="https://zemian.github.io/theme/css/main.css" />
+        <link href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="ZBlog Atom Feed" />
+        <meta name="description" content="A new Oracle JET 8.2.0 just released! Good time to give you another tips on how to use the toolkit. You might have noticed that Oracle JET is..." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://zemian.github.io/">ZBlog</a></h1>
+                <nav><ul>
+                    <li><a href="https://zemian.github.io/pages/about-the-author.html">About The Author</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://zemian.github.io/2020/setup-oracle-jet-with-public-cdn.html" rel="bookmark"
+           title="Permalink to Setup Oracle JET With Public CDN">Setup Oracle JET With Public CDN</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2020-04-17T00:00:00-05:00">
+                Published: Fri 17 April 2020
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/ojet.html">ojet</a> </p>
+</footer><!-- /.post-info -->      <p>A new Oracle <a href="https://www.npmjs.com/package/@oracle/oraclejet/v/8.2.0">JET 8.2.0</a> just released! Good time to give you another tips on how to use the toolkit.</p>
+<p>You might have noticed that Oracle JET is published under NPM package, and hence you may get it through any CDN network that serve NPM packages directly. A popular one for developer is UNPKG.com. So here I will create a simple ClickCount application that uses external public CDN.</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;app&quot;</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;oj-web-padding&quot;</span><span class="p">&gt;</span>
+    Count: <span class="p">&lt;</span><span class="nt">oj-bind-text</span> <span class="na">value</span><span class="o">=</span><span class="s">&quot;[[count]]&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">oj-bind-text</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">oj-button</span> <span class="na">on-oj-action</span><span class="o">=</span><span class="s">&quot;[[onClick]]&quot;</span><span class="p">&gt;</span>Click<span class="p">&lt;/</span><span class="nt">oj-button</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+
+<span class="p">&lt;</span><span class="nt">link</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;https://unpkg.com/@oracle/oraclejet@8.2.0/dist/css/alta/oj-alta-min.css&quot;</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://unpkg.com/requirejs@2.3.6/require.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+    <span class="nx">requirejs</span><span class="p">.</span><span class="nx">config</span><span class="p">({</span>
+        <span class="nx">paths</span><span class="o">:</span> <span class="p">{</span>
+            <span class="s1">&#39;text&#39;</span><span class="o">:</span> <span class="s1">&#39;https://unpkg.com/requirejs-text@2.0.15/text&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;css&#39;</span><span class="o">:</span> <span class="s1">&#39;https://unpkg.com/require-css@0.1.10/css&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;jquery&#39;</span><span class="o">:</span> <span class="s1">&#39;https://unpkg.com/jquery@3.4.1/dist/jquery&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;knockout&#39;</span><span class="o">:</span> <span class="s1">&#39;https://unpkg.com/knockout@3.5.1/build/output/knockout-latest&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;promise&#39;</span><span class="o">:</span> <span class="s1">&#39;https://unpkg.com/es6-promise@4.2.8/dist/es6-promise.auto.min&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;signals&#39;</span><span class="o">:</span> <span class="s1">&#39;https://www.unpkg.com/signals@1.0.0/dist/signals.min&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;customElements&#39;</span><span class="o">:</span> <span class="s1">&#39;https://unpkg.com/@webcomponents/custom-elements@1.2.0/custom-elements.min&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;jqueryui-amd&#39;</span><span class="o">:</span> <span class="s1">&#39;https://www.unpkg.com/jquery-ui@1.12.1/ui&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;hammerjs&#39;</span><span class="o">:</span> <span class="s1">&#39;https://www.unpkg.com/hammerjs@2.0.8/hammer.min&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;ojs&#39;</span><span class="o">:</span> <span class="s1">&#39;https://unpkg.com/@oracle/oraclejet@8.2.0/dist/js/libs/oj/min&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;ojL10n&#39;</span><span class="o">:</span> <span class="s1">&#39;https://unpkg.com/@oracle/oraclejet@8.2.0/dist/js/libs/oj/ojL10n&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;ojtranslations&#39;</span><span class="o">:</span> <span class="s1">&#39;https://unpkg.com/@oracle/oraclejet@8.2.0/dist/js/libs/oj/resources&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;ojdnd&#39;</span><span class="o">:</span> <span class="s1">&#39;https://unpkg.com/@oracle/oraclejet@8.2.0/dist/js/libs/dnd-polyfill/dnd-polyfill-1.0.1.min&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;touchr&#39;</span><span class="o">:</span> <span class="s1">&#39;https://unpkg.com/@oracle/oraclejet@8.2.0/dist/js/libs/touchr/touchr&#39;</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="p">});</span>
+
+    <span class="nx">require</span><span class="p">([</span><span class="s1">&#39;knockout&#39;</span><span class="p">,</span> <span class="s1">&#39;ojs/ojknockout&#39;</span><span class="p">,</span> <span class="s1">&#39;ojs/ojbutton&#39;</span><span class="p">],</span> <span class="p">(</span><span class="nx">ko</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+        <span class="kd">let</span> <span class="nx">app</span> <span class="o">=</span> <span class="ow">new</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">count</span> <span class="o">=</span> <span class="nx">ko</span><span class="p">.</span><span class="nx">observable</span><span class="p">(</span><span class="mf">0</span><span class="p">);</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">onClick</span> <span class="o">=</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+                <span class="k">this</span><span class="p">.</span><span class="nx">count</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">count</span><span class="p">()</span> <span class="o">+</span> <span class="mf">1</span><span class="p">);</span>
+            <span class="p">};</span>
+        <span class="p">};</span>
+        <span class="nx">ko</span><span class="p">.</span><span class="nx">applyBindings</span><span class="p">(</span><span class="nx">app</span><span class="p">);</span>
+    <span class="p">});</span>
+<span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</code></pre></div>
+
+<p>Compare this to the <a href="https://medium.com/@zemiandeng/hello-ojet-b750c7acf6bc">Hello OJET</a> I have shown in previous post, this is just a single html file. This is great for quick exploration and demo!</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

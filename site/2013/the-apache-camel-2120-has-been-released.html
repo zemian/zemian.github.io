@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>The Apache Camel 2.12.0 has been released!</title>
+        <link rel="stylesheet" href="https://zemian.github.io/theme/css/main.css" />
+        <link href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="ZBlog Atom Feed" />
+        <meta name="description" content="The Apache Camel 2.12.0 has been released! Yeh! This is a special release to me mainly because I have help fixed few Jira Issues. :-P Among these,..." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://zemian.github.io/">ZBlog</a></h1>
+                <nav><ul>
+                    <li><a href="https://zemian.github.io/pages/about-the-author.html">About The Author</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://zemian.github.io/2013/the-apache-camel-2120-has-been-released.html" rel="bookmark"
+           title="Permalink to The Apache Camel 2.12.0 has been released!">The Apache Camel 2.12.0 has been released!</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2013-09-10T00:00:00-05:00">
+                Published: Tue 10 September 2013
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/camel.html">camel</a> </p>
+</footer><!-- /.post-info -->      <p>The Apache Camel 2.12.0 has been released! Yeh!</p>
+<p>This is a special release to me mainly because I have help fixed few   <a href="https://issues.apache.org/jira/issues/?jql=project%20%3D%20CAMEL%20AND%20status%20in%20(Resolved%2C%20Closed)%20AND%20text%20~%20%22Zemian%22">Jira Issues</a>. :-P</p>
+<p>Among these, I have helped ported the old <code>quartz</code> component into <a href="http://camel.apache.org/quartz2.html">quartz2</a> using the new Quartz 2.0 API. As far as for Camel users concern, it should work just as old one, except it will now use the <code>quartz2://</code> URL prefix instead. But the implementation uses Quartz2 library that's not backward compatible with old Quartz1.8, which is very old. In addition, the <code>quartz2</code> component now has a new option <code>deleteJob=false</code> that will allow you to NOT delete the job created by Camel on shutdown, and it will also reuse existing job found with the same name in the Quartz scheduler if it exists during startup.</p>
+<p>Obviously my contribution seems tiny compare to what the <a href="http://camel.apache.org/camel-2120-release.html">full release</a> brings you, but it&#8217;s a start in helping out the project. I am glad the Camel folks accepted these patches and found it into their release.</p>
+<p>Try out the latest Camel and see what you think.</p>
+<p>Happing programming!</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

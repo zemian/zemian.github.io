@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>Java Jdbc Test for UTF8 and Default Value for TIMESTAMP</title>
+        <link rel="stylesheet" href="https://zemian.github.io/theme/css/main.css" />
+        <link href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="ZBlog Atom Feed" />
+        <meta name="description" content="Just a quick MySQL test on how to use UTF8 encoding with JDBC connection string. Also a test on how to set TIMESTAMP default values. package..." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://zemian.github.io/">ZBlog</a></h1>
+                <nav><ul>
+                    <li><a href="https://zemian.github.io/pages/about-the-author.html">About The Author</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://zemian.github.io/2015/java-jdbc-test-for-utf8-and-default-value-for-timestamp.html" rel="bookmark"
+           title="Permalink to Java Jdbc Test for UTF8 and Default Value for TIMESTAMP">Java Jdbc Test for UTF8 and Default Value for TIMESTAMP</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2015-11-02T00:00:00-05:00">
+                Published: Mon 02 November 2015
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/java.html">java</a> <a href="https://zemian.github.io/tag/jdbc.html">jdbc</a> </p>
+</footer><!-- /.post-info -->      <p>Just a quick MySQL test on how to use UTF8 encoding with JDBC connection string. Also a test on how to set TIMESTAMP default values.</p>
+<div class="highlight"><pre><span></span><code><span class="n">package</span> <span class="n">zemian</span><span class="o">.</span><span class="n">jdbc</span><span class="p">;</span>
+
+<span class="kn">import</span> <span class="nn">org.junit.Test</span><span class="p">;</span>
+
+<span class="kn">import</span> <span class="nn">java.sql.</span><span class="o">*</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">java.util.</span><span class="o">*</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">java.util.Date</span><span class="p">;</span>
+
+<span class="o">/**</span>
+
+ <span class="o">--</span> <span class="n">drop</span> <span class="n">table</span> <span class="n">ztest_issues</span><span class="p">;</span>
+ <span class="n">CREATE</span> <span class="n">TABLE</span> <span class="n">ztest_issues</span><span class="p">(</span>
+ <span class="nb">id</span> <span class="n">INT</span> <span class="n">NOT</span> <span class="n">NULL</span> <span class="n">AUTO_INCREMENT</span> <span class="n">PRIMARY</span> <span class="n">KEY</span>
+ <span class="p">,</span> <span class="n">title</span> <span class="n">VARCHAR</span><span class="p">(</span><span class="mi">64</span><span class="p">)</span> <span class="n">NOT</span> <span class="n">NULL</span>
+ <span class="p">,</span> <span class="n">summary</span> <span class="n">TEXT</span> <span class="n">NULL</span>
+ <span class="p">,</span> <span class="n">priority</span> <span class="n">INT</span> <span class="n">NOT</span> <span class="n">NULL</span> <span class="n">DEFAULT</span> <span class="mi">5</span>
+ <span class="p">,</span> <span class="n">cdate</span> <span class="n">DATETIME</span> <span class="n">NOT</span> <span class="n">NULL</span> <span class="n">DEFAULT</span> <span class="n">CURRENT_TIMESTAMP</span>
+ <span class="p">);</span>
+
+ <span class="n">INSERT</span> <span class="n">INTO</span> <span class="n">ztest_issues</span><span class="p">(</span><span class="n">title</span><span class="p">)</span> <span class="n">VALUES</span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">);</span>
+ <span class="n">INSERT</span> <span class="n">INTO</span> <span class="n">ztest_issues</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">summary</span><span class="p">)</span> <span class="n">VALUES</span><span class="p">(</span><span class="s1">&#39;test2&#39;</span><span class="p">,</span> <span class="s1">&#39;Just a test&#39;</span><span class="p">);</span>
+ <span class="n">INSERT</span> <span class="n">INTO</span> <span class="n">ztest_issues</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">summary</span><span class="p">,</span> <span class="n">priority</span><span class="p">)</span> <span class="n">VALUES</span><span class="p">(</span><span class="s1">&#39;test2&#39;</span><span class="p">,</span> <span class="s1">&#39;Just a test&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+ <span class="n">INSERT</span> <span class="n">INTO</span> <span class="n">ztest_issues</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">summary</span><span class="p">,</span> <span class="n">priority</span><span class="p">,</span> <span class="n">cdate</span><span class="p">)</span> <span class="n">VALUES</span><span class="p">(</span><span class="s1">&#39;test2&#39;</span><span class="p">,</span> <span class="s1">&#39;Just a test&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;2010-12-31 08:00:00&#39;</span><span class="p">);</span>
+
+ <span class="o">--</span><span class="n">INSERT</span> <span class="n">INTO</span> <span class="n">ztest_issues</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">summary</span><span class="p">)</span> <span class="n">VALUES</span><span class="p">(</span><span class="s1">&#39;locale test1&#39;</span><span class="p">,</span> <span class="n">LOAD_FILE</span><span class="p">(</span><span class="s1">&#39;C:/data/tmp/test.xml&#39;</span><span class="p">));</span>
+ <span class="o">--</span><span class="n">INSERT</span> <span class="n">INTO</span> <span class="n">ztest_issues</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">summary</span><span class="p">)</span> <span class="n">VALUES</span><span class="p">(</span><span class="s1">&#39;locale test2&#39;</span><span class="p">,</span> <span class="n">LOAD_FILE</span><span class="p">(</span><span class="s1">&#39;C:/data/tmp/test2.xml&#39;</span><span class="p">));</span>
+ <span class="o">--</span><span class="n">INSERT</span> <span class="n">INTO</span> <span class="n">ztest_issues</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">summary</span><span class="p">)</span> <span class="n">VALUES</span><span class="p">(</span><span class="s1">&#39;locale test3&#39;</span><span class="p">,</span> <span class="n">LOAD_FILE</span><span class="p">(</span><span class="s1">&#39;C:/data/tmp/test3.xml&#39;</span><span class="p">));</span>
+
+ <span class="n">SELECT</span> <span class="o">*</span> <span class="n">FROM</span> <span class="n">ztest_issues</span><span class="p">;</span>
+
+ <span class="n">NOTE</span><span class="p">:</span>
+ <span class="n">CURRENT_TIMESTAMP</span> <span class="ow">is</span> <span class="n">version</span> <span class="n">specific</span> <span class="ow">and</span> <span class="ow">is</span> <span class="n">now</span> <span class="n">allowed</span> <span class="k">for</span> <span class="n">DATETIME</span> <span class="n">columns</span> <span class="k">as</span> <span class="n">of</span> <span class="n">version</span> <span class="mf">5.6</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">dev</span><span class="o">.</span><span class="n">mysql</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">doc</span><span class="o">/</span><span class="n">refman</span><span class="o">/</span><span class="mf">5.6</span><span class="o">/</span><span class="n">en</span><span class="o">/</span><span class="n">timestamp</span><span class="o">-</span><span class="n">initialization</span><span class="o">.</span><span class="n">html</span>
+
+ <span class="n">For</span> <span class="mf">5.6</span> <span class="o">&lt;</span><span class="p">,</span> <span class="n">use</span> <span class="n">TIMESTAMP</span> <span class="k">for</span> <span class="n">cdate</span> <span class="n">field</span> <span class="n">instead</span><span class="o">.</span>
+
+ <span class="n">cdate</span> <span class="n">TIMESTAMP</span> <span class="n">NOT</span> <span class="n">NULL</span> <span class="n">DEFAULT</span> <span class="n">CURRENT_TIMESTAMP</span>
+ <span class="n">cdate</span> <span class="n">DATETIME</span> <span class="n">NULL</span>
+
+ <span class="n">NOTE2</span><span class="p">:</span>
+ <span class="n">cdate</span> <span class="n">DATETIME</span> <span class="n">NOT</span> <span class="n">NULL</span> <span class="n">DEFAULT</span> <span class="mi">0</span>
+
+ <span class="n">If</span> <span class="n">you</span> <span class="n">were</span> <span class="n">to</span> <span class="n">use</span> <span class="n">default</span> <span class="n">to</span> <span class="n">ZERO</span><span class="p">,</span> <span class="n">then</span> <span class="n">you</span> <span class="n">would</span> <span class="n">need</span> <span class="n">this</span> <span class="n">properties</span> <span class="ow">in</span> <span class="n">conn</span> <span class="n">string</span><span class="o">.</span> <span class="n">Else</span> <span class="n">you</span> <span class="n">will</span> <span class="n">fail</span> <span class="n">to</span> <span class="n">get</span> <span class="n">ZERO</span> <span class="n">date</span> <span class="n">value</span> <span class="n">into</span> <span class="n">Java</span><span class="o">.</span>
+
+ <span class="n">You</span> <span class="n">need</span> <span class="n">to</span> <span class="n">tell</span> <span class="n">the</span> <span class="n">JDBC</span> <span class="n">driver</span> <span class="n">to</span> <span class="n">convert</span> <span class="n">them</span> <span class="n">to</span> <span class="n">NULL</span><span class="o">.</span> <span class="n">This</span> <span class="ow">is</span> <span class="n">done</span> <span class="n">by</span> <span class="n">passing</span> <span class="n">a</span> <span class="n">connection</span> <span class="nb">property</span> <span class="n">name</span> <span class="n">zeroDateTimeBehavior</span> <span class="k">with</span> <span class="n">the</span> <span class="n">value</span> <span class="n">convertToNull</span>
+
+ <span class="n">For</span> <span class="n">more</span> <span class="n">details</span> <span class="n">see</span> <span class="n">the</span> <span class="n">manual</span><span class="p">:</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">dev</span><span class="o">.</span><span class="n">mysql</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">doc</span><span class="o">/</span><span class="n">refman</span><span class="o">/</span><span class="mf">4.1</span><span class="o">/</span><span class="n">en</span><span class="o">/</span><span class="n">connector</span><span class="o">-</span><span class="n">j</span><span class="o">-</span><span class="n">installing</span><span class="o">-</span><span class="n">upgrading</span><span class="o">.</span><span class="n">html</span>
+
+ <span class="o">*/</span>
+<span class="n">public</span> <span class="k">class</span> <span class="nc">ZtestIssuesJdbcTest</span> <span class="p">{</span>
+<span class="o">//</span>    <span class="n">String</span> <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;jdbc:mysql://localhost/test&quot;</span><span class="p">;</span>
+<span class="o">//</span>    <span class="n">String</span> <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;jdbc:mysql://localhost/test?zeroDateTimeBehavior=convertToNull&quot;</span><span class="p">;</span>
+    <span class="n">String</span> <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;jdbc:mysql://localhost/test?useUnicode=true&amp;characterEncoding=UTF-8&amp;connectionCollation=utf8_general_ci&amp;zeroDateTimeBehavior=convertToNull&quot;</span><span class="p">;</span>
+    <span class="n">String</span> <span class="n">username</span> <span class="o">=</span> <span class="s2">&quot;test&quot;</span><span class="p">;</span>
+    <span class="n">String</span> <span class="n">password</span> <span class="o">=</span> <span class="s2">&quot;test123&quot;</span><span class="p">;</span>
+
+    <span class="nd">@Test</span>
+    <span class="n">public</span> <span class="n">void</span> <span class="n">testShowTableLocale</span><span class="p">()</span> <span class="n">throws</span> <span class="ne">Exception</span> <span class="p">{</span>
+        <span class="k">try</span> <span class="p">(</span><span class="n">Connection</span> <span class="n">conn</span> <span class="o">=</span> <span class="n">DriverManager</span><span class="o">.</span><span class="n">getConnection</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">))</span> <span class="p">{</span>
+            <span class="n">String</span> <span class="n">sql</span> <span class="o">=</span> <span class="s2">&quot;SHOW VARIABLES LIKE &#39;char%&#39;&quot;</span><span class="p">;</span>
+            <span class="n">System</span><span class="o">.</span><span class="n">out</span><span class="o">.</span><span class="n">println</span><span class="p">(</span><span class="s2">&quot;Sql:&quot;</span> <span class="o">+</span> <span class="n">sql</span><span class="p">);</span>
+            <span class="n">Statement</span> <span class="n">sm</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">createStatement</span><span class="p">();</span>
+            <span class="n">ResultSet</span> <span class="n">rs</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">executeQuery</span><span class="p">(</span><span class="n">sql</span><span class="p">);</span>
+            <span class="k">while</span> <span class="p">(</span><span class="n">rs</span><span class="o">.</span><span class="n">next</span><span class="p">())</span> <span class="p">{</span>
+                <span class="n">System</span><span class="o">.</span><span class="n">out</span><span class="o">.</span><span class="n">printf</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="se">\t</span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">rs</span><span class="o">.</span><span class="n">getObject</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">rs</span><span class="o">.</span><span class="n">getObject</span><span class="p">(</span><span class="mi">2</span><span class="p">));</span>
+            <span class="p">}</span>
+
+            <span class="n">sql</span> <span class="o">=</span> <span class="s2">&quot;SHOW CREATE TABLE ztest_issues&quot;</span><span class="p">;</span>
+            <span class="n">System</span><span class="o">.</span><span class="n">out</span><span class="o">.</span><span class="n">println</span><span class="p">(</span><span class="s2">&quot;Sql:&quot;</span> <span class="o">+</span> <span class="n">sql</span><span class="p">);</span>
+            <span class="n">sm</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">createStatement</span><span class="p">();</span>
+            <span class="n">rs</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">executeQuery</span><span class="p">(</span><span class="n">sql</span><span class="p">);</span>
+            <span class="k">while</span> <span class="p">(</span><span class="n">rs</span><span class="o">.</span><span class="n">next</span><span class="p">())</span> <span class="p">{</span>
+                <span class="n">System</span><span class="o">.</span><span class="n">out</span><span class="o">.</span><span class="n">printf</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="se">\t</span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">rs</span><span class="o">.</span><span class="n">getObject</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">rs</span><span class="o">.</span><span class="n">getObject</span><span class="p">(</span><span class="mi">2</span><span class="p">));</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="nd">@Test</span>
+    <span class="n">public</span> <span class="n">void</span> <span class="n">testQuery</span><span class="p">()</span> <span class="n">throws</span> <span class="ne">Exception</span> <span class="p">{</span>
+        <span class="k">try</span> <span class="p">(</span><span class="n">Connection</span> <span class="n">conn</span> <span class="o">=</span> <span class="n">DriverManager</span><span class="o">.</span><span class="n">getConnection</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">))</span> <span class="p">{</span>
+            <span class="n">String</span> <span class="n">sql</span> <span class="o">=</span> <span class="s2">&quot;SELECT id, cdate, title, summary FROM ztest_issues&quot;</span><span class="p">;</span>
+            <span class="n">System</span><span class="o">.</span><span class="n">out</span><span class="o">.</span><span class="n">println</span><span class="p">(</span><span class="s2">&quot;Sql:&quot;</span> <span class="o">+</span> <span class="n">sql</span><span class="p">);</span>
+            <span class="n">Statement</span> <span class="n">sm</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">createStatement</span><span class="p">();</span>
+            <span class="n">ResultSet</span> <span class="n">rs</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">executeQuery</span><span class="p">(</span><span class="n">sql</span><span class="p">);</span>
+            <span class="k">while</span> <span class="p">(</span><span class="n">rs</span><span class="o">.</span><span class="n">next</span><span class="p">())</span> <span class="p">{</span>
+                <span class="n">System</span><span class="o">.</span><span class="n">out</span><span class="o">.</span><span class="n">printf</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%d</span><span class="se">\t</span><span class="si">%s</span><span class="se">\t</span><span class="si">%s</span><span class="se">\t</span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">rs</span><span class="o">.</span><span class="n">getObject</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">rs</span><span class="o">.</span><span class="n">getObject</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">rs</span><span class="o">.</span><span class="n">getObject</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">rs</span><span class="o">.</span><span class="n">getObject</span><span class="p">(</span><span class="mi">4</span><span class="p">));</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="nd">@Test</span>
+    <span class="n">public</span> <span class="n">void</span> <span class="n">testInsert</span><span class="p">()</span> <span class="n">throws</span> <span class="ne">Exception</span> <span class="p">{</span>
+        <span class="k">try</span> <span class="p">(</span><span class="n">Connection</span> <span class="n">conn</span> <span class="o">=</span> <span class="n">DriverManager</span><span class="o">.</span><span class="n">getConnection</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">))</span> <span class="p">{</span>
+            <span class="n">String</span> <span class="n">sql</span> <span class="o">=</span> <span class="s2">&quot;INSERT INTO ztest_issues(title, summary, cdate) VALUES(?, ?, ?)&quot;</span><span class="p">;</span>
+            <span class="n">System</span><span class="o">.</span><span class="n">out</span><span class="o">.</span><span class="n">println</span><span class="p">(</span><span class="s2">&quot;Sql: &quot;</span> <span class="o">+</span> <span class="n">sql</span><span class="p">);</span>
+            <span class="n">PreparedStatement</span> <span class="n">ps</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">prepareStatement</span><span class="p">(</span><span class="n">sql</span><span class="p">);</span>
+
+            <span class="n">String</span> <span class="n">testId</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span> <span class="o">+</span> <span class="n">System</span><span class="o">.</span><span class="n">currentTimeMillis</span><span class="p">();</span>
+
+            <span class="n">ps</span><span class="o">.</span><span class="n">setObject</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;English Locale &quot;</span> <span class="o">+</span> <span class="n">testId</span><span class="p">);</span>
+            <span class="n">ps</span><span class="o">.</span><span class="n">setObject</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;Just a test&quot;</span><span class="p">);</span>
+            <span class="n">ps</span><span class="o">.</span><span class="n">setObject</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">new</span> <span class="n">Date</span><span class="p">());</span>
+            <span class="nb">int</span> <span class="n">result</span> <span class="o">=</span> <span class="n">ps</span><span class="o">.</span><span class="n">executeUpdate</span><span class="p">();</span>
+            <span class="n">System</span><span class="o">.</span><span class="n">out</span><span class="o">.</span><span class="n">println</span><span class="p">(</span><span class="s2">&quot;Insert Result: &quot;</span> <span class="o">+</span> <span class="n">result</span><span class="p">);</span>
+
+            <span class="n">ps</span><span class="o">.</span><span class="n">setObject</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Chinese Locale &quot;</span> <span class="o">+</span> <span class="n">testId</span><span class="p">);</span>
+            <span class="n">ps</span><span class="o">.</span><span class="n">setObject</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;&amp;#21482;&amp;#26159;&amp;#19968;&amp;#20491;&amp;#28204;&amp;#35430;&quot;</span><span class="p">);</span>
+            <span class="n">ps</span><span class="o">.</span><span class="n">setObject</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">new</span> <span class="n">Date</span><span class="p">());</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">ps</span><span class="o">.</span><span class="n">executeUpdate</span><span class="p">();</span>
+            <span class="n">System</span><span class="o">.</span><span class="n">out</span><span class="o">.</span><span class="n">println</span><span class="p">(</span><span class="s2">&quot;Insert Result: &quot;</span> <span class="o">+</span> <span class="n">result</span><span class="p">);</span>
+
+            <span class="n">ps</span><span class="o">.</span><span class="n">setObject</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Spanish Locale &quot;</span> <span class="o">+</span> <span class="n">testId</span><span class="p">);</span>
+            <span class="n">ps</span><span class="o">.</span><span class="n">setObject</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;Sólo una prueba&quot;</span><span class="p">);</span>
+            <span class="n">ps</span><span class="o">.</span><span class="n">setObject</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">new</span> <span class="n">Date</span><span class="p">());</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">ps</span><span class="o">.</span><span class="n">executeUpdate</span><span class="p">();</span>
+            <span class="n">System</span><span class="o">.</span><span class="n">out</span><span class="o">.</span><span class="n">println</span><span class="p">(</span><span class="s2">&quot;Insert Result: &quot;</span> <span class="o">+</span> <span class="n">result</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

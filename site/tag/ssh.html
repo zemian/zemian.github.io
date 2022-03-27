@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>ZBlog - ssh</title>
+        <link rel="stylesheet" href="https://zemian.github.io/theme/css/main.css" />
+        <link href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="ZBlog Atom Feed" />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://zemian.github.io/">ZBlog</a></h1>
+                <nav><ul>
+                    <li><a href="https://zemian.github.io/pages/about-the-author.html">About The Author</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="https://zemian.github.io/2018/how-to-setup-ssh-folder-permissions.html">How to setup .ssh folder permissions</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2018-05-24T00:00:00-05:00">
+                Published: Thu 24 May 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/ssh.html">ssh</a> <a href="https://zemian.github.io/tag/linux.html">linux</a> </p>
+</footer><!-- /.post-info --><p>How to setup .ssh folder permissions</p>
+<div class="highlight"><pre><span></span><code>chmod <span class="m">700</span> ~/.ssh                 <span class="c1"># (drwx------)</span>
+chmod <span class="m">600</span> ~/.ssh/authorized_keys <span class="c1"># (-rw-------)</span>
+chmod <span class="m">600</span> ~/.ssh/id_rsa          <span class="c1"># (-rw-------)</span>
+chmod <span class="m">644</span> ~/.ssh/id_rsa.pub      <span class="c1"># (-rw-r--r--)</span>
+chmod <span class="m">755</span> ~                      <span class="c1"># (drwxr-xr-x)</span>
+</code></pre></div>
+
+<p>ref: <a href="https://superuser.com/questions/215504/permissions-on-private-key-in-ssh-folder">https://superuser.com/questions/215504/permissions-on-private-key-in-ssh-folder</a></p>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2016/login-to-remote-host-without-password.html" rel="bookmark"
+                           title="Permalink to Login to remote host without password">Login to remote host without password</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2016-07-06T00:00:00-05:00">
+                Published: Wed 06 July 2016
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/linux.html">linux</a> <a href="https://zemian.github.io/tag/ssh.html">ssh</a> </p>
+</footer><!-- /.post-info -->                <p>Most of remote systems are secured by SSH, and to gain remote control with terminal, you would need to <code>ssh</code> into the server. You will be prompted to login with your password on every session. To avoid typing password everytime, you need to setup as authorized client. Here is how …</p>
+                <a class="readmore" href="https://zemian.github.io/2016/login-to-remote-host-without-password.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2014/how-to-use-ssh-tunneling-to-get-to-your-restricted-servers.html" rel="bookmark"
+                           title="Permalink to How to use SSH tunneling to get to your restricted servers">How to use SSH tunneling to get to your restricted servers</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2014-11-01T00:00:00-05:00">
+                Published: Sat 01 November 2014
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/ssh.html">ssh</a> </p>
+</footer><!-- /.post-info -->                <p>Have you ever been told that in your network serverX can only be reached by a serverY via SSH? Now you have access to serverY from your own PC with normal SSH access as well, but just not directly to serverX.</p>
+<p>What can you do in situation like this if …</p>
+                <a class="readmore" href="https://zemian.github.io/2014/how-to-use-ssh-tunneling-to-get-to-your-restricted-servers.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2014/how-to-setup-custom-sslsocketfactorys-trustmanager-per-each-url-connection.html" rel="bookmark"
+                           title="Permalink to How to setup custom SSLSocketFactory's TrustManager per each URL connection">How to setup custom SSLSocketFactory's TrustManager per each URL connection</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2014-10-28T00:00:00-05:00">
+                Published: Tue 28 October 2014
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/ssh.html">ssh</a> <a href="https://zemian.github.io/tag/java.html">java</a> </p>
+</footer><!-- /.post-info -->                <p>We can see from javadoc that javax.net.ssl.HttpsURLConnection provided a static method to override with setDefaultSSLSocketFory() method. This allow you to supply a custom javax.net.ssl.TrustManager that may verify your own  CA certs handshake and validation etc. But this will override the default for all "https …</p>
+                <a class="readmore" href="https://zemian.github.io/2014/how-to-setup-custom-sslsocketfactorys-trustmanager-per-each-url-connection.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+                </ol><!-- /#posts-list -->
+                </section><!-- /#content -->
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

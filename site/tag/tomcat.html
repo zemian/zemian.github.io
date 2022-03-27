@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>ZBlog - tomcat</title>
+        <link rel="stylesheet" href="https://zemian.github.io/theme/css/main.css" />
+        <link href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="ZBlog Atom Feed" />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://zemian.github.io/">ZBlog</a></h1>
+                <nav><ul>
+                    <li><a href="https://zemian.github.io/pages/about-the-author.html">About The Author</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="https://zemian.github.io/2018/run-tomcat-with-webapp-runnerjar.html">Run Tomcat with webapp-runner.jar</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2018-06-21T00:00:00-05:00">
+                Published: Thu 21 June 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/tomcat.html">tomcat</a> <a href="https://zemian.github.io/tag/webapp-runner.html">webapp-runner</a> <a href="https://zemian.github.io/tag/java.html">java</a> </p>
+</footer><!-- /.post-info --><p>I have used <a href="https://github.com/jsimone/webapp-runner">https://github.com/jsimone/webapp-runner</a> in several
+projects now, and I find it really useful.</p>
+<p>You can start a Tomcat instance as simple as this:</p>
+<div class="highlight"><pre><span></span><code>java -jar target/webapp-runner.jar target/adocblog.war
+</code></pre></div>
+
+<p>However if you need to run it with extra classpath entries, then you
+would need to use the <code>-cp</code> instead of <code>-jar</code> Java option. Like this:</p>
+<div class="highlight"><pre><span></span><code>java -cp &quot;target/extra-classes:target/webapp-runner.jar&quot; webapp.runner.launch.Main target/adocblog.war
+</code></pre></div>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2018/how-to-setup-httpd-reverse-proxy-to-tomcat.html" rel="bookmark"
+                           title="Permalink to How to setup Httpd Reverse Proxy To Tomcat">How to setup Httpd Reverse Proxy To Tomcat</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-03-05T00:00:00-05:00">
+                Published: Mon 05 March 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/httpd.html">httpd</a> <a href="https://zemian.github.io/tag/reverse.html">reverse</a> <a href="https://zemian.github.io/tag/proxy.html">proxy</a> <a href="https://zemian.github.io/tag/tomcat.html">tomcat</a> </p>
+</footer><!-- /.post-info -->                <p>Here is an example on how to configure HTTPD server with reverse proxy
+into Tomcat, and adding the authenticated user as header and passing to
+Tocmat server.</p>
+<ol>
+<li>Example of <code>httpd.conf</code> file</li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="c1"># Apache httpd v2.4 minimal configuration</span><span class="w"></span>
+<span class="n">ServerRoot</span><span class="w"> </span><span class="s2">&quot;/etc/httpd&quot;</span><span class="w"></span>
+<span class="n">Listen</span><span class="w"> </span><span class="mi">80</span><span class="w"></span>
+
+<span class="n">LoadModule</span><span class="w"> </span><span class="n">mpm_prefork_module</span><span class="w"> </span><span class="n">modules</span><span class="o">/</span><span class="n">mod_mpm …</span></code></pre></div>
+                <a class="readmore" href="https://zemian.github.io/2018/how-to-setup-httpd-reverse-proxy-to-tomcat.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2017/how-to-run-nginx-and-setup-reverse-proxy-to-tomcat.html" rel="bookmark"
+                           title="Permalink to How to run nginx and setup reverse proxy to Tomcat">How to run nginx and setup reverse proxy to Tomcat</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2017-08-04T00:00:00-05:00">
+                Published: Fri 04 August 2017
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/nginx.html">nginx</a> <a href="https://zemian.github.io/tag/tomcat.html">tomcat</a> </p>
+</footer><!-- /.post-info -->                <h1>Basic <code>nginx</code> usage</h1>
+<div class="highlight"><pre><span></span><code># start
+cd ~/apps/nginx-1.13.7
+./nginx -c conf/nginx.conf
+
+# stop
+./nginx -c conf/nginx.conf -s stop
+</code></pre></div>
+
+<h1>How to setup nginx reverse proxy to Tomcat</h1>
+<div class="highlight"><pre><span></span><code><span class="err">#</span><span class="w"> </span><span class="nt">nginx</span><span class="p">.</span><span class="nc">conf</span><span class="w"></span>
+<span class="nt">server</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="err">listen</span><span class="w">       </span><span class="err">80</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="err">server_name</span><span class="w">  </span><span class="err">localhost</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">        </span><span class="err">location</span><span class="w"> </span><span class="err">/</span><span class="w"> </span><span class="err">{</span><span class="w"></span>
+<span class="w">                </span><span class="err">proxy_pass</span><span class="w"> </span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="o">:</span><span class="mi">8080</span><span class="p">;</span><span class="w"></span>
+<span class="w">                </span><span class="err">proxy_set_header</span><span class="w"> </span><span class="err">X-Forwarded-Host</span><span class="w"> </span><span class="err">$host</span><span class="p">;</span><span class="w"></span>
+<span class="w">                </span><span class="err">proxy …</span></code></pre></div>
+                <a class="readmore" href="https://zemian.github.io/2017/how-to-run-nginx-and-setup-reverse-proxy-to-tomcat.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+                </ol><!-- /#posts-list -->
+                </section><!-- /#content -->
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

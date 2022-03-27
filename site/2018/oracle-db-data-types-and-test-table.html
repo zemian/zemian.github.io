@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>Oracle DB Data Types and Test Table</title>
+        <link rel="stylesheet" href="https://zemian.github.io/theme/css/main.css" />
+        <link href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="ZBlog Atom Feed" />
+        <meta name="description" content="A quick sql table setup to test most common data types. -- -- Notes on Oracle Database 12.2 --..." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://zemian.github.io/">ZBlog</a></h1>
+                <nav><ul>
+                    <li><a href="https://zemian.github.io/pages/about-the-author.html">About The Author</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://zemian.github.io/2018/oracle-db-data-types-and-test-table.html" rel="bookmark"
+           title="Permalink to Oracle DB Data Types and Test Table">Oracle DB Data Types and Test Table</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-08-18T00:00:00-05:00">
+                Published: Sat 18 August 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/sql.html">sql</a> <a href="https://zemian.github.io/tag/oracle.html">oracle</a> </p>
+</footer><!-- /.post-info -->      <p>A quick sql table setup to test most common data types.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--</span>
+<span class="c1">-- Notes on Oracle Database 12.2</span>
+<span class="c1">-- https://docs.oracle.com/en/database/oracle/oracle-database/12.2/administration.html</span>
+
+<span class="c1">-- DataTypes</span>
+<span class="c1">-- https://docs.oracle.com/en/database/oracle/oracle-database/12.2/sqlrf/Data-Types.html</span>
+
+<span class="cm">/*</span>
+<span class="cm">CHAR          Fixed length and space padded character string (sql: CHAR)</span>
+<span class="cm">VARCHAR2      Variable length character string (sql: VARCHAR)</span>
+<span class="cm">              (Oracle discourage use of VARCHAR, even though it&#39;s same as VARCHAR2 as of now.)</span>
+<span class="cm">NVARCHAR2     Same as VARCHAR2 but with Unicode support</span>
+<span class="cm">CLOB          Variable length character large string (sql: TEXT)</span>
+
+<span class="cm">NUMBER(p)     Declare integer number (sql: INT)</span>
+
+<span class="cm">BINARY_FLOAT  Declare floating-point number (sql: REAL 32 bits)</span>
+<span class="cm">BINARY_DOUBLE Declare floating-point number (sql: DOUBLE PRECISION 64 bits)</span>
+
+<span class="cm">NUMBER        Declare floating-point number (like NUMERIC with max precision and scale. Values will be stored as exact, not binary.)</span>
+<span class="cm">NUMBER(p,s)   Declare fixed-point number (sql: NUMERIC)</span>
+
+<span class="cm">DATE          Declare datetime with no sub second precision (note: it includes time!)</span>
+<span class="cm">TIMESTAMP     Declare datetime with sub second precision</span>
+<span class="cm">TIMESTAMP WITH TIMEZONE</span>
+<span class="cm">              Declare datetime with sub second precision and timezone</span>
+<span class="cm">INTERVAL YEAR TO MONTH   Declare period of time difference</span>
+<span class="cm">INTERVAL DAY TO DECOND   Declare period of time difference</span>
+
+<span class="cm">BLOB          Binary data</span>
+<span class="cm"> */</span><span class="w"></span>
+
+<span class="c1">-- Test table</span>
+<span class="k">create</span><span class="w"> </span><span class="k">table</span><span class="w"> </span><span class="n">test</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">id</span><span class="w">    </span><span class="nb">number</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span><span class="w"> </span><span class="k">generated</span><span class="w"> </span><span class="n">always</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="k">identity</span><span class="w"> </span><span class="k">primary</span><span class="w"> </span><span class="k">key</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">ts</span><span class="w">    </span><span class="k">timestamp</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span><span class="w"> </span><span class="k">default</span><span class="w"> </span><span class="n">systimestamp</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="k">null</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">cat</span><span class="w">   </span><span class="n">varchar2</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="k">null</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">price</span><span class="w">    </span><span class="nb">number</span><span class="p">(</span><span class="mi">19</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span><span class="w"> </span><span class="k">null</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">qty</span><span class="w">      </span><span class="nb">int</span><span class="w"> </span><span class="k">null</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">txtdata</span><span class="w">  </span><span class="n">varchar2</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span><span class="w"> </span><span class="k">null</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">bindata</span><span class="w">  </span><span class="nb">blob</span><span class="w"> </span><span class="k">null</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">distx</span><span class="w">  </span><span class="n">binary_float</span><span class="w"> </span><span class="k">null</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">disty</span><span class="w">  </span><span class="n">binary_double</span><span class="w"> </span><span class="k">null</span><span class="w"></span>
+<span class="p">);</span><span class="w"></span>
+<span class="k">insert</span><span class="w"> </span><span class="k">into</span><span class="w"> </span><span class="n">test</span><span class="p">(</span><span class="n">cat</span><span class="p">,</span><span class="w"> </span><span class="n">price</span><span class="p">,</span><span class="w"> </span><span class="n">qty</span><span class="p">)</span><span class="w"> </span><span class="k">values</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">100000</span><span class="p">.</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">50000</span><span class="p">),</span><span class="w"></span>
+<span class="w">                                         </span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">100000</span><span class="p">.</span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">),</span><span class="w"></span>
+<span class="w">                                         </span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">100000</span><span class="p">.</span><span class="mi">00</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">),</span><span class="w"></span>
+<span class="w">                                         </span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">9977000</span><span class="p">.</span><span class="mi">3333</span><span class="p">,</span><span class="w"> </span><span class="mi">179</span><span class="p">),</span><span class="w"></span>
+<span class="w">                                         </span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">104729</span><span class="p">.</span><span class="mi">1129</span><span class="p">,</span><span class="w"> </span><span class="mi">104729</span><span class="p">);</span><span class="w"></span>
+<span class="k">insert</span><span class="w"> </span><span class="k">into</span><span class="w"> </span><span class="n">test</span><span class="p">(</span><span class="n">cat</span><span class="p">,</span><span class="w"> </span><span class="n">bindata</span><span class="p">,</span><span class="w"> </span><span class="n">txtdata</span><span class="p">)</span><span class="w"> </span><span class="k">values</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;test2&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">hextoraw</span><span class="p">(</span><span class="s1">&#39;CAFEBABE&#39;</span><span class="p">),</span><span class="w"> </span><span class="s1">&#39;CAFEBABE&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="k">insert</span><span class="w"> </span><span class="k">into</span><span class="w"> </span><span class="n">test</span><span class="p">(</span><span class="n">cat</span><span class="p">,</span><span class="w"> </span><span class="n">bindata</span><span class="p">)</span><span class="w"> </span><span class="k">values</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;test3&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">hextoraw</span><span class="p">(</span><span class="n">to_char</span><span class="p">(</span><span class="n">floor</span><span class="p">(</span><span class="n">dbms_random</span><span class="p">.</span><span class="n">value</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">256</span><span class="p">)),</span><span class="w"> </span><span class="s1">&#39;XX&#39;</span><span class="p">)));</span><span class="w"></span>
+<span class="k">insert</span><span class="w"> </span><span class="k">into</span><span class="w"> </span><span class="n">test</span><span class="p">(</span><span class="n">cat</span><span class="p">,</span><span class="w"> </span><span class="n">bindata</span><span class="p">)</span><span class="w"> </span><span class="k">values</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;test3&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">hextoraw</span><span class="p">(</span><span class="n">to_char</span><span class="p">(</span><span class="n">floor</span><span class="p">(</span><span class="n">dbms_random</span><span class="p">.</span><span class="n">value</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">256</span><span class="p">)),</span><span class="w"> </span><span class="s1">&#39;XX&#39;</span><span class="p">)));</span><span class="w"></span>
+<span class="k">insert</span><span class="w"> </span><span class="k">into</span><span class="w"> </span><span class="n">test</span><span class="p">(</span><span class="n">cat</span><span class="p">,</span><span class="w"> </span><span class="n">bindata</span><span class="p">)</span><span class="w"> </span><span class="k">values</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;test3&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">hextoraw</span><span class="p">(</span><span class="n">to_char</span><span class="p">(</span><span class="n">floor</span><span class="p">(</span><span class="n">dbms_random</span><span class="p">.</span><span class="n">value</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">256</span><span class="p">)),</span><span class="w"> </span><span class="s1">&#39;XX&#39;</span><span class="p">)));</span><span class="w"></span>
+<span class="k">update</span><span class="w"> </span><span class="n">test</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="n">txtdata</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rawtohex</span><span class="p">(</span><span class="n">bindata</span><span class="p">)</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">cat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;test3&#39;</span><span class="p">;</span><span class="w"></span>
+<span class="k">insert</span><span class="w"> </span><span class="k">into</span><span class="w"> </span><span class="n">test</span><span class="p">(</span><span class="n">cat</span><span class="p">,</span><span class="w"> </span><span class="n">distx</span><span class="p">,</span><span class="w"> </span><span class="n">disty</span><span class="p">)</span><span class="w"> </span><span class="k">values</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;test4&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">dbms_random</span><span class="p">.</span><span class="n">value</span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">.</span><span class="mi">0</span><span class="p">),</span><span class="w"> </span><span class="n">dbms_random</span><span class="p">.</span><span class="n">value</span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">.</span><span class="mi">0</span><span class="p">));</span><span class="w"></span>
+<span class="k">insert</span><span class="w"> </span><span class="k">into</span><span class="w"> </span><span class="n">test</span><span class="p">(</span><span class="n">cat</span><span class="p">,</span><span class="w"> </span><span class="n">distx</span><span class="p">,</span><span class="w"> </span><span class="n">disty</span><span class="p">)</span><span class="w"> </span><span class="k">values</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;test4&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">dbms_random</span><span class="p">.</span><span class="n">value</span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">.</span><span class="mi">0</span><span class="p">),</span><span class="w"> </span><span class="n">dbms_random</span><span class="p">.</span><span class="n">value</span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">.</span><span class="mi">0</span><span class="p">));</span><span class="w"></span>
+<span class="k">insert</span><span class="w"> </span><span class="k">into</span><span class="w"> </span><span class="n">test</span><span class="p">(</span><span class="n">cat</span><span class="p">,</span><span class="w"> </span><span class="n">distx</span><span class="p">,</span><span class="w"> </span><span class="n">disty</span><span class="p">)</span><span class="w"> </span><span class="k">values</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;test4&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">dbms_random</span><span class="p">.</span><span class="n">value</span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">.</span><span class="mi">0</span><span class="p">),</span><span class="w"> </span><span class="n">dbms_random</span><span class="p">.</span><span class="n">value</span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">.</span><span class="mi">0</span><span class="p">));</span><span class="w"></span>
+<span class="k">select</span><span class="w"> </span><span class="k">sum</span><span class="p">(</span><span class="n">price</span><span class="p">)</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">test</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">cat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;test&#39;</span><span class="p">;</span><span class="w"></span>
+<span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">test</span><span class="w"> </span><span class="k">order</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">cat</span><span class="p">,</span><span class="w"> </span><span class="n">ts</span><span class="w"> </span><span class="k">desc</span><span class="p">;</span><span class="w"></span>
+</code></pre></div>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>Enhancing Spring Test Framework with beforeClass and afterClass setup</title>
+        <link rel="stylesheet" href="https://zemian.github.io/theme/css/main.css" />
+        <link href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="ZBlog Atom Feed" />
+        <meta name="description" content="How to allow instance methods to run as JUnit BeforeClass behavior JUnit allows you to setup methods on the class level once before and after all..." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://zemian.github.io/">ZBlog</a></h1>
+                <nav><ul>
+                    <li><a href="https://zemian.github.io/pages/about-the-author.html">About The Author</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://zemian.github.io/2012/enhancing-spring-test-framework-with-beforeclass-and-afterclass-setup.html" rel="bookmark"
+           title="Permalink to Enhancing Spring Test Framework with beforeClass and afterClass setup">Enhancing Spring Test Framework with beforeClass and afterClass setup</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2012-09-28T00:00:00-05:00">
+                Published: Fri 28 September 2012
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/java.html">java</a> <a href="https://zemian.github.io/tag/spring.html">spring</a> </p>
+</footer><!-- /.post-info -->      <h1>How to allow instance methods to run as JUnit BeforeClass behavior</h1>
+<p>JUnit allows you to setup methods on the class level once before and after all tests methods invocation. However, by design on purpose that they restrict this to only <em>static</em> methods using <code>@BeforeClass</code> and <code>@AfterClass</code> annotations. For example this simple demo shows the typical Junit setup:</p>
+<div class="highlight"><pre><span></span><code>    <span class="n">package</span> <span class="n">deng</span><span class="o">.</span><span class="n">junitdemo</span><span class="p">;</span>
+
+    <span class="kn">import</span> <span class="nn">org.junit.AfterClass</span><span class="p">;</span>
+    <span class="kn">import</span> <span class="nn">org.junit.BeforeClass</span><span class="p">;</span>
+    <span class="kn">import</span> <span class="nn">org.junit.Test</span><span class="p">;</span>
+
+    <span class="n">public</span> <span class="k">class</span> <span class="nc">DemoTest</span> <span class="p">{</span>
+
+        <span class="nd">@Test</span>
+        <span class="n">public</span> <span class="n">void</span> <span class="n">testOne</span><span class="p">()</span> <span class="p">{</span>
+            <span class="n">System</span><span class="o">.</span><span class="n">out</span><span class="o">.</span><span class="n">println</span><span class="p">(</span><span class="s2">&quot;Normal test method #1.&quot;</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="nd">@Test</span>
+        <span class="n">public</span> <span class="n">void</span> <span class="n">testTwo</span><span class="p">()</span> <span class="p">{</span>
+            <span class="n">System</span><span class="o">.</span><span class="n">out</span><span class="o">.</span><span class="n">println</span><span class="p">(</span><span class="s2">&quot;Normal test method #2.&quot;</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="nd">@BeforeClass</span>
+        <span class="n">public</span> <span class="n">static</span> <span class="n">void</span> <span class="n">beforeClassSetup</span><span class="p">()</span> <span class="p">{</span>
+            <span class="n">System</span><span class="o">.</span><span class="n">out</span><span class="o">.</span><span class="n">println</span><span class="p">(</span><span class="s2">&quot;A static method setup before class.&quot;</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="nd">@AfterClass</span>
+        <span class="n">public</span> <span class="n">static</span> <span class="n">void</span> <span class="n">afterClassSetup</span><span class="p">()</span> <span class="p">{</span>
+            <span class="n">System</span><span class="o">.</span><span class="n">out</span><span class="o">.</span><span class="n">println</span><span class="p">(</span><span class="s2">&quot;A static method setup after class.&quot;</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+</code></pre></div>
+
+<p>And above should result the following output:</p>
+<div class="highlight"><pre><span></span><code>    A static method setup before class.
+    Normal test method #1.
+    Normal test method #2.
+    A static method setup after class.
+</code></pre></div>
+
+<p>This usage is fine for most of the time, but there are times you want to use non-static methods to setup the test. I will show you a more detailed use case later, but for now, let's see how we can solve this naughty problem with JUnit first. We can solve this by making the test
+implements a Listener that provide the before and after callbacks, and we will need to digg into JUnit to detect this Listener to invoke our methods. This is a solution I came up with:</p>
+<div class="highlight"><pre><span></span><code>    <span class="n">package</span> <span class="n">deng</span><span class="o">.</span><span class="n">junitdemo</span><span class="p">;</span>
+
+    <span class="kn">import</span> <span class="nn">org.junit.Test</span><span class="p">;</span>
+    <span class="kn">import</span> <span class="nn">org.junit.runner.RunWith</span><span class="p">;</span>
+
+    <span class="nd">@RunWith</span><span class="p">(</span><span class="n">InstanceTestClassRunner</span><span class="o">.</span><span class="n">class</span><span class="p">)</span>
+    <span class="n">public</span> <span class="k">class</span> <span class="nc">Demo2Test</span> <span class="n">implements</span> <span class="n">InstanceTestClassListener</span> <span class="p">{</span>
+
+        <span class="nd">@Test</span>
+        <span class="n">public</span> <span class="n">void</span> <span class="n">testOne</span><span class="p">()</span> <span class="p">{</span>
+            <span class="n">System</span><span class="o">.</span><span class="n">out</span><span class="o">.</span><span class="n">println</span><span class="p">(</span><span class="s2">&quot;Normal test method #1&quot;</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="nd">@Test</span>
+        <span class="n">public</span> <span class="n">void</span> <span class="n">testTwo</span><span class="p">()</span> <span class="p">{</span>
+            <span class="n">System</span><span class="o">.</span><span class="n">out</span><span class="o">.</span><span class="n">println</span><span class="p">(</span><span class="s2">&quot;Normal test method #2&quot;</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="nd">@Override</span>
+        <span class="n">public</span> <span class="n">void</span> <span class="n">beforeClassSetup</span><span class="p">()</span> <span class="p">{</span>
+            <span class="n">System</span><span class="o">.</span><span class="n">out</span><span class="o">.</span><span class="n">println</span><span class="p">(</span><span class="s2">&quot;An instance method setup before class.&quot;</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="nd">@Override</span>
+        <span class="n">public</span> <span class="n">void</span> <span class="n">afterClassSetup</span><span class="p">()</span> <span class="p">{</span>
+            <span class="n">System</span><span class="o">.</span><span class="n">out</span><span class="o">.</span><span class="n">println</span><span class="p">(</span><span class="s2">&quot;An instance method setup after class.&quot;</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+</code></pre></div>
+
+<p>As stated above, our Listener is a simple contract:</p>
+<div class="highlight"><pre><span></span><code>    package deng.junitdemo;
+
+    public interface InstanceTestClassListener {
+        void beforeClassSetup();
+        void afterClassSetup();
+    }
+</code></pre></div>
+
+<p>Our next task is to provide the JUnit runner implementation that will trigger the setup methods.</p>
+<div class="highlight"><pre><span></span><code>    <span class="n">package</span> <span class="n">deng</span><span class="o">.</span><span class="n">junitdemo</span><span class="p">;</span>
+
+    <span class="kn">import</span> <span class="nn">org.junit.runner.notification.RunNotifier</span><span class="p">;</span>
+    <span class="kn">import</span> <span class="nn">org.junit.runners.BlockJUnit4ClassRunner</span><span class="p">;</span>
+    <span class="kn">import</span> <span class="nn">org.junit.runners.model.InitializationError</span><span class="p">;</span>
+
+    <span class="n">public</span> <span class="k">class</span> <span class="nc">InstanceTestClassRunner</span> <span class="n">extends</span> <span class="n">BlockJUnit4ClassRunner</span> <span class="p">{</span>
+
+        <span class="n">private</span> <span class="n">InstanceTestClassListener</span> <span class="n">instanceSetupListener</span><span class="p">;</span>
+
+        <span class="n">public</span> <span class="n">InstanceTestClassRunner</span><span class="p">(</span><span class="n">Class</span><span class="o">&lt;</span><span class="err">?</span><span class="o">&gt;</span> <span class="n">klass</span><span class="p">)</span> <span class="n">throws</span> <span class="n">InitializationError</span> <span class="p">{</span>
+            <span class="nb">super</span><span class="p">(</span><span class="n">klass</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="nd">@Override</span>
+        <span class="n">protected</span> <span class="n">Object</span> <span class="n">createTest</span><span class="p">()</span> <span class="n">throws</span> <span class="ne">Exception</span> <span class="p">{</span>
+            <span class="n">Object</span> <span class="n">test</span> <span class="o">=</span> <span class="nb">super</span><span class="o">.</span><span class="n">createTest</span><span class="p">();</span>
+            <span class="o">//</span> <span class="n">Note</span> <span class="n">that</span> <span class="n">JUnit4</span> <span class="n">will</span> <span class="n">call</span> <span class="n">this</span> <span class="n">createTest</span><span class="p">()</span> <span class="n">multiple</span> <span class="n">times</span> <span class="k">for</span> <span class="n">each</span>
+            <span class="o">//</span> <span class="n">test</span> <span class="n">method</span><span class="p">,</span> <span class="n">so</span> <span class="n">we</span> <span class="n">need</span> <span class="n">to</span> <span class="n">ensure</span> <span class="n">to</span> <span class="n">call</span> <span class="s2">&quot;beforeClassSetup&quot;</span> <span class="n">only</span> <span class="n">once</span><span class="o">.</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">test</span> <span class="n">instanceof</span> <span class="n">InstanceTestClassListener</span> <span class="o">&amp;&amp;</span> <span class="n">instanceSetupListener</span> <span class="o">==</span> <span class="n">null</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">instanceSetupListener</span> <span class="o">=</span> <span class="p">(</span><span class="n">InstanceTestClassListener</span><span class="p">)</span> <span class="n">test</span><span class="p">;</span>
+                <span class="n">instanceSetupListener</span><span class="o">.</span><span class="n">beforeClassSetup</span><span class="p">();</span>
+            <span class="p">}</span>
+            <span class="k">return</span> <span class="n">test</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="nd">@Override</span>
+        <span class="n">public</span> <span class="n">void</span> <span class="n">run</span><span class="p">(</span><span class="n">RunNotifier</span> <span class="n">notifier</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nb">super</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">notifier</span><span class="p">);</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">instanceSetupListener</span> <span class="o">!=</span> <span class="n">null</span><span class="p">)</span>
+                <span class="n">instanceSetupListener</span><span class="o">.</span><span class="n">afterClassSetup</span><span class="p">();</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+</code></pre></div>
+
+<p>Now we are in business. If we run above test, it should give us similar result, but this time we are using instance methods instead!</p>
+<div class="highlight"><pre><span></span><code>    An instance method setup before class.
+    Normal test method #1
+    Normal test method #2
+    An instance method setup after class.
+</code></pre></div>
+
+<h1>A concrete use case: Working with Spring Test Framework</h1>
+<p>Now let me show you a real use case with above. If you use Spring Test Framework, you would normally setup a test like this so that you may have test fixture injected as member instance.</p>
+<div class="highlight"><pre><span></span><code>    <span class="n">package</span> <span class="n">deng</span><span class="o">.</span><span class="n">junitdemo</span><span class="o">.</span><span class="n">spring</span><span class="p">;</span>
+
+    <span class="kn">import</span> <span class="nn">static</span> <span class="n">org</span><span class="o">.</span><span class="n">hamcrest</span><span class="o">.</span><span class="n">Matchers</span><span class="o">.</span><span class="ow">is</span><span class="p">;</span>
+    <span class="kn">import</span> <span class="nn">static</span> <span class="n">org</span><span class="o">.</span><span class="n">junit</span><span class="o">.</span><span class="n">Assert</span><span class="o">.</span><span class="n">assertThat</span><span class="p">;</span>
+
+    <span class="kn">import</span> <span class="nn">java.util.List</span><span class="p">;</span>
+
+    <span class="kn">import</span> <span class="nn">javax.annotation.Resource</span><span class="p">;</span>
+
+    <span class="kn">import</span> <span class="nn">org.junit.Test</span><span class="p">;</span>
+    <span class="kn">import</span> <span class="nn">org.junit.runner.RunWith</span><span class="p">;</span>
+    <span class="kn">import</span> <span class="nn">org.springframework.test.context.ContextConfiguration</span><span class="p">;</span>
+    <span class="kn">import</span> <span class="nn">org.springframework.test.context.junit4.SpringJUnit4ClassRunner</span><span class="p">;</span>
+
+    <span class="nd">@RunWith</span><span class="p">(</span><span class="n">SpringJUnit4ClassRunner</span><span class="o">.</span><span class="n">class</span><span class="p">)</span>
+    <span class="nd">@ContextConfiguration</span>
+    <span class="n">public</span> <span class="k">class</span> <span class="nc">SpringDemoTest</span> <span class="p">{</span>
+
+        <span class="nd">@Resource</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;myList&quot;</span><span class="p">)</span>
+        <span class="n">private</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">myList</span><span class="p">;</span>
+
+        <span class="nd">@Test</span>
+        <span class="n">public</span> <span class="n">void</span> <span class="n">testMyListInjection</span><span class="p">()</span> <span class="p">{</span>
+            <span class="n">assertThat</span><span class="p">(</span><span class="n">myList</span><span class="o">.</span><span class="n">size</span><span class="p">(),</span> <span class="ow">is</span><span class="p">(</span><span class="mi">2</span><span class="p">));</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+</code></pre></div>
+
+<p>You would also need a spring xml under that same package for above to run:</p>
+<div class="highlight"><pre><span></span><code>    <span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+    <span class="nt">&lt;beans</span> <span class="na">xmlns=</span><span class="s">&quot;http://www.springframework.org/schema/beans&quot;</span>
+         <span class="na">xmlns:xsi=</span><span class="s">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span>
+         <span class="na">xsi:schemaLocation=</span><span class="s">&quot;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd&quot;</span><span class="nt">&gt;</span>
+         <span class="nt">&lt;bean</span> <span class="na">id=</span><span class="s">&quot;myList&quot;</span> <span class="na">class=</span><span class="s">&quot;java.util.ArrayList&quot;</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;constructor-arg&gt;</span>
+                <span class="nt">&lt;list&gt;</span>
+                    <span class="nt">&lt;value&gt;</span>one<span class="nt">&lt;/value&gt;</span>
+                    <span class="nt">&lt;value&gt;</span>two<span class="nt">&lt;/value&gt;</span>
+                <span class="nt">&lt;/list&gt;</span>
+            <span class="nt">&lt;/constructor-arg&gt;</span>
+         <span class="nt">&lt;/bean&gt;</span>
+    <span class="nt">&lt;/beans&gt;</span>
+</code></pre></div>
+
+<p>Pay very close attention to member instance <code>List&lt;String&gt; myList</code>. When running JUnit test, that field will be injected by Spring, and it can be used in any test method. However, if you ever want a one time setup of some code and get a reference to a Spring injected field, then you are in bad luck. This is because the JUnit <code>@BeforeClass</code> will force your method to be static; and if you make your field static, Spring injection won't work in your test!</p>
+<p>Now if you are a frequent Spring user, you should know that Spring Test Framework already provided a way for you to handle this type of use case. Here is a way for you to do class level setup with Spring's style:</p>
+<div class="highlight"><pre><span></span><code>    <span class="n">package</span> <span class="n">deng</span><span class="o">.</span><span class="n">junitdemo</span><span class="o">.</span><span class="n">spring</span><span class="p">;</span>
+
+    <span class="kn">import</span> <span class="nn">static</span> <span class="n">org</span><span class="o">.</span><span class="n">hamcrest</span><span class="o">.</span><span class="n">Matchers</span><span class="o">.</span><span class="ow">is</span><span class="p">;</span>
+    <span class="kn">import</span> <span class="nn">static</span> <span class="n">org</span><span class="o">.</span><span class="n">junit</span><span class="o">.</span><span class="n">Assert</span><span class="o">.</span><span class="n">assertThat</span><span class="p">;</span>
+
+    <span class="kn">import</span> <span class="nn">java.util.List</span><span class="p">;</span>
+
+    <span class="kn">import</span> <span class="nn">javax.annotation.Resource</span><span class="p">;</span>
+
+    <span class="kn">import</span> <span class="nn">org.junit.Test</span><span class="p">;</span>
+    <span class="kn">import</span> <span class="nn">org.junit.runner.RunWith</span><span class="p">;</span>
+    <span class="kn">import</span> <span class="nn">org.springframework.test.context.ContextConfiguration</span><span class="p">;</span>
+    <span class="kn">import</span> <span class="nn">org.springframework.test.context.TestContext</span><span class="p">;</span>
+    <span class="kn">import</span> <span class="nn">org.springframework.test.context.TestExecutionListeners</span><span class="p">;</span>
+    <span class="kn">import</span> <span class="nn">org.springframework.test.context.junit4.SpringJUnit4ClassRunner</span><span class="p">;</span>
+    <span class="kn">import</span> <span class="nn">org.springframework.test.context.support.AbstractTestExecutionListener</span><span class="p">;</span>
+    <span class="kn">import</span> <span class="nn">org.springframework.test.context.support.DependencyInjectionTestExecutionListener</span><span class="p">;</span>
+
+    <span class="nd">@RunWith</span><span class="p">(</span><span class="n">SpringJUnit4ClassRunner</span><span class="o">.</span><span class="n">class</span><span class="p">)</span>
+    <span class="nd">@TestExecutionListeners</span><span class="p">(</span><span class="n">listeners</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">DependencyInjectionTestExecutionListener</span><span class="o">.</span><span class="n">class</span><span class="p">,</span> 
+            <span class="n">SpringDemo2Test</span><span class="o">.</span><span class="n">class</span><span class="p">})</span>
+    <span class="nd">@ContextConfiguration</span>
+    <span class="n">public</span> <span class="k">class</span> <span class="nc">SpringDemo2Test</span> <span class="n">extends</span> <span class="n">AbstractTestExecutionListener</span> <span class="p">{</span>
+
+        <span class="nd">@Resource</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;myList&quot;</span><span class="p">)</span>
+        <span class="n">private</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">myList</span><span class="p">;</span>
+
+        <span class="nd">@Test</span>
+        <span class="n">public</span> <span class="n">void</span> <span class="n">testMyListInjection</span><span class="p">()</span> <span class="p">{</span>
+            <span class="n">assertThat</span><span class="p">(</span><span class="n">myList</span><span class="o">.</span><span class="n">size</span><span class="p">(),</span> <span class="ow">is</span><span class="p">(</span><span class="mi">2</span><span class="p">));</span>
+        <span class="p">}</span>
+
+        <span class="nd">@Override</span>
+        <span class="n">public</span> <span class="n">void</span> <span class="n">afterTestClass</span><span class="p">(</span><span class="n">TestContext</span> <span class="n">testContext</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">List</span><span class="o">&lt;</span><span class="err">?</span><span class="o">&gt;</span> <span class="nb">list</span> <span class="o">=</span> <span class="n">testContext</span><span class="o">.</span><span class="n">getApplicationContext</span><span class="p">()</span><span class="o">.</span><span class="n">getBean</span><span class="p">(</span><span class="s2">&quot;myList&quot;</span><span class="p">,</span> <span class="n">List</span><span class="o">.</span><span class="n">class</span><span class="p">);</span>
+            <span class="n">assertThat</span><span class="p">((</span><span class="n">String</span><span class="p">)</span><span class="nb">list</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="ow">is</span><span class="p">(</span><span class="s2">&quot;one&quot;</span><span class="p">));</span>
+        <span class="p">}</span>
+
+        <span class="nd">@Override</span>
+        <span class="n">public</span> <span class="n">void</span> <span class="n">beforeTestClass</span><span class="p">(</span><span class="n">TestContext</span> <span class="n">testContext</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">List</span><span class="o">&lt;</span><span class="err">?</span><span class="o">&gt;</span> <span class="nb">list</span> <span class="o">=</span> <span class="n">testContext</span><span class="o">.</span><span class="n">getApplicationContext</span><span class="p">()</span><span class="o">.</span><span class="n">getBean</span><span class="p">(</span><span class="s2">&quot;myList&quot;</span><span class="p">,</span> <span class="n">List</span><span class="o">.</span><span class="n">class</span><span class="p">);</span>
+            <span class="n">assertThat</span><span class="p">((</span><span class="n">String</span><span class="p">)</span><span class="nb">list</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="ow">is</span><span class="p">(</span><span class="s2">&quot;two&quot;</span><span class="p">));</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+</code></pre></div>
+
+<p>As you can see, Spring offers the <code>@TestExecutionListeners</code> annotation to allow you to write any Listener, and in it you will have a reference to the <code>TestContext</code> which has the <code>ApplicationContext</code> for you to get to the injected field reference. This works, but I find it not very elegant. It forces you to look up the bean, while your injected field is already available as field. But you can't use it unless you go through the <code>TestContext</code> parameter.</p>
+<p>Now if you mix the solution we provided in the beginning, we will see a more prettier test setup. Let's see it:</p>
+<div class="highlight"><pre><span></span><code>    <span class="n">package</span> <span class="n">deng</span><span class="o">.</span><span class="n">junitdemo</span><span class="o">.</span><span class="n">spring</span><span class="p">;</span>
+
+    <span class="kn">import</span> <span class="nn">static</span> <span class="n">org</span><span class="o">.</span><span class="n">hamcrest</span><span class="o">.</span><span class="n">Matchers</span><span class="o">.</span><span class="ow">is</span><span class="p">;</span>
+    <span class="kn">import</span> <span class="nn">static</span> <span class="n">org</span><span class="o">.</span><span class="n">junit</span><span class="o">.</span><span class="n">Assert</span><span class="o">.</span><span class="n">assertThat</span><span class="p">;</span>
+
+    <span class="kn">import</span> <span class="nn">java.util.List</span><span class="p">;</span>
+
+    <span class="kn">import</span> <span class="nn">javax.annotation.Resource</span><span class="p">;</span>
+
+    <span class="kn">import</span> <span class="nn">org.junit.Test</span><span class="p">;</span>
+    <span class="kn">import</span> <span class="nn">org.junit.runner.RunWith</span><span class="p">;</span>
+    <span class="kn">import</span> <span class="nn">org.springframework.test.context.ContextConfiguration</span><span class="p">;</span>
+
+    <span class="kn">import</span> <span class="nn">deng.junitdemo.InstanceTestClassListener</span><span class="p">;</span>
+
+    <span class="nd">@RunWith</span><span class="p">(</span><span class="n">SpringInstanceTestClassRunner</span><span class="o">.</span><span class="n">class</span><span class="p">)</span>
+    <span class="nd">@ContextConfiguration</span>
+    <span class="n">public</span> <span class="k">class</span> <span class="nc">SpringDemo3Test</span> <span class="n">implements</span> <span class="n">InstanceTestClassListener</span> <span class="p">{</span>
+
+        <span class="nd">@Resource</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;myList&quot;</span><span class="p">)</span>
+        <span class="n">private</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">myList</span><span class="p">;</span>
+
+        <span class="nd">@Test</span>
+        <span class="n">public</span> <span class="n">void</span> <span class="n">testMyListInjection</span><span class="p">()</span> <span class="p">{</span>
+            <span class="n">assertThat</span><span class="p">(</span><span class="n">myList</span><span class="o">.</span><span class="n">size</span><span class="p">(),</span> <span class="ow">is</span><span class="p">(</span><span class="mi">2</span><span class="p">));</span>
+        <span class="p">}</span>
+
+        <span class="nd">@Override</span>
+        <span class="n">public</span> <span class="n">void</span> <span class="n">beforeClassSetup</span><span class="p">()</span> <span class="p">{</span>
+            <span class="n">assertThat</span><span class="p">((</span><span class="n">String</span><span class="p">)</span><span class="n">myList</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="ow">is</span><span class="p">(</span><span class="s2">&quot;one&quot;</span><span class="p">));</span>
+        <span class="p">}</span>
+
+        <span class="nd">@Override</span>
+        <span class="n">public</span> <span class="n">void</span> <span class="n">afterClassSetup</span><span class="p">()</span> <span class="p">{</span>
+            <span class="n">assertThat</span><span class="p">((</span><span class="n">String</span><span class="p">)</span><span class="n">myList</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="ow">is</span><span class="p">(</span><span class="s2">&quot;two&quot;</span><span class="p">));</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+</code></pre></div>
+
+<p>Now JUnit only allow you to use single <code>Runner</code>, so we must extends the Spring's version to insert what we did before.</p>
+<div class="highlight"><pre><span></span><code>    <span class="n">package</span> <span class="n">deng</span><span class="o">.</span><span class="n">junitdemo</span><span class="o">.</span><span class="n">spring</span><span class="p">;</span>
+
+    <span class="kn">import</span> <span class="nn">org.junit.runner.notification.RunNotifier</span><span class="p">;</span>
+    <span class="kn">import</span> <span class="nn">org.junit.runners.model.InitializationError</span><span class="p">;</span>
+    <span class="kn">import</span> <span class="nn">org.springframework.test.context.junit4.SpringJUnit4ClassRunner</span><span class="p">;</span>
+
+    <span class="kn">import</span> <span class="nn">deng.junitdemo.InstanceTestClassListener</span><span class="p">;</span>
+
+    <span class="n">public</span> <span class="k">class</span> <span class="nc">SpringInstanceTestClassRunner</span> <span class="n">extends</span> <span class="n">SpringJUnit4ClassRunner</span> <span class="p">{</span>
+
+        <span class="n">private</span> <span class="n">InstanceTestClassListener</span> <span class="n">instanceSetupListener</span><span class="p">;</span>
+
+        <span class="n">public</span> <span class="n">SpringInstanceTestClassRunner</span><span class="p">(</span><span class="n">Class</span><span class="o">&lt;</span><span class="err">?</span><span class="o">&gt;</span> <span class="n">clazz</span><span class="p">)</span> <span class="n">throws</span> <span class="n">InitializationError</span> <span class="p">{</span>
+            <span class="nb">super</span><span class="p">(</span><span class="n">clazz</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="nd">@Override</span>
+        <span class="n">protected</span> <span class="n">Object</span> <span class="n">createTest</span><span class="p">()</span> <span class="n">throws</span> <span class="ne">Exception</span> <span class="p">{</span>
+            <span class="n">Object</span> <span class="n">test</span> <span class="o">=</span> <span class="nb">super</span><span class="o">.</span><span class="n">createTest</span><span class="p">();</span>
+            <span class="o">//</span> <span class="n">Note</span> <span class="n">that</span> <span class="n">JUnit4</span> <span class="n">will</span> <span class="n">call</span> <span class="n">this</span> <span class="n">createTest</span><span class="p">()</span> <span class="n">multiple</span> <span class="n">times</span> <span class="k">for</span> <span class="n">each</span>
+            <span class="o">//</span> <span class="n">test</span> <span class="n">method</span><span class="p">,</span> <span class="n">so</span> <span class="n">we</span> <span class="n">need</span> <span class="n">to</span> <span class="n">ensure</span> <span class="n">to</span> <span class="n">call</span> <span class="s2">&quot;beforeClassSetup&quot;</span> <span class="n">only</span> <span class="n">once</span><span class="o">.</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">test</span> <span class="n">instanceof</span> <span class="n">InstanceTestClassListener</span> <span class="o">&amp;&amp;</span> <span class="n">instanceSetupListener</span> <span class="o">==</span> <span class="n">null</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">instanceSetupListener</span> <span class="o">=</span> <span class="p">(</span><span class="n">InstanceTestClassListener</span><span class="p">)</span> <span class="n">test</span><span class="p">;</span>
+                <span class="n">instanceSetupListener</span><span class="o">.</span><span class="n">beforeClassSetup</span><span class="p">();</span>
+            <span class="p">}</span>
+            <span class="k">return</span> <span class="n">test</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="nd">@Override</span>
+        <span class="n">public</span> <span class="n">void</span> <span class="n">run</span><span class="p">(</span><span class="n">RunNotifier</span> <span class="n">notifier</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nb">super</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">notifier</span><span class="p">);</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">instanceSetupListener</span> <span class="o">!=</span> <span class="n">null</span><span class="p">)</span>
+                <span class="n">instanceSetupListener</span><span class="o">.</span><span class="n">afterClassSetup</span><span class="p">();</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+</code></pre></div>
+
+<p>That should do the trick. Running the test will give use this output:</p>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="mi">12</span><span class="o">:</span><span class="mi">58</span><span class="o">:</span><span class="mi">48</span><span class="w"> </span><span class="n">main</span><span class="w"> </span><span class="n">INFO</span><span class="w">  </span><span class="n">org</span><span class="p">.</span><span class="n">springframework</span><span class="p">.</span><span class="n">test</span><span class="p">.</span><span class="n">context</span><span class="p">.</span><span class="n">support</span><span class="p">.</span><span class="n">AbstractContextLoader</span><span class="o">:</span><span class="mi">139</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Detected</span><span class="w"> </span><span class="k">default</span><span class="w"> </span><span class="n">resource</span><span class="w"> </span><span class="n">location</span><span class="w"> </span><span class="s">&quot;classpath:/deng/junitdemo/spring/SpringDemo3Test-context.xml&quot;</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">test</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="p">[</span><span class="n">deng</span><span class="p">.</span><span class="n">junitdemo</span><span class="p">.</span><span class="n">spring</span><span class="p">.</span><span class="n">SpringDemo3Test</span><span class="p">].</span><span class="w"></span>
+<span class="w">    </span><span class="mi">12</span><span class="o">:</span><span class="mi">58</span><span class="o">:</span><span class="mi">48</span><span class="w"> </span><span class="n">main</span><span class="w"> </span><span class="n">INFO</span><span class="w">  </span><span class="n">org</span><span class="p">.</span><span class="n">springframework</span><span class="p">.</span><span class="n">test</span><span class="p">.</span><span class="n">context</span><span class="p">.</span><span class="n">support</span><span class="p">.</span><span class="n">DelegatingSmartContextLoader</span><span class="o">:</span><span class="mi">148</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">GenericXmlContextLoader</span><span class="w"> </span><span class="n">detected</span><span class="w"> </span><span class="k">default</span><span class="w"> </span><span class="n">locations</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">context</span><span class="w"> </span><span class="n">configuration</span><span class="w"> </span><span class="p">[</span><span class="n">ContextConfigurationAttributes</span><span class="mi">@74</span><span class="n">b23210</span><span class="w"> </span><span class="n">declaringClass</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="err">&#39;</span><span class="n">deng</span><span class="p">.</span><span class="n">junitdemo</span><span class="p">.</span><span class="n">spring</span><span class="p">.</span><span class="n">SpringDemo3Test</span><span class="err">&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">locations</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="err">&#39;</span><span class="p">{</span><span class="n">classpath</span><span class="o">:/</span><span class="n">deng</span><span class="o">/</span><span class="n">junitdemo</span><span class="o">/</span><span class="n">spring</span><span class="o">/</span><span class="n">SpringDemo3Test</span><span class="o">-</span><span class="n">context</span><span class="p">.</span><span class="n">xml</span><span class="p">}</span><span class="err">&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">classes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="err">&#39;</span><span class="p">{}</span><span class="err">&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">inheritLocations</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="n">contextLoaderClass</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="err">&#39;</span><span class="n">org</span><span class="p">.</span><span class="n">springframework</span><span class="p">.</span><span class="n">test</span><span class="p">.</span><span class="n">context</span><span class="p">.</span><span class="n">ContextLoader</span><span class="err">&#39;</span><span class="p">].</span><span class="w"></span>
+<span class="w">    </span><span class="mi">12</span><span class="o">:</span><span class="mi">58</span><span class="o">:</span><span class="mi">48</span><span class="w"> </span><span class="n">main</span><span class="w"> </span><span class="n">INFO</span><span class="w">  </span><span class="n">org</span><span class="p">.</span><span class="n">springframework</span><span class="p">.</span><span class="n">test</span><span class="p">.</span><span class="n">context</span><span class="p">.</span><span class="n">support</span><span class="p">.</span><span class="n">AnnotationConfigContextLoader</span><span class="o">:</span><span class="mi">150</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Could</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="n">detect</span><span class="w"> </span><span class="k">default</span><span class="w"> </span><span class="n">configuration</span><span class="w"> </span><span class="n">classes</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">test</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="p">[</span><span class="n">deng</span><span class="p">.</span><span class="n">junitdemo</span><span class="p">.</span><span class="n">spring</span><span class="p">.</span><span class="n">SpringDemo3Test</span><span class="p">]</span><span class="o">:</span><span class="w"> </span><span class="n">SpringDemo3Test</span><span class="w"> </span><span class="n">does</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="n">declare</span><span class="w"> </span><span class="n">any</span><span class="w"> </span><span class="k">static</span><span class="p">,</span><span class="w"> </span><span class="n">non</span><span class="o">-</span><span class="n">private</span><span class="p">,</span><span class="w"> </span><span class="n">non</span><span class="o">-</span><span class="n">final</span><span class="p">,</span><span class="w"> </span><span class="n">inner</span><span class="w"> </span><span class="n">classes</span><span class="w"> </span><span class="n">annotated</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="p">@</span><span class="n">Configuration</span><span class="p">.</span><span class="w"></span>
+<span class="w">    </span><span class="mi">12</span><span class="o">:</span><span class="mi">58</span><span class="o">:</span><span class="mi">48</span><span class="w"> </span><span class="n">main</span><span class="w"> </span><span class="n">INFO</span><span class="w">  </span><span class="n">org</span><span class="p">.</span><span class="n">springframework</span><span class="p">.</span><span class="n">test</span><span class="p">.</span><span class="n">context</span><span class="p">.</span><span class="n">TestContextManager</span><span class="o">:</span><span class="mi">185</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="p">@</span><span class="n">TestExecutionListeners</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="n">present</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="p">[</span><span class="k">class</span><span class="w"> </span><span class="n">deng</span><span class="p">.</span><span class="n">junitdemo</span><span class="p">.</span><span class="n">spring</span><span class="p">.</span><span class="n">SpringDemo3Test</span><span class="p">]</span><span class="o">:</span><span class="w"> </span><span class="n">using</span><span class="w"> </span><span class="n">defaults</span><span class="p">.</span><span class="w"></span>
+<span class="w">    </span><span class="mi">12</span><span class="o">:</span><span class="mi">58</span><span class="o">:</span><span class="mi">48</span><span class="w"> </span><span class="n">main</span><span class="w"> </span><span class="n">INFO</span><span class="w">  </span><span class="n">org</span><span class="p">.</span><span class="n">springframework</span><span class="p">.</span><span class="n">beans</span><span class="p">.</span><span class="n">factory</span><span class="p">.</span><span class="n">xml</span><span class="p">.</span><span class="n">XmlBeanDefinitionReader</span><span class="o">:</span><span class="mi">315</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Loading</span><span class="w"> </span><span class="n">XML</span><span class="w"> </span><span class="n">bean</span><span class="w"> </span><span class="n">definitions</span><span class="w"> </span><span class="n">from</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="n">path</span><span class="w"> </span><span class="n">resource</span><span class="w"> </span><span class="p">[</span><span class="n">deng</span><span class="o">/</span><span class="n">junitdemo</span><span class="o">/</span><span class="n">spring</span><span class="o">/</span><span class="n">SpringDemo3Test</span><span class="o">-</span><span class="n">context</span><span class="p">.</span><span class="n">xml</span><span class="p">]</span><span class="w"></span>
+<span class="w">    </span><span class="mi">12</span><span class="o">:</span><span class="mi">58</span><span class="o">:</span><span class="mi">48</span><span class="w"> </span><span class="n">main</span><span class="w"> </span><span class="n">INFO</span><span class="w">  </span><span class="n">org</span><span class="p">.</span><span class="n">springframework</span><span class="p">.</span><span class="n">context</span><span class="p">.</span><span class="n">support</span><span class="p">.</span><span class="n">GenericApplicationContext</span><span class="o">:</span><span class="mi">500</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Refreshing</span><span class="w"> </span><span class="n">org</span><span class="p">.</span><span class="n">springframework</span><span class="p">.</span><span class="n">context</span><span class="p">.</span><span class="n">support</span><span class="p">.</span><span class="n">GenericApplicationContext</span><span class="mi">@44</span><span class="n">c9d92c</span><span class="o">:</span><span class="w"> </span><span class="n">startup</span><span class="w"> </span><span class="n">date</span><span class="w"> </span><span class="p">[</span><span class="n">Sat</span><span class="w"> </span><span class="n">Sep</span><span class="w"> </span><span class="mi">29</span><span class="w"> </span><span class="mi">12</span><span class="o">:</span><span class="mi">58</span><span class="o">:</span><span class="mi">48</span><span class="w"> </span><span class="n">EDT</span><span class="w"> </span><span class="mi">2012</span><span class="p">];</span><span class="w"> </span><span class="n">root</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">context</span><span class="w"> </span><span class="n">hierarchy</span><span class="w"></span>
+<span class="w">    </span><span class="mi">12</span><span class="o">:</span><span class="mi">58</span><span class="o">:</span><span class="mi">49</span><span class="w"> </span><span class="n">main</span><span class="w"> </span><span class="n">INFO</span><span class="w">  </span><span class="n">org</span><span class="p">.</span><span class="n">springframework</span><span class="p">.</span><span class="n">beans</span><span class="p">.</span><span class="n">factory</span><span class="p">.</span><span class="n">support</span><span class="p">.</span><span class="n">DefaultListableBeanFactory</span><span class="o">:</span><span class="mi">581</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Pre</span><span class="o">-</span><span class="n">instantiating</span><span class="w"> </span><span class="n">singletons</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">org</span><span class="p">.</span><span class="n">springframework</span><span class="p">.</span><span class="n">beans</span><span class="p">.</span><span class="n">factory</span><span class="p">.</span><span class="n">support</span><span class="p">.</span><span class="n">DefaultListableBeanFactory</span><span class="mi">@73</span><span class="n">c6641</span><span class="o">:</span><span class="w"> </span><span class="n">defining</span><span class="w"> </span><span class="n">beans</span><span class="w"> </span><span class="p">[</span><span class="n">myList</span><span class="p">,</span><span class="n">org</span><span class="p">.</span><span class="n">springframework</span><span class="p">.</span><span class="n">context</span><span class="p">.</span><span class="n">annotation</span><span class="p">.</span><span class="n">internalConfigurationAnnotationProcessor</span><span class="p">,</span><span class="n">org</span><span class="p">.</span><span class="n">springframework</span><span class="p">.</span><span class="n">context</span><span class="p">.</span><span class="n">annotation</span><span class="p">.</span><span class="n">internalAutowiredAnnotationProcessor</span><span class="p">,</span><span class="n">org</span><span class="p">.</span><span class="n">springframework</span><span class="p">.</span><span class="n">context</span><span class="p">.</span><span class="n">annotation</span><span class="p">.</span><span class="n">internalRequiredAnnotationProcessor</span><span class="p">,</span><span class="n">org</span><span class="p">.</span><span class="n">springframework</span><span class="p">.</span><span class="n">context</span><span class="p">.</span><span class="n">annotation</span><span class="p">.</span><span class="n">internalCommonAnnotationProcessor</span><span class="p">,</span><span class="n">org</span><span class="p">.</span><span class="n">springframework</span><span class="p">.</span><span class="n">context</span><span class="p">.</span><span class="n">annotation</span><span class="p">.</span><span class="n">ConfigurationClassPostProcessor$ImportAwareBeanPostProcessor</span><span class="err">#</span><span class="mi">0</span><span class="p">];</span><span class="w"> </span><span class="n">root</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">factory</span><span class="w"> </span><span class="n">hierarchy</span><span class="w"></span>
+<span class="w">    </span><span class="mi">12</span><span class="o">:</span><span class="mi">58</span><span class="o">:</span><span class="mi">49</span><span class="w"> </span><span class="n">Thread</span><span class="mi">-1</span><span class="w"> </span><span class="n">INFO</span><span class="w">  </span><span class="n">org</span><span class="p">.</span><span class="n">springframework</span><span class="p">.</span><span class="n">context</span><span class="p">.</span><span class="n">support</span><span class="p">.</span><span class="n">GenericApplicationContext</span><span class="o">:</span><span class="mi">1025</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Closing</span><span class="w"> </span><span class="n">org</span><span class="p">.</span><span class="n">springframework</span><span class="p">.</span><span class="n">context</span><span class="p">.</span><span class="n">support</span><span class="p">.</span><span class="n">GenericApplicationContext</span><span class="mi">@44</span><span class="n">c9d92c</span><span class="o">:</span><span class="w"> </span><span class="n">startup</span><span class="w"> </span><span class="n">date</span><span class="w"> </span><span class="p">[</span><span class="n">Sat</span><span class="w"> </span><span class="n">Sep</span><span class="w"> </span><span class="mi">29</span><span class="w"> </span><span class="mi">12</span><span class="o">:</span><span class="mi">58</span><span class="o">:</span><span class="mi">48</span><span class="w"> </span><span class="n">EDT</span><span class="w"> </span><span class="mi">2012</span><span class="p">];</span><span class="w"> </span><span class="n">root</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">context</span><span class="w"> </span><span class="n">hierarchy</span><span class="w"></span>
+<span class="w">    </span><span class="mi">12</span><span class="o">:</span><span class="mi">58</span><span class="o">:</span><span class="mi">49</span><span class="w"> </span><span class="n">Thread</span><span class="mi">-1</span><span class="w"> </span><span class="n">INFO</span><span class="w">  </span><span class="n">org</span><span class="p">.</span><span class="n">springframework</span><span class="p">.</span><span class="n">beans</span><span class="p">.</span><span class="n">factory</span><span class="p">.</span><span class="n">support</span><span class="p">.</span><span class="n">DefaultListableBeanFactory</span><span class="o">:</span><span class="mi">433</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Destroying</span><span class="w"> </span><span class="n">singletons</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">org</span><span class="p">.</span><span class="n">springframework</span><span class="p">.</span><span class="n">beans</span><span class="p">.</span><span class="n">factory</span><span class="p">.</span><span class="n">support</span><span class="p">.</span><span class="n">DefaultListableBeanFactory</span><span class="mi">@73</span><span class="n">c6641</span><span class="o">:</span><span class="w"> </span><span class="n">defining</span><span class="w"> </span><span class="n">beans</span><span class="w"> </span><span class="p">[</span><span class="n">myList</span><span class="p">,</span><span class="n">org</span><span class="p">.</span><span class="n">springframework</span><span class="p">.</span><span class="n">context</span><span class="p">.</span><span class="n">annotation</span><span class="p">.</span><span class="n">internalConfigurationAnnotationProcessor</span><span class="p">,</span><span class="n">org</span><span class="p">.</span><span class="n">springframework</span><span class="p">.</span><span class="n">context</span><span class="p">.</span><span class="n">annotation</span><span class="p">.</span><span class="n">internalAutowiredAnnotationProcessor</span><span class="p">,</span><span class="n">org</span><span class="p">.</span><span class="n">springframework</span><span class="p">.</span><span class="n">context</span><span class="p">.</span><span class="n">annotation</span><span class="p">.</span><span class="n">internalRequiredAnnotationProcessor</span><span class="p">,</span><span class="n">org</span><span class="p">.</span><span class="n">springframework</span><span class="p">.</span><span class="n">context</span><span class="p">.</span><span class="n">annotation</span><span class="p">.</span><span class="n">internalCommonAnnotationProcessor</span><span class="p">,</span><span class="n">org</span><span class="p">.</span><span class="n">springframework</span><span class="p">.</span><span class="n">context</span><span class="p">.</span><span class="n">annotation</span><span class="p">.</span><span class="n">ConfigurationClassPostProcessor$ImportAwareBeanPostProcessor</span><span class="err">#</span><span class="mi">0</span><span class="p">];</span><span class="w"> </span><span class="n">root</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">factory</span><span class="w"> </span><span class="n">hierarchy</span><span class="w"></span>
+</code></pre></div>
+
+<p>Obviously the output shows nothing interesting here, but the test should run with all assertion passed. The point is that now we have a more elegant way to invoking a before and after test setup that are at class level, and they can be instance methods to allow Spring injection.</p>
+<h1>Download the demo code</h1>
+<p>You may get above demo code in a working Maven project from <a href="https://bitbucket.org/saltnlight5/sandbox/src/8d545b15fbbd/junit-examples">my sandbox</a>.</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>Compling Apache HTTPD Web Server on MacOSX</title>
+        <link rel="stylesheet" href="https://zemian.github.io/theme/css/main.css" />
+        <link href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="ZBlog Atom Feed" />
+        <meta name="description" content="Before you begin, you should know that the HTTPD server is very likely already comes with your MacOSX! For example, here is how my server looks..." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://zemian.github.io/">ZBlog</a></h1>
+                <nav><ul>
+                    <li><a href="https://zemian.github.io/pages/about-the-author.html">About The Author</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://zemian.github.io/2018/compling-apache-httpd-web-server-on-macosx.html" rel="bookmark"
+           title="Permalink to Compling Apache HTTPD Web Server on MacOSX">Compling Apache HTTPD Web Server on MacOSX</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-03-07T00:00:00-05:00">
+                Published: Wed 07 March 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/macosx.html">macosx</a> <a href="https://zemian.github.io/tag/httpd.html">httpd</a> </p>
+</footer><!-- /.post-info -->      <p>Before you begin, you should know that the HTTPD server is very likely
+already comes with your MacOSX! For example, here is how my server looks
+like:</p>
+<div class="highlight"><pre><span></span><code>$ apachectl -t -D DUMP_INCLUDES
+Included configuration files:
+  <span class="o">(</span>*<span class="o">)</span> /private/etc/apache2/httpd.conf
+    <span class="o">(</span><span class="m">498</span><span class="o">)</span> /private/etc/apache2/extra/httpd-mpm.conf
+    <span class="o">(</span><span class="m">504</span><span class="o">)</span> /private/etc/apache2/extra/httpd-autoindex.conf
+    <span class="o">(</span><span class="m">544</span><span class="o">)</span> /private/etc/apache2/other/php7.conf
+</code></pre></div>
+
+<p>You would want to compile and buid your own HTTPD server if you like to
+customize your own build or doing modules development. In that case,
+read on.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">#</span><span class="w"></span>
+<span class="c1"># Requirement:</span><span class="w"></span>
+<span class="c1">#  MacOSX Version:</span><span class="w"></span>
+<span class="c1">#    Darwin myhost 17.4.0 Darwin Kernel Version 17.4.0: Sun Dec 17 09:19:54 PST 2017; root:xnu-4570.41.2~1/RELEASE_X86_64 x86_64</span><span class="w"></span>
+<span class="c1">#  HTTPD version 2.4.9</span><span class="w"></span>
+<span class="c1">#</span><span class="w"></span>
+
+<span class="c1"># Install xcode that comes with C compiler</span><span class="w"></span>
+<span class="n">xcode</span><span class="o">-</span><span class="n">select</span><span class="w"> </span><span class="o">--</span><span class="n">install</span><span class="w"></span>
+
+<span class="c1"># Install package manager for macosx</span><span class="w"></span>
+<span class="c1"># install brew from https://brew.sh</span><span class="w"></span>
+
+<span class="c1">#</span><span class="w"></span>
+<span class="c1"># NOTE: If your brew installation have probblem with error writing to /usr/local</span><span class="w"></span>
+<span class="c1"># then try to uninstall then install brew again.</span><span class="w"></span>
+<span class="c1">#</span><span class="w"></span>
+<span class="c1"># Uninstall</span><span class="w"></span>
+<span class="c1"># /usr/bin/ruby -e &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/uninstall)&quot;</span><span class="w"></span>
+<span class="c1">#</span><span class="w"></span>
+<span class="c1"># Install</span><span class="w"></span>
+<span class="c1"># /usr/bin/ruby -e &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&quot;</span><span class="w"></span>
+<span class="c1">#</span><span class="w"></span>
+
+<span class="c1"># Install make tools and required libraries</span><span class="w"></span>
+<span class="n">brew</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="n">autoconf</span><span class="w"> </span><span class="n">automake</span><span class="w"> </span><span class="n">libtool</span><span class="w"> </span><span class="n">pcre</span><span class="w"></span>
+
+<span class="n">git</span><span class="w"> </span><span class="n">clone</span><span class="w"> </span><span class="n">git</span><span class="p">:</span><span class="o">//</span><span class="n">git</span><span class="o">.</span><span class="n">apache</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">httpd</span><span class="o">.</span><span class="n">git</span><span class="w"></span>
+<span class="n">cd</span><span class="w"> </span><span class="n">httpd</span><span class="w"></span>
+<span class="n">git</span><span class="w"> </span><span class="n">checkout</span><span class="w"> </span><span class="mf">2.4</span><span class="o">.</span><span class="mi">9</span><span class="w"></span>
+
+<span class="c1"># You also need to get the required library sources</span><span class="w"></span>
+<span class="n">cd</span><span class="w"> </span><span class="n">srclib</span><span class="w"></span>
+<span class="n">git</span><span class="w"> </span><span class="n">clone</span><span class="w"> </span><span class="n">git</span><span class="p">:</span><span class="o">//</span><span class="n">git</span><span class="o">.</span><span class="n">apache</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">apr</span><span class="o">.</span><span class="n">git</span><span class="w"></span>
+<span class="n">cd</span><span class="w"> </span><span class="n">apr</span><span class="w"></span>
+<span class="n">git</span><span class="w"> </span><span class="n">checkout</span><span class="w"> </span><span class="mf">1.6</span><span class="o">.</span><span class="mi">3</span><span class="w"></span>
+<span class="n">cd</span><span class="w"> </span><span class="o">../</span><span class="w"></span>
+<span class="n">git</span><span class="w"> </span><span class="n">clone</span><span class="w"> </span><span class="n">git</span><span class="p">:</span><span class="o">//</span><span class="n">git</span><span class="o">.</span><span class="n">apache</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">apr</span><span class="o">-</span><span class="n">util</span><span class="o">.</span><span class="n">git</span><span class="w"></span>
+<span class="n">cd</span><span class="w"> </span><span class="n">apr</span><span class="o">-</span><span class="n">util</span><span class="w"></span>
+<span class="n">git</span><span class="w"> </span><span class="n">checkout</span><span class="w"> </span><span class="mf">1.6</span><span class="o">.</span><span class="mi">1</span><span class="w"></span>
+<span class="n">cd</span><span class="w"> </span><span class="o">../../</span><span class="w"></span>
+
+<span class="o">./</span><span class="n">buildconf</span><span class="w"></span>
+<span class="o">./</span><span class="n">configure</span><span class="w"></span>
+
+<span class="n">make</span><span class="w"></span>
+<span class="n">sudo</span><span class="w"> </span><span class="n">make</span><span class="w"> </span><span class="n">install</span><span class="w"></span>
+
+<span class="c1"># When completed successful, the HTTPD server will be in /usr/local/apache2</span><span class="w"></span>
+</code></pre></div>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

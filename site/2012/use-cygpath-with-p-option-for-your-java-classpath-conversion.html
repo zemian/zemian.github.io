@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>Use cygpath with -p option for your Java CLASSPATH conversion</title>
+        <link rel="stylesheet" href="https://zemian.github.io/theme/css/main.css" />
+        <link href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="ZBlog Atom Feed" />
+        <meta name="description" content="I just noticed that Cygwin's cygpath command supports -p option. This is a real gem when writing Java wrapper script that needs to covert..." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://zemian.github.io/">ZBlog</a></h1>
+                <nav><ul>
+                    <li><a href="https://zemian.github.io/pages/about-the-author.html">About The Author</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://zemian.github.io/2012/use-cygpath-with-p-option-for-your-java-classpath-conversion.html" rel="bookmark"
+           title="Permalink to Use cygpath with -p option for your Java CLASSPATH conversion">Use cygpath with -p option for your Java CLASSPATH conversion</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2012-11-15T00:00:00-05:00">
+                Published: Thu 15 November 2012
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/cygwin.html">cygwin</a> </p>
+</footer><!-- /.post-info -->      <p>I just noticed that Cygwin's <code>cygpath</code> command supports <code>-p</code> option. This is a real gem when writing Java wrapper script that needs to covert CLASSPATH values. A simple script can demonstrate the purpose.</p>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="cp">#!/usr/bin/env bash</span>
+<span class="w">    </span><span class="cp"># Author: Zemian Deng, date: 2012-11-16T00:00:00-05:00</span>
+<span class="w">    </span><span class="cp">#</span>
+<span class="w">    </span><span class="cp"># run.sh - A simple Java wrapper script for Cygwin and Unix/Linux shell. We assume </span>
+<span class="w">    </span><span class="cp"># this script is located in a subdiretory inside the application home directory.</span>
+<span class="w">    </span><span class="cp"># Example:</span>
+<span class="w">    </span><span class="cp">#   app/bin/run.sh</span>
+<span class="w">    </span><span class="cp">#   app/config/log4j.properties</span>
+<span class="w">    </span><span class="cp">#   app/lib/log4j.jar</span>
+<span class="w">    </span><span class="cp"># Usage:</span>
+<span class="w">    </span><span class="cp">#   bash&gt; run.sh app.Hello</span>
+<span class="w">    </span><span class="cp">#</span>
+<span class="w">    </span><span class="kt">DIR</span><span class="o">=</span><span class="n">$</span><span class="p">(</span><span class="n">cd</span><span class="w"> </span><span class="s">&quot;$(dirname $0)/..&quot;</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">pwd</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="n">CP</span><span class="o">=</span><span class="n">$</span><span class="p">{</span><span class="n">CP</span><span class="o">:=</span><span class="s">&quot;$DIR/config:$DIR/lib/*&quot;</span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">[[</span><span class="w"> </span><span class="s">&quot;$OS&quot;</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">Windows</span><span class="o">*</span><span class="w"> </span><span class="p">]];</span><span class="w"> </span><span class="n">then</span><span class="w"></span>
+<span class="w">     </span><span class="n">CP</span><span class="o">=</span><span class="n">$</span><span class="p">(</span><span class="n">cygpath</span><span class="w"> </span><span class="o">-</span><span class="n">mp</span><span class="w"> </span><span class="n">$CP</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="n">fi</span><span class="w"></span>
+<span class="w">    </span><span class="n">java</span><span class="w"> </span><span class="o">-</span><span class="n">cp</span><span class="w"> </span><span class="s">&quot;$CP&quot;</span><span class="w"> </span><span class="s">&quot;$@&quot;</span><span class="w"></span>
+</code></pre></div>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

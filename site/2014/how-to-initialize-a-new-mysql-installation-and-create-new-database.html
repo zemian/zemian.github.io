@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>How to initialize a new MySQL installation and create new database</title>
+        <link rel="stylesheet" href="https://zemian.github.io/theme/css/main.css" />
+        <link href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="ZBlog Atom Feed" />
+        <meta name="description" content="For a freshly installed MySQL server, you would need to initialize the system tables and data directory like this: cd mysql-<version>..." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://zemian.github.io/">ZBlog</a></h1>
+                <nav><ul>
+                    <li><a href="https://zemian.github.io/pages/about-the-author.html">About The Author</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://zemian.github.io/2014/how-to-initialize-a-new-mysql-installation-and-create-new-database.html" rel="bookmark"
+           title="Permalink to How to initialize a new MySQL installation and create new database">How to initialize a new MySQL installation and create new database</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2014-06-11T00:00:00-05:00">
+                Published: Wed 11 June 2014
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/mysql.html">mysql</a> </p>
+</footer><!-- /.post-info -->      <p>For a freshly installed MySQL server, you would need to initialize the system tables and data directory like this:</p>
+<div class="highlight"><pre><span></span><code>cd mysql-&lt;version&gt;
+
+scripts/mysql_install_db --basedir=. --datadir=data
+bin/mysqld_safe --defaults-file=my.cnf &amp;
+</code></pre></div>
+
+<p>Before MySQL 5.6, this will setup a "root" with empty password that you can immediately login. For MySQL 5.7 however, it creates a random password for "root" user now. The password is generated under $HOME/.mysql_secret. You need to login and run "SET PASSWORD ## PASSWORD('secret')" to change it.</p>
+<p>After above, you may login using "root" and start creating your own database and users. For example:</p>
+<div class="highlight"><pre><span></span><code>CREATE DATABASE mydb;
+GRANT ALL PRIVILEGES ON mydb.* TO &#39;myuser&#39;@&#39;%&#39; IDENTIFIED BY &#39;secret&#39;;
+GRANT ALL PRIVILEGES ON mydb.* TO &#39;myuser&#39;@&#39;localhost&#39; IDENTIFIED BY &#39;secret&#39;;
+</code></pre></div>
+
+<p>UPDATE 2015-01-26 </p>
+<p>Here are more notes to replace/upgrade existing mysql server and install to init.d to auto start by OS.</p>
+<h2>Install and Setup new MySQL into an exiting Linux.</h2>
+<h3>To remove/dislable old existing mysqld init.d (one usually defualt installed under /usr/mysql)</h3>
+<div class="highlight"><pre><span></span><code>sudo /sbin/chkconfig --del mysqld
+</code></pre></div>
+
+<h3>Install new mysql server (5.6.16)</h3>
+<ul>
+<li>Ensure mysql user exists and installation files are owned by this user</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="c1"># Setup and initial the new mysql server </span><span class="w"></span>
+<span class="n">groupadd</span><span class="w"> </span><span class="n">mysql</span><span class="w"></span>
+<span class="n">useradd</span><span class="w"> </span><span class="o">-</span><span class="n">r</span><span class="w"> </span><span class="o">-</span><span class="n">g</span><span class="w"> </span><span class="n">mysql</span><span class="w"> </span><span class="n">mysql</span><span class="w"> </span>
+<span class="n">cd</span><span class="w"> </span><span class="o">/</span><span class="n">apps</span><span class="o">/</span><span class="n">mysql</span><span class="w"></span>
+<span class="n">sudo</span><span class="w"> </span><span class="n">chown</span><span class="w"> </span><span class="o">-</span><span class="n">R</span><span class="w"> </span><span class="n">mysql</span><span class="p">:</span><span class="n">mysql</span><span class="w"> </span><span class="o">.</span><span class="w"></span>
+<span class="n">sudo</span><span class="w"> </span><span class="n">scripts</span><span class="o">/</span><span class="n">mysql_install_db</span><span class="w"> </span><span class="o">--</span><span class="n">basedir</span><span class="o">=/</span><span class="n">apps</span><span class="o">/</span><span class="n">mysql</span><span class="w"> </span><span class="o">--</span><span class="n">datadir</span><span class="o">=/</span><span class="n">apps</span><span class="o">/</span><span class="n">mysql</span><span class="o">/</span><span class="n">data</span><span class="w"> </span><span class="o">--</span><span class="n">user</span><span class="o">=</span><span class="n">mysql</span><span class="w"></span>
+
+<span class="c1"># Optional: Manually start the server and see if it works</span><span class="w"></span>
+<span class="c1"># sudo bin/mysqld_safe --defaults-file=/apps/mysql/my.cnf --user=mysql</span><span class="w"></span>
+<span class="c1"># sudo bin/mysqladmin shutdown -u root</span><span class="w"></span>
+
+<span class="c1"># Install the init.d script to start server upon system reboot </span><span class="w"></span>
+<span class="n">sudo</span><span class="w"> </span><span class="n">ln</span><span class="w"> </span><span class="o">-</span><span class="n">s</span><span class="w"> </span><span class="n">support</span><span class="o">-</span><span class="n">file</span><span class="o">/</span><span class="n">mysql</span><span class="o">.</span><span class="n">server</span><span class="w"> </span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">init</span><span class="o">.</span><span class="n">d</span><span class="o">/</span><span class="n">mysql</span><span class="o">.</span><span class="n">server</span><span class="w"></span>
+<span class="n">sudo</span><span class="w"> </span><span class="n">vim</span><span class="w"> </span><span class="n">support</span><span class="o">-</span><span class="n">file</span><span class="o">/</span><span class="n">mysql</span><span class="o">.</span><span class="n">server</span><span class="w"></span>
+<span class="w">    </span><span class="o">*</span><span class="w"> </span><span class="n">Ensure</span><span class="w"> </span><span class="n">these</span><span class="w"> </span><span class="n">vars</span><span class="w"> </span><span class="n">are</span><span class="w"> </span><span class="n">set</span><span class="w"> </span><span class="n">correctly</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">your</span><span class="w"> </span><span class="n">env</span><span class="w"></span>
+<span class="n">basedir</span><span class="o">=/</span><span class="n">apps</span><span class="o">/</span><span class="n">mysql</span><span class="w"></span>
+<span class="n">datadir</span><span class="o">=/</span><span class="n">apps</span><span class="o">/</span><span class="n">mysql</span><span class="o">/</span><span class="n">data</span><span class="w"></span>
+<span class="n">cnffile</span><span class="o">=/</span><span class="n">apps</span><span class="o">/</span><span class="n">mysql</span><span class="o">/</span><span class="n">my</span><span class="o">.</span><span class="n">cnf</span><span class="w"></span>
+<span class="n">user</span><span class="o">=</span><span class="n">mysql</span><span class="w"></span>
+<span class="w">    </span><span class="o">*</span><span class="w"> </span><span class="n">modify</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">mysqld_safe</span><span class="w"> </span><span class="n">command</span><span class="w"> </span><span class="n">line</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">add</span><span class="w"> </span><span class="p">(</span><span class="n">ENSURE</span><span class="w"> </span><span class="o">--</span><span class="n">user</span><span class="w"> </span><span class="n">option</span><span class="w"> </span><span class="n">comes</span><span class="w"> </span><span class="n">last</span><span class="o">!</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="o">--</span><span class="n">defaults</span><span class="o">-</span><span class="n">file</span><span class="o">=$</span><span class="n">cnffile</span><span class="w"> </span><span class="o">--</span><span class="n">user</span><span class="o">=$</span><span class="n">user</span><span class="w"></span>
+
+<span class="n">sudo</span><span class="w"> </span><span class="o">/</span><span class="n">sbin</span><span class="o">/</span><span class="n">chkconfig</span><span class="w"> </span><span class="o">--</span><span class="n">add</span><span class="w"> </span><span class="n">mysql</span><span class="o">.</span><span class="n">server</span><span class="w"></span>
+<span class="n">sudo</span><span class="w"> </span><span class="o">/</span><span class="n">sbin</span><span class="o">/</span><span class="n">service</span><span class="w"> </span><span class="n">mysql</span><span class="o">.</span><span class="n">server</span><span class="w"> </span><span class="n">start</span><span class="w"></span>
+
+<span class="c1">### Change MySQL root password</span><span class="w"></span>
+<span class="w">        </span><span class="n">sudo</span><span class="w"> </span><span class="n">bin</span><span class="o">/</span><span class="n">mysqladmin</span><span class="w"> </span><span class="n">password</span><span class="w"> </span><span class="s1">&#39;new_password&#39;</span><span class="w"></span>
+</code></pre></div>
+
+<p>Ref:
+<a href="https://dev.mysql.com/doc/refman/5.6/en/binary-installation.html">https://dev.mysql.com/doc/refman/5.6/en/binary-installation.html</a></p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

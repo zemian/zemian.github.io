@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>ZBlog - Blog</title>
+        <link rel="stylesheet" href="https://zemian.github.io/theme/css/main.css" />
+        <link href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="ZBlog Atom Feed" />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://zemian.github.io/">ZBlog</a></h1>
+                <nav><ul>
+                    <li><a href="https://zemian.github.io/pages/about-the-author.html">About The Author</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+                <section id="content" class="body">
+                    <ol id="posts-list" class="hfeed" start="9">
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2013/running-maven-war-packaging-project-without-pom-config.html" rel="bookmark"
+                           title="Permalink to Running Maven war packaging project without pom config">Running Maven war packaging project without pom config</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2013-08-27T00:00:00-05:00">
+                Published: Tue 27 August 2013
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/maven.html">maven</a> </p>
+</footer><!-- /.post-info -->                <p>Use Jetty (latest 9.x requires JDK7)</p>
+<div class="highlight"><pre><span></span><code>bash&gt; mvn org.eclipse.jetty:jetty-maven-plugin:run -Djetty.port=8081
+</code></pre></div>
+
+<p>Or use Jetty on JDK 6</p>
+<div class="highlight"><pre><span></span><code>bash&gt; mvn org.mortbay.jetty:jetty-maven-plugin:8.1.12.v20130726:run -Djetty.port=8081
+</code></pre></div>
+
+<p>Or use Tomcat</p>
+<div class="highlight"><pre><span></span><code>bash&gt; mvn org.apache.tomcat.maven:tomcat7-maven-plugin:run -Dmaven.tomcat …</code></pre></div>
+                <a class="readmore" href="https://zemian.github.io/2013/running-maven-war-packaging-project-without-pom-config.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2013/how-to-create-web-app-with-quartz-scheduler-and-logging.html" rel="bookmark"
+                           title="Permalink to How to create web-app with Quartz Scheduler and logging">How to create web-app with Quartz Scheduler and logging</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2013-08-25T00:00:00-05:00">
+                Published: Sun 25 August 2013
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/quartz.html">quartz</a> </p>
+</footer><!-- /.post-info -->                <p>I sometimes help out users in Quartz Scheduler forums. Once in a while some one would
+ask how can he/she setup the Quartz inside a web application. This is actualy a fairly
+simple thing to do. The library already comes with a <code>ServletContextListener</code> that
+you can use to start …</p>
+                <a class="readmore" href="https://zemian.github.io/2013/how-to-create-web-app-with-quartz-scheduler-and-logging.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2013/myschedule-3210-is-out.html" rel="bookmark"
+                           title="Permalink to MySchedule-3.2.1.0 is out!">MySchedule-3.2.1.0 is out!</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2013-08-23T00:00:00-05:00">
+                Published: Fri 23 August 2013
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/myschedule.html">myschedule</a> </p>
+</footer><!-- /.post-info -->                <p>The main work on this release is upgrade to Quartz 2.2.1</p>
+<ul>
+<li>Upgraded to Quartz 2.2.1</li>
+<li>
+<p>Upgraded to SLF4J 1.7.5</p>
+</li>
+<li>
+<p>Quartz 2.2.1 API has some changes that break backward compatibility and this release addressed these
+  issues:</p>
+</li>
+<li>
+<p>SchedulerPlugin interface now has different #initialize() signature …</p></li></ul>
+                <a class="readmore" href="https://zemian.github.io/2013/myschedule-3210-is-out.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2013/getting-started-with-apache-camel-using-java.html" rel="bookmark"
+                           title="Permalink to Getting started with Apache Camel using Java">Getting started with Apache Camel using Java</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2013-08-20T00:00:00-05:00">
+                Published: Tue 20 August 2013
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/camel.html">camel</a> </p>
+</footer><!-- /.post-info -->                <p>Apache Camel is a very useful library that helps you process events or messages
+from many different sources. You may move these messages through many different
+protocols such as between VM, HTTP, FTP, JMS, or even DIRECTORY/FILE, and yet
+still keep your processing code free of transport logic. This …</p>
+                <a class="readmore" href="https://zemian.github.io/2013/getting-started-with-apache-camel-using-java.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2013/how-to-configure-slf4j-with-different-logger-implementations.html" rel="bookmark"
+                           title="Permalink to How to configure SLF4J with different logger implementations">How to configure SLF4J with different logger implementations</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2013-08-18T00:00:00-05:00">
+                Published: Sun 18 August 2013
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/slf4j.html">slf4j</a> <a href="https://zemian.github.io/tag/logging.html">logging</a> </p>
+</footer><!-- /.post-info -->                <p>There are many good benefits in using <code>slf4j</code> library as your Java
+application logging API layer. Here I will show few examples on how
+to use and configure it with different loggers.</p>
+<p>You can think of <code>slf4j</code> as an Java interface, and then you would
+need an implementation (ONLY ONE …</p>
+                <a class="readmore" href="https://zemian.github.io/2013/how-to-configure-slf4j-with-different-logger-implementations.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2013/how-to-convert-asciidoc-text-to-html-using-groovy.html" rel="bookmark"
+                           title="Permalink to How to convert asciidoc text to html using Groovy">How to convert asciidoc text to html using Groovy</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2013-08-17T00:00:00-05:00">
+                Published: Sat 17 August 2013
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/groovy.html">groovy</a> </p>
+</footer><!-- /.post-info -->                <p>Here is how you can convert <code>asciidoc</code> text using Groovy script:</p>
+<div class="highlight"><pre><span></span><code><span class="o">//</span> <span class="n">filename</span><span class="p">:</span> <span class="n">RunAsciidoc</span><span class="o">.</span><span class="n">groovy</span>
+<span class="nd">@Grab</span><span class="p">(</span><span class="s1">&#39;org.asciidoctor:asciidoctor-java-integration:0.1.3&#39;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">org.asciidoctor.</span><span class="o">*</span>
+<span class="k">def</span> <span class="nf">asciidoctor</span> <span class="o">=</span> <span class="n">Asciidoctor</span><span class="o">.</span><span class="n">Factory</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">output</span> <span class="o">=</span> <span class="n">asciidoctor</span><span class="o">.</span><span class="n">renderFile</span><span class="p">(</span><span class="n">new</span> <span class="n">File</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>  <span class="p">[:])</span>
+<span class="n">println</span><span class="p">(</span><span class="n">output</span><span class="p">);</span>
+</code></pre></div>
+
+<p>Now you may run it</p>
+<div class="highlight"><pre><span></span><code>groovy RunAsciidoc.groovy myarticle.txt
+</code></pre></div>
+
+<p>Many …</p>
+                <a class="readmore" href="https://zemian.github.io/2013/how-to-convert-asciidoc-text-to-html-using-groovy.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2013/how-to-manage-maven-third-party-jars.html" rel="bookmark"
+                           title="Permalink to How to manage Maven third party jars">How to manage Maven third party jars</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2013-06-23T00:00:00-05:00">
+                Published: Sun 23 June 2013
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/maven.html">maven</a> </p>
+</footer><!-- /.post-info -->                <h2>How to manage Maven third party jars</h2>
+<p>When you find yourself the need to load third party jars into Maven repository,
+there are few steps you normally do to test it out. You first install them
+locally into <code>$HOME/.m2/repository</code>, and then create your project pom that
+list those …</p>
+                <a class="readmore" href="https://zemian.github.io/2013/how-to-manage-maven-third-party-jars.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2013/how-to-zip-up-a-release-from-a-hg-repository.html" rel="bookmark"
+                           title="Permalink to How to zip up a release from a hg repository">How to zip up a release from a hg repository</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2013-06-17T00:00:00-05:00">
+                Published: Mon 17 June 2013
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/hg.html">hg</a> </p>
+</footer><!-- /.post-info -->                <h2>How to zip up a release from a hg repository</h2>
+<p>Did you know <code>hg archive</code> command can quickly zip up your project by given a revision or release
+name? This is very handy to package up a distribution and share with other who is refusing to use
+the same client …</p>
+                <a class="readmore" href="https://zemian.github.io/2013/how-to-zip-up-a-release-from-a-hg-repository.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2013/how-to-install-awestruct-on-cygwin.html" rel="bookmark"
+                           title="Permalink to How to install awestruct on Cygwin">How to install awestruct on Cygwin</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2013-06-14T00:00:00-05:00">
+                Published: Fri 14 June 2013
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/cygwin.html">cygwin</a> </p>
+</footer><!-- /.post-info -->                <p>How to install <code>awestruct</code> on Cygwin</p>
+<h2>How to install <code>awestruct</code> on Cygwin</h2>
+<p>I tried installing <code>awestruct</code> on Cygwin today, but it failed with following:</p>
+<div class="highlight"><pre><span></span><code>    <span class="nv">gem</span> <span class="nv">install</span> <span class="nv">awestruct</span>
+    <span class="nv">Building</span> <span class="nv">native</span> <span class="nv">extensions</span>.  <span class="nv">This</span> <span class="nv">could</span> <span class="nv">take</span> <span class="nv">a</span> <span class="k">while</span>...
+    <span class="nv">ERROR</span>:  <span class="nv">Error</span> <span class="nv">installing</span> <span class="nv">awestruct</span>:
+            <span class="nv">ERROR</span>: <span class="nv">Failed</span> <span class="nv">to</span> <span class="nv">build</span> <span class="nv">gem</span> <span class="nv">native</span> <span class="nv">extension</span>.
+
+            <span class="o">/</span><span class="nv">usr</span><span class="o">/</span><span class="nv">bin</span><span class="o">/</span><span class="nv">ruby</span>.<span class="nv">exe …</span></code></pre></div>
+                <a class="readmore" href="https://zemian.github.io/2013/how-to-install-awestruct-on-cygwin.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2013/taming-the-jmx-on-weblogic-server.html" rel="bookmark"
+                           title="Permalink to Taming the JMX on WebLogic Server">Taming the JMX on WebLogic Server</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2013-06-11T00:00:00-05:00">
+                Published: Tue 11 June 2013
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/weblogic.html">weblogic</a> <a href="https://zemian.github.io/tag/jmx.html">jmx</a> </p>
+</footer><!-- /.post-info -->                <p>Taming the JMX on WebLogic Server</p>
+<h1>Taming the JMX on WebLogic Server</h1>
+<p>Let assume couple things first:</p>
+<p>1) I assume you have heard of Java&#8217;s JMX features and familiar what it does (expose and manage your service remotely). You ought to know that default JVM will have a Platform …</p>
+                <a class="readmore" href="https://zemian.github.io/2013/taming-the-jmx-on-weblogic-server.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+                </ol><!-- /#posts-list -->
+<p class="paginator">
+        <a href="https://zemian.github.io/category/blog.html">&#8647;</a>
+        <a href="https://zemian.github.io/category/blog20.html">&laquo;</a>
+    Page 21 / 30
+        <a href="https://zemian.github.io/category/blog22.html">&raquo;</a>
+        <a href="https://zemian.github.io/category/blog30.html">&#8649;</a>
+</p>
+                </section><!-- /#content -->
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

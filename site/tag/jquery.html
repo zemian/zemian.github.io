@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>ZBlog - jquery</title>
+        <link rel="stylesheet" href="https://zemian.github.io/theme/css/main.css" />
+        <link href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="ZBlog Atom Feed" />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://zemian.github.io/">ZBlog</a></h1>
+                <nav><ul>
+                    <li><a href="https://zemian.github.io/pages/about-the-author.html">About The Author</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="https://zemian.github.io/2020/how-to-load-multiple-jquery.html">How to Load Multiple jQuery</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2020-09-19T00:00:00-05:00">
+                Published: Sat 19 September 2020
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/js.html">js</a> <a href="https://zemian.github.io/tag/jquery.html">jquery</a> <a href="https://zemian.github.io/tag/requirejs.html">requirejs</a> </p>
+</footer><!-- /.post-info --><p>Sometimes, your site might need to load mulitple versions of jQuery to support some legacy libraries. Here I will provide two ways to do that.</p>
+<h2>Using plain HTML/JS</h2>
+<div class="highlight"><pre><span></span><code><span class="o">&lt;</span><span class="nx">script</span> <span class="nx">src</span><span class="o">=</span><span class="s2">&quot;https://unpkg.com/jquery@3.5.1/dist/jquery.js&quot;</span><span class="o">&gt;&lt;</span><span class="err">/script&gt;</span>
+<span class="o">&lt;</span><span class="nx">script</span><span class="o">&gt;</span><span class="kd">let</span> <span class="nx">jq3</span> <span class="o">=</span> <span class="nx">jQuery</span><span class="p">.</span><span class="nx">noConflict</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span><span class="o">&lt;</span><span class="err">/script&gt;</span>
+<span class="o">&lt;</span><span class="nx">script</span> <span class="nx">src</span><span class="o">=</span><span class="s2">&quot;https://unpkg.com/jquery@1.12.4/dist/jquery.js&quot;</span><span class="o">&gt;&lt;</span><span class="err">/script&gt;</span>
+<span class="o">&lt;</span><span class="nx">script</span><span class="o">&gt;</span><span class="kd">let</span> <span class="nx">jq1</span> <span class="o">=</span> <span class="nx">jQuery</span><span class="p">.</span><span class="nx">noConflict</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span><span class="o">&lt;</span><span class="err">/script&gt;</span>
+
+
+<span class="o">&lt;</span><span class="nx">script</span><span class="o">&gt;</span>
+<span class="c1">// Now we can use each jQuery with the name assigned.</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;jQuery 3 version &quot;</span> <span class="o">+</span> <span class="nx">jq3</span><span class="p">.</span><span class="nx">fn</span><span class="p">.</span><span class="nx">jquery</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;jQuery 1 version &quot;</span> <span class="o">+</span> <span class="nx">jq1</span><span class="p">.</span><span class="nx">fn</span><span class="p">.</span><span class="nx">jquery</span><span class="p">);</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;jQuery 3 document &quot;</span><span class="p">,</span> <span class="nx">jq3</span><span class="p">(</span><span class="nb">document</span><span class="p">));</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;jQuery 1 document &quot;</span><span class="p">,</span> <span class="nx">jq1</span><span class="p">(</span><span class="nb">document</span><span class="p">));</span>
+<span class="o">&lt;</span><span class="err">/script&gt;</span>
+</code></pre></div>
+
+<p>NOTE: You need to call <code>noConflict()</code> immediately after the script tag load of the jQuery. If you are dealing with multiple jQuery, it's best not to use the <code>$</code> global variable to avoid confusion.</p>
+<h2>Using RequireJS</h2>
+<div class="highlight"><pre><span></span><code><span class="o">&lt;</span><span class="nx">script</span> <span class="nx">src</span><span class="o">=</span><span class="s2">&quot;https://unpkg.com/requirejs@2.3.6/require.js&quot;</span><span class="o">&gt;&lt;</span><span class="err">/script&gt;</span>
+<span class="o">&lt;</span><span class="nx">script</span><span class="o">&gt;</span>
+    <span class="nx">define</span><span class="p">(</span><span class="s1">&#39;jq3&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;https://unpkg.com/jquery@3.5.1/dist/jquery&#39;</span><span class="p">],</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">jQuery</span><span class="p">.</span><span class="nx">noConflict</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+    <span class="p">});</span>
+    <span class="nx">define</span><span class="p">(</span><span class="s1">&#39;jq1&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;https://unpkg.com/jquery@1.12.4/dist/jquery&#39;</span><span class="p">],</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">jQuery</span><span class="p">.</span><span class="nx">noConflict</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+    <span class="p">});</span>
+
+    <span class="nx">require</span><span class="p">([</span><span class="s1">&#39;jq3&#39;</span><span class="p">,</span> <span class="s1">&#39;jq1&#39;</span><span class="p">],</span> <span class="kd">function</span><span class="p">(</span><span class="nx">jq3</span><span class="p">,</span> <span class="nx">jq1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">jq3</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;jQuery 3 version &quot;</span> <span class="o">+</span> <span class="nx">jq3</span><span class="p">.</span><span class="nx">fn</span><span class="p">.</span><span class="nx">jquery</span><span class="p">);</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;jQuery 1 version &quot;</span> <span class="o">+</span> <span class="nx">jq1</span><span class="p">.</span><span class="nx">fn</span><span class="p">.</span><span class="nx">jquery</span><span class="p">);</span>
+
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;jQuery 3 document &quot;</span><span class="p">,</span> <span class="nx">jq3</span><span class="p">(</span><span class="nb">document</span><span class="p">));</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;jQuery 1 document &quot;</span><span class="p">,</span> <span class="nx">jq1</span><span class="p">(</span><span class="nb">document</span><span class="p">));</span>
+        <span class="p">});</span>
+    <span class="p">});</span>
+<span class="o">&lt;</span><span class="err">/script&gt;</span>
+</code></pre></div>
+
+<p>NOTE: Do not load multiple versions of jQuery through the <code>paths</code> inside <code>requirejs.config()</code> method. As that will automatically bind the <code>jquery</code> module name and you can't change that.</p>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2011/jquery-doesnt-suport-ajax-over-the-file-protocol.html" rel="bookmark"
+                           title="Permalink to jQuery doesn't suport ajax over the file protocol">jQuery doesn't suport ajax over the file protocol</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2011-05-29T00:00:00-05:00">
+                Published: Sun 29 May 2011
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/jquery.html">jquery</a> </p>
+</footer><!-- /.post-info -->                <p>I was playing with jQueryUI today, and a simple example like this failed to update an page.</p>
+<div class="highlight"><pre><span></span><code>    $.get(&#39;data1.xml&#39;, function(data) {
+        $(&#39;#main-panel&#39;).html(data)
+    });
+</code></pre></div>
+
+<p>Running under Firefox4 locally on a PC (static local file protocols), I get errors like this inside Firebug:</p>
+<div class="highlight"><pre><span></span><code><span class="n">Node</span><span class="w"> </span><span class="n">cannot</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">inserted</span><span class="w"> </span><span class="k">at</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">specified …</span></code></pre></div>
+                <a class="readmore" href="https://zemian.github.io/2011/jquery-doesnt-suport-ajax-over-the-file-protocol.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+                </ol><!-- /#posts-list -->
+                </section><!-- /#content -->
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

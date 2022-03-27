@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>First snapshot of myschedule-3.0.0 is available</title>
+        <link rel="stylesheet" href="https://zemian.github.io/theme/css/main.css" />
+        <link href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="ZBlog Atom Feed" />
+        <meta name="description" content="First snapshot of myschedule-3.0.0 with brand new UI is ready to be try out! It's been a long time since I made a release for MySchedule project,..." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://zemian.github.io/">ZBlog</a></h1>
+                <nav><ul>
+                    <li><a href="https://zemian.github.io/pages/about-the-author.html">About The Author</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://zemian.github.io/2013/first-snapshot-of-myschedule-300-is-available.html" rel="bookmark"
+           title="Permalink to First snapshot of myschedule-3.0.0 is available">First snapshot of myschedule-3.0.0 is available</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2013-03-27T00:00:00-05:00">
+                Published: Wed 27 March 2013
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/myschedule.html">myschedule</a> </p>
+</footer><!-- /.post-info -->      <p>First snapshot of <a href="https://code.google.com/p/myschedule/downloads/list">myschedule-3.0.0</a> with brand new UI is ready to be try out! </p>
+<p>It's been a long time since I made a release for MySchedule project, and I have been busy!</p>
+<p>Well, for starter, I have been exploring the Vaaddin library for a new UI design for the project, and it's working really nice! I love to have full Java code for UI layout and widget controls and yet it runs on browser. It's a perfect fit for MySchedule. As you will see from the snapshot, the UI is still pretty bare, but for me, as backend developer, and be able to have such clean UI code is super exciting. (on other hand, working with JavaScript, even with such nice library as jQuery can still feel like a hack at times. ^_^) You should checkout the latest MySchedule source to take a look yourself. All that GUI is less than handful of UI classes. Vaaddin is pretty sweet!</p>
+<p>As MySchedule jumped to 3.x version, I've taken the opportunity to clean up few areas in the "quartz-extra" module as well. Also to support Vaadin, the web layer needed a rework. The new code is easy to follow and ready to support more UI features in the future.</p>
+<p>I also improved on the project packaging. Now getting started with is even more easier. Get the single zip file, and try any of these simple steps:</p>
+<div class="highlight"><pre><span></span><code>    ## Web application usage (option 1: power up a self-contained servlet server!)
+
+     bash&gt; cd myschedule-3.*
+     bash&gt; bin/myschedule-ui.sh --httpPort=8081
+
+    Now open a browser and visit http://localhost:8081
+
+    ## Web application usage (option 2: use your own servelt server)
+
+    Simply copy the myschedule-3.*/war/myschedule.war file into your Servlet container such as Tomcat.
+
+    ## Command line usage (option 3: quickly test your quartz config)
+
+     bash&gt; cd myschedule-3.*
+     bash&gt; bin/myschedule.sh bin/quartz.properties
+</code></pre></div>
+
+<p>Note that not all MySchedule-2.x features are in the 3.0 snapshot yet. For now, you would need to use the ScripConsole window to enter jobs into the scheduler. There are now new templates UI available for you to choose and start working quickly. I am still working on allowing users to save their own templates and edit them. This should give users more rich experience in using the UI manager.</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

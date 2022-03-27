@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>Developing Java EE applications with Maven, NetBeans and Glassfish</title>
+        <link rel="stylesheet" href="https://zemian.github.io/theme/css/main.css" />
+        <link href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="ZBlog Atom Feed" />
+        <meta name="description" content="I have been working with EE 6 stack lately, and I find it quite pleasant and productive. For my own learning purpose, I intend to explore more..." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://zemian.github.io/">ZBlog</a></h1>
+                <nav><ul>
+                    <li><a href="https://zemian.github.io/pages/about-the-author.html">About The Author</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://zemian.github.io/2014/developing-java-ee-applications-with-maven-netbeans-and-glassfish.html" rel="bookmark"
+           title="Permalink to Developing Java EE applications with Maven, NetBeans and Glassfish">Developing Java EE applications with Maven, NetBeans and Glassfish</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2014-12-21T00:00:00-05:00">
+                Published: Sun 21 December 2014
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/javaee.html">javaee</a> <a href="https://zemian.github.io/tag/maven.html">maven</a> </p>
+</footer><!-- /.post-info -->      <p>I have been working with EE 6 stack lately, and I find it quite pleasant and productive. For my own learning purpose, I intend to explore more deeper on some of the major components available on the EE stack.</p>
+<p>I have started a <a href="https://github.com/saltnlight5/java-ee6-examples">java-ee6-examples</a> project in GitHub, and I plan to add my examples and working demo code there, along with some blog posts whenever I can. The project is seperated into sub-modules that a typical EE application would organized: a parent module, a common library jar module and one or more web modules etc. The project is buildable using <a href="http://maven.apache.org/">Maven 3 tool</a> on command line, and you may use any major IDE that supports Maven (I will try out NetBeans for these demos).</p>
+<p>I will also be testing my examples application mainly on Glassfish Server. Glassfish Server is an open source EE application server, and 
+its current 4.x release supports EE 7 already (GF 3.x is for EE 6). We should able to run
+ any EE 6 applications on GF 4.x without much problems, so for my learning purpose, I will restrict my examples to use EE 6 for now (you will notice that I have to set EE 6 version as dependency in Maven pom file!)</p>
+<p>So if you are interested in these, watch this blog for future updates.</p>
+<p>To help you started with EE development, I jot down few useful links here.</p>
+<p>Downloads: 
+* <a href="http://www.oracle.com/technetwork/java/javase/downloads/java-archive-downloads-javase7-521261.html">JDK 7</a>
+* <a href="https://netbeans.org/downloads/">NetBeans IDE</a>
+* <a href="https://glassfish.java.net/download.html">Glassfish Application Server</a></p>
+<div class="highlight"><pre><span></span><code><span class="p">(</span><span class="n">Oracle</span><span class="w"> </span><span class="n">also</span><span class="w"> </span><span class="n">provides</span><span class="w"> </span><span class="p">[</span><span class="n">convenient</span><span class="w"> </span><span class="n">package</span><span class="w"> </span><span class="n">download</span><span class="p">](</span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="o">.</span><span class="n">oracle</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">technetwork</span><span class="o">/</span><span class="n">java</span><span class="o">/</span><span class="n">javaee</span><span class="o">/</span><span class="n">downloads</span><span class="o">/</span><span class="n">index</span><span class="o">.</span><span class="n">html</span><span class="p">)</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">includes</span><span class="w"> </span><span class="n">all</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="n">above</span><span class="p">[</span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="o">.</span><span class="n">oracle</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">technetwork</span><span class="o">/</span><span class="n">java</span><span class="o">/</span><span class="n">javaee</span><span class="o">/</span><span class="n">downloads</span><span class="o">/</span><span class="n">index</span><span class="o">.</span><span class="n">html</span><span class="p">](</span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="o">.</span><span class="n">oracle</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">technetwork</span><span class="o">/</span><span class="n">java</span><span class="o">/</span><span class="n">javaee</span><span class="o">/</span><span class="n">downloads</span><span class="o">/</span><span class="n">index</span><span class="o">.</span><span class="n">html</span><span class="p">)</span><span class="o">!</span><span class="p">)</span><span class="w"></span>
+</code></pre></div>
+
+<p>References:
+* <a href="https://docs.oracle.com/javaee/6/tutorial/doc/">EE 6 Tutorial</a>
+* <a href="http://www.oracle.com/technetwork/java/javaee/tech/javaee6technologies-1955512.html">EE 6 Technologies</a>
+* <a href="http://docs.oracle.com/javaee/6/api/">EE 6 API</a>
+* <a href="http://docs.oracle.com/javase/7/docs/api/">JDK 7 API</a></p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

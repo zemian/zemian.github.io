@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>ZBlog - jdbc</title>
+        <link rel="stylesheet" href="https://zemian.github.io/theme/css/main.css" />
+        <link href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="ZBlog Atom Feed" />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://zemian.github.io/">ZBlog</a></h1>
+                <nav><ul>
+                    <li><a href="https://zemian.github.io/pages/about-the-author.html">About The Author</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="https://zemian.github.io/2018/a-plain-and-simple-jdbc-service-for-java8.html">A plain and simple Jdbc service for Java8</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2018-07-28T00:00:00-05:00">
+                Published: Sat 28 July 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/java.html">java</a> <a href="https://zemian.github.io/tag/jdbc.html">jdbc</a> </p>
+</footer><!-- /.post-info --><p>With Java8, we can create simple and thin Jdbc service that’s productive
+and easy to use. This service implementation is inspired by Spring’s
+JdbcTemplate, but much lighter and has zero dependency.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">package</span> <span class="nn">zemian.jdbc</span><span class="p">;</span>
+
+<span class="kn">import</span> <span class="nn">javax.sql.DataSource</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">java.io.IOException</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">java.io.InputStream</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">java.net.URL</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">java.sql.*</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">java.util.*</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">java.util.stream.Collectors</span><span class="p">;</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * This class provide an easier interface to run SQLs and retrieve data than direct Java JDBC API.</span>
+<span class="cm"> *</span>
+<span class="cm"> * You can instantiate this class in two ways:</span>
+<span class="cm"> *</span>
+<span class="cm"> * - Method1: Using a DataSource. Each operation will get a Connection object from the #dataSource.</span>
+<span class="cm"> * - Method2: Using a direct Connection object. Use this to reuse a single connection to perform all</span>
+<span class="cm"> *            JDBC operations.</span>
+<span class="cm"> *</span>
+<span class="cm"> * Both methods above will not directly close the Connection object per Jdbc instance. It&#39;s user</span>
+<span class="cm"> * responsibility to close it after use. For pooled DataSource, it should be automatic, else you</span>
+<span class="cm"> * might want to use the Jdbc.withJdbc() convenient method. This method will let you quickly start a single</span>
+<span class="cm"> * new DB connection and Jdbc instance, and it will auto close connection when method is exited.</span>
+<span class="cm"> *</span>
+<span class="cm"> * This class provide these easy methods to work with DB data:</span>
+<span class="cm"> * - #execute() perform update SQLs that returns number of records updated.</span>
+<span class="cm"> * - #query() perform select SQLs that returns a list of records.</span>
+<span class="cm"> * - #get() perform select SQLs that return a single object element.</span>
+<span class="cm"> * - #insert() perform table insert using a Map as record.</span>
+<span class="cm"> * - #update() perform table update using a Map as record.</span>
+<span class="cm"> *</span>
+<span class="cm"> * The #query() and #get() methods allow you to provide custom RSMapper to convert ResultSet instance</span>
+<span class="cm"> * into any user object.</span>
+<span class="cm"> *</span>
+<span class="cm"> * @author Zemian Deng 2018-07-28</span>
+<span class="cm"> */</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Jdbc</span> <span class="p">{</span>
+    <span class="c1">// == Static utility methods and supporting inner classes</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">withJdbc</span><span class="p">(</span><span class="n">String</span> <span class="n">propsResourceName</span><span class="p">,</span> <span class="n">JdbcAction</span> <span class="n">task</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">Properties</span> <span class="n">props</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Properties</span><span class="p">();</span>
+        <span class="n">URL</span> <span class="n">propsUrl</span> <span class="o">=</span> <span class="n">Thread</span><span class="p">.</span><span class="na">currentThread</span><span class="p">().</span><span class="na">getContextClassLoader</span><span class="p">().</span><span class="na">getResource</span><span class="p">(</span><span class="n">propsResourceName</span><span class="p">);</span>
+        <span class="k">try</span> <span class="p">(</span><span class="n">InputStream</span> <span class="n">ins</span> <span class="o">=</span> <span class="n">propsUrl</span><span class="p">.</span><span class="na">openStream</span><span class="p">())</span> <span class="p">{</span>
+            <span class="n">props</span><span class="p">.</span><span class="na">load</span><span class="p">(</span><span class="n">ins</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="n">IOException</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="n">RuntimeException</span><span class="p">(</span><span class="s">&quot;Unable to open properties from resource: &quot;</span> <span class="o">+</span> <span class="n">propsResourceName</span><span class="p">,</span> <span class="n">e</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="n">withJdbc</span><span class="p">(</span><span class="n">props</span><span class="p">,</span> <span class="n">task</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">withJdbc</span><span class="p">(</span><span class="n">String</span> <span class="n">url</span><span class="p">,</span> <span class="n">String</span> <span class="n">user</span><span class="p">,</span> <span class="n">String</span> <span class="n">password</span><span class="p">,</span> <span class="n">JdbcAction</span> <span class="n">task</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">Properties</span> <span class="n">props</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Properties</span><span class="p">();</span>
+        <span class="n">props</span><span class="p">.</span><span class="na">setProperty</span><span class="p">(</span><span class="s">&quot;url&quot;</span><span class="p">,</span> <span class="n">url</span><span class="p">);</span>
+        <span class="n">props</span><span class="p">.</span><span class="na">setProperty</span><span class="p">(</span><span class="s">&quot;user&quot;</span><span class="p">,</span> <span class="n">user</span><span class="p">);</span>
+        <span class="n">props</span><span class="p">.</span><span class="na">setProperty</span><span class="p">(</span><span class="s">&quot;password&quot;</span><span class="p">,</span> <span class="n">password</span><span class="p">);</span>
+        <span class="n">withJdbc</span><span class="p">(</span><span class="n">props</span><span class="p">,</span> <span class="n">task</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">withJdbc</span><span class="p">(</span><span class="n">Properties</span> <span class="n">jdbcProps</span><span class="p">,</span> <span class="n">JdbcAction</span> <span class="n">task</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">try</span> <span class="p">(</span><span class="n">Connection</span> <span class="n">conn</span> <span class="o">=</span> <span class="n">DriverManager</span><span class="p">.</span><span class="na">getConnection</span><span class="p">(</span><span class="n">jdbcProps</span><span class="p">.</span><span class="na">getProperty</span><span class="p">(</span><span class="s">&quot;url&quot;</span><span class="p">),</span> <span class="n">jdbcProps</span><span class="p">))</span> <span class="p">{</span>
+            <span class="n">Jdbc</span> <span class="n">jdbc</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Jdbc</span><span class="p">(</span><span class="n">conn</span><span class="p">);</span>
+            <span class="n">task</span><span class="p">.</span><span class="na">runJdbc</span><span class="p">(</span><span class="n">jdbc</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="n">Exception</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">e</span> <span class="k">instanceof</span> <span class="n">RuntimeException</span><span class="p">)</span>
+                <span class="k">throw</span> <span class="p">(</span><span class="n">RuntimeException</span><span class="p">)</span> <span class="n">e</span><span class="p">;</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="n">RuntimeException</span><span class="p">(</span><span class="s">&quot;Failed to process Jdbc&quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="nf">getFieldNames</span><span class="p">(</span><span class="n">ResultSet</span> <span class="n">rs</span><span class="p">)</span> <span class="kd">throws</span> <span class="n">SQLException</span> <span class="p">{</span>
+        <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">names</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;&gt;</span><span class="p">();</span>
+        <span class="n">ResultSetMetaData</span> <span class="n">md</span> <span class="o">=</span> <span class="n">rs</span><span class="p">.</span><span class="na">getMetaData</span><span class="p">();</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">max</span> <span class="o">=</span> <span class="n">md</span><span class="p">.</span><span class="na">getColumnCount</span><span class="p">();</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">max</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">names</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="n">md</span><span class="p">.</span><span class="na">getColumnName</span><span class="p">(</span><span class="n">i</span><span class="p">));</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">names</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">setParams</span><span class="p">(</span><span class="n">PreparedStatement</span> <span class="n">st</span><span class="p">,</span> <span class="n">Object</span><span class="o">[]</span> <span class="n">params</span><span class="p">)</span> <span class="kd">throws</span> <span class="n">SQLException</span> <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">params</span><span class="p">.</span><span class="na">length</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">st</span><span class="p">.</span><span class="na">setObject</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">params</span><span class="o">[</span><span class="n">i</span><span class="o">]</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="kd">interface</span> <span class="nc">JdbcAction</span> <span class="p">{</span>
+        <span class="kt">void</span> <span class="nf">runJdbc</span><span class="p">(</span><span class="n">Jdbc</span> <span class="n">jdbc</span><span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kd">interface</span> <span class="nc">ConnAction</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="p">{</span>
+        <span class="n">T</span> <span class="nf">runConn</span><span class="p">(</span><span class="n">Connection</span> <span class="n">conn</span><span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kd">interface</span> <span class="nc">ConnActionNoRet</span> <span class="p">{</span>
+        <span class="kt">void</span> <span class="nf">runConn</span><span class="p">(</span><span class="n">Connection</span> <span class="n">conn</span><span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kd">interface</span> <span class="nc">RSMapper</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="p">{</span>
+        <span class="n">T</span> <span class="nf">map</span><span class="p">(</span><span class="n">ResultSet</span> <span class="n">rs</span><span class="p">,</span> <span class="kt">int</span> <span class="n">idx</span><span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">Record</span> <span class="kd">extends</span> <span class="n">HashMap</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span> <span class="n">Object</span><span class="o">&gt;</span> <span class="p">{</span>
+        <span class="kd">public</span> <span class="nf">Record</span><span class="p">()</span> <span class="p">{}</span>
+        <span class="kd">public</span> <span class="nf">Record</span><span class="p">(</span><span class="n">ResultSet</span> <span class="n">rs</span><span class="p">)</span> <span class="kd">throws</span> <span class="n">SQLException</span> <span class="p">{</span>
+            <span class="k">this</span><span class="p">(</span><span class="n">rs</span><span class="p">,</span> <span class="n">Jdbc</span><span class="p">.</span><span class="na">getFieldNames</span><span class="p">(</span><span class="n">rs</span><span class="p">));</span>
+        <span class="p">}</span>
+        <span class="kd">public</span> <span class="nf">Record</span><span class="p">(</span><span class="n">ResultSet</span> <span class="n">rs</span><span class="p">,</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">names</span><span class="p">)</span> <span class="kd">throws</span> <span class="n">SQLException</span> <span class="p">{</span>
+            <span class="k">for</span> <span class="p">(</span><span class="n">String</span> <span class="n">name</span> <span class="p">:</span> <span class="n">names</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">Object</span> <span class="n">val</span> <span class="o">=</span> <span class="n">rs</span><span class="p">.</span><span class="na">getObject</span><span class="p">(</span><span class="n">name</span><span class="p">);</span>
+                <span class="n">put</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">val</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="kd">public</span> <span class="nf">Record</span><span class="p">(</span><span class="n">Object</span> <span class="p">...</span> <span class="n">entries</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">entries</span><span class="p">.</span><span class="na">length</span><span class="p">;</span> <span class="n">i</span><span class="o">+=</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">Object</span> <span class="n">key</span> <span class="o">=</span> <span class="n">entries</span><span class="o">[</span><span class="n">i</span><span class="o">]</span><span class="p">;</span>
+                <span class="n">Object</span> <span class="n">val</span> <span class="o">=</span> <span class="n">entries</span><span class="o">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="o">]</span><span class="p">;</span>
+                <span class="n">put</span><span class="p">(</span><span class="n">key</span><span class="p">.</span><span class="na">toString</span><span class="p">(),</span> <span class="n">val</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="kd">public</span> <span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">T</span> <span class="nf">getValue</span><span class="p">(</span><span class="n">String</span> <span class="n">key</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="p">(</span><span class="n">T</span><span class="p">)</span> <span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="kd">public</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="nf">getFieldNames</span><span class="p">()</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;&gt;</span><span class="p">(</span><span class="n">keySet</span><span class="p">());</span>
+        <span class="p">}</span>
+        <span class="nd">@Override</span>
+        <span class="kd">public</span> <span class="n">String</span> <span class="nf">toString</span><span class="p">()</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="s">&quot;Record&quot;</span> <span class="o">+</span> <span class="kd">super</span><span class="p">.</span><span class="na">toString</span><span class="p">();</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="c1">// == Jdbc Service implementation</span>
+    <span class="kd">private</span> <span class="n">DataSource</span> <span class="n">dataSource</span><span class="p">;</span>
+    <span class="kd">private</span> <span class="n">Connection</span> <span class="n">conn</span><span class="p">;</span>
+
+    <span class="kd">public</span> <span class="nf">Jdbc</span><span class="p">(</span><span class="n">Connection</span> <span class="n">conn</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="na">conn</span> <span class="o">=</span> <span class="n">conn</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kd">public</span> <span class="nf">Jdbc</span><span class="p">(</span><span class="n">DataSource</span> <span class="n">dataSource</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="na">dataSource</span> <span class="o">=</span> <span class="n">dataSource</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kd">public</span> <span class="n">Connection</span> <span class="nf">getConn</span><span class="p">()</span> <span class="kd">throws</span> <span class="n">SQLException</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">conn</span> <span class="o">!=</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="n">conn</span><span class="p">;</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="n">dataSource</span><span class="p">.</span><span class="na">getConnection</span><span class="p">();</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="kd">public</span> <span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">T</span> <span class="nf">withConn</span><span class="p">(</span><span class="n">ConnAction</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">action</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">try</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="n">action</span><span class="p">.</span><span class="na">runConn</span><span class="p">(</span><span class="n">getConn</span><span class="p">());</span>
+        <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="n">Exception</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">e</span> <span class="k">instanceof</span> <span class="n">RuntimeException</span><span class="p">)</span>
+                <span class="k">throw</span> <span class="p">(</span><span class="n">RuntimeException</span><span class="p">)</span> <span class="n">e</span><span class="p">;</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="n">RuntimeException</span><span class="p">(</span><span class="s">&quot;Failed to process DB conn&quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">withConnNoRet</span><span class="p">(</span><span class="n">ConnActionNoRet</span> <span class="n">action</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">withConn</span><span class="p">(</span><span class="n">conn</span> <span class="o">-&gt;</span> <span class="p">{</span>
+            <span class="n">action</span><span class="p">.</span><span class="na">runConn</span><span class="p">(</span><span class="n">conn</span><span class="p">);</span>
+            <span class="k">return</span> <span class="kc">null</span><span class="p">;</span>
+        <span class="p">});</span>
+    <span class="p">}</span>
+
+    <span class="kd">public</span> <span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">T</span> <span class="nf">get</span><span class="p">(</span><span class="n">String</span> <span class="n">sql</span><span class="p">,</span> <span class="n">Object</span> <span class="p">...</span> <span class="n">params</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">get</span><span class="p">((</span><span class="n">rs</span><span class="p">,</span> <span class="n">idx</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="n">T</span><span class="p">)</span> <span class="n">rs</span><span class="p">.</span><span class="na">getObject</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">sql</span><span class="p">,</span> <span class="n">params</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kd">public</span> <span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">T</span> <span class="nf">get</span><span class="p">(</span><span class="n">RSMapper</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">mapper</span><span class="p">,</span> <span class="n">String</span> <span class="n">sql</span><span class="p">,</span> <span class="n">Object</span> <span class="p">...</span> <span class="n">params</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">withConn</span><span class="p">(</span><span class="n">conn</span> <span class="o">-&gt;</span> <span class="p">{</span>
+            <span class="k">try</span> <span class="p">(</span><span class="n">PreparedStatement</span> <span class="n">st</span> <span class="o">=</span> <span class="n">conn</span><span class="p">.</span><span class="na">prepareStatement</span><span class="p">(</span><span class="n">sql</span><span class="p">))</span> <span class="p">{</span>
+                <span class="n">setParams</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="n">params</span><span class="p">);</span>
+                <span class="n">st</span><span class="p">.</span><span class="na">executeQuery</span><span class="p">();</span>
+                <span class="k">try</span> <span class="p">(</span><span class="n">ResultSet</span> <span class="n">rs</span> <span class="o">=</span> <span class="n">st</span><span class="p">.</span><span class="na">getResultSet</span><span class="p">())</span> <span class="p">{</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">rs</span><span class="p">.</span><span class="na">next</span><span class="p">())</span> <span class="p">{</span>
+                        <span class="k">return</span> <span class="n">mapper</span><span class="p">.</span><span class="na">map</span><span class="p">(</span><span class="n">rs</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="n">RuntimeException</span><span class="p">(</span><span class="s">&quot;There is no unique record from query.&quot;</span><span class="p">);</span>
+        <span class="p">});</span>
+    <span class="p">}</span>
+
+    <span class="kd">public</span> <span class="n">Record</span> <span class="nf">getRecord</span><span class="p">(</span><span class="n">String</span> <span class="n">sql</span><span class="p">,</span> <span class="n">Object</span> <span class="p">...</span> <span class="n">params</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">get</span><span class="p">((</span><span class="n">rs</span><span class="p">,</span> <span class="n">idx</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="k">new</span> <span class="n">Record</span><span class="p">(</span><span class="n">rs</span><span class="p">),</span> <span class="n">sql</span><span class="p">,</span> <span class="n">params</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kd">public</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">Record</span><span class="o">&gt;</span> <span class="nf">query</span><span class="p">(</span><span class="n">String</span> <span class="n">sql</span><span class="p">,</span> <span class="n">Object</span> <span class="p">...</span> <span class="n">params</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">final</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">names</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;&gt;</span><span class="p">();</span>
+        <span class="k">return</span> <span class="n">query</span><span class="p">((</span><span class="n">rs</span><span class="p">,</span> <span class="n">idx</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">idx</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">names</span><span class="p">.</span><span class="na">addAll</span><span class="p">(</span><span class="n">getFieldNames</span><span class="p">(</span><span class="n">rs</span><span class="p">));</span>
+            <span class="p">}</span>
+            <span class="k">return</span> <span class="k">new</span> <span class="n">Record</span><span class="p">(</span><span class="n">rs</span><span class="p">,</span> <span class="n">names</span><span class="p">);</span>
+        <span class="p">},</span> <span class="n">sql</span><span class="p">,</span> <span class="n">params</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kd">public</span> <span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="nf">query</span><span class="p">(</span><span class="n">RSMapper</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">mapper</span><span class="p">,</span> <span class="n">String</span> <span class="n">sql</span><span class="p">,</span> <span class="n">Object</span> <span class="p">...</span> <span class="n">params</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">withConn</span><span class="p">(</span><span class="n">conn</span> <span class="o">-&gt;</span> <span class="p">{</span>
+            <span class="n">List</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;&gt;</span><span class="p">();</span>
+            <span class="k">try</span> <span class="p">(</span><span class="n">PreparedStatement</span> <span class="n">st</span> <span class="o">=</span> <span class="n">conn</span><span class="p">.</span><span class="na">prepareStatement</span><span class="p">(</span><span class="n">sql</span><span class="p">))</span> <span class="p">{</span>
+                <span class="n">setParams</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="n">params</span><span class="p">);</span>
+                <span class="n">st</span><span class="p">.</span><span class="na">executeQuery</span><span class="p">();</span>
+                <span class="k">try</span> <span class="p">(</span><span class="n">ResultSet</span> <span class="n">rs</span> <span class="o">=</span> <span class="n">st</span><span class="p">.</span><span class="na">getResultSet</span><span class="p">())</span> <span class="p">{</span>
+                    <span class="kt">int</span> <span class="n">idx</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+                    <span class="k">while</span> <span class="p">(</span><span class="n">rs</span><span class="p">.</span><span class="na">next</span><span class="p">())</span> <span class="p">{</span>
+                        <span class="n">T</span> <span class="n">t</span> <span class="o">=</span> <span class="n">mapper</span><span class="p">.</span><span class="na">map</span><span class="p">(</span><span class="n">rs</span><span class="p">,</span> <span class="n">idx</span><span class="o">++</span><span class="p">);</span>
+                        <span class="n">list</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="n">t</span><span class="p">);</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+            <span class="k">return</span> <span class="n">list</span><span class="p">;</span>
+        <span class="p">});</span>
+    <span class="p">}</span>
+
+    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">execute</span><span class="p">(</span><span class="n">String</span> <span class="n">sql</span><span class="p">,</span> <span class="n">Object</span> <span class="p">...</span> <span class="n">params</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">withConn</span><span class="p">(</span><span class="n">conn</span> <span class="o">-&gt;</span> <span class="p">{</span>
+            <span class="k">try</span> <span class="p">(</span><span class="n">PreparedStatement</span> <span class="n">st</span> <span class="o">=</span> <span class="n">conn</span><span class="p">.</span><span class="na">prepareStatement</span><span class="p">(</span><span class="n">sql</span><span class="p">))</span> <span class="p">{</span>
+                <span class="n">setParams</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="n">params</span><span class="p">);</span>
+                <span class="k">return</span> <span class="n">st</span><span class="p">.</span><span class="na">executeUpdate</span><span class="p">();</span>
+            <span class="p">}</span>
+        <span class="p">});</span>
+    <span class="p">}</span>
+
+    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">insert</span><span class="p">(</span><span class="n">String</span> <span class="n">table</span><span class="p">,</span> <span class="n">Record</span> <span class="n">record</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">insert</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">record</span><span class="p">,</span> <span class="n">record</span><span class="p">.</span><span class="na">getFieldNames</span><span class="p">());</span>
+    <span class="p">}</span>
+
+    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">insert</span><span class="p">(</span><span class="n">String</span> <span class="n">table</span><span class="p">,</span> <span class="n">Record</span> <span class="n">record</span><span class="p">,</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">insertFields</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">String</span> <span class="n">fields</span> <span class="o">=</span> <span class="n">insertFields</span><span class="p">.</span><span class="na">stream</span><span class="p">().</span><span class="na">collect</span><span class="p">(</span><span class="n">Collectors</span><span class="p">.</span><span class="na">joining</span><span class="p">(</span><span class="s">&quot;, &quot;</span><span class="p">));</span>
+        <span class="n">String</span> <span class="n">qMarks</span> <span class="o">=</span> <span class="n">insertFields</span><span class="p">.</span><span class="na">stream</span><span class="p">().</span><span class="na">map</span><span class="p">(</span><span class="n">e</span> <span class="o">-&gt;</span> <span class="s">&quot;?&quot;</span><span class="p">).</span><span class="na">collect</span><span class="p">(</span><span class="n">Collectors</span><span class="p">.</span><span class="na">joining</span><span class="p">(</span><span class="s">&quot;, &quot;</span><span class="p">));</span>
+        <span class="n">String</span> <span class="n">sql</span> <span class="o">=</span> <span class="s">&quot;INSERT INTO &quot;</span> <span class="o">+</span> <span class="n">table</span> <span class="o">+</span> <span class="s">&quot;(&quot;</span> <span class="o">+</span> <span class="n">fields</span> <span class="o">+</span> <span class="s">&quot;) VALUES (&quot;</span> <span class="o">+</span> <span class="n">qMarks</span> <span class="o">+</span> <span class="s">&quot;)&quot;</span><span class="p">;</span>
+        <span class="n">List</span><span class="o">&lt;</span><span class="n">Object</span><span class="o">&gt;</span> <span class="n">params</span> <span class="o">=</span> <span class="n">insertFields</span><span class="p">.</span><span class="na">stream</span><span class="p">().</span><span class="na">map</span><span class="p">(</span><span class="n">e</span> <span class="o">-&gt;</span> <span class="n">record</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="n">e</span><span class="p">)).</span><span class="na">collect</span><span class="p">(</span><span class="n">Collectors</span><span class="p">.</span><span class="na">toList</span><span class="p">());</span>
+        <span class="k">return</span> <span class="n">withConn</span><span class="p">(</span><span class="n">conn</span> <span class="o">-&gt;</span> <span class="p">{</span>
+            <span class="k">try</span> <span class="p">(</span><span class="n">PreparedStatement</span> <span class="n">st</span> <span class="o">=</span> <span class="n">conn</span><span class="p">.</span><span class="na">prepareStatement</span><span class="p">(</span><span class="n">sql</span><span class="p">,</span> <span class="n">Statement</span><span class="p">.</span><span class="na">RETURN_GENERATED_KEYS</span><span class="p">))</span> <span class="p">{</span>
+                <span class="n">setParams</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="n">params</span><span class="p">.</span><span class="na">toArray</span><span class="p">());</span>
+                <span class="kt">int</span> <span class="n">uc</span> <span class="o">=</span> <span class="n">st</span><span class="p">.</span><span class="na">executeUpdate</span><span class="p">();</span>
+                <span class="c1">// Check for auto generated keys, if present add into the record.</span>
+                <span class="c1">// NOTE it will not override existing fields in record!</span>
+                <span class="k">try</span> <span class="p">(</span><span class="n">ResultSet</span> <span class="n">rs</span> <span class="o">=</span> <span class="n">st</span><span class="p">.</span><span class="na">getGeneratedKeys</span><span class="p">())</span> <span class="p">{</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">rs</span><span class="p">.</span><span class="na">next</span><span class="p">())</span> <span class="p">{</span>
+                        <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">names</span> <span class="o">=</span> <span class="n">getFieldNames</span><span class="p">(</span><span class="n">rs</span><span class="p">);</span>
+                        <span class="k">for</span> <span class="p">(</span><span class="n">String</span> <span class="n">name</span> <span class="p">:</span> <span class="n">names</span><span class="p">)</span> <span class="p">{</span>
+                            <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">record</span><span class="p">.</span><span class="na">containsKey</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+                                <span class="kd">record</span><span class="err">.</span><span class="nc">put</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">rs</span><span class="p">.</span><span class="na">getObject</span><span class="p">(</span><span class="n">name</span><span class="p">));</span>
+                        <span class="p">}</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+                <span class="k">return</span> <span class="n">uc</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">});</span>
+    <span class="p">}</span>
+
+    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">update</span><span class="p">(</span><span class="n">String</span> <span class="n">table</span><span class="p">,</span> <span class="n">Record</span> <span class="n">record</span><span class="p">,</span> <span class="n">String</span> <span class="p">...</span> <span class="n">keyFields</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">updateFields</span> <span class="o">=</span> <span class="n">record</span><span class="p">.</span><span class="na">getFieldNames</span><span class="p">();</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">String</span> <span class="n">key</span> <span class="p">:</span> <span class="n">keyFields</span><span class="p">)</span>
+            <span class="n">updateFields</span><span class="p">.</span><span class="na">remove</span><span class="p">(</span><span class="n">key</span><span class="p">);</span>
+        <span class="k">return</span> <span class="n">update</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">record</span><span class="p">,</span> <span class="n">updateFields</span><span class="p">,</span> <span class="n">Arrays</span><span class="p">.</span><span class="na">asList</span><span class="p">(</span><span class="n">keyFields</span><span class="p">));</span>
+    <span class="p">}</span>
+
+    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">update</span><span class="p">(</span><span class="n">String</span> <span class="n">table</span><span class="p">,</span> <span class="n">Record</span> <span class="n">record</span><span class="p">,</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">updateFields</span><span class="p">,</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">keyFields</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">String</span> <span class="n">updateFieldsNames</span> <span class="o">=</span> <span class="n">updateFields</span><span class="p">.</span><span class="na">stream</span><span class="p">().</span><span class="na">map</span><span class="p">(</span><span class="n">e</span> <span class="o">-&gt;</span> <span class="n">e</span> <span class="o">+</span> <span class="s">&quot; = ?&quot;</span><span class="p">).</span><span class="na">collect</span><span class="p">(</span><span class="n">Collectors</span><span class="p">.</span><span class="na">joining</span><span class="p">(</span><span class="s">&quot;, &quot;</span><span class="p">));</span>
+        <span class="n">String</span> <span class="n">keyFieldsNames</span> <span class="o">=</span> <span class="n">keyFields</span><span class="p">.</span><span class="na">stream</span><span class="p">().</span><span class="na">map</span><span class="p">(</span><span class="n">e</span> <span class="o">-&gt;</span> <span class="n">e</span> <span class="o">+</span> <span class="s">&quot; = ?&quot;</span><span class="p">).</span><span class="na">collect</span><span class="p">(</span><span class="n">Collectors</span><span class="p">.</span><span class="na">joining</span><span class="p">(</span><span class="s">&quot;, &quot;</span><span class="p">));</span>
+        <span class="n">String</span> <span class="n">sql</span> <span class="o">=</span> <span class="s">&quot;UPDATE &quot;</span> <span class="o">+</span> <span class="n">table</span> <span class="o">+</span> <span class="s">&quot; SET &quot;</span> <span class="o">+</span> <span class="n">updateFieldsNames</span> <span class="o">+</span> <span class="s">&quot; WHERE &quot;</span> <span class="o">+</span> <span class="n">keyFieldsNames</span><span class="p">;</span>
+        <span class="n">List</span><span class="o">&lt;</span><span class="n">Object</span><span class="o">&gt;</span> <span class="n">params</span> <span class="o">=</span> <span class="n">updateFields</span><span class="p">.</span><span class="na">stream</span><span class="p">().</span><span class="na">map</span><span class="p">(</span><span class="n">e</span> <span class="o">-&gt;</span> <span class="n">record</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="n">e</span><span class="p">)).</span><span class="na">collect</span><span class="p">(</span><span class="n">Collectors</span><span class="p">.</span><span class="na">toList</span><span class="p">());</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">String</span> <span class="n">key</span> <span class="p">:</span> <span class="n">keyFields</span><span class="p">)</span>
+            <span class="n">params</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="n">record</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="n">key</span><span class="p">));</span>
+        <span class="k">return</span> <span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">,</span> <span class="n">params</span><span class="p">.</span><span class="na">toArray</span><span class="p">());</span>
+    <span class="p">}</span>
+
+    <span class="c1">// Test Jdbc with Postgres DB</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">String</span> <span class="n">url</span> <span class="o">=</span> <span class="n">System</span><span class="p">.</span><span class="na">getProperty</span><span class="p">(</span><span class="s">&quot;url&quot;</span><span class="p">,</span> <span class="s">&quot;jdbc:postgresql://localhost:5432/postgres&quot;</span><span class="p">);</span>
+        <span class="n">String</span> <span class="n">user</span> <span class="o">=</span> <span class="n">System</span><span class="p">.</span><span class="na">getProperty</span><span class="p">(</span><span class="s">&quot;user&quot;</span><span class="p">,</span> <span class="s">&quot;postgres&quot;</span><span class="p">);</span>
+        <span class="n">String</span> <span class="n">password</span> <span class="o">=</span> <span class="n">System</span><span class="p">.</span><span class="na">getProperty</span><span class="p">(</span><span class="s">&quot;password&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">);</span>
+
+        <span class="n">Jdbc</span><span class="p">.</span><span class="na">withJdbc</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">password</span><span class="p">,</span> <span class="n">jdbc</span> <span class="o">-&gt;</span> <span class="p">{</span>
+            <span class="n">jdbc</span><span class="p">.</span><span class="na">withConnNoRet</span><span class="p">(</span><span class="n">conn</span> <span class="o">-&gt;</span> <span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">conn</span><span class="p">));</span>
+        <span class="p">});</span>
+
+        <span class="n">Jdbc</span><span class="p">.</span><span class="na">withJdbc</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">password</span><span class="p">,</span> <span class="n">jdbc</span> <span class="o">-&gt;</span> <span class="p">{</span>
+            <span class="c1">// Execute</span>
+            <span class="n">jdbc</span><span class="p">.</span><span class="na">execute</span><span class="p">(</span><span class="s">&quot;create temp table test(id varchar(10) primary key, seq serial, amount numeric(19,4))&quot;</span><span class="p">);</span>
+            <span class="kt">int</span> <span class="n">uc</span> <span class="o">=</span> <span class="n">jdbc</span><span class="p">.</span><span class="na">execute</span><span class="p">(</span><span class="s">&quot;insert into test(id, amount) values(?, ?)&quot;</span><span class="p">,</span> <span class="s">&quot;T01&quot;</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">);</span>
+            <span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;test record inserted: uc=&quot;</span> <span class="o">+</span> <span class="n">uc</span><span class="p">);</span>
+
+            <span class="n">Record</span> <span class="n">record</span> <span class="o">=</span> <span class="n">jdbc</span><span class="p">.</span><span class="na">getRecord</span><span class="p">(</span><span class="s">&quot;select * from test where id = ?&quot;</span><span class="p">,</span> <span class="s">&quot;T01&quot;</span><span class="p">);</span>
+            <span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">record</span><span class="p">);</span>
+
+            <span class="c1">// Get</span>
+            <span class="n">Integer</span> <span class="n">seq</span> <span class="o">=</span> <span class="n">jdbc</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="s">&quot;select seq from test where id = ?&quot;</span><span class="p">,</span> <span class="s">&quot;T01&quot;</span><span class="p">);</span>
+            <span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;seq = &quot;</span> <span class="o">+</span> <span class="n">seq</span><span class="p">);</span>
+
+            <span class="n">java</span><span class="p">.</span><span class="na">math</span><span class="p">.</span><span class="na">BigDecimal</span> <span class="n">amount</span> <span class="o">=</span> <span class="n">jdbc</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="s">&quot;select amount from test where id = ?&quot;</span><span class="p">,</span> <span class="s">&quot;T01&quot;</span><span class="p">);</span>
+            <span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;amount = &quot;</span> <span class="o">+</span> <span class="n">amount</span><span class="p">);</span>
+
+            <span class="c1">// Update</span>
+            <span class="kd">record</span><span class="err">.</span><span class="nc">put</span><span class="p">(</span><span class="s">&quot;amount&quot;</span><span class="p">,</span> <span class="n">amount</span><span class="p">.</span><span class="na">doubleValue</span><span class="p">()</span> <span class="o">+</span> <span class="mf">0.20</span><span class="p">);</span>
+            <span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;amount to be updated: &quot;</span> <span class="o">+</span> <span class="n">record</span><span class="p">.</span><span class="na">getValue</span><span class="p">(</span><span class="s">&quot;amount&quot;</span><span class="p">));</span>
+            <span class="n">uc</span> <span class="o">=</span> <span class="n">jdbc</span><span class="p">.</span><span class="na">update</span><span class="p">(</span><span class="s">&quot;test&quot;</span><span class="p">,</span> <span class="n">record</span><span class="p">,</span> <span class="s">&quot;id&quot;</span><span class="p">);</span>
+            <span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;amount udpated. uc=&quot;</span> <span class="o">+</span> <span class="n">uc</span><span class="p">);</span>
+
+            <span class="n">amount</span> <span class="o">=</span> <span class="n">jdbc</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="s">&quot;select amount from test where id = ?&quot;</span><span class="p">,</span> <span class="s">&quot;T01&quot;</span><span class="p">);</span>
+            <span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;after update from db: amount = &quot;</span> <span class="o">+</span> <span class="n">amount</span><span class="p">);</span>
+
+            <span class="c1">// Insert</span>
+            <span class="kd">record</span> <span class="err">=</span> <span class="nc">new</span> <span class="n">Record</span><span class="p">(</span><span class="s">&quot;id&quot;</span><span class="p">,</span> <span class="s">&quot;T02&quot;</span><span class="p">,</span> <span class="s">&quot;amount&quot;</span><span class="p">,</span> <span class="mf">0.30</span><span class="p">);</span>
+            <span class="n">jdbc</span><span class="p">.</span><span class="na">insert</span><span class="p">(</span><span class="s">&quot;test&quot;</span><span class="p">,</span> <span class="n">record</span><span class="p">);</span>
+            <span class="kt">int</span> <span class="n">newSeq</span> <span class="o">=</span> <span class="p">(</span><span class="n">Integer</span><span class="p">)</span> <span class="n">record</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="s">&quot;seq&quot;</span><span class="p">);</span>
+            <span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;generated column seq=&quot;</span> <span class="o">+</span> <span class="n">newSeq</span><span class="p">);</span>
+            <span class="n">Record</span> <span class="n">record2</span> <span class="o">=</span> <span class="n">jdbc</span><span class="p">.</span><span class="na">getRecord</span><span class="p">(</span><span class="s">&quot;select * from test where id = ?&quot;</span><span class="p">,</span> <span class="s">&quot;T02&quot;</span><span class="p">);</span>
+            <span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">record2</span><span class="p">);</span>
+
+            <span class="c1">// Query</span>
+            <span class="n">List</span><span class="o">&lt;</span><span class="n">Record</span><span class="o">&gt;</span> <span class="n">records</span> <span class="o">=</span> <span class="n">jdbc</span><span class="p">.</span><span class="na">query</span><span class="p">(</span><span class="s">&quot;select * from test order by id&quot;</span><span class="p">);</span>
+            <span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">records</span><span class="p">);</span>
+        <span class="p">});</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2015/java-jdbc-test-for-utf8-and-default-value-for-timestamp.html" rel="bookmark"
+                           title="Permalink to Java Jdbc Test for UTF8 and Default Value for TIMESTAMP">Java Jdbc Test for UTF8 and Default Value for TIMESTAMP</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2015-11-02T00:00:00-05:00">
+                Published: Mon 02 November 2015
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/java.html">java</a> <a href="https://zemian.github.io/tag/jdbc.html">jdbc</a> </p>
+</footer><!-- /.post-info -->                <p>Just a quick MySQL test on how to use UTF8 encoding with JDBC connection string. Also a test on how to set TIMESTAMP default values.</p>
+<div class="highlight"><pre><span></span><code><span class="n">package</span> <span class="n">zemian</span><span class="o">.</span><span class="n">jdbc</span><span class="p">;</span>
+
+<span class="kn">import</span> <span class="nn">org.junit.Test</span><span class="p">;</span>
+
+<span class="kn">import</span> <span class="nn">java.sql.</span><span class="o">*</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">java.util.</span><span class="o">*</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">java.util.Date</span><span class="p">;</span>
+
+<span class="o">/**</span>
+
+ <span class="o">--</span> <span class="n">drop</span> <span class="n">table</span> <span class="n">ztest_issues</span><span class="p">;</span>
+ <span class="n">CREATE</span> <span class="n">TABLE</span> <span class="n">ztest_issues …</span></code></pre></div>
+                <a class="readmore" href="https://zemian.github.io/2015/java-jdbc-test-for-utf8-and-default-value-for-timestamp.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2015/javascript-jdbc-quick-test.html" rel="bookmark"
+                           title="Permalink to JavaScript Jdbc Quick Test">JavaScript Jdbc Quick Test</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2015-09-09T00:00:00-05:00">
+                Published: Wed 09 September 2015
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/javascript.html">javascript</a> <a href="https://zemian.github.io/tag/jdbc.html">jdbc</a> </p>
+</footer><!-- /.post-info -->                <div class="highlight"><pre><span></span><code><span class="nt">importPackage</span><span class="o">(</span><span class="nt">java</span><span class="p">.</span><span class="nc">sql</span><span class="o">)</span><span class="w"></span>
+<span class="nt">url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;jdbc:mysql://localhost/test&quot;</span><span class="o">;</span><span class="w"></span>
+<span class="nt">username</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;test&quot;</span><span class="o">;</span><span class="w"></span>
+<span class="nt">password</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;test123&quot;</span><span class="o">;</span><span class="w"></span>
+
+<span class="o">//</span><span class="w"> </span><span class="nt">Util</span><span class="w"> </span><span class="nt">for</span><span class="w"> </span><span class="nt">nice</span><span class="w"> </span><span class="nt">print</span><span class="w"> </span><span class="nt">of</span><span class="w"> </span><span class="nt">result</span><span class="w"></span>
+<span class="nt">function</span><span class="w"> </span><span class="nt">printResultSet</span><span class="o">(</span><span class="nt">rs</span><span class="o">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="err">colCount</span><span class="w"> </span><span class="err">=</span><span class="w"> </span><span class="err">rs.getMetaData().getColumnCount()</span><span class="p">;</span><span class="w"></span>
+<span class="err">while</span><span class="w"> </span><span class="err">(rs.next())</span><span class="w"> </span><span class="err">{</span><span class="w"></span>
+<span class="err">for</span><span class="w"> </span><span class="err">(i=1</span><span class="p">;</span><span class="w"> </span><span class="err">i</span><span class="w"> </span><span class="err">&lt;=</span><span class="w"> </span><span class="err">colCount</span><span class="p">;</span><span class="w"> </span><span class="err">i++)</span><span class="w"> </span><span class="err">{</span><span class="w"></span>
+<span class="err">printf(&quot;%s\t&quot;,</span><span class="w"> </span><span class="err">rs.getObject(i))</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+<span class="nt">println</span><span class="o">();</span><span class="w"></span>
+<span class="err">}</span><span class="w"></span>
+<span class="err">}</span><span class="w"></span>
+
+<span class="o">//</span><span class="w"> </span><span class="nt">Get</span><span class="w"> </span><span class="nt">a</span><span class="w"> </span><span class="nt">DB</span><span class="w"> </span><span class="nt">conn</span><span class="w"></span>
+<span class="nt">sql</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;SELECT * FROM ztest_issues …</span></code></pre></div>
+                <a class="readmore" href="https://zemian.github.io/2015/javascript-jdbc-quick-test.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2015/example-of-plain-jdbc-support-class.html" rel="bookmark"
+                           title="Permalink to Example of plain Jdbc Support Class">Example of plain Jdbc Support Class</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2015-06-05T00:00:00-05:00">
+                Published: Fri 05 June 2015
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/java.html">java</a> <a href="https://zemian.github.io/tag/jdbc.html">jdbc</a> </p>
+</footer><!-- /.post-info -->                <p>Need to fetch some data from DB quickly with Java? Here is a quick example of plain JDBC JdbcSupport  Class to help you.</p>
+<div class="highlight"><pre><span></span><code><span class="n">package</span> <span class="n">zemian</span><span class="o">.</span><span class="n">jdbcexample</span>
+
+<span class="kn">import</span> <span class="nn">org.slf4j.Logger</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">org.slf4j.LoggerFactory</span><span class="p">;</span>
+
+<span class="kn">import</span> <span class="nn">javax.sql.DataSource</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">java.sql.Connection</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">java.sql.PreparedStatement</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">java.sql.ResultSet …</span></code></pre></div>
+                <a class="readmore" href="https://zemian.github.io/2015/example-of-plain-jdbc-support-class.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2013/getting-started-with-spring-jdbc-in-a-web-application.html" rel="bookmark"
+                           title="Permalink to Getting started with Spring JDBC in a web application">Getting started with Spring JDBC in a web application</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2013-10-09T00:00:00-05:00">
+                Published: Wed 09 October 2013
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/spring.html">spring</a> <a href="https://zemian.github.io/tag/jdbc.html">jdbc</a> </p>
+</footer><!-- /.post-info -->                <p>I have shown you how to setup a <a href="https://zemian.github.io/2013/10/getting-started-with-annotation-based.html">basic Spring 3 MVC web application</a> in my previous article. Reusing that project setup as template, I will show you how to enhance it to work with JDBC. With this you can store and retrieve data from database. We will add a …</p>
+                <a class="readmore" href="https://zemian.github.io/2013/getting-started-with-spring-jdbc-in-a-web-application.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+                </ol><!-- /#posts-list -->
+                </section><!-- /#content -->
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>ZBlog - Blog</title>
+        <link rel="stylesheet" href="https://zemian.github.io/theme/css/main.css" />
+        <link href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="ZBlog Atom Feed" />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://zemian.github.io/">ZBlog</a></h1>
+                <nav><ul>
+                    <li><a href="https://zemian.github.io/pages/about-the-author.html">About The Author</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+                <section id="content" class="body">
+                    <ol id="posts-list" class="hfeed" start="9">
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2012/ctrlc-not-working-on-cygwin-1715-1.html" rel="bookmark"
+                           title="Permalink to CTRL+C not working on Cygwin 1.7.15-1">CTRL+C not working on Cygwin 1.7.15-1</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2012-07-12T00:00:00-05:00">
+                Published: Thu 12 July 2012
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/cygwin.html">cygwin</a> </p>
+</footer><!-- /.post-info -->                <p>When I installed new package in my Cygwin recently, it also automatically upgraded to latest Cygwin 1.7.15-1 DLL. After this, pressing CTRL+C no longer work</p>
+<p>on a running Java process the cygwin shell. I found the reason why this happens, and here is the email I sent …</p>
+                <a class="readmore" href="https://zemian.github.io/2012/ctrlc-not-working-on-cygwin-1715-1.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2012/creating-oracle-stored-procedure-using-java.html" rel="bookmark"
+                           title="Permalink to Creating Oracle Stored Procedure using Java">Creating Oracle Stored Procedure using Java</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2012-07-11T00:00:00-05:00">
+                Published: Wed 11 July 2012
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/oracle.html">oracle</a> <a href="https://zemian.github.io/tag/java.html">java</a> </p>
+</footer><!-- /.post-info -->                <p>Did you know you can write Oracle database stored procedure in Java? Give this a try in your <code>sqlplus</code> prompt.</p>
+<div class="highlight"><pre><span></span><code><span class="n">sql</span><span class="o">&gt;</span><span class="w"> </span><span class="n">create</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="n">replace</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="n">compile</span><span class="w"> </span><span class="n">java</span><span class="w"> </span><span class="n">source</span><span class="w"> </span><span class="n">named</span><span class="w"> </span><span class="s2">&quot;MyJavaDbProcedure&quot;</span><span class="w"> </span><span class="k">as</span><span class="w"></span>
+<span class="n">sql</span><span class="o">&gt;</span><span class="w"> </span><span class="n">public</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="n">MyJavaDbProcedure</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="n">sql</span><span class="o">&gt;</span><span class="w">   </span><span class="n">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="nb nb-Type">String</span><span class="w"> </span><span class="n">upcase</span><span class="p">(</span><span class="nb nb-Type">String</span><span class="w"> </span><span class="n">text</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="n">sql</span><span class="o">&gt;</span><span class="w">     </span><span class="k">return</span><span class="w"> </span><span class="n">text</span><span class="o">.</span><span class="n">toUpperCase</span><span class="p">();</span><span class="w"></span>
+<span class="n">sql</span><span class="o">&gt;</span><span class="w">   </span><span class="p">}</span><span class="w"></span>
+<span class="n">sql</span><span class="o">&gt;</span><span class="w"> </span><span class="p">};</span><span class="w"></span>
+<span class="n">sql</span><span class="o">&gt;</span><span class="w"> </span><span class="o">/</span><span class="w"></span>
+<span class="n">sql …</span></code></pre></div>
+                <a class="readmore" href="https://zemian.github.io/2012/creating-oracle-stored-procedure-using-java.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2012/quick-way-to-benchmark-java-code.html" rel="bookmark"
+                           title="Permalink to Quick way to benchmark Java code">Quick way to benchmark Java code</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2012-07-11T00:00:00-05:00">
+                Published: Wed 11 July 2012
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/java.html">java</a> </p>
+</footer><!-- /.post-info -->                <p>Don't you envy Ruby has the Benchmark module? Yes, there are many art and science go behind how to setup and run a good micro benchmark code, especially with the JVM. But many times you just want to see some result, quickly. There is actually a very groovy and quick …</p>
+                <a class="readmore" href="https://zemian.github.io/2012/quick-way-to-benchmark-java-code.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2012/minimal-java-webapp-with-maven.html" rel="bookmark"
+                           title="Permalink to Minimal Java webapp with Maven">Minimal Java webapp with Maven</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2012-07-10T00:00:00-05:00">
+                Published: Tue 10 July 2012
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/maven.html">maven</a> <a href="https://zemian.github.io/tag/java.html">java</a> </p>
+</footer><!-- /.post-info -->                <p>Below are the shortest steps I know that would get you the smallest Java web application ready in Maven.</p>
+<div class="highlight"><pre><span></span><code>$ mkdir -p webapp/src/main/webapp/WEB-INF/classes
+$ echo &#39;<span class="nt">&lt;web-app&gt;&lt;/web-app&gt;</span>&#39; &gt; webapp/src/main/webapp/WEB-INF/web.xml
+$ echo &#39;<span class="nt">&lt;html&gt;</span>Hello World.<span class="nt">&lt;/html&gt;</span>&#39; &gt; webapp/src/main/webapp/index.jsp
+$ echo &#39;<span class="nt">&lt;project …</span></code></pre></div>
+                <a class="readmore" href="https://zemian.github.io/2012/minimal-java-webapp-with-maven.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2012/kickstart-timemachine-scheduler-with-a-quick-groovy-script.html" rel="bookmark"
+                           title="Permalink to Kickstart TimeMachine Scheduler with a quick Groovy script">Kickstart TimeMachine Scheduler with a quick Groovy script</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2012-07-09T00:00:00-05:00">
+                Published: Mon 09 July 2012
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/groovy.html">groovy</a> <a href="https://zemian.github.io/tag/timemachine.html">timemachine</a> </p>
+</footer><!-- /.post-info -->                <p>If you have <a href="http://groovy.codehaus.org/">Groovy</a>installed, you can kick start a <a href="https://bitbucket.org/timemachine/scheduler">TimeMachine Scheduler</a> job without any setup! Try this out:</p>
+<div class="highlight"><pre><span></span><code><span class="o">//</span> <span class="n">Create</span> <span class="n">a</span> <span class="n">repeating</span> <span class="n">schedule</span> <span class="n">job</span> <span class="n">that</span> <span class="n">runs</span> <span class="n">every</span> <span class="mi">3</span> <span class="n">seconds</span><span class="o">.</span>
+<span class="nd">@Grab</span><span class="p">(</span><span class="s1">&#39;org.slf4j:slf4j-simple:1.6.6&#39;</span><span class="p">)</span>
+<span class="nd">@Grab</span><span class="p">(</span><span class="s1">&#39;org.bitbucket.timemachine:timemachine-scheduler:1.2.2&#39;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">timemachine.scheduler.</span><span class="o">*</span>
+<span class="n">scheduler</span> <span class="o">=</span> <span class="n">new</span> <span class="n">SchedulerFactory …</span></code></pre></div>
+                <a class="readmore" href="https://zemian.github.io/2012/kickstart-timemachine-scheduler-with-a-quick-groovy-script.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2012/getting-jdk6-srczip-for-new-imac.html" rel="bookmark"
+                           title="Permalink to Getting JDK6 src.zip for new iMac">Getting JDK6 src.zip for new iMac</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2012-07-03T00:00:00-05:00">
+                Published: Tue 03 July 2012
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/java.html">java</a> </p>
+</footer><!-- /.post-info -->                <p>I got a new iMac, and I have activated the first time usage of JDK6. It's all working, but it doesn't come with src.zip! I googled around but other's solution didn't work for me. (eg: http://stackoverflow.com/questions/4011002/java-eclipse-on-macosx-where-is-the-src-zip). I tried download their Apple JDK updates, but …</p>
+                <a class="readmore" href="https://zemian.github.io/2012/getting-jdk6-srczip-for-new-imac.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2012/timemachine-scheduler-tour-part7.html" rel="bookmark"
+                           title="Permalink to TimeMachine Scheduler Tour - Part7">TimeMachine Scheduler Tour - Part7</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2012-06-24T00:00:00-05:00">
+                Published: Sun 24 June 2012
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/timemachine.html">timemachine</a> </p>
+</footer><!-- /.post-info -->                <p>This is part 7 of 7 in a series of articles that will give you a tour of the <a href="https://bitbucket.org/timemachine/scheduler/wiki/Home">TimeMachine Scheduler</a> project. These articles will introduce you to the scheduler, how to load jobs and schedules, and explore some of its advanced features. For the most current and accurate instructions …</p>
+                <a class="readmore" href="https://zemian.github.io/2012/timemachine-scheduler-tour-part7.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2012/timemachine-scheduler-tour-part6.html" rel="bookmark"
+                           title="Permalink to TimeMachine Scheduler Tour - Part6">TimeMachine Scheduler Tour - Part6</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2012-06-22T00:00:00-05:00">
+                Published: Fri 22 June 2012
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/timemachine.html">timemachine</a> </p>
+</footer><!-- /.post-info -->                <p>This is part 6 of 7 in a series of articles that will give you a tour of the <a href="https://bitbucket.org/timemachine/scheduler/wiki/Home">TimeMachine Scheduler</a> project. These articles will introduce you to the scheduler, how to load jobs and schedules, and explore some of its advanced features. For the most current and accurate instructions …</p>
+                <a class="readmore" href="https://zemian.github.io/2012/timemachine-scheduler-tour-part6.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2012/timemachine-scheduler-tour-part5.html" rel="bookmark"
+                           title="Permalink to TimeMachine Scheduler Tour - Part5">TimeMachine Scheduler Tour - Part5</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2012-06-20T00:00:00-05:00">
+                Published: Wed 20 June 2012
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/timemachine.html">timemachine</a> </p>
+</footer><!-- /.post-info -->                <p>This is part 5 of 7 in a series of articles that will give you a tour of the <a href="https://bitbucket.org/timemachine/scheduler/wiki/Home">TimeMachine Scheduler</a> project. These articles will introduce you to the scheduler, how to load jobs and schedules, and explore some of its advanced features. For the most current and accurate instructions …</p>
+                <a class="readmore" href="https://zemian.github.io/2012/timemachine-scheduler-tour-part5.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2012/timemachine-scheduler-tour-part4.html" rel="bookmark"
+                           title="Permalink to TimeMachine Scheduler Tour - Part4">TimeMachine Scheduler Tour - Part4</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2012-06-17T00:00:00-05:00">
+                Published: Sun 17 June 2012
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/timemachine.html">timemachine</a> </p>
+</footer><!-- /.post-info -->                <p>This is part 4 of 7 in a series of articles that will give you a tour of the <a href="https://bitbucket.org/timemachine/scheduler/wiki/Home">TimeMachine Scheduler</a> project. These articles will introduce you to the scheduler, how to load jobs and schedules, and explore some of its advanced features. For the most current and accurate instructions …</p>
+                <a class="readmore" href="https://zemian.github.io/2012/timemachine-scheduler-tour-part4.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+                </ol><!-- /#posts-list -->
+<p class="paginator">
+        <a href="https://zemian.github.io/category/blog.html">&#8647;</a>
+        <a href="https://zemian.github.io/category/blog26.html">&laquo;</a>
+    Page 27 / 30
+        <a href="https://zemian.github.io/category/blog28.html">&raquo;</a>
+        <a href="https://zemian.github.io/category/blog30.html">&#8649;</a>
+</p>
+                </section><!-- /#content -->
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

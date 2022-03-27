@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>EE JSP - The Reversed Jacket of Servlet</title>
+        <link rel="stylesheet" href="https://zemian.github.io/theme/css/main.css" />
+        <link href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="ZBlog Atom Feed" />
+        <meta name="description" content="Generating HTML from Servlet is only practical if you have small amount of pages, or needed fine control of the content you are generating,..." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://zemian.github.io/">ZBlog</a></h1>
+                <nav><ul>
+                    <li><a href="https://zemian.github.io/pages/about-the-author.html">About The Author</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://zemian.github.io/2015/ee-jsp-the-reversed-jacket-of-servlet.html" rel="bookmark"
+           title="Permalink to EE JSP - The Reversed Jacket of Servlet">EE JSP - The Reversed Jacket of Servlet</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2015-01-25T00:00:00-05:00">
+                Published: Sun 25 January 2015
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/jsp.html">jsp</a> </p>
+</footer><!-- /.post-info -->      <p>Generating HTML from Servlet is only practical if you have small amount of pages, or needed fine control of the content you are generating, (binary PDF etc). For most application, the output is going to be HTML, and we need a better way to do this; and that's where the JSP (Java Server Pages) comes in.</p>
+<p>With JSP, you write and focus on the HTML content in a file; then only when you needed dynamic or condition logic in between the content, you would insert the Java code, which called the Scriptlet. When the application server process the JSP page, it will automatically generate a Servlet class that write these JSP file's content out (as you would programatically writing it using PrintWriter as shown in my previous posts). Wherever you have the Scriptlet in JSP, it will be inlined in the generated Servlet class. The generated jsp servlet classes are all managed, compiled and deployed by the application server within your application automatically. In short, the JSP is nothing more than the reverse jacket of the Servlet.</p>
+<p>Here is a simple example of JSP that print Hello World and a server timestamp.</p>
+<div class="highlight"><pre><span></span><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>Hello World!<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>Page served on <span class="cp">&lt;%=</span> <span class="kp">new</span> <span class="n">java</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">Date</span><span class="p">()</span><span class="cp">%&gt;</span><span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</code></pre></div>
+
+<p>Simply save this as text file named hello.jsp inside your src/main/webapp maven based folder, and it will be runnable within your NetBeans IDE. For JSP, you do not need to configure URL mapping as in Serlvet, and it's directly accessable from your context path. For example, above should display in your browser by http://localhost:8080/hello.jsp URL.</p>
+<p>Notice the example also show how you can embed Java code. You can place a method or object inside &lt;%= %&gt; scriptlet, and it will use the resulted object's toString() method output to concatenate to the HTML outside the scriptlet tag. You can also define new methods using &lt;%! %&gt; scriptlet tag, or execute any code that does not generate output using &lt;% %&gt; scriptlets. Note that you can add comments in JSP between &lt;%-- --%&gt; scriptlet as well.</p>
+<p>JSP also allows you to insert "Page Directives" to control how the JSP container render the result. For example, you can change the result content type by insert this on top of the page</p>
+<div class="highlight"><pre><span></span><code><span class="cp">&lt;%</span><span class="err">@</span> <span class="n">page</span> <span class="n">contentType</span><span class="o">=</span><span class="s2">&quot;text/txt&quot;</span> <span class="cp">%&gt;</span><span class="x"></span>
+</code></pre></div>
+
+<p>Another often used page directive is import Java package so you don't need to prefix it on each Java statement line.</p>
+<div class="highlight"><pre><span></span><code>    <span class="cp">&lt;%</span><span class="err">@</span> <span class="n">page</span> <span class="n">imporet</span><span class="o">=</span><span class="s2">&quot;java.util.*&quot;</span> <span class="cp">%&gt;</span>
+
+
+
+    ...
+
+
+
+    <span class="nt">&lt;p&gt;</span>Page served on <span class="cp">&lt;%=</span> <span class="kp">new</span> <span class="no">Date</span><span class="p">()</span><span class="cp">%&gt;</span><span class="nt">&lt;/p&gt;</span>
+</code></pre></div>
+
+<p>There are many more directives you can use. Checkout the JSP spec doc for more details.</p>
+<p>Besides inserting your own Java code, JSP also predefined some variables you may access directly without declaring them. Here is an example that displays most of these built-in implicit variables.</p>
+<div class="highlight"><pre><span></span><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>JSP Examples<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>Implicit Variables<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">table</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nt">tr</span><span class="p">&gt;</span>
+                <span class="p">&lt;</span><span class="nt">td</span><span class="p">&gt;</span>Name<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;&lt;</span><span class="nt">td</span><span class="p">&gt;</span>Instance<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;&lt;</span><span class="nt">td</span><span class="p">&gt;</span>Example<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;</span>
+            <span class="p">&lt;/</span><span class="nt">tr</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nt">tr</span><span class="p">&gt;</span>
+                <span class="p">&lt;</span><span class="nt">td</span><span class="p">&gt;</span>applicationScope<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;&lt;</span><span class="nt">td</span><span class="p">&gt;</span>${applicationScope}<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;&lt;</span><span class="nt">td</span><span class="p">&gt;</span>${applicationScope[&#39;myAppName&#39;]}<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;</span>
+            <span class="p">&lt;/</span><span class="nt">tr</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nt">tr</span><span class="p">&gt;</span>
+                <span class="p">&lt;</span><span class="nt">td</span><span class="p">&gt;</span>sessionSope<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;&lt;</span><span class="nt">td</span><span class="p">&gt;</span>${sessionSope}<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;&lt;</span><span class="nt">td</span><span class="p">&gt;</span>${sessionSope[&#39;loginSession&#39;]}<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;</span>
+            <span class="p">&lt;/</span><span class="nt">tr</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nt">tr</span><span class="p">&gt;</span>
+                <span class="p">&lt;</span><span class="nt">td</span><span class="p">&gt;</span>pageScope<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;&lt;</span><span class="nt">td</span><span class="p">&gt;</span>${pageScope}<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;&lt;</span><span class="nt">td</span><span class="p">&gt;</span>${pageScope[&#39;javax.servlet.jsp.jspConfig&#39;]}<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;</span>
+            <span class="p">&lt;/</span><span class="nt">tr</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nt">tr</span><span class="p">&gt;</span>
+                <span class="p">&lt;</span><span class="nt">td</span><span class="p">&gt;</span>requestScope<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;&lt;</span><span class="nt">td</span><span class="p">&gt;</span>${requestScope}<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;&lt;</span><span class="nt">td</span><span class="p">&gt;</span>${requestScope[&#39;foo&#39;]}<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;</span>
+            <span class="p">&lt;/</span><span class="nt">tr</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nt">tr</span><span class="p">&gt;</span>
+                <span class="p">&lt;</span><span class="nt">td</span><span class="p">&gt;</span>param<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;&lt;</span><span class="nt">td</span><span class="p">&gt;</span>${param}<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;&lt;</span><span class="nt">td</span><span class="p">&gt;</span>${param[&#39;query&#39;]}<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;</span>
+            <span class="p">&lt;/</span><span class="nt">tr</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nt">tr</span><span class="p">&gt;</span>
+                <span class="p">&lt;</span><span class="nt">td</span><span class="p">&gt;</span>header<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;&lt;</span><span class="nt">td</span><span class="p">&gt;</span>${header}<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;&lt;</span><span class="nt">td</span><span class="p">&gt;</span>${header[&#39;user-agent&#39;]}<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;</span>
+            <span class="p">&lt;/</span><span class="nt">tr</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nt">tr</span><span class="p">&gt;</span>
+                <span class="p">&lt;</span><span class="nt">td</span><span class="p">&gt;</span>cookie<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;&lt;</span><span class="nt">td</span><span class="p">&gt;</span>${cookie}<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;&lt;</span><span class="nt">td</span><span class="p">&gt;</span>${cookie[&#39;JSESSIONID&#39;]}<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;</span>
+            <span class="p">&lt;/</span><span class="nt">tr</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nt">tr</span><span class="p">&gt;</span>
+                <span class="p">&lt;</span><span class="nt">td</span><span class="p">&gt;</span>pageContext<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;&lt;</span><span class="nt">td</span><span class="p">&gt;</span>${pageContext}<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;&lt;</span><span class="nt">td</span><span class="p">&gt;</span>${pageContext.request.contextPath}<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;</span>
+            <span class="p">&lt;/</span><span class="nt">tr</span><span class="p">&gt;</span>
+        <span class="p">&lt;/</span><span class="nt">table</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>Page served on <span class="cp">&lt;%=</span> <span class="kp">new</span> <span class="n">java</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">Date</span><span class="p">()</span><span class="cp">%&gt;</span><span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>  
+</code></pre></div>
+
+<p>In above example, I accessed the implicit variables using the JSP Expression Language (EL) syntax rather than the &lt;%= %&gt; scriptlet. The EL is more compact and easier to read, however it only can read variable that existed in any of the request, session or application scopes. The EL uses DOT notation to access fields or even nested fields from the object variable; assuming the fields have corresponding getter methods that is. EL can also access map with "myMap[key]" format, or a list with "myList[index]" syntax. Most of these implicit variables can be access as a Map object, and they exposed mainly from the ServletHttpRequest object on the request, as you would from your own Servlet class.</p>
+<p>JSP can be seen as a template language in the web application. It helps generate the "VIEW" part of the application. It let you or the authoring in your team to focus on the HTML and look and feel of the content. It can help building larger web application much easier. Be careful about using excessive and complex logic Java code inside your JSP files though, as it will make it harder to debug and read; especially if you have a Java statement that throws an exception. The line number from the stacktrace would be harder to track and match to your Scriptlet code. Also imagine if you start to have JavaScript code inside JSP files, then it can get really messy. Better to keep these in separate files. If you must embed Java code in JSP, try to wrap it in a single line of Java invocation call. Better yet, try to process request using Servlet code, and generate all the data you need to display in JSP by insert them into the request scope space, and then forward to a JSP file for rendering. With this pattern, you can actually limit usage of scriptlet 
+in JSP, and only use EL and JSP tags.</p>
+<p>You can find above code in my <a href="https://github.com/saltnlight5/java-ee6-examples/tree/master/jsp-example">jsp-example</a> in GitHub.</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

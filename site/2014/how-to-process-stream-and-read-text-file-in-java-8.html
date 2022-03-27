@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>How to process stream and read text file in Java 8</title>
+        <link rel="stylesheet" href="https://zemian.github.io/theme/css/main.css" />
+        <link href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="ZBlog Atom Feed" />
+        <meta name="description" content="I have converted one of my old utility class using latest Java8. I use this often to print content of manifest file to check any mysterious jar..." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://zemian.github.io/">ZBlog</a></h1>
+                <nav><ul>
+                    <li><a href="https://zemian.github.io/pages/about-the-author.html">About The Author</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://zemian.github.io/2014/how-to-process-stream-and-read-text-file-in-java-8.html" rel="bookmark"
+           title="Permalink to How to process stream and read text file in Java 8">How to process stream and read text file in Java 8</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2014-03-31T00:00:00-05:00">
+                Published: Mon 31 March 2014
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/java.html">java</a> </p>
+</footer><!-- /.post-info -->      <p>I have converted one of my old utility class using latest Java8. I use this often to print content of manifest file to check any mysterious jar file for version etc. Just run "java ztools.PrintJar /path/to/my.jar" to see output. In the new code, you will see how I use the Java 8 stream processing to filter what I need from an Enumeration list, and then get the optional result if there is any. And then the BufferedReader now comes with "lines()" method that also do streaming. It's pretty cool to see Java 8 in actions!</p>
+<div class="highlight"><pre><span></span><code><span class="n">package</span> <span class="n">ztools</span><span class="p">;</span>
+
+<span class="kn">import</span> <span class="nn">java.io.BufferedReader</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">java.io.InputStream</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">java.io.InputStreamReader</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">java.util.Optional</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">java.util.jar.JarEntry</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">java.util.jar.JarFile</span><span class="p">;</span>
+
+<span class="o">/**</span>
+ <span class="o">*</span> <span class="n">Print</span> <span class="n">text</span> <span class="n">based</span> <span class="n">resource</span> <span class="n">file</span> <span class="n">inside</span> <span class="n">a</span> <span class="n">jar</span> <span class="n">file</span><span class="o">.</span> <span class="p">(</span><span class="n">eg</span><span class="p">:</span> <span class="n">META</span><span class="o">-</span><span class="n">INF</span><span class="o">/</span><span class="n">MANIFEST</span><span class="o">.</span><span class="n">MF</span><span class="p">)</span>
+ <span class="o">*</span> <span class="nd">@author</span> <span class="n">Zemian</span> <span class="n">Deng</span>
+ <span class="o">*/</span>
+<span class="n">public</span> <span class="k">class</span> <span class="nc">PrintJar</span> <span class="p">{</span>
+    <span class="n">public</span> <span class="n">static</span> <span class="n">void</span> <span class="n">main</span><span class="p">(</span><span class="n">String</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span> <span class="n">throws</span> <span class="ne">Exception</span> <span class="p">{</span>
+        <span class="o">//</span> <span class="n">Search</span> <span class="n">given</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">a</span> <span class="n">jar</span>
+        <span class="n">JarFile</span> <span class="n">jarFile</span> <span class="o">=</span> <span class="n">new</span> <span class="n">JarFile</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+        <span class="n">final</span> <span class="n">String</span> <span class="n">searchName</span> <span class="o">=</span> <span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">length</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">)</span> <span class="err">?</span> <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">:</span> <span class="s2">&quot;META-INF/MANIFEST.MF&quot;</span><span class="p">;</span>
+        <span class="n">Optional</span><span class="o">&lt;</span><span class="n">JarEntry</span><span class="o">&gt;</span> <span class="n">searchResult</span> <span class="o">=</span> <span class="n">jarFile</span>
+                <span class="o">.</span><span class="n">stream</span><span class="p">()</span>
+                <span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">e</span> <span class="o">-&gt;</span> <span class="n">e</span><span class="o">.</span><span class="n">getName</span><span class="p">()</span><span class="o">.</span><span class="n">equals</span><span class="p">(</span><span class="n">searchName</span><span class="p">))</span>
+                <span class="o">.</span><span class="n">findFirst</span><span class="p">();</span>
+        <span class="k">if</span> <span class="p">(</span><span class="err">!</span><span class="n">searchResult</span><span class="o">.</span><span class="n">isPresent</span><span class="p">())</span>
+            <span class="n">throw</span> <span class="n">new</span> <span class="n">RuntimeException</span><span class="p">(</span><span class="n">searchName</span> <span class="o">+</span> <span class="s2">&quot; not found!&quot;</span><span class="p">);</span>
+
+        <span class="o">//</span> <span class="n">Print</span> <span class="n">the</span> <span class="n">JarEntry</span>
+        <span class="n">JarEntry</span> <span class="n">entry</span> <span class="o">=</span> <span class="n">searchResult</span><span class="o">.</span><span class="n">get</span><span class="p">();</span>
+        <span class="k">try</span> <span class="p">(</span><span class="n">InputStream</span> <span class="n">instream</span> <span class="o">=</span> <span class="n">jarFile</span><span class="o">.</span><span class="n">getInputStream</span><span class="p">(</span><span class="n">entry</span><span class="p">))</span> <span class="p">{</span>
+            <span class="n">BufferedReader</span> <span class="n">reader</span> <span class="o">=</span> <span class="n">new</span> <span class="n">BufferedReader</span><span class="p">(</span><span class="n">new</span> <span class="n">InputStreamReader</span><span class="p">(</span><span class="n">instream</span><span class="p">));</span>
+            <span class="n">reader</span><span class="o">.</span><span class="n">lines</span><span class="p">()</span><span class="o">.</span><span class="n">forEach</span><span class="p">(</span><span class="n">line</span> <span class="o">-&gt;</span> <span class="n">System</span><span class="o">.</span><span class="n">out</span><span class="o">.</span><span class="n">println</span><span class="p">(</span><span class="n">line</span><span class="p">));</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

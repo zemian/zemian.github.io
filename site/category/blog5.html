@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>ZBlog - Blog</title>
+        <link rel="stylesheet" href="https://zemian.github.io/theme/css/main.css" />
+        <link href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="ZBlog Atom Feed" />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://zemian.github.io/">ZBlog</a></h1>
+                <nav><ul>
+                    <li><a href="https://zemian.github.io/pages/about-the-author.html">About The Author</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+                <section id="content" class="body">
+                    <ol id="posts-list" class="hfeed" start="9">
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2018/run-tomcat-with-webapp-runnerjar.html" rel="bookmark"
+                           title="Permalink to Run Tomcat with webapp-runner.jar">Run Tomcat with webapp-runner.jar</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-06-21T00:00:00-05:00">
+                Published: Thu 21 June 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/tomcat.html">tomcat</a> <a href="https://zemian.github.io/tag/webapp-runner.html">webapp-runner</a> <a href="https://zemian.github.io/tag/java.html">java</a> </p>
+</footer><!-- /.post-info -->                <p>I have used <a href="https://github.com/jsimone/webapp-runner">https://github.com/jsimone/webapp-runner</a> in several
+projects now, and I find it really useful.</p>
+<p>You can start a Tomcat instance as simple as this:</p>
+<div class="highlight"><pre><span></span><code>java -jar target/webapp-runner.jar target/adocblog.war
+</code></pre></div>
+
+<p>However if you need to run it with extra classpath entries, then you
+would …</p>
+                <a class="readmore" href="https://zemian.github.io/2018/run-tomcat-with-webapp-runnerjar.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2018/installing-python-on-windows-without-admin-rights.html" rel="bookmark"
+                           title="Permalink to Installing Python on Windows Without Admin Rights">Installing Python on Windows Without Admin Rights</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-06-06T00:00:00-05:00">
+                Published: Wed 06 June 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/python.html">python</a> <a href="https://zemian.github.io/tag/install.html">install</a> </p>
+</footer><!-- /.post-info -->                <p>To install Python on Windows without Admin Rights:</p>
+<ol>
+<li>
+<p>Download binary from <a href="https://www.python.org/downloads/windows/">https://www.python.org/downloads/windows/</a></p>
+</li>
+<li>
+<p>Run the following in <code>cmd.exe</code> terminal.</p>
+<p><code>mkdir %USERPROFILE%\apps\python-2.6.6
+msiexec /a python-2.6.6.amd64.msi /qb TARGETDIR=%USERPROFILE%\apps\python-2.6.6</code></p>
+</li>
+</ol>
+<p>Starting Python 3.5 the official …</p>
+                <a class="readmore" href="https://zemian.github.io/2018/installing-python-on-windows-without-admin-rights.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2018/python-argparse-with-multiple-occurance-of-an-option.html" rel="bookmark"
+                           title="Permalink to Python argparse with multiple occurance of an option">Python argparse with multiple occurance of an option</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-06-06T00:00:00-05:00">
+                Published: Wed 06 June 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/optparse.html">optparse</a> <a href="https://zemian.github.io/tag/argparse.html">argparse</a> <a href="https://zemian.github.io/tag/python.html">python</a> </p>
+</footer><!-- /.post-info -->                <div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">argparse</span>
+<span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;prog_args&quot;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s1">&#39;*&#39;</span><span class="p">)</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-e&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;append&#39;</span><span class="p">)</span>
+<span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+<span class="n">prog_args</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">prog_args</span>
+<span class="n">env</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">([</span><span class="n">e</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;=&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">args</span><span class="o">.</span><span class="n">e</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Program args: </span><span class="si">{</span><span class="n">prog_args</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Env options: </span><span class="si">{</span><span class="n">env</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code>$ python3 test.py one …</code></pre></div>
+                <a class="readmore" href="https://zemian.github.io/2018/python-argparse-with-multiple-occurance-of-an-option.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2018/how-to-setup-ssh-folder-permissions.html" rel="bookmark"
+                           title="Permalink to How to setup .ssh folder permissions">How to setup .ssh folder permissions</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-05-24T00:00:00-05:00">
+                Published: Thu 24 May 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/ssh.html">ssh</a> <a href="https://zemian.github.io/tag/linux.html">linux</a> </p>
+</footer><!-- /.post-info -->                <p>How to setup .ssh folder permissions</p>
+<div class="highlight"><pre><span></span><code>chmod <span class="m">700</span> ~/.ssh                 <span class="c1"># (drwx------)</span>
+chmod <span class="m">600</span> ~/.ssh/authorized_keys <span class="c1"># (-rw-------)</span>
+chmod <span class="m">600</span> ~/.ssh/id_rsa          <span class="c1"># (-rw-------)</span>
+chmod <span class="m">644</span> ~/.ssh/id_rsa.pub      <span class="c1"># (-rw-r--r--)</span>
+chmod <span class="m">755</span> ~                      <span class="c1"># (drwxr-xr-x)</span>
+</code></pre></div>
+
+<p>ref: <a href="https://superuser.com/questions/215504/permissions-on-private-key-in-ssh-folder">https://superuser.com/questions/215504/permissions-on-private-key-in-ssh-folder</a></p>
+                <a class="readmore" href="https://zemian.github.io/2018/how-to-setup-ssh-folder-permissions.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2018/create-multiple-vms-using-vagrant.html" rel="bookmark"
+                           title="Permalink to Create multiple VMs using Vagrant">Create multiple VMs using Vagrant</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-05-19T00:00:00-05:00">
+                Published: Sat 19 May 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/vagrant.html">vagrant</a> <a href="https://zemian.github.io/tag/virtualbox.html">virtualbox</a> <a href="https://zemian.github.io/tag/vm.html">vm</a> <a href="https://zemian.github.io/tag/ubuntu.html">ubuntu</a> </p>
+</footer><!-- /.post-info -->                <p>Vagrant is a great tool to automate and setup VMs. Here is a config file
+that can setup multiple VMs in your own PC to simulate a
+controller(admin), db, and app servers farm env. I will setup so that
+it’s ready to install Ansible in a the control …</p>
+                <a class="readmore" href="https://zemian.github.io/2018/create-multiple-vms-using-vagrant.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2018/starting-sublimetext-on-cygwin.html" rel="bookmark"
+                           title="Permalink to Starting SublimeText on Cygwin">Starting SublimeText on Cygwin</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-04-09T00:00:00-05:00">
+                Published: Mon 09 April 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/sublimetext.html">sublimetext</a> <a href="https://zemian.github.io/tag/cygwin.html">cygwin</a> <a href="https://zemian.github.io/tag/editor.html">editor</a> </p>
+</footer><!-- /.post-info -->                <p>I edit files a lot from command line Cygwin, and I usually use an alias
+<code>e</code> to my favorite editor. For SublimeText, I found it more useful to
+start a new windows on files I pass in like this:</p>
+<div class="highlight"><pre><span></span><code><span class="n">function</span><span class="w"> </span><span class="nf">subl</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="s">&quot;/C/Users/zemian/apps/Sublime-Text-Build-3143-x64/subl.exe&quot;</span><span class="w"> </span><span class="o">--</span><span class="n">new</span><span class="o">-</span><span class="n">window …</span></code></pre></div>
+                <a class="readmore" href="https://zemian.github.io/2018/starting-sublimetext-on-cygwin.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2018/java-versions.html" rel="bookmark"
+                           title="Permalink to Java versions">Java versions</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-03-26T00:00:00-05:00">
+                Published: Mon 26 March 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/java.html">java</a> <a href="https://zemian.github.io/tag/javap.html">javap</a> </p>
+</footer><!-- /.post-info -->                <p>How to check Java version from compiled classes</p>
+<div class="highlight"><pre><span></span><code>javap -cp target/classes -verbose com.zemian.hellojava.App | grep &#39;major version&#39;
+major version: 49
+</code></pre></div>
+
+<p>You may use this forumla to get the JDK version:
+<code>&lt;class_file_major_ver&gt; - 44 = JDK version</code>. So this means above class
+is targeted for JDK 5 …</p>
+                <a class="readmore" href="https://zemian.github.io/2018/java-versions.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2018/compare-multiple-jdk-versions-startup-time.html" rel="bookmark"
+                           title="Permalink to Compare Multiple JDK Versions Startup Time">Compare Multiple JDK Versions Startup Time</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-03-24T00:00:00-05:00">
+                Published: Sat 24 March 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/jdk.html">jdk</a> <a href="https://zemian.github.io/tag/java.html">java</a> <a href="https://zemian.github.io/tag/python.html">python</a> </p>
+</footer><!-- /.post-info -->                <p>Script file: <code>jdk-startup-time-test.py</code></p>
+<div class="highlight"><pre><span></span><code><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># Author: Zemian Deng 2018-03-24</span>
+<span class="c1">#</span>
+<span class="c1"># This script will test multiple JDK versions of startup time in your system</span>
+<span class="c1"># We assume all JDK are installed in $HOME/apps directory with</span>
+<span class="c1"># names matching in &#39;jdk_versions&#39; list.</span>
+<span class="c1"># Also we asusme you compiled `hello.java` with …</span></code></pre></div>
+                <a class="readmore" href="https://zemian.github.io/2018/compare-multiple-jdk-versions-startup-time.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2018/oracle-java-se-jdk-vs-openjdk.html" rel="bookmark"
+                           title="Permalink to Oracle Java SE JDK vs OpenJDK">Oracle Java SE JDK vs OpenJDK</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-03-24T00:00:00-05:00">
+                Published: Sat 24 March 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/openjdk.html">openjdk</a> <a href="https://zemian.github.io/tag/jdk.html">jdk</a> <a href="https://zemian.github.io/tag/java.html">java</a> </p>
+</footer><!-- /.post-info -->                <p>In general:</p>
+<ul>
+<li>
+<p>JRE - Java Runtime Environment. It comes with the Java (<code>java</code>)
+    executable for running Java application. This is typical for end
+    users who use it to run compiled Java applications (in jar file
+    distribution), and not doing any development. JRE is smaller to
+    download than JDK.</p>
+</li>
+<li>
+<p>JDK - Java Development …</p></li></ul>
+                <a class="readmore" href="https://zemian.github.io/2018/oracle-java-se-jdk-vs-openjdk.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2018/switching-different-jdk-in-cygwin.html" rel="bookmark"
+                           title="Permalink to Switching Different JDK in Cygwin">Switching Different JDK in Cygwin</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-03-24T00:00:00-05:00">
+                Published: Sat 24 March 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/cygwin.html">cygwin</a> <a href="https://zemian.github.io/tag/jdk.html">jdk</a> <a href="https://zemian.github.io/tag/java.html">java</a> </p>
+</footer><!-- /.post-info -->                <p>I love to use bash shell terminal. It’s a much more powerful terminal to
+do everyday tasks. Even in Windows, I can get most of what I need using
+Cygwin. Unfortunately Java executable are native to OS only, and for
+Windows, it would still work under Cygwin, but all …</p>
+                <a class="readmore" href="https://zemian.github.io/2018/switching-different-jdk-in-cygwin.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+                </ol><!-- /#posts-list -->
+<p class="paginator">
+        <a href="https://zemian.github.io/category/blog.html">&#8647;</a>
+        <a href="https://zemian.github.io/category/blog4.html">&laquo;</a>
+    Page 5 / 30
+        <a href="https://zemian.github.io/category/blog6.html">&raquo;</a>
+        <a href="https://zemian.github.io/category/blog30.html">&#8649;</a>
+</p>
+                </section><!-- /#content -->
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

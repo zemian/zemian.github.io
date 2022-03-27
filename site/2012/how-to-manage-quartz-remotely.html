@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>How to manage Quartz remotely</title>
+        <link rel="stylesheet" href="https://zemian.github.io/theme/css/main.css" />
+        <link href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="ZBlog Atom Feed" />
+        <meta name="description" content="Option 1: JMX Many people asked can they manage Quartz via JMX, and that the documentation on this is not clear enough to help them get started...." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://zemian.github.io/">ZBlog</a></h1>
+                <nav><ul>
+                    <li><a href="https://zemian.github.io/pages/about-the-author.html">About The Author</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://zemian.github.io/2012/how-to-manage-quartz-remotely.html" rel="bookmark"
+           title="Permalink to How to manage Quartz remotely">How to manage Quartz remotely</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2012-08-27T00:00:00-05:00">
+                Published: Mon 27 August 2012
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/quartz.html">quartz</a> </p>
+</footer><!-- /.post-info -->      <h2>Option 1: JMX</h2>
+<p>Many people asked can they manage Quartz via JMX, and that the documentation on this is not clear enough to help them get started. So, let me highlight couple ways you can do this.</p>
+<p>Yes you can enable JMX in quartz with the following in 
+<code>quartz.properties</code></p>
+<div class="highlight"><pre><span></span><code><span class="n">org</span><span class="o">.</span><span class="n">quartz</span><span class="o">.</span><span class="n">scheduler</span><span class="o">.</span><span class="n">jmx</span><span class="o">.</span><span class="k">export</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">true</span><span class="w"></span>
+</code></pre></div>
+
+<p>After this, you use standard JMX client such as <code>$JAVA_HOME/bin/jconsole</code> to connect and manage remotely. </p>
+<h2>Option 2: RMI</h2>
+<p>Another way to manage quartz remotely is to enable RMI in Quartz. If you use this, you basically run one instance of Quartz as RMI server, and then 
+you can create second Quartz instance as RMI client. These two can talk remotely via a TCP port. </p>
+<p>For server scheduler instance, you want to add these in <code>quartz.properties</code></p>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="n">org</span><span class="o">.</span><span class="n">quartz</span><span class="o">.</span><span class="n">scheduler</span><span class="o">.</span><span class="n">rmi</span><span class="o">.</span><span class="k">export</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">true</span><span class="w"></span>
+<span class="w">    </span><span class="n">org</span><span class="o">.</span><span class="n">quartz</span><span class="o">.</span><span class="n">scheduler</span><span class="o">.</span><span class="n">rmi</span><span class="o">.</span><span class="n">createRegistry</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">true</span><span class="w"></span>
+<span class="w">    </span><span class="n">org</span><span class="o">.</span><span class="n">quartz</span><span class="o">.</span><span class="n">scheduler</span><span class="o">.</span><span class="n">rmi</span><span class="o">.</span><span class="n">registryHost</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">localhost</span><span class="w"></span>
+<span class="w">    </span><span class="n">org</span><span class="o">.</span><span class="n">quartz</span><span class="o">.</span><span class="n">scheduler</span><span class="o">.</span><span class="n">rmi</span><span class="o">.</span><span class="n">registryPort</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1099</span><span class="w"></span>
+<span class="w">    </span><span class="n">org</span><span class="o">.</span><span class="n">quartz</span><span class="o">.</span><span class="n">scheduler</span><span class="o">.</span><span class="n">rmi</span><span class="o">.</span><span class="n">serverPort</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1100</span><span class="w"></span>
+</code></pre></div>
+
+<p>And for client scheduler instance, you want to add these in <code>quartz.properties</code></p>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="n">org</span><span class="p">.</span><span class="n">quartz</span><span class="p">.</span><span class="n">scheduler</span><span class="p">.</span><span class="n">rmi</span><span class="p">.</span><span class="n">proxy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">true</span><span class="w"></span>
+<span class="w">    </span><span class="n">org</span><span class="p">.</span><span class="n">quartz</span><span class="p">.</span><span class="n">scheduler</span><span class="p">.</span><span class="n">rmi</span><span class="p">.</span><span class="n">registryHost</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">localhost</span><span class="w"></span>
+<span class="w">    </span><span class="n">org</span><span class="p">.</span><span class="n">quartz</span><span class="p">.</span><span class="n">scheduler</span><span class="p">.</span><span class="n">rmi</span><span class="p">.</span><span class="n">registryPort</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">1099</span><span class="w"></span>
+</code></pre></div>
+
+<p>The RMI feature is mentioned in Quartz doc <a href="http://quartz-scheduler.org/documentation/quartz-2.x/configuration/ConfigRMI">here</a>. Quartz doesn't have 
+a <em>client</em> API, but use the same <code>org.quartz.Scheduler</code> for both server and client. It's just the configuration are different.
+By different configuration, you get very different behavior. For server, your scheduler is running all the jobs, while for client, it's simply a
+proxy. Your client scheduler instance will not run any jobs! You must be really careful when shutting down client because it does allow you to bring
+down the server!</p>
+<p>These configurations have been highlighted in the <a href="http://code.google.com/p/myschedule">MySchedule</a> project. If you run the webapp, you should see
+a screen like <a href="http://stormy-flower-6956.herokuapp.com/main/dashboard/create">this demo</a>, and you will see it provided many sample of quartz configurations
+with these remote managment config properties.</p>
+<p>If configure with RMI option, you can actually still use MySchedule web UI to manage the Quartz as proxy. You can view and drill down jobs, and you can
+even stop or shutdown remote server!</p>
+<p>Based on my experience, there is a down side of using Quartz RMI feature though. That is it creates a single point of failure. There is no fail over 
+if your RMI server port is down!</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

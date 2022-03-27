@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>ZBlog - git</title>
+        <link rel="stylesheet" href="https://zemian.github.io/theme/css/main.css" />
+        <link href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="ZBlog Atom Feed" />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://zemian.github.io/">ZBlog</a></h1>
+                <nav><ul>
+                    <li><a href="https://zemian.github.io/pages/about-the-author.html">About The Author</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="https://zemian.github.io/2018/git-clone-failed-with-ssl-certificate-problem.html">Git clone failed with SSL certificate problem</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2018-03-03T00:00:00-05:00">
+                Published: Sat 03 March 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/git.html">git</a> </p>
+</footer><!-- /.post-info --><p>Problem:</p>
+<div class="highlight"><pre><span></span><code>git clone https://github.com/notepad-plus-plus/notepad-plus-plus
+Cloning into &#39;notepad-plus-plus&#39;...
+fatal: unable to access &#39;https://github.com/notepad-plus-plus/notepad-plus-plus/&#39;: SSL certificate problem: unable to get local issuer certificate
+</code></pre></div>
+
+<p>Solution:</p>
+<div class="highlight"><pre><span></span><code><span class="nv">git</span> <span class="nv">config</span> <span class="o">--</span><span class="nv">global</span> <span class="nv">http</span>.<span class="nv">sslVerify</span> <span class="nv">false</span>
+# <span class="k">then</span> <span class="nv">retry</span> <span class="nv">above</span> <span class="nv">command</span>
+</code></pre></div>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2016/git-branch-name-with-slash.html" rel="bookmark"
+                           title="Permalink to Git Branch name with 'slash'">Git Branch name with 'slash'</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2016-10-09T00:00:00-05:00">
+                Published: Sun 09 October 2016
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/git.html">git</a> </p>
+</footer><!-- /.post-info -->                <p>Git allows you to use <code>/</code> slash in your branch name. It’s useful for
+grouping branches. However, you need to be careful that once a slashy
+branch name is created, you can’t use its name as the "base" for another
+new nested slash name! For example:</p>
+<div class="highlight"><pre><span></span><code><span class="err">#</span><span class="w"> </span><span class="nt">this</span><span class="w"> </span><span class="nt">is</span><span class="w"> </span><span class="nt">fine …</span></code></pre></div>
+                <a class="readmore" href="https://zemian.github.io/2016/git-branch-name-with-slash.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2016/my-quick-git-reference.html" rel="bookmark"
+                           title="Permalink to My Quick Git Reference">My Quick Git Reference</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2016-10-04T00:00:00-05:00">
+                Published: Tue 04 October 2016
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/git.html">git</a> </p>
+</footer><!-- /.post-info -->                <p>I have started using git and here are some of my frequently used
+commands.</p>
+<div class="highlight"><pre><span></span><code><span class="nv">git</span> <span class="nv">clone</span> <span class="nv">http</span>:<span class="o">//</span><span class="nv">path</span><span class="o">/</span><span class="nv">to</span><span class="o">/</span><span class="nv">repo</span>.<span class="nv">git</span>  # <span class="nv">Retrieve</span> <span class="nv">a</span> <span class="nv">repo</span> <span class="k">for</span> <span class="nv">work</span> <span class="ss">(</span><span class="nv">auto</span> <span class="nv">checkout</span> <span class="nv">master</span> <span class="nv">branch</span> <span class="nv">into</span> <span class="nv">WorkingDir</span><span class="ss">)</span>
+<span class="nv">git</span> <span class="nv">init</span>                           # <span class="nv">Create</span> <span class="nv">new</span> <span class="nv">repository</span> <span class="k">for</span> <span class="nv">work</span> <span class="ss">(</span><span class="nv">auto</span> <span class="nv">checkout</span> <span class="nv">master</span> <span class="nv">branch</span> <span class="nv">into</span> <span class="nv">WorkingDir</span><span class="ss">)</span>
+<span class="nv">git</span> <span class="nv">init</span> <span class="o">--</span><span class="nv">bare</span>                    # <span class="nv">Create</span> <span class="nv">new …</span></code></pre></div>
+                <a class="readmore" href="https://zemian.github.io/2016/my-quick-git-reference.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2012/where-did-git-go.html" rel="bookmark"
+                           title="Permalink to Where did Git go?">Where did Git go?</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2012-09-18T00:00:00-05:00">
+                Published: Tue 18 September 2012
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/git.html">git</a> </p>
+</footer><!-- /.post-info -->                <p>My git is gone after I upgraded to latest MacOSX updates! What a annoying thing.</p>
+<p>Appearently it's in here now: <code>/usr/local/git/bin/git</code></p>
+<p>You can edit your <code>$PATH</code> like it says <a href="http://stackoverflow.com/questions/6810059/git-on-mac-os-x-lion">here</a>, or you could just relink it.</p>
+<div class="highlight"><pre><span></span><code>ln -s /usr/local/git/bin/git /usr/local/bin …</code></pre></div>
+                <a class="readmore" href="https://zemian.github.io/2012/where-did-git-go.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+                </ol><!-- /#posts-list -->
+                </section><!-- /#content -->
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

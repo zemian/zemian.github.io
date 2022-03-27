@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>Building message based application using Camel</title>
+        <link rel="stylesheet" href="https://zemian.github.io/theme/css/main.css" />
+        <link href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="ZBlog Atom Feed" />
+        <meta name="description" content="This is a long article that contains three separate topics: Getting started with Apache Camel with Java Improving startup of routes with a..." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://zemian.github.io/">ZBlog</a></h1>
+                <nav><ul>
+                    <li><a href="https://zemian.github.io/pages/about-the-author.html">About The Author</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://zemian.github.io/2012/building-message-based-application-using-camel.html" rel="bookmark"
+           title="Permalink to Building message based application using Camel">Building message based application using Camel</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2012-09-14T00:00:00-05:00">
+                Published: Fri 14 September 2012
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/camel.html">camel</a> </p>
+</footer><!-- /.post-info -->      <p>This is a long article that contains three separate topics:</p>
+<ul>
+<li>Getting started with Apache Camel with Java</li>
+<li>Improving startup of routes with a CamelRunner</li>
+<li>Building message based application using Camel</li>
+</ul>
+<p>But since I've prepared a <a href="https://bitbucket.org/saltnlight5/sandbox/downloads">camel-demo-1.0.0-SNAPSHOT-project.zip</a> that has all these materials included, I thought it would easier to combine them and present it as whole.</p>
+<h1>Getting started with Apache Camel with Java</h1>
+<p>Trying out <a href="https://zemian.github.io/2012/08/getting-started-with-apache-camel-using.html">Camel with few Groovy lines</a> is one thing, but 
+getting a full scale project in Java is another matter. Today, I will show you how to get things started on <a href="http://camel.apache.org/">Apache Camel</a> with 
+<a href="http://maven.apache.org/">Maven</a> based project. You may also use the provided <code>camel-demo</code> as project template to jump start your own Apache Camel 
+project. You would just need to rename the Java package and rename the pom's group and artifact id's to match your need.</p>
+<h2>Preparing a Maven based project with Camel dependencies</h2>
+<p>Unzip the <code>camel-demo</code> project source, and you will see the basic directory layout.</p>
+<div class="highlight"><pre><span></span><code>    camel-demo
+        +- bin
+        +- config
+        +- data
+        +- src
+        +- pom.xml
+        +- README.txt
+</code></pre></div>
+
+<p>What makes this demo a Camel based project is just the declaration in <code>pom.xml</code>. Let's take a look the file and its dependencies.</p>
+<div class="highlight"><pre><span></span><code>    <span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+    <span class="nt">&lt;project</span> <span class="na">xmlns=</span><span class="s">&quot;http://maven.apache.org/POM/4.0.0&quot;</span> <span class="na">xmlns:xsi=</span><span class="s">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span>
+        <span class="na">xsi:schemaLocation=</span><span class="s">&quot;http://maven.apache.org/POM/4.0.0   http://maven.apache.org/maven-v4_0_0.xsd&quot;</span><span class="nt">&gt;</span>
+
+        <span class="nt">&lt;modelVersion&gt;</span>4.0.0<span class="nt">&lt;/modelVersion&gt;</span>
+        <span class="nt">&lt;groupId&gt;</span>deng.cameldemo<span class="nt">&lt;/groupId&gt;</span>
+        <span class="nt">&lt;artifactId&gt;</span>camel-demo<span class="nt">&lt;/artifactId&gt;</span>
+        <span class="nt">&lt;version&gt;</span>1.0.0-SNAPSHOT<span class="nt">&lt;/version&gt;</span>
+        <span class="nt">&lt;packaging&gt;</span>jar<span class="nt">&lt;/packaging&gt;</span>
+
+        <span class="nt">&lt;properties&gt;</span>
+            <span class="nt">&lt;project.build.sourceEncoding&gt;</span>UTF-8<span class="nt">&lt;/project.build.sourceEncoding&gt;</span>
+            <span class="nt">&lt;slf4j.version&gt;</span>1.6.6<span class="nt">&lt;/slf4j.version&gt;</span>
+            <span class="nt">&lt;camel.version&gt;</span>2.10.1<span class="nt">&lt;/camel.version&gt;</span>
+        <span class="nt">&lt;/properties&gt;</span>
+
+        <span class="nt">&lt;build&gt;</span>
+            <span class="nt">&lt;plugins&gt;</span>
+                <span class="nt">&lt;plugin&gt;</span>
+                    <span class="nt">&lt;artifactId&gt;</span>maven-compiler-plugin<span class="nt">&lt;/artifactId&gt;</span>
+                    <span class="nt">&lt;version&gt;</span>2.3.2<span class="nt">&lt;/version&gt;</span>
+                    <span class="nt">&lt;configuration&gt;</span>
+                        <span class="nt">&lt;source&gt;</span>1.6<span class="nt">&lt;/source&gt;</span>
+                        <span class="nt">&lt;target&gt;</span>1.6<span class="nt">&lt;/target&gt;</span>
+                    <span class="nt">&lt;/configuration&gt;</span>
+                <span class="nt">&lt;/plugin&gt;</span>
+                <span class="nt">&lt;plugin&gt;</span>
+                    <span class="nt">&lt;artifactId&gt;</span>maven-assembly-plugin<span class="nt">&lt;/artifactId&gt;</span>
+                    <span class="nt">&lt;version&gt;</span>2.3<span class="nt">&lt;/version&gt;</span>
+                    <span class="nt">&lt;configuration&gt;</span>
+                        <span class="nt">&lt;descriptorRefs&gt;</span>
+                            <span class="nt">&lt;descriptorRef&gt;</span>project<span class="nt">&lt;/descriptorRef&gt;</span>
+                            <span class="nt">&lt;descriptorRef&gt;</span>jar-with-dependencies<span class="nt">&lt;/descriptorRef&gt;</span>
+                        <span class="nt">&lt;/descriptorRefs&gt;</span>
+                    <span class="nt">&lt;/configuration&gt;</span>
+                    <span class="nt">&lt;executions&gt;</span>
+                        <span class="nt">&lt;execution&gt;</span>
+                            <span class="nt">&lt;id&gt;</span>make-assembly<span class="nt">&lt;/id&gt;</span>
+                            <span class="nt">&lt;phase&gt;</span>package<span class="nt">&lt;/phase&gt;</span>
+                            <span class="nt">&lt;goals&gt;</span>
+                                <span class="nt">&lt;goal&gt;</span>single<span class="nt">&lt;/goal&gt;</span>
+                            <span class="nt">&lt;/goals&gt;</span>
+                        <span class="nt">&lt;/execution&gt;</span>
+                    <span class="nt">&lt;/executions&gt;</span>
+                <span class="nt">&lt;/plugin&gt;</span>
+            <span class="nt">&lt;/plugins&gt;</span>
+        <span class="nt">&lt;/build&gt;</span>
+
+        <span class="nt">&lt;dependencies&gt;</span>
+
+            <span class="cm">&lt;!-- Unit testing lib --&gt;</span>
+            <span class="nt">&lt;dependency&gt;</span>
+                <span class="nt">&lt;groupId&gt;</span>junit<span class="nt">&lt;/groupId&gt;</span>
+                <span class="nt">&lt;artifactId&gt;</span>junit-dep<span class="nt">&lt;/artifactId&gt;</span>
+                <span class="nt">&lt;version&gt;</span>4.10<span class="nt">&lt;/version&gt;</span>
+                <span class="nt">&lt;scope&gt;</span>test<span class="nt">&lt;/scope&gt;</span>
+            <span class="nt">&lt;/dependency&gt;</span>
+            <span class="nt">&lt;dependency&gt;</span>
+                <span class="nt">&lt;groupId&gt;</span>org.hamcrest<span class="nt">&lt;/groupId&gt;</span>
+                <span class="nt">&lt;artifactId&gt;</span>hamcrest-library<span class="nt">&lt;/artifactId&gt;</span>
+                <span class="nt">&lt;version&gt;</span>1.2.1<span class="nt">&lt;/version&gt;</span>
+                <span class="nt">&lt;scope&gt;</span>test<span class="nt">&lt;/scope&gt;</span>
+            <span class="nt">&lt;/dependency&gt;</span>
+
+            <span class="cm">&lt;!-- Logging lib --&gt;</span>
+            <span class="nt">&lt;dependency&gt;</span>
+                <span class="nt">&lt;groupId&gt;</span>org.slf4j<span class="nt">&lt;/groupId&gt;</span>
+                <span class="nt">&lt;artifactId&gt;</span>slf4j-api<span class="nt">&lt;/artifactId&gt;</span>
+                <span class="nt">&lt;version&gt;</span><span class="cp">${</span><span class="n">slf4j</span><span class="o">.</span><span class="n">version</span><span class="cp">}</span><span class="nt">&lt;/version&gt;</span>
+            <span class="nt">&lt;/dependency&gt;</span>
+            <span class="nt">&lt;dependency&gt;</span>
+                <span class="nt">&lt;groupId&gt;</span>org.slf4j<span class="nt">&lt;/groupId&gt;</span>
+                <span class="nt">&lt;artifactId&gt;</span>slf4j-log4j12<span class="nt">&lt;/artifactId&gt;</span>
+                <span class="nt">&lt;version&gt;</span><span class="cp">${</span><span class="n">slf4j</span><span class="o">.</span><span class="n">version</span><span class="cp">}</span><span class="nt">&lt;/version&gt;</span>
+                <span class="nt">&lt;scope&gt;</span>runtime<span class="nt">&lt;/scope&gt;</span>
+                <span class="nt">&lt;optional&gt;</span>true<span class="nt">&lt;/optional&gt;</span>
+            <span class="nt">&lt;/dependency&gt;</span>
+
+            <span class="cm">&lt;!-- Apache Commons lib --&gt;</span>
+            <span class="nt">&lt;dependency&gt;</span>
+                <span class="nt">&lt;groupId&gt;</span>commons-lang<span class="nt">&lt;/groupId&gt;</span>
+                <span class="nt">&lt;artifactId&gt;</span>commons-lang<span class="nt">&lt;/artifactId&gt;</span>
+                <span class="nt">&lt;version&gt;</span>2.6<span class="nt">&lt;/version&gt;</span>
+            <span class="nt">&lt;/dependency&gt;</span>
+            <span class="nt">&lt;dependency&gt;</span>
+                <span class="nt">&lt;groupId&gt;</span>commons-io<span class="nt">&lt;/groupId&gt;</span>
+                <span class="nt">&lt;artifactId&gt;</span>commons-io<span class="nt">&lt;/artifactId&gt;</span>
+                <span class="nt">&lt;version&gt;</span>2.0.1<span class="nt">&lt;/version&gt;</span>
+            <span class="nt">&lt;/dependency&gt;</span>
+
+            <span class="cm">&lt;!-- Apache Camel --&gt;</span>
+            <span class="nt">&lt;dependency&gt;</span>
+                <span class="nt">&lt;groupId&gt;</span>org.apache.camel<span class="nt">&lt;/groupId&gt;</span>
+                <span class="nt">&lt;artifactId&gt;</span>camel-core<span class="nt">&lt;/artifactId&gt;</span>
+                <span class="nt">&lt;version&gt;</span><span class="cp">${</span><span class="n">camel</span><span class="o">.</span><span class="n">version</span><span class="cp">}</span><span class="nt">&lt;/version&gt;</span>
+            <span class="nt">&lt;/dependency&gt;</span>
+            <span class="nt">&lt;dependency&gt;</span>
+                <span class="nt">&lt;groupId&gt;</span>org.apache.camel<span class="nt">&lt;/groupId&gt;</span>
+                <span class="nt">&lt;artifactId&gt;</span>camel-spring<span class="nt">&lt;/artifactId&gt;</span>
+                <span class="nt">&lt;version&gt;</span><span class="cp">${</span><span class="n">camel</span><span class="o">.</span><span class="n">version</span><span class="cp">}</span><span class="nt">&lt;/version&gt;</span>
+            <span class="nt">&lt;/dependency&gt;</span>
+            <span class="nt">&lt;dependency&gt;</span>
+                <span class="nt">&lt;groupId&gt;</span>org.apache.camel<span class="nt">&lt;/groupId&gt;</span>
+                <span class="nt">&lt;artifactId&gt;</span>camel-groovy<span class="nt">&lt;/artifactId&gt;</span>
+                <span class="nt">&lt;version&gt;</span><span class="cp">${</span><span class="n">camel</span><span class="o">.</span><span class="n">version</span><span class="cp">}</span><span class="nt">&lt;/version&gt;</span>
+            <span class="nt">&lt;/dependency&gt;</span>
+            <span class="nt">&lt;dependency&gt;</span>
+                <span class="nt">&lt;groupId&gt;</span>org.apache.camel<span class="nt">&lt;/groupId&gt;</span>
+                <span class="nt">&lt;artifactId&gt;</span>camel-jackson<span class="nt">&lt;/artifactId&gt;</span>
+                <span class="nt">&lt;version&gt;</span><span class="cp">${</span><span class="n">camel</span><span class="o">.</span><span class="n">version</span><span class="cp">}</span><span class="nt">&lt;/version&gt;</span>
+            <span class="nt">&lt;/dependency&gt;</span>
+            <span class="nt">&lt;dependency&gt;</span>
+                <span class="nt">&lt;groupId&gt;</span>org.apache.camel<span class="nt">&lt;/groupId&gt;</span>
+                <span class="nt">&lt;artifactId&gt;</span>camel-mina<span class="nt">&lt;/artifactId&gt;</span>
+                <span class="nt">&lt;version&gt;</span><span class="cp">${</span><span class="n">camel</span><span class="o">.</span><span class="n">version</span><span class="cp">}</span><span class="nt">&lt;/version&gt;</span>
+            <span class="nt">&lt;/dependency&gt;</span>
+
+        <span class="nt">&lt;/dependencies&gt;</span>
+
+    <span class="nt">&lt;/project&gt;</span>
+</code></pre></div>
+
+<p>This <code>pom.xml</code> decalares a Java based application and it will produce <code>jar</code>. It requires minimal of JDK 6 or higher. Besides the typical <code>junit</code> and <code>hamcrest</code> for unit testing, I also added <code>slf4j</code> for logging. I have added couple Apache's <code>commons-lang/io</code> to the project as well. I think these are basic settings that any Java based application should use them.</p>
+<p>The <code>maven-assembly-plugin</code> I have declared is only for this demo packging purpose, and you may change or remove to suite your own project need. </p>
+<p>For Camel dependencies, you would need minimal <code>camel-core</code> for routes building. And then you can add any additional components you plan to use in your project. I have added the following for building typical message based application development:</p>
+<ol>
+<li>The <code>camel-spring</code> - we want to have option to declare Camel routes in xml files as configuration. See <code>camel-demo/config</code> directory for samples.</li>
+<li>The <code>camel-jackson</code> - we want to process messaging data in our application as JSON format.</li>
+<li>The <code>camel-mina</code> - we want to send messaging data accross network through TCP socket.</li>
+<li>The <code>camel-groovy</code> - [optional] we want to be able to add dynamic scripting to route, even inside the xml config. This is great for debug and POC.</li>
+</ol>
+<p>Note that since we use multiple camel components dependencies, I choose to set a Maven property <code>${camel.version}</code> so that when we upgrade Camel, 
+it's easier to maintain the <code>pom.xml</code> file in one place. </p>
+<p>You should able to cd into the project directory and run <code>mvn compile</code> to verify that the project. It should compile without error.</p>
+<h1>Improving startup of routes with a CamelRunner</h1>
+<p>With the project <code>pom.xml</code> file ready, you can start creating Camel routes to handle your own business logics. Before we get too excited, let's try out
+a simple <code>HelloRoute</code> to see how it works and how we can run it first. Here is the route defnition code in <code>src/main/java/deng/cameldemo/HelloRoute.java</code>.</p>
+<div class="highlight"><pre><span></span><code>    <span class="n">package</span> <span class="n">deng</span><span class="o">.</span><span class="n">cameldemo</span><span class="p">;</span>
+
+    <span class="kn">import</span> <span class="nn">org.apache.camel.builder.RouteBuilder</span><span class="p">;</span>
+
+    <span class="n">public</span> <span class="k">class</span> <span class="nc">HelloRoute</span> <span class="n">extends</span> <span class="n">RouteBuilder</span> <span class="p">{</span>
+        <span class="nd">@Override</span>
+        <span class="n">public</span> <span class="n">void</span> <span class="n">configure</span><span class="p">()</span> <span class="n">throws</span> <span class="ne">Exception</span> <span class="p">{</span>
+            <span class="n">from</span><span class="p">(</span><span class="s2">&quot;timer://helloTimer?period=3000&quot;</span><span class="p">)</span><span class="o">.</span>
+                <span class="n">to</span><span class="p">(</span><span class="s2">&quot;log:&quot;</span> <span class="o">+</span> <span class="n">getClass</span><span class="p">()</span><span class="o">.</span><span class="n">getName</span><span class="p">());</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+</code></pre></div>
+
+<h2>Take a test ride with the Camel</h2>
+<p>To see above in action, we need to add it into a <code>CamelContext</code> and start the context. For Java standalone program, we would write this setup code
+in a <code>Main</code> class. The Camel actually comes with a <code>org.apache.camel.main.MainSupport</code> abstract class that you may use to extend your own <code>Main</code>. 
+However, I think it would be even nicer if Camel would provide a <code>CamelRunner</code> that can run like this.</p>
+<div class="highlight"><pre><span></span><code>$ java CamelRunner deng.cameldemo.HelloRoute
+</code></pre></div>
+
+<p>Such <code>CamelRunner</code> would be very user friendly and re-usable to have, so that's what I did. I wrote one like this:</p>
+<div class="highlight"><pre><span></span><code>    <span class="n">package</span> <span class="n">deng</span><span class="o">.</span><span class="n">cameldemo</span><span class="p">;</span>
+
+    <span class="kn">import</span> <span class="nn">org.apache.camel.CamelContext</span><span class="p">;</span>
+    <span class="kn">import</span> <span class="nn">org.apache.camel.builder.RouteBuilder</span><span class="p">;</span>
+    <span class="kn">import</span> <span class="nn">org.apache.camel.impl.DefaultCamelContext</span><span class="p">;</span>
+    <span class="kn">import</span> <span class="nn">org.slf4j.Logger</span><span class="p">;</span>
+    <span class="kn">import</span> <span class="nn">org.slf4j.LoggerFactory</span><span class="p">;</span>
+    <span class="kn">import</span> <span class="nn">org.springframework.context.ConfigurableApplicationContext</span><span class="p">;</span>
+    <span class="kn">import</span> <span class="nn">org.springframework.context.support.FileSystemXmlApplicationContext</span><span class="p">;</span>
+
+    <span class="o">/**</span> 
+     <span class="o">*</span> <span class="n">A</span> <span class="n">main</span> <span class="n">program</span> <span class="n">to</span> <span class="n">start</span> <span class="n">Camel</span> <span class="ow">and</span> <span class="n">run</span> <span class="k">as</span> <span class="n">a</span> <span class="n">server</span> <span class="n">using</span> <span class="n">RouteBuilder</span> <span class="k">class</span> <span class="nc">names</span> <span class="ow">or</span> 
+     <span class="o">*</span> <span class="n">Spring</span> <span class="n">config</span> <span class="n">files</span><span class="o">.</span>
+     <span class="o">*</span> 
+     <span class="o">*</span> <span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">Usage</span><span class="p">:</span>
+     <span class="o">*</span> 
+     <span class="o">*</span> <span class="n">java</span> <span class="n">deng</span><span class="o">.</span><span class="n">cameldemo</span><span class="o">.</span><span class="n">CamelRunner</span> <span class="n">deng</span><span class="o">.</span><span class="n">cameldemo</span><span class="o">.</span><span class="n">HelloRoute</span>
+     <span class="o">*</span> 
+     <span class="o">*</span> <span class="ow">or</span>
+     <span class="o">*</span> 
+     <span class="o">*</span> <span class="n">java</span> <span class="o">-</span><span class="n">Dspring</span><span class="o">=</span><span class="n">true</span> <span class="n">deng</span><span class="o">.</span><span class="n">cameldemo</span><span class="o">.</span><span class="n">CamelRunner</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">camel</span><span class="o">-</span><span class="n">spring</span><span class="o">.</span><span class="n">xml</span>
+     <span class="o">*</span> 
+     <span class="o">*</span> <span class="nd">@author</span> <span class="n">Zemian</span> <span class="n">Deng</span>
+     <span class="o">*/</span>
+    <span class="n">public</span> <span class="k">class</span> <span class="nc">CamelRunner</span> <span class="p">{</span>
+        <span class="n">public</span> <span class="n">static</span> <span class="n">void</span> <span class="n">main</span><span class="p">(</span><span class="n">String</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span> <span class="n">throws</span> <span class="ne">Exception</span> <span class="p">{</span>
+            <span class="n">CamelRunner</span> <span class="n">runner</span> <span class="o">=</span> <span class="n">new</span> <span class="n">CamelRunner</span><span class="p">();</span>
+            <span class="n">runner</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">args</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="n">private</span> <span class="n">static</span> <span class="n">Logger</span> <span class="n">logger</span> <span class="o">=</span> <span class="n">LoggerFactory</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">CamelRunner</span><span class="o">.</span><span class="n">class</span><span class="p">);</span>
+        <span class="n">public</span> <span class="n">void</span> <span class="n">run</span><span class="p">(</span><span class="n">String</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span> <span class="n">throws</span> <span class="ne">Exception</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">Boolean</span><span class="o">.</span><span class="n">parseBoolean</span><span class="p">(</span><span class="n">System</span><span class="o">.</span><span class="n">getProperty</span><span class="p">(</span><span class="s2">&quot;spring&quot;</span><span class="p">,</span> <span class="s2">&quot;false&quot;</span><span class="p">)))</span>
+                <span class="n">runWithSpringConfig</span><span class="p">(</span><span class="n">args</span><span class="p">);</span>
+            <span class="k">else</span>
+                <span class="n">runWithCamelRoutes</span><span class="p">(</span><span class="n">args</span><span class="p">);</span>
+
+            <span class="o">//</span> <span class="n">Wait</span> <span class="k">for</span> <span class="n">user</span> <span class="n">to</span> <span class="n">hit</span> <span class="n">CRTL</span><span class="o">+</span><span class="n">C</span> <span class="n">to</span> <span class="n">stop</span> <span class="n">the</span> <span class="n">service</span>
+            <span class="n">synchronized</span><span class="p">(</span><span class="n">this</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">this</span><span class="o">.</span><span class="n">wait</span><span class="p">();</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="n">private</span> <span class="n">void</span> <span class="n">runWithSpringConfig</span><span class="p">(</span><span class="n">String</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">final</span> <span class="n">ConfigurableApplicationContext</span> <span class="n">springContext</span> <span class="o">=</span> <span class="n">new</span> <span class="n">FileSystemXmlApplicationContext</span><span class="p">(</span><span class="n">args</span><span class="p">);</span>
+
+            <span class="o">//</span> <span class="n">Register</span> <span class="n">proper</span> <span class="n">shutdown</span><span class="o">.</span>
+            <span class="n">Runtime</span><span class="o">.</span><span class="n">getRuntime</span><span class="p">()</span><span class="o">.</span><span class="n">addShutdownHook</span><span class="p">(</span><span class="n">new</span> <span class="n">Thread</span><span class="p">()</span> <span class="p">{</span> 
+                <span class="nd">@Override</span>
+                <span class="n">public</span> <span class="n">void</span> <span class="n">run</span><span class="p">()</span> <span class="p">{</span>
+                    <span class="k">try</span> <span class="p">{</span>
+                        <span class="n">springContext</span><span class="o">.</span><span class="n">close</span><span class="p">();</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Spring stopped.&quot;</span><span class="p">);</span>
+                    <span class="p">}</span> <span class="n">catch</span> <span class="p">(</span><span class="ne">Exception</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Failed to stop Spring.&quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">);</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+            <span class="p">});</span>
+
+            <span class="o">//</span> <span class="n">Start</span> <span class="n">spring</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Spring started.&quot;</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="n">private</span> <span class="n">void</span> <span class="n">runWithCamelRoutes</span><span class="p">(</span><span class="n">String</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span> <span class="n">throws</span> <span class="ne">Exception</span> <span class="p">{</span>
+            <span class="n">final</span> <span class="n">CamelContext</span> <span class="n">camelContext</span> <span class="o">=</span> <span class="n">new</span> <span class="n">DefaultCamelContext</span><span class="p">();</span>        
+            <span class="o">//</span> <span class="n">Register</span> <span class="n">proper</span> <span class="n">shutdown</span><span class="o">.</span>
+            <span class="n">Runtime</span><span class="o">.</span><span class="n">getRuntime</span><span class="p">()</span><span class="o">.</span><span class="n">addShutdownHook</span><span class="p">(</span><span class="n">new</span> <span class="n">Thread</span><span class="p">()</span> <span class="p">{</span> 
+                <span class="nd">@Override</span>
+                <span class="n">public</span> <span class="n">void</span> <span class="n">run</span><span class="p">()</span> <span class="p">{</span>
+                    <span class="k">try</span> <span class="p">{</span>
+                        <span class="n">camelContext</span><span class="o">.</span><span class="n">stop</span><span class="p">();</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Camel stopped for </span><span class="si">{}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">camelContext</span><span class="p">);</span>
+                    <span class="p">}</span> <span class="n">catch</span> <span class="p">(</span><span class="ne">Exception</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Failed to stop Camel.&quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">);</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+            <span class="p">});</span>
+
+            <span class="o">//</span> <span class="n">Added</span> <span class="n">RouteBuilder</span> <span class="kn">from</span> <span class="nn">args</span>
+            <span class="k">for</span> <span class="p">(</span><span class="n">String</span> <span class="n">className</span> <span class="p">:</span> <span class="n">args</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">Class</span><span class="o">&lt;</span><span class="err">?</span><span class="o">&gt;</span> <span class="bp">cls</span> <span class="o">=</span> <span class="n">Class</span><span class="o">.</span><span class="n">forName</span><span class="p">(</span><span class="n">className</span><span class="p">);</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">RouteBuilder</span><span class="o">.</span><span class="n">class</span><span class="o">.</span><span class="n">isAssignableFrom</span><span class="p">(</span><span class="bp">cls</span><span class="p">))</span> <span class="p">{</span>
+                    <span class="n">Object</span> <span class="n">obj</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">newInstance</span><span class="p">();</span>
+                    <span class="n">RouteBuilder</span> <span class="n">routeBuilder</span> <span class="o">=</span> <span class="p">(</span><span class="n">RouteBuilder</span><span class="p">)</span><span class="n">obj</span><span class="p">;</span>
+                    <span class="n">camelContext</span><span class="o">.</span><span class="n">addRoutes</span><span class="p">(</span><span class="n">routeBuilder</span><span class="p">);</span>
+                <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                    <span class="n">throw</span> <span class="n">new</span> <span class="n">RuntimeException</span><span class="p">(</span><span class="s2">&quot;Unable to add Camel RouteBuilder &quot;</span> <span class="o">+</span> <span class="n">className</span><span class="p">);</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+
+            <span class="o">//</span> <span class="n">Start</span> <span class="n">camel</span>
+            <span class="n">camelContext</span><span class="o">.</span><span class="n">start</span><span class="p">();</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Camel started for </span><span class="si">{}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">camelContext</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+</code></pre></div>
+
+<p>To help you run the main class, I have provided a <a href="https://zemian.github.io/2012/08/a-better-java-shell-script-wrapper.html">run-java</a> 
+wrapper script under the project's <code>bin</code> directory, so that you may quickly test it without having to setup classpath.</p>
+<div class="highlight"><pre><span></span><code>$ mvn package
+$ bin/run-java deng.cameldemo.CamelRunner deng.cameldemo.HelloRoute
+</code></pre></div>
+
+<p>You will see that the program will load the <code>HelloRoute</code> in a <code>DefaultCamelContext</code> and start it as a server. The <code>HelloRoute</code> itself will 
+generate a 3 seconds timer message and send it to a logger, which should be printing onto your console screen. This will continue forever 
+until you hit <code>CTRL+C</code> to end it.</p>
+<p>NOTE: You only have to invoke <code>mvn package</code> command once, so that it will package up all the dependencies jars in order for <code>run-java</code> to auto-detect
+them. If you are not going to use <code>maven-assembly-plugin</code> during <code>package</code> phase, then use <code>mvn dependency:copy-dependencies</code> command 
+explicitly will work fine as well.</p>
+<h2>Take a test ride with the Camel, Part 2: running Camel with Spring xml configuration</h2>
+<p>The <code>HelloRoute</code> example above would simply provide route definition that formed by using component URI's. It will be nice if
+we can configure the route in a declarative manner so that we may change the route without re-compile a class file. This will be very handy especially
+if you are not familiar with each component's options and want to explore and try things out. Well, that's what the <code>camel-spring</code> is for. Beside 
+giving you an option to load route in xml config file, it also provides a very flexible way to register custom services/processors bean in the Spring
+IoC container.</p>
+<p>If you are a keen reader, you will notice in the <code>CamelRunner</code> code above that it has an extra <code>runWithSpringConfig</code> part. So the <code>CamelRunner</code> 
+can actually bootstrap any Spring xml file and start a context as a server. You may use it like this:</p>
+<div class="highlight"><pre><span></span><code>$ bin/run-java deng.cameldemo.CamelRunner -Dspring<span class="o">=</span><span class="nb">true</span> config/hellocamel-spring.xml
+</code></pre></div>
+
+<p>The <code>config/hellocamel-spring.xml</code> is just an equivalent of our <code>HelloRoute</code> code but in Spring xml form:</p>
+<div class="highlight"><pre><span></span><code>    <span class="nt">&lt;beans</span> <span class="na">xmlns=</span><span class="s">&quot;http://www.springframework.org/schema/beans&quot;</span>
+        <span class="na">xmlns:xsi=</span><span class="s">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span>
+        <span class="na">xsi:schemaLocation=</span><span class="s">&quot;</span>
+<span class="s">            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd</span>
+<span class="s">            http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd&quot;</span><span class="nt">&gt;</span>
+
+        <span class="nt">&lt;camelContext</span> <span class="na">id=</span><span class="s">&quot;helloCamel&quot;</span> <span class="na">xmlns=</span><span class="s">&quot;http://camel.apache.org/schema/spring&quot;</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;route&gt;</span>
+                <span class="nt">&lt;from</span> <span class="na">uri=</span><span class="s">&quot;timer://jdkTimer?period=3000&quot;</span><span class="nt">/&gt;</span>
+                <span class="nt">&lt;to</span> <span class="na">uri=</span><span class="s">&quot;log://deng.cameldemo.HelloCamel&quot;</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;/route&gt;</span>
+        <span class="nt">&lt;/camelContext&gt;</span>
+
+    <span class="nt">&lt;/beans&gt;</span>
+</code></pre></div>
+
+<p>This remove the need to compile/re-compile <code>HelloRoute</code> to define the Camel route to run.</p>
+<h1>Building message based application using Camel</h1>
+<p>To present you with a more practical demo, I would show you further on how to setup Camel to process message based application. In many IT
+shops, it's common that you would have a server to take message data as input and process them. A practical use case is to take any JSON
+formated message and transform it into object and process it. To do this in Camel, what you want to build is a route that will take 
+input messages from a TCP port, and then process it in a pipeflow with any business logic you may have. You will run the route as a server, 
+and then client may use any mean to submit the message to the TCP port. Client may even be another thin Camel client app to submit data as well. 
+Let me show you how to get started.</p>
+<h2>Writing the server side code with Camel route</h2>
+<p>The server side would need a route to listen from a TCP port, and this is provided by <code>camel-mina</code> component. The first step is you need a route.</p>
+<div class="highlight"><pre><span></span><code>    <span class="n">package</span> <span class="n">deng</span><span class="o">.</span><span class="n">cameldemo</span><span class="p">;</span>
+
+    <span class="kn">import</span> <span class="nn">org.apache.camel.builder.RouteBuilder</span><span class="p">;</span>
+
+    <span class="n">public</span> <span class="k">class</span> <span class="nc">TcpMsgRoute</span> <span class="n">extends</span> <span class="n">RouteBuilder</span> <span class="p">{</span>
+        <span class="nd">@Override</span>
+        <span class="n">public</span> <span class="n">void</span> <span class="n">configure</span><span class="p">()</span> <span class="n">throws</span> <span class="ne">Exception</span> <span class="p">{</span>
+            <span class="n">String</span> <span class="n">port</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">getProperty</span><span class="p">(</span><span class="s2">&quot;port&quot;</span><span class="p">,</span> <span class="s2">&quot;12345&quot;</span><span class="p">);</span>
+            <span class="n">from</span><span class="p">(</span><span class="s2">&quot;mina:tcp://localhost:&quot;</span> <span class="o">+</span> <span class="n">port</span> <span class="o">+</span> <span class="s2">&quot;?sync=false&quot;</span><span class="p">)</span><span class="o">.</span>
+                <span class="n">to</span><span class="p">(</span><span class="s2">&quot;log:&quot;</span> <span class="o">+</span> <span class="n">getClass</span><span class="p">()</span><span class="o">.</span><span class="n">getName</span><span class="p">());</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+</code></pre></div>
+
+<p>Then the next step is ... done! No way, you mean that's all there to it for a server? Too good to be true? Well, let's try it out</p>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="n">$</span><span class="w"> </span><span class="n">bin</span><span class="o">/</span><span class="n">run</span><span class="o">-</span><span class="n">java</span><span class="w"> </span><span class="n">deng</span><span class="p">.</span><span class="n">cameldemo</span><span class="p">.</span><span class="n">CamelRunner</span><span class="w"> </span><span class="n">deng</span><span class="p">.</span><span class="n">cameldemo</span><span class="p">.</span><span class="n">TcpMsgRoute</span><span class="w"> </span><span class="o">-</span><span class="n">Dport</span><span class="o">=</span><span class="mi">12345</span><span class="w"></span>
+<span class="w">    </span><span class="mi">15</span><span class="o">:</span><span class="mi">21</span><span class="o">:</span><span class="mi">41</span><span class="w"> </span><span class="n">main</span><span class="w"> </span><span class="n">INFO</span><span class="w">  </span><span class="n">org</span><span class="p">.</span><span class="n">apache</span><span class="p">.</span><span class="n">camel</span><span class="p">.</span><span class="n">impl</span><span class="p">.</span><span class="n">DefaultCamelContext</span><span class="o">:</span><span class="mi">1391</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Apache</span><span class="w"> </span><span class="n">Camel</span><span class="w"> </span><span class="mf">2.10.1</span><span class="w"> </span><span class="p">(</span><span class="n">CamelContext</span><span class="o">:</span><span class="w"> </span><span class="n">camel</span><span class="mi">-1</span><span class="p">)</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">starting</span><span class="w"></span>
+<span class="w">    </span><span class="mi">15</span><span class="o">:</span><span class="mi">21</span><span class="o">:</span><span class="mi">41</span><span class="w"> </span><span class="n">main</span><span class="w"> </span><span class="n">INFO</span><span class="w">  </span><span class="n">org</span><span class="p">.</span><span class="n">apache</span><span class="p">.</span><span class="n">camel</span><span class="p">.</span><span class="n">management</span><span class="p">.</span><span class="n">ManagementStrategyFactory</span><span class="o">:</span><span class="mi">43</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">JMX</span><span class="w"> </span><span class="n">enabled</span><span class="p">.</span><span class="w"></span>
+<span class="w">    </span><span class="mi">15</span><span class="o">:</span><span class="mi">21</span><span class="o">:</span><span class="mi">42</span><span class="w"> </span><span class="n">main</span><span class="w"> </span><span class="n">INFO</span><span class="w">  </span><span class="n">org</span><span class="p">.</span><span class="n">apache</span><span class="p">.</span><span class="n">camel</span><span class="p">.</span><span class="n">impl</span><span class="p">.</span><span class="n">converter</span><span class="p">.</span><span class="n">DefaultTypeConverter</span><span class="o">:</span><span class="mi">45</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Loaded</span><span class="w"> </span><span class="mi">172</span><span class="w"> </span><span class="n">type</span><span class="w"> </span><span class="n">converters</span><span class="w"></span>
+<span class="w">    </span><span class="mi">15</span><span class="o">:</span><span class="mi">21</span><span class="o">:</span><span class="mi">42</span><span class="w"> </span><span class="n">main</span><span class="w"> </span><span class="n">INFO</span><span class="w">  </span><span class="n">org</span><span class="p">.</span><span class="n">apache</span><span class="p">.</span><span class="n">camel</span><span class="p">.</span><span class="n">component</span><span class="p">.</span><span class="n">mina</span><span class="p">.</span><span class="n">MinaConsumer</span><span class="o">:</span><span class="mi">59</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Binding</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">server</span><span class="w"> </span><span class="n">address</span><span class="o">:</span><span class="w"> </span><span class="n">localhost</span><span class="o">/</span><span class="mf">127.0.0.1</span><span class="o">:</span><span class="mi">12345</span><span class="w"> </span><span class="n">using</span><span class="w"> </span><span class="n">acceptor</span><span class="o">:</span><span class="w"> </span><span class="n">org</span><span class="p">.</span><span class="n">apache</span><span class="p">.</span><span class="n">mina</span><span class="p">.</span><span class="n">transport</span><span class="p">.</span><span class="n">socket</span><span class="p">.</span><span class="n">nio</span><span class="p">.</span><span class="n">SocketAcceptor</span><span class="mf">@2ff</span><span class="n">ad8fe</span><span class="w"></span>
+<span class="w">    </span><span class="mi">15</span><span class="o">:</span><span class="mi">21</span><span class="o">:</span><span class="mi">42</span><span class="w"> </span><span class="n">main</span><span class="w"> </span><span class="n">INFO</span><span class="w">  </span><span class="n">org</span><span class="p">.</span><span class="n">apache</span><span class="p">.</span><span class="n">camel</span><span class="p">.</span><span class="n">impl</span><span class="p">.</span><span class="n">DefaultCamelContext</span><span class="o">:</span><span class="mi">2045</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Route</span><span class="o">:</span><span class="w"> </span><span class="n">route1</span><span class="w"> </span><span class="n">started</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">consuming</span><span class="w"> </span><span class="n">from</span><span class="o">:</span><span class="w"> </span><span class="n">Endpoint</span><span class="p">[</span><span class="n">mina</span><span class="o">:</span><span class="c1">//tcp://localhost:12345?sync=true]</span>
+<span class="w">    </span><span class="mi">15</span><span class="o">:</span><span class="mi">21</span><span class="o">:</span><span class="mi">42</span><span class="w"> </span><span class="n">main</span><span class="w"> </span><span class="n">INFO</span><span class="w">  </span><span class="n">org</span><span class="p">.</span><span class="n">apache</span><span class="p">.</span><span class="n">camel</span><span class="p">.</span><span class="n">management</span><span class="p">.</span><span class="n">DefaultManagementLifecycleStrategy</span><span class="o">:</span><span class="mi">859</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">StatisticsLevel</span><span class="w"> </span><span class="n">at</span><span class="w"> </span><span class="n">All</span><span class="w"> </span><span class="n">so</span><span class="w"> </span><span class="n">enabling</span><span class="w"> </span><span class="n">load</span><span class="w"> </span><span class="n">performance</span><span class="w"> </span><span class="n">statistics</span><span class="w"></span>
+<span class="w">    </span><span class="mi">15</span><span class="o">:</span><span class="mi">21</span><span class="o">:</span><span class="mi">42</span><span class="w"> </span><span class="n">main</span><span class="w"> </span><span class="n">INFO</span><span class="w">  </span><span class="n">org</span><span class="p">.</span><span class="n">apache</span><span class="p">.</span><span class="n">camel</span><span class="p">.</span><span class="n">impl</span><span class="p">.</span><span class="n">DefaultCamelContext</span><span class="o">:</span><span class="mi">1426</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Total</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">routes</span><span class="p">,</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">which</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">started</span><span class="p">.</span><span class="w"></span>
+<span class="w">    </span><span class="mi">15</span><span class="o">:</span><span class="mi">21</span><span class="o">:</span><span class="mi">42</span><span class="w"> </span><span class="n">main</span><span class="w"> </span><span class="n">INFO</span><span class="w">  </span><span class="n">org</span><span class="p">.</span><span class="n">apache</span><span class="p">.</span><span class="n">camel</span><span class="p">.</span><span class="n">impl</span><span class="p">.</span><span class="n">DefaultCamelContext</span><span class="o">:</span><span class="mi">1427</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Apache</span><span class="w"> </span><span class="n">Camel</span><span class="w"> </span><span class="mf">2.10.1</span><span class="w"> </span><span class="p">(</span><span class="n">CamelContext</span><span class="o">:</span><span class="w"> </span><span class="n">camel</span><span class="mi">-1</span><span class="p">)</span><span class="w"> </span><span class="n">started</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="mf">0.505</span><span class="w"> </span><span class="n">seconds</span><span class="w"></span>
+<span class="w">    </span><span class="mi">15</span><span class="o">:</span><span class="mi">21</span><span class="o">:</span><span class="mi">42</span><span class="w"> </span><span class="n">main</span><span class="w"> </span><span class="n">INFO</span><span class="w">  </span><span class="n">deng</span><span class="p">.</span><span class="n">cameldemo</span><span class="p">.</span><span class="n">CamelRunner</span><span class="o">:</span><span class="mi">93</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Camel</span><span class="w"> </span><span class="n">started</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">CamelContext</span><span class="p">(</span><span class="n">camel</span><span class="mi">-1</span><span class="p">)</span><span class="w"></span>
+</code></pre></div>
+
+<p>Voila! The server is up and waiting for your users to send messages through port <code>12345</code>. Not too bad for few lines of code.</p>
+<h2>Writing the client side code with Camel ProducerTemplate</h2>
+<p>Since our server expose a TCP port and take in any text content message, you can create any client that's capable writing to a TCP socket. In here, 
+I will show you how to use Camel to write a thin client.</p>
+<div class="highlight"><pre><span></span><code>    <span class="n">package</span> <span class="n">deng</span><span class="o">.</span><span class="n">cameldemo</span><span class="o">.</span><span class="n">client</span><span class="p">;</span>
+
+    <span class="kn">import</span> <span class="nn">java.io.FileReader</span><span class="p">;</span>
+    <span class="kn">import</span> <span class="nn">org.apache.camel.CamelContext</span><span class="p">;</span>
+    <span class="kn">import</span> <span class="nn">org.apache.camel.ProducerTemplate</span><span class="p">;</span>
+    <span class="kn">import</span> <span class="nn">org.apache.camel.impl.DefaultCamelContext</span><span class="p">;</span>
+    <span class="kn">import</span> <span class="nn">org.apache.commons.io.IOUtils</span><span class="p">;</span>
+    <span class="kn">import</span> <span class="nn">org.slf4j.Logger</span><span class="p">;</span>
+    <span class="kn">import</span> <span class="nn">org.slf4j.LoggerFactory</span><span class="p">;</span>
+
+    <span class="n">public</span> <span class="k">class</span> <span class="nc">TcpMsgSender</span> <span class="p">{</span>
+        <span class="n">public</span> <span class="n">static</span> <span class="n">void</span> <span class="n">main</span><span class="p">(</span><span class="n">String</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span> <span class="n">throws</span> <span class="ne">Exception</span> <span class="p">{</span>
+            <span class="n">TcpMsgSender</span> <span class="n">runner</span> <span class="o">=</span> <span class="n">new</span> <span class="n">TcpMsgSender</span><span class="p">();</span>
+            <span class="n">runner</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">args</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="n">private</span> <span class="n">static</span> <span class="n">Logger</span> <span class="n">logger</span> <span class="o">=</span> <span class="n">LoggerFactory</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">TcpMsgSender</span><span class="o">.</span><span class="n">class</span><span class="p">);</span>
+        <span class="n">public</span> <span class="n">void</span> <span class="n">run</span><span class="p">(</span><span class="n">String</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span> <span class="n">throws</span> <span class="ne">Exception</span> <span class="p">{</span>
+            <span class="n">String</span> <span class="n">fileName</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">length</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="err">?</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">:</span> <span class="s2">&quot;data/msg.txt&quot;</span><span class="p">;</span>
+            <span class="n">String</span><span class="p">[]</span> <span class="n">hostPort</span> <span class="o">=</span> <span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">length</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="err">?</span> <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">:</span> <span class="s2">&quot;localhost:12345&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">);</span>
+            <span class="n">String</span> <span class="n">host</span> <span class="o">=</span> <span class="n">hostPort</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+            <span class="n">String</span> <span class="n">port</span> <span class="o">=</span> <span class="n">hostPort</span><span class="o">.</span><span class="n">length</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="err">?</span> <span class="n">hostPort</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">:</span> <span class="s2">&quot;12345&quot;</span><span class="p">;</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Sending tcp message </span><span class="si">{}</span><span class="s2"> to host=</span><span class="si">{}</span><span class="s2">, port=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">new</span> <span class="n">Object</span><span class="p">[]{</span> <span class="n">fileName</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">});</span>
+
+            <span class="n">String</span> <span class="n">text</span> <span class="o">=</span> <span class="n">IOUtils</span><span class="o">.</span><span class="n">toString</span><span class="p">(</span><span class="n">new</span> <span class="n">FileReader</span><span class="p">(</span><span class="n">fileName</span><span class="p">));</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;File size=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">text</span><span class="o">.</span><span class="n">length</span><span class="p">());</span>
+
+            <span class="n">CamelContext</span> <span class="n">camelContext</span> <span class="o">=</span> <span class="n">new</span> <span class="n">DefaultCamelContext</span><span class="p">();</span>
+            <span class="n">ProducerTemplate</span> <span class="n">producer</span> <span class="o">=</span> <span class="n">camelContext</span><span class="o">.</span><span class="n">createProducerTemplate</span><span class="p">();</span>
+            <span class="n">producer</span><span class="o">.</span><span class="n">sendBody</span><span class="p">(</span><span class="s2">&quot;mina:tcp://&quot;</span> <span class="o">+</span> <span class="n">host</span> <span class="o">+</span> <span class="s2">&quot;:&quot;</span> <span class="o">+</span> <span class="n">port</span> <span class="o">+</span> <span class="s2">&quot;?sync=false&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">);</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Message sent.&quot;</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+</code></pre></div>
+
+<p>This <code>TcpMsgSender</code> can send any text file to your server endpoint. Try this out while your server is running:</p>
+<div class="highlight"><pre><span></span><code>    $ bin/run-java deng.cameldemo.client.TcpMsgSender data/test-msg.json localhost:12345
+    15:22:35 main INFO  deng.cameldemo.client.TcpMsgSender:24 | Sending tcp message data/test-msg.json to host=localhost, port=12345
+    15:22:35 main DEBUG deng.cameldemo.client.TcpMsgSender:27 | File size=47
+    15:22:35 main INFO  org.apache.camel.impl.converter.DefaultTypeConverter:45 | Loaded 172 type converters
+    15:22:35 main INFO  org.apache.camel.management.ManagementStrategyFactory:43 | JMX enabled.
+    15:22:35 main INFO  deng.cameldemo.client.TcpMsgSender:32 | Message sent.
+</code></pre></div>
+
+<p>You should able to verify from your server console output that it received the msg. The msg I sent is in <code>data/test-msg.json</code>, which 
+contains this simple text:</p>
+<div class="highlight"><pre><span></span><code>{ &quot;firstName&quot; : &quot;Zemian&quot;, &quot;lastName&quot; : &quot;Deng&quot; }
+</code></pre></div>
+
+<p>Note that our server simply receive plain text and log it. We will discuss how to process the message next.</p>
+<h2>Processing message data in JSON format with Camel and Spring xml config</h2>
+<p>You thought the server code was easy from above, guess again. You can actually replace the <code>TcpMsgRoute</code> with just some simple xml lines!</p>
+<div class="highlight"><pre><span></span><code>    <span class="nt">&lt;beans</span> <span class="na">xmlns=</span><span class="s">&quot;http://www.springframework.org/schema/beans&quot;</span>
+        <span class="na">xmlns:xsi=</span><span class="s">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span>
+        <span class="na">xsi:schemaLocation=</span><span class="s">&quot;</span>
+<span class="s">            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd</span>
+<span class="s">            http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd&quot;</span><span class="nt">&gt;</span>
+
+        <span class="nt">&lt;camelContext</span> <span class="na">id=</span><span class="s">&quot;tcpMsgServer&quot;</span> <span class="na">xmlns=</span><span class="s">&quot;http://camel.apache.org/schema/spring&quot;</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;route&gt;</span>
+                <span class="nt">&lt;from</span> <span class="na">uri=</span><span class="s">&quot;mina:tcp://localhost:12345?sync=false&quot;</span><span class="nt">/&gt;</span>
+                <span class="nt">&lt;to</span> <span class="na">uri=</span><span class="s">&quot;log://deng.cameldemo.TcpMsgServer&quot;</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;/route&gt;</span>
+        <span class="nt">&lt;/camelContext&gt;</span>
+
+    <span class="nt">&lt;/beans&gt;</span>
+</code></pre></div>
+
+<p>Save it as <code>config/tcpmsgserver-spring.xml</code>. Then re-run the server, and you should get the same result as above.</p>
+<div class="highlight"><pre><span></span><code>$ bin/run-java deng.cameldemo.CamelRunner -Dspring<span class="o">=</span><span class="nb">true</span> config/tcpmsgserver-spring.xml
+</code></pre></div>
+
+<p>Now let us improve the above xml to further process the JSON message data. We will like to transform the plain text to a Java object then process 
+by a custom bean. To do that, we first would need to add unmarshal component to the route. This is where the <code>camel-jackson</code> comes into play. 
+In our demo, the unmarshalling step would convert the JSON text into a <code>java.util.Map</code> and then pass it to a processor bean named <code>myMsgProcessor</code>.
+Let's create a new xml file named <code>config/tcpmsgserver-json-spring.xml</code> as follow.</p>
+<div class="highlight"><pre><span></span><code>    <span class="nt">&lt;beans</span> <span class="na">xmlns=</span><span class="s">&quot;http://www.springframework.org/schema/beans&quot;</span>
+        <span class="na">xmlns:xsi=</span><span class="s">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span>
+        <span class="na">xsi:schemaLocation=</span><span class="s">&quot;</span>
+<span class="s">            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd</span>
+<span class="s">            http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd&quot;</span><span class="nt">&gt;</span>
+
+        <span class="nt">&lt;camelContext</span> <span class="na">id=</span><span class="s">&quot;tcpMsgServer&quot;</span> <span class="na">xmlns=</span><span class="s">&quot;http://camel.apache.org/schema/spring&quot;</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;route&gt;</span>
+                <span class="nt">&lt;from</span> <span class="na">uri=</span><span class="s">&quot;mina:tcp://localhost:12345?sync=false&quot;</span><span class="nt">/&gt;</span>
+                <span class="nt">&lt;to</span> <span class="na">uri=</span><span class="s">&quot;log://deng.cameldemo.TcpMsgServer&quot;</span><span class="nt">/&gt;</span>
+                <span class="nt">&lt;unmarshal&gt;</span>
+                    <span class="nt">&lt;json</span> <span class="na">library=</span><span class="s">&quot;Jackson&quot;</span><span class="nt">/&gt;</span>
+                <span class="nt">&lt;/unmarshal&gt;</span>
+                <span class="nt">&lt;to</span> <span class="na">uri=</span><span class="s">&quot;bean:myMsgProcessor?method=process&quot;</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;/route&gt;</span>
+        <span class="nt">&lt;/camelContext&gt;</span>
+
+        <span class="nt">&lt;bean</span> <span class="na">id=</span><span class="s">&quot;myMsgProcessor&quot;</span> <span class="na">class=</span><span class="s">&quot;deng.cameldemo.MyMsgProcessor&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;/bean&gt;</span>
+
+    <span class="nt">&lt;/beans&gt;</span>
+</code></pre></div>
+
+<p>The <code>myMsgProcessor</code> is an Spring bean that we provide custom logic code to process the data. At this point we have a full Java object
+to manipulate. The content of the processor can be any POJO with the method name specified in the URI. Here is an example one:</p>
+<div class="highlight"><pre><span></span><code>    <span class="n">package</span> <span class="n">deng</span><span class="o">.</span><span class="n">cameldemo</span><span class="p">;</span>
+
+    <span class="kn">import</span> <span class="nn">org.apache.camel.builder.RouteBuilder</span><span class="p">;</span>
+    <span class="kn">import</span> <span class="nn">org.slf4j.Logger</span><span class="p">;</span>
+    <span class="kn">import</span> <span class="nn">org.slf4j.LoggerFactory</span><span class="p">;</span>
+    <span class="kn">import</span> <span class="nn">java.util.Map</span><span class="p">;</span>
+
+    <span class="n">public</span> <span class="k">class</span> <span class="nc">MyMsgProcessor</span> <span class="p">{</span>
+        <span class="n">private</span> <span class="n">static</span> <span class="n">Logger</span> <span class="n">logger</span> <span class="o">=</span> <span class="n">LoggerFactory</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">MyMsgProcessor</span><span class="o">.</span><span class="n">class</span><span class="p">);</span>
+        <span class="n">public</span> <span class="n">void</span> <span class="n">process</span><span class="p">(</span><span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span> <span class="n">String</span><span class="o">&gt;</span> <span class="n">data</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;We should slice and dice the data: &quot;</span> <span class="o">+</span> <span class="n">data</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+</code></pre></div>
+
+<p>Try re-run the server with the new xml file above, and you should able to re-invoke the same client command to test it out. Here is a sample 
+output of my server:</p>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="n">$</span><span class="w"> </span><span class="n">bin</span><span class="o">/</span><span class="n">run</span><span class="o">-</span><span class="n">java</span><span class="w"> </span><span class="n">deng</span><span class="p">.</span><span class="n">cameldemo</span><span class="p">.</span><span class="n">CamelRunner</span><span class="w"> </span><span class="o">-</span><span class="n">Dspring</span><span class="o">=</span><span class="nb">true</span><span class="w"> </span><span class="n">config</span><span class="o">/</span><span class="n">tcpmsgserver</span><span class="o">-</span><span class="n">json</span><span class="o">-</span><span class="n">spring</span><span class="p">.</span><span class="n">xml</span><span class="w"></span>
+<span class="w">    </span><span class="mi">17</span><span class="o">:</span><span class="mo">05</span><span class="o">:</span><span class="mi">25</span><span class="w"> </span><span class="n">main</span><span class="w"> </span><span class="n">INFO</span><span class="w">  </span><span class="n">org</span><span class="p">.</span><span class="n">springframework</span><span class="p">.</span><span class="n">context</span><span class="p">.</span><span class="n">support</span><span class="p">.</span><span class="n">FileSystemXmlApplicationContext</span><span class="o">:</span><span class="mi">456</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Refreshing</span><span class="w"> </span><span class="n">org</span><span class="p">.</span><span class="n">springframework</span><span class="p">.</span><span class="n">context</span><span class="p">.</span><span class="n">support</span><span class="p">.</span><span class="n">FileSystemXmlApplicationContext</span><span class="mi">@4200309</span><span class="o">:</span><span class="w"> </span><span class="n">startup</span><span class="w"> </span><span class="n">date</span><span class="w"> </span><span class="p">[</span><span class="n">Sat</span><span class="w"> </span><span class="n">Sep</span><span class="w"> </span><span class="mi">15</span><span class="w"> </span><span class="mi">17</span><span class="o">:</span><span class="mo">05</span><span class="o">:</span><span class="mi">25</span><span class="w"> </span><span class="n">EDT</span><span class="w"> </span><span class="mi">2012</span><span class="p">];</span><span class="w"> </span><span class="n">root</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">context</span><span class="w"> </span><span class="n">hierarchy</span><span class="w"></span>
+<span class="w">    </span><span class="mi">17</span><span class="o">:</span><span class="mo">05</span><span class="o">:</span><span class="mi">25</span><span class="w"> </span><span class="n">main</span><span class="w"> </span><span class="n">INFO</span><span class="w">  </span><span class="n">org</span><span class="p">.</span><span class="n">springframework</span><span class="p">.</span><span class="n">beans</span><span class="p">.</span><span class="n">factory</span><span class="p">.</span><span class="n">xml</span><span class="p">.</span><span class="n">XmlBeanDefinitionReader</span><span class="o">:</span><span class="mi">315</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Loading</span><span class="w"> </span><span class="n">XML</span><span class="w"> </span><span class="n">bean</span><span class="w"> </span><span class="n">definitions</span><span class="w"> </span><span class="n">from</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="p">[</span><span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">zemian</span><span class="o">/</span><span class="n">projects</span><span class="o">/</span><span class="n">sandbox</span><span class="o">/</span><span class="n">camel</span><span class="o">-</span><span class="n">demo</span><span class="o">/</span><span class="n">config</span><span class="o">/</span><span class="n">tcpmsgserver</span><span class="o">-</span><span class="n">json</span><span class="o">-</span><span class="n">spring</span><span class="p">.</span><span class="n">xml</span><span class="p">]</span><span class="w"></span>
+<span class="w">    </span><span class="mi">17</span><span class="o">:</span><span class="mo">05</span><span class="o">:</span><span class="mi">27</span><span class="w"> </span><span class="n">main</span><span class="w"> </span><span class="n">INFO</span><span class="w">  </span><span class="n">org</span><span class="p">.</span><span class="n">springframework</span><span class="p">.</span><span class="n">beans</span><span class="p">.</span><span class="n">factory</span><span class="p">.</span><span class="n">support</span><span class="p">.</span><span class="n">DefaultListableBeanFactory</span><span class="o">:</span><span class="mi">557</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Pre</span><span class="o">-</span><span class="n">instantiating</span><span class="w"> </span><span class="n">singletons</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">org</span><span class="p">.</span><span class="n">springframework</span><span class="p">.</span><span class="n">beans</span><span class="p">.</span><span class="n">factory</span><span class="p">.</span><span class="n">support</span><span class="p">.</span><span class="n">DefaultListableBeanFactory</span><span class="mi">@27</span><span class="n">b75165</span><span class="o">:</span><span class="w"> </span><span class="n">defining</span><span class="w"> </span><span class="n">beans</span><span class="w"> </span><span class="p">[</span><span class="n">template</span><span class="p">,</span><span class="n">consumerTemplate</span><span class="p">,</span><span class="n">tcpMsgServer</span><span class="o">:</span><span class="n">beanPostProcessor</span><span class="p">,</span><span class="n">tcpMsgServer</span><span class="p">,</span><span class="n">myMsgProcessor</span><span class="p">];</span><span class="w"> </span><span class="n">root</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">factory</span><span class="w"> </span><span class="n">hierarchy</span><span class="w"></span>
+<span class="w">    </span><span class="mi">17</span><span class="o">:</span><span class="mo">05</span><span class="o">:</span><span class="mi">27</span><span class="w"> </span><span class="n">main</span><span class="w"> </span><span class="n">INFO</span><span class="w">  </span><span class="n">org</span><span class="p">.</span><span class="n">apache</span><span class="p">.</span><span class="n">camel</span><span class="p">.</span><span class="n">spring</span><span class="p">.</span><span class="n">SpringCamelContext</span><span class="o">:</span><span class="mi">1391</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Apache</span><span class="w"> </span><span class="n">Camel</span><span class="w"> </span><span class="mf">2.10.1</span><span class="w"> </span><span class="p">(</span><span class="n">CamelContext</span><span class="o">:</span><span class="w"> </span><span class="n">tcpMsgServer</span><span class="p">)</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">starting</span><span class="w"></span>
+<span class="w">    </span><span class="mi">17</span><span class="o">:</span><span class="mo">05</span><span class="o">:</span><span class="mi">27</span><span class="w"> </span><span class="n">main</span><span class="w"> </span><span class="n">INFO</span><span class="w">  </span><span class="n">org</span><span class="p">.</span><span class="n">apache</span><span class="p">.</span><span class="n">camel</span><span class="p">.</span><span class="n">management</span><span class="p">.</span><span class="n">ManagementStrategyFactory</span><span class="o">:</span><span class="mi">43</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">JMX</span><span class="w"> </span><span class="n">enabled</span><span class="p">.</span><span class="w"></span>
+<span class="w">    </span><span class="mi">17</span><span class="o">:</span><span class="mo">05</span><span class="o">:</span><span class="mi">27</span><span class="w"> </span><span class="n">main</span><span class="w"> </span><span class="n">INFO</span><span class="w">  </span><span class="n">org</span><span class="p">.</span><span class="n">apache</span><span class="p">.</span><span class="n">camel</span><span class="p">.</span><span class="n">impl</span><span class="p">.</span><span class="n">converter</span><span class="p">.</span><span class="n">DefaultTypeConverter</span><span class="o">:</span><span class="mi">45</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Loaded</span><span class="w"> </span><span class="mi">172</span><span class="w"> </span><span class="n">type</span><span class="w"> </span><span class="n">converters</span><span class="w"></span>
+<span class="w">    </span><span class="mi">17</span><span class="o">:</span><span class="mo">05</span><span class="o">:</span><span class="mi">28</span><span class="w"> </span><span class="n">main</span><span class="w"> </span><span class="n">INFO</span><span class="w">  </span><span class="n">org</span><span class="p">.</span><span class="n">apache</span><span class="p">.</span><span class="n">camel</span><span class="p">.</span><span class="n">component</span><span class="p">.</span><span class="n">mina</span><span class="p">.</span><span class="n">MinaConsumer</span><span class="o">:</span><span class="mi">59</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Binding</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">server</span><span class="w"> </span><span class="n">address</span><span class="o">:</span><span class="w"> </span><span class="n">localhost</span><span class="o">/</span><span class="mf">127.0.0.1</span><span class="o">:</span><span class="mi">12345</span><span class="w"> </span><span class="n">using</span><span class="w"> </span><span class="n">acceptor</span><span class="o">:</span><span class="w"> </span><span class="n">org</span><span class="p">.</span><span class="n">apache</span><span class="p">.</span><span class="n">mina</span><span class="p">.</span><span class="n">transport</span><span class="p">.</span><span class="n">socket</span><span class="p">.</span><span class="n">nio</span><span class="p">.</span><span class="n">SocketAcceptor</span><span class="mi">@5</span><span class="n">a3cae4a</span><span class="w"></span>
+<span class="w">    </span><span class="mi">17</span><span class="o">:</span><span class="mo">05</span><span class="o">:</span><span class="mi">28</span><span class="w"> </span><span class="n">main</span><span class="w"> </span><span class="n">INFO</span><span class="w">  </span><span class="n">org</span><span class="p">.</span><span class="n">apache</span><span class="p">.</span><span class="n">camel</span><span class="p">.</span><span class="n">spring</span><span class="p">.</span><span class="n">SpringCamelContext</span><span class="o">:</span><span class="mi">2045</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Route</span><span class="o">:</span><span class="w"> </span><span class="n">route1</span><span class="w"> </span><span class="n">started</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">consuming</span><span class="w"> </span><span class="n">from</span><span class="o">:</span><span class="w"> </span><span class="n">Endpoint</span><span class="p">[</span><span class="n">mina</span><span class="o">:</span><span class="c1">//tcp://localhost:12345?sync=false]</span>
+<span class="w">    </span><span class="mi">17</span><span class="o">:</span><span class="mo">05</span><span class="o">:</span><span class="mi">28</span><span class="w"> </span><span class="n">main</span><span class="w"> </span><span class="n">INFO</span><span class="w">  </span><span class="n">org</span><span class="p">.</span><span class="n">apache</span><span class="p">.</span><span class="n">camel</span><span class="p">.</span><span class="n">management</span><span class="p">.</span><span class="n">DefaultManagementLifecycleStrategy</span><span class="o">:</span><span class="mi">859</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">StatisticsLevel</span><span class="w"> </span><span class="n">at</span><span class="w"> </span><span class="n">All</span><span class="w"> </span><span class="n">so</span><span class="w"> </span><span class="n">enabling</span><span class="w"> </span><span class="n">load</span><span class="w"> </span><span class="n">performance</span><span class="w"> </span><span class="n">statistics</span><span class="w"></span>
+<span class="w">    </span><span class="mi">17</span><span class="o">:</span><span class="mo">05</span><span class="o">:</span><span class="mi">28</span><span class="w"> </span><span class="n">main</span><span class="w"> </span><span class="n">INFO</span><span class="w">  </span><span class="n">org</span><span class="p">.</span><span class="n">apache</span><span class="p">.</span><span class="n">camel</span><span class="p">.</span><span class="n">spring</span><span class="p">.</span><span class="n">SpringCamelContext</span><span class="o">:</span><span class="mi">1426</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Total</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">routes</span><span class="p">,</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">which</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">started</span><span class="p">.</span><span class="w"></span>
+<span class="w">    </span><span class="mi">17</span><span class="o">:</span><span class="mo">05</span><span class="o">:</span><span class="mi">28</span><span class="w"> </span><span class="n">main</span><span class="w"> </span><span class="n">INFO</span><span class="w">  </span><span class="n">org</span><span class="p">.</span><span class="n">apache</span><span class="p">.</span><span class="n">camel</span><span class="p">.</span><span class="n">spring</span><span class="p">.</span><span class="n">SpringCamelContext</span><span class="o">:</span><span class="mi">1427</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Apache</span><span class="w"> </span><span class="n">Camel</span><span class="w"> </span><span class="mf">2.10.1</span><span class="w"> </span><span class="p">(</span><span class="n">CamelContext</span><span class="o">:</span><span class="w"> </span><span class="n">tcpMsgServer</span><span class="p">)</span><span class="w"> </span><span class="n">started</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="mf">0.695</span><span class="w"> </span><span class="n">seconds</span><span class="w"></span>
+<span class="w">    </span><span class="mi">17</span><span class="o">:</span><span class="mo">05</span><span class="o">:</span><span class="mi">28</span><span class="w"> </span><span class="n">main</span><span class="w"> </span><span class="n">INFO</span><span class="w">  </span><span class="n">deng</span><span class="p">.</span><span class="n">cameldemo</span><span class="p">.</span><span class="n">CamelRunner</span><span class="o">:</span><span class="mi">61</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Spring</span><span class="w"> </span><span class="n">started</span><span class="p">.</span><span class="w"></span>
+<span class="w">    </span><span class="mi">17</span><span class="o">:</span><span class="mo">05</span><span class="o">:</span><span class="mi">35</span><span class="w"> </span><span class="n">Camel</span><span class="w"> </span><span class="p">(</span><span class="n">tcpMsgServer</span><span class="p">)</span><span class="w"> </span><span class="kr">thread</span><span class="w"> </span><span class="err">#</span><span class="mi">3</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">MinaThreadPool</span><span class="w"> </span><span class="n">INFO</span><span class="w">  </span><span class="n">deng</span><span class="p">.</span><span class="n">cameldemo</span><span class="p">.</span><span class="n">TcpMsgServer</span><span class="o">:</span><span class="mi">96</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Exchange</span><span class="p">[</span><span class="n">ExchangePattern</span><span class="o">:</span><span class="n">InOnly</span><span class="p">,</span><span class="w"> </span><span class="n">BodyType</span><span class="o">:</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="n">Body</span><span class="o">:</span><span class="p">{</span><span class="w"> </span><span class="s">&quot;firstName&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s">&quot;Zemian&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;lastName&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s">&quot;Deng&quot;</span><span class="w"> </span><span class="p">}]</span><span class="w"></span>
+<span class="w">    </span><span class="mi">17</span><span class="o">:</span><span class="mo">05</span><span class="o">:</span><span class="mi">35</span><span class="w"> </span><span class="n">Camel</span><span class="w"> </span><span class="p">(</span><span class="n">tcpMsgServer</span><span class="p">)</span><span class="w"> </span><span class="kr">thread</span><span class="w"> </span><span class="err">#</span><span class="mi">3</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">MinaThreadPool</span><span class="w"> </span><span class="n">INFO</span><span class="w">  </span><span class="n">deng</span><span class="p">.</span><span class="n">cameldemo</span><span class="p">.</span><span class="n">MyMsgProcessor</span><span class="o">:</span><span class="mi">11</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">We</span><span class="w"> </span><span class="n">should</span><span class="w"> </span><span class="n">slice</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">dice</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">data</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="n">lastName</span><span class="o">=</span><span class="n">Deng</span><span class="p">,</span><span class="w"> </span><span class="n">firstName</span><span class="o">=</span><span class="n">Zemian</span><span class="p">}</span><span class="w"></span>
+</code></pre></div>
+
+<p>Pay attention that Camel will auto convert the data format in your route! Our client only sends the plain text as JSON format, but when
+server receives it, it unmarshals it using Jackson library, and then converts it into a java Map object. It then passes the map object into our
+processor bean. Also, in this demo, I choose to use a generic <code>java.util.Map</code> as processor method argument (which is output of the JSON unmarshal), but
+you can easily define your own business data type, such as <code>MyCustomerData</code>. This reveals the power of Camel, since you don't need to push the message
+in your flow, but only worry about writing your "processor" as a POJO. The Camel will "glue" components together to form a route and carry the message data through the pipeline flow.</p>
+<p>On the same token, when you write your business logic in one or more processors, it's a good idea that you limit your POJO logic to be as small 
+unit as possible. When you do this, then you can maximize the reusability of the processors. The bigger POJO you make, with many business logics mixed in, it will also make it
+difficult to test. So I recommend you when developing these processor beans, try to think them as LEGO pieces -- small POJO. You want to let Camel define the route and glue the LEGO
+pieces togther. Once you get into this habit of thiking, then you can use Camel in a more effectively way to solve many of your domain problems.</p>
+<p>Well, that's all for today folks. I hope you enjoyed the Camel ride. Happy programming!</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>Exploring Apache Camel Core - Seda Component</title>
+        <link rel="stylesheet" href="https://zemian.github.io/theme/css/main.css" />
+        <link href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="ZBlog Atom Feed" />
+        <meta name="description" content="The seda component in Apache Camel is very similar to the direct component that I’ve presented in previous blog, but in a asynchronous manner. To..." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://zemian.github.io/">ZBlog</a></h1>
+                <nav><ul>
+                    <li><a href="https://zemian.github.io/pages/about-the-author.html">About The Author</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://zemian.github.io/2013/exploring-apache-camel-core-seda-component.html" rel="bookmark"
+           title="Permalink to Exploring Apache Camel Core - Seda Component">Exploring Apache Camel Core - Seda Component</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2013-09-08T00:00:00-05:00">
+                Published: Sun 08 September 2013
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/camel.html">camel</a> </p>
+</footer><!-- /.post-info -->      <p>The <code>seda</code> component in Apache Camel is very similar to the <code>direct</code> component that I&#8217;ve presented in previous blog, but in a asynchronous manner. To do this, it uses a <code>java.util.concurrent.BlockingQueue</code> as default implementation to queue up messages and disconnect from your main <code>Route</code> thread and then processing the messages in a separated thread. Because of this <code>BlockingQueue</code>, you need to be aware of the usage and config option.</p>
+<p>One option needs to be aware of asynchronous processing is the it default to queue size is unbound, meaning it will grow as much as your memory allowed. To cap this, set <code>size=1000</code>. Let&#8217;s see an example.</p>
+<div class="highlight"><pre><span></span><code><span class="n">package</span> <span class="n">camelcoredemo</span><span class="p">;</span>
+
+<span class="kn">import</span> <span class="nn">org.slf4j.</span><span class="o">*</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.camel.</span><span class="o">*</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.camel.builder.</span><span class="o">*</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.camel.main.Main</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">java.io.</span><span class="o">*</span><span class="p">;</span>
+
+<span class="n">public</span> <span class="k">class</span> <span class="nc">SedaDemoCamel</span> <span class="n">extends</span> <span class="n">Main</span> <span class="p">{</span>
+    <span class="n">static</span> <span class="n">Logger</span> <span class="n">LOG</span> <span class="o">=</span> <span class="n">LoggerFactory</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">SedaDemoCamel</span><span class="o">.</span><span class="n">class</span><span class="p">);</span>
+    <span class="n">public</span> <span class="n">static</span> <span class="n">void</span> <span class="n">main</span><span class="p">(</span><span class="n">String</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span> <span class="n">throws</span> <span class="ne">Exception</span> <span class="p">{</span>
+        <span class="n">SedaDemoCamel</span> <span class="n">main</span> <span class="o">=</span> <span class="n">new</span> <span class="n">SedaDemoCamel</span><span class="p">();</span>
+        <span class="n">main</span><span class="o">.</span><span class="n">enableHangupSupport</span><span class="p">();</span>
+        <span class="n">main</span><span class="o">.</span><span class="n">addRouteBuilder</span><span class="p">(</span><span class="n">createRouteBuilder1</span><span class="p">());</span>
+        <span class="n">main</span><span class="o">.</span><span class="n">addRouteBuilder</span><span class="p">(</span><span class="n">createRouteBuilder2</span><span class="p">());</span>
+        <span class="n">main</span><span class="o">.</span><span class="n">addRouteBuilder</span><span class="p">(</span><span class="n">createRouteBuilder3</span><span class="p">());</span>
+        <span class="n">main</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">args</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="o">//</span> <span class="n">The</span> <span class="n">file</span> <span class="n">poller</span> <span class="n">route</span>
+    <span class="n">static</span> <span class="n">RouteBuilder</span> <span class="n">createRouteBuilder1</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">new</span> <span class="n">RouteBuilder</span><span class="p">()</span> <span class="p">{</span>
+            <span class="n">public</span> <span class="n">void</span> <span class="n">configure</span><span class="p">()</span> <span class="p">{</span>
+                <span class="n">from</span><span class="p">(</span><span class="s2">&quot;file://target/input?preMove=staging&amp;move=.processed&quot;</span><span class="p">)</span>
+                <span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">new</span> <span class="n">Processor</span><span class="p">()</span> <span class="p">{</span>
+                    <span class="n">public</span> <span class="n">void</span> <span class="n">process</span><span class="p">(</span><span class="n">Exchange</span> <span class="n">msg</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="n">CamelContext</span> <span class="n">camelContext</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">getContext</span><span class="p">();</span>
+                        <span class="n">ProducerTemplate</span> <span class="n">producer</span> <span class="o">=</span> <span class="n">camelContext</span><span class="o">.</span><span class="n">createProducerTemplate</span><span class="p">();</span>
+                        <span class="n">String</span> <span class="n">text</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">getIn</span><span class="p">()</span><span class="o">.</span><span class="n">getBody</span><span class="p">(</span><span class="n">String</span><span class="o">.</span><span class="n">class</span><span class="p">);</span>
+                        <span class="n">String</span> <span class="n">fileName</span> <span class="o">=</span> <span class="p">(</span><span class="n">String</span><span class="p">)</span><span class="n">msg</span><span class="o">.</span><span class="n">getIn</span><span class="p">()</span><span class="o">.</span><span class="n">getHeader</span><span class="p">(</span><span class="s2">&quot;CamelFileName&quot;</span><span class="p">);</span>
+                        <span class="n">boolean</span> <span class="n">specialFile</span> <span class="o">=</span> <span class="n">fileName</span><span class="o">.</span><span class="n">endsWith</span><span class="p">(</span><span class="s2">&quot;_SPECIAL.dat&quot;</span><span class="p">);</span>
+                        <span class="k">if</span> <span class="p">(</span><span class="n">specialFile</span><span class="p">)</span>
+                            <span class="n">producer</span><span class="o">.</span><span class="n">sendBody</span><span class="p">(</span><span class="s2">&quot;seda:specialRoute&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">);</span>
+                        <span class="k">else</span>
+                            <span class="n">producer</span><span class="o">.</span><span class="n">sendBody</span><span class="p">(</span><span class="s2">&quot;seda:normalRoute&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">);</span>
+                    <span class="p">}</span>
+                <span class="p">});</span>
+            <span class="p">}</span>
+        <span class="p">};</span>
+    <span class="p">}</span>
+    <span class="o">//</span> <span class="n">The</span> <span class="n">special</span> <span class="n">file</span> <span class="n">processing</span> <span class="n">route</span>
+    <span class="n">static</span> <span class="n">RouteBuilder</span> <span class="n">createRouteBuilder2</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">new</span> <span class="n">RouteBuilder</span><span class="p">()</span> <span class="p">{</span>
+            <span class="n">public</span> <span class="n">void</span> <span class="n">configure</span><span class="p">()</span> <span class="p">{</span>
+                <span class="n">from</span><span class="p">(</span><span class="s2">&quot;seda:specialRoute&quot;</span><span class="p">)</span>
+                <span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">new</span> <span class="n">Processor</span><span class="p">()</span> <span class="p">{</span>
+                    <span class="n">public</span> <span class="n">void</span> <span class="n">process</span><span class="p">(</span><span class="n">Exchange</span> <span class="n">msg</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Processing special file: &quot;</span> <span class="o">+</span> <span class="n">msg</span><span class="p">);</span>
+                    <span class="p">}</span>
+                <span class="p">});</span>
+            <span class="p">}</span>
+        <span class="p">};</span>
+    <span class="p">}</span>
+    <span class="o">//</span> <span class="n">The</span> <span class="n">normal</span> <span class="n">file</span> <span class="n">processing</span> <span class="n">route</span>
+    <span class="n">static</span> <span class="n">RouteBuilder</span> <span class="n">createRouteBuilder3</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">new</span> <span class="n">RouteBuilder</span><span class="p">()</span> <span class="p">{</span>
+            <span class="n">public</span> <span class="n">void</span> <span class="n">configure</span><span class="p">()</span> <span class="p">{</span>
+                <span class="n">from</span><span class="p">(</span><span class="s2">&quot;seda:normalRoute&quot;</span><span class="p">)</span>
+                <span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">new</span> <span class="n">Processor</span><span class="p">()</span> <span class="p">{</span>
+                    <span class="n">public</span> <span class="n">void</span> <span class="n">process</span><span class="p">(</span><span class="n">Exchange</span> <span class="n">msg</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Processing normal file: &quot;</span> <span class="o">+</span> <span class="n">msg</span><span class="p">);</span>
+                    <span class="p">}</span>
+                <span class="p">});</span>
+            <span class="p">}</span>
+        <span class="p">};</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>You will notice that this demo code is very similar to the <code>direct</code> component demo, with few differences. First, we use <code>seda</code> endpoints. Second, in file poller, we read in the entire file content text. We do this because we are now passing to an asynchronous <code>Route</code> that will runs on separate threads. The poller is configured to move the processed file into different folder right after the first <code>Route</code> has ended. So we must ensure the processing <code>Route</code> is not depended on the path of the File, hence we will load entire text in instead.</p>
+<p>Another interesting <code>seda</code> option is you may set the number of concurrent threads to receive the messages to process them! Let&#8217;s say if your <strong>normal</strong> files are heavy in traffic, then you can configure to use more threads on that part (default is just one thread.)</p>
+<div class="highlight"><pre><span></span><code><span class="nf">from</span><span class="p">(</span><span class="err">&quot;</span><span class="no">seda</span><span class="p">:</span><span class="no">normalRoute</span><span class="err">?</span><span class="no">concurrentConsumers</span><span class="err">=</span><span class="mi">10</span><span class="err">&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="na">.process</span><span class="p">(</span><span class="no">new</span><span class="w"> </span><span class="no">Processor</span><span class="p">()</span><span class="w"> </span><span class="err">{</span><span class="w"></span>
+<span class="w">    </span><span class="nf">public</span><span class="w"> </span><span class="no">void</span><span class="w"> </span><span class="no">process</span><span class="p">(</span><span class="no">Exchange</span><span class="w"> </span><span class="no">msg</span><span class="p">)</span><span class="w"> </span><span class="err">{</span><span class="w"></span>
+<span class="w">        </span><span class="nf">LOG.info</span><span class="p">(</span><span class="err">&quot;</span><span class="no">Processing</span><span class="w"> </span><span class="no">normal</span><span class="w"> </span><span class="no">file</span><span class="p">:</span><span class="w"> </span><span class="err">&quot;</span><span class="w"> </span><span class="err">+</span><span class="w"> </span><span class="no">msg</span><span class="p">)</span><span class="c1">;</span>
+<span class="w">    </span><span class="err">}</span><span class="w"></span>
+<span class="err">})</span><span class="c1">;</span>
+</code></pre></div>
+
+<p>To verify that your are running concurrently, you can easily configure your logger to display thread name. For
+example with <code>log4j</code>, you can use this pattern:</p>
+<div class="highlight"><pre><span></span><code>log4j.rootLogger=INFO, stdout
+log4j.appender.stdout=org.apache.log4j.ConsoleAppender
+log4j.appender.stdout.layout=org.apache.log4j.PatternLayout
+log4j.appender.stdout.layout.ConversionPattern=%d %p %t [%c] - %m%n
+</code></pre></div>
+
+<p>There are more options availabe from <a href="http://camel.apache.org/seda.html">Seda</a> component
+that you may explore.
+<a href="https://zemian.github.io/2013/08/getting-started-with-apache-camel-using.html">Try it out with a Route</a>
+and see it for yourself.</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

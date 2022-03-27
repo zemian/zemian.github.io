@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>ZBlog - macosx</title>
+        <link rel="stylesheet" href="https://zemian.github.io/theme/css/main.css" />
+        <link href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="ZBlog Atom Feed" />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://zemian.github.io/">ZBlog</a></h1>
+                <nav><ul>
+                    <li><a href="https://zemian.github.io/pages/about-the-author.html">About The Author</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="https://zemian.github.io/2018/compling-apache-httpd-web-server-on-macosx.html">Compling Apache HTTPD Web Server on MacOSX</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2018-03-07T00:00:00-05:00">
+                Published: Wed 07 March 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/macosx.html">macosx</a> <a href="https://zemian.github.io/tag/httpd.html">httpd</a> </p>
+</footer><!-- /.post-info --><p>Before you begin, you should know that the HTTPD server is very likely
+already comes with your MacOSX! For example, here is how my server looks
+like:</p>
+<div class="highlight"><pre><span></span><code>$ apachectl -t -D DUMP_INCLUDES
+Included configuration files:
+  <span class="o">(</span>*<span class="o">)</span> /private/etc/apache2/httpd.conf
+    <span class="o">(</span><span class="m">498</span><span class="o">)</span> /private/etc/apache2/extra/httpd-mpm.conf
+    <span class="o">(</span><span class="m">504</span><span class="o">)</span> /private/etc/apache2/extra/httpd-autoindex.conf
+    <span class="o">(</span><span class="m">544</span><span class="o">)</span> /private/etc/apache2/other/php7.conf
+</code></pre></div>
+
+<p>You would want to compile and buid your own HTTPD server if you like to
+customize your own build or doing modules development. In that case,
+read on.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">#</span><span class="w"></span>
+<span class="c1"># Requirement:</span><span class="w"></span>
+<span class="c1">#  MacOSX Version:</span><span class="w"></span>
+<span class="c1">#    Darwin myhost 17.4.0 Darwin Kernel Version 17.4.0: Sun Dec 17 09:19:54 PST 2017; root:xnu-4570.41.2~1/RELEASE_X86_64 x86_64</span><span class="w"></span>
+<span class="c1">#  HTTPD version 2.4.9</span><span class="w"></span>
+<span class="c1">#</span><span class="w"></span>
+
+<span class="c1"># Install xcode that comes with C compiler</span><span class="w"></span>
+<span class="n">xcode</span><span class="o">-</span><span class="n">select</span><span class="w"> </span><span class="o">--</span><span class="n">install</span><span class="w"></span>
+
+<span class="c1"># Install package manager for macosx</span><span class="w"></span>
+<span class="c1"># install brew from https://brew.sh</span><span class="w"></span>
+
+<span class="c1">#</span><span class="w"></span>
+<span class="c1"># NOTE: If your brew installation have probblem with error writing to /usr/local</span><span class="w"></span>
+<span class="c1"># then try to uninstall then install brew again.</span><span class="w"></span>
+<span class="c1">#</span><span class="w"></span>
+<span class="c1"># Uninstall</span><span class="w"></span>
+<span class="c1"># /usr/bin/ruby -e &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/uninstall)&quot;</span><span class="w"></span>
+<span class="c1">#</span><span class="w"></span>
+<span class="c1"># Install</span><span class="w"></span>
+<span class="c1"># /usr/bin/ruby -e &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&quot;</span><span class="w"></span>
+<span class="c1">#</span><span class="w"></span>
+
+<span class="c1"># Install make tools and required libraries</span><span class="w"></span>
+<span class="n">brew</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="n">autoconf</span><span class="w"> </span><span class="n">automake</span><span class="w"> </span><span class="n">libtool</span><span class="w"> </span><span class="n">pcre</span><span class="w"></span>
+
+<span class="n">git</span><span class="w"> </span><span class="n">clone</span><span class="w"> </span><span class="n">git</span><span class="p">:</span><span class="o">//</span><span class="n">git</span><span class="o">.</span><span class="n">apache</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">httpd</span><span class="o">.</span><span class="n">git</span><span class="w"></span>
+<span class="n">cd</span><span class="w"> </span><span class="n">httpd</span><span class="w"></span>
+<span class="n">git</span><span class="w"> </span><span class="n">checkout</span><span class="w"> </span><span class="mf">2.4</span><span class="o">.</span><span class="mi">9</span><span class="w"></span>
+
+<span class="c1"># You also need to get the required library sources</span><span class="w"></span>
+<span class="n">cd</span><span class="w"> </span><span class="n">srclib</span><span class="w"></span>
+<span class="n">git</span><span class="w"> </span><span class="n">clone</span><span class="w"> </span><span class="n">git</span><span class="p">:</span><span class="o">//</span><span class="n">git</span><span class="o">.</span><span class="n">apache</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">apr</span><span class="o">.</span><span class="n">git</span><span class="w"></span>
+<span class="n">cd</span><span class="w"> </span><span class="n">apr</span><span class="w"></span>
+<span class="n">git</span><span class="w"> </span><span class="n">checkout</span><span class="w"> </span><span class="mf">1.6</span><span class="o">.</span><span class="mi">3</span><span class="w"></span>
+<span class="n">cd</span><span class="w"> </span><span class="o">../</span><span class="w"></span>
+<span class="n">git</span><span class="w"> </span><span class="n">clone</span><span class="w"> </span><span class="n">git</span><span class="p">:</span><span class="o">//</span><span class="n">git</span><span class="o">.</span><span class="n">apache</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">apr</span><span class="o">-</span><span class="n">util</span><span class="o">.</span><span class="n">git</span><span class="w"></span>
+<span class="n">cd</span><span class="w"> </span><span class="n">apr</span><span class="o">-</span><span class="n">util</span><span class="w"></span>
+<span class="n">git</span><span class="w"> </span><span class="n">checkout</span><span class="w"> </span><span class="mf">1.6</span><span class="o">.</span><span class="mi">1</span><span class="w"></span>
+<span class="n">cd</span><span class="w"> </span><span class="o">../../</span><span class="w"></span>
+
+<span class="o">./</span><span class="n">buildconf</span><span class="w"></span>
+<span class="o">./</span><span class="n">configure</span><span class="w"></span>
+
+<span class="n">make</span><span class="w"></span>
+<span class="n">sudo</span><span class="w"> </span><span class="n">make</span><span class="w"> </span><span class="n">install</span><span class="w"></span>
+
+<span class="c1"># When completed successful, the HTTPD server will be in /usr/local/apache2</span><span class="w"></span>
+</code></pre></div>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2018/installing-c-compiler-on-macosx.html" rel="bookmark"
+                           title="Permalink to Installing C compiler on MacOSX">Installing C compiler on MacOSX</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-03-05T00:00:00-05:00">
+                Published: Mon 05 March 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/macosx.html">macosx</a> <a href="https://zemian.github.io/tag/compiler.html">compiler</a> </p>
+</footer><!-- /.post-info -->                <p>Install xcode - it contains C compiler and many other developer tools for MacOSX system</p>
+<div class="highlight"><pre><span></span><code>xcode-select --install
+</code></pre></div>
+                <a class="readmore" href="https://zemian.github.io/2018/installing-c-compiler-on-macosx.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2018/package-manager-for-macosx.html" rel="bookmark"
+                           title="Permalink to Package manager for MacOSX">Package manager for MacOSX</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-03-05T00:00:00-05:00">
+                Published: Mon 05 March 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/macosx.html">macosx</a> <a href="https://zemian.github.io/tag/package-manager.html">package-manager</a> <a href="https://zemian.github.io/tag/brew.html">brew</a> </p>
+</footer><!-- /.post-info -->                <div class="highlight"><pre><span></span><code>    #
+    # <span class="nv">Install</span> <span class="nv">package</span> <span class="nv">manager</span> <span class="k">for</span> <span class="nv">macosx</span> <span class="nv">called</span> <span class="nv">brew</span> <span class="nv">from</span> <span class="nv">https</span>:<span class="o">//</span><span class="nv">brew</span>.<span class="nv">sh</span>
+    #
+    # <span class="nv">Install</span>
+    $ <span class="o">/</span><span class="nv">usr</span><span class="o">/</span><span class="nv">bin</span><span class="o">/</span><span class="nv">ruby</span> <span class="o">-</span><span class="nv">e</span> <span class="s2">&quot;</span><span class="s">$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)</span><span class="s2">&quot;</span>
+
+    # <span class="k">If</span> <span class="nv">your</span> <span class="nv">brew</span> <span class="nv">installation</span> <span class="nv">have</span> <span class="nv">problem</span> <span class="nv">with</span> <span class="nv">error</span> <span class="nv">writing</span> <span class="nv">to</span> <span class="o">/</span><span class="nv">usr</span><span class="o">/</span><span class="nv">local</span>
+    # <span class="k">then</span> <span class="nv">try</span> <span class="nv">to</span> <span class="nv">uninstall</span> <span class="k">then</span> <span class="nv">install</span> <span class="nv">brew</span> <span class="nv">again</span>.
+    #
+    # <span class="nv">Uninstall</span>
+    $ <span class="o">/</span><span class="nv">usr</span><span class="o">/</span><span class="nv">bin</span><span class="o">/</span><span class="nv">ruby …</span></code></pre></div>
+                <a class="readmore" href="https://zemian.github.io/2018/package-manager-for-macosx.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+                </ol><!-- /#posts-list -->
+                </section><!-- /#content -->
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

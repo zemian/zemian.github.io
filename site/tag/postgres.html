@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>ZBlog - postgres</title>
+        <link rel="stylesheet" href="https://zemian.github.io/theme/css/main.css" />
+        <link href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="ZBlog Atom Feed" />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://zemian.github.io/">ZBlog</a></h1>
+                <nav><ul>
+                    <li><a href="https://zemian.github.io/pages/about-the-author.html">About The Author</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="https://zemian.github.io/2018/postgresql-data-types-and-test-table.html">PostgreSQL Data Types and Test Table</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2018-08-20T00:00:00-05:00">
+                Published: Mon 20 August 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/sql.html">sql</a> <a href="https://zemian.github.io/tag/postgres.html">postgres</a> </p>
+</footer><!-- /.post-info --><p>A quick sql table setup to test most common data types.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Notes for PostgreSQL Database (9.6)</span>
+<span class="c1">-- https://www.postgresql.org/docs/9.6/static/index.html</span>
+
+<span class="c1">-- Data Types</span>
+<span class="c1">-- https://www.postgresql.org/docs/9.6/static/datatype.html</span>
+
+<span class="cm">/*</span>
+
+<span class="cm">CHAR          Fixed length and space padded character string (sql: CHAR)</span>
+<span class="cm">VARCHAR       Variable length character string (sql: VARCHAR)</span>
+<span class="cm">TEXT          Variable length character large string (sql: TEXT)</span>
+
+<span class="cm">INT           Declare integer number (sql: INT 32 bits)</span>
+<span class="cm">SMALLINT      16 bits</span>
+<span class="cm">BIGINT        64 bits</span>
+<span class="cm">SERIAL        Auto increment integer (INT with sequence)</span>
+
+<span class="cm">REAL             Declare floating-point number 32 bits</span>
+<span class="cm">DOUBLE PRECISION Declare floating-point number 64 bits</span>
+
+<span class="cm">NUMERIC(p,s)     Declare fixed-point number (sql: NUMERIC)</span>
+
+<span class="cm">DATE          Declare date</span>
+<span class="cm">TIME          Declare time</span>
+<span class="cm">TIMESTAMP     Declare datetime</span>
+<span class="cm">TIMESTAMP WITH TIMEZONE or TIMESTAMPTZ</span>
+<span class="cm">              Declare datetime as timezone aware (stored as UTC but convert to client session timezone)</span>
+<span class="cm">INTERVAL      Declare period of time difference</span>
+
+<span class="cm">BYTEA         Binary data</span>
+
+<span class="cm"> */</span><span class="w"></span>
+<span class="c1">-- test table</span>
+<span class="k">create</span><span class="w"> </span><span class="k">table</span><span class="w"> </span><span class="n">test</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">id</span><span class="w">       </span><span class="nb">serial</span><span class="w"> </span><span class="k">primary</span><span class="w"> </span><span class="k">key</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">ts</span><span class="w">       </span><span class="n">timestamptz</span><span class="w"> </span><span class="k">default</span><span class="w"> </span><span class="k">current_timestamp</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">cat</span><span class="w">      </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">price</span><span class="w">    </span><span class="nb">numeric</span><span class="p">(</span><span class="mi">19</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span><span class="w"></span>
+<span class="w">  </span><span class="n">qty</span><span class="w">      </span><span class="nb">int</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">txtdata</span><span class="w">  </span><span class="nb">text</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">bindata</span><span class="w">  </span><span class="n">bytea</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">distx</span><span class="w">    </span><span class="nb">real</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">disty</span><span class="w">    </span><span class="n">double</span><span class="w"> </span><span class="k">precision</span><span class="w"></span>
+<span class="p">);</span><span class="w"></span>
+<span class="k">insert</span><span class="w"> </span><span class="k">into</span><span class="w"> </span><span class="n">test</span><span class="p">(</span><span class="n">cat</span><span class="p">,</span><span class="w"> </span><span class="n">price</span><span class="p">,</span><span class="w"> </span><span class="n">qty</span><span class="p">)</span><span class="w"> </span><span class="k">values</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">100000</span><span class="p">.</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">50000</span><span class="p">),</span><span class="w"></span>
+<span class="w">                                         </span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">100000</span><span class="p">.</span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">),</span><span class="w"></span>
+<span class="w">                                         </span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">100000</span><span class="p">.</span><span class="mi">00</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">),</span><span class="w"></span>
+<span class="w">                                         </span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">9977000</span><span class="p">.</span><span class="mi">3333</span><span class="p">,</span><span class="w"> </span><span class="mi">179</span><span class="p">),</span><span class="w"></span>
+<span class="w">                                         </span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">104729</span><span class="p">.</span><span class="mi">1129</span><span class="p">,</span><span class="w"> </span><span class="mi">104729</span><span class="p">);</span><span class="w"></span>
+<span class="k">insert</span><span class="w"> </span><span class="k">into</span><span class="w"> </span><span class="n">test</span><span class="p">(</span><span class="n">cat</span><span class="p">,</span><span class="w"> </span><span class="n">bindata</span><span class="p">,</span><span class="w"> </span><span class="n">txtdata</span><span class="p">)</span><span class="w"> </span><span class="k">values</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;test2&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">E</span><span class="s1">&#39;\\xCAFEBABE&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;CAFEBABE&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="k">insert</span><span class="w"> </span><span class="k">into</span><span class="w"> </span><span class="n">test</span><span class="p">(</span><span class="n">cat</span><span class="p">,</span><span class="w"> </span><span class="n">bindata</span><span class="p">)</span><span class="w"> </span><span class="k">values</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;test3&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">decode</span><span class="p">(</span><span class="n">md5</span><span class="p">(</span><span class="n">random</span><span class="p">()::</span><span class="nb">text</span><span class="p">),</span><span class="w"> </span><span class="s1">&#39;hex&#39;</span><span class="p">));</span><span class="w"></span>
+<span class="k">insert</span><span class="w"> </span><span class="k">into</span><span class="w"> </span><span class="n">test</span><span class="p">(</span><span class="n">cat</span><span class="p">,</span><span class="w"> </span><span class="n">bindata</span><span class="p">)</span><span class="w"> </span><span class="k">values</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;test3&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">decode</span><span class="p">(</span><span class="n">md5</span><span class="p">(</span><span class="n">random</span><span class="p">()::</span><span class="nb">text</span><span class="p">),</span><span class="w"> </span><span class="s1">&#39;hex&#39;</span><span class="p">));</span><span class="w"></span>
+<span class="k">insert</span><span class="w"> </span><span class="k">into</span><span class="w"> </span><span class="n">test</span><span class="p">(</span><span class="n">cat</span><span class="p">,</span><span class="w"> </span><span class="n">bindata</span><span class="p">)</span><span class="w"> </span><span class="k">values</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;test3&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">decode</span><span class="p">(</span><span class="n">md5</span><span class="p">(</span><span class="n">random</span><span class="p">()::</span><span class="nb">text</span><span class="p">),</span><span class="w"> </span><span class="s1">&#39;hex&#39;</span><span class="p">));</span><span class="w"></span>
+<span class="k">update</span><span class="w"> </span><span class="n">test</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="n">txtdata</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">encode</span><span class="p">(</span><span class="n">bindata</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;hex&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">cat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;test3&#39;</span><span class="p">;</span><span class="w"></span>
+<span class="k">insert</span><span class="w"> </span><span class="k">into</span><span class="w"> </span><span class="n">test</span><span class="p">(</span><span class="n">cat</span><span class="p">,</span><span class="w"> </span><span class="n">distx</span><span class="p">,</span><span class="w"> </span><span class="n">disty</span><span class="p">)</span><span class="w"> </span><span class="k">values</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;test4&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">random</span><span class="p">(),</span><span class="w"> </span><span class="n">random</span><span class="p">());</span><span class="w"></span>
+<span class="k">insert</span><span class="w"> </span><span class="k">into</span><span class="w"> </span><span class="n">test</span><span class="p">(</span><span class="n">cat</span><span class="p">,</span><span class="w"> </span><span class="n">distx</span><span class="p">,</span><span class="w"> </span><span class="n">disty</span><span class="p">)</span><span class="w"> </span><span class="k">values</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;test4&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">random</span><span class="p">(),</span><span class="w"> </span><span class="n">random</span><span class="p">());</span><span class="w"></span>
+<span class="k">insert</span><span class="w"> </span><span class="k">into</span><span class="w"> </span><span class="n">test</span><span class="p">(</span><span class="n">cat</span><span class="p">,</span><span class="w"> </span><span class="n">distx</span><span class="p">,</span><span class="w"> </span><span class="n">disty</span><span class="p">)</span><span class="w"> </span><span class="k">values</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;test4&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">random</span><span class="p">(),</span><span class="w"> </span><span class="n">random</span><span class="p">());</span><span class="w"></span>
+<span class="k">select</span><span class="w"> </span><span class="k">sum</span><span class="p">(</span><span class="n">price</span><span class="p">)</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">test</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">cat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;test&#39;</span><span class="p">;</span><span class="w"></span>
+<span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">test</span><span class="w"> </span><span class="k">order</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">cat</span><span class="p">,</span><span class="w"> </span><span class="n">ts</span><span class="w"> </span><span class="k">desc</span><span class="p">;</span><span class="w"></span>
+</code></pre></div>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2018/examples-of-postgres-functions-and-triggers.html" rel="bookmark"
+                           title="Permalink to Examples of Postgres Functions and Triggers">Examples of Postgres Functions and Triggers</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-08-09T00:00:00-05:00">
+                Published: Thu 09 August 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/postgres.html">postgres</a> <a href="https://zemian.github.io/tag/function.html">function</a> <a href="https://zemian.github.io/tag/trigger.html">trigger</a> </p>
+</footer><!-- /.post-info -->                <div class="highlight"><pre><span></span><code><span class="c1">-- Simple Function</span>
+<span class="k">create</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="k">replace</span><span class="w"> </span><span class="k">function</span><span class="w"> </span><span class="n">rand_range</span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="nb">int</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="nb">int</span><span class="p">)</span><span class="w"> </span><span class="k">returns</span><span class="w"> </span><span class="nb">int</span><span class="w"></span>
+<span class="k">as</span><span class="w"> </span><span class="err">$$</span><span class="w"></span>
+<span class="w">  </span><span class="c1">-- return a random range of int between a and b, both inclusive!;</span>
+<span class="w">  </span><span class="k">select</span><span class="w"> </span><span class="k">cast</span><span class="p">(</span><span class="n">floor</span><span class="p">(</span><span class="n">random</span><span class="p">()</span><span class="o">*</span><span class="p">((</span><span class="n">b</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="o">-</span><span class="n">a</span><span class="p">)</span><span class="o">+</span><span class="n">a</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nb">int</span><span class="p">);</span><span class="w"></span>
+<span class="err">$$</span><span class="w"> </span><span class="k">language</span><span class="w"> </span><span class="k">sql</span><span class="p">;</span><span class="w"></span>
+<span class="k">select</span><span class="w"> </span><span class="n">rand_range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">);</span><span class="w"></span>
+<span class="k">select</span><span class="w"> </span><span class="n">rand_range</span><span class="p">(</span><span class="mi">90</span><span class="p">,</span><span class="w"> </span><span class="mi">95</span><span class="p">)</span><span class="w"> </span><span class="k">from …</span></code></pre></div>
+                <a class="readmore" href="https://zemian.github.io/2018/examples-of-postgres-functions-and-triggers.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2018/init-and-start-postgresql-in-cygwin.html" rel="bookmark"
+                           title="Permalink to Init and Start PostgreSQL in Cygwin">Init and Start PostgreSQL in Cygwin</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-03-22T00:00:00-05:00">
+                Published: Thu 22 March 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/postgres.html">postgres</a> </p>
+</footer><!-- /.post-info -->                <h1>Run Postgres Server</h1>
+<div class="highlight"><pre><span></span><code><span class="c1"># Start /usr/sbin/cygserver first if you haven&#39;t already done so</span><span class="w"></span>
+<span class="n">mkdir</span><span class="w"> </span><span class="o">/</span><span class="n">srv</span><span class="o">/</span><span class="n">pgdata</span><span class="w"></span>
+<span class="k">export</span><span class="w"> </span><span class="n">PGDATA</span><span class="o">=/</span><span class="n">srv</span><span class="o">/</span><span class="n">pgdata</span><span class="w"></span>
+<span class="n">pg_ctl</span><span class="w"> </span><span class="n">init</span><span class="w"></span>
+<span class="n">pg_ctl</span><span class="w"> </span><span class="n">start</span><span class="w"></span>
+</code></pre></div>
+
+<h2>Test Posgres Using Client</h2>
+<div class="highlight"><pre><span></span><code><span class="n">psql</span><span class="w"> </span><span class="n">postgres</span><span class="w"></span>
+
+<span class="n">postgres</span><span class="o">=</span><span class="c1"># create table test_ratings(username varchar(200), rating int);</span><span class="w"></span>
+<span class="n">postgres</span><span class="o">=</span><span class="c1"># insert into test_ratings values …</span></code></pre></div>
+                <a class="readmore" href="https://zemian.github.io/2018/init-and-start-postgresql-in-cygwin.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2018/fetching-data-from-postgresql-using-python-psycopg2.html" rel="bookmark"
+                           title="Permalink to Fetching Data From PostgreSQL Using Python psycopg2">Fetching Data From PostgreSQL Using Python psycopg2</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-03-04T00:00:00-05:00">
+                Published: Sun 04 March 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/python.html">python</a> <a href="https://zemian.github.io/tag/postgres.html">postgres</a> </p>
+</footer><!-- /.post-info -->                <div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">psycopg2</span>
+<span class="n">conn</span> <span class="o">=</span> <span class="n">psycopg2</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s1">&#39;dbname=test user=test&#39;</span><span class="p">)</span>
+<span class="n">cur</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+<span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;select * from users order by username&quot;</span><span class="p">)</span>
+<span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="n">row</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="n">fetchmany</span><span class="p">()</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">row</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">break</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+<span class="n">cur</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div>
+                <a class="readmore" href="https://zemian.github.io/2018/fetching-data-from-postgresql-using-python-psycopg2.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2018/starting-postgres-server-on-cygwin.html" rel="bookmark"
+                           title="Permalink to Starting postgres server on Cygwin">Starting postgres server on Cygwin</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-02-20T00:00:00-05:00">
+                Published: Tue 20 February 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/postgres.html">postgres</a> <a href="https://zemian.github.io/tag/cygwin.html">cygwin</a> </p>
+</footer><!-- /.post-info -->                <p>To run postgres database server on Cygwin, you need first run the
+<code>cygserver</code>. If not, you will get error similar to this:</p>
+<div class="highlight"><pre><span></span><code><span class="k">export</span><span class="w"> </span><span class="n">PGDATA</span><span class="o">=/</span><span class="n">cygdrive</span><span class="o">/</span><span class="n">c</span><span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">zemian</span><span class="o">/</span><span class="n">my</span><span class="o">-</span><span class="n">pgdata</span><span class="w"></span>
+<span class="n">pg_ctl</span><span class="w"> </span><span class="n">init</span><span class="w"></span>
+<span class="o">...</span><span class="w"></span>
+<span class="n">running</span><span class="w"> </span><span class="n">bootstrap</span><span class="w"> </span><span class="n">script</span><span class="w"> </span><span class="o">...</span><span class="w"> </span><span class="n">FATAL</span><span class="p">:</span><span class="w">  </span><span class="n">could</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">create</span><span class="w"> </span><span class="n">shared</span><span class="w"> </span><span class="n">memory</span><span class="w"> </span><span class="n">segment</span><span class="p">:</span><span class="w"> </span><span class="n">Function</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">implemented</span><span class="w"></span>
+<span class="n">DETAIL</span><span class="p">:</span><span class="w">  </span><span class="n">Failed</span><span class="w"> </span><span class="n">system</span><span class="w"> </span><span class="n">call …</span></code></pre></div>
+                <a class="readmore" href="https://zemian.github.io/2018/starting-postgres-server-on-cygwin.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2017/creating-postgresql-db-users-to-match-linux-users.html" rel="bookmark"
+                           title="Permalink to Creating PostgreSQL db users to match Linux users">Creating PostgreSQL db users to match Linux users</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2017-07-07T00:00:00-05:00">
+                Published: Fri 07 July 2017
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/postgres.html">postgres</a> </p>
+</footer><!-- /.post-info -->                <p>By default the <code>posgresql-server</code> install will create a <code>postgres</code> Linux
+user account and the server will run under that user. And also
+PostgreSQL server will default have a DB user named <code>postgres</code> as well,
+and this DB user does not have a password! There is a distinction
+between Linux user …</p>
+                <a class="readmore" href="https://zemian.github.io/2017/creating-postgresql-db-users-to-match-linux-users.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2016/how-to-install-posgresql-server-with-yum-on-linux.html" rel="bookmark"
+                           title="Permalink to How to install posgresql-server with yum on Linux">How to install posgresql-server with yum on Linux</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2016-07-08T00:00:00-05:00">
+                Published: Fri 08 July 2016
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/postgres.html">postgres</a> </p>
+</footer><!-- /.post-info -->                <p>If you have a RedHat/CentOS/OracleLinux distro of Linux, then <code>yum</code> should be available as your package manager. Here are the notes I have to get PostgreSQL server up running.</p>
+<div class="highlight"><pre><span></span><code><span class="nv">bash</span><span class="o">&gt;</span> <span class="nv">yum</span> <span class="nv">info</span> <span class="nv">postgresql</span><span class="o">-</span><span class="nv">server</span>
+<span class="nv">bash</span><span class="o">&gt;</span> # <span class="nv">Verify</span> <span class="nv">that</span><span class="s1">&#39;</span><span class="s">s the version you want to install</span>
+
+<span class="nv">bash</span><span class="o">&gt;</span> # <span class="nv">Ready</span> <span class="nv">to</span> <span class="nv">install …</span></code></pre></div>
+                <a class="readmore" href="https://zemian.github.io/2016/how-to-install-posgresql-server-with-yum-on-linux.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2016/getting-started-with-postgresql-database.html" rel="bookmark"
+                           title="Permalink to Getting started with PostgreSQL database">Getting started with PostgreSQL database</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2016-06-26T00:00:00-05:00">
+                Published: Sun 26 June 2016
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/postgres.html">postgres</a> </p>
+</footer><!-- /.post-info -->                <p>I have been learning and using PostgreSQL recently for a Django app, and I have to say it's really GOOD! I have used quite a bit of MySQL and Oracle DB in my workplace, so I didn't find good reason to learn PostgreSQL in the past. Now I finally get …</p>
+                <a class="readmore" href="https://zemian.github.io/2016/getting-started-with-postgresql-database.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+                </ol><!-- /#posts-list -->
+                </section><!-- /#content -->
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

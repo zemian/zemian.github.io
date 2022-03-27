@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>How to manually test a DataSource connection in WebLogic</title>
+        <link rel="stylesheet" href="https://zemian.github.io/theme/css/main.css" />
+        <link href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="ZBlog Atom Feed" />
+        <meta name="description" content="When you creating new DataSource in WLS, it allows you to test the connectivity. However after you have created it, the test button is kinda..." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://zemian.github.io/">ZBlog</a></h1>
+                <nav><ul>
+                    <li><a href="https://zemian.github.io/pages/about-the-author.html">About The Author</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://zemian.github.io/2016/how-to-manually-test-a-datasource-connection-in-weblogic.html" rel="bookmark"
+           title="Permalink to How to manually test a DataSource connection in WebLogic">How to manually test a DataSource connection in WebLogic</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2016-06-16T00:00:00-05:00">
+                Published: Thu 16 June 2016
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/weblogic.html">weblogic</a> </p>
+</footer><!-- /.post-info -->      <p>When you creating new DataSource in WLS, it allows you to test the
+connectivity. However after you have created it, the test button is
+kinda hidden in a non-obvious way. This is how I get to it and test an
+existing DataSource that have targeted a server.</p>
+<ol>
+<li>
+<p>Login to Admin Console (eg: <a href="http://localhost:7100/console">http://localhost:7100/console</a>)</p>
+</li>
+<li>
+<p>On the Domain Structure left panel, click:    
+    <code>&lt;my\_domain\_name&gt;</code> (eg: DefaultDomain) &gt; Services &gt; Data
+    Sources</p>
+</li>
+<li>
+<p>On the right, Click on the DataSource name you want to test.</p>
+</li>
+<li>
+<p>Click the "Monitoring" tab &gt; "Testing" tab.</p>
+</li>
+<li>
+<p>Select the server the DataSource has targeted to and then press
+    "Test Data Source" button.</p>
+</li>
+</ol>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

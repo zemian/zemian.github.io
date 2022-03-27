@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>NetBeans projects dependencies</title>
+        <link rel="stylesheet" href="https://zemian.github.io/theme/css/main.css" />
+        <link href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="ZBlog Atom Feed" />
+        <meta name="description" content="With all the coolness of NetBeans, one of the feature I feel it's lacking is managing project denpendencies natively in IDE. Currently the only..." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://zemian.github.io/">ZBlog</a></h1>
+                <nav><ul>
+                    <li><a href="https://zemian.github.io/pages/about-the-author.html">About The Author</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://zemian.github.io/2015/netbeans-projects-dependencies.html" rel="bookmark"
+           title="Permalink to NetBeans projects dependencies">NetBeans projects dependencies</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2015-05-13T00:00:00-05:00">
+                Published: Wed 13 May 2015
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/netbeans.html">netbeans</a> </p>
+</footer><!-- /.post-info -->      <p>With all the coolness of NetBeans, one of the feature I feel it's lacking is managing project denpendencies natively in IDE. Currently the only way to get this feature is if your Java projects are Maven based. If you have Ant based projects, then you would have to manually do this with hacks, and for each projects/sub-projects! Take a look at these two links:</p>
+<p><a href="http://stackoverflow.com/questions/13669237/netbeans-java-how-to-add-as-library-another-project-with-dependencies">http://stackoverflow.com/questions/13669237/netbeans-java-how-to-add-as-library-another-project-with-dependencies</a></p>
+<p><a href="https://netbeans.org/bugzilla/show_bug.cgi?id=47507">https://netbeans.org/bugzilla/show_bug.cgi?id=47507</a></p>
+<p>With today's EE projects, you likely going to have many sub projects, and manually handling their dependencies on each project within the IDE is not fun, and hard to maintain. Basically the time you used to setup third party libraries on a ProjectA is wasted and will not automatically exported to ProjectB if it depends on it within the IDE. NetBeans seems to only use project dependencies as way to link related projects together, and to export the main proejct jar/classes, not its third party libraries. A transitive dependencies management feature is needed. Some of user's responses on this topic seem to simply suggest one should go with Maven. Well, as much as I like to use Maven myself, I don't think it acceptable to tell users to convert their existing projects from Ant to Maven just to use an IDE. The IDE tool should be more transparent in this regard.</p>
+<p>It's worth to note that both Eclipse and Intellij have this feature and it's productive. I wish NetBeans can improve on this and provide a solution in near future.</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

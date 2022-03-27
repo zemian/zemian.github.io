@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>Using Intellij IDEA 12 for WebLogic Server 12c</title>
+        <link rel="stylesheet" href="https://zemian.github.io/theme/css/main.css" />
+        <link href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="ZBlog Atom Feed" />
+        <meta name="description" content="If you want to explore the latest EE features, you would need WebLogic Server 12c. However if you still have the IDEA 12 Ultimate edition, you..." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://zemian.github.io/">ZBlog</a></h1>
+                <nav><ul>
+                    <li><a href="https://zemian.github.io/pages/about-the-author.html">About The Author</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://zemian.github.io/2014/using-intellij-idea-12-for-weblogic-server-12c.html" rel="bookmark"
+           title="Permalink to Using Intellij IDEA 12 for WebLogic Server 12c">Using Intellij IDEA 12 for WebLogic Server 12c</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2014-02-01T00:00:00-05:00">
+                Published: Sat 01 February 2014
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/intellij.html">intellij</a> <a href="https://zemian.github.io/tag/weblogic.html">weblogic</a> </p>
+</footer><!-- /.post-info -->      <p>If you want to explore the latest EE features, you would need WebLogic Server 12c. However if you still have the IDEA 12 Ultimate edition, you will quickly find that it only supports up to WebLogic 
+Server 11g (10.x)! However you can still make your IDEA 12 U to work with WLS 12c, and all you need is an extra "registry.xml" file under WLS home directory (eg: C:/apps/wls12120/registry.xml). This file will allow the IDEA to pickup and recognize your latest WLS 12c installation.</p>
+<div class="highlight"><pre><span></span><code><span class="o">&lt;?</span><span class="n">xml</span><span class="w"> </span><span class="n">version</span><span class="o">=</span><span class="s">&quot;1.0&quot;</span><span class="w"> </span><span class="n">encoding</span><span class="o">=</span><span class="s">&quot;UTF-8&quot;</span><span class="o">?&gt;</span><span class="w"></span>
+<span class="o">&lt;</span><span class="n">bea</span><span class="o">-</span><span class="n">product</span><span class="o">-</span><span class="n">information</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="o">&lt;</span><span class="n">host</span><span class="w"> </span><span class="n">home</span><span class="o">=</span><span class="s">&quot;C:</span><span class="se">\a</span><span class="s">pps\wls12120&quot;</span><span class="w"> </span><span class="n">name</span><span class="o">=</span><span class="s">&quot;${env.HOST}&quot;</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">    </span><span class="o">&lt;</span><span class="n">product</span><span class="w"> </span><span class="n">format</span><span class="o">=</span><span class="s">&quot;1.0&quot;</span><span class="w"> </span><span class="n">name</span><span class="o">=</span><span class="s">&quot;WebLogic Platform&quot;</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">      </span><span class="o">&lt;</span><span class="k">release</span><span class="w"> </span><span class="n">level</span><span class="o">=</span><span class="s">&quot;12.0&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="n">ServicePackLevel</span><span class="o">=</span><span class="s">&quot;6&quot;</span><span class="w"> </span><span class="n">PatchLevel</span><span class="o">=</span><span class="s">&quot;0&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="n">Status</span><span class="o">=</span><span class="s">&quot;installed&quot;</span><span class="w"> </span><span class="n">BeaProgramGroup</span><span class="o">=</span><span class="s">&quot;BEA WebLogic Platform 12.0&quot;</span><span class="w"> </span><span class="n">StartMenu</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="n">InstallTime</span><span class="o">=</span><span class="s">&quot;@INSTALL_TIME@&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="n">InstallDir</span><span class="o">=</span><span class="s">&quot;C:</span><span class="se">\a</span><span class="s">pps\wls12120\wlserver&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="n">JavaHome</span><span class="o">=</span><span class="s">&quot;C:</span><span class="se">\a</span><span class="s">pps\jdk7&quot;</span><span class="w"> </span><span class="n">JavaVersion</span><span class="o">=</span><span class="s">&quot;1.7.0&quot;</span><span class="w"> </span><span class="n">JavaVendor</span><span class="o">=</span><span class="s">&quot;@JAVA_VENDOR@&quot;</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">        </span><span class="o">&lt;</span><span class="n">component</span><span class="w"> </span><span class="n">name</span><span class="o">=</span><span class="s">&quot;WebLogic Server&quot;</span><span class="w"> </span><span class="n">version</span><span class="o">=</span><span class="s">&quot;12.1.2.0&quot;</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">          </span><span class="o">&lt;</span><span class="n">component</span><span class="w"> </span><span class="n">name</span><span class="o">=</span><span class="s">&quot;Server&quot;</span><span class="o">/&gt;</span><span class="w"></span>
+<span class="w">          </span><span class="o">&lt;</span><span class="n">component</span><span class="w"> </span><span class="n">name</span><span class="o">=</span><span class="s">&quot;Server Examples&quot;</span><span class="o">/&gt;</span><span class="w"></span>
+<span class="w">        </span><span class="o">&lt;/</span><span class="n">component</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">     </span><span class="o">&lt;/</span><span class="k">release</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">    </span><span class="o">&lt;/</span><span class="n">product</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w"> </span><span class="o">&lt;/</span><span class="n">host</span><span class="o">&gt;</span><span class="w"></span>
+<span class="o">&lt;/</span><span class="n">bea</span><span class="o">-</span><span class="n">product</span><span class="o">-</span><span class="n">information</span><span class="o">&gt;</span><span class="w"></span>
+</code></pre></div>
+
+<p>I have learned this from reading the IntelliJ forum. Also note that the latest IDEA 13 will support WebLogic Server 12c out of the box now.</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

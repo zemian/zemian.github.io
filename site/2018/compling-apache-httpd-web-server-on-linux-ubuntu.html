@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>Compling Apache HTTPD Web Server on Linux (Ubuntu)</title>
+        <link rel="stylesheet" href="https://zemian.github.io/theme/css/main.css" />
+        <link href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="ZBlog Atom Feed" />
+        <meta name="description" content="sudo apt install autoconf automake libtool libtool-bin libpcre3-dev libexpat1-dev libexpat1-dev libexpat1-dev mkdir ossdev cd ossdev git clone..." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://zemian.github.io/">ZBlog</a></h1>
+                <nav><ul>
+                    <li><a href="https://zemian.github.io/pages/about-the-author.html">About The Author</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://zemian.github.io/2018/compling-apache-httpd-web-server-on-linux-ubuntu.html" rel="bookmark"
+           title="Permalink to Compling Apache HTTPD Web Server on Linux (Ubuntu)">Compling Apache HTTPD Web Server on Linux (Ubuntu)</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-03-07T00:00:00-05:00">
+                Published: Wed 07 March 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/httpd.html">httpd</a> <a href="https://zemian.github.io/tag/linux.html">linux</a> </p>
+</footer><!-- /.post-info -->      <div class="highlight"><pre><span></span><code><span class="n">sudo</span><span class="w"> </span><span class="n">apt</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="n">autoconf</span><span class="w"> </span><span class="n">automake</span><span class="w"> </span><span class="n">libtool</span><span class="w"> </span><span class="n">libtool</span><span class="o">-</span><span class="n">bin</span><span class="w"> </span><span class="n">libpcre3</span><span class="o">-</span><span class="n">dev</span><span class="w"> </span><span class="n">libexpat1</span><span class="o">-</span><span class="n">dev</span><span class="w"> </span><span class="n">libexpat1</span><span class="o">-</span><span class="n">dev</span><span class="w"> </span><span class="n">libexpat1</span><span class="o">-</span><span class="n">dev</span><span class="w"></span>
+<span class="n">mkdir</span><span class="w"> </span><span class="n">ossdev</span><span class="w"></span>
+<span class="n">cd</span><span class="w"> </span><span class="n">ossdev</span><span class="w"></span>
+<span class="n">git</span><span class="w"> </span><span class="n">clone</span><span class="w"> </span><span class="n">git</span><span class="p">:</span><span class="o">//</span><span class="n">git</span><span class="o">.</span><span class="n">apache</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">httpd</span><span class="o">.</span><span class="n">git</span><span class="w"></span>
+<span class="n">git</span><span class="w"> </span><span class="n">clone</span><span class="w"> </span><span class="n">git</span><span class="p">:</span><span class="o">//</span><span class="n">git</span><span class="o">.</span><span class="n">apache</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">apr</span><span class="o">.</span><span class="n">git</span><span class="w"> </span><span class="n">httpd</span><span class="o">/</span><span class="n">srclib</span><span class="o">/</span><span class="n">apr</span><span class="w"></span>
+<span class="n">git</span><span class="w"> </span><span class="n">clone</span><span class="w"> </span><span class="n">git</span><span class="p">:</span><span class="o">//</span><span class="n">git</span><span class="o">.</span><span class="n">apache</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">apr</span><span class="o">-</span><span class="n">util</span><span class="o">.</span><span class="n">git</span><span class="w"> </span><span class="n">httpd</span><span class="o">/</span><span class="n">srclib</span><span class="o">/</span><span class="n">apr</span><span class="o">-</span><span class="n">util</span><span class="w"></span>
+<span class="n">cd</span><span class="w"> </span><span class="n">httpd</span><span class="w"></span>
+<span class="n">git</span><span class="w"> </span><span class="n">checkout</span><span class="w"> </span><span class="mf">2.4</span><span class="o">.</span><span class="mi">9</span><span class="w"></span>
+<span class="n">cd</span><span class="w"> </span><span class="n">srclib</span><span class="o">/</span><span class="n">apr</span><span class="w"></span>
+<span class="n">git</span><span class="w"> </span><span class="n">checkout</span><span class="w"> </span><span class="mf">1.6</span><span class="o">.</span><span class="mi">3</span><span class="w"></span>
+<span class="n">cd</span><span class="w"> </span><span class="o">../</span><span class="n">apr</span><span class="o">-</span><span class="n">util</span><span class="w"></span>
+<span class="n">git</span><span class="w"> </span><span class="n">checkout</span><span class="w"> </span><span class="mf">1.6</span><span class="o">.</span><span class="mi">1</span><span class="w"></span>
+<span class="n">cd</span><span class="w"> </span><span class="o">../../</span><span class="w"></span>
+<span class="o">./</span><span class="n">buildconf</span><span class="w"></span>
+<span class="o">./</span><span class="n">configure</span><span class="w"> </span><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">mpms</span><span class="o">-</span><span class="n">shared</span><span class="w"> </span><span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">pmp</span><span class="o">=</span><span class="n">worker</span><span class="w"> </span><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">mods</span><span class="o">-</span><span class="n">shared</span><span class="o">=</span><span class="n">most</span><span class="w"></span>
+<span class="n">make</span><span class="w"></span>
+<span class="n">sudo</span><span class="w"> </span><span class="n">make</span><span class="w"> </span><span class="n">install</span><span class="w"></span>
+<span class="n">sudo</span><span class="w"> </span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">apache2</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">apachectl</span><span class="w"> </span><span class="o">-</span><span class="n">k</span><span class="w"> </span><span class="n">start</span><span class="w"></span>
+</code></pre></div>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

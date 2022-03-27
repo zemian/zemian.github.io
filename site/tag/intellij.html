@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>ZBlog - intellij</title>
+        <link rel="stylesheet" href="https://zemian.github.io/theme/css/main.css" />
+        <link href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="ZBlog Atom Feed" />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://zemian.github.io/">ZBlog</a></h1>
+                <nav><ul>
+                    <li><a href="https://zemian.github.io/pages/about-the-author.html">About The Author</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="https://zemian.github.io/2018/reduce-recent-project-list-size-in-intellij.html">Reduce recent project list size in IntelliJ</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2018-03-07T00:00:00-05:00">
+                Published: Wed 07 March 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/intellij.html">intellij</a> </p>
+</footer><!-- /.post-info --><p>When opening a project from IntelliJ IDE, it will give you a list of
+menu that contains your recent projects. This list however has default
+of 50 items max, and sometimes I find it stretched the menu popup too
+long and covered some of IDE the status line (which I need to verify the
+project path to be open). It’s a pity that there is obvious normal IDE
+Settings to change this, but today I found a post that shows how you can
+do it this:</p>
+<ol>
+<li>
+<p>Go to menu: <code>Help-&gt;Find Action-&gt;Registry</code></p>
+</li>
+<li>
+<p>In the diablog table, find the "ide.max.recent.projects" key entry
+    and change the value to your liking (eg: <code>10</code>)</p>
+</li>
+</ol>
+<p>Ref:
+<a href="https://intellij-support.jetbrains.com/hc/en-us/community/posts/207089089-SOLVED-Where-do-I-set-the-maximum-number-of-recent-projects-to-be-shown-in-the-File-Open-Recent-list">https://intellij-support.jetbrains.com/hc/en-us/community/posts/207089089-SOLVED-Where-do-I-set-the-maximum-number-of-recent-projects-to-be-shown-in-the-File-Open-Recent-list</a>-</p>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2018/how-to-turn-off-intellij-autoformat-on-a-block-of-code.html" rel="bookmark"
+                           title="Permalink to How to turn off IntelliJ autoformat on a block of code">How to turn off IntelliJ autoformat on a block of code</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-02-23T00:00:00-05:00">
+                Published: Fri 23 February 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/intellij.html">intellij</a> </p>
+</footer><!-- /.post-info -->                <p>When doing bug fix on old codes, you want least possible change set as
+possible. The IntelliJ IDE by default will auto reformat your code upon
+a <code>}</code> character you type. (Example: when you add a try/finally block to
+an existing block of code, then it will reformat that block …</p>
+                <a class="readmore" href="https://zemian.github.io/2018/how-to-turn-off-intellij-autoformat-on-a-block-of-code.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2018/intellij-highlight-outprintln-in-jsp-as-red-error.html" rel="bookmark"
+                           title="Permalink to IntelliJ highlight "out.println" in JSP as red error">IntelliJ highlight "out.println" in JSP as red error</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-02-17T00:00:00-05:00">
+                Published: Sat 17 February 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/intellij.html">intellij</a> <a href="https://zemian.github.io/tag/jsp.html">jsp</a> </p>
+</footer><!-- /.post-info -->                <p>Some times you might have a Maven web application that deployes without
+problem into a Tomcat server, but when open in IntelliJ IDE, you will
+notice some of your JSP files have red error marks on lines such as
+<code>out.println("test");</code>. This problem can occur if your project <code>pom …</code></p>
+                <a class="readmore" href="https://zemian.github.io/2018/intellij-highlight-outprintln-in-jsp-as-red-error.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2018/intellij-displays-servers-certificate-is-not-trusted-pop-up.html" rel="bookmark"
+                           title="Permalink to IntelliJ displays Server's Certificate is not trusted pop-up">IntelliJ displays Server's Certificate is not trusted pop-up</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-02-11T00:00:00-05:00">
+                Published: Sun 11 February 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/intellij.html">intellij</a> </p>
+</footer><!-- /.post-info -->                <p>I get this "Server’s Certificate is not trusted" pop-up window once in a
+while when I am in different network. If you know your IDE is already
+working fine, then you can get rid of it by go to below location.</p>
+<p><code>File | Settings | Tools | Server Certificates for Windows and …</code></p>
+                <a class="readmore" href="https://zemian.github.io/2018/intellij-displays-servers-certificate-is-not-trusted-pop-up.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2018/how-to-fix-intellij-outofmemoryerror.html" rel="bookmark"
+                           title="Permalink to How to fix IntelliJ OutOfMemoryError">How to fix IntelliJ OutOfMemoryError</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-01-19T00:00:00-05:00">
+                Published: Fri 19 January 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/intellij.html">intellij</a> </p>
+</footer><!-- /.post-info -->                <p>If you have a large project, you might get this error when trying to do
+a full build</p>
+<div class="highlight"><pre><span></span><code><span class="n">Error</span><span class="o">:</span><span class="n">java</span><span class="o">:</span><span class="w"> </span><span class="n">OutOfMemoryError</span><span class="o">:</span><span class="w"> </span><span class="n">insufficient</span><span class="w"> </span><span class="n">memory</span><span class="w"></span>
+</code></pre></div>
+
+<p>You can fix this by increase memory in two places in the IDE. For
+example, let says you want to increase to 2GB of memory:</p>
+<ol>
+<li>
+<p>Update the …</p></li></ol>
+                <a class="readmore" href="https://zemian.github.io/2018/how-to-fix-intellij-outofmemoryerror.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2015/how-to-setup-intellij-ide-war-exploded-artifact-with-multiple-cdi-dependent-projects.html" rel="bookmark"
+                           title="Permalink to How to setup Intellij IDE war exploded artifact with multiple CDI dependent projects">How to setup Intellij IDE war exploded artifact with multiple CDI dependent projects</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2015-05-29T00:00:00-05:00">
+                Published: Fri 29 May 2015
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/intellij.html">intellij</a> </p>
+</footer><!-- /.post-info -->                <p>I have a large Java project with many sub modules, and they have simple top down dependencies like this:</p>
+<div class="highlight"><pre><span></span><code>ProjectX
++-ModuleLibA
++-ModuleLibB
++-ModuleCdiLibC
++-ModuleCdiLibC2
++-ModuleLibD
++-ModuleCdiLibE
++-ModuleCdiLibE2
++-ModuleCdiLibE3
++-ModuleLibF
++-ModuleLibG
++-ModuleWebAppX
+</code></pre></div>
+
+<p>Each of these modules has their own third party dependency jars. When I say top down, it simply means …</p>
+                <a class="readmore" href="https://zemian.github.io/2015/how-to-setup-intellij-ide-war-exploded-artifact-with-multiple-cdi-dependent-projects.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2014/generating-a-war-file-from-a-plain-intellij-web-project.html" rel="bookmark"
+                           title="Permalink to Generating a war file from a plain IntelliJ web project">Generating a war file from a plain IntelliJ web project</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2014-02-25T00:00:00-05:00">
+                Published: Tue 25 February 2014
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/intellij.html">intellij</a> </p>
+</footer><!-- /.post-info -->                <p>Sometimes you just want to create a quick web project in IntelliJ IDEA, and you would use their wizard and with web or Java EE module as starter project. But these projects will not have Ant nor Maven script generated for you automatically, and the IDEA Build would only compile …</p>
+                <a class="readmore" href="https://zemian.github.io/2014/generating-a-war-file-from-a-plain-intellij-web-project.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2014/using-intellij-idea-12-for-weblogic-server-12c.html" rel="bookmark"
+                           title="Permalink to Using Intellij IDEA 12 for WebLogic Server 12c">Using Intellij IDEA 12 for WebLogic Server 12c</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2014-02-01T00:00:00-05:00">
+                Published: Sat 01 February 2014
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/intellij.html">intellij</a> <a href="https://zemian.github.io/tag/weblogic.html">weblogic</a> </p>
+</footer><!-- /.post-info -->                <p>If you want to explore the latest EE features, you would need WebLogic Server 12c. However if you still have the IDEA 12 Ultimate edition, you will quickly find that it only supports up to WebLogic 
+Server 11g (10.x)! However you can still make your IDEA 12 U to …</p>
+                <a class="readmore" href="https://zemian.github.io/2014/using-intellij-idea-12-for-weblogic-server-12c.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2014/getting-started-with-intellij-idea-and-weblogic-server.html" rel="bookmark"
+                           title="Permalink to Getting started with Intellij IDEA and WebLogic Server">Getting started with Intellij IDEA and WebLogic Server</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2014-01-31T00:00:00-05:00">
+                Published: Fri 31 January 2014
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/intellij.html">intellij</a> <a href="https://zemian.github.io/tag/weblogic.html">weblogic</a> </p>
+</footer><!-- /.post-info -->                <p>Before starting, you would need the Ultimate version of IDEA to run WebLogic Server (yes, the paid version or the 30 days trial). The Community edition of IDEA will not support Application Server deployment.</p>
+<p>I also assume you have already setup WebLogic Server and a user domain as per my …</p>
+                <a class="readmore" href="https://zemian.github.io/2014/getting-started-with-intellij-idea-and-weblogic-server.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2012/intellij-idea-is-pretty-awesome.html" rel="bookmark"
+                           title="Permalink to Intellij IDEA is pretty awesome!">Intellij IDEA is pretty awesome!</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2012-12-11T00:00:00-05:00">
+                Published: Tue 11 December 2012
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/intellij.html">intellij</a> </p>
+</footer><!-- /.post-info -->                <p>Did you know IntelliJ IDEA has a free Community Edition you may <a href="http://www.jetbrains.com/idea/download/index.html">download</a>? I've been test driving it, and I will post few things I learned so far.</p>
+<p>Here are few things that I usually change from out of the default installed settings.</p>
+<ol>
+<li>File &gt; Settings &gt; Editor =&gt; Uncheck "Allow placement of …</li></ol>
+                <a class="readmore" href="https://zemian.github.io/2012/intellij-idea-is-pretty-awesome.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+                </ol><!-- /#posts-list -->
+                </section><!-- /#content -->
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

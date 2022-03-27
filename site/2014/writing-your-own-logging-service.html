@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>Writing your own logging service?</title>
+        <link rel="stylesheet" href="https://zemian.github.io/theme/css/main.css" />
+        <link href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="ZBlog Atom Feed" />
+        <meta name="description" content="Application logging is one those things like favorite Editors war: everyone has their own opinions and there are endless of implemenations and..." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://zemian.github.io/">ZBlog</a></h1>
+                <nav><ul>
+                    <li><a href="https://zemian.github.io/pages/about-the-author.html">About The Author</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://zemian.github.io/2014/writing-your-own-logging-service.html" rel="bookmark"
+           title="Permalink to Writing your own logging service?">Writing your own logging service?</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2014-12-13T00:00:00-05:00">
+                Published: Sat 13 December 2014
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/logging.html">logging</a> </p>
+</footer><!-- /.post-info -->      <p>Application logging is one those things like favorite Editors war: everyone has their own opinions and there are endless of implemenations and flavors out there. Now a days, you likely would want to use something already available such as Log4j or Logback. Even JDK has a built in "java.util.logging" implementation. To avoid couple to a direct logger, many projects would opt to use a facade interface, and there is already couple good ones out there already, such as SLF4J or Apache Common Logging etc.</p>
+<p>Despite all these, many project owners still want to try write their own logger service! I wondered if I were to ask and write one myself, what would it be like? So I played around and come up with this simple facade that wraps one of the logger provider (JDK logger in this case), and you can check it out <a href="https://github.com/saltnlight5/java-ee6-examples/tree/master/common-service/src/main/java/zemian/service/logging">here</a>. With my logger, you can use it like this in your application:</p>
+<div class="highlight"><pre><span></span><code> <span class="kn">import</span> <span class="nn">zemian.service.logging.</span><span class="o">*</span><span class="p">;</span>
+ <span class="k">class</span> <span class="nc">MyService</span> <span class="p">{</span>
+   <span class="n">static</span> <span class="n">Log</span> <span class="n">LOG</span> <span class="o">=</span> <span class="n">LogFactory</span><span class="o">.</span><span class="n">createLog</span><span class="p">(</span><span class="n">MyService</span><span class="o">.</span><span class="n">class</span><span class="p">);</span>
+   <span class="n">public</span> <span class="n">void</span> <span class="n">run</span><span class="p">()</span> <span class="p">{</span>
+     <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">Message</span><span class="o">.</span><span class="n">msg</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> service is running now.&quot;</span><span class="p">,</span> <span class="n">this</span><span class="p">));</span>
+   <span class="p">}</span>
+ <span class="p">}</span>
+</code></pre></div>
+
+<p>Or you can use the Logger wrapper to avoid many imports:</p>
+<div class="highlight"><pre><span></span><code> <span class="kn">import</span> <span class="nn">zemian.service.logging.Logger</span><span class="p">;</span>
+ <span class="k">class</span> <span class="nc">MyService2</span> <span class="p">{</span>
+   <span class="n">static</span> <span class="n">Logger</span> <span class="n">LOGGER</span> <span class="o">=</span> <span class="n">new</span> <span class="n">Logger</span><span class="p">(</span><span class="n">MyService2</span><span class="o">.</span><span class="n">class</span><span class="p">);</span>
+   <span class="n">public</span> <span class="n">void</span> <span class="n">run</span><span class="p">()</span> <span class="p">{</span>
+     <span class="n">LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> service is running now.&quot;</span><span class="p">,</span> <span class="n">this</span><span class="p">);</span>
+   <span class="p">}</span>
+ <span class="p">}</span>
+</code></pre></div>
+
+<p>Some principles I followed when trying this out:</p>
+<ul>
+<li>Use simple names for different level of messages: error, warn, info, debug and trace (no crazy fine, finer and finest level names.)</li>
+<li>Seperate Log service from implementation so you can swap provider.</li>
+<li>Uses Message logging POJO as data encapsulation. It simplifies the log service interface.</li>
+<li>Use log parameters and lazy format binding to construct log message to speed performance. </li>
+</ul>
+<p>Do not go crazy with logging service implemenation make it complex. For example I recommend NOT to mix business logic or data in your logging if possible! If you need custom error codes to be logged for example, you can write your own Exception class and encapsulate there, and then let the logging service do its job: just logging.</p>
+<p>Here are some general rules about using logger in your application that I recommend:</p>
+<ul>
+<li>Use <code>ERROR</code> log messages when there is reallyl a error! Try not to log an "acceptable" error message in your application. Treat an ERROR as critical problem in your application, like if it's in production, some one should be paged to take care of the problem immediately. Each message should have a full Java stacktrace! Some application might want to assign a unique Error Code to these level of messages for easier identification and troubleshoot purpose.</li>
+<li>Use <code>WARN</code> log messages if it's a problem that's ignorable during production operation, but not good idea to supress it. Likely these might point to potentially problem in your application or env. Each message should have a full Java stacktrace, if available that is!</li>
+<li>Use <code>INFO</code> log messages for admin operators or application monitors peoples to see how your application is doing. High level application status or some important and meaningful business information indicators etc. Do not litter your log with developer's messages and unessary verbose and unclear message. Each message should be written in clear sentence so operators knows it's meaningful.</li>
+<li>Use <code>DEBUG</code> log messages for developers to see and troubleshoot the application. Use this for critical application junction and operation to show objects and services states etc. Try not to add repeated loop info messages here and litter your log content.</li>
+<li>Use <code>TRACE</code> log message for developers to troubleshoot tight for loop and high traffic messages information.</li>
+<li>You should select a logger provider that let you configure and turn these logging levels ON or OFF (preferrable at runtime if possible as well). Each level should able to automatically suppress all levels below it. And ofcourse you want a logger provider that can handle log message output to STDOUT and/or to FILE as destination as well.</li>
+</ul>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

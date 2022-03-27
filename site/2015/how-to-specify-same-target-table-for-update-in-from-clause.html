@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>How to specify SAME target table for update in FROM clause</title>
+        <link rel="stylesheet" href="https://zemian.github.io/theme/css/main.css" />
+        <link href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="ZBlog Atom Feed" />
+        <meta name="description" content="Have you tried updating something simple as following? update category_tmp set last_update=NOW() where category_id in ( select category_id from..." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://zemian.github.io/">ZBlog</a></h1>
+                <nav><ul>
+                    <li><a href="https://zemian.github.io/pages/about-the-author.html">About The Author</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://zemian.github.io/2015/how-to-specify-same-target-table-for-update-in-from-clause.html" rel="bookmark"
+           title="Permalink to How to specify SAME target table for update in FROM clause">How to specify SAME target table for update in FROM clause</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2015-10-11T00:00:00-05:00">
+                Published: Sun 11 October 2015
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/mysql.html">mysql</a> </p>
+</footer><!-- /.post-info -->      <p>Have you tried updating something simple as following?</p>
+<div class="highlight"><pre><span></span><code>update category_tmp set last_update=NOW() 
+where category_id in (
+  select category_id from category_tmp where name like &#39;A%&#39;
+);
+</code></pre></div>
+
+<p>In MySQL you will get an error like this:</p>
+<div class="highlight"><pre><span></span><code><span class="nv">Error</span> <span class="nv">Code</span>: <span class="mi">1093</span>. <span class="nv">You</span> <span class="nv">can</span><span class="s1">&#39;</span><span class="s">t specify target table </span><span class="s1">&#39;</span><span class="nv">category_tmp</span><span class="s1">&#39;</span><span class="s"> for update in FROM clause.</span>
+</code></pre></div>
+
+<p>So it says that you can't use the same update TABLE name within the sub query in where condition. The trick to get around this is to use another sub query in the where clause so it won't see the TABLE name being used! Here is a workaround:</p>
+<div class="highlight"><pre><span></span><code>update category_tmp set last_update=NOW() 
+where category_id in (
+  select category_id from (
+    select category_id from category_tmp where name like &#39;A%&#39;
+  ) ID_LIST
+);
+</code></pre></div>
+
+<p>Noticed that in MySQL, you must name your sub query result such as <code>ID_LIST</code>, in order for it to be re-select it again on the outer query! Otherwise it will error out with this:</p>
+<div class="highlight"><pre><span></span><code>Error Code: 1248. Every derived table must have its own alias
+</code></pre></div>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

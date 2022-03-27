@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>ZBlog</title>
+        <link rel="stylesheet" href="https://zemian.github.io/theme/css/main.css" />
+        <link href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="ZBlog Atom Feed" />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://zemian.github.io/">ZBlog</a></h1>
+                <nav><ul>
+                    <li><a href="https://zemian.github.io/pages/about-the-author.html">About The Author</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="https://zemian.github.io/2022/getting-started-with-pelican.html">Getting started with Pelican</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2022-03-26T00:00:00-04:00">
+                Published: Sat 26 March 2022
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/python.html">python</a> <a href="https://zemian.github.io/tag/blog.html">blog</a> <a href="https://zemian.github.io/tag/ssg.html">ssg</a> </p>
+</footer><!-- /.post-info --><p>This blog is now using <a href="https://getpelican.com/">Pelican</a> is a static site generator, written in Python.</p>
+<h2>First time setup</h2>
+<div class="highlight"><pre><span></span><code>pip install pelican markdown
+</code></pre></div>
+
+<h2>How to use</h2>
+<p>To create article</p>
+<div class="highlight"><pre><span></span><code>echo &#39;Hello&#39; &gt; content/hello.md
+</code></pre></div>
+
+<p>To preview</p>
+<div class="highlight"><pre><span></span><code>pelican -r -l
+</code></pre></div>
+
+<p>To publish</p>
+<div class="highlight"><pre><span></span><code><span class="n">pelican</span><span class="w"> </span><span class="o">-</span><span class="n">s</span><span class="w"> </span><span class="n">publishconf</span><span class="o">.</span><span class="n">py</span><span class="w"></span>
+<span class="n">rsync</span><span class="w"> </span><span class="o">-</span><span class="n">avc</span><span class="w"> </span><span class="o">--</span><span class="n">delete</span><span class="w"> </span><span class="n">output</span><span class="o">/</span><span class="w"> </span><span class="n">host</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="p">:</span><span class="o">/</span><span class="k">var</span><span class="o">/</span><span class="n">www</span><span class="o">/</span><span class="n">your</span><span class="o">-</span><span class="n">site</span><span class="o">/</span><span class="w"></span>
+</code></pre></div>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2021/build-a-datepicker-using-vuejs-and-bulmacss.html" rel="bookmark"
+                           title="Permalink to Build a DatePicker using VueJS and BulmaCSS">Build a DatePicker using VueJS and BulmaCSS</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2021-12-01T00:00:00-05:00">
+                Published: Wed 01 December 2021
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/vue.html">vue</a> <a href="https://zemian.github.io/tag/bulma.html">bulma</a> <a href="https://zemian.github.io/tag/datepicker.html">datepicker</a> </p>
+</footer><!-- /.post-info -->                <p>I took the challenge to build a simple DatePicker web component using VueJS and BulmaCSS, and here is the result!</p>
+<p class="codepen" data-height="653" data-default-tab="result" data-slug-hash="vYJbwzY" data-user="zemian" style="height: 653px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;">
+  <span>See the Pen <a href="https://codepen.io/zemian/pen/vYJbwzY">
+  Vue+Bulma Date Picker</a> by Zemian Deng (<a href="https://codepen.io/zemian">@zemian</a>)
+  on <a href="https://codepen.io">CodePen</a>.</span>
+</p>
+<script async src="https://cpwebassets.codepen.io/assets/embed/ei.js"></script>
+                <a class="readmore" href="https://zemian.github.io/2021/build-a-datepicker-using-vuejs-and-bulmacss.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2021/how-to-setup-wordpress-for-local-development.html" rel="bookmark"
+                           title="Permalink to How to Setup WordPress For Local Development">How to Setup WordPress For Local Development</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2021-11-14T00:00:00-05:00">
+                Published: Sun 14 November 2021
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/php.html">php</a> <a href="https://zemian.github.io/tag/wordpress.html">wordpress</a> </p>
+</footer><!-- /.post-info -->                <p>The <a href="https://wordpress.org/support/article/how-to-install-wordpress/">WordPress installation</a> is relative simple, and they even boast about a "famous 5-minute installation". However, what they mean by "5-minutes" part though, is that it only count when you first launched the WordPress site for the first time setup. If you are a newbie, it's likely you haven't install …</p>
+                <a class="readmore" href="https://zemian.github.io/2021/how-to-setup-wordpress-for-local-development.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2021/new-zblog-design-with-bulma-and-sculpin.html" rel="bookmark"
+                           title="Permalink to New ZBlog Design With Bulma and Sculpin">New ZBlog Design With Bulma and Sculpin</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2021-11-11T00:00:00-05:00">
+                Published: Thu 11 November 2021
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/php.html">php</a> <a href="https://zemian.github.io/tag/blog.html">blog</a> <a href="https://zemian.github.io/tag/sculpin.html">sculpin</a> <a href="https://zemian.github.io/tag/bulma.html">bulma</a> <a href="https://zemian.github.io/tag/ssg.html">ssg</a> </p>
+</footer><!-- /.post-info -->                <p>I redesigned <a href="https://github.com/zemian/zemian.github.io/tree/sculpin">my blog</a> with the <a href="https://sculpin.io/">Sculpin</a> Static Site Generator. I made a simple custom theme with BulmaCSS. Here is a screenshot:</p>
+<p><img alt="sculpin icon" src="/images/posts/2021/new-zblog-design-with-bulma-and-sculpin.png"></p>
+<p>Few things I like about Bulma and Sculpin:</p>
+<ul>
+<li>Bulma is an easy to work with CSS library and has great out-of-the-box styles.</li>
+<li>I learned enough PHP to feel …</li></ul>
+                <a class="readmore" href="https://zemian.github.io/2021/new-zblog-design-with-bulma-and-sculpin.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2021/how-to-trust-a-self-signed-ssl-certificate-on-macos.html" rel="bookmark"
+                           title="Permalink to How to Trust a Self-Signed SSL certificate on MacOS">How to Trust a Self-Signed SSL certificate on MacOS</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2021-04-17T00:00:00-04:00">
+                Published: Sat 17 April 2021
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/macos.html">macos</a> <a href="https://zemian.github.io/tag/ssl-certificate.html">SSL-certificate</a> <a href="https://zemian.github.io/tag/self-signed.html">self-signed</a> </p>
+</footer><!-- /.post-info -->                <p>Sometimes we use a self-sign certificate on web server for development. If you are
+using a MacOS system, you would need the following to get pass the Trust certificate.</p>
+<ol>
+<li>
+<p>Visit the site and the click the URL icon to show the Certificate.</p>
+</li>
+<li>
+<p>Drag the certificate onto the Desktop and save …</p></li></ol>
+                <a class="readmore" href="https://zemian.github.io/2021/how-to-trust-a-self-signed-ssl-certificate-on-macos.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2020/take-notes-with-marknotes.html" rel="bookmark"
+                           title="Permalink to Take Notes with MarkNotes">Take Notes with MarkNotes</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2020-11-07T00:00:00-05:00">
+                Published: Sat 07 November 2020
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/php.html">php</a> <a href="https://zemian.github.io/tag/web-development.html">web-development</a> <a href="https://zemian.github.io/tag/markdown.html">markdown</a> <a href="https://zemian.github.io/tag/notes.html">notes</a> <a href="https://zemian.github.io/tag/marknotes.html">marknotes</a> </p>
+</footer><!-- /.post-info -->                <p>I wrote a simple notes taking web application called <a href="https://github.com/zemian/marknotes">MarkNotes</a>. It's a single <code>index.php</code> page application for managing Markdown notes. Try it out and let me know what you think!</p>
+<p>Here are few screenshots on how it looks like:</p>
+<h2>Home Page</h2>
+<p><img alt="marknotes screenshot#1" src="/images/posts/2020/marknotes1.png"></p>
+<h2>Admin Page</h2>
+<p><img alt="marknotes screenshot#2" src="/images/posts/2020/marknotes2.png"></p>
+<h2>Editing a Note</h2>
+<p><img alt="marknotes screenshot#3" src="/images/posts/2020/marknotes3.png"></p>
+                <a class="readmore" href="https://zemian.github.io/2020/take-notes-with-marknotes.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2020/directory-listing-project.html" rel="bookmark"
+                           title="Permalink to Directory Listing Project">Directory Listing Project</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2020-10-04T00:00:00-04:00">
+                Published: Sun 04 October 2020
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/php.html">php</a> <a href="https://zemian.github.io/tag/web-development.html">web-development</a> </p>
+</footer><!-- /.post-info -->                <p>A directory listing index page is a very useful for development. It gives you 
+a quick overview of your project content and able to verify your site is up and
+running.</p>
+<p>While learning PHP, I have created the smallest project called <a href="https://github.com/zemian/purple-index">purple-index</a>.</p>
+<p>Here are some screenshots. Enjoy!</p>
+<p><img alt="Screenshot" src="https://raw.githubusercontent.com/zemian/index-listing/main/docs/screenshot.png"></p>
+<p><img alt="Screenshot" src="https://raw.githubusercontent.com/zemian/index-listing/main/docs/screenshot2.png"></p>
+<p><img alt="Screenshot" src="https://raw.githubusercontent.com/zemian/index-listing/main/docs/screenshot3.png"></p>
+                <a class="readmore" href="https://zemian.github.io/2020/directory-listing-project.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2020/which-programmer-text-editor-to-use.html" rel="bookmark"
+                           title="Permalink to Which Programmer Text Editor To Use?">Which Programmer Text Editor To Use?</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2020-09-27T00:00:00-04:00">
+                Published: Sun 27 September 2020
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/texteditor.html">texteditor</a> <a href="https://zemian.github.io/tag/editor.html">editor</a> <a href="https://zemian.github.io/tag/programming.html">programming</a> </p>
+</footer><!-- /.post-info -->                <p>A text editor is a programmer must have tool. Like many developers, I have used quite a few text editors over the years. Here are some that got me through many projects.</p>
+<ul>
+<li>
+<p>I started learning QBasic back in the 90's that comes with editor. It was in the old Microsoft …</p></li></ul>
+                <a class="readmore" href="https://zemian.github.io/2020/which-programmer-text-editor-to-use.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2020/which-cms-to-use.html" rel="bookmark"
+                           title="Permalink to Which CMS to Use?">Which CMS to Use?</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2020-09-23T00:00:00-04:00">
+                Published: Wed 23 September 2020
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/cms.html">cms</a> <a href="https://zemian.github.io/tag/blog.html">blog</a> <a href="https://zemian.github.io/tag/knowledge-management.html">knowledge-management</a> <a href="https://zemian.github.io/tag/site-development.html">site-development</a> </p>
+</footer><!-- /.post-info -->                <p>What is a CMS? Accoridng to <a href="https://en.wikipedia.org/wiki/Content_management_system">Wikipedia</a></p>
+<blockquote>
+<p>A content management system (CMS) is a computer software used to manage the creation and modification of digital content. CMSs are typically used for enterprise content management (ECM) and web content management (WCM). ECM typically supports multiple users in a collaborative environment by …</p></blockquote>
+                <a class="readmore" href="https://zemian.github.io/2020/which-cms-to-use.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2020/the-world-of-php-development.html" rel="bookmark"
+                           title="Permalink to The World of PHP Development">The World of PHP Development</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2020-09-20T00:00:00-05:00">
+                Published: Sun 20 September 2020
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/php.html">php</a> <a href="https://zemian.github.io/tag/mysql.html">mysql</a> <a href="https://zemian.github.io/tag/webserver.html">webserver</a> <a href="https://zemian.github.io/tag/joomla.html">joomla</a> </p>
+</footer><!-- /.post-info -->                <p>I have gotten into PHP lately in order to help a friend who runs a Joomla site with a custom component. Thinking to myself now that I have some <a href="/2020/03/22/front-end">Front End Experience</a>, I shouldn't have trouble doing this. But I have never seriuosly got into PHP in the past though …</p>
+                <a class="readmore" href="https://zemian.github.io/2020/the-world-of-php-development.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+                </ol><!-- /#posts-list -->
+<p class="paginator">
+    Page 1 / 30
+        <a href="https://zemian.github.io/index2.html">&raquo;</a>
+        <a href="https://zemian.github.io/index30.html">&#8649;</a>
+</p>
+                </section><!-- /#content -->
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

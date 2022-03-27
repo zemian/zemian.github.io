@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>Exploring Apache Camel Core - Direct Component</title>
+        <link rel="stylesheet" href="https://zemian.github.io/theme/css/main.css" />
+        <link href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="ZBlog Atom Feed" />
+        <meta name="description" content="The Apache Camel allows you to create multiple Route's within a single CamelContext space. The direct component in Camel would allow you to bridge..." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://zemian.github.io/">ZBlog</a></h1>
+                <nav><ul>
+                    <li><a href="https://zemian.github.io/pages/about-the-author.html">About The Author</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://zemian.github.io/2013/exploring-apache-camel-core-direct-component.html" rel="bookmark"
+           title="Permalink to Exploring Apache Camel Core - Direct Component">Exploring Apache Camel Core - Direct Component</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2013-09-07T00:00:00-05:00">
+                Published: Sat 07 September 2013
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/camel.html">camel</a> </p>
+</footer><!-- /.post-info -->      <p>The Apache Camel allows you to create multiple <code>Route</code>'s within a single <code>CamelContext</code> space. The <code>direct</code> component in Camel would allow you to bridge messages between these <code>Route</code>'s. To demonstrate this, I will create few routes and pass messages between them.</p>
+<div class="highlight"><pre><span></span><code><span class="n">package</span> <span class="n">camelcoredemo</span><span class="p">;</span>
+
+<span class="kn">import</span> <span class="nn">org.slf4j.</span><span class="o">*</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.camel.</span><span class="o">*</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.camel.builder.</span><span class="o">*</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.camel.main.Main</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">java.io.</span><span class="o">*</span><span class="p">;</span>
+
+<span class="n">public</span> <span class="k">class</span> <span class="nc">DirectDemoCamel</span> <span class="n">extends</span> <span class="n">Main</span> <span class="p">{</span>
+    <span class="n">static</span> <span class="n">Logger</span> <span class="n">LOG</span> <span class="o">=</span> <span class="n">LoggerFactory</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">DirectDemoCamel</span><span class="o">.</span><span class="n">class</span><span class="p">);</span>
+    <span class="n">public</span> <span class="n">static</span> <span class="n">void</span> <span class="n">main</span><span class="p">(</span><span class="n">String</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span> <span class="n">throws</span> <span class="ne">Exception</span> <span class="p">{</span>
+        <span class="n">DirectDemoCamel</span> <span class="n">main</span> <span class="o">=</span> <span class="n">new</span> <span class="n">DirectDemoCamel</span><span class="p">();</span>
+        <span class="n">main</span><span class="o">.</span><span class="n">enableHangupSupport</span><span class="p">();</span>
+        <span class="n">main</span><span class="o">.</span><span class="n">addRouteBuilder</span><span class="p">(</span><span class="n">createRouteBuilder1</span><span class="p">());</span>
+        <span class="n">main</span><span class="o">.</span><span class="n">addRouteBuilder</span><span class="p">(</span><span class="n">createRouteBuilder2</span><span class="p">());</span>
+        <span class="n">main</span><span class="o">.</span><span class="n">addRouteBuilder</span><span class="p">(</span><span class="n">createRouteBuilder3</span><span class="p">());</span>
+        <span class="n">main</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">args</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="o">//</span> <span class="n">The</span> <span class="n">file</span> <span class="n">poller</span> <span class="n">route</span>
+    <span class="n">static</span> <span class="n">RouteBuilder</span> <span class="n">createRouteBuilder1</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">new</span> <span class="n">RouteBuilder</span><span class="p">()</span> <span class="p">{</span>
+            <span class="n">public</span> <span class="n">void</span> <span class="n">configure</span><span class="p">()</span> <span class="p">{</span>
+                <span class="n">from</span><span class="p">(</span><span class="s2">&quot;file://target/input?preMove=staging&amp;move=.processed&quot;</span><span class="p">)</span>
+                <span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">new</span> <span class="n">Processor</span><span class="p">()</span> <span class="p">{</span>
+                    <span class="n">public</span> <span class="n">void</span> <span class="n">process</span><span class="p">(</span><span class="n">Exchange</span> <span class="n">msg</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="n">CamelContext</span> <span class="n">camelContext</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">getContext</span><span class="p">();</span>
+                        <span class="n">ProducerTemplate</span> <span class="n">producer</span> <span class="o">=</span> <span class="n">camelContext</span><span class="o">.</span><span class="n">createProducerTemplate</span><span class="p">();</span>
+                        <span class="n">File</span> <span class="n">file</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">getIn</span><span class="p">()</span><span class="o">.</span><span class="n">getBody</span><span class="p">(</span><span class="n">File</span><span class="o">.</span><span class="n">class</span><span class="p">);</span>
+                        <span class="n">boolean</span> <span class="n">specialFile</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">getName</span><span class="p">()</span><span class="o">.</span><span class="n">endsWith</span><span class="p">(</span><span class="s2">&quot;_SPECIAL.dat&quot;</span><span class="p">);</span>
+                        <span class="k">if</span> <span class="p">(</span><span class="n">specialFile</span><span class="p">)</span>
+                            <span class="n">producer</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;direct:specialRoute&quot;</span><span class="p">,</span> <span class="n">msg</span><span class="p">);</span>
+                        <span class="k">else</span>
+                            <span class="n">producer</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;direct:normalRoute&quot;</span><span class="p">,</span> <span class="n">msg</span><span class="p">);</span>
+                    <span class="p">}</span>
+                <span class="p">});</span>
+            <span class="p">}</span>
+        <span class="p">};</span>
+    <span class="p">}</span>
+    <span class="o">//</span> <span class="n">The</span> <span class="n">special</span> <span class="n">file</span> <span class="n">processing</span> <span class="n">route</span>
+    <span class="n">static</span> <span class="n">RouteBuilder</span> <span class="n">createRouteBuilder2</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">new</span> <span class="n">RouteBuilder</span><span class="p">()</span> <span class="p">{</span>
+            <span class="n">public</span> <span class="n">void</span> <span class="n">configure</span><span class="p">()</span> <span class="p">{</span>
+                <span class="n">from</span><span class="p">(</span><span class="s2">&quot;direct:specialRoute&quot;</span><span class="p">)</span>
+                <span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">new</span> <span class="n">Processor</span><span class="p">()</span> <span class="p">{</span>
+                    <span class="n">public</span> <span class="n">void</span> <span class="n">process</span><span class="p">(</span><span class="n">Exchange</span> <span class="n">msg</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Processing special file: &quot;</span> <span class="o">+</span> <span class="n">msg</span><span class="p">);</span>
+                    <span class="p">}</span>
+                <span class="p">});</span>
+            <span class="p">}</span>
+        <span class="p">};</span>
+    <span class="p">}</span>
+    <span class="o">//</span> <span class="n">The</span> <span class="n">normal</span> <span class="n">file</span> <span class="n">processing</span> <span class="n">route</span>
+    <span class="n">static</span> <span class="n">RouteBuilder</span> <span class="n">createRouteBuilder3</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">new</span> <span class="n">RouteBuilder</span><span class="p">()</span> <span class="p">{</span>
+            <span class="n">public</span> <span class="n">void</span> <span class="n">configure</span><span class="p">()</span> <span class="p">{</span>
+                <span class="n">from</span><span class="p">(</span><span class="s2">&quot;direct:normalRoute&quot;</span><span class="p">)</span>
+                <span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">new</span> <span class="n">Processor</span><span class="p">()</span> <span class="p">{</span>
+                    <span class="n">public</span> <span class="n">void</span> <span class="n">process</span><span class="p">(</span><span class="n">Exchange</span> <span class="n">msg</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Processing normal file: &quot;</span> <span class="o">+</span> <span class="n">msg</span><span class="p">);</span>
+                    <span class="p">}</span>
+                <span class="p">});</span>
+            <span class="p">}</span>
+        <span class="p">};</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Here I have created 3 <code>Route</code>'s and re-used the <code>file</code> component I have introduced in the past. The first <code>Route</code> polls a directory, and then based on the name of the file found, we send it to either to <strong>special</strong> or <strong>normal</strong><code>Route</code> for processing. Because these <code>Route</code>'s are separated, we need a bridge channel to pass the messages through, hence it's what the <code>direct</code> component does. The usage is simply use any <strong>unique name</strong> within the <code>CamelContext</code>, and it will serve as a direct memory queue to pass messages. You may read from or send to these queues. So as you can see, the <code>direct</code> component let you easily breakup a complex route workflow into smaller part.</p>
+<p>In above demo, I have also introduced a bit of Camel core features: <code>ProducerTemplate</code>. Within a <code>CamelContext</code> you may create an instance of <code>ProducerTemplate</code> and it will allow you to send any messages to any endpoints dynamically at runtime. Usually you would probably want to store this producer object as member field instead of per each message processing. But for demo purpose, I will leave it as simple as that, and leave you as exercise to explore more on your own.</p>
+<p>There are more options availabe from <a href="http://camel.apache.org/direct.html">Direct</a> component
+that you may explore.
+<a href="https://zemian.github.io/2013/08/getting-started-with-apache-camel-using.html">Try it out with a Route</a>
+and see it for yourself.</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

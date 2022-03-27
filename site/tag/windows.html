@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>ZBlog - windows</title>
+        <link rel="stylesheet" href="https://zemian.github.io/theme/css/main.css" />
+        <link href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="ZBlog Atom Feed" />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://zemian.github.io/">ZBlog</a></h1>
+                <nav><ul>
+                    <li><a href="https://zemian.github.io/pages/about-the-author.html">About The Author</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="https://zemian.github.io/2018/how-to-create-windows-context-menu-without-admin-rights.html">How To Create Windows Context Menu Without Admin Rights</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2018-03-16T00:00:00-05:00">
+                Published: Fri 16 March 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/windows.html">windows</a> </p>
+</footer><!-- /.post-info --><div class="highlight"><pre><span></span><code><span class="nv">@REM</span><span class="w"> </span><span class="n">Base</span><span class="w"> </span><span class="k">on</span><span class="w"> </span><span class="n">tips</span><span class="w"> </span><span class="nl">here</span><span class="p">:</span><span class="w"></span>
+<span class="nv">@REM</span><span class="w"> </span><span class="nl">https</span><span class="p">:</span><span class="o">//</span><span class="n">stackoverflow</span><span class="p">.</span><span class="n">com</span><span class="o">/</span><span class="n">questions</span><span class="o">/</span><span class="mi">48138681</span><span class="o">/</span><span class="n">how</span><span class="o">-</span><span class="k">to</span><span class="o">-</span><span class="k">add</span><span class="o">-</span><span class="n">sublime</span><span class="o">-</span><span class="nc">text</span><span class="o">-</span><span class="k">to</span><span class="o">-</span><span class="n">contextual</span><span class="o">-</span><span class="n">menu</span><span class="o">-</span><span class="k">without</span><span class="o">-</span><span class="k">admin</span><span class="o">-</span><span class="k">privileges</span><span class="o">-</span><span class="k">on</span><span class="o">-</span><span class="n">windows</span><span class="w"></span>
+
+<span class="nv">@reg</span><span class="w"> </span><span class="k">add</span><span class="w"> </span><span class="ss">&quot;HKEY_CURRENT_USER\Software\Classes\*\shell\Open with Sublime Text 3&quot;</span><span class="w">         </span><span class="o">/</span><span class="n">t</span><span class="w"> </span><span class="n">REG_SZ</span><span class="w"> </span><span class="o">/</span><span class="n">v</span><span class="w"> </span><span class="ss">&quot;&quot;</span><span class="w"> </span><span class="o">/</span><span class="n">d</span><span class="w"> </span><span class="ss">&quot;Open with Sublime Text 3&quot;</span><span class="w">   </span><span class="o">/</span><span class="n">f</span><span class="w"></span>
+<span class="nv">@reg</span><span class="w"> </span><span class="k">add</span><span class="w"> </span><span class="ss">&quot;HKEY_CURRENT_USER\Software\Classes\*\shell\Open with Sublime Text 3&quot;</span><span class="w">         </span><span class="o">/</span><span class="n">t</span><span class="w"> </span><span class="n">REG_EXPAND_SZ</span><span class="w"> </span><span class="o">/</span><span class="n">v</span><span class="w"> </span><span class="ss">&quot;Icon&quot;</span><span class="w"> </span><span class="o">/</span><span class="n">d</span><span class="w"> </span><span class="ss">&quot;%st3Path%,0&quot;</span><span class="w"> </span><span class="o">/</span><span class="n">f</span><span class="w"></span>
+<span class="nv">@reg</span><span class="w"> </span><span class="k">add</span><span class="w"> </span><span class="ss">&quot;HKEY_CURRENT_USER\Software\Classes\*\shell\Open with Sublime Text 3\command&quot;</span><span class="w"> </span><span class="o">/</span><span class="n">t</span><span class="w"> </span><span class="n">REG_SZ</span><span class="w"> </span><span class="o">/</span><span class="n">v</span><span class="w"> </span><span class="ss">&quot;&quot;</span><span class="w"> </span><span class="o">/</span><span class="n">d</span><span class="w"> </span><span class="ss">&quot;C:\Users\zemian\apps\Sublime-Text-Build-3143-x64\sublime_text.exe \&quot;</span><span class="o">%%</span><span class="mi">1</span><span class="err">\</span><span class="ss">&quot;&quot;</span><span class="w"> </span><span class="o">/</span><span class="n">f</span><span class="w"></span>
+
+<span class="nv">@REM</span><span class="w"> </span><span class="k">If</span><span class="w"> </span><span class="n">you</span><span class="w"> </span><span class="n">want</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">remove</span><span class="w"> </span><span class="n">above</span><span class="w"></span>
+<span class="nv">@REM</span><span class="w"> </span><span class="nv">@reg</span><span class="w"> </span><span class="k">delete</span><span class="w">  </span><span class="ss">&quot;HKEY_CURRENT_USER\Software\Classes\*\shell\Open with Sublime Text 3\command&quot;</span><span class="w"> </span><span class="o">/</span><span class="n">f</span><span class="w"> </span><span class="o">&gt;</span><span class="n">nul</span><span class="w"> </span><span class="mi">2</span><span class="o">&gt;&amp;</span><span class="mi">1</span><span class="w"></span>
+<span class="nv">@REM</span><span class="w"> </span><span class="nv">@reg</span><span class="w"> </span><span class="k">delete</span><span class="w">  </span><span class="ss">&quot;HKEY_CURRENT_USER\Software\Classes\*\shell\Open with Sublime Text 3&quot;</span><span class="w"> </span><span class="o">/</span><span class="n">f</span><span class="w"> </span><span class="o">&gt;</span><span class="n">nul</span><span class="w"> </span><span class="mi">2</span><span class="o">&gt;&amp;</span><span class="mi">1</span><span class="w"></span>
+</code></pre></div>                </article>
+            </aside><!-- /#featured -->
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

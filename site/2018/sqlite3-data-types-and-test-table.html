@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>SQLite3 Data Types and Test Table</title>
+        <link rel="stylesheet" href="https://zemian.github.io/theme/css/main.css" />
+        <link href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="ZBlog Atom Feed" />
+        <meta name="description" content="A quick sql table setup to test most common data types. -- Notes for SQLite3 Database (3.24) -- https://www.sqlite.org/docs.html -- Data Types --..." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://zemian.github.io/">ZBlog</a></h1>
+                <nav><ul>
+                    <li><a href="https://zemian.github.io/pages/about-the-author.html">About The Author</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://zemian.github.io/2018/sqlite3-data-types-and-test-table.html" rel="bookmark"
+           title="Permalink to SQLite3 Data Types and Test Table">SQLite3 Data Types and Test Table</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-08-21T00:00:00-05:00">
+                Published: Tue 21 August 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/sql.html">sql</a> <a href="https://zemian.github.io/tag/sqlite3.html">sqlite3</a> </p>
+</footer><!-- /.post-info -->      <p>A quick sql table setup to test most common data types.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Notes for SQLite3 Database (3.24)</span>
+<span class="c1">-- https://www.sqlite.org/docs.html</span>
+
+<span class="c1">-- Data Types</span>
+<span class="c1">-- https://www.sqlite.org/datatype3.html</span>
+
+<span class="c1">-- Functions</span>
+<span class="c1">-- https://www.sqlite.org/lang_corefunc.html</span>
+
+<span class="cm">/*</span>
+<span class="cm">SQLite does not have strong data type, but dynamic type that define by value rather than by schema/container.</span>
+
+<span class="cm">SQLite only has 5 storage class that it can be used to store data (desc their doc):</span>
+
+<span class="cm">NULL. The value is a NULL value.</span>
+<span class="cm">INTEGER. The value is a signed integer, stored in 1, 2, 3, 4, 6, or 8 bytes depending on the magnitude of the value.</span>
+<span class="cm">REAL. The value is a floating point value, stored as an 8-byte IEEE floating point number.</span>
+<span class="cm">TEXT. The value is a text string, stored using the database encoding (UTF-8, UTF-16BE or UTF-16LE).</span>
+<span class="cm">BLOB. The value is a blob of data, stored exactly as it was input.</span>
+
+<span class="cm">SQLite can conform to standard SQL types by mapping what&#39;s called &quot;affinity&quot; type.</span>
+
+<span class="cm">CHAR          Map to TEXT</span>
+<span class="cm">VARCHAR       Map to TEXT</span>
+<span class="cm">TEXT          Map to TEXT</span>
+
+<span class="cm">INT           Map to INTEGER</span>
+
+<span class="cm">REAL             Map to REAL</span>
+<span class="cm">DOUBLE PRECISION Map to REAL</span>
+
+<span class="cm">NUMERIC       Map to INTEGER, REAL, TEXT or BLOB</span>
+
+<span class="cm">DATE          Map to INTEGER, REAL, TEXT or BLOB</span>
+<span class="cm">DATETIME      Map to INTEGER, REAL, TEXT or BLOB</span>
+
+<span class="cm">NOTE: Despite there is a &quot;NUMERIC&quot; affinity type, it&#39;s not a fixed-point type! SQLite</span>
+<span class="cm">does not have native NUMERIC. It will dynamically choose a best fit storage class</span>
+<span class="cm">instead (REAL if it can keep 15 digits accuracy). If you need true fixed point data type,</span>
+<span class="cm">you may try to use TEXT data stored instead. Same as with DATETIME types. For example you</span>
+<span class="cm">can store DATETIME as TEXT, and then SQLite provides many built-in functions that help you</span>
+<span class="cm">manipulate dates instead. Note also that precision and scale such as VARCHAR(n) or</span>
+<span class="cm">NUMERIC(p, s) has no real meaning other than DDL schema documentation only!</span>
+
+<span class="cm">The SQLite INT size can auto grow into 64-bits (like sql: BIGINT) if needed. The REAL type</span>
+<span class="cm">is 64-bits size! (unlike many other DB that use REAL for 32-bits and DOUBLE PRECISION for</span>
+<span class="cm">64 bits).</span>
+<span class="cm"> */</span><span class="w"></span>
+
+<span class="c1">-- Test table</span>
+<span class="k">create</span><span class="w"> </span><span class="k">table</span><span class="w"> </span><span class="n">test</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">id</span><span class="w">      </span><span class="nb">integer</span><span class="w"> </span><span class="k">primary</span><span class="w"> </span><span class="k">key</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">ts</span><span class="w">      </span><span class="nb">text</span><span class="w"> </span><span class="k">default</span><span class="w"> </span><span class="p">(</span><span class="n">datetime</span><span class="p">(</span><span class="s1">&#39;now&#39;</span><span class="p">)),</span><span class="w"></span>
+<span class="w">  </span><span class="n">cat</span><span class="w">     </span><span class="nb">text</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">price</span><span class="w">   </span><span class="nb">text</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">qty</span><span class="w">     </span><span class="nb">int</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">txtdata</span><span class="w"> </span><span class="nb">text</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">bindata</span><span class="w"> </span><span class="nb">blob</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">distx</span><span class="w">   </span><span class="nb">real</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">disty</span><span class="w">   </span><span class="nb">real</span><span class="w"></span>
+<span class="p">);</span><span class="w"></span>
+<span class="k">insert</span><span class="w"> </span><span class="k">into</span><span class="w"> </span><span class="n">test</span><span class="p">(</span><span class="n">cat</span><span class="p">,</span><span class="w"> </span><span class="n">price</span><span class="p">,</span><span class="w"> </span><span class="n">qty</span><span class="p">)</span><span class="w"> </span><span class="k">values</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">100000</span><span class="p">.</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">50000</span><span class="p">),</span><span class="w"></span>
+<span class="w">                                         </span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">100000</span><span class="p">.</span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">),</span><span class="w"></span>
+<span class="w">                                         </span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">100000</span><span class="p">.</span><span class="mi">00</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">),</span><span class="w"></span>
+<span class="w">                                         </span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">9977000</span><span class="p">.</span><span class="mi">3333</span><span class="p">,</span><span class="w"> </span><span class="mi">179</span><span class="p">),</span><span class="w"></span>
+<span class="w">                                         </span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">104729</span><span class="p">.</span><span class="mi">1129</span><span class="p">,</span><span class="w"> </span><span class="mi">104729</span><span class="p">);</span><span class="w"></span>
+<span class="k">insert</span><span class="w"> </span><span class="k">into</span><span class="w"> </span><span class="n">test</span><span class="p">(</span><span class="n">cat</span><span class="p">,</span><span class="w"> </span><span class="n">bindata</span><span class="p">,</span><span class="w"> </span><span class="n">txtdata</span><span class="p">)</span><span class="w"> </span><span class="k">values</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;test2&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="s1">&#39;CAFEBABE&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;CAFEBABE&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="k">insert</span><span class="w"> </span><span class="k">into</span><span class="w"> </span><span class="n">test</span><span class="p">(</span><span class="n">cat</span><span class="p">,</span><span class="w"> </span><span class="n">bindata</span><span class="p">)</span><span class="w"> </span><span class="k">values</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;test3&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">randomblob</span><span class="p">(</span><span class="mi">16</span><span class="p">));</span><span class="w"></span>
+<span class="k">insert</span><span class="w"> </span><span class="k">into</span><span class="w"> </span><span class="n">test</span><span class="p">(</span><span class="n">cat</span><span class="p">,</span><span class="w"> </span><span class="n">bindata</span><span class="p">)</span><span class="w"> </span><span class="k">values</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;test3&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">randomblob</span><span class="p">(</span><span class="mi">16</span><span class="p">));</span><span class="w"></span>
+<span class="k">insert</span><span class="w"> </span><span class="k">into</span><span class="w"> </span><span class="n">test</span><span class="p">(</span><span class="n">cat</span><span class="p">,</span><span class="w"> </span><span class="n">bindata</span><span class="p">)</span><span class="w"> </span><span class="k">values</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;test3&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">randomblob</span><span class="p">(</span><span class="mi">16</span><span class="p">));</span><span class="w"></span>
+<span class="k">update</span><span class="w"> </span><span class="n">test</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="n">txtdata</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hex</span><span class="p">(</span><span class="n">bindata</span><span class="p">)</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">cat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;test3&#39;</span><span class="p">;</span><span class="w"></span>
+<span class="k">insert</span><span class="w"> </span><span class="k">into</span><span class="w"> </span><span class="n">test</span><span class="p">(</span><span class="n">cat</span><span class="p">,</span><span class="w"> </span><span class="n">distx</span><span class="p">,</span><span class="w"> </span><span class="n">disty</span><span class="p">)</span><span class="w"> </span><span class="k">values</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;test4&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">random</span><span class="p">(),</span><span class="w"> </span><span class="n">random</span><span class="p">());</span><span class="w"></span>
+<span class="k">insert</span><span class="w"> </span><span class="k">into</span><span class="w"> </span><span class="n">test</span><span class="p">(</span><span class="n">cat</span><span class="p">,</span><span class="w"> </span><span class="n">distx</span><span class="p">,</span><span class="w"> </span><span class="n">disty</span><span class="p">)</span><span class="w"> </span><span class="k">values</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;test4&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">random</span><span class="p">(),</span><span class="w"> </span><span class="n">random</span><span class="p">());</span><span class="w"></span>
+<span class="k">insert</span><span class="w"> </span><span class="k">into</span><span class="w"> </span><span class="n">test</span><span class="p">(</span><span class="n">cat</span><span class="p">,</span><span class="w"> </span><span class="n">distx</span><span class="p">,</span><span class="w"> </span><span class="n">disty</span><span class="p">)</span><span class="w"> </span><span class="k">values</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;test4&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">random</span><span class="p">(),</span><span class="w"> </span><span class="n">random</span><span class="p">());</span><span class="w"></span>
+<span class="k">select</span><span class="w"> </span><span class="k">sum</span><span class="p">(</span><span class="n">price</span><span class="p">)</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">test</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">cat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;test&#39;</span><span class="p">;</span><span class="w"></span>
+<span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">test</span><span class="w"> </span><span class="k">order</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">cat</span><span class="p">,</span><span class="w"> </span><span class="n">ts</span><span class="w"> </span><span class="k">desc</span><span class="p">;</span><span class="w"></span>
+</code></pre></div>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

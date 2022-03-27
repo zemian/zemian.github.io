@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>Setup MySQL DataSource on WLS</title>
+        <link rel="stylesheet" href="https://zemian.github.io/theme/css/main.css" />
+        <link href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="ZBlog Atom Feed" />
+        <meta name="description" content="Here is a WLST script to setup MySQL DataSource in WebLogic server after you have created a domain. The script will also assign this DataSource to..." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://zemian.github.io/">ZBlog</a></h1>
+                <nav><ul>
+                    <li><a href="https://zemian.github.io/pages/about-the-author.html">About The Author</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://zemian.github.io/2015/setup-mysql-datasource-on-wls.html" rel="bookmark"
+           title="Permalink to Setup MySQL DataSource on WLS">Setup MySQL DataSource on WLS</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2015-10-04T00:00:00-05:00">
+                Published: Sun 04 October 2015
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/weblogic.html">weblogic</a> <a href="https://zemian.github.io/tag/mysql.html">mysql</a> </p>
+</footer><!-- /.post-info -->      <p>Here is a WLST script to setup MySQL DataSource in WebLogic server after you have created a domain. The script will also assign this DataSource to one or more servers you pass in at the end of arguments.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Update an existing domain to setup a DataSource and assign it to servers</span>
+<span class="c1"># Example</span>
+<span class="c1">#   wlst.cmd setupDataSource.py C:\data\wls11g_domains\dev MYTESTDB jdbc/MYTESTDB com.mysql.jdbc.Driver jdbc:mysql://localhost/mytestdb test test123 AdminServer</span>
+
+<span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">os.path</span>
+<span class="p">(</span><span class="n">domain_home</span><span class="p">,</span> <span class="n">ds_name</span><span class="p">,</span> <span class="n">jndi_name</span><span class="p">,</span> <span class="n">driver_name</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">8</span><span class="p">]</span>
+<span class="n">servers</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">8</span><span class="p">:]</span>
+
+<span class="n">domain_home</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">domain_home</span><span class="p">)</span>
+
+<span class="n">readDomain</span><span class="p">(</span><span class="n">domain_home</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Setting up WLS DataSource: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">ds_name</span><span class="p">)</span>
+<span class="n">create</span><span class="p">(</span><span class="n">ds_name</span><span class="p">,</span> <span class="s1">&#39;JDBCSystemResource&#39;</span><span class="p">)</span>
+<span class="n">cd</span><span class="p">(</span><span class="s1">&#39;/JDBCSystemResource/</span><span class="si">%s</span><span class="s1">/JdbcResource/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">ds_name</span><span class="p">,</span> <span class="n">ds_name</span><span class="p">))</span>
+<span class="n">create</span><span class="p">(</span><span class="s1">&#39;myJdbcDriverParams&#39;</span><span class="p">,</span><span class="s1">&#39;JDBCDriverParams&#39;</span><span class="p">)</span>
+<span class="n">cd</span><span class="p">(</span><span class="s1">&#39;JDBCDriverParams/NO_NAME_0&#39;</span><span class="p">)</span>
+<span class="nb">set</span><span class="p">(</span><span class="s1">&#39;DriverName&#39;</span><span class="p">,</span><span class="n">driver_name</span><span class="p">)</span>
+<span class="nb">set</span><span class="p">(</span><span class="s1">&#39;URL&#39;</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span>
+<span class="nb">set</span><span class="p">(</span><span class="s1">&#39;PasswordEncrypted&#39;</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
+<span class="nb">set</span><span class="p">(</span><span class="s1">&#39;UseXADataSourceInterface&#39;</span><span class="p">,</span> <span class="s1">&#39;false&#39;</span><span class="p">)</span>
+<span class="n">create</span><span class="p">(</span><span class="s1">&#39;myProps&#39;</span><span class="p">,</span><span class="s1">&#39;Properties&#39;</span><span class="p">)</span>
+<span class="n">cd</span><span class="p">(</span><span class="s1">&#39;Properties/NO_NAME_0&#39;</span><span class="p">)</span>
+<span class="n">create</span><span class="p">(</span><span class="s1">&#39;user&#39;</span><span class="p">,</span> <span class="s1">&#39;Property&#39;</span><span class="p">)</span>
+<span class="n">create</span><span class="p">(</span><span class="s1">&#39;characterEncoding&#39;</span><span class="p">,</span> <span class="s1">&#39;Property&#39;</span><span class="p">)</span>
+<span class="n">create</span><span class="p">(</span><span class="s1">&#39;connectionCollation&#39;</span><span class="p">,</span> <span class="s1">&#39;Property&#39;</span><span class="p">)</span>
+<span class="n">create</span><span class="p">(</span><span class="s1">&#39;useUnicode&#39;</span><span class="p">,</span> <span class="s1">&#39;Property&#39;</span><span class="p">)</span>
+<span class="n">cd</span><span class="p">(</span><span class="s1">&#39;Property/user&#39;</span><span class="p">)</span>
+<span class="n">cmo</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+<span class="n">cd</span><span class="p">(</span><span class="s1">&#39;../characterEncoding&#39;</span><span class="p">)</span>
+<span class="n">cmo</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+<span class="n">cd</span><span class="p">(</span><span class="s1">&#39;../connectionCollation&#39;</span><span class="p">)</span>
+<span class="n">cmo</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="s1">&#39;utf8_general_ci&#39;</span><span class="p">)</span>
+<span class="n">cd</span><span class="p">(</span><span class="s1">&#39;../useUnicode&#39;</span><span class="p">)</span>
+<span class="n">cmo</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="s1">&#39;true&#39;</span><span class="p">)</span>
+
+<span class="n">cd</span><span class="p">(</span><span class="s1">&#39;/JDBCSystemResource/</span><span class="si">%s</span><span class="s1">/JdbcResource/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">ds_name</span><span class="p">,</span> <span class="n">ds_name</span><span class="p">))</span>
+<span class="n">create</span><span class="p">(</span><span class="s1">&#39;myJdbcDataSourceParams&#39;</span><span class="p">,</span><span class="s1">&#39;JDBCDataSourceParams&#39;</span><span class="p">)</span>
+<span class="n">cd</span><span class="p">(</span><span class="s1">&#39;JDBCDataSourceParams/NO_NAME_0&#39;</span><span class="p">)</span>
+<span class="nb">set</span><span class="p">(</span><span class="s1">&#39;JNDIName&#39;</span><span class="p">,</span> <span class="n">java</span><span class="o">.</span><span class="n">lang</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="n">jndi_name</span><span class="p">))</span>
+
+<span class="n">cd</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">server</span> <span class="ow">in</span> <span class="n">servers</span><span class="p">:</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Assigning DS to server: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">server</span><span class="p">)</span>
+<span class="n">assign</span><span class="p">(</span><span class="s1">&#39;JDBCSystemResource&#39;</span><span class="p">,</span> <span class="n">ds_name</span><span class="p">,</span> <span class="s1">&#39;Target&#39;</span><span class="p">,</span> <span class="n">server</span><span class="p">)</span>
+
+<span class="n">updateDomain</span><span class="p">()</span>
+<span class="n">exit</span><span class="p">()</span>
+</code></pre></div>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

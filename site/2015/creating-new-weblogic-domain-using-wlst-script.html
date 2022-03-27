@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>Creating new WebLogic domain using WLST script</title>
+        <link rel="stylesheet" href="https://zemian.github.io/theme/css/main.css" />
+        <link href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="ZBlog Atom Feed" />
+        <meta name="description" content="Here is how to creating new WebLogic domain using WLST script without starting up a WebLogic server instance. The default AdminServer console..." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://zemian.github.io/">ZBlog</a></h1>
+                <nav><ul>
+                    <li><a href="https://zemian.github.io/pages/about-the-author.html">About The Author</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://zemian.github.io/2015/creating-new-weblogic-domain-using-wlst-script.html" rel="bookmark"
+           title="Permalink to Creating new WebLogic domain using WLST script">Creating new WebLogic domain using WLST script</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2015-10-02T00:00:00-05:00">
+                Published: Fri 02 October 2015
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/weblogic.html">weblogic</a> </p>
+</footer><!-- /.post-info -->      <p>Here is how to creating new WebLogic domain using WLST script without starting up a WebLogic server instance. The default AdminServer console login username is <code>weblogic</code>, and the script allow you to change its password and a port number for the AdminServer instance.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Usage: wlst.cmd createDomain.py &lt;domain_home&gt; &lt;port&gt; &lt;password&gt;</span>
+<span class="c1"># Example: </span>
+<span class="c1">#   cd D:\apps\wls1036_dev\wlserver\common\bin</span>
+<span class="c1">#   wlst.cmd scripts\createDomain.py C:\data\wls11g_domains\dev 7001 weblogic1</span>
+
+<span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">os.path</span>
+<span class="n">domain_home</span><span class="p">,</span> <span class="n">port_s</span><span class="p">,</span> <span class="n">password</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+
+<span class="n">port</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">port_s</span><span class="p">)</span>
+<span class="n">domain_home</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">domain_home</span><span class="p">)</span>
+<span class="n">domain_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span><span class="n">domain_home</span><span class="p">))</span>
+<span class="n">template</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/wlserver/common/templates/domains/wls.jar&quot;</span> <span class="o">%</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;MW_HOME&#39;</span><span class="p">]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Creating WLS domain: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">domain_name</span><span class="p">)</span>
+<span class="c1"># MW_HOME should be auto set by wlst.cmd script</span>
+<span class="n">readTemplate</span><span class="p">(</span><span class="n">template</span><span class="p">)</span>
+
+<span class="c1"># Set domain name</span>
+<span class="nb">set</span><span class="p">(</span><span class="s1">&#39;Name&#39;</span><span class="p">,</span> <span class="n">domain_name</span><span class="p">)</span>
+
+<span class="c1"># Set AdminServer port </span>
+<span class="n">cd</span><span class="p">(</span><span class="s1">&#39;Servers/AdminServer&#39;</span><span class="p">)</span>
+<span class="nb">set</span><span class="p">(</span><span class="s1">&#39;ListenAddress&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+<span class="nb">set</span><span class="p">(</span><span class="s1">&#39;ListenPort&#39;</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span>
+
+<span class="c1"># Set weblogic password</span>
+<span class="n">cd</span><span class="p">(</span><span class="s1">&#39;/Security/</span><span class="si">%s</span><span class="s1">/User/weblogic&#39;</span> <span class="o">%</span> <span class="n">domain_name</span><span class="p">)</span>
+<span class="n">cmo</span><span class="o">.</span><span class="n">setPassword</span><span class="p">(</span><span class="n">password</span><span class="p">)</span>
+
+<span class="c1"># Write domain</span>
+<span class="c1">#setOption(&#39;OverwriteDomain&#39;, &#39;true&#39;)</span>
+<span class="n">writeDomain</span><span class="p">(</span><span class="n">domain_home</span><span class="p">)</span>
+<span class="n">closeTemplate</span><span class="p">()</span>
+<span class="n">exit</span><span class="p">()</span>
+</code></pre></div>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

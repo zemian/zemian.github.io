@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>ZBlog - linux</title>
+        <link rel="stylesheet" href="https://zemian.github.io/theme/css/main.css" />
+        <link href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="ZBlog Atom Feed" />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://zemian.github.io/">ZBlog</a></h1>
+                <nav><ul>
+                    <li><a href="https://zemian.github.io/pages/about-the-author.html">About The Author</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="https://zemian.github.io/2018/how-to-setup-ssh-folder-permissions.html">How to setup .ssh folder permissions</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2018-05-24T00:00:00-05:00">
+                Published: Thu 24 May 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/ssh.html">ssh</a> <a href="https://zemian.github.io/tag/linux.html">linux</a> </p>
+</footer><!-- /.post-info --><p>How to setup .ssh folder permissions</p>
+<div class="highlight"><pre><span></span><code>chmod <span class="m">700</span> ~/.ssh                 <span class="c1"># (drwx------)</span>
+chmod <span class="m">600</span> ~/.ssh/authorized_keys <span class="c1"># (-rw-------)</span>
+chmod <span class="m">600</span> ~/.ssh/id_rsa          <span class="c1"># (-rw-------)</span>
+chmod <span class="m">644</span> ~/.ssh/id_rsa.pub      <span class="c1"># (-rw-r--r--)</span>
+chmod <span class="m">755</span> ~                      <span class="c1"># (drwxr-xr-x)</span>
+</code></pre></div>
+
+<p>ref: <a href="https://superuser.com/questions/215504/permissions-on-private-key-in-ssh-folder">https://superuser.com/questions/215504/permissions-on-private-key-in-ssh-folder</a></p>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2018/how-to-find-linux-standard-base-release-info.html" rel="bookmark"
+                           title="Permalink to How to find Linux Standard Base release info">How to find Linux Standard Base release info</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-03-11T00:00:00-05:00">
+                Published: Sun 11 March 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/linux.html">linux</a> </p>
+</footer><!-- /.post-info -->                <div class="highlight"><pre><span></span><code><span class="n">zemian</span><span class="nv">@zemian</span><span class="o">-</span><span class="nl">VirtualBox</span><span class="p">:</span><span class="o">~</span><span class="err">$</span><span class="w"> </span><span class="n">lsb_release</span><span class="w"> </span><span class="o">-</span><span class="n">a</span><span class="w"></span>
+
+<span class="k">No</span><span class="w"> </span><span class="n">LSB</span><span class="w"> </span><span class="n">modules</span><span class="w"> </span><span class="k">are</span><span class="w"> </span><span class="n">available</span><span class="p">.</span><span class="w"></span>
+<span class="n">Distributor</span><span class="w"> </span><span class="nl">ID</span><span class="p">:</span><span class="w"> </span><span class="n">Ubuntu</span><span class="w"></span>
+<span class="nl">Description</span><span class="p">:</span><span class="w">    </span><span class="n">Ubuntu</span><span class="w"> </span><span class="mf">16.04.3</span><span class="w"> </span><span class="n">LTS</span><span class="w"></span>
+<span class="k">Release</span><span class="err">:</span><span class="w">        </span><span class="mf">16.04</span><span class="w"></span>
+<span class="nl">Codename</span><span class="p">:</span><span class="w">       </span><span class="n">xenial</span><span class="w"></span>
+</code></pre></div>
+                <a class="readmore" href="https://zemian.github.io/2018/how-to-find-linux-standard-base-release-info.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2018/compling-apache-httpd-web-server-on-linux-ubuntu.html" rel="bookmark"
+                           title="Permalink to Compling Apache HTTPD Web Server on Linux (Ubuntu)">Compling Apache HTTPD Web Server on Linux (Ubuntu)</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-03-07T00:00:00-05:00">
+                Published: Wed 07 March 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/httpd.html">httpd</a> <a href="https://zemian.github.io/tag/linux.html">linux</a> </p>
+</footer><!-- /.post-info -->                <div class="highlight"><pre><span></span><code><span class="n">sudo</span><span class="w"> </span><span class="n">apt</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="n">autoconf</span><span class="w"> </span><span class="n">automake</span><span class="w"> </span><span class="n">libtool</span><span class="w"> </span><span class="n">libtool</span><span class="o">-</span><span class="n">bin</span><span class="w"> </span><span class="n">libpcre3</span><span class="o">-</span><span class="n">dev</span><span class="w"> </span><span class="n">libexpat1</span><span class="o">-</span><span class="n">dev</span><span class="w"> </span><span class="n">libexpat1</span><span class="o">-</span><span class="n">dev</span><span class="w"> </span><span class="n">libexpat1</span><span class="o">-</span><span class="n">dev</span><span class="w"></span>
+<span class="n">mkdir</span><span class="w"> </span><span class="n">ossdev</span><span class="w"></span>
+<span class="n">cd</span><span class="w"> </span><span class="n">ossdev</span><span class="w"></span>
+<span class="n">git</span><span class="w"> </span><span class="n">clone</span><span class="w"> </span><span class="n">git</span><span class="p">:</span><span class="o">//</span><span class="n">git</span><span class="o">.</span><span class="n">apache</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">httpd</span><span class="o">.</span><span class="n">git</span><span class="w"></span>
+<span class="n">git</span><span class="w"> </span><span class="n">clone</span><span class="w"> </span><span class="n">git</span><span class="p">:</span><span class="o">//</span><span class="n">git</span><span class="o">.</span><span class="n">apache</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">apr</span><span class="o">.</span><span class="n">git</span><span class="w"> </span><span class="n">httpd</span><span class="o">/</span><span class="n">srclib</span><span class="o">/</span><span class="n">apr</span><span class="w"></span>
+<span class="n">git</span><span class="w"> </span><span class="n">clone</span><span class="w"> </span><span class="n">git</span><span class="p">:</span><span class="o">//</span><span class="n">git</span><span class="o">.</span><span class="n">apache</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">apr</span><span class="o">-</span><span class="n">util</span><span class="o">.</span><span class="n">git</span><span class="w"> </span><span class="n">httpd</span><span class="o">/</span><span class="n">srclib …</span></code></pre></div>
+                <a class="readmore" href="https://zemian.github.io/2018/compling-apache-httpd-web-server-on-linux-ubuntu.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2016/how-to-switch-linux-account-user-without-the-target-users-password.html" rel="bookmark"
+                           title="Permalink to How to switch Linux account user without the target user's password">How to switch Linux account user without the target user's password</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2016-07-07T00:00:00-05:00">
+                Published: Thu 07 July 2016
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/linux.html">linux</a> </p>
+</footer><!-- /.post-info -->                <p>Did you know if you have been granted <code>sudo</code> access to a remote
+host with <code>su</code> command, then you may switch to any user without the
+need to type in their password?</p>
+<p>Try this out:</p>
+<div class="highlight"><pre><span></span><code><span class="n">zemian</span><span class="nv">@myhost</span><span class="w"> </span><span class="n">bash</span><span class="o">&gt;</span><span class="w"> </span><span class="n">sudo</span><span class="w"> </span><span class="n">su</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">postgres</span><span class="w"></span>
+<span class="c1"># When prompted for password, enter your own user account …</span></code></pre></div>
+                <a class="readmore" href="https://zemian.github.io/2016/how-to-switch-linux-account-user-without-the-target-users-password.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2016/login-to-remote-host-without-password.html" rel="bookmark"
+                           title="Permalink to Login to remote host without password">Login to remote host without password</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2016-07-06T00:00:00-05:00">
+                Published: Wed 06 July 2016
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/linux.html">linux</a> <a href="https://zemian.github.io/tag/ssh.html">ssh</a> </p>
+</footer><!-- /.post-info -->                <p>Most of remote systems are secured by SSH, and to gain remote control with terminal, you would need to <code>ssh</code> into the server. You will be prompted to login with your password on every session. To avoid typing password everytime, you need to setup as authorized client. Here is how …</p>
+                <a class="readmore" href="https://zemian.github.io/2016/login-to-remote-host-without-password.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2016/installing-a-local-downloaded-rpm-file.html" rel="bookmark"
+                           title="Permalink to Installing a local downloaded .rpm file">Installing a local downloaded .rpm file</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2016-06-26T00:00:00-05:00">
+                Published: Sun 26 June 2016
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/linux.html">linux</a> </p>
+</footer><!-- /.post-info -->                <p>To install:</p>
+<div class="highlight"><pre><span></span><code>bash&gt; sudo yum install &lt;package_name.rpm&gt;
+</code></pre></div>
+
+<p>If you have problem installing it due to gpg check failure and you know it's a good RPM, then try with this.</p>
+<div class="highlight"><pre><span></span><code>bash&gt; sudo yum --nogpgcheck localinstall &lt;package_name.rpm&gt;
+</code></pre></div>
+
+<p>To verify what's in the rpm:</p>
+<div class="highlight"><pre><span></span><code>bash&gt; rpm -qlp &lt;package_name …</code></pre></div>
+                <a class="readmore" href="https://zemian.github.io/2016/installing-a-local-downloaded-rpm-file.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2016/how-to-install-zoom-conference-on-ubuntu-1404-lts.html" rel="bookmark"
+                           title="Permalink to How to install Zoom conference on Ubuntu 14.04 LTS">How to install Zoom conference on Ubuntu 14.04 LTS</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2016-06-17T00:00:00-05:00">
+                Published: Fri 17 June 2016
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/linux.html">linux</a> </p>
+</footer><!-- /.post-info -->                <ol>
+<li>
+<p>Download latest z<code>oom_2.0.52458.0531_amd64.deb</code> package from https://zoom.us/download</p>
+</li>
+<li>
+<p>Run  </p>
+<p>bash&gt; sudo dpkg -i zoom_2.0.52458.0531_amd64.deb</p>
+</li>
+<li>
+<p>Even though the package installed complete, you will see error messages if you have a 64-bit OS because Zoom has other dependencies …</p></li></ol>
+                <a class="readmore" href="https://zemian.github.io/2016/how-to-install-zoom-conference-on-ubuntu-1404-lts.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2013/learn-how-to-grep-by-context-will-give-you-better-result.html" rel="bookmark"
+                           title="Permalink to Learn how to grep by context will give you better result">Learn how to grep by context will give you better result</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2013-02-03T00:00:00-05:00">
+                Published: Sun 03 February 2013
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/linux.html">linux</a> </p>
+</footer><!-- /.post-info -->                <p>I learned that <code>grep</code> command supports few options called "context" searching. Basically it can print lines around the matching string! For example, you can use this feature to perform a quick Java threads stack analysis like this (assuming you have a java process PID=12345).</p>
+<div class="highlight"><pre><span></span><code>bash&gt; jstack 12345 | grep --color …</code></pre></div>
+                <a class="readmore" href="https://zemian.github.io/2013/learn-how-to-grep-by-context-will-give-you-better-result.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+                </ol><!-- /#posts-list -->
+                </section><!-- /#content -->
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

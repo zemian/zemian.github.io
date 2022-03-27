@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>ZBlog - timemachine</title>
+        <link rel="stylesheet" href="https://zemian.github.io/theme/css/main.css" />
+        <link href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="ZBlog Atom Feed" />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://zemian.github.io/">ZBlog</a></h1>
+                <nav><ul>
+                    <li><a href="https://zemian.github.io/pages/about-the-author.html">About The Author</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="https://zemian.github.io/2012/high-level-design-diagrams-for-timemachine-scheduler.html">High Level Design Diagrams for TimeMachine Scheduler</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2012-09-29T00:00:00-05:00">
+                Published: Sat 29 September 2012
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/timemachine.html">timemachine</a> </p>
+</footer><!-- /.post-info --><p>Despite the advance of all the computers, I am one of those guys who still carry a pen and composition notebook around. I am far from those who has photographic memories, nor one who can digest every thing in their heads. Especially when it comes to doing software design. I still find my self scribbling on my notebook quite a bit, or even on piece of napkin if no paper is available. I am also one of those who only need high level ideas drawn out, then I can usually go directly to code, map it to some API and then write some simple implementations to get started. </p>
+<p>That's how I started with the <a href="https://bitbucket.org/timemachine/scheduler">TimeMachine Scheduler</a> project a while back. However, as we come to a point where we have a solid runnable code, we must also start to present it to others. Showing my composition notebook is not the prettier thing in the world, specially when I have no gift in penmenship at all. This is a time to look into some professional diagram and design tools to draw up the high level architecture.</p>
+<p>I was contacted by <a href="http://www.architexa.com">Architexa</a> to give them some review of their tool. I think this is a great opportunity for me to try it to draw up some diagrams on the TimeMachine project. Most of what I have diagrammed here are explained in details in the project <a href="https://bitbucket.org/timemachine/scheduler/wiki/ReferenceManual">reference manual</a>, so if you want to know more, please do read it up for further reference.</p>
+<h1>TimeMachine top level packages</h1>
+<p>First, the Architexa provides their software as an Eclipse plugin, and after installing it, it can analysis an existing project. I did that and here is the package level view it presents me for the TimeMachine.</p>
+<p><img alt="TimeMachine packages dependencies diagram" src="https://bitbucket.org/saltnlight5/images/raw/84cde5b1e9ba/timemachine-diagrams/package-dependencies.png"></p>
+<p>The graph is not very clear on why everything depends on <code>schedule</code> package, but perhaps Schedule is used through the code. Any way the TimeMachine has been carefully separating out the pakcages so it's easy for user to use. All the interfaces you need to scheduler jobs are in <code>timemachine.scheduler</code>. In it, there are couple static factories class: <code>Schedules</code> and <code>JobTasks</code> provide majority of the functionity you need. So the goal is you can do quiet a bit with just <code>import timemachine.scheduler.*;</code>; then as you need each layer functionality, you can import them explicitly the sub-packages.</p>
+<h1>TimeMachine main classes diagrams</h1>
+<p>In TimeMachine, you have few major class hierarchy that you must need to get familiar in order to write effective scheduling jobs. </p>
+<p>A job in TimeMachine is implemented by a class with <code>JobTask</code> interface. The project provide few for you to get started.</p>
+<p><img alt="TimeMachine JobTask class diagram" src="https://bitbucket.org/saltnlight5/images/raw/84cde5b1e9ba/timemachine-diagrams/jobtask-class-hierarchy.png"></p>
+<p>How often and frequent to run your job in the scheduler is provided by a <code>Schedule</code>. Here we provided some most used implementations, including the customizable <code>DateListSchedule</code> that uses a <code>provider</code> generator.</p>
+<p><img alt="TimeMachine Schedule class diagram" src="https://bitbucket.org/saltnlight5/images/raw/84cde5b1e9ba/timemachine-diagrams/schedule-class-hierarchy.png"></p>
+<p>The TimeMachine is a scheduler composed by a stackable service container. Here are some of the services that power the scheduler as a whole. The user/developer can write their own user <code>Service</code> and add into the container as well.</p>
+<p><img alt="TimeMachine SchedulerEngine class diagram" src="https://bitbucket.org/saltnlight5/images/raw/84cde5b1e9ba/timemachine-diagrams/service-class-hierarchy.png"></p>
+<p>The services above are then combined together to form the scheduler engine.</p>
+<p><img alt="TimeMachine SchedulerEngine class diagram" src="https://bitbucket.org/saltnlight5/images/raw/84cde5b1e9ba/timemachine-diagrams/scheduler-engine-class-hierarchy.png"></p>
+<h1>TimeMachine in action diagrams</h1>
+<p>Depicting sequence diagram is pretty challenging. The Architexa plugin is pretty good in this area, especially when you already have code already done. The Architexa plugin would take advantage of existing code and Java reflection and give you a selectable choice on what and to where as action. Here I will highlight couple actions in TimeMachine.</p>
+<p>The most basic startup of the TimeMachine sequence would look something like this.</p>
+<p><img alt="TimeMachine Scheduler startup up sequence diagram" src="https://bitbucket.org/saltnlight5/images/raw/84cde5b1e9ba/timemachine-diagrams/scheduler-start-up-sequence.png"></p>
+<p>In the heart of the scheduler logic is in the <code>PollingScheduleRunner</code> service, and here are some of the actions depicted.</p>
+<p><img alt="TimeMachine PollingScheduleRunner sequence diagram" src="https://bitbucket.org/saltnlight5/images/raw/84cde5b1e9ba/timemachine-diagrams/polling-schedule-runner-sequence.png"></p>
+<h1>Using Architexa</h1>
+<p>Over all, I think Architexa provided a pretty good plugin for Eclipse. I have some problems when generating the sequence diagrams. For example, I can't resize the width between two actors(classes) to display full method name. And in some actions there are no lines drawn! I suspect it's due to the tool is using code inspection, and some of the call are called by different threads.</p>
+<p>The plugin itself seems pretty solid. You can install and uninstall without harm. They currently offer free download for small number of users, which I think it's a great way for you to explorer.</p>
+<p>I am not too sure how effective of Architexa on builing a collabration of sharing these diagrams as platform. I treat these diagrams as supplement to the project. It certainly helps in explaining high level architeture, but it's far from the complete documentation. No documentation can get any closer to the code. I think the strength of Java being static already provided some level of documentation when just reading the code alone. I would rather Architexa to focus and perfecting the plugin that draw the diagram, because these are more important to me.</p>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2012/timemachine-scheduler-122-release.html" rel="bookmark"
+                           title="Permalink to TimeMachine Scheduler 1.2.2 Release">TimeMachine Scheduler 1.2.2 Release</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2012-09-25T00:00:00-05:00">
+                Published: Tue 25 September 2012
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/timemachine.html">timemachine</a> </p>
+</footer><!-- /.post-info -->                <p>This is a bug fix release for couple of issues:</p>
+<ol>
+<li>
+<p>Fixed an issue with parsing release date string with "EDT" timezone that can cause the scheduler fail to startup</p>
+</li>
+<li>
+<p>Added the optional slf4j-log4j binding to view log output in war file.</p>
+</li>
+</ol>
+<p>You may download the latest here: <a href="https://bitbucket.org/timemachine/scheduler/downloads">https://bitbucket.org …</a></p>
+                <a class="readmore" href="https://zemian.github.io/2012/timemachine-scheduler-122-release.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2012/how-to-integrate-timemachine-scheduler-in-spring-based-application.html" rel="bookmark"
+                           title="Permalink to How to integrate TimeMachine Scheduler in Spring based application">How to integrate TimeMachine Scheduler in Spring based application</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2012-08-17T00:00:00-05:00">
+                Published: Fri 17 August 2012
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/timemachine.html">timemachine</a> <a href="https://zemian.github.io/tag/spring.html">spring</a> </p>
+</footer><!-- /.post-info -->                <p>One of the goals for <a href="https://bitbucket.org/timemachine/scheduler">TimeMachine Scheduler</a> is to make use of POJO as friendly as possible so that we can integrate into any IoC container easily. I've prepared a demo that will show you how to integrate TimeMachine with <a href="http://www.springsource.org/">Spring</a> based application. </p>
+<p>We will mainly focus on the Spring …</p>
+                <a class="readmore" href="https://zemian.github.io/2012/how-to-integrate-timemachine-scheduler-in-spring-based-application.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2012/timemachine-jars-size-and-dependencies.html" rel="bookmark"
+                           title="Permalink to TimeMachine jars size and dependencies">TimeMachine jars size and dependencies</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2012-08-03T00:00:00-05:00">
+                Published: Fri 03 August 2012
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/timemachine.html">timemachine</a> </p>
+</footer><!-- /.post-info -->                <p>From the <a href="https://bitbucket.org/timemachine/scheduler/downloads">TimeMachine Scheduler</a> download page you will see that the latest 1.2.1 release zip package size is around 13M. It may seem large for a scheduler application, but let's examine it closely to see what's in there. Here is how the zip package looks like inside</p>
+<div class="highlight"><pre><span></span><code>    timemachine-scheduler-1 …</code></pre></div>
+                <a class="readmore" href="https://zemian.github.io/2012/timemachine-jars-size-and-dependencies.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2012/using-timemachine-scheduler-on-jbossas-7.html" rel="bookmark"
+                           title="Permalink to Using TimeMachine Scheduler on JBossAS 7">Using TimeMachine Scheduler on JBossAS 7</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2012-07-23T00:00:00-05:00">
+                Published: Mon 23 July 2012
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/jboss.html">jboss</a> <a href="https://zemian.github.io/tag/timemachine.html">timemachine</a> </p>
+</footer><!-- /.post-info -->                <p>I’ve written an article for MasterTheBoss.com on integrating
+<a href="http://mastertheboss.com/jboss-quartz/using-timemachine-scheduler-on-jbossas-7">TimeMachine Scheduler on
+JBossAS7</a></p>
+                <a class="readmore" href="https://zemian.github.io/2012/using-timemachine-scheduler-on-jbossas-7.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2012/timemachine-scheduler-120-release-is-out.html" rel="bookmark"
+                           title="Permalink to TimeMachine Scheduler 1.2.0 release is out!">TimeMachine Scheduler 1.2.0 release is out!</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2012-07-15T00:00:00-05:00">
+                Published: Sun 15 July 2012
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/timemachine.html">timemachine</a> </p>
+</footer><!-- /.post-info -->                <p>I just released the <a href="https://bitbucket.org/timemachine/scheduler/downloads">timemachine-scheudler-1.2.0</a>, and it now comes with both stand-alone server (zip) and web application (war) distribution packages.</p>
+<p>In this <a href="https://bitbucket.org/timemachine/scheduler/wiki/ReleaseNotes">release</a>, I fixed few major bugs and made many small clean ups and minor fixes. I also added few new features. I will briefly introduce them …</p>
+                <a class="readmore" href="https://zemian.github.io/2012/timemachine-scheduler-120-release-is-out.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2012/kickstart-timemachine-scheduler-with-a-quick-groovy-script.html" rel="bookmark"
+                           title="Permalink to Kickstart TimeMachine Scheduler with a quick Groovy script">Kickstart TimeMachine Scheduler with a quick Groovy script</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2012-07-09T00:00:00-05:00">
+                Published: Mon 09 July 2012
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/groovy.html">groovy</a> <a href="https://zemian.github.io/tag/timemachine.html">timemachine</a> </p>
+</footer><!-- /.post-info -->                <p>If you have <a href="http://groovy.codehaus.org/">Groovy</a>installed, you can kick start a <a href="https://bitbucket.org/timemachine/scheduler">TimeMachine Scheduler</a> job without any setup! Try this out:</p>
+<div class="highlight"><pre><span></span><code><span class="o">//</span> <span class="n">Create</span> <span class="n">a</span> <span class="n">repeating</span> <span class="n">schedule</span> <span class="n">job</span> <span class="n">that</span> <span class="n">runs</span> <span class="n">every</span> <span class="mi">3</span> <span class="n">seconds</span><span class="o">.</span>
+<span class="nd">@Grab</span><span class="p">(</span><span class="s1">&#39;org.slf4j:slf4j-simple:1.6.6&#39;</span><span class="p">)</span>
+<span class="nd">@Grab</span><span class="p">(</span><span class="s1">&#39;org.bitbucket.timemachine:timemachine-scheduler:1.2.2&#39;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">timemachine.scheduler.</span><span class="o">*</span>
+<span class="n">scheduler</span> <span class="o">=</span> <span class="n">new</span> <span class="n">SchedulerFactory …</span></code></pre></div>
+                <a class="readmore" href="https://zemian.github.io/2012/kickstart-timemachine-scheduler-with-a-quick-groovy-script.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2012/timemachine-scheduler-tour-part7.html" rel="bookmark"
+                           title="Permalink to TimeMachine Scheduler Tour - Part7">TimeMachine Scheduler Tour - Part7</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2012-06-24T00:00:00-05:00">
+                Published: Sun 24 June 2012
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/timemachine.html">timemachine</a> </p>
+</footer><!-- /.post-info -->                <p>This is part 7 of 7 in a series of articles that will give you a tour of the <a href="https://bitbucket.org/timemachine/scheduler/wiki/Home">TimeMachine Scheduler</a> project. These articles will introduce you to the scheduler, how to load jobs and schedules, and explore some of its advanced features. For the most current and accurate instructions …</p>
+                <a class="readmore" href="https://zemian.github.io/2012/timemachine-scheduler-tour-part7.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2012/timemachine-scheduler-tour-part6.html" rel="bookmark"
+                           title="Permalink to TimeMachine Scheduler Tour - Part6">TimeMachine Scheduler Tour - Part6</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2012-06-22T00:00:00-05:00">
+                Published: Fri 22 June 2012
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/timemachine.html">timemachine</a> </p>
+</footer><!-- /.post-info -->                <p>This is part 6 of 7 in a series of articles that will give you a tour of the <a href="https://bitbucket.org/timemachine/scheduler/wiki/Home">TimeMachine Scheduler</a> project. These articles will introduce you to the scheduler, how to load jobs and schedules, and explore some of its advanced features. For the most current and accurate instructions …</p>
+                <a class="readmore" href="https://zemian.github.io/2012/timemachine-scheduler-tour-part6.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2012/timemachine-scheduler-tour-part5.html" rel="bookmark"
+                           title="Permalink to TimeMachine Scheduler Tour - Part5">TimeMachine Scheduler Tour - Part5</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2012-06-20T00:00:00-05:00">
+                Published: Wed 20 June 2012
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/timemachine.html">timemachine</a> </p>
+</footer><!-- /.post-info -->                <p>This is part 5 of 7 in a series of articles that will give you a tour of the <a href="https://bitbucket.org/timemachine/scheduler/wiki/Home">TimeMachine Scheduler</a> project. These articles will introduce you to the scheduler, how to load jobs and schedules, and explore some of its advanced features. For the most current and accurate instructions …</p>
+                <a class="readmore" href="https://zemian.github.io/2012/timemachine-scheduler-tour-part5.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+                </ol><!-- /#posts-list -->
+<p class="paginator">
+    Page 1 / 2
+        <a href="https://zemian.github.io/tag/timemachine2.html">&raquo;</a>
+        <a href="https://zemian.github.io/tag/timemachine2.html">&#8649;</a>
+</p>
+                </section><!-- /#content -->
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>How to start multiple WebLogic managed servers</title>
+        <link rel="stylesheet" href="https://zemian.github.io/theme/css/main.css" />
+        <link href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="ZBlog Atom Feed" />
+        <meta name="description" content="The WebLogic Server docs recommand you to create a dedicated admin server and then sepearate managed servers for application deployment. Here I..." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://zemian.github.io/">ZBlog</a></h1>
+                <nav><ul>
+                    <li><a href="https://zemian.github.io/pages/about-the-author.html">About The Author</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://zemian.github.io/2014/how-to-start-multiple-weblogic-managed-servers.html" rel="bookmark"
+           title="Permalink to How to start multiple WebLogic managed servers">How to start multiple WebLogic managed servers</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2014-03-11T00:00:00-05:00">
+                Published: Tue 11 March 2014
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/weblogic.html">weblogic</a> </p>
+</footer><!-- /.post-info -->      <p>The WebLogic Server docs recommand you to create a dedicated admin server and then sepearate managed servers for application deployment. Here I will show you how to create one or more managed server in the same host as the admin server.</p>
+<p>I assume you already have WLS installed with your own domain created and running. If you haven't done this before, you may refer to my <a href="https://zemian.github.io/2014/01/getting-started-with-weblogic-server.html">previous blog on how to create and start WLS.</a> After you started your domain (that's the default admin server), then follow these steps.</p>
+<ol>
+<li>
+<p>Login into your http://localhost:7001/console webapp.</p>
+</li>
+<li>
+<p>On the right menu tree, click Environment &gt; Servers. You should see "<code>myserver(admin)</code>" already listed.</p>
+</li>
+<li>
+<p>Click "New" button, enter Server Name: appserver and set Server Listen Port: 7002</p>
+</li>
+<li>
+<p>Click "Next" and then "Finish"</p>
+</li>
+<li>
+<p>Now open a new terminal and run these commands: </p>
+</li>
+</ol>
+<div class="highlight"><pre><span></span><code>    cd mydomain
+    bin/startManagedWeblogic.sh appserver1 localhost:7001
+</code></pre></div>
+
+<p>You would need to enter the username and password, same as for your /console webapp. After this managed server is up and running you may send the process in the background by pressing CTRL+Z and then run bg command. Or you may use the servers/appserver/security/boot.properties file to bypass the user/password prompt on every restart of this managed server.</p>
+<p>Now you have one managed server started along with your admin server. After this you may start deploying application onto this managed server. All the webapp deployed would now accessable by its assigned port such as http://localhost:7002/yourwebapp url. You may repeat the same for however number of managed server you like to run on the same host. Try to name your server name and port number unique.</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

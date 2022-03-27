@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>ZBlog - servlet</title>
+        <link rel="stylesheet" href="https://zemian.github.io/theme/css/main.css" />
+        <link href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="ZBlog Atom Feed" />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://zemian.github.io/">ZBlog</a></h1>
+                <nav><ul>
+                    <li><a href="https://zemian.github.io/pages/about-the-author.html">About The Author</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="https://zemian.github.io/2015/ee-jsp-and-servlet-3-crafting-your-own-mvc-pattern.html">EE JSP and Servlet 3 - Crafting Your Own MVC Pattern</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2015-03-13T00:00:00-05:00">
+                Published: Fri 13 March 2015
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/jsp.html">jsp</a> <a href="https://zemian.github.io/tag/servlet.html">servlet</a> </p>
+</footer><!-- /.post-info --><p>The combination of JSP and Servlet allows you to develope MVC pattern
+web application easily. The main focus of MVC pattern is that we want to
+write a Controller logic that can produce data Model, and then let the
+View to display these data and generate the desired HTML output. These
+are done so we may separate the concern on each layer, and makes
+developing larger application easier. In EE, we can map a Servlet to a
+URL and let the Servlet becomes the Contoller, and when all data model
+are gathered and stored in request, session or application scope, we can
+then forward to a JSP for rendering output.</p>
+<p>Now the last part is CONTROLLER, which can be verbose and a bit raw feel
+if you were to write a Servlet class per each. So we can improve this
+part and define a simplier interface to let developer write controller
+easier. Here I will show you how a simple MVC style of code can look
+like.</p>
+<p><a href="https://github.com/saltnlight5/java-ee6-examples/tree/master/mvc-example">mvc-example</a></p>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2015/ee-servlet-3-developing-user-login-with-session-and-filter.html" rel="bookmark"
+                           title="Permalink to EE Servlet 3 - Developing User Login with Session and Filter">EE Servlet 3 - Developing User Login with Session and Filter</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2015-01-16T00:00:00-05:00">
+                Published: Fri 16 January 2015
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/servlet.html">servlet</a> </p>
+</footer><!-- /.post-info -->                <p>I have introduced the Application class in my previous post where you can setup backend services. One example service I added is the UserService. This service will load a Java users properties file that contains username and password sets; and it's used later to authenticate users to login into the …</p>
+                <a class="readmore" href="https://zemian.github.io/2015/ee-servlet-3-developing-user-login-with-session-and-filter.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2015/ee-servlet-3-how-to-setup-backend-services-in-a-web-application.html" rel="bookmark"
+                           title="Permalink to EE Servlet 3 - How to Setup Backend Services in a Web Application">EE Servlet 3 - How to Setup Backend Services in a Web Application</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2015-01-09T00:00:00-05:00">
+                Published: Fri 09 January 2015
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/servlet.html">servlet</a> </p>
+</footer><!-- /.post-info -->                <p>In a web application, providing user interfacing (UI) is often only half of the job. Many applications have requirements that's supported by backend services. Some example of backend services are scheduler process (batch processing), listen to a queue and respond when messages come in, or simple thing such as storing …</p>
+                <a class="readmore" href="https://zemian.github.io/2015/ee-servlet-3-how-to-setup-backend-services-in-a-web-application.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2015/ee-servlet-3-simple-form-processing.html" rel="bookmark"
+                           title="Permalink to EE Servlet 3 - Simple Form Processing">EE Servlet 3 - Simple Form Processing</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2015-01-06T00:00:00-05:00">
+                Published: Tue 06 January 2015
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/servlet.html">servlet</a> </p>
+</footer><!-- /.post-info -->                <p>Form handling in web application is like bread and butter for most Web developers. It will not be much use if we can not capture users input and process it. So I have included a simple <a href="https://github.com/saltnlight5/java-ee6-examples/blob/master/servlet3-example/src/main/java/zemian/servlet3example/web/FormServlet.java">FormServlet</a>in my servlet3-example  that demonstrated few frequently used form inputs you might encounter …</p>
+                <a class="readmore" href="https://zemian.github.io/2015/ee-servlet-3-simple-form-processing.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2015/ee-serlvet-3-generating-html-output-in-servlet.html" rel="bookmark"
+                           title="Permalink to EE Serlvet 3 - Generating HTML output in Servlet">EE Serlvet 3 - Generating HTML output in Servlet</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2015-01-01T00:00:00-05:00">
+                Published: Thu 01 January 2015
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/servlet.html">servlet</a> </p>
+</footer><!-- /.post-info -->                <p>If you just need to handle a handful of requests URI in your EE web module, then it might be easier to generate your own HTML response in your Servlet code instead of using a full blown template library. As part of my examples, I tried out a very simple …</p>
+                <a class="readmore" href="https://zemian.github.io/2015/ee-serlvet-3-generating-html-output-in-servlet.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2014/ee-servlet-3-getting-started-with-web-application-module-and-a-landing-page.html" rel="bookmark"
+                           title="Permalink to EE Servlet 3 - Getting started with web application module and a landing page">EE Servlet 3 - Getting started with web application module and a landing page</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2014-12-27T00:00:00-05:00">
+                Published: Sat 27 December 2014
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/servlet.html">servlet</a> </p>
+</footer><!-- /.post-info -->                <h2>Getting started with Servlet 3</h2>
+<p>Web application module in Java EE is probably the most common type of application module that a developer would encounter and work on. That's because not only it can provide users the UI, but it also supoprt many common web application patterns: Model View Controller …</p>
+                <a class="readmore" href="https://zemian.github.io/2014/ee-servlet-3-getting-started-with-web-application-module-and-a-landing-page.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2014/how-servlet-and-jsp-create-sessions.html" rel="bookmark"
+                           title="Permalink to How Servlet and JSP create sessions">How Servlet and JSP create sessions</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2014-10-26T00:00:00-05:00">
+                Published: Sun 26 October 2014
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/servlet.html">servlet</a> </p>
+</footer><!-- /.post-info -->                <p>In Servlet, you may get the Session object by "httpServletRequest.getSession(true)". The "true" flag will create the session if it doesn't already exist, else it gets the existing session.</p>
+<p>Now if you want to check whether you have the session exists or not (without have to create one if …</p>
+                <a class="readmore" href="https://zemian.github.io/2014/how-servlet-and-jsp-create-sessions.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+                </ol><!-- /#posts-list -->
+                </section><!-- /#content -->
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

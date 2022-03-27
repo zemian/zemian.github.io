@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>How to setup custom SSLSocketFactory's TrustManager per each URL connection</title>
+        <link rel="stylesheet" href="https://zemian.github.io/theme/css/main.css" />
+        <link href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="ZBlog Atom Feed" />
+        <meta name="description" content="We can see from javadoc that javax.net.ssl.HttpsURLConnection provided a static method to override with setDefaultSSLSocketFory() method. This..." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://zemian.github.io/">ZBlog</a></h1>
+                <nav><ul>
+                    <li><a href="https://zemian.github.io/pages/about-the-author.html">About The Author</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://zemian.github.io/2014/how-to-setup-custom-sslsocketfactorys-trustmanager-per-each-url-connection.html" rel="bookmark"
+           title="Permalink to How to setup custom SSLSocketFactory's TrustManager per each URL connection">How to setup custom SSLSocketFactory's TrustManager per each URL connection</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2014-10-28T00:00:00-05:00">
+                Published: Tue 28 October 2014
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/ssh.html">ssh</a> <a href="https://zemian.github.io/tag/java.html">java</a> </p>
+</footer><!-- /.post-info -->      <p>We can see from javadoc that javax.net.ssl.HttpsURLConnection provided a static method to override with setDefaultSSLSocketFory() method. This allow you to supply a custom javax.net.ssl.TrustManager that may verify your own  CA certs handshake and validation etc. But this will override the default for all "https" URLs per your JVM!</p>
+<p>So how can we override just a single https URL? Looking at javax.net.ssl.HttpsURLConnection again we see instance method for setSSLSocketFactory(), but we can't instantiate HttpsURLConnection object directly! It took me some digging to realized that the java.net.URL is actually an factory class for its implementation! One can get an instance like this using new URL("https://localhost").openConnection()</p>
+<p>To complete this article, I will provide a simple working example that demonstrate this.</p>
+<div class="highlight"><pre><span></span><code><span class="n">package</span> <span class="n">zemian</span><span class="p">;</span>
+
+<span class="kn">import</span> <span class="nn">java.io.BufferedReader</span><span class="p">;</span>
+
+<span class="kn">import</span> <span class="nn">java.io.InputStream</span><span class="p">;</span>
+
+<span class="kn">import</span> <span class="nn">java.io.InputStreamReader</span><span class="p">;</span>
+
+<span class="kn">import</span> <span class="nn">java.net.URL</span><span class="p">;</span>
+
+<span class="kn">import</span> <span class="nn">java.net.URLConnection</span><span class="p">;</span>
+
+<span class="kn">import</span> <span class="nn">java.security.SecureRandom</span><span class="p">;</span>
+
+<span class="kn">import</span> <span class="nn">java.security.cert.X509Certificate</span><span class="p">;</span>
+
+<span class="kn">import</span> <span class="nn">javax.net.ssl.HttpsURLConnection</span><span class="p">;</span>
+
+<span class="kn">import</span> <span class="nn">javax.net.ssl.SSLContext</span><span class="p">;</span>
+
+<span class="kn">import</span> <span class="nn">javax.net.ssl.SSLSocketFactory</span><span class="p">;</span>
+
+<span class="kn">import</span> <span class="nn">javax.net.ssl.TrustManager</span><span class="p">;</span>
+
+<span class="kn">import</span> <span class="nn">javax.net.ssl.X509TrustManager</span><span class="p">;</span>
+
+<span class="n">public</span> <span class="k">class</span> <span class="nc">WGetText</span> <span class="p">{</span>
+
+    <span class="n">public</span> <span class="n">static</span> <span class="n">void</span> <span class="n">main</span><span class="p">(</span><span class="n">String</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span> <span class="n">throws</span> <span class="ne">Exception</span> <span class="p">{</span>
+
+        <span class="n">String</span> <span class="n">urlString</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">getProperty</span><span class="p">(</span><span class="s2">&quot;url&quot;</span><span class="p">,</span> <span class="s2">&quot;https://google.com&quot;</span><span class="p">);</span>
+
+        <span class="n">URL</span> <span class="n">url</span> <span class="o">=</span> <span class="n">new</span> <span class="n">URL</span><span class="p">(</span><span class="n">urlString</span><span class="p">);</span>
+
+        <span class="n">URLConnection</span> <span class="n">urlConnection</span> <span class="o">=</span> <span class="n">url</span><span class="o">.</span><span class="n">openConnection</span><span class="p">();</span>
+
+        <span class="n">HttpsURLConnection</span> <span class="n">httpsUrlConnection</span> <span class="o">=</span> <span class="p">(</span><span class="n">HttpsURLConnection</span><span class="p">)</span> <span class="n">urlConnection</span><span class="p">;</span>
+
+        <span class="n">SSLSocketFactory</span> <span class="n">sslSocketFactory</span> <span class="o">=</span> <span class="n">createTrustAllSslSocketFactory</span><span class="p">();</span>
+
+        <span class="n">httpsUrlConnection</span><span class="o">.</span><span class="n">setSSLSocketFactory</span><span class="p">(</span><span class="n">sslSocketFactory</span><span class="p">);</span>
+
+        <span class="k">try</span> <span class="p">(</span><span class="n">InputStream</span> <span class="n">inputStream</span> <span class="o">=</span> <span class="n">httpsUrlConnection</span><span class="o">.</span><span class="n">getInputStream</span><span class="p">())</span> <span class="p">{</span>
+
+            <span class="n">BufferedReader</span> <span class="n">reader</span> <span class="o">=</span> <span class="n">new</span> <span class="n">BufferedReader</span><span class="p">(</span><span class="n">new</span> <span class="n">InputStreamReader</span><span class="p">(</span><span class="n">inputStream</span><span class="p">));</span>
+
+            <span class="n">String</span> <span class="n">line</span> <span class="o">=</span> <span class="n">null</span><span class="p">;</span>
+
+            <span class="k">while</span> <span class="p">((</span><span class="n">line</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">readLine</span><span class="p">())</span> <span class="o">!=</span> <span class="n">null</span><span class="p">)</span> <span class="p">{</span>
+
+                <span class="n">System</span><span class="o">.</span><span class="n">out</span><span class="o">.</span><span class="n">println</span><span class="p">(</span><span class="n">line</span><span class="p">);</span>
+
+            <span class="p">}</span>
+
+        <span class="p">}</span>
+
+    <span class="p">}</span>
+
+    <span class="n">private</span> <span class="n">static</span> <span class="n">SSLSocketFactory</span> <span class="n">createTrustAllSslSocketFactory</span><span class="p">()</span> <span class="n">throws</span> <span class="ne">Exception</span> <span class="p">{</span>
+
+        <span class="n">TrustManager</span><span class="p">[]</span> <span class="n">byPassTrustManagers</span> <span class="o">=</span> <span class="n">new</span> <span class="n">TrustManager</span><span class="p">[]</span> <span class="p">{</span> <span class="n">new</span> <span class="n">X509TrustManager</span><span class="p">()</span> <span class="p">{</span>
+
+            <span class="n">public</span> <span class="n">X509Certificate</span><span class="p">[]</span> <span class="n">getAcceptedIssuers</span><span class="p">()</span> <span class="p">{</span>
+
+                <span class="k">return</span> <span class="n">new</span> <span class="n">X509Certificate</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+
+            <span class="p">}</span>
+
+            <span class="n">public</span> <span class="n">void</span> <span class="n">checkClientTrusted</span><span class="p">(</span><span class="n">X509Certificate</span><span class="p">[]</span> <span class="n">chain</span><span class="p">,</span> <span class="n">String</span> <span class="n">authType</span><span class="p">)</span> <span class="p">{</span>
+
+            <span class="p">}</span>
+
+            <span class="n">public</span> <span class="n">void</span> <span class="n">checkServerTrusted</span><span class="p">(</span><span class="n">X509Certificate</span><span class="p">[]</span> <span class="n">chain</span><span class="p">,</span> <span class="n">String</span> <span class="n">authType</span><span class="p">)</span> <span class="p">{</span>
+
+            <span class="p">}</span>
+
+        <span class="p">}</span> <span class="p">};</span>
+
+        <span class="n">SSLContext</span> <span class="n">sslContext</span> <span class="o">=</span> <span class="n">SSLContext</span><span class="o">.</span><span class="n">getInstance</span><span class="p">(</span><span class="s2">&quot;TLS&quot;</span><span class="p">);</span>
+
+        <span class="n">sslContext</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">null</span><span class="p">,</span> <span class="n">byPassTrustManagers</span><span class="p">,</span> <span class="n">new</span> <span class="n">SecureRandom</span><span class="p">());</span>
+
+        <span class="k">return</span> <span class="n">sslContext</span><span class="o">.</span><span class="n">getSocketFactory</span><span class="p">();</span>
+
+    <span class="p">}</span>
+
+<span class="p">}</span>
+</code></pre></div>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

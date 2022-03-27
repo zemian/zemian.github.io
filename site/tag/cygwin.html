@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>ZBlog - cygwin</title>
+        <link rel="stylesheet" href="https://zemian.github.io/theme/css/main.css" />
+        <link href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="ZBlog Atom Feed" />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://zemian.github.io/">ZBlog</a></h1>
+                <nav><ul>
+                    <li><a href="https://zemian.github.io/pages/about-the-author.html">About The Author</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="https://zemian.github.io/2018/starting-sublimetext-on-cygwin.html">Starting SublimeText on Cygwin</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2018-04-09T00:00:00-05:00">
+                Published: Mon 09 April 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/sublimetext.html">sublimetext</a> <a href="https://zemian.github.io/tag/cygwin.html">cygwin</a> <a href="https://zemian.github.io/tag/editor.html">editor</a> </p>
+</footer><!-- /.post-info --><p>I edit files a lot from command line Cygwin, and I usually use an alias
+<code>e</code> to my favorite editor. For SublimeText, I found it more useful to
+start a new windows on files I pass in like this:</p>
+<div class="highlight"><pre><span></span><code><span class="n">function</span><span class="w"> </span><span class="nf">subl</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="s">&quot;/C/Users/zemian/apps/Sublime-Text-Build-3143-x64/subl.exe&quot;</span><span class="w"> </span><span class="o">--</span><span class="n">new</span><span class="o">-</span><span class="n">window</span><span class="w"> </span><span class="n">$</span><span class="p">(</span><span class="n">cygpath</span><span class="w"> </span><span class="o">-</span><span class="n">am</span><span class="w"> </span><span class="s">&quot;$@&quot;</span><span class="p">)</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+<span class="n">alias</span><span class="w"> </span><span class="n">e</span><span class="o">=</span><span class="n">subl</span><span class="w"></span>
+</code></pre></div>
+
+<p>Now in terminal, I can edit any files by simply running this: </p>
+<div class="highlight"><pre><span></span><code>$ e ~/.bashrc
+</code></pre></div>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2018/switching-different-jdk-in-cygwin.html" rel="bookmark"
+                           title="Permalink to Switching Different JDK in Cygwin">Switching Different JDK in Cygwin</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-03-24T00:00:00-05:00">
+                Published: Sat 24 March 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/cygwin.html">cygwin</a> <a href="https://zemian.github.io/tag/jdk.html">jdk</a> <a href="https://zemian.github.io/tag/java.html">java</a> </p>
+</footer><!-- /.post-info -->                <p>I love to use bash shell terminal. It’s a much more powerful terminal to
+do everyday tasks. Even in Windows, I can get most of what I need using
+Cygwin. Unfortunately Java executable are native to OS only, and for
+Windows, it would still work under Cygwin, but all …</p>
+                <a class="readmore" href="https://zemian.github.io/2018/switching-different-jdk-in-cygwin.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2018/compling-apache-httpd-web-server-on-cygwin.html" rel="bookmark"
+                           title="Permalink to Compling Apache HTTPD Web Server on Cygwin">Compling Apache HTTPD Web Server on Cygwin</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-03-07T00:00:00-05:00">
+                Published: Wed 07 March 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/httpd.html">httpd</a> <a href="https://zemian.github.io/tag/cygwin.html">cygwin</a> </p>
+</footer><!-- /.post-info -->                <p>I have noted the instructions on how to build the HTTPD web server from
+scratch in a Cygwin platoform in a Windows 7 PC.</p>
+<p>Note that compiling full HTTPD on Cygwin is very slow compare to other
+system such as Linux or MacOSX! If you are looking to do full …</p>
+                <a class="readmore" href="https://zemian.github.io/2018/compling-apache-httpd-web-server-on-cygwin.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2018/getting-started-with-apache-httpd-web-server-on-windows.html" rel="bookmark"
+                           title="Permalink to Getting started with Apache HTTPD Web Server on Windows">Getting started with Apache HTTPD Web Server on Windows</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-02-27T00:00:00-05:00">
+                Published: Tue 27 February 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/httpd.html">httpd</a> <a href="https://zemian.github.io/tag/cygwin.html">cygwin</a> </p>
+</footer><!-- /.post-info -->                <h1>Using native Windows Binary (without admin rights)</h1>
+<ol>
+<li>
+<p>Download one of binary from
+    <a href="https://httpd.apache.org/docs/current/platform/windows.html#down">https://httpd.apache.org/docs/current/platform/windows.html#down</a></p>
+</li>
+<li>
+<p>Unzip a portable version (zip file) into <code>C:\Apache24</code></p>
+</li>
+<li>
+<p>cd <code>C:\Apache24\bin</code> and run httpd.exe</p>
+</li>
+<li>
+<p>Open browser to <a href="http://localhost">http://localhost</a></p>
+</li>
+</ol>
+<p>Press <code>CTRL+C</code> to stop the …</p>
+                <a class="readmore" href="https://zemian.github.io/2018/getting-started-with-apache-httpd-web-server-on-windows.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2018/starting-postgres-server-on-cygwin.html" rel="bookmark"
+                           title="Permalink to Starting postgres server on Cygwin">Starting postgres server on Cygwin</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-02-20T00:00:00-05:00">
+                Published: Tue 20 February 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/postgres.html">postgres</a> <a href="https://zemian.github.io/tag/cygwin.html">cygwin</a> </p>
+</footer><!-- /.post-info -->                <p>To run postgres database server on Cygwin, you need first run the
+<code>cygserver</code>. If not, you will get error similar to this:</p>
+<div class="highlight"><pre><span></span><code><span class="k">export</span><span class="w"> </span><span class="n">PGDATA</span><span class="o">=/</span><span class="n">cygdrive</span><span class="o">/</span><span class="n">c</span><span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">zemian</span><span class="o">/</span><span class="n">my</span><span class="o">-</span><span class="n">pgdata</span><span class="w"></span>
+<span class="n">pg_ctl</span><span class="w"> </span><span class="n">init</span><span class="w"></span>
+<span class="o">...</span><span class="w"></span>
+<span class="n">running</span><span class="w"> </span><span class="n">bootstrap</span><span class="w"> </span><span class="n">script</span><span class="w"> </span><span class="o">...</span><span class="w"> </span><span class="n">FATAL</span><span class="p">:</span><span class="w">  </span><span class="n">could</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">create</span><span class="w"> </span><span class="n">shared</span><span class="w"> </span><span class="n">memory</span><span class="w"> </span><span class="n">segment</span><span class="p">:</span><span class="w"> </span><span class="n">Function</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">implemented</span><span class="w"></span>
+<span class="n">DETAIL</span><span class="p">:</span><span class="w">  </span><span class="n">Failed</span><span class="w"> </span><span class="n">system</span><span class="w"> </span><span class="n">call …</span></code></pre></div>
+                <a class="readmore" href="https://zemian.github.io/2018/starting-postgres-server-on-cygwin.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2013/how-to-install-awestruct-on-cygwin.html" rel="bookmark"
+                           title="Permalink to How to install awestruct on Cygwin">How to install awestruct on Cygwin</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2013-06-14T00:00:00-05:00">
+                Published: Fri 14 June 2013
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/cygwin.html">cygwin</a> </p>
+</footer><!-- /.post-info -->                <p>How to install <code>awestruct</code> on Cygwin</p>
+<h2>How to install <code>awestruct</code> on Cygwin</h2>
+<p>I tried installing <code>awestruct</code> on Cygwin today, but it failed with following:</p>
+<div class="highlight"><pre><span></span><code>    <span class="nv">gem</span> <span class="nv">install</span> <span class="nv">awestruct</span>
+    <span class="nv">Building</span> <span class="nv">native</span> <span class="nv">extensions</span>.  <span class="nv">This</span> <span class="nv">could</span> <span class="nv">take</span> <span class="nv">a</span> <span class="k">while</span>...
+    <span class="nv">ERROR</span>:  <span class="nv">Error</span> <span class="nv">installing</span> <span class="nv">awestruct</span>:
+            <span class="nv">ERROR</span>: <span class="nv">Failed</span> <span class="nv">to</span> <span class="nv">build</span> <span class="nv">gem</span> <span class="nv">native</span> <span class="nv">extension</span>.
+
+            <span class="o">/</span><span class="nv">usr</span><span class="o">/</span><span class="nv">bin</span><span class="o">/</span><span class="nv">ruby</span>.<span class="nv">exe …</span></code></pre></div>
+                <a class="readmore" href="https://zemian.github.io/2013/how-to-install-awestruct-on-cygwin.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2012/cygwin-tips-open-anything-with-cygstart.html" rel="bookmark"
+                           title="Permalink to Cygwin tips - open anything with cygstart">Cygwin tips - open anything with cygstart</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2012-12-13T00:00:00-05:00">
+                Published: Thu 13 December 2012
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/cygwin.html">cygwin</a> </p>
+</footer><!-- /.post-info -->                <p>Cygwin has this cool command called <code>cygstart</code>, and I usually alias it as <code>open</code>.</p>
+<div class="highlight"><pre><span></span><code>alias open=&#39;cygstart&#39;
+</code></pre></div>
+
+<p>Here are few things I use often:</p>
+<div class="highlight"><pre><span></span><code># bring up Windows Explore with folder open
+bash&gt; open /cygdrive/c/temp
+bash&gt; open &quot;$USERPROFILE&quot;
+
+# bring up browser on a url
+bash&gt; open http://google.com …</code></pre></div>
+                <a class="readmore" href="https://zemian.github.io/2012/cygwin-tips-open-anything-with-cygstart.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2012/use-cygpath-with-p-option-for-your-java-classpath-conversion.html" rel="bookmark"
+                           title="Permalink to Use cygpath with -p option for your Java CLASSPATH conversion">Use cygpath with -p option for your Java CLASSPATH conversion</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2012-11-15T00:00:00-05:00">
+                Published: Thu 15 November 2012
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/cygwin.html">cygwin</a> </p>
+</footer><!-- /.post-info -->                <p>I just noticed that Cygwin's <code>cygpath</code> command supports <code>-p</code> option. This is a real gem when writing Java wrapper script that needs to covert CLASSPATH values. A simple script can demonstrate the purpose.</p>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="cp">#!/usr/bin/env bash</span>
+<span class="w">    </span><span class="cp"># Author: Zemian Deng, date: 2012-11-16T00:00:00-05:00</span>
+<span class="w">    </span><span class="cp">#</span>
+<span class="w">    </span><span class="cp"># run.sh - A simple Java …</span></code></pre></div>
+                <a class="readmore" href="https://zemian.github.io/2012/use-cygpath-with-p-option-for-your-java-classpath-conversion.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2012/ctrlc-not-working-on-cygwin-1715-1.html" rel="bookmark"
+                           title="Permalink to CTRL+C not working on Cygwin 1.7.15-1">CTRL+C not working on Cygwin 1.7.15-1</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2012-07-12T00:00:00-05:00">
+                Published: Thu 12 July 2012
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/cygwin.html">cygwin</a> </p>
+</footer><!-- /.post-info -->                <p>When I installed new package in my Cygwin recently, it also automatically upgraded to latest Cygwin 1.7.15-1 DLL. After this, pressing CTRL+C no longer work</p>
+<p>on a running Java process the cygwin shell. I found the reason why this happens, and here is the email I sent …</p>
+                <a class="readmore" href="https://zemian.github.io/2012/ctrlc-not-working-on-cygwin-1715-1.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2011/how-to-build-ruby-on-cygwin-and-setup-heroku.html" rel="bookmark"
+                           title="Permalink to How to build Ruby on Cygwin and setup Heroku">How to build Ruby on Cygwin and setup Heroku</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2011-11-19T00:00:00-05:00">
+                Published: Sat 19 November 2011
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/ruby.html">ruby</a> <a href="https://zemian.github.io/tag/cygwin.html">cygwin</a> </p>
+</footer><!-- /.post-info -->                <p>I like to use ruby that comes with Cygwin instead of the RubyInstaller for Windows, because the path it handles are more consistenly in Linux form. But the current Cygwin only comes with <code>ruby-1.8.7</code>, so to use <code>ruby-1.9.3</code>, I have to built it on Cygwin on …</p>
+                <a class="readmore" href="https://zemian.github.io/2011/how-to-build-ruby-on-cygwin-and-setup-heroku.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+                </ol><!-- /#posts-list -->
+                </section><!-- /#content -->
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>My Quick Git Reference</title>
+        <link rel="stylesheet" href="https://zemian.github.io/theme/css/main.css" />
+        <link href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="ZBlog Atom Feed" />
+        <meta name="description" content="I have started using git and here are some of my frequently used commands. git clone http://path/to/repo.git # Retrieve a repo for work (auto..." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://zemian.github.io/">ZBlog</a></h1>
+                <nav><ul>
+                    <li><a href="https://zemian.github.io/pages/about-the-author.html">About The Author</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://zemian.github.io/2016/my-quick-git-reference.html" rel="bookmark"
+           title="Permalink to My Quick Git Reference">My Quick Git Reference</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2016-10-04T00:00:00-05:00">
+                Published: Tue 04 October 2016
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/git.html">git</a> </p>
+</footer><!-- /.post-info -->      <p>I have started using git and here are some of my frequently used
+commands.</p>
+<div class="highlight"><pre><span></span><code><span class="nv">git</span> <span class="nv">clone</span> <span class="nv">http</span>:<span class="o">//</span><span class="nv">path</span><span class="o">/</span><span class="nv">to</span><span class="o">/</span><span class="nv">repo</span>.<span class="nv">git</span>  # <span class="nv">Retrieve</span> <span class="nv">a</span> <span class="nv">repo</span> <span class="k">for</span> <span class="nv">work</span> <span class="ss">(</span><span class="nv">auto</span> <span class="nv">checkout</span> <span class="nv">master</span> <span class="nv">branch</span> <span class="nv">into</span> <span class="nv">WorkingDir</span><span class="ss">)</span>
+<span class="nv">git</span> <span class="nv">init</span>                           # <span class="nv">Create</span> <span class="nv">new</span> <span class="nv">repository</span> <span class="k">for</span> <span class="nv">work</span> <span class="ss">(</span><span class="nv">auto</span> <span class="nv">checkout</span> <span class="nv">master</span> <span class="nv">branch</span> <span class="nv">into</span> <span class="nv">WorkingDir</span><span class="ss">)</span>
+<span class="nv">git</span> <span class="nv">init</span> <span class="o">--</span><span class="nv">bare</span>                    # <span class="nv">Create</span> <span class="nv">new</span> <span class="nv">repository</span> <span class="nv">without</span> <span class="nv">WorkingDir</span>  <span class="o">-</span> <span class="nv">bare</span> <span class="nv">repo</span> <span class="k">for</span> <span class="nv">server</span> <span class="nv">share</span> <span class="nv">only</span>
+
+<span class="nv">git</span> <span class="nv">status</span>             # <span class="nv">Print</span> <span class="nv">current</span> <span class="nv">status</span> <span class="nv">of</span> <span class="nv">the</span> <span class="nv">repo</span>
+<span class="nv">git</span> <span class="nv">branch</span> <span class="o">-</span><span class="nv">a</span>          # <span class="nv">List</span> <span class="nv">of</span> <span class="nv">all</span> <span class="nv">branches</span> <span class="ss">(</span><span class="nv">including</span> <span class="nv">remote</span> <span class="nv">branches</span><span class="ss">)</span>
+<span class="nv">git</span> <span class="nv">tag</span>                # <span class="nv">List</span> <span class="nv">of</span> <span class="nv">all</span> <span class="nv">tags</span>
+<span class="nv">git</span> <span class="nv">log</span> <span class="o">-</span><span class="mi">3</span>                                      # <span class="k">Show</span> <span class="nv">last</span> <span class="mi">3</span> <span class="nv">commits</span>
+<span class="nv">git</span> <span class="nv">log</span> <span class="o">-</span><span class="mi">30</span> <span class="o">--</span><span class="nv">oneline</span>                           # <span class="k">Show</span> <span class="nv">last</span> <span class="mi">30</span> <span class="nv">commits</span> <span class="nv">one</span> <span class="nv">per</span> <span class="nv">line</span>
+<span class="nv">git</span> <span class="nv">log</span> <span class="o">--</span><span class="nv">decorate</span> <span class="o">--</span><span class="nv">graph</span> <span class="o">--</span><span class="nv">format</span><span class="o">=</span><span class="s1">&#39;</span><span class="s">%h %an %s</span><span class="s1">&#39;</span> # <span class="k">Show</span> <span class="nv">all</span> <span class="nv">log</span> <span class="nv">messages</span> <span class="nv">one</span> <span class="nv">per</span> <span class="nv">line</span> <span class="nv">in</span> <span class="nv">a</span> <span class="nv">graph</span>
+<span class="nv">git</span> <span class="nv">log</span> <span class="o">--</span><span class="nv">reverse</span> <span class="o">|</span><span class="nv">head</span>                         # <span class="k">Show</span> <span class="nv">first</span> <span class="nv">commit</span> <span class="nv">message</span>
+<span class="nv">git</span> <span class="k">show</span> <span class="o">--</span><span class="nv">stat</span> <span class="o">&lt;</span><span class="nv">sha1</span><span class="o">&gt;</span> # <span class="k">Show</span> <span class="nv">what</span> <span class="nv">files</span> <span class="nv">changed</span> <span class="nv">on</span> <span class="nv">a</span> <span class="nv">commit</span>
+<span class="nv">git</span> <span class="nv">diff</span>               # <span class="k">Show</span> <span class="nv">diff</span> <span class="nv">all</span> <span class="nv">files</span> <span class="nv">between</span> <span class="nv">Index</span> <span class="nv">and</span> <span class="nv">WorkingDir</span>
+<span class="nv">git</span> <span class="nv">diff</span> <span class="nv">readme</span>.<span class="nv">md</span>     # <span class="k">Show</span> <span class="nv">diff</span> <span class="nv">of</span> <span class="nv">a</span> <span class="nv">file</span> <span class="nv">against</span> <span class="nv">Index</span>
+<span class="nv">git</span> <span class="nv">diff</span> <span class="nv">master</span>..<span class="nv">topic</span> # <span class="k">Show</span> <span class="nv">diff</span> <span class="nv">between</span> <span class="nv">two</span> <span class="nv">branches</span>
+
+<span class="nv">git</span> <span class="nv">checkout</span> <span class="o">-</span><span class="nv">b</span> <span class="nv">topic</span>               # <span class="nv">Create</span> <span class="nv">a</span> <span class="nv">new</span> <span class="nv">topic</span> <span class="nv">branch</span> <span class="nv">and</span> <span class="nv">set</span> <span class="nv">as</span> <span class="nv">current</span> <span class="nv">branch</span>
+                                      <span class="ss">(</span><span class="nv">New</span> <span class="nv">branch</span> <span class="nv">starts</span> <span class="nv">from</span> <span class="nv">previous</span> <span class="nv">checkout</span> <span class="nv">branch</span><span class="ss">)</span>
+<span class="nv">git</span> <span class="nv">checkout</span> <span class="o">-</span><span class="nv">b</span> <span class="nv">topic</span> <span class="nv">origin</span><span class="o">/</span><span class="nv">topic</span>  # <span class="nv">Create</span> <span class="nv">a</span> <span class="nv">new</span> <span class="nv">topic</span> <span class="nv">branch</span> <span class="nv">and</span> <span class="nv">set</span> <span class="nv">as</span> <span class="nv">current</span> <span class="nv">branch</span>
+                                      <span class="ss">(</span><span class="nv">New</span> <span class="nv">branch</span> <span class="nv">starts</span> <span class="nv">from</span> <span class="nv">origin</span><span class="o">/</span><span class="nv">topic</span> <span class="s2">&quot;</span><span class="s">remote</span><span class="s2">&quot;</span> <span class="nv">branch</span><span class="ss">)</span>
+<span class="nv">git</span> <span class="nv">branch</span> <span class="o">--</span><span class="nv">move</span> <span class="nv">topicA</span> <span class="nv">topicB</span>     # <span class="nv">Rename</span> <span class="nv">a</span> <span class="nv">branch</span>
+<span class="nv">git</span> <span class="nv">branch</span> <span class="o">-</span><span class="nv">d</span> <span class="nv">topic</span>                 # <span class="nv">Delete</span> <span class="nv">a</span> <span class="nv">branch</span> <span class="ss">(</span><span class="nv">use</span> <span class="o">-</span><span class="nv">D</span> <span class="nv">to</span> <span class="nv">force</span> <span class="nv">it</span><span class="ss">)</span>
+<span class="nv">git</span> <span class="nv">checkout</span> <span class="nv">master</span>                 # <span class="nv">Switch</span> <span class="nv">to</span> <span class="nv">master</span> <span class="nv">branch</span> <span class="nv">and</span> <span class="nv">set</span> <span class="nv">as</span> <span class="nv">current</span> <span class="nv">branch</span>
+<span class="nv">git</span> <span class="nv">merge</span> <span class="nv">topic</span>                     # <span class="nv">Merge</span> <span class="nv">changes</span> <span class="nv">from</span> <span class="nv">topic</span> <span class="nv">branch</span> <span class="nv">onto</span> <span class="nv">current</span> <span class="nv">branch</span>
+
+<span class="nv">git</span> <span class="nv">add</span> .                        # <span class="nv">Add</span> <span class="nv">files</span> <span class="nv">to</span> <span class="nv">Index</span>
+<span class="nv">git</span> <span class="nv">add</span> <span class="nv">readme</span>.<span class="nv">md</span>                # <span class="nv">Add</span> <span class="nv">one</span> <span class="nv">file</span> <span class="nv">to</span> <span class="nv">Index</span>
+<span class="nv">git</span> <span class="nv">add</span> <span class="o">-</span><span class="nv">A</span>                       # <span class="nv">Add</span> <span class="nv">everything</span> <span class="nv">to</span> <span class="nv">Index</span>
+<span class="nv">git</span> <span class="nv">commit</span> <span class="o">-</span><span class="nv">m</span> <span class="s1">&#39;</span><span class="s">topic: my change</span><span class="s1">&#39;</span> # <span class="nv">Commit</span> <span class="nv">Index</span> <span class="nv">changes</span>
+
+<span class="nv">git</span> <span class="nv">mv</span> <span class="nv">oldfile</span>.<span class="nv">md</span> <span class="nv">newfile</span>.<span class="nv">md</span>     # <span class="nv">Rename</span> <span class="nv">a</span> <span class="nv">file</span>
+<span class="nv">git</span> <span class="nv">rm</span> <span class="nv">outdated</span>.<span class="nv">md</span>               # <span class="nv">Remove</span> <span class="nv">a</span> <span class="nv">file</span> <span class="nv">from</span> <span class="nv">Index</span> <span class="nv">and</span> <span class="nv">WorkingDir</span>
+<span class="nv">git</span> <span class="nv">rm</span> <span class="o">--</span><span class="nv">cached</span> <span class="nv">outdated</span>.<span class="nv">md</span>      # <span class="nv">Remove</span> <span class="nv">a</span> <span class="nv">file</span> <span class="nv">from</span> <span class="nv">Index</span> <span class="nv">only</span> <span class="ss">(</span><span class="nv">leave</span> <span class="nv">it</span> <span class="nv">in</span> <span class="nv">WorkingDir</span><span class="ss">)</span>
+
+<span class="nv">git</span> <span class="nv">remote</span> <span class="nv">add</span> <span class="nv">origin</span> <span class="nv">http</span>:<span class="o">//</span><span class="nv">path</span><span class="o">/</span><span class="nv">to</span><span class="o">/</span><span class="nv">repo</span>.<span class="nv">git</span>     # <span class="nv">Setup</span> <span class="nv">remote</span> <span class="nv">repository</span>
+<span class="nv">git</span> <span class="nv">remote</span> <span class="nv">set</span><span class="o">-</span><span class="nv">url</span> <span class="nv">origin</span> <span class="nv">http</span>:<span class="o">//</span><span class="nv">path</span><span class="o">/</span><span class="nv">to</span><span class="o">/</span><span class="nv">repo</span>.<span class="nv">git</span> # <span class="nv">Update</span> <span class="nv">remote</span> <span class="nv">repository</span>
+<span class="nv">git</span> <span class="nv">remote</span> <span class="o">-</span><span class="nv">v</span>                                     # <span class="nv">List</span> <span class="nv">remote</span> <span class="nv">repositories</span>
+
+<span class="nv">git</span> <span class="nv">push</span> <span class="o">--</span><span class="nv">set</span><span class="o">-</span><span class="nv">upstream</span> <span class="nv">origin</span> <span class="nv">topic</span>              # <span class="nv">Push</span> <span class="nv">branch</span> <span class="nv">to</span> <span class="nv">remote</span> <span class="nv">first</span> <span class="nv">time</span>
+<span class="nv">git</span> <span class="nv">push</span>                                          # <span class="nv">Push</span> <span class="nv">branch</span> <span class="nv">to</span> <span class="nv">remote</span> <span class="nv">second</span> <span class="nv">time</span>
+<span class="nv">git</span> <span class="nv">push</span> <span class="o">--</span><span class="nv">all</span>                                    # <span class="nv">Push</span> <span class="nv">all</span> <span class="nv">the</span> <span class="nv">branches</span> <span class="nv">to</span> <span class="nv">remote</span><span class="o">!</span>
+<span class="nv">git</span> <span class="nv">push</span> <span class="nv">origin</span> :<span class="nv">topic</span>                            # <span class="nv">Push</span> <span class="nv">and</span> <span class="nv">DELETE</span> <span class="nv">the</span> <span class="nv">remote</span> <span class="nv">branch</span><span class="o">!</span>
+
+<span class="nv">git</span> <span class="nv">pull</span>   # <span class="nv">Fetch</span> <span class="nv">and</span> <span class="nv">merge</span> <span class="nv">the</span> <span class="s2">&quot;</span><span class="s">auto tracked remote</span><span class="s2">&quot;</span> <span class="nv">branch</span> <span class="nv">onto</span> <span class="nv">current</span> <span class="nv">branch</span>
+<span class="nv">git</span> <span class="nv">fetch</span>  # <span class="nv">Fetch</span> <span class="nv">only</span> <span class="nv">the</span> <span class="s2">&quot;</span><span class="s">auto tracked remote</span><span class="s2">&quot;</span> <span class="nv">branch</span> <span class="nv">onto</span> <span class="nv">current</span> <span class="nv">branch</span>
+
+<span class="nv">git</span> <span class="nv">checkout</span>              # <span class="nv">Restore</span> <span class="nv">WorkingDir</span> <span class="nv">from</span> <span class="nv">Index</span> <span class="ss">(</span><span class="nv">will</span> <span class="nv">not</span> <span class="nv">override</span> <span class="nv">local</span> <span class="nv">modified</span> <span class="nv">files</span><span class="o">!</span><span class="ss">)</span>
+<span class="nv">git</span> <span class="nv">checkout</span> <span class="o">--</span> <span class="nv">readme</span>.<span class="nv">md</span> # <span class="nv">Restore</span> <span class="nv">a</span> <span class="nv">single</span> <span class="nv">WorkingDir</span> <span class="nv">file</span> <span class="nv">from</span> <span class="nv">Index</span>
+
+<span class="nv">git</span> <span class="nv">reset</span>          # <span class="nv">Reset</span> <span class="nv">the</span> <span class="nv">HEAD</span> <span class="nv">and</span> <span class="nv">Index</span> <span class="ss">(</span><span class="nv">same</span> <span class="nv">as</span> <span class="o">--</span><span class="nv">mixed</span><span class="ss">)</span>
+<span class="nv">git</span> <span class="nv">reset</span> <span class="o">--</span><span class="nv">soft</span>   # <span class="nv">Reset</span> <span class="nv">the</span> <span class="nv">HEAD</span> <span class="nv">only</span>
+<span class="nv">git</span> <span class="nv">reset</span> <span class="o">--</span><span class="nv">hard</span>   # <span class="nv">Reset</span> <span class="nv">the</span> <span class="nv">HEAD</span>, <span class="nv">Index</span> <span class="nv">and</span> <span class="nv">WorkingDir</span><span class="o">!</span>
+
+<span class="nv">git</span> <span class="nv">reflog</span>         # <span class="nv">Inpect</span> <span class="nv">any</span> <span class="nv">recent</span> <span class="nv">transactions</span> <span class="nv">and</span> <span class="nv">can</span> <span class="nv">be</span> <span class="nv">use</span> <span class="nv">to</span> <span class="nv">recover</span> <span class="nv">lost</span> <span class="ss">(</span><span class="nv">unnamed</span><span class="ss">)</span> <span class="nv">commits</span>
+
+<span class="nv">git</span> <span class="nv">stash</span>          # <span class="nv">Put</span> <span class="nv">away</span> <span class="nv">all</span> <span class="nv">pending</span> <span class="nv">changes</span>
+<span class="nv">git</span> <span class="nv">stash</span> <span class="nv">pop</span>      # <span class="nv">Bring</span> <span class="nv">back</span> <span class="nv">all</span> <span class="nv">pending</span> <span class="nv">changes</span>
+<span class="nv">git</span> <span class="nv">stash</span> <span class="nv">list</span>     # <span class="nv">List</span> <span class="nv">all</span> <span class="nv">stashes</span>
+</code></pre></div>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

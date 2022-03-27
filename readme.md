@@ -18,6 +18,7 @@ To preview
 
 To publish
 
-	pelican -s publishconf.py
-	rsync -avc --delete output/ host.example.com:/var/www/your-site/
+	pelican -s publishconf.py -o site
+	git commit -m 'Publish site'
+	git push
 	

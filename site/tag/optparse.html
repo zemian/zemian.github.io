@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>ZBlog - optparse</title>
+        <link rel="stylesheet" href="https://zemian.github.io/theme/css/main.css" />
+        <link href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="ZBlog Atom Feed" />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://zemian.github.io/">ZBlog</a></h1>
+                <nav><ul>
+                    <li><a href="https://zemian.github.io/pages/about-the-author.html">About The Author</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="https://zemian.github.io/2018/a-simple-java-command-line-options-parser.html">A simple Java command line options parser</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2018-08-13T00:00:00-05:00">
+                Published: Mon 13 August 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/optparse.html">optparse</a> <a href="https://zemian.github.io/tag/java.html">java</a> </p>
+</footer><!-- /.post-info --><div class="highlight"><pre><span></span><code><span class="kn">package</span> <span class="nn">com.zemian.hellojava</span><span class="p">;</span>
+
+<span class="kn">import</span> <span class="nn">java.util.*</span><span class="p">;</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * A simple command line arguments and options parser in the format of &quot;--optionName=optionValue&quot; or</span>
+<span class="cm"> * &quot;-optionName=optionValue&quot;.</span>
+<span class="cm"> *</span>
+<span class="cm"> * The optionName can be one ore more characters. The equals sign must be used when providing optionValue;</span>
+<span class="cm"> * else it will be treated as program arguments instead! If you ommit the &quot;=optionValue&quot; part, then it</span>
+<span class="cm"> * will default to &quot;=true&quot; for that optionName. The optionValue must be a single string. Any other argument</span>
+<span class="cm"> * that are not part of options are store in a new args list.</span>
+<span class="cm"> *</span>
+<span class="cm"> * The constructor will immediately parse the input arguments, and it should not throw any exceptions. In case</span>
+<span class="cm"> * user did not use correct format, by above rule, it will go into the argument list instead. We purposely made</span>
+<span class="cm"> * this class simple, and let end user to perform any validation they need for their program.</span>
+<span class="cm"> *</span>
+<span class="cm"> * Usage example:</span>
+<span class="cm"> *   Hello --help</span>
+<span class="cm"> *   Hello --num=101 --verbose one two three</span>
+<span class="cm"> * ----</span>
+<span class="cm"> * public class Hello {}</span>
+<span class="cm"> *     public static void main(String[] args) {</span>
+<span class="cm"> *         CmdOpts opts = new CmdOpts(args);</span>
+<span class="cm"> *         if (opts.hasOpt(&quot;help&quot;))</span>
+<span class="cm"> *           System.out.println(&quot;You need help&quot;);</span>
+<span class="cm"> *         int num = opts.getIntOpt(&quot;num&quot;, 0);</span>
+<span class="cm"> *         System.out.println(&quot;Using num=&quot; + num);</span>
+<span class="cm"> *         System.out.println(&quot;Using new args=&quot; + opts.getArgs());</span>
+<span class="cm"> *     }</span>
+<span class="cm"> * }</span>
+<span class="cm"> * ----</span>
+<span class="cm"> *</span>
+<span class="cm"> * Created by Zemian Deng 2017.</span>
+<span class="cm"> */</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">CmdOpts</span> <span class="p">{</span>
+    <span class="kd">private</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span> <span class="n">Object</span><span class="o">&gt;</span> <span class="n">opts</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;&gt;</span><span class="p">();</span>
+    <span class="kd">private</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">args</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;&gt;</span><span class="p">();</span>
+
+    <span class="kd">public</span> <span class="nf">CmdOpts</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">arguments</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">parse</span><span class="p">(</span><span class="n">arguments</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kd">private</span> <span class="kt">void</span> <span class="nf">parse</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">arguments</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">String</span> <span class="n">arg</span> <span class="p">:</span> <span class="n">arguments</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">arg</span><span class="p">.</span><span class="na">startsWith</span><span class="p">(</span><span class="s">&quot;--&quot;</span><span class="p">))</span> <span class="p">{</span>
+                <span class="n">addOpt</span><span class="p">(</span><span class="n">arg</span><span class="p">.</span><span class="na">substring</span><span class="p">(</span><span class="mi">2</span><span class="p">));</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">arg</span><span class="p">.</span><span class="na">startsWith</span><span class="p">(</span><span class="s">&quot;-&quot;</span><span class="p">))</span> <span class="p">{</span>
+                <span class="n">addOpt</span><span class="p">(</span><span class="n">arg</span><span class="p">.</span><span class="na">substring</span><span class="p">(</span><span class="mi">1</span><span class="p">));</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="n">args</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="n">arg</span><span class="p">);</span>
+            <span class="p">}</span>
+
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="kd">private</span> <span class="kt">void</span> <span class="nf">addOpt</span><span class="p">(</span><span class="n">String</span> <span class="n">option</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">option</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="s">&quot;&quot;</span><span class="p">.</span><span class="na">equals</span><span class="p">(</span><span class="n">option</span><span class="p">))</span> <span class="p">{</span>
+            <span class="n">String</span><span class="o">[]</span> <span class="n">options</span> <span class="o">=</span> <span class="n">option</span><span class="p">.</span><span class="na">split</span><span class="p">(</span><span class="s">&quot;=&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+            <span class="n">String</span> <span class="n">optionName</span> <span class="o">=</span> <span class="n">options</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="p">;</span>
+            <span class="n">String</span> <span class="n">optionValue</span> <span class="o">=</span> <span class="s">&quot;true&quot;</span><span class="p">;</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">options</span><span class="p">.</span><span class="na">length</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">optionValue</span> <span class="o">=</span> <span class="n">options</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="n">Object</span> <span class="n">existingOpt</span> <span class="o">=</span> <span class="n">opts</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="n">optionName</span><span class="p">);</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">existingOpt</span> <span class="o">==</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">opts</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="n">optionName</span><span class="p">,</span> <span class="n">optionValue</span><span class="p">);</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="c1">// Support multi options with same key</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">existingOpt</span> <span class="k">instanceof</span> <span class="n">List</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="c1">// Third + items</span>
+                    <span class="p">((</span><span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="p">)</span> <span class="n">existingOpt</span><span class="p">).</span><span class="na">add</span><span class="p">(</span><span class="n">optionValue</span><span class="p">);</span>
+                <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                    <span class="c1">// Second items</span>
+                    <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;&gt;</span><span class="p">();</span>
+                    <span class="n">list</span><span class="p">.</span><span class="na">add</span><span class="p">((</span><span class="n">String</span><span class="p">)</span> <span class="n">existingOpt</span><span class="p">);</span>
+                    <span class="n">list</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="n">optionValue</span><span class="p">);</span>
+                    <span class="n">opts</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="n">optionName</span><span class="p">,</span> <span class="n">list</span><span class="p">);</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">getOptsSize</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">opts</span><span class="p">.</span><span class="na">size</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="kd">public</span> <span class="n">Set</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="nf">getOptsNames</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">opts</span><span class="p">.</span><span class="na">keySet</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">hasOpt</span><span class="p">(</span><span class="n">String</span> <span class="n">name</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">opts</span><span class="p">.</span><span class="na">containsKey</span><span class="p">(</span><span class="n">name</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kd">public</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span> <span class="n">Object</span><span class="o">&gt;</span> <span class="nf">getOpts</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">opts</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setOpts</span><span class="p">(</span><span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span> <span class="n">Object</span><span class="o">&gt;</span> <span class="n">opts</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="na">opts</span> <span class="o">=</span> <span class="n">opts</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">getOpt</span><span class="p">(</span><span class="n">String</span> <span class="n">name</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">String</span><span class="p">)</span> <span class="n">opts</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="n">name</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">getOpt</span><span class="p">(</span><span class="n">String</span> <span class="n">name</span><span class="p">,</span> <span class="n">String</span> <span class="n">def</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">String</span> <span class="n">result</span> <span class="o">=</span> <span class="n">getOpt</span><span class="p">(</span><span class="n">name</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">result</span> <span class="o">==</span> <span class="kc">null</span><span class="p">)</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">def</span><span class="p">;</span>
+        <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">getBooleanOpt</span><span class="p">(</span><span class="n">String</span> <span class="n">name</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">hasOpt</span><span class="p">(</span><span class="n">name</span><span class="p">))</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">Boolean</span><span class="p">.</span><span class="na">parseBoolean</span><span class="p">(</span><span class="n">getOpt</span><span class="p">(</span><span class="n">name</span><span class="p">));</span>
+    <span class="p">}</span>
+
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">getBooleanOpt</span><span class="p">(</span><span class="n">String</span> <span class="n">name</span><span class="p">,</span> <span class="kt">boolean</span> <span class="n">def</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">hasOpt</span><span class="p">(</span><span class="n">name</span><span class="p">))</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">String</span> <span class="n">result</span> <span class="o">=</span> <span class="n">getOpt</span><span class="p">(</span><span class="n">name</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">result</span> <span class="o">==</span> <span class="kc">null</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">def</span><span class="p">;</span>
+        <span class="k">return</span> <span class="n">Boolean</span><span class="p">.</span><span class="na">parseBoolean</span><span class="p">(</span><span class="n">result</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">getIntOpt</span><span class="p">(</span><span class="n">String</span> <span class="n">name</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">Integer</span><span class="p">.</span><span class="na">parseInt</span><span class="p">(</span><span class="n">getOpt</span><span class="p">(</span><span class="n">name</span><span class="p">));</span>
+    <span class="p">}</span>
+
+    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">getIntOpt</span><span class="p">(</span><span class="n">String</span> <span class="n">name</span><span class="p">,</span> <span class="kt">int</span> <span class="n">def</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">String</span> <span class="n">result</span> <span class="o">=</span> <span class="n">getOpt</span><span class="p">(</span><span class="n">name</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">result</span> <span class="o">==</span> <span class="kc">null</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">def</span><span class="p">;</span>
+        <span class="k">return</span> <span class="n">Integer</span><span class="p">.</span><span class="na">parseInt</span><span class="p">(</span><span class="n">result</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kd">public</span> <span class="kt">long</span> <span class="nf">getLongOpt</span><span class="p">(</span><span class="n">String</span> <span class="n">name</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">Long</span><span class="p">.</span><span class="na">parseLong</span><span class="p">(</span><span class="n">getOpt</span><span class="p">(</span><span class="n">name</span><span class="p">));</span>
+    <span class="p">}</span>
+
+    <span class="kd">public</span> <span class="kt">long</span> <span class="nf">getLongOpt</span><span class="p">(</span><span class="n">String</span> <span class="n">name</span><span class="p">,</span> <span class="kt">long</span> <span class="n">def</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">String</span> <span class="n">result</span> <span class="o">=</span> <span class="n">getOpt</span><span class="p">(</span><span class="n">name</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">result</span> <span class="o">==</span> <span class="kc">null</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">def</span><span class="p">;</span>
+        <span class="k">return</span> <span class="n">Long</span><span class="p">.</span><span class="na">parseLong</span><span class="p">(</span><span class="n">result</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kd">public</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="nf">getMultiOpts</span><span class="p">(</span><span class="n">String</span> <span class="n">name</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;&gt;</span><span class="p">();</span>
+        <span class="n">Object</span> <span class="n">optVal</span> <span class="o">=</span> <span class="n">opts</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="n">name</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">optVal</span> <span class="o">==</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="n">list</span><span class="p">;</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">optVal</span> <span class="k">instanceof</span> <span class="n">String</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">list</span><span class="p">.</span><span class="na">add</span><span class="p">((</span><span class="n">String</span><span class="p">)</span> <span class="n">optVal</span><span class="p">);</span>
+            <span class="k">return</span> <span class="n">list</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="n">list</span><span class="p">.</span><span class="na">addAll</span><span class="p">((</span><span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="p">)</span> <span class="n">optVal</span><span class="p">);</span>
+        <span class="k">return</span> <span class="n">list</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">getArgsSize</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">args</span><span class="p">.</span><span class="na">size</span><span class="p">();</span>
+    <span class="p">}</span>
+    <span class="kd">public</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="nf">getArgs</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">args</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="kd">public</span> <span class="n">String</span><span class="o">[]</span> <span class="nf">getArgsArray</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">args</span><span class="p">.</span><span class="na">toArray</span><span class="p">(</span><span class="k">new</span> <span class="n">String</span><span class="o">[</span><span class="n">args</span><span class="p">.</span><span class="na">size</span><span class="p">()</span><span class="o">]</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">getArgOrError</span><span class="p">(</span><span class="kt">int</span> <span class="n">index</span><span class="p">,</span> <span class="n">String</span> <span class="n">errorIfMissing</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">index</span> <span class="o">&gt;=</span> <span class="n">args</span><span class="p">.</span><span class="na">size</span><span class="p">()</span> <span class="o">||</span> <span class="n">index</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="n">IllegalArgumentException</span><span class="p">(</span><span class="n">errorIfMissing</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">args</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="n">index</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">getArg</span><span class="p">(</span><span class="kt">int</span> <span class="n">index</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">args</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="n">index</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="cm">/** A test class to try out CmdOpts. */</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">CmdOpts</span> <span class="n">opts</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CmdOpts</span><span class="p">(</span><span class="n">args</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">opts</span><span class="p">.</span><span class="na">hasOpt</span><span class="p">(</span><span class="s">&quot;help&quot;</span><span class="p">))</span>
+            <span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;You need help&quot;</span><span class="p">);</span>
+        <span class="kt">int</span> <span class="n">num</span> <span class="o">=</span> <span class="n">opts</span><span class="p">.</span><span class="na">getIntOpt</span><span class="p">(</span><span class="s">&quot;num&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+        <span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Using num=&quot;</span> <span class="o">+</span> <span class="n">num</span><span class="p">);</span>
+        <span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Using new args=&quot;</span> <span class="o">+</span> <span class="n">opts</span><span class="p">.</span><span class="na">getArgs</span><span class="p">());</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2018/python-argparse-with-multiple-occurance-of-an-option.html" rel="bookmark"
+                           title="Permalink to Python argparse with multiple occurance of an option">Python argparse with multiple occurance of an option</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-06-06T00:00:00-05:00">
+                Published: Wed 06 June 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/optparse.html">optparse</a> <a href="https://zemian.github.io/tag/argparse.html">argparse</a> <a href="https://zemian.github.io/tag/python.html">python</a> </p>
+</footer><!-- /.post-info -->                <div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">argparse</span>
+<span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;prog_args&quot;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s1">&#39;*&#39;</span><span class="p">)</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-e&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;append&#39;</span><span class="p">)</span>
+<span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+<span class="n">prog_args</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">prog_args</span>
+<span class="n">env</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">([</span><span class="n">e</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;=&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">args</span><span class="o">.</span><span class="n">e</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Program args: </span><span class="si">{</span><span class="n">prog_args</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Env options: </span><span class="si">{</span><span class="n">env</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code>$ python3 test.py one …</code></pre></div>
+                <a class="readmore" href="https://zemian.github.io/2018/python-argparse-with-multiple-occurance-of-an-option.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2018/parsing-arguments-and-options-with-python-script.html" rel="bookmark"
+                           title="Permalink to Parsing Arguments and Options With Python Script">Parsing Arguments and Options With Python Script</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-03-22T00:00:00-05:00">
+                Published: Thu 22 March 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/python.html">python</a> <a href="https://zemian.github.io/tag/argparse.html">argparse</a> <a href="https://zemian.github.io/tag/optparse.html">optparse</a> </p>
+</footer><!-- /.post-info -->                <div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">argparse</span>
+<span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--file&#39;</span><span class="p">)</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--debug&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">)</span>
+<span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">debug</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Options: </span><span class="si">{</span><span class="n">args</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">file</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">file</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">fh</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+</code></pre></div>
+                <a class="readmore" href="https://zemian.github.io/2018/parsing-arguments-and-options-with-python-script.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+                </ol><!-- /#posts-list -->
+                </section><!-- /#content -->
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

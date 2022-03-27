@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>Running Maven war packaging project without pom config</title>
+        <link rel="stylesheet" href="https://zemian.github.io/theme/css/main.css" />
+        <link href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="ZBlog Atom Feed" />
+        <meta name="description" content="Use Jetty (latest 9.x requires JDK7) bash> mvn org.eclipse.jetty:jetty-maven-plugin:run -Djetty.port=8081 Or use Jetty on JDK 6 bash> mvn..." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://zemian.github.io/">ZBlog</a></h1>
+                <nav><ul>
+                    <li><a href="https://zemian.github.io/pages/about-the-author.html">About The Author</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://zemian.github.io/2013/running-maven-war-packaging-project-without-pom-config.html" rel="bookmark"
+           title="Permalink to Running Maven war packaging project without pom config">Running Maven war packaging project without pom config</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2013-08-27T00:00:00-05:00">
+                Published: Tue 27 August 2013
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/maven.html">maven</a> </p>
+</footer><!-- /.post-info -->      <p>Use Jetty (latest 9.x requires JDK7)</p>
+<div class="highlight"><pre><span></span><code>bash&gt; mvn org.eclipse.jetty:jetty-maven-plugin:run -Djetty.port=8081
+</code></pre></div>
+
+<p>Or use Jetty on JDK 6</p>
+<div class="highlight"><pre><span></span><code>bash&gt; mvn org.mortbay.jetty:jetty-maven-plugin:8.1.12.v20130726:run -Djetty.port=8081
+</code></pre></div>
+
+<p>Or use Tomcat</p>
+<div class="highlight"><pre><span></span><code>bash&gt; mvn org.apache.tomcat.maven:tomcat7-maven-plugin:run -Dmaven.tomcat.port=8081
+</code></pre></div>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

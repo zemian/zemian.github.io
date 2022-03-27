@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>Getting started with Intellij IDEA and WebLogic Server</title>
+        <link rel="stylesheet" href="https://zemian.github.io/theme/css/main.css" />
+        <link href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="ZBlog Atom Feed" />
+        <meta name="description" content="Before starting, you would need the Ultimate version of IDEA to run WebLogic Server (yes, the paid version or the 30 days trial). The Community..." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://zemian.github.io/">ZBlog</a></h1>
+                <nav><ul>
+                    <li><a href="https://zemian.github.io/pages/about-the-author.html">About The Author</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://zemian.github.io/2014/getting-started-with-intellij-idea-and-weblogic-server.html" rel="bookmark"
+           title="Permalink to Getting started with Intellij IDEA and WebLogic Server">Getting started with Intellij IDEA and WebLogic Server</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2014-01-31T00:00:00-05:00">
+                Published: Fri 31 January 2014
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/intellij.html">intellij</a> <a href="https://zemian.github.io/tag/weblogic.html">weblogic</a> </p>
+</footer><!-- /.post-info -->      <p>Before starting, you would need the Ultimate version of IDEA to run WebLogic Server (yes, the paid version or the 30 days trial). The Community edition of IDEA will not support Application Server deployment.</p>
+<p>I also assume you have already setup WebLogic Server and a user domain as per my <a href="https://zemian.github.io/2014/01/getting-started-with-weblogic-server.html">previous blog instructions</a>. So now let's setup the IDE to boost your development.</p>
+<ol>
+<li>Create a simple HelloWorld web application in IDEA.</li>
+<li>For your HelloWorld, you can go into the Project Settings &gt; Artifacts, and add "web:war exploded" entry for your application. You will add this into your app server later.</li>
+<li>
+<p>Ensure you have added the Application Server Views plugin with WebLogic Server. (It's under Settings &gt; IDE Settings &gt; Application Server)</p>
+</li>
+<li>
+<p>Click + and enter Name: WebLogic 12.1.2 </p>
+</li>
+<li>
+<p>WebLogic Home: <code>C:\apps\wls12120</code></p>
+</li>
+<li>
+<p>Back to your editor, select Menu: Run &gt; Edit Configuration</p>
+</li>
+<li>
+<p>Click + and add "WebLogic Server" &gt; Local</p>
+</li>
+<li>Name: WLS</li>
+<li>On Server tab, ensure DomainPath is set: <code>C:\apps\wls12120\mydomain</code></li>
+<li>On Deployment tab, select "web:war exploded" for your HelloWorld project.</li>
+<li>
+<p>Click OK</p>
+</li>
+<li>
+<p>Now Menu: Run &gt; "Run WLS"</p>
+</li>
+</ol>
+<p>Your WebLogic Server should now start and running your web application inside. You may visit the browser on http://localhost:7001/web_war_exploded</p>
+<p>Some goodies with Intellij IDEA and WLS are:</p>
+<ul>
+<li>Redeploy WAR only without restarting server</li>
+<li>Deploy application in exploded mode and have IDE auto make and sync </li>
+<li>Debug application with server running within IDE</li>
+<li>Full control on server settings </li>
+</ul>
+<p>NOTE: As noted in previous blog, if you do not set MW_HOME as system variable, then you must add this in IDEA's Run Configuration. Or you edit your "mydomain/bin/startWebLogic.cmd" and "stopWebLogic.cmd" scripts directly. </p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

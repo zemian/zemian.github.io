@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>ZBlog - php</title>
+        <link rel="stylesheet" href="https://zemian.github.io/theme/css/main.css" />
+        <link href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="ZBlog Atom Feed" />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://zemian.github.io/">ZBlog</a></h1>
+                <nav><ul>
+                    <li><a href="https://zemian.github.io/pages/about-the-author.html">About The Author</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="https://zemian.github.io/2021/how-to-setup-wordpress-for-local-development.html">How to Setup WordPress For Local Development</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2021-11-14T00:00:00-05:00">
+                Published: Sun 14 November 2021
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/php.html">php</a> <a href="https://zemian.github.io/tag/wordpress.html">wordpress</a> </p>
+</footer><!-- /.post-info --><p>The <a href="https://wordpress.org/support/article/how-to-install-wordpress/">WordPress installation</a> is relative simple, and they even boast about a "famous 5-minute installation". However, what they mean by "5-minutes" part though, is that it only count when you first launched the WordPress site for the first time setup. If you are a newbie, it's likely you haven't install their pre-requisites yet. Here I will summarize the install and setup process for completeness sake.</p>
+<h2>The Pre-Requisite Setup</h2>
+<p>The WordPress requires MySQL database server, and you need PHP and a web server to run it. I will use the Apache HTTPD web server (or Apache for short) here.</p>
+<p>If you are using macOS, then you may install these items using <code>brew</code> command <a href="https://brew.sh/">package manager</a> like this:</p>
+<div class="highlight"><pre><span></span><code>brew install httpd mysql php
+brew services start httpd
+brew services start mysql
+</code></pre></div>
+
+<p>If you want to learn each software in detail, checkout their website for their full documentation:</p>
+<ul>
+<li><a href="https://httpd.apache.org/">Apache HTTPD server</a></li>
+<li><a href="https://dev.mysql.com/downloads/mysql/">MySQL database server</a></li>
+<li><a href="https://www.php.net/downloads.php">PHP</a></li>
+</ul>
+<h2>The Apache HTTPD Setup</h2>
+<p>For Apache, you need some manual setup to get PHP working. Edit the Apache config 
+<code>/usr/local/etc/httpd/httpd.conf</code> file and append the following:</p>
+<div class="highlight"><pre><span></span><code># To enable PHP in Apache add the following to httpd.conf and restart Apache:
+LoadModule php_module /usr/local/opt/php/lib/httpd/modules/libphp.so
+<span class="nt">&lt;FilesMatch</span> <span class="err">\.php$</span><span class="nt">&gt;</span>
+    SetHandler application/x-httpd-php
+<span class="nt">&lt;/FilesMatch&gt;</span>
+
+# Finally, check DirectoryIndex includes index.php
+DirectoryIndex index.php index.html
+</code></pre></div>
+
+<p>NOTE: The path I have is from my installation. You may want to run <code>brew info httpd</code> and 
+<code>brew info php</code> to verify your actual installation paths.</p>
+<p>TIPS: For Windows users, you may want to try friendly <a href="https://www.apachefriends.org/index.html">XAMPP package</a> that comes with all three software!</p>
+<p>To verify you have Apache &amp; PHP installed correctly, you need to locate the DocumentRoot directory is.
+That's where it host all your HTML files for Apache server. For mine, it's under <code>/usr/local/var/www/</code>
+You can find your DocumentRoot path inside the Apache config <code>/usr/local/etc/httpd/httpd.conf</code> file.
+You will also noticed that default port Apache use is <code>8080</code>. So create a simple PHP script to test it like this:</p>
+<div class="highlight"><pre><span></span><code><span class="err">#</span> <span class="nx">file</span><span class="o">:</span> <span class="err">/usr/local/var/www/phpinfo.php</span>
+<span class="cp">&lt;?php</span> <span class="nb">phpinfo</span><span class="p">();</span> <span class="cp">?&gt;</span>
+</code></pre></div>
+
+<p>Now open <code>http://localhost:8080/phpinfo.php</code> to verify. It should print many PHP information for you.</p>
+<h2>The Database Setup</h2>
+<p>Once your MySQL server is running, open a MySQL prompt with <code>mysql -u root</code> command. In there we can create a user and an empty database like this:</p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Create DB user</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">USER</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="s1">&#39;myuser&#39;</span><span class="o">@</span><span class="s1">&#39;localhost&#39;</span><span class="w"> </span><span class="n">IDENTIFIED</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="s1">&#39;mypassword&#39;</span><span class="p">;</span><span class="w"></span>
+
+<span class="c1">-- Create DB for wordpress</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="n">wordpress</span><span class="w"> </span><span class="nb">CHARACTER</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">utf8mb4</span><span class="w"> </span><span class="k">COLLATE</span><span class="w"> </span><span class="n">utf8mb4_general_ci</span><span class="p">;</span><span class="w"></span>
+
+<span class="c1">-- Grant DB privileges to our user</span>
+<span class="k">GRANT</span><span class="w"> </span><span class="k">ALL</span><span class="w"> </span><span class="k">PRIVILEGES</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">wordpress</span><span class="p">.</span><span class="o">*</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="s1">&#39;myuser&#39;</span><span class="o">@</span><span class="s1">&#39;localhost&#39;</span><span class="p">;</span><span class="w"></span>
+</code></pre></div>
+
+<blockquote>
+<p>NOTE: Note we are only creating an empty database here. The WordPress database schema is not yet created. It will be created as part of WordPress installation below.</p>
+<p>WARNING: You should change the user and password to something that is more secure; including the WordPress admin user we will setup below.</p>
+</blockquote>
+<h2>The WordPress Install and Setup</h2>
+<ol>
+<li>
+<p>Download <a href="https://wordpress.org/download/#download-install">WordPress</a> and unzip it under the DocumentRoot folder (eg: <code>/usr/local/var/www/</code>). You should have the <code>/usr/local/var/www/wordpress</code> directory after complete.</p>
+</li>
+<li>
+<p>Open a browser and visit <code>http://localhost:8080/wordpress</code>. This is where your "famous 5-minute installation" starts. Follow the prompt through several pages to get your WordPress up and running. I will give you some basic examples to get started:</p>
+<ol>
+<li>A language selection page will greet you. Select <code>English (United States)</code> and then press "Continue" button.</li>
+<li>Next is an info page telling you that you need the database information to complete the setup. Press "Let's go" button.</li>
+<li>
+<p>Enter the database information, then press "Submit" button:</p>
+<ul>
+<li>Database Name: <code>wordpress</code></li>
+<li>Username: <code>myuser</code></li>
+<li>Password: <code>mypassword</code></li>
+<li>Database Host: <code>loclhost</code></li>
+<li>Table Prefix: <code>wp_</code></li>
+</ul>
+</li>
+<li>
+<p>A confirmation page will display that you are ready to proceed. Press "Run the installation" button.</p>
+</li>
+<li>
+<p>A welcome page that prompt to setup the Site information. Press "Install WordPress" button to continue after you entered the following:</p>
+<ul>
+<li>Site Title: <code>My WordPress</code></li>
+<li>Username: <code>myadmin</code></li>
+<li>Password: <code>mypassword</code></li>
+<li>Confirm Password: Check to confirm</li>
+<li>Your Email: <code>myadmin@localhost.local</code></li>
+<li>Search engine visibility: Check to discourage search engine</li>
+</ul>
+</li>
+<li>
+<p>Success page will display next, and you may now press "Login in" button to continue.</p>
+</li>
+<li>
+<p>Now your WordPress is ready. You may access two areas of the site:</p>
+<ul>
+<li><code>http://localhost:8080/wordpress</code> - The front-end site for public users. </li>
+<li><code>http://localhost:8080/wordpress/wp-admin</code> - The back-end site for admin users.</li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
+<p>And that's all! Enjoy creating content with WordPress!</p>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2021/new-zblog-design-with-bulma-and-sculpin.html" rel="bookmark"
+                           title="Permalink to New ZBlog Design With Bulma and Sculpin">New ZBlog Design With Bulma and Sculpin</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2021-11-11T00:00:00-05:00">
+                Published: Thu 11 November 2021
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/php.html">php</a> <a href="https://zemian.github.io/tag/blog.html">blog</a> <a href="https://zemian.github.io/tag/sculpin.html">sculpin</a> <a href="https://zemian.github.io/tag/bulma.html">bulma</a> <a href="https://zemian.github.io/tag/ssg.html">ssg</a> </p>
+</footer><!-- /.post-info -->                <p>I redesigned <a href="https://github.com/zemian/zemian.github.io/tree/sculpin">my blog</a> with the <a href="https://sculpin.io/">Sculpin</a> Static Site Generator. I made a simple custom theme with BulmaCSS. Here is a screenshot:</p>
+<p><img alt="sculpin icon" src="/images/posts/2021/new-zblog-design-with-bulma-and-sculpin.png"></p>
+<p>Few things I like about Bulma and Sculpin:</p>
+<ul>
+<li>Bulma is an easy to work with CSS library and has great out-of-the-box styles.</li>
+<li>I learned enough PHP to feel …</li></ul>
+                <a class="readmore" href="https://zemian.github.io/2021/new-zblog-design-with-bulma-and-sculpin.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2020/take-notes-with-marknotes.html" rel="bookmark"
+                           title="Permalink to Take Notes with MarkNotes">Take Notes with MarkNotes</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2020-11-07T00:00:00-05:00">
+                Published: Sat 07 November 2020
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/php.html">php</a> <a href="https://zemian.github.io/tag/web-development.html">web-development</a> <a href="https://zemian.github.io/tag/markdown.html">markdown</a> <a href="https://zemian.github.io/tag/notes.html">notes</a> <a href="https://zemian.github.io/tag/marknotes.html">marknotes</a> </p>
+</footer><!-- /.post-info -->                <p>I wrote a simple notes taking web application called <a href="https://github.com/zemian/marknotes">MarkNotes</a>. It's a single <code>index.php</code> page application for managing Markdown notes. Try it out and let me know what you think!</p>
+<p>Here are few screenshots on how it looks like:</p>
+<h2>Home Page</h2>
+<p><img alt="marknotes screenshot#1" src="/images/posts/2020/marknotes1.png"></p>
+<h2>Admin Page</h2>
+<p><img alt="marknotes screenshot#2" src="/images/posts/2020/marknotes2.png"></p>
+<h2>Editing a Note</h2>
+<p><img alt="marknotes screenshot#3" src="/images/posts/2020/marknotes3.png"></p>
+                <a class="readmore" href="https://zemian.github.io/2020/take-notes-with-marknotes.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2020/directory-listing-project.html" rel="bookmark"
+                           title="Permalink to Directory Listing Project">Directory Listing Project</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2020-10-04T00:00:00-04:00">
+                Published: Sun 04 October 2020
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/php.html">php</a> <a href="https://zemian.github.io/tag/web-development.html">web-development</a> </p>
+</footer><!-- /.post-info -->                <p>A directory listing index page is a very useful for development. It gives you 
+a quick overview of your project content and able to verify your site is up and
+running.</p>
+<p>While learning PHP, I have created the smallest project called <a href="https://github.com/zemian/purple-index">purple-index</a>.</p>
+<p>Here are some screenshots. Enjoy!</p>
+<p><img alt="Screenshot" src="https://raw.githubusercontent.com/zemian/index-listing/main/docs/screenshot.png"></p>
+<p><img alt="Screenshot" src="https://raw.githubusercontent.com/zemian/index-listing/main/docs/screenshot2.png"></p>
+<p><img alt="Screenshot" src="https://raw.githubusercontent.com/zemian/index-listing/main/docs/screenshot3.png"></p>
+                <a class="readmore" href="https://zemian.github.io/2020/directory-listing-project.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://zemian.github.io/2020/the-world-of-php-development.html" rel="bookmark"
+                           title="Permalink to The World of PHP Development">The World of PHP Development</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2020-09-20T00:00:00-05:00">
+                Published: Sun 20 September 2020
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/php.html">php</a> <a href="https://zemian.github.io/tag/mysql.html">mysql</a> <a href="https://zemian.github.io/tag/webserver.html">webserver</a> <a href="https://zemian.github.io/tag/joomla.html">joomla</a> </p>
+</footer><!-- /.post-info -->                <p>I have gotten into PHP lately in order to help a friend who runs a Joomla site with a custom component. Thinking to myself now that I have some <a href="/2020/03/22/front-end">Front End Experience</a>, I shouldn't have trouble doing this. But I have never seriuosly got into PHP in the past though …</p>
+                <a class="readmore" href="https://zemian.github.io/2020/the-world-of-php-development.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+                </ol><!-- /#posts-list -->
+                </section><!-- /#content -->
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

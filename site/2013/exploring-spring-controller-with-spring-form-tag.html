@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>Exploring Spring Controller with Spring Form Tag</title>
+        <link rel="stylesheet" href="https://zemian.github.io/theme/css/main.css" />
+        <link href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="ZBlog Atom Feed" />
+        <meta name="description" content="In the past article, I have shown you how to process an plain HTML form with Spring controller. But a more powerful way to process form is to use..." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://zemian.github.io/">ZBlog</a></h1>
+                <nav><ul>
+                    <li><a href="https://zemian.github.io/pages/about-the-author.html">About The Author</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://zemian.github.io/2013/exploring-spring-controller-with-spring-form-tag.html" rel="bookmark"
+           title="Permalink to Exploring Spring Controller with Spring Form Tag">Exploring Spring Controller with Spring Form Tag</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2013-10-29T00:00:00-05:00">
+                Published: Tue 29 October 2013
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/spring.html">spring</a> </p>
+</footer><!-- /.post-info -->      <p>In the past <a href="https://zemian.github.io/2013/10/exploring-spring-controller-with-jstl.html">article</a>, I have shown you how to process an plain HTML form with Spring controller. But a more powerful way to process form is to use Spring&#8217;s <code>@ModelAttribute</code> and its <code>spring:form</code> tags. I will show you how to get that started here by modifying last article&#8217;s project setup. We will simply modify the Comment form and controller to use this feature.</p>
+<p>In the same project, modify the <code>src/webapp/comment.jsp</code> view file into this:</p>
+<div class="highlight"><pre><span></span><code><span class="cp">&lt;%</span><span class="err">@</span> <span class="n">taglib</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;spring&quot;</span> <span class="n">uri</span><span class="o">=</span><span class="s2">&quot;http://www.springframework.org/tags/form&quot;</span> <span class="cp">%&gt;</span>
+<span class="nt">&lt;spring:form</span> <span class="na">modelAttribute=</span><span class="s">&quot;comment&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;table&gt;</span>
+    <span class="nt">&lt;tr&gt;</span>
+        <span class="nt">&lt;td&gt;&lt;spring:textarea</span> <span class="na">path=</span><span class="s">&quot;text&quot;</span> <span class="na">rows=</span><span class="s">&quot;20&quot;</span> <span class="na">cols=</span><span class="s">&quot;80&quot;</span><span class="nt">/&gt;&lt;/td&gt;</span>
+    <span class="nt">&lt;/tr&gt;</span>
+    <span class="nt">&lt;tr&gt;</span>
+        <span class="nt">&lt;td</span> <span class="na">colspan=</span><span class="s">&quot;2&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;submit&quot;</span> <span class="na">value=</span><span class="s">&quot;Post&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;/td&gt;</span>
+    <span class="nt">&lt;/tr&gt;</span>
+  <span class="nt">&lt;/table&gt;</span>
+<span class="nt">&lt;/spring:form&gt;</span>
+</code></pre></div>
+
+<p>This view now use the <code>spring:form</code> tag to render the comment form instead of plain HTML. I have only shown you one element here, but the <code>spring:form</code> tag library also comes with all the matching HTML form elements that helps you quickly render the form with data binded. This automatically triggers the <code>CommentController</code> when you submit. We will need to modify that to capture the form.</p>
+<div class="highlight"><pre><span></span><code><span class="n">package</span> <span class="n">springweb</span><span class="o">.</span><span class="n">controller</span><span class="p">;</span>
+
+<span class="kn">import</span> <span class="nn">org.springframework.beans.factory.annotation.Autowired</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.stereotype.Controller</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.validation.BindingResult</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.web.bind.annotation.ModelAttribute</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.web.bind.annotation.RequestMapping</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.web.bind.annotation.RequestMethod</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.web.bind.annotation.RequestParam</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.web.servlet.ModelAndView</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">springweb.data.Comment</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">springweb.data.CommentService</span><span class="p">;</span>
+
+<span class="kn">import</span> <span class="nn">javax.servlet.http.HttpServletRequest</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">java.util.List</span><span class="p">;</span>
+
+<span class="nd">@Controller</span>
+<span class="n">public</span> <span class="k">class</span> <span class="nc">CommentController</span> <span class="p">{</span>
+
+    <span class="nd">@Autowired</span>
+    <span class="n">private</span> <span class="n">CommentService</span> <span class="n">commentService</span><span class="p">;</span>
+
+    <span class="nd">@RequestMapping</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="s2">&quot;/comments&quot;</span><span class="p">)</span>
+    <span class="n">public</span> <span class="n">ModelAndView</span> <span class="n">comments</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">List</span><span class="o">&lt;</span><span class="n">Comment</span><span class="o">&gt;</span> <span class="n">comments</span> <span class="o">=</span> <span class="n">commentService</span><span class="o">.</span><span class="n">findComments</span><span class="p">();</span>
+        <span class="n">ModelAndView</span> <span class="n">result</span> <span class="o">=</span> <span class="n">new</span> <span class="n">ModelAndView</span><span class="p">(</span><span class="s2">&quot;/comments&quot;</span><span class="p">);</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">addObject</span><span class="p">(</span><span class="s2">&quot;comments&quot;</span><span class="p">,</span> <span class="n">comments</span><span class="p">);</span>
+        <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="nd">@ModelAttribute</span><span class="p">(</span><span class="s2">&quot;comment&quot;</span><span class="p">)</span>
+    <span class="n">public</span> <span class="n">Comment</span> <span class="n">createFormModelAttribute</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">Comment</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="nd">@RequestMapping</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="s2">&quot;/comment&quot;</span><span class="p">)</span>
+    <span class="n">public</span> <span class="n">String</span> <span class="n">comment</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="s2">&quot;comment&quot;</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="nd">@RequestMapping</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="s2">&quot;/comment&quot;</span><span class="p">,</span> <span class="n">method</span> <span class="o">=</span> <span class="n">RequestMethod</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
+    <span class="n">public</span> <span class="n">ModelAndView</span> <span class="n">postComment</span><span class="p">(</span><span class="n">HttpServletRequest</span> <span class="n">req</span><span class="p">,</span>
+                                <span class="nd">@ModelAttribute</span><span class="p">(</span><span class="s2">&quot;comment&quot;</span><span class="p">)</span> <span class="n">Comment</span> <span class="n">comment</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">String</span> <span class="n">fromUrl</span> <span class="o">=</span> <span class="n">req</span><span class="o">.</span><span class="n">getRequestURI</span><span class="p">();</span>
+        <span class="n">String</span> <span class="n">user</span> <span class="o">=</span> <span class="n">req</span><span class="o">.</span><span class="n">getRemoteUser</span><span class="p">();</span>
+        <span class="n">String</span> <span class="n">userIp</span> <span class="o">=</span> <span class="n">req</span><span class="o">.</span><span class="n">getRemoteAddr</span><span class="p">();</span>
+        <span class="n">comment</span><span class="o">.</span><span class="n">setFromUserIp</span><span class="p">(</span><span class="n">userIp</span><span class="p">);</span>
+        <span class="n">comment</span><span class="o">.</span><span class="n">setFromUser</span><span class="p">(</span><span class="n">user</span><span class="p">);</span>
+        <span class="n">comment</span><span class="o">.</span><span class="n">setFromUrl</span><span class="p">(</span><span class="n">fromUrl</span><span class="p">);</span>
+        <span class="n">commentService</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">comment</span><span class="p">);</span>
+        <span class="n">ModelAndView</span> <span class="n">result</span> <span class="o">=</span> <span class="n">new</span> <span class="n">ModelAndView</span><span class="p">(</span><span class="s2">&quot;comment-posted&quot;</span><span class="p">);</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">addObject</span><span class="p">(</span><span class="s2">&quot;comment&quot;</span><span class="p">,</span> <span class="n">comment</span><span class="p">);</span>
+        <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>The difference in this controller compare to the old one is we used <code>@ModelAttribute</code> with an <code>form</code> object (or Spring calls it a <code>command</code> object.) We can name it, which I called <code>comment</code> here. It&#8217;s just a java POJO class, nothing special. But it is used to capture all the form input and then pass to Controller, which is called data binding. Notice that it will instanciate by <code>createFormModelAttribute()</code> method as you request the form view first. If you pre-populate the pojo with text, then it will automatically shows in the form! When user submit the controller will process in <code>postComment()</code> method, and the form object is re-populated with new form input again for processing. This allows you to work with form in pure Object style, and in many ways, it&#8217;s shorter and cleaner compare to plain HTML form.</p>
+<p>There are much to the Spring MVC form processing. One powerful feature is it able to help you orgainze the <code>form</code> object validation and collect the error messages. Spring also helps localize your error message text etc. You may read more on their reference doc.</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

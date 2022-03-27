@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>Creating PostgreSQL db users to match Linux users</title>
+        <link rel="stylesheet" href="https://zemian.github.io/theme/css/main.css" />
+        <link href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="ZBlog Atom Feed" />
+        <meta name="description" content="By default the posgresql-server install will create a postgres Linux user account and the server will run under that user. And also PostgreSQL..." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://zemian.github.io/">ZBlog</a></h1>
+                <nav><ul>
+                    <li><a href="https://zemian.github.io/pages/about-the-author.html">About The Author</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://zemian.github.io/2017/creating-postgresql-db-users-to-match-linux-users.html" rel="bookmark"
+           title="Permalink to Creating PostgreSQL db users to match Linux users">Creating PostgreSQL db users to match Linux users</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2017-07-07T00:00:00-05:00">
+                Published: Fri 07 July 2017
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://zemian.github.io/author/zemian-deng.html">Zemian Deng</a>
+        </address>
+<p>In <a href="https://zemian.github.io/category/blog.html">Blog</a>.</p>
+<p>tags: <a href="https://zemian.github.io/tag/postgres.html">postgres</a> </p>
+</footer><!-- /.post-info -->      <p>By default the <code>posgresql-server</code> install will create a <code>postgres</code> Linux
+user account and the server will run under that user. And also
+PostgreSQL server will default have a DB user named <code>postgres</code> as well,
+and this DB user does not have a password! There is a distinction
+between Linux user vs PostgreSQL database user, and mostly you need to
+work with DB user only. After the install, you may change the password
+for DB <code>postgres</code> like this:</p>
+<div class="highlight"><pre><span></span><code><span class="n">bash</span><span class="o">&gt;</span><span class="w"> </span><span class="n">sudo</span><span class="w"> </span><span class="o">-</span><span class="n">u</span><span class="w"> </span><span class="n">postgres</span><span class="w"> </span><span class="n">psql</span><span class="w"></span>
+
+<span class="n">postgres</span><span class="o">=</span><span class="c1"># \password postgres</span><span class="w"></span>
+
+<span class="c1"># It should prompt you to enter password for `postgres` DB user.</span><span class="w"></span>
+</code></pre></div>
+
+<p>When developing application, I like to create a dedicated DB user to
+match my login account and create database there instead of using the
+default <code>postgres</code> user. You may create a new DB user that match to your
+current Linux account user (eg: <code>zemian</code>) like this:</p>
+<div class="highlight"><pre><span></span><code><span class="n">bash</span><span class="o">&gt;</span><span class="w"> </span><span class="n">sudo</span><span class="w"> </span><span class="o">-</span><span class="n">u</span><span class="w"> </span><span class="n">postgres</span><span class="w"> </span><span class="n">createdb</span><span class="w"> </span><span class="o">-</span><span class="n">s</span><span class="w"> </span><span class="o">-</span><span class="n">P</span><span class="w"> </span><span class="n">zemian</span><span class="w"></span>
+<span class="c1"># It should prompt you to enter password for `zemian` DB user. The `-s` option is to for superuser privileges.</span><span class="w"></span>
+</code></pre></div>
+
+<p>Now that you have a DB user <code>zemian</code>, you may create a default database
+for it.</p>
+<div class="highlight"><pre><span></span><code>bash&gt; createdb --username=zemian zemian
+</code></pre></div>
+
+<p>Now you may invoke <code>psql</code> under <code>zemian</code> Linux user session without any
+parameters and it should log you in!</p>
+<div class="highlight"><pre><span></span><code><span class="n">bash</span><span class="o">&gt;</span><span class="w"> </span><span class="n">psql</span><span class="w"></span>
+
+<span class="n">zemian</span><span class="o">=</span><span class="c1"># CREATE TABLE test(id serial, name VARCHAR(20), message VARCHAR(500));</span><span class="w"></span>
+<span class="n">NOTICE</span><span class="p">:</span><span class="w">  </span><span class="n">CREATE</span><span class="w"> </span><span class="n">TABLE</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">create</span><span class="w"> </span><span class="n">implicit</span><span class="w"> </span><span class="n">sequence</span><span class="w"> </span><span class="s2">&quot;test_id_seq&quot;</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">serial</span><span class="w"> </span><span class="n">column</span><span class="w"> </span><span class="s2">&quot;test.id&quot;</span><span class="w"></span>
+<span class="n">CREATE</span><span class="w"> </span><span class="n">TABLE</span><span class="w"></span>
+
+<span class="n">zemian</span><span class="o">=</span><span class="c1"># \d test</span><span class="w"></span>
+<span class="w">                                 </span><span class="n">Table</span><span class="w"> </span><span class="s2">&quot;public.test&quot;</span><span class="w"></span>
+<span class="w"> </span><span class="n">Column</span><span class="w">  </span><span class="o">|</span><span class="w">          </span><span class="n">Type</span><span class="w">          </span><span class="o">|</span><span class="w">                     </span><span class="n">Modifiers</span><span class="w"></span>
+<span class="o">---------+------------------------+---------------------------------------------------</span><span class="w"></span>
+<span class="w"> </span><span class="n">id</span><span class="w">      </span><span class="o">|</span><span class="w"> </span><span class="n">integer</span><span class="w">                </span><span class="o">|</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nb nb-Type">null</span><span class="w"> </span><span class="n">default</span><span class="w"> </span><span class="n">nextval</span><span class="p">(</span><span class="s1">&#39;test_id_seq&#39;</span><span class="p">::</span><span class="n">regclass</span><span class="p">)</span><span class="w"></span>
+<span class="w"> </span><span class="n">name</span><span class="w">    </span><span class="o">|</span><span class="w"> </span><span class="n">character</span><span class="w"> </span><span class="n">varying</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span><span class="w">  </span><span class="o">|</span><span class="w"></span>
+<span class="w"> </span><span class="n">message</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">character</span><span class="w"> </span><span class="n">varying</span><span class="p">(</span><span class="mi">500</span><span class="p">)</span><span class="w"> </span><span class="o">|</span><span class="w"></span>
+
+<span class="n">zemian</span><span class="o">=</span><span class="c1"># INSERT INTO test(name, message) VALUES(&#39;Hello&#39;, &#39;World&#39;);</span><span class="w"></span>
+<span class="n">INSERT</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
+<span class="n">zemian</span><span class="o">=</span><span class="c1"># INSERT INTO test(name, message) VALUES(&#39;Hello2&#39;, &#39;World2&#39;);</span><span class="w"></span>
+<span class="n">INSERT</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
+<span class="n">zemian</span><span class="o">=</span><span class="c1"># SELECT * FROM test;</span><span class="w"></span>
+<span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">|</span><span class="w">  </span><span class="n">name</span><span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="n">message</span><span class="w"></span>
+<span class="o">----+--------+---------</span><span class="w"></span>
+<span class="w">  </span><span class="mi">1</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Hello</span><span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="n">World</span><span class="w"></span>
+<span class="w">  </span><span class="mi">2</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Hello2</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">World2</span><span class="w"></span>
+<span class="p">(</span><span class="mi">2</span><span class="w"> </span><span class="n">rows</span><span class="p">)</span><span class="w"></span>
+</code></pre></div>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://zemian.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>
