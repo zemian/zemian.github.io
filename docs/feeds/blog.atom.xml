@@ -14,8 +14,8 @@
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;To publish&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;pelican -s publishconf.py -o docs
-git commit -m &amp;#39;Publish …&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;This blog is now using &lt;a href="https://getpelican.com/"&gt;Pelican&lt;/a&gt; is a static site generator, written in Python.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;pelican -s publishconf.py -d -o docs
+git commit -m …&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;This blog is now using &lt;a href="https://getpelican.com/"&gt;Pelican&lt;/a&gt; is a static site generator, written in Python.&lt;/p&gt;
 &lt;h2&gt;First time setup&lt;/h2&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;pip install pelican markdown
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
@@ -30,7 +30,7 @@ git commit -m &amp;#39;Publish …&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</summary
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;To publish&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;pelican -s publishconf.py -o docs
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;pelican -s publishconf.py -d -o docs
 git commit -m &amp;#39;Publish site&amp;#39;
 git push
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content><category term="Blog"></category><category term="python"></category><category term="blog"></category><category term="ssg"></category></entry><entry><title>Build a DatePicker using VueJS and BulmaCSS</title><link href="https://zemian.github.io/2021/build-a-datepicker-using-vuejs-and-bulmacss.html" rel="alternate"></link><published>2021-12-01T00:00:00-05:00</published><updated>2021-12-01T00:00:00-05:00</updated><author><name>Zemian Deng</name></author><id>tag:zemian.github.io,2021-12-01:/2021/build-a-datepicker-using-vuejs-and-bulmacss.html</id><content type="html">&lt;p&gt;I took the challenge to build a simple DatePicker web component using VueJS and BulmaCSS, and here is the result!&lt;/p&gt;
