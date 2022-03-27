@@ -9,5 +9,5 @@ man:find
 
 And you will see something like this:
 
-[![](http://1.bp.blogspot.com/-hJtb8OSJUcY/Vi0NzuU1aqI/AAAAAAAAArk/VxH6rcjZE6g/s320/grab1.tiff)](http://1.bp.blogspot.com/-hJtb8OSJUcY/Vi0NzuU1aqI/AAAAAAAAArk/VxH6rcjZE6g/s1600/grab1.tiff)
+[![grab1.tiff](http://1.bp.blogspot.com/-hJtb8OSJUcY/Vi0NzuU1aqI/AAAAAAAAArk/VxH6rcjZE6g/s320/grab1.tiff)](http://1.bp.blogspot.com/-hJtb8OSJUcY/Vi0NzuU1aqI/AAAAAAAAArk/VxH6rcjZE6g/s1600/grab1.tiff)
 

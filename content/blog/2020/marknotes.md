@@ -9,11 +9,11 @@ I wrote a simple notes taking web application called [MarkNotes](https://github.
 Here are few screenshots on how it looks like:
 
 ## Home Page
-![](/images/posts/2020/marknotes1.png)
+![marknotes screenshot#1](/images/posts/2020/marknotes1.png)
 
 ## Admin Page
-![](/images/posts/2020/marknotes2.png)
+![marknotes screenshot#2](/images/posts/2020/marknotes2.png)
 
 ## Editing a Note
-![](/images/posts/2020/marknotes3.png)
+![marknotes screenshot#3](/images/posts/2020/marknotes3.png)
 

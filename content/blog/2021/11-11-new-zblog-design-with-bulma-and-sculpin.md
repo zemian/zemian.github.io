@@ -6,7 +6,7 @@ Tags: php,blog,sculpin,bulma,ssg
 
 I redesigned [my blog](https://github.com/zemian/zemian.github.io/tree/sculpin) with the [Sculpin](https://sculpin.io/) Static Site Generator. I made a simple custom theme with BulmaCSS. Here is a screenshot:
 
-![](/images/posts/2021/new-zblog-design-with-bulma-and-sculpin.png)
+![sculpin icon](/images/posts/2021/new-zblog-design-with-bulma-and-sculpin.png)
 
 Few things I like about Bulma and Sculpin:
 
