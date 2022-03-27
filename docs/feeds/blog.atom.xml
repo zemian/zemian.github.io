@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>ZBlog - Blog</title><link href="https://zemian.github.io/" rel="alternate"></link><link href="https://zemian.github.io/feeds/blog.atom.xml" rel="self"></link><id>https://zemian.github.io/</id><updated>2022-03-26T00:00:00-04:00</updated><entry><title>Getting started with Pelican</title><link href="https://zemian.github.io/2022/getting-started-with-pelican.html" rel="alternate"></link><published>2022-03-26T00:00:00-04:00</published><updated>2022-03-26T00:00:00-04:00</updated><author><name>Zemian Deng</name></author><id>tag:zemian.github.io,2022-03-26:/2022/getting-started-with-pelican.html</id><summary type="html">&lt;p&gt;This blog is now using &lt;a href="https://getpelican.com/"&gt;Pelican&lt;/a&gt; is a static site generator, written in Python.&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>ZBlog - Blog</title><link href="https://zemian.github.io/" rel="alternate"></link><link href="https://zemian.github.io/feeds/blog.atom.xml" rel="self"></link><id>https://zemian.github.io/</id><updated>2022-03-26T00:00:00-04:00</updated><entry><title>Getting started with Pelican</title><link href="https://zemian.github.io/2022/getting-started-with-pelican.html" rel="alternate"></link><published>2022-03-26T00:00:00-04:00</published><updated>2022-03-26T00:00:00-04:00</updated><author><name>Zemian Deng</name></author><id>tag:zemian.github.io,2022-03-26:/2022/getting-started-with-pelican.html</id><summary type="html">&lt;p&gt;This blog is now using &lt;a href="https://getpelican.com/"&gt;Pelican&lt;/a&gt;, a static site generator written in Python.&lt;/p&gt;
 &lt;h2&gt;First time setup&lt;/h2&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;pip install pelican markdown
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
@@ -15,7 +15,7 @@
 
 &lt;p&gt;To publish&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;pelican -s publishconf.py -d -o docs
-git commit -m …&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;This blog is now using &lt;a href="https://getpelican.com/"&gt;Pelican&lt;/a&gt; is a static site generator, written in Python.&lt;/p&gt;
+git commit -m &amp;#39;Publish …&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;This blog is now using &lt;a href="https://getpelican.com/"&gt;Pelican&lt;/a&gt;, a static site generator written in Python.&lt;/p&gt;
 &lt;h2&gt;First time setup&lt;/h2&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;pip install pelican markdown
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
