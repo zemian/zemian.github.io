@@ -1,10 +1,8 @@
----
-title: Compling Apache HTTPD Web Server on MacOSX
-date: 2018-03-07T00:00:00-05:00
-tags:
-  - macosx
-  - httpd
----
+Title: Compling Apache HTTPD Web Server on MacOSX
+Date: 2018-03-07 00:00:00-05:00
+Tags: macosx,httpd
+
+
 
 Before you begin, you should know that the HTTPD server is very likely
 already comes with your MacOSX! For example, here is how my server looks
@@ -70,3 +68,4 @@ read on.
     sudo make install
 
     # When completed successful, the HTTPD server will be in /usr/local/apache2
+

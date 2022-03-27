@@ -1,9 +1,8 @@
----
-title: Generating a war file from a plain IntelliJ web project
-date: 2014-02-25T00:00:00-05:00
-tags:
-  - intellij
----
+Title: Generating a war file from a plain IntelliJ web project
+Date: 2014-02-25 00:00:00-05:00
+Tags: intellij
+
+
 Sometimes you just want to create a quick web project in IntelliJ IDEA, and you would use their wizard and with web or Java EE module as starter project. But these projects will not have Ant nor Maven script generated for you automatically, and the IDEA Build would only compile your classes. So if you want an war file generated, try the following:
 
 1) Menu: File > Project Structure > Artifacts
@@ -15,3 +14,4 @@ Sometimes you just want to create a quick web project in IntelliJ IDEA, and you 
 By default it should generate it under your `<project>/out/artifacts/web_war.war`
 
 Note that IntelliJ also allows you to setup "Web Application: Exploded" artifact, which great for development that run and deploy to an application server within your IDE.
+

@@ -1,9 +1,8 @@
----
-title: TimeMachine Scheduler Tour - Part7
-date: 2012-06-24T00:00:00-05:00
-tags:
-  - timemachine
----
+Title: TimeMachine Scheduler Tour - Part7
+Date: 2012-06-24 00:00:00-05:00
+Tags: timemachine
+
+
 
 This is part 7 of 7 in a series of articles that will give you a tour of the [TimeMachine Scheduler](https://bitbucket.org/timemachine/scheduler/wiki/Home) project. These articles will introduce you to the scheduler, how to load jobs and schedules, and explore some of its advanced features. For the most current and accurate instructions, please visit the ReferenceManual from the project site.
 
@@ -36,3 +35,4 @@ This would make the MemoryDataStore service to use a singleton instance of the M
 This would conclude our tour with the TimeMachine Scheduler. We hope these articles have given you helpful information to explore more. Our goals are to provide a scheduler that can scale well, able to run high concurrent jobs, allow flexible schedules, and easy to configure. We love to hear your feedback. Please visit the project site and join the user forum to participate.
 
 End of part 7. You may see [previous tour](https://zemian.github.io/2012/06/timemachine-scheduler-tour-part6.html).
+

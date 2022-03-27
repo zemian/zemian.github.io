@@ -1,9 +1,8 @@
----
-title: Quick way to benchmark Java code
-date: 2012-07-11T00:00:00-05:00
-tags:
-  - java
----
+Title: Quick way to benchmark Java code
+Date: 2012-07-11 00:00:00-05:00
+Tags: java
+
+
 Don't you envy Ruby has the Benchmark module? Yes, there are many art and science go behind how to setup and run a good micro benchmark code, especially with the JVM. But many times you just want to see some result, quickly. There is actually a very groovy and quick way to bench mark Java code with gbench! Check this out:
 
 ```
@@ -45,3 +44,4 @@ Options
 jdk.String.split                663219       0  663219  693382
 commons-lang.StringUtils.split  192721       0  192721  212359
 ```
+

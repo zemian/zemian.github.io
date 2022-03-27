@@ -1,9 +1,8 @@
----
-title: Getting started with WebLogic Server
-date: 2014-01-30T00:00:00-05:00
-tags:
-  - weblogic
----
+Title: Getting started with WebLogic Server
+Date: 2014-01-30 00:00:00-05:00
+Tags: weblogic
+
+
 
 Here are some quick tips on how to get started with WebLogic Server on Windows OS:
 
@@ -31,3 +30,4 @@ TIPS3: The default server name created by this initial setup is called myserver.
 TIPS4: To change the domain name from `mydomain` to something else, use: `-Dweblogic.Domain=dev-domain`
 
 TIPS5: The default admin server listening port is 7001. To change this, use: -Dweblogic.ListenPort=7002
+

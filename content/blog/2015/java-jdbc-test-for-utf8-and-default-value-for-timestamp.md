@@ -1,10 +1,8 @@
----
-title: Java Jdbc Test for UTF8 and Default Value for TIMESTAMP
-date: 2015-11-02T00:00:00-05:00
-tags:
-  - java
-  - jdbc
----
+Title: Java Jdbc Test for UTF8 and Default Value for TIMESTAMP
+Date: 2015-11-02 00:00:00-05:00
+Tags: java,jdbc
+
+
 Just a quick MySQL test on how to use UTF8 encoding with JDBC connection string. Also a test on how to set TIMESTAMP default values.
 
 ```
@@ -127,3 +125,4 @@ public class ZtestIssuesJdbcTest {
     }
 }
 ```
+

@@ -1,11 +1,8 @@
----
-title: Compare Multiple JDK Versions Startup Time
-date: 2018-03-24T00:00:00-05:00
-tags:
-  - jdk
-  - java
-  - python
----
+Title: Compare Multiple JDK Versions Startup Time
+Date: 2018-03-24 00:00:00-05:00
+Tags: jdk,java,python
+
+
 
 Script file: `jdk-startup-time-test.py`
 
@@ -62,3 +59,4 @@ jdk-8u161            avg start-time 0.178s
 jdk-9.0.4            avg start-time 0.359s
 jdk-10               avg start-time 0.323s
 ```
+

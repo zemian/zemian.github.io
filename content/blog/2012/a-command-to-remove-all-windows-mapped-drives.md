@@ -1,9 +1,8 @@
----
-title: A command to remove all Windows mapped drives
-date: 2012-12-12T00:00:00-05:00
-tags:
-  - cmd
----
+Title: A command to remove all Windows mapped drives
+Date: 2012-12-12 00:00:00-05:00
+Tags: cmd
+
+
 
 If you work in a Corp env and having a Laptop, you will likely go home
 with it still running and it must has all the network drives still
@@ -18,3 +17,4 @@ Here is a DOS command to remove them all.
     C:> net use * /delete /y
 
 If you are in Cygwin bash, then you must quote the `'*'`.
+

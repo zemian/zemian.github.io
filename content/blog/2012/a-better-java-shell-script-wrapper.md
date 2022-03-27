@@ -1,11 +1,8 @@
----
-title: A better java shell script wrapper
-date: 2012-08-01T00:00:00-05:00
-tags:
-  - java
-  - bash
-  - shell
----
+Title: A better java shell script wrapper
+Date: 2012-08-01 00:00:00-05:00
+Tags: java,bash,shell
+
+
 
 In many Java projects, you often see wrapper shell script to invoke the `java` command with its custom application parameters. For example, `$ANT_HOME/bin/ant`, `$GROOVY_HOME/bin/groovy`, or even in our [TimeMachine Scheduler](http://bitbucket.org/timemachine/scheduler) you will see `$TIMEMACHINE_HOME/bin/scheduler.sh`.
 
@@ -56,3 +53,4 @@ Above examples are assuming you are in a released project structure such as this
 But what about during development? A frequent use case is that you want to be able to run your latest compiled classes under `target/classes` without have to package up or release the entire project. You can use our `run-java` in these scenario as well. First, simply add `bin/run-java` in your project, then you run `mvn compile dependency:copy-dependencies` that will generate all the `jar` files into `target/dependency`. That's all. The `run-java` will automatically detect these directories and create the correct classpath to run your main class.
 
 If you use Eclipse IDE for development, then your `target/classes` will be always up-to-date, and the `run-java` can be a great gem to have in your project even for development.
+

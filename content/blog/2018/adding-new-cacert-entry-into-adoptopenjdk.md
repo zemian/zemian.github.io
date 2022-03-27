@@ -1,13 +1,8 @@
----
-title: Adding new cacert entry into AdoptOpenJDK
-date: 2018-07-23T00:00:00-05:00
-tags:
-  - cacert
-  - keytool
-  - openjdk
-  - jdk
-  - java
----
+Title: Adding new cacert entry into AdoptOpenJDK
+Date: 2018-07-23 00:00:00-05:00
+Tags: cacert,keytool,openjdk,jdk,java
+
+
 
 I downloaded latest Tomcat source and it failed to get the dependencies.
 
@@ -49,3 +44,4 @@ So for me, I went to <https://repo.maven.apache.org/> and exported
     keytool -keystore cacerts -storepasswd changeit -list
 
 This fixed my problem.
+

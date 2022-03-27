@@ -1,9 +1,8 @@
----
-title: View and terminate Oracle Database user sessions
-date: 2015-08-21T00:00:00-05:00
-tags:
-  - oracle
----
+Title: View and terminate Oracle Database user sessions
+Date: 2015-08-21 00:00:00-05:00
+Tags: oracle
+
+
 
 ```
 Verify sessions:
@@ -18,3 +17,4 @@ SELECT 'ALTER SYSTEM KILL SESSION ''' || SID || ',' || SERIAL# || ''';'
   FROM V$SESSION
   WHERE USERNAME like 'SCOTT%';
 ```
+

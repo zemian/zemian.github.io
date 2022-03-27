@@ -1,10 +1,8 @@
----
-title: MySchedule-1.0.0 ready to use
-date: 2011-06-04T00:00:00-05:00
-tags:
-  - myschedule
-  - quartz
----
+Title: MySchedule-1.0.0 ready to use
+Date: 2011-06-04 00:00:00-05:00
+Tags: myschedule,quartz
+
+
 I have made MySchedule-1.0.0 ready to use.
 
 MySchedule is an open source web application dashboard for Quartz scheduler. Get the war file here: [http://code.google.com/p/myschedule/downloads/list](http://code.google.com/p/myschedule/downloads/list)
@@ -14,3 +12,4 @@ It doesn't look pretty at the moment, but for those who are looking  for more Qu
 If you have any issues or comments, feel free to enter them at [http://code.google.com/p/myschedule/issues/list](http://code.google.com/p/myschedule/issues/list)
 
 Enjoy! 
+

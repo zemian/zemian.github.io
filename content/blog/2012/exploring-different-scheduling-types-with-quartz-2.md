@@ -1,9 +1,8 @@
----
-title: Exploring different scheduling types with Quartz 2
-date: 2012-10-22T00:00:00-05:00
-tags:
-  - quartz
----
+Title: Exploring different scheduling types with Quartz 2
+Date: 2012-10-22 00:00:00-05:00
+Tags: quartz
+
+
 
 We often think of Cron when we want to schedule a job. Cron is very flexible in expressing an repeating occurance of an event/job in a very compact expression. However it's not answer for everything, as I often see people are asking for help in the Quartz user forum. Did you know that the popular [Quartz 2](http://quartz-scheduler.org) library provide many other schedule types (called Trigger) besides cron? I will show you each of the Quartz 2 built-in schedule types here within a complete, standalone Groovy script that you can run and test it out. Let's start with a simple one.
 
@@ -137,3 +136,4 @@ Another hidden Trigger type from Quartz is `CalendarIntervalTrigger`, and you wo
 ```    
 
 I hope these will help you get started on most of your scheduling need with Quartz 2. Try these out and see your future fire times before even scheduling a job into the scheduler should save you some times and troubles.
+

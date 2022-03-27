@@ -1,9 +1,8 @@
----
-title: Building message based application using Camel
-date: 2012-09-14T00:00:00-05:00
-tags:
-  - camel
----
+Title: Building message based application using Camel
+Date: 2012-09-14 00:00:00-05:00
+Tags: camel
+
+
 
 This is a long article that contains three separate topics:
 
@@ -565,3 +564,4 @@ difficult to test. So I recommend you when developing these processor beans, try
 pieces togther. Once you get into this habit of thiking, then you can use Camel in a more effectively way to solve many of your domain problems.
 
 Well, that's all for today folks. I hope you enjoyed the Camel ride. Happy programming!
+

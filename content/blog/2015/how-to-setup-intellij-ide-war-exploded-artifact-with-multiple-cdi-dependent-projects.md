@@ -1,9 +1,8 @@
----
-title: How to setup Intellij IDE war exploded artifact with multiple CDI dependent projects
-date: 2015-05-29T00:00:00-05:00
-tags:
-  - intellij
----
+Title: How to setup Intellij IDE war exploded artifact with multiple CDI dependent projects
+Date: 2015-05-29 00:00:00-05:00
+Tags: intellij
+
+
 I have a large Java project with many sub modules, and they have simple top down dependencies like this:
 ```
 ProjectX
@@ -42,3 +41,4 @@ To resolve this, I have to make the IntelliJIDE artifact dependent modules to ge
 5. Repeat for each of the CDI based Modules!
 
 I wish there is a easier way to do across all Modules for this, but at least this manual solution works!
+

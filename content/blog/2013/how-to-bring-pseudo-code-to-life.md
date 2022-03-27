@@ -1,10 +1,8 @@
----
-title: How to bring pseudo code to life
-date: 2013-05-01T00:00:00-05:00
-tags:
-  - design
-  - programming
----
+Title: How to bring pseudo code to life
+Date: 2013-05-01 00:00:00-05:00
+Tags: design,programming
+
+
 
 When designing a piece of software, I like to start with some pseudo code first, then work my way out. I tend to try mapping out the normal workflow (one that runs without any corner cases) with high level of actions as series of steps. Then the detailed implementation of the code can be filled in at later time.
 
@@ -152,3 +150,4 @@ Now what we are missing is just filling in each step of actions. Since we have a
 ```    
 
 That's all to this. What do you think? I think it's a simple way to tackle business problems. Simple software make less bugs and easier to maintain.
+

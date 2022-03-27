@@ -1,9 +1,8 @@
----
-title: Hello Oracle JET
-date: 2020-03-25T00:00:00-05:00
-tags:
-  - ojet
----
+Title: Hello Oracle JET
+Date: 2020-03-25 00:00:00-05:00
+Tags: ojet
+
+
 
 Here are some short instructions on how to create your first Oracle JET (v8.1.0) application.
 
@@ -34,3 +33,4 @@ Now you should see a blank application ready for you to start your next project!
 ![](/images/posts/2020/ojet-starter.png)
 
 The project source that was generated in this article is available at [GitHub](https://github.com/zemian/hello-ojet/tree/demo-basic-template).
+

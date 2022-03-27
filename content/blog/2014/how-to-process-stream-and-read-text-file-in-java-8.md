@@ -1,9 +1,8 @@
----
-title: How to process stream and read text file in Java 8
-date: 2014-03-31T00:00:00-05:00
-tags:
-  - java
----
+Title: How to process stream and read text file in Java 8
+Date: 2014-03-31 00:00:00-05:00
+Tags: java
+
+
 I have converted one of my old utility class using latest Java8. I use this often to print content of manifest file to check any mysterious jar file for version etc. Just run "java ztools.PrintJar /path/to/my.jar" to see output. In the new code, you will see how I use the Java 8 stream processing to filter what I need from an Enumeration list, and then get the optional result if there is any. And then the BufferedReader now comes with "lines()" method that also do streaming. It's pretty cool to see Java 8 in actions!
 ```
 package ztools;
@@ -40,3 +39,4 @@ public class PrintJar {
     }
 }
 ```
+

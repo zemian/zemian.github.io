@@ -1,10 +1,8 @@
----
-title: Creating Oracle Stored Procedure using Java
-date: 2012-07-11T00:00:00-05:00
-tags:
-  - oracle
-  - java
----
+Title: Creating Oracle Stored Procedure using Java
+Date: 2012-07-11 00:00:00-05:00
+Tags: oracle,java
+
+
 Did you know you can write Oracle database stored procedure in Java? Give this a try in your `sqlplus` prompt.
 
 ```
@@ -27,3 +25,4 @@ sql> /
 ```
 
 I let the database compile a Java source directly, but there is also the `java class` PL/SQL that you can load Java binary `.class` file as well. I am sure your DBA will fight all their might to prevent you doing stuff like this. But it's cool to see that this option is available.
+

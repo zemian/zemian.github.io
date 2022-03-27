@@ -1,9 +1,8 @@
----
-title: How to install awestruct on Cygwin
-date: 2013-06-14T00:00:00-05:00
-tags:
-  - cygwin
----
+Title: How to install awestruct on Cygwin
+Date: 2013-06-14 00:00:00-05:00
+Tags: cygwin
+
+
 How to install `awestruct` on Cygwin
 
 ## How to install `awestruct` on Cygwin
@@ -38,3 +37,4 @@ with extra parameters like this:
 Now I am awestruct!
 
 Last updated 2013-06-15 21:51:49 EDT
+

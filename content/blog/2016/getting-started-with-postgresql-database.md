@@ -1,9 +1,8 @@
----
-title: Getting started with PostgreSQL database
-date: 2016-06-26T00:00:00-05:00
-tags:
-  - postgres
----
+Title: Getting started with PostgreSQL database
+Date: 2016-06-26 00:00:00-05:00
+Tags: postgres
+
+
 
 I have been learning and using PostgreSQL recently for a Django app, and I have to say it's really GOOD! I have used quite a bit of MySQL and Oracle DB in my workplace, so I didn't find good reason to learn PostgreSQL in the past. Now I finally get a chance to start another new project with Django, so I decided to give it a try, and I wasn't disappointed. I will write up a brief getting started guide here for those impatient to get things moving.
 
@@ -61,3 +60,4 @@ Once you connected to your database again, you may check your user privileges:
 	mydb-# \dp;
 
 These examples should be enough to get you setup a database for app development. The rest are just normal SQL access to database. The [PostgresSQL documentation](https://www.postgresql.org/docs/9.5/static/index.html) is an excellent reference for all that you need.
+

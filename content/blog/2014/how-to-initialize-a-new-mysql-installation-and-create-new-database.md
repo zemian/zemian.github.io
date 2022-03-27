@@ -1,9 +1,8 @@
----
-title: How to initialize a new MySQL installation and create new database
-date: 2014-06-11T00:00:00-05:00
-tags:
-  - mysql
----
+Title: How to initialize a new MySQL installation and create new database
+Date: 2014-06-11 00:00:00-05:00
+Tags: mysql
+
+
 
      
 
@@ -71,3 +70,4 @@ sudo /sbin/service mysql.server start
 ```
 Ref:
 [https://dev.mysql.com/doc/refman/5.6/en/binary-installation.html](https://dev.mysql.com/doc/refman/5.6/en/binary-installation.html)
+

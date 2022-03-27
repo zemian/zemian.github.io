@@ -1,12 +1,8 @@
----
-title: New ZBlog Design With Bulma and Sculpin
-date: 2021-11-11
-tags:
-- php
-- blog
-- sculpin
-- bulma
----
+Title: New ZBlog Design With Bulma and Sculpin
+Date: 2021-11-11
+Tags: php,blog,sculpin,bulma,ssg
+
+
 
 I redesigned [my blog](https://github.com/zemian/zemian.github.io/tree/sculpin) with the [Sculpin](https://sculpin.io/) Static Site Generator. I made a simple custom theme with BulmaCSS. Here is a screenshot:
 
@@ -19,3 +15,4 @@ Few things I like about Bulma and Sculpin:
 * I am also learning about Symfony framework, which what Sculpin is based on.
 * It supports Twig templates which pretty easy to work with. It's very much like the Django template syntax, which I have a worked on in the past. So the learning curve here is very minimal.
 * Sculpin actually let you use Symfony Encore frontend library. It's nice to able to do `import` with both JS and CSS dependency, along with SASS post-css processing as well. 
+

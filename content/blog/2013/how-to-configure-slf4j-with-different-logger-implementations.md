@@ -1,10 +1,8 @@
----
-title: How to configure SLF4J with different logger implementations
-date: 2013-08-18T00:00:00-05:00
-tags:
-  - slf4j
-  - logging
----
+Title: How to configure SLF4J with different logger implementations
+Date: 2013-08-18 00:00:00-05:00
+Tags: slf4j,logging
+
+
 
 There are many good benefits in using `slf4j` library as your Java
 application logging API layer. Here I will show few examples on how
@@ -162,3 +160,4 @@ References
 - [http://docs.oracle.com/javase/7/docs/technotes/guides/logging/](http://docs.oracle.com/javase/7/docs/technotes/guides/logging/)
 
 - [http://logback.qos.ch/](http://logback.qos.ch/)
+

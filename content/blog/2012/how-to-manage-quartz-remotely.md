@@ -1,9 +1,8 @@
----
-title: How to manage Quartz remotely
-date: 2012-08-27T00:00:00-05:00
-tags:
-  - quartz
----
+Title: How to manage Quartz remotely
+Date: 2012-08-27 00:00:00-05:00
+Tags: quartz
+
+
 
 ## Option 1: JMX
 
@@ -55,3 +54,4 @@ even stop or shutdown remote server!
 
 Based on my experience, there is a down side of using Quartz RMI feature though. That is it creates a single point of failure. There is no fail over 
 if your RMI server port is down!
+

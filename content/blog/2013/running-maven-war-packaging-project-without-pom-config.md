@@ -1,9 +1,8 @@
----
-title: Running Maven war packaging project without pom config
-date: 2013-08-27T00:00:00-05:00
-tags:
-  - maven
----
+Title: Running Maven war packaging project without pom config
+Date: 2013-08-27 00:00:00-05:00
+Tags: maven
+
+
 
 Use Jetty (latest 9.x requires JDK7)
 
@@ -16,3 +15,4 @@ Or use Jetty on JDK 6
 Or use Tomcat
 
     bash> mvn org.apache.tomcat.maven:tomcat7-maven-plugin:run -Dmaven.tomcat.port=8081
+

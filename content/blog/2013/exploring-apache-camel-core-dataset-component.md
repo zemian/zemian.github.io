@@ -1,9 +1,8 @@
----
-title: Exploring Apache Camel Core - DataSet Component
-date: 2013-09-03T00:00:00-05:00
-tags:
-  - camel
----
+Title: Exploring Apache Camel Core - DataSet Component
+Date: 2013-09-03 00:00:00-05:00
+Tags: camel
+
+
 
 A good sample data generator can help you test program more throughly and help measure
 the processing throughput. The `camel-core` comes with a `dataset` component that can
@@ -88,3 +87,4 @@ There are more options availabe from [DataSet](http://camel.apache.org/dataset.h
 that you may explore.
 [Try it out with a Route](https://zemian.github.io/2013/08/getting-started-with-apache-camel-using.html)
 and see it for yourself.
+

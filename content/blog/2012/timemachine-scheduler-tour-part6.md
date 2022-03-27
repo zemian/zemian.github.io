@@ -1,9 +1,8 @@
----
-title: TimeMachine Scheduler Tour - Part6
-date: 2012-06-22T00:00:00-05:00
-tags:
-  - timemachine
----
+Title: TimeMachine Scheduler Tour - Part6
+Date: 2012-06-22 00:00:00-05:00
+Tags: timemachine
+
+
 
 This is part 6 of 7 in a series of articles that will give you a tour of the [TimeMachine Scheduler](https://bitbucket.org/timemachine/scheduler/wiki/Home) project. These articles will introduce you to the scheduler, how to load jobs and schedules, and explore some of its advanced features. For the most current and accurate instructions, please visit the ReferenceManual from the project site.
 
@@ -52,3 +51,4 @@ The name to pool matching is done using the Java regular expression. The example
 Note that JobTask's name is only optional (only ID is required and it's auto generated), so to use this features, you want to ensure to set the JobTask's name that match your configured pool, or else they all default back to single DEFAULT pool.
 
 End of part 6. You may continue [next tour](https://zemian.github.io/2012/06/timemachine-scheduler-tour-part7.html), or see [previous tour](https://zemian.github.io/2012/06/timemachine-scheduler-tour-part5.html).
+

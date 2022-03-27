@@ -1,9 +1,8 @@
----
-title: EE Servlet 3 - Developing User Login with Session and Filter
-date: 2015-01-16T00:00:00-05:00
-tags:
-  - servlet
----
+Title: EE Servlet 3 - Developing User Login with Session and Filter
+Date: 2015-01-16 00:00:00-05:00
+Tags: servlet
+
+
 I have introduced the Application class in my previous post where you can setup backend services. One example service I added is the UserService. This service will load a Java users properties file that contains username and password sets; and it's used later to authenticate users to login into the web application. Now I will show how the login part is done using standard Servlet API along with this backend service.
 
 At a high level, what we want is to restrict some web resources (this means certain URLs provided by Servlets such as "/sysprops", or "/user") to only client users who are known in our users properties file. Users may identify themself with the matching password. This is typically done with a user login form, authenticate it, then insert a login token into Http Session scope space. This login token then can be used to verify whether to allow users to access the restricted resources or not. We only interested in a single authorization (no roles are defined, and any logged in user may access any protected URLs.)
@@ -186,3 +185,4 @@ that is used between few of the classes to check whether user has logged in or n
 These few classes are simple but yet demonstrated the use of Servlet Filter and Servlet on how to manage Session data. This programming pattern allows users to have their own browsing session and privacy through the application.
 
 If you are to run my [servlet3-example](https://github.com/saltnlight5/java-ee6-examples/tree/master/servlet3-example)  in a GlassFish server, you may login using any users listed in [here](https://github.com/saltnlight5/java-ee6-examples/blob/master/servlet3-example/src/main/resources/zemian/servlet3example/service/users.properties).
+

@@ -1,9 +1,8 @@
----
-title: Exploring Apache Camel Core - Direct Component
-date: 2013-09-07T00:00:00-05:00
-tags:
-  - camel
----
+Title: Exploring Apache Camel Core - Direct Component
+Date: 2013-09-07 00:00:00-05:00
+Tags: camel
+
+
 
 The Apache Camel allows you to create multiple `Route`'s within a single `CamelContext` space. The `direct` component in Camel would allow you to bridge messages between these `Route`'s. To demonstrate this, I will create few routes and pass messages between them.
 
@@ -81,3 +80,4 @@ There are more options availabe from [Direct](http://camel.apache.org/direct.htm
 that you may explore.
 [Try it out with a Route](https://zemian.github.io/2013/08/getting-started-with-apache-camel-using.html)
 and see it for yourself.
+

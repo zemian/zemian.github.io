@@ -1,9 +1,8 @@
----
-title: How to write better POJO Services
-date: 2012-09-01T00:00:00-05:00
-tags:
-  - java
----
+Title: How to write better POJO Services
+Date: 2012-09-01 00:00:00-05:00
+Tags: java
+
+
 
 In Java, you can easily implement some business logic in Plain Old Java Object (POJO) classes, and then able to run them in a fancy
 server or framework without much hassle. There many server/frameworks, such as JBossAS, Spring or Camel etc, that 
@@ -441,3 +440,4 @@ deployment without exiting JVM, in which will lead to system resources leakage.
 The above *Service* practice has been put into use in the [TimeMachine](https://bitbucket.org/timemachine/scheduler) project. In fact, if you 
 look at the `timemachine.scheduler.service.SchedulerEngine`, it would just be a container of many [services](https://bitbucket.org/timemachine/scheduler/src/15f066cc6dad/timemachine-scheduler/src/main/java/timemachine/scheduler/service) 
 running together. And that's how user can extend the scheduler functionalities as well, by writing a *Service*. You can load these services dynamically by a simple properties file.
+

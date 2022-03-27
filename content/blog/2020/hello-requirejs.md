@@ -1,9 +1,8 @@
----
-title: Hello RequiredJS
-date: 2020-04-18T00:00:00-05:00
-tags:
-  - requirejs
----
+Title: Hello RequiredJS
+Date: 2020-04-18 00:00:00-05:00
+Tags: requirejs
+
+
 
 The [RequiredJS](https://requirejs.org/) is a JavaScript library that helps you separate your code into modules as namespaces, and it helps to load them as dependencies when need it. Here is a simple html demo:
 
@@ -52,3 +51,4 @@ require(['knockout'], function(ko) {
 Notice that the path to knockout module is without the `.js` extension!
 
 The RequireJS is great for writing larger JS application. Modules help you avoid names clash, and it helps break down code into a manageable files.
+

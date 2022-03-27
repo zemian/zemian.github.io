@@ -1,9 +1,8 @@
----
-title: Intellij IDEA is pretty awesome!
-date: 2012-12-11T00:00:00-05:00
-tags:
-  - intellij
----
+Title: Intellij IDEA is pretty awesome!
+Date: 2012-12-11 00:00:00-05:00
+Tags: intellij
+
+
 Did you know IntelliJ IDEA has a free Community Edition you may [download](http://www.jetbrains.com/idea/download/index.html)? I've been test driving it, and I will post few things I learned so far.
 
 Here are few things that I usually change from out of the default installed settings.
@@ -31,3 +30,4 @@ I have tried a decent size Java projects (few thousand source files) and it hand
 Another tips I have for you is the IDEA uses many icon symbols to represent many things. These give you quick visual status on files, progress and states of your Classes etc. It's helpful to see what they mean using this [http://www.jetbrains.com/idea/webhelp/symbols.html](http://www.jetbrains.com/idea/webhelp/symbols.html)
 
 So overall, I think IntelliJ IDEA is pretty good and awesome in many way.
+

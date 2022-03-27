@@ -1,9 +1,8 @@
----
-title: How to parse Python command arguments and options
-date: 2015-07-23T00:00:00-05:00
-tags:
-  - python
----
+Title: How to parse Python command arguments and options
+Date: 2015-07-23 00:00:00-05:00
+Tags: python
+
+
 https://docs.python.org/3/howto/argparse.html
 
 The python doc for [argparse](https://docs.python.org/3.4/library/argparse.html)module didn't provide enough examples on the usage. I also think the module and parser itself is TOO flexible, in that the add_argument function accept too many parameters and it's confusing to use.
@@ -75,3 +74,4 @@ Example3: Handle one or more arguments with a boolean option
 To display the default values in the helppage, do this with the parser
 
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+

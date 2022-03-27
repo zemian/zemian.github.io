@@ -1,9 +1,8 @@
----
-title: Exploring Apache Camel Core - Seda Component
-date: 2013-09-08T00:00:00-05:00
-tags:
-  - camel
----
+Title: Exploring Apache Camel Core - Seda Component
+Date: 2013-09-08 00:00:00-05:00
+Tags: camel
+
+
 
 The `seda` component in Apache Camel is very similar to the `direct` component that I&#8217;ve presented in previous blog, but in a asynchronous manner. To do this, it uses a `java.util.concurrent.BlockingQueue` as default implementation to queue up messages and disconnect from your main `Route` thread and then processing the messages in a separated thread. Because of this `BlockingQueue`, you need to be aware of the usage and config option.
 
@@ -99,3 +98,4 @@ There are more options availabe from [Seda](http://camel.apache.org/seda.html) c
 that you may explore.
 [Try it out with a Route](https://zemian.github.io/2013/08/getting-started-with-apache-camel-using.html)
 and see it for yourself.
+

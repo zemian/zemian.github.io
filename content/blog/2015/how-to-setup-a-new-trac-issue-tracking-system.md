@@ -1,10 +1,8 @@
----
-title: How to setup a new Trac issue tracking system
-date: 2015-10-21T00:00:00-05:00
-tags:
-  - python
-  - issue-tracker
----
+Title: How to setup a new Trac issue tracking system
+Date: 2015-10-21 00:00:00-05:00
+Tags: python,issue-tracker
+
+
 Here is how I setup a local instance of Trac (a python based issue tracking web application) on my Mac.
 
 Prerequisite: MySQL 5.6 and Python 2.7 (Python3 will not work with Trac yet!)
@@ -37,3 +35,4 @@ Step1: Setup a Trac database and a user
     Step4: Run Track
 
     bash> tracd -p 8000 --basic-auth="mytrac,/Users/zemian/dev/mytrac/.htpasswd,mytrac" /Users/zemian/dev/metric
+

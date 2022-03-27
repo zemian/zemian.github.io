@@ -1,9 +1,8 @@
----
-title: Create simple WLS domain using WLST and built-in template jar
-date: 2015-09-25T00:00:00-05:00
-tags:
-  - weblogic
----
+Title: Create simple WLS domain using WLST and built-in template jar
+Date: 2015-09-25 00:00:00-05:00
+Tags: weblogic
+
+
 
 You can easily [start up a WebLogic Server](https://zemian.github.io/2014/01/getting-started-with-weblogic-server.html) on an empty directory and it will create a domain. Here is another way to create WLS domain structure folder without actually starting up a WLS server.
 
@@ -47,3 +46,4 @@ closeTemplate()
 
 exit()
 ```
+

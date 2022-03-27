@@ -1,10 +1,8 @@
----
-title: MySchedule-2.4.0 release
-date: 2012-02-27T00:00:00-05:00
-tags:
-  - myschedule
-  - quartz
----
+Title: MySchedule-2.4.0 release
+Date: 2012-02-27 00:00:00-05:00
+Tags: myschedule,quartz
+
+
 I have released version 2.4.0 of MySchedule project, and you may get it here: [http://code.google.com/p/myschedule/downloads/list](http://code.google.com/p/myschedule/downloads/list) 
 
 In this release, I have added these:
@@ -21,3 +19,4 @@ In this release, I have added these:
 * Fixed trigger display page. 
 
  Enjoy!
+

@@ -1,9 +1,8 @@
----
-title: Oracle JET Intro Articles on DZone
-date: 2020-03-31T00:00:00-05:00
-tags:
-  - ojet
----
+Title: Oracle JET Intro Articles on DZone
+Date: 2020-03-31 00:00:00-05:00
+Tags: ojet
+
+
 
 
 I found an old series of articles that introduced Oracle JET by [Chris Muir](https://blogs.oracle.com/author/chris-muir) on DZone. These articles seem dated way back in 2016 (with OJET v3 ?), but the core concepts are still valid. In fact many of these introductions are now captured in the [Oracle JET Developer Guide](https://docs.oracle.com/en/middleware/developer-tools/jet/8.1/develop/index.html) already. But these articles are short and good read. I don’t know Chris personally, but thanks for publishing these.
@@ -21,3 +20,4 @@ The complete series of articles published to date can be found here:
 *   [Responsive Web Design With Oracle JET](https://dzone.com/articles/responsive-web-design-with-oracle-jet)
 *   [Single Page Applications in Oracle JET](https://dzone.com/articles/single-page-applications-in-oracle-jet)
 *   [Working With REST in Oracle JET](https://dzone.com/articles/working-with-rest-in-oracle-jet)
+

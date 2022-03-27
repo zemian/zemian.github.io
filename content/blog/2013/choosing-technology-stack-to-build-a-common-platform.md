@@ -1,9 +1,8 @@
----
-title: Choosing Technology Stack to build a common platform
-date: 2013-05-29T00:00:00-05:00
-tags:
-  - architecture
----
+Title: Choosing Technology Stack to build a common platform
+Date: 2013-05-29 00:00:00-05:00
+Tags: architecture
+
+
 
 There are many talks in Java community about Spring vs Java EE, and how one group would argue you should use one and not other etc. When I see this, I can't help but to think why can't we use them both together? In fact I think using them both effectively would create a great technology stack for building an infrastructure for large company who like to provide a common platform that may host and run many different applications and projects.
 
@@ -67,3 +66,4 @@ I think this is subjective as well, but we need to choose one that's fit for bus
 Tomcat is a very well known Servlet server. However it is only a Web container that support Servlet/JSP application. It does not provide JMS or JTA features that provided by a Java EE server. It's a fact that many web application requirements can be satisfy with simple Tomcat server. However in a large IT env, you will often you need other services that provided by Java EE server. In many cases, people will simply run Tomcat webapp and bridge to other Java EE server when needed.
 
 Well, this is reason I would select a Java EE server in the first place. Specially with JEE6, it provided Web Profile that stripped down to mostly Web Container features, then should make the server faster to start-up and less extra services loaded. However, in case when application needed EE features, the platform we provide will able to support it.
+

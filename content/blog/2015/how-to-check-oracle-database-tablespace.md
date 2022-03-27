@@ -1,9 +1,8 @@
----
-title: How to check Oracle Database tablespace
-date: 2015-08-14T00:00:00-05:00
-tags:
-  - oracle
----
+Title: How to check Oracle Database tablespace
+Date: 2015-08-14 00:00:00-05:00
+Tags: oracle
+
+
 
 When creating a new users in Oracle database (new schema), you need to verify the existing tablespace availability. This query will show you what's there and how much space are free to use.
 
@@ -59,3 +58,4 @@ Here are some references on how Oracle manages user, schema and tablespace.
 [http://docs.oracle.com/cd/B28359_01/server.111/b28286/statements_8003.htm](http://docs.oracle.com/cd/B28359_01/server.111/b28286/statements_8003.htm)
 [http://stackoverflow.com/questions/880230/difference-between-a-user-and-a-schema-in-oracle](http://stackoverflow.com/questions/880230/difference-between-a-user-and-a-schema-in-oracle)
 [https://asktom.oracle.com/pls/asktom/f?p=100:11:0::::P11_QUESTION_ID:6162110256950](https://asktom.oracle.com/pls/asktom/f?p=100:11:0::::P11_QUESTION_ID:6162110256950)
+

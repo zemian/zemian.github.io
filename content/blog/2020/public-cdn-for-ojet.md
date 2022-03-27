@@ -1,9 +1,8 @@
----
-title: Setup Oracle JET With Public CDN
-date: 2020-04-17T00:00:00-05:00
-tags:
-  - ojet
----
+Title: Setup Oracle JET With Public CDN
+Date: 2020-04-17 00:00:00-05:00
+Tags: ojet
+
+
 
 
 A new Oracle [JET 8.2.0](https://www.npmjs.com/package/@oracle/oraclejet/v/8.2.0) just released! Good time to give you another tips on how to use the toolkit.
@@ -51,3 +50,4 @@ You might have noticed that Oracle JET is published under NPM package, and hence
 ```
 
 Compare this to the [Hello OJET](https://medium.com/@zemiandeng/hello-ojet-b750c7acf6bc) I have shown in previous post, this is just a single html file. This is great for quick exploration and demo!
+

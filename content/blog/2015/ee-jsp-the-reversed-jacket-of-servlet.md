@@ -1,9 +1,8 @@
----
-title: EE JSP - The Reversed Jacket of Servlet
-date: 2015-01-25T00:00:00-05:00
-tags:
-  - jsp
----
+Title: EE JSP - The Reversed Jacket of Servlet
+Date: 2015-01-25 00:00:00-05:00
+Tags: jsp
+
+
 Generating HTML from Servlet is only practical if you have small amount of pages, or needed fine control of the content you are generating, (binary PDF etc). For most application, the output is going to be HTML, and we need a better way to do this; and that's where the JSP (Java Server Pages) comes in.
 
 With JSP, you write and focus on the HTML content in a file; then only when you needed dynamic or condition logic in between the content, you would insert the Java code, which called the Scriptlet. When the application server process the JSP page, it will automatically generate a Servlet class that write these JSP file's content out (as you would programatically writing it using PrintWriter as shown in my previous posts). Wherever you have the Scriptlet in JSP, it will be inlined in the generated Servlet class. The generated jsp servlet classes are all managed, compiled and deployed by the application server within your application automatically. In short, the JSP is nothing more than the reverse jacket of the Servlet.
@@ -86,3 +85,4 @@ JSP can be seen as a template language in the web application. It helps generate
 in JSP, and only use EL and JSP tags.
 
 You can find above code in my [jsp-example](https://github.com/saltnlight5/java-ee6-examples/tree/master/jsp-example) in GitHub.
+

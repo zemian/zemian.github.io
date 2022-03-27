@@ -1,9 +1,8 @@
----
-title: jQuery doesn't suport ajax over the file protocol
-date: 2011-05-29T00:00:00-05:00
-tags:
-  - jquery
----
+Title: jQuery doesn't suport ajax over the file protocol
+Date: 2011-05-29 00:00:00-05:00
+Tags: jquery
+
+
 I was playing with jQueryUI today, and a simple example like this failed to update an page.
 
         $.get('data1.xml', function(data) {
@@ -21,3 +20,4 @@ Running under Firefox4 locally on a PC (static local file protocols), I get erro
 Turns out that this failure only occur when fetching local files because the same code works when deployed and run from a web server. Reading from a bug report here http://bugs.jqueryui.com/ticket/7225 seems to indicate that jQuery AJAX doesn't support local file protocol.
 
 Interestingly, an IE browser works with above code! And also the jQuery's load method like $('#main-panel').load('data1.xml'); works fine with local file!
+

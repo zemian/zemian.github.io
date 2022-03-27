@@ -1,9 +1,8 @@
----
-title: Fast shell utilities to report Maven's unit tests results
-date: 2013-01-28T00:00:00-05:00
-tags:
-  - maven
----
+Title: Fast shell utilities to report Maven's unit tests results
+Date: 2013-01-28 00:00:00-05:00
+Tags: maven
+
+
 
 I would like to share couple shell utilities that I have collected. These are for fast Maven multi modules reporting from your unit tests results, without having you to run entire Maven site reports, which can take a LONG time to generate if you have a large project! They should work on Linux or Window's Cygwin shell.
 
@@ -45,3 +44,4 @@ head -q -n 4 $FILES \
 ruby -e 'ARGV.each{ |n| File.open(n) {|f| 4.times{ puts f.readline}} }' $FILES \
 `
 It's a tad longer, but it's PORTABLE!
+

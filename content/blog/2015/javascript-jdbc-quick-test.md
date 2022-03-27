@@ -1,10 +1,8 @@
----
-title: JavaScript Jdbc Quick Test
-date: 2015-09-09T00:00:00-05:00
-tags:
-  - javascript
-  - jdbc
----
+Title: JavaScript Jdbc Quick Test
+Date: 2015-09-09 00:00:00-05:00
+Tags: javascript,jdbc
+
+
 
 ```
 importPackage(java.sql)
@@ -49,3 +47,4 @@ st.close();
 // Close DB conn
 conn.close();
 ```
+

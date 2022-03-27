@@ -1,9 +1,8 @@
----
-title: Init and Start PostgreSQL in Cygwin
-date: 2018-03-22T00:00:00-05:00
-tags:
-  - postgres
----
+Title: Init and Start PostgreSQL in Cygwin
+Date: 2018-03-22 00:00:00-05:00
+Tags: postgres
+
+
 
 Run Postgres Server
 ===================
@@ -80,3 +79,4 @@ a database that match your username, and use that as default.
 
 You should be careful with "--auth=trust", which can get you started
 quickly but not very secure.
+

@@ -1,9 +1,8 @@
----
-title: How To Create Windows Context Menu Without Admin Rights
-date: 2018-03-16T00:00:00-05:00
-tags:
-  - windows
----
+Title: How To Create Windows Context Menu Without Admin Rights
+Date: 2018-03-16 00:00:00-05:00
+Tags: windows
+
+
 
     @REM Base on tips here:
     @REM https://stackoverflow.com/questions/48138681/how-to-add-sublime-text-to-contextual-menu-without-admin-privileges-on-windows
@@ -15,3 +14,4 @@ tags:
     @REM If you want to remove above
     @REM @reg delete  "HKEY_CURRENT_USER\Software\Classes\*\shell\Open with Sublime Text 3\command" /f >nul 2>&1
     @REM @reg delete  "HKEY_CURRENT_USER\Software\Classes\*\shell\Open with Sublime Text 3" /f >nul 2>&1
+

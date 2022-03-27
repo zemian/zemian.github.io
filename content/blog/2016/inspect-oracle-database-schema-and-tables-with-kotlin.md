@@ -1,9 +1,8 @@
----
-title: Inspect Oracle Database Schema and Tables with Kotlin
-date: 2016-07-05T00:00:00-05:00
-tags:
-  - kotlin
----
+Title: Inspect Oracle Database Schema and Tables with Kotlin
+Date: 2016-07-05 00:00:00-05:00
+Tags: kotlin
+
+
 
 ```
 // Filename: conn.kts
@@ -50,3 +49,4 @@ stmt.close()
 
 conn.close()
 ```
+

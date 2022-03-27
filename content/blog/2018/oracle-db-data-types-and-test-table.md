@@ -1,10 +1,8 @@
----
-title: Oracle DB Data Types and Test Table 
-date: 2018-08-18T00:00:00-05:00
-tags:
-  - sql
-  - oracle
----
+Title: Oracle DB Data Types and Test Table
+Date: 2018-08-18 00:00:00-05:00
+Tags: sql,oracle
+
+
 
 A quick sql table setup to test most common data types.
 
@@ -73,3 +71,4 @@ insert into test(cat, distx, disty) values ('test4', dbms_random.value(0.0, 1.0)
 select sum(price) from test where cat = 'test';
 select * from test order by cat, ts desc;
 ```
+

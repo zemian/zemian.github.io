@@ -1,10 +1,8 @@
----
-title: Java versions
-date: 2018-03-26T00:00:00-05:00
-tags:
-  - java
-  - javap
----
+Title: Java versions
+Date: 2018-03-26 00:00:00-05:00
+Tags: java,javap
+
+
 
 How to check Java version from compiled classes
 
@@ -30,3 +28,4 @@ JDK versions.
     major version: 54 = Java 10
 
 Ref: <https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html>
+

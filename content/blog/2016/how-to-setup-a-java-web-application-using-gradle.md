@@ -1,9 +1,8 @@
----
-title: How to setup a Java web application using Gradle
-date: 2016-06-14T00:00:00-05:00
-tags:
-  - gradle
----
+Title: How to setup a Java web application using Gradle
+Date: 2016-06-14 00:00:00-05:00
+Tags: gradle
+
+
 For basic java and Gradle, it's really simple. All you need is one line in build.gradle file and you can start compiling Java source under src/main/java folder.
 
 apply plugin: 'java'
@@ -145,3 +144,4 @@ To compile code, type command: `gradle compileJava`
 To run test, type command: gradle test(A nice feature of Gradle is that it auto generate test reports! Look for them in your build/reports folder.)
 
 To run web app, type command: gradle jettyRun
+

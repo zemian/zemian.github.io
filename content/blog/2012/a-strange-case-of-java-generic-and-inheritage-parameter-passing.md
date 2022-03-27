@@ -1,9 +1,8 @@
----
-title: A strange case of Java generic and inheritage parameter passing
-date: 2012-12-20T00:00:00-05:00
-tags:
-  - java
----
+Title: A strange case of Java generic and inheritage parameter passing
+Date: 2012-12-20 00:00:00-05:00
+Tags: java
+
+
 
 I came a cross some strange Java code and I would like to share it here. Take a look few of classes I have here:
 
@@ -67,3 +66,4 @@ Now, we can improve the `FooProcessor` in this way so that the presence of `<T>`
 ```    
 
 That's a more proper way to write the generic parameter anyway. But despite a better solution, the puzzle is that the original code compiled under the compiler, but only with the `<T>` presented, and yet it's not used. Wouldn't you consider this as a Java compiler bug?
+

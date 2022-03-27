@@ -1,10 +1,8 @@
----
-title: mysqlclient gives "Library not loaded - libmysqlclient.18.dylib" error
-date: 2015-10-16T00:00:00-05:00
-tags:
-  - python
-  - mysql
----
+Title: mysqlclient gives "Library not loaded - libmysqlclient.18.dylib" error
+Date: 2015-10-16 00:00:00-05:00
+Tags: python,mysql
+
+
 If you want to use python MySQLdb module (eg: if you run Trac with MySQL backend), you would need first install MySQL server on MacOSX, then install the mysqlclient python package using pip. However upon verifying it, you may encounter error like this:
 
 ```
@@ -60,3 +58,4 @@ Update 2016-06-17
 To install mysqlclient on Ubuntu 14, you might need to first install the mysql_config first:
 
   `bash> sudo apt-get install libmysqlclient-dev`
+

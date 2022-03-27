@@ -1,9 +1,8 @@
----
-title: How to manually test a DataSource connection in WebLogic
-date: 2016-06-16T00:00:00-05:00
-tags:
-  - weblogic
----
+Title: How to manually test a DataSource connection in WebLogic
+Date: 2016-06-16 00:00:00-05:00
+Tags: weblogic
+
+
 
 When you creating new DataSource in WLS, it allows you to test the
 connectivity. However after you have created it, the test button is
@@ -22,3 +21,4 @@ existing DataSource that have targeted a server.
 
 5.  Select the server the DataSource has targeted to and then press
     "Test Data Source" button.
+

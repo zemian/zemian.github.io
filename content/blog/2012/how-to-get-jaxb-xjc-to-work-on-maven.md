@@ -1,10 +1,8 @@
----
-title: How to get JAXB (xjc) to work on Maven
-date: 2012-03-11T00:00:00-05:00
-tags:
-  - java
-  - maven
----
+Title: How to get JAXB (xjc) to work on Maven
+Date: 2012-03-11 00:00:00-05:00
+Tags: java,maven
+
+
 I got it working by using the following
 
 ```
@@ -52,3 +50,4 @@ I got it working by using the following
         </plugins>
     </build>
  ```
+

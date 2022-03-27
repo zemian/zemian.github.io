@@ -1,9 +1,8 @@
----
-title: How to export and import MySQL database
-date: 2014-05-30T00:00:00-05:00
-tags:
-  - mysql
----
+Title: How to export and import MySQL database
+Date: 2014-05-30 00:00:00-05:00
+Tags: mysql
+
+
 You can export the MySQL database with schema table definitions and data separated. Here is a simple bash shell script that will export an database.
 ```
 # file: database-export.sh
@@ -48,3 +47,4 @@ PS: I have come to learn that "mysqldump" with procedures will insert an extra l
     mysqldump --no-data --routines -u $DB_USERNAME -p$DB_PASSWORD $DB_NAME | perl -pi -e 's/DEFINER="\w+"@"\w+" //g' > $DB_SCHEMA_FILE
 
 You can vote the issue here: [http://bugs.mysql.com/bug.php?id=24680](http://bugs.mysql.com/bug.php?id=24680)
+

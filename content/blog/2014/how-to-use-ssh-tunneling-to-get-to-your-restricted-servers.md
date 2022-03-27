@@ -1,9 +1,8 @@
----
-title: How to use SSH tunneling to get to your restricted servers
-date: 2014-11-01T00:00:00-05:00
-tags:
-  - ssh
----
+Title: How to use SSH tunneling to get to your restricted servers
+Date: 2014-11-01 00:00:00-05:00
+Tags: ssh
+
+
 Have you ever been told that in your network serverX can only be reached by a serverY via SSH? Now you have access to serverY from your own PC with normal SSH access as well, but just not directly to serverX.
 
 What can you do in situation like this if you need to access the restricted serverY? Well you can always ssh into serverY, then ssh again into serverX to check your work or log or whatever. But what happen if you have a database server or WebLogic Server instance running in serverX; and you want your local PC's fancy tools to access the serverX? (Eg: Accessing the WLS admin console, or using SqlDeveloper to connect to your DB etc). In this case, that's where ssh tunneling can help you, and here is how.
@@ -21,3 +20,4 @@ Now you should able to access your restricted serverX's WLS admin console!
 Same can be done with a database server such as MySQL. For example, you will run  ssh -L 12346:serverX:3306 serverY and then change your SqlDeveloper JDBC connection url string to the tunnel port `jdbc:mysql://localhost:12346/mydb`
 
 This is a cool technique to get around a secured environment.
+

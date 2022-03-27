@@ -1,9 +1,8 @@
----
-title: How to install posgresql-server with yum on Linux
-date: 2016-07-08T00:00:00-05:00
-tags:
-  - postgres
----
+Title: How to install posgresql-server with yum on Linux
+Date: 2016-07-08 00:00:00-05:00
+Tags: postgres
+
+
 
 If you have a RedHat/CentOS/OracleLinux distro of Linux, then `yum` should be available as your package manager. Here are the notes I have to get PostgreSQL server up running.
 
@@ -31,3 +30,4 @@ If you have a RedHat/CentOS/OracleLinux distro of Linux, then `yum` should be av
     
 
 If you can't find `service` or `chkconfig` commands, then check to ensure you have have `/sbin` in your `$PATH`.
+

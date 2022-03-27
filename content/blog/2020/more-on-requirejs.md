@@ -1,9 +1,8 @@
----
-title: Exploring More on RequireJS
-date: 2020-04-22T00:00:00-05:00
-tags:
-  - requirejs
----
+Title: Exploring More on RequireJS
+Date: 2020-04-22 00:00:00-05:00
+Tags: requirejs
+
+
 
 ## Configuring RequireJS
 
@@ -108,3 +107,4 @@ require(['mymodulelib',
   'mymodulelib5'
 ], function(lib, lib2, lib3) {// write your module here...});
 ```
+

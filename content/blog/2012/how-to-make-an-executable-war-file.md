@@ -1,9 +1,8 @@
----
-title: How to make an executable WAR file
-date: 2012-08-14T00:00:00-05:00
-tags:
-  - maven
----
+Title: How to make an executable WAR file
+Date: 2012-08-14 00:00:00-05:00
+Tags: maven
+
+
 
 If you ever used [Jenkin](http://jenkins-ci.org) CI server, you have probably seen their super easy one-line instruction to get started: `java -jar jenkins.war`. Now that's one awesome way to get your users to try out your product!
 
@@ -38,3 +37,4 @@ Making a Main-Class [WinstoneMain.java](https://bitbucket.org/saltnlight5/sandbo
 In my example I added into `WEB-INF/lib-winstone`, and then the `WinstoneMain` would extract these and then load the `winstone.Launcher` using a custom class loader. Also, we need to use some Winstone options to start a web server properly. I use this [webnotepad/pom.xml](https://bitbucket.org/saltnlight5/sandbox/src/4e80e4b4114e/webnotepad/pom.xml) to package it all up the war file. You can easily use my example because I have create them under a separate `profile` and you just need add to your web module/pom.xml. In my project demo you would run `mvn package -Pdist` to generate the executable war file.
 
 NOTE: I noticed Winstone project didn't show much activity since last release since 2008. But I was happy to find that there is a fork project on [GoogleCode Winstone](http://code.google.com/p/winstone/) that shows activities. I didn't use this for my demo, but it looks promising.
+

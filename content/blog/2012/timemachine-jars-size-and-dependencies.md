@@ -1,9 +1,8 @@
----
-title: TimeMachine jars size and dependencies
-date: 2012-08-03T00:00:00-05:00
-tags:
-  - timemachine
----
+Title: TimeMachine jars size and dependencies
+Date: 2012-08-03 00:00:00-05:00
+Tags: timemachine
+
+
 
 From the [TimeMachine Scheduler](https://bitbucket.org/timemachine/scheduler/downloads) download page you will see that the latest 1.2.1 release zip package size is around 13M. It may seem large for a scheduler application, but let's examine it closely to see what's in there. Here is how the zip package looks like inside
 
@@ -51,3 +50,4 @@ Now with the Hibernate data service, you would also need a database driver that 
 When you working with Hibernate and Database, you should always use a Database connection pool. I packaged the `c3p0-0.9.1.2.jar` implementation which Hibernate can automatically detects.
 
 I hope these information can help you decide what to remove or add in case you want to customize your scheduler to fit into your application. You may also visit the project to see the Maven site dependencies report that has all the details. This also means that if you use Maven to bring in TimeMachine scheduler as dependency, you will automatically gets the minimal because I have carefully set all the optional items not to be included with the proper Maven scopes.
+

@@ -1,9 +1,8 @@
----
-title: Git clone failed with SSL certificate problem
-date: 2018-03-03T00:00:00-05:00
-tags:
-  - git
----
+Title: Git clone failed with SSL certificate problem
+Date: 2018-03-03 00:00:00-05:00
+Tags: git
+
+
 
 Problem:
 
@@ -15,3 +14,4 @@ Solution:
 
     git config --global http.sslVerify false
     # then retry above command
+

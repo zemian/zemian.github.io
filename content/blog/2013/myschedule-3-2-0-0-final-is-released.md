@@ -1,9 +1,8 @@
----
-title: MySchedule 3.2.0.0 FINAL is released
-date: 2013-06-07T00:00:00-05:00
-tags:
-  - myschedule
----
+Title: MySchedule 3.2.0.0 FINAL is released
+Date: 2013-06-07 00:00:00-05:00
+Tags: myschedule
+
+
 
 Hi folks,
 
@@ -19,3 +18,4 @@ I have tagged the 3.2.0.0 release of the MySchedule project today. This is the f
 - New [online demo](http://demo-myschedule.rhcloud.com) setup on OpenShift platform
 
 Get it and try it out here [http://code.google.com/p/myschedule](http://code.google.com/p/myschedule)
+

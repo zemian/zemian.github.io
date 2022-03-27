@@ -1,10 +1,8 @@
----
-title: IntelliJ highlight "out.println" in JSP as red error
-date: 2018-02-17T00:00:00-05:00
-tags:
-  - intellij
-  - jsp
----
+Title: IntelliJ highlight "out.println" in JSP as red error
+Date: 2018-02-17 00:00:00-05:00
+Tags: intellij,jsp
+
+
 
 Some times you might have a Maven web application that deployes without
 problem into a Tomcat server, but when open in IntelliJ IDE, you will
@@ -35,3 +33,4 @@ ensure it contains these in your `pom.xml` file.
 Note that for Tomcat, you must include the `JSTL` tag library as
 dependency, and it is NOT provided by server if you want to use the core
 JSTL tags!
+

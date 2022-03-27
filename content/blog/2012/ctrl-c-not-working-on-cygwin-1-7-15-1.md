@@ -1,9 +1,8 @@
----
-title: CTRL+C not working on Cygwin 1.7.15-1
-date: 2012-07-12T00:00:00-05:00
-tags:
-  - cygwin
----
+Title: CTRL+C not working on Cygwin 1.7.15-1
+Date: 2012-07-12 00:00:00-05:00
+Tags: cygwin
+
+
 When I installed new package in my Cygwin recently, it also automatically upgraded to latest Cygwin 1.7.15-1 DLL. After this, pressing CTRL+C no longer work
 
 on a running Java process the cygwin shell. I found the reason why this happens, and here is the email I sent to cygwin mailing list:
@@ -28,3 +27,4 @@ on a running Java process the cygwin shell. I found the reason why this happens,
 > Zemian 
 
 Ref: [http://old.nabble.com/CTRL%2BC-is-not-working-with-java-on-latest-cygwin-1.7.15-tt34147441.html](http://old.nabble.com/CTRL%2BC-is-not-working-with-java-on-latest-cygwin-1.7.15-tt34147441.html)
+

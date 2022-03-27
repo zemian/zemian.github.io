@@ -1,10 +1,8 @@
----
-title: What does UTF-8 with BOM mean?
-date: 2012-11-02T00:00:00-05:00
-tags:
-  - string
-  - utf8
----
+Title: What does UTF-8 with BOM mean?
+Date: 2012-11-02 00:00:00-05:00
+Tags: string,utf8
+
+
 
 Believe it or not, There is no such thing as Plain Text!
 
@@ -23,3 +21,4 @@ Ref:
 [http://en.wikipedia.org/wiki/UTF-8](http://en.wikipedia.org/wiki/UTF-8) 
 
 [http://www.joelonsoftware.com/articles/Unicode.html](http://www.joelonsoftware.com/articles/Unicode.html)
+

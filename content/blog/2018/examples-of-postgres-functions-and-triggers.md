@@ -1,11 +1,8 @@
----
-title: Examples of Postgres Functions and Triggers
-date: 2018-08-09T00:00:00-05:00
-tags:
-  - postgres
-  - function
-  - trigger
----
+Title: Examples of Postgres Functions and Triggers
+Date: 2018-08-09 00:00:00-05:00
+Tags: postgres,function,trigger
+
+
 
 ```sql
 -- Simple Function

@@ -1,9 +1,8 @@
----
-title: Learn how to grep by context will give you better result
-date: 2013-02-03T00:00:00-05:00
-tags:
-  - linux
----
+Title: Learn how to grep by context will give you better result
+Date: 2013-02-03 00:00:00-05:00
+Tags: linux
+
+
 
 I learned that `grep` command supports few options called "context" searching. Basically it can print lines around the matching string! For example, you can use this feature to perform a quick Java threads stack analysis like this (assuming you have a java process PID=12345).
 
@@ -18,3 +17,4 @@ See, without the "-B 1" option, which show one line before match, you won't know
 You may also use "-A 5" to see 5 more lines after the match. Or you may use the "-C 5" to see 5 lines before and after the match.
 
 PS: There is nothing wrong with a "BLOCKED" thread in Java, however if you got one that won't go away, then it's a good indicator that something is fishy about that thread in your application; because in a well designed app, threads should be in BLOCKED state as briefly as possible. Read the javadoc on `java.lang.Thread.State` for more details.
+

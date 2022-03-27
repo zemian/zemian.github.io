@@ -1,9 +1,8 @@
----
-title: Java Http Proxy with User and Password
-date: 2018-03-16T00:00:00-05:00
-tags:
-  - java-http-proxy
----
+Title: Java Http Proxy with User and Password
+Date: 2018-03-16 00:00:00-05:00
+Tags: java-http-proxy
+
+
 
 File: `scratch\_1.java`
 
@@ -54,3 +53,4 @@ handlers= java.util.logging.ConsoleHandler
 java.util.logging.ConsoleHandler.level = FINEST
 sun.net.www.protocol.http.HttpURLConnection.level = ALL
 ```
+

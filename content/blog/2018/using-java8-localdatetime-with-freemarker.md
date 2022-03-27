@@ -1,9 +1,8 @@
----
-title: Using Java8 LocalDateTime with FreeMarker
-date: 2018-01-27T00:00:00-05:00
-tags:
-  - freemarker
----
+Title: Using Java8 LocalDateTime with FreeMarker
+Date: 2018-01-27 00:00:00-05:00
+Tags: freemarker
+
+
 
 It’s unfortunate that even latest FreeMarker 2.3.27 still does not
 support `java.time.LocalDateTime` as data model natively. If you want to
@@ -27,3 +26,4 @@ With this, you may format the java8 date model in template like this:
     Today date is ${todayDate.format()}
 
     Or use custom date formatter: ${todayDate.format('yyyy-MM-dd HH:mm')}
+

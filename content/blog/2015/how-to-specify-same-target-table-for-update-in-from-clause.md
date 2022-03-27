@@ -1,9 +1,8 @@
----
-title: How to specify SAME target table for update in FROM clause
-date: 2015-10-11T00:00:00-05:00
-tags:
-  - mysql
----
+Title: How to specify SAME target table for update in FROM clause
+Date: 2015-10-11 00:00:00-05:00
+Tags: mysql
+
+
 Have you tried updating something simple as following?
 
 ```
@@ -35,3 +34,4 @@ Noticed that in MySQL, you must name your sub query result such as `ID_LIST`, in
 ```
 Error Code: 1248. Every derived table must have its own alias
 ```
+

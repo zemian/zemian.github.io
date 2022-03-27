@@ -1,9 +1,8 @@
----
-title: TimeMachine Scheduler Tour - Part5
-date: 2012-06-20T00:00:00-05:00
-tags:
-  - timemachine
----
+Title: TimeMachine Scheduler Tour - Part5
+Date: 2012-06-20 00:00:00-05:00
+Tags: timemachine
+
+
 
 This is part 5 of 7 in a series of articles that will give you a tour of the [TimeMachine Scheduler](https://bitbucket.org/timemachine/scheduler/wiki/Home) project. These articles will introduce you to the scheduler, how to load jobs and schedules, and explore some of its advanced features. For the most current and accurate instructions, please visit the ReferenceManual from the project site.
 
@@ -108,3 +107,4 @@ There, you just experienced a little bit of script within script! Pretty cool hu
 As you can see, our DateListSchedule can give you a very flexible way to customize any schedule needs, even with dynamic scripting. Since this DateListSchedule is already part of the built-in schedule, all the persistence layer would work correctly without modifying any classes nor database structure.
 
 End of part 5. You may continue [next tour](https://zemian.github.io/2012/06/timemachine-scheduler-tour-part6.html), or see [previous tour](https://zemian.github.io/2012/06/timemachine-scheduler-tour-part4.html).
+

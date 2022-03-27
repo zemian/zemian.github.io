@@ -1,10 +1,8 @@
----
-title: Taming the JMX on WebLogic Server
-date: 2013-06-11T00:00:00-05:00
-tags:
-  - weblogic
-  - jmx
----
+Title: Taming the JMX on WebLogic Server
+Date: 2013-06-11 00:00:00-05:00
+Tags: weblogic,jmx
+
+
 Taming the JMX on WebLogic Server
 
 # Taming the JMX on WebLogic Server
@@ -116,3 +114,4 @@ For more details on how to work with JMX and WLS, see their docs here:
 [http://docs.oracle.com/cd/E12839_01/web.1111/e13728/accesswls.htm#i1119556](http://docs.oracle.com/cd/E12839_01/web.1111/e13728/accesswls.htm#i1119556)
 
 Last updated 2013-06-12 23:52:42 EDT
+

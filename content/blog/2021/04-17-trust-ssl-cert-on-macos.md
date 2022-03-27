@@ -1,11 +1,8 @@
----
-title: How to Trust a Self-Signed SSL certificate on MacOS
-date: 2021-04-17
-tags:
-- macos
-- SSL-certificate
-- self-signed
----
+Title: How to Trust a Self-Signed SSL certificate on MacOS
+Date: 2021-04-17
+Tags: macos,SSL-certificate,self-signed
+
+
 
 Sometimes we use a self-sign certificate on web server for development. If you are
 using a MacOS system, you would need the following to get pass the Trust certificate.
@@ -23,3 +20,4 @@ using a MacOS system, you would need the following to get pass the Trust certifi
 6. Restart browser (eg: Chrome) and revisit site again. 
 
 NOTE: If you don't restart browser, the certificate will continue to fail!
+

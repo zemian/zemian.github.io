@@ -1,9 +1,8 @@
----
-title: How Servlet and JSP create sessions
-date: 2014-10-26T00:00:00-05:00
-tags:
-  - servlet
----
+Title: How Servlet and JSP create sessions
+Date: 2014-10-26 00:00:00-05:00
+Tags: servlet
+
+
 In Servlet, you may get the Session object by "httpServletRequest.getSession(true)". The "true" flag will create the session if it doesn't already exist, else it gets the existing session.
 
 Now if you want to check whether you have the session exists or not (without have to create one if doesn't exist), you need to pass in "false" and then check for "null".
@@ -18,3 +17,4 @@ Now comes the trick party. If you run above code and then dispatch the request t
  <% page session="false" %>
 ```
 Only with this you will able to actually prevent creation of unnecessary Session object if you were to use JSP for output! Something to watch out for when debugging session based application.
+

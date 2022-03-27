@@ -1,10 +1,8 @@
----
-title: A very lean war file for MySchedule
-date: 2012-10-22T00:00:00-05:00
-tags:
-  - myschedule
-  - quartz
----
+Title: A very lean war file for MySchedule
+Date: 2012-10-22 00:00:00-05:00
+Tags: myschedule,quartz
+
+
 On the next coming MySchedule release, I've been working on removing few dependencies in the project to improve its size, but yet still keeping all the original functionality.
 
 The [result](http://code.google.com/p/myschedule/downloads/list) is about 70% reduction in war file size!
@@ -21,3 +19,4 @@ So why remove Spring? Don't get me wrong, I like working with Spring, and I thin
 start any web application quickly. I know where things are configured and where to add new code to make a Spring app works, and it's flexibility are fantastic for development, especially for larger projects.  But in MySchedule case, it is just a small webapp that has it's focus is on Quartz. I wanted to remove Spring to create less confusion for any one who want to look at the code. The Spring bundled with Quartz in its core, and I want to avoid (I didn't use any of that any way.) I also want to shrink the war file size. And lastly, just to challenge of myself that, yes there is life outside of Spring, and it still can be maintainable. :-P
 
 So in replacing Spring, but kept very much of same coding style, I have created my tiny little web request processing library. It only has few classes, and it will allow me to use single Servlet controller to map and process all URL actions through many smaller unit of code, which I called action handler. Now MySchedule can be easily configured through one [MainServlet](http://code.google.com/p/myschedule/source/browse/myschedule-web/src/main/java/myschedule/web/servlet/app/MainServlet.java)class. Not bad!
+

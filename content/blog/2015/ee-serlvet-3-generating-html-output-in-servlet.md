@@ -1,9 +1,8 @@
----
-title: EE Serlvet 3 - Generating HTML output in Servlet
-date: 2015-01-01T00:00:00-05:00
-tags:
-  - servlet
----
+Title: EE Serlvet 3 - Generating HTML output in Servlet
+Date: 2015-01-01 00:00:00-05:00
+Tags: servlet
+
+
 If you just need to handle a handful of requests URI in your EE web module, then it might be easier to generate your own HTML response in your Servlet code instead of using a full blown template library. As part of my examples, I tried out a very simple Java DSL that generate html output when writing your own Serlvet. The code looks like this:
 ```
 package zemian.servlet3example.web;
@@ -67,3 +66,4 @@ The simple [HtmlWriter](https://github.com/saltnlight5/java-ee6-examples/blob/ma
 Also, note that ServletResponse object let you have full control on writing custom responses, so you are not restricted to only returing HTML. You can write binary output such as PDF or even MP3 files. You simply need to control the Response Writer and the correct corresponding content mime type and size that will return.
 
 You can get these code at [servlet3-example](https://github.com/saltnlight5/java-ee6-examples/tree/master/servlet3-example)
+

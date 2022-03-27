@@ -1,9 +1,8 @@
----
-title: TimeMachine Scheduler Tour - Part2
-date: 2012-06-10T00:00:00-05:00
-tags:
-  - timemachine
----
+Title: TimeMachine Scheduler Tour - Part2
+Date: 2012-06-10 00:00:00-05:00
+Tags: timemachine
+
+
 This is part 2 of 7 in a series of articles that will give you a tour of the [TimeMachine Scheduler](https://bitbucket.org/timemachine/scheduler/wiki/Home) project. These articles will introduce you to the scheduler, how to load jobs and schedules, and explore some of its advanced features. For the most current and accurate instructions, please visit the ReferenceManual from the project site.
 
 ## Scripting the Scheduler with Groovy
@@ -120,3 +119,4 @@ There you go. Above is your first custom job in TimeMachine Scheduler! The Groov
 Interested? Go and [download](https://bitbucket.org/timemachine/scheduler/downloads)the scheduler today and give it a try!
 
 End of part 2. You may continue [next tour](https://zemian.github.io/2012/06/timemachine-scheduler-tour-part3.html), or see [previous tour](https://zemian.github.io/2012/06/timemachine-scheduler-tour-part1.html).
+

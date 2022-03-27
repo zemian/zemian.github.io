@@ -1,10 +1,8 @@
----
-title: MySchedule-2.3.0 release is out
-date: 2011-11-06T00:00:00-05:00
-tags:
-  - myschedule
-  - quartz
----
+Title: MySchedule-2.3.0 release is out
+Date: 2011-11-06 00:00:00-05:00
+Tags: myschedule,quartz
+
+
 MySchedule is a web application that let you manage and run Quartz in a servlet container. You can get Quartz running and start exploring by simply dropping the war file into a web server such as Tomcat. 
 
 Here is a short list of what's in this release: 
@@ -21,3 +19,4 @@ Try it out and let me know what you think.
 [http://code.google.com/p/myschedule](http://code.google.com/p/myschedule) 
 
 Enjoy! 
+

@@ -1,10 +1,8 @@
----
-title: Getting started with Spring JDBC in a web application
-date: 2013-10-09T00:00:00-05:00
-tags:
-  - spring
-  - jdbc
----
+Title: Getting started with Spring JDBC in a web application
+Date: 2013-10-09 00:00:00-05:00
+Tags: spring,jdbc
+
+
 
 I have shown you how to setup a [basic Spring 3 MVC web application](https://zemian.github.io/2013/10/getting-started-with-annotation-based.html) in my previous article. Reusing that project setup as template, I will show you how to enhance it to work with JDBC. With this you can store and retrieve data from database. We will add a new controller and a data service through Spring so you can see how Spring injection and annotation configuration works together.
 
@@ -203,3 +201,4 @@ To see your hard labor with above, you simply need to run the Maven tomcat plugi
 From this simple exercise, you can quickly see Spring MVC brings you many benefits; and a lot of fun in developing web application. Spring, by design principles, tends to be developers friendly, boots productivity and un-intrusively in your environment. It&#8217;s one of the reason I like to work with it a lot. I hope you enjoy this tutorial and go further explore on your own.
 
 Happy programming!
+

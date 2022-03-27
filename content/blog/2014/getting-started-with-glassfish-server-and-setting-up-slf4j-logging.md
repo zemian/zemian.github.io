@@ -1,11 +1,8 @@
----
-title: Getting started with Glassfish Server and Setting up SLF4J logging
-date: 2014-12-10T00:00:00-05:00
-tags:
-  - glassfish
-  - slf4j
-  - logging
----
+Title: Getting started with Glassfish Server and Setting up SLF4J logging
+Date: 2014-12-10 00:00:00-05:00
+Tags: glassfish,slf4j,logging
+
+
 Some notes I jot down while playing with GlassFish Server (3) for EE 6. You may get a working example here:
 [https://github.com/saltnlight5/java-ee6-examples/tree/master/extra/glassfish-logging-example](https://github.com/saltnlight5/java-ee6-examples/tree/master/extra/glassfish-logging-example)
 ```
@@ -53,3 +50,4 @@ Web applications is http://localhost:8080
 
 1. Copy mysql-connector-java-5.1.30-bin.jar into $GF/domains/domain1/lib
 ```
+

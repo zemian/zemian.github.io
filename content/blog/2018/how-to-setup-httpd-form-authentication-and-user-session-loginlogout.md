@@ -1,11 +1,8 @@
----
-title: How to setup httpd form authentication and user session login/logout
-date: 2018-02-27T00:00:00-05:00
-tags:
-  - httpd
-  - authentication
-  - session
----
+Title: How to setup httpd form authentication and user session login/logout
+Date: 2018-02-27 00:00:00-05:00
+Tags: httpd,authentication,session
+
+
 
 ## Configuration setup for `httpd.conf`
 
@@ -94,3 +91,4 @@ Logout page `htdocs/logout.html`
 Secured page `htdocs/secured/index.html`
 
 	<p>This is secured area</p>
+

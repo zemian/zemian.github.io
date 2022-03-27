@@ -1,9 +1,8 @@
----
-title: Migrating Django 1.6 to 1.9
-date: 2016-07-06T00:00:00-05:00
-tags:
-  - django
----
+Title: Migrating Django 1.6 to 1.9
+Date: 2016-07-06 00:00:00-05:00
+Tags: django
+
+
 
 Couple years ago, I wrote a simple Events and Signin management app
 using django 1.6. It was fun to write and it worked really well. Just
@@ -16,3 +15,4 @@ found few differences.
 
 -   There is now `makemigration` and `migrate` command to create
     database table.
+

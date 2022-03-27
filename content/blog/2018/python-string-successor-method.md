@@ -1,10 +1,8 @@
----
-title: Python string successor method
-date: 2018-08-24T00:00:00-05:00
-tags:
-  - python
-  - string
----
+Title: Python string successor method
+Date: 2018-08-24 00:00:00-05:00
+Tags: python,string
+
+
 
 ```python
 # A simple implementation of Ruby's String#next() successor method in Python

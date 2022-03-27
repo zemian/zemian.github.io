@@ -1,9 +1,8 @@
----
-title: Python processing each line from stdin or files
-date: 2015-07-11T00:00:00-05:00
-tags:
-  - python
----
+Title: Python processing each line from stdin or files
+Date: 2015-07-11 00:00:00-05:00
+Tags: python
+
+
 
 ```
 import fileinput,re
@@ -13,3 +12,4 @@ line=line.replace('\\', '/')
 a,b,*_=re.split('\s+', line)
 print(b)
 ```
+

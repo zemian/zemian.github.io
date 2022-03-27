@@ -1,12 +1,8 @@
----
-title: Create multiple VMs using Vagrant
-date: 2018-05-19T00:00:00-05:00
-tags:
-  - vagrant
-  - virtualbox
-  - vm
-  - ubuntu
----
+Title: Create multiple VMs using Vagrant
+Date: 2018-05-19 00:00:00-05:00
+Tags: vagrant,virtualbox,vm,ubuntu
+
+
 
 Vagrant is a great tool to automate and setup VMs. Here is a config file
 that can setup multiple VMs in your own PC to simulate a
@@ -148,3 +144,4 @@ Vagrant.configure("2") do |config|
   end
 end
 ```
+

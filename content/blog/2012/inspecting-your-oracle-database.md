@@ -1,9 +1,8 @@
----
-title: Inspecting your Oracle database
-date: 2012-04-11T00:00:00-05:00
-tags:
-  - oracle
----
+Title: Inspecting your Oracle database
+Date: 2012-04-11 00:00:00-05:00
+Tags: oracle
+
+
 Some quick tips on how to inspect what you have in your Oracle database.
 
 ```    
@@ -40,3 +39,4 @@ select * from v$lock where type in ('TX', 'TM')
 select * from dba_locks where lock_type in ('Transaction', 'DML')
 ```
     
+

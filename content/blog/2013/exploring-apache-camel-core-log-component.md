@@ -1,9 +1,8 @@
----
-title: Exploring Apache Camel Core - Log Component
-date: 2013-09-02T00:00:00-05:00
-tags:
-  - camel
----
+Title: Exploring Apache Camel Core - Log Component
+Date: 2013-09-02 00:00:00-05:00
+Tags: camel
+
+
 
 There are many ways to log and inspect the messages as it pass through your
 Camel `Route`. The `camel-core` comes with a `log` component that let
@@ -102,3 +101,4 @@ There are more options availabe from [Log](http://camel.apache.org/log.html) com
 that you may explore.
 [Try it out with a Route](https://zemian.github.io/2013/08/getting-started-with-apache-camel-using.html)
 and see it for yourself.
+

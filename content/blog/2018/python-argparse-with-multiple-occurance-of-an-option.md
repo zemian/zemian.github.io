@@ -1,11 +1,8 @@
----
-title: Python argparse with multiple occurance of an option
-date: 2018-06-06T00:00:00-05:00
-tags:
-    - optparse
-    - argparse
-    - python
----
+Title: Python argparse with multiple occurance of an option
+Date: 2018-06-06 00:00:00-05:00
+Tags: optparse,argparse,python
+
+
 
 ```python
 import argparse

@@ -1,10 +1,8 @@
----
-title: Fetching Data From PostgreSQL Using Python psycopg2
-date: 2018-03-04T00:00:00-05:00
-tags:
-  - python
-  - postgres
----
+Title: Fetching Data From PostgreSQL Using Python psycopg2
+Date: 2018-03-04 00:00:00-05:00
+Tags: python,postgres
+
+
 
 ```
 import psycopg2
@@ -19,3 +17,4 @@ while True:
 cur.close()
 conn.close()
 ```
+

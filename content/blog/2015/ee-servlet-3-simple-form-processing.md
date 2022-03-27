@@ -1,9 +1,8 @@
----
-title: EE Servlet 3 - Simple Form Processing
-date: 2015-01-06T00:00:00-05:00
-tags:
-  - servlet
----
+Title: EE Servlet 3 - Simple Form Processing
+Date: 2015-01-06 00:00:00-05:00
+Tags: servlet
+
+
 Form handling in web application is like bread and butter for most Web developers. It will not be much use if we can not capture users input and process it. So I have included a simple [FormServlet](https://github.com/saltnlight5/java-ee6-examples/blob/master/servlet3-example/src/main/java/zemian/servlet3example/web/FormServlet.java)in my servlet3-example  that demonstrated few frequently used form inputs you might encounter. Here is how it looks like:
 ```
 package zemian.servlet3example.web;
@@ -81,3 +80,4 @@ Another frequent dealt with area in form processing is data validation. If you c
 I like to mention one more note. There are many Java web frameworks out there that focus a LOT of attention on form handling, and they ought to help you develop application easier with less duplicated code. It is done usually with a very concrete programming model and style that, in many cases, shield you away from seing the HttpServletRequest object completly. All these are good (assuming the framework is a good quality one), but keep in mind that majority of cases when there is a problem occur, it's mostly at the framework specific layer, or even more likely your own code that use the framwork. And then you will be spending most of your debugging time learning the framework specific domain, rather than the Servlet spec layer.
 
 For my example purpose I am trying to focus on EE API alone, so I will stay away from any extra frameworks other than the standard API. If you are a beginner, I strongly encourage you to study the Servlet API and see how form is handled, this gives you a more solid understanding of how the data come about in a web application. If you look further into the Java EE stack, it actually already has a framework that's called JSF as part of EE 6 standards. It's design is to help construct web pages as components model; and it lets you capture form data and automatically bind to a bean object in a much more smoother and integrated fashion. JSF is worthy of its own topic for future posts.
+

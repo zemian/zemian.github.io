@@ -1,9 +1,8 @@
----
-title: Exploring Spring Controller with JSTL view
-date: 2013-10-16T00:00:00-05:00
-tags:
-  - spring
----
+Title: Exploring Spring Controller with JSTL view
+Date: 2013-10-16 00:00:00-05:00
+Tags: spring
+
+
 
 Let&#8217;s improve [our previous Spring JDBC application](https://zemian.github.io/2013/10/getting-started-with-spring-jdbc-in-web.html) with some more exploration on Spring MVC&#8217;s Controller development. I will show another exercise of writing a new Controller that processes a HTML form and use JSTL tags in JSP view pages.
 
@@ -336,3 +335,4 @@ Note that despite I used Spring Controller as backend, all the views are in basi
 I know these are lot of code to post as a blog article today, but I wanted to be complete and try to show a  working demo with tutorial notes. I choose to make it into a single post with file content instead of having you download a project somewhere else. It makes my notes and explanation easier to match onto the code.
 
 And that will conclude our tutorial for today. Please leave a note if you find this helpful.
+

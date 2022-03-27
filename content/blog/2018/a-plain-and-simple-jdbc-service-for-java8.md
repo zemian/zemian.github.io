@@ -1,10 +1,8 @@
----
-title: A plain and simple Jdbc service for Java8
-date: 2018-07-28T00:00:00-05:00
-tags:
-  - java
-  - jdbc
----
+Title: A plain and simple Jdbc service for Java8
+Date: 2018-07-28 00:00:00-05:00
+Tags: java,jdbc
+
+
 
 With Java8, we can create simple and thin Jdbc service that’s productive
 and easy to use. This service implementation is inspired by Spring’s
@@ -334,3 +332,4 @@ public class Jdbc {
     }
 }
 ```
+

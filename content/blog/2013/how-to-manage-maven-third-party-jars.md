@@ -1,9 +1,8 @@
----
-title: How to manage Maven third party jars
-date: 2013-06-23T00:00:00-05:00
-tags:
-  - maven
----
+Title: How to manage Maven third party jars
+Date: 2013-06-23 00:00:00-05:00
+Tags: maven
+
+
 
 ## How to manage Maven third party jars
 
@@ -80,3 +79,4 @@ for FILE in $FILES; do
 done
 ```
 Last updated 2013-06-18 19:14:37 EDT
+

@@ -1,9 +1,8 @@
----
-title: Exploring Apache Camel Core - Timer Component
-date: 2013-09-01T00:00:00-05:00
-tags:
-  - camel
----
+Title: Exploring Apache Camel Core - Timer Component
+Date: 2013-09-01 00:00:00-05:00
+Tags: camel
+
+
 
 Camel Timer is a simple and yet useful component.
 It brings the JDK&#8217;s timer functionality into your camel Route with very simple config.
@@ -37,3 +36,4 @@ There are more options availabe from [Timer](http://camel.apache.org/timer.html)
 that you may explore.
 [Try it out with a Route](https://zemian.github.io/2013/08/getting-started-with-apache-camel-using.html)
 and see it for yourself.
+

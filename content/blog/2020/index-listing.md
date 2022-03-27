@@ -1,10 +1,8 @@
----
-title: Directory Listing Project
-date: 2020-10-04
-tags:
-- php
-- web-development
----
+Title: Directory Listing Project
+Date: 2020-10-04
+Tags: php,web-development
+
+
 
 A directory listing index page is a very useful for development. It gives you 
 a quick overview of your project content and able to verify your site is up and
@@ -19,3 +17,4 @@ Here are some screenshots. Enjoy!
 ![Screenshot](https://raw.githubusercontent.com/zemian/index-listing/main/docs/screenshot2.png)
 
 ![Screenshot](https://raw.githubusercontent.com/zemian/index-listing/main/docs/screenshot3.png)
+

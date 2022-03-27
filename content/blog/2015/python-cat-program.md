@@ -1,9 +1,8 @@
----
-title: Python cat program
-date: 2015-07-24T00:00:00-05:00
-tags:
-  - python
----
+Title: Python cat program
+Date: 2015-07-24 00:00:00-05:00
+Tags: python
+
+
 You can implement the Linux cat program with few lines of Python code.
 
 ```
@@ -28,3 +27,4 @@ with fileinput.input(files=args.files) as finput:
 ```
 
 Note that argparse not only just parse for options, but actual argument list as well, and you have to explicitly define it, so you may reference it after the parse.
+

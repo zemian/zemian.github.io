@@ -1,10 +1,8 @@
----
-title: Carry your sword and dagger programmers!
-date: 2013-05-03T00:00:00-05:00
-tags:
-  - programming
-  - practice
----
+Title: Carry your sword and dagger programmers!
+Date: 2013-05-03 00:00:00-05:00
+Tags: programming,practice
+
+
 
 A knight would for sure carry his sword proudly and ready for any
 battles. But then he can not use such a heavy weapon for daily tasks
@@ -33,3 +31,4 @@ Any rate, if you a programmer, I strongly encourage you to learn at
 least two languages, and learn it well. As I said, prefer one static and
 one dynamic language. This pair of combination will boost your
 productivity to next level.
+

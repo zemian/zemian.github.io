@@ -1,11 +1,8 @@
----
-title: How to Load Multiple jQuery
-date: 2020-09-19T00:00:00-05:00
-tags:
-- js
-- jquery
-- requirejs
----
+Title: How to Load Multiple jQuery
+Date: 2020-09-19 00:00:00-05:00
+Tags: js,jquery,requirejs
+
+
 
 Sometimes, your site might need to load mulitple versions of jQuery to support some legacy libraries. Here I will provide two ways to do that.
 
@@ -55,3 +52,4 @@ NOTE: You need to call `noConflict()` immediately after the script tag load of t
 ```
 
 NOTE: Do not load multiple versions of jQuery through the `paths` inside `requirejs.config()` method. As that will automatically bind the `jquery` module name and you can't change that.
+

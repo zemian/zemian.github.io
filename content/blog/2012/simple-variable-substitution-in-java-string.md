@@ -1,9 +1,8 @@
----
-title: Simple Variable Substitution in Java String
-date: 2012-10-24T00:00:00-05:00
-tags:
-  - java
----
+Title: Simple Variable Substitution in Java String
+Date: 2012-10-24 00:00:00-05:00
+Tags: java
+
+
 
 When I wrote about how to improve the Java Properties class using [Props](https://zemian.github.io/2012/09/improving-javautilproperties.html), I've shown
 a feature where you can use variable substition such as `mypath=${user.home}` in your config file. The implementation underneath it uses the Apache Common Lang library with `org.apache.commons.lang.text.StrSubstitutor`. There is nothing wrong with this, but I was curious how bad would it be to remove such dependency, so the `Props` can be more standalone.
@@ -63,3 +62,4 @@ Probably not the most efficient thing, but it should work. Let's have some tests
 ```    
 
 The output should print nothing, as it passed the test. What do you think?
+

@@ -1,9 +1,8 @@
----
-title: Simple http server with CGI scripts enabled
-date: 2016-07-14T00:00:00-05:00
-tags:
-  - python
----
+Title: Simple http server with CGI scripts enabled
+Date: 2016-07-14 00:00:00-05:00
+Tags: python
+
+
 If you want to experiment some python code as CGI script to serve by a HTTP server,
 you can get started by these steps:
 
@@ -53,3 +52,4 @@ If you want to do more with fancy CGI scripts, try the Python's `cgi` module. He
 Again `chmod` your `cgitest.py` script and visit [http://localhost:8000/cgi-bin/cgitest.py](http://localhost:8000/cgi-bin/cgitest.py). You will see all the
 HTTP related data as expected when working with a CGI script. See [https://docs.python.org/3/library/cgi.html](https://docs.python.org/3/library/cgi.html)
 for more details.
+

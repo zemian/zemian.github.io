@@ -1,10 +1,8 @@
----
-title: Setup Python on Mac
-date: 2015-10-10T00:00:00-05:00
-tags:
-  - python
-  - mac
----
+Title: Setup Python on Mac
+Date: 2015-10-10 00:00:00-05:00
+Tags: python,mac
+
+
 
 ## Setup Python 2
 
@@ -39,3 +37,4 @@ bash> pyvenv mypy3
 bash> source mypy3/bin/activate
 (mypy3) bash> python -c 'import sys; print(sys.path)'
 ```
+

@@ -1,10 +1,8 @@
----
-title: Getting version string from a Maven based web application
-date: 2015-05-20T00:00:00-05:00
-tags:
-  - maven
-  - java
----
+Title: Getting version string from a Maven based web application
+Date: 2015-05-20 00:00:00-05:00
+Tags: maven,java
+
+
 When you package a maven project, it will automatically generate a pom.properties file inside that will contains the version, artifactId and groupId information. These are handy to have and to display for your web application at runtime. One can use a method like following to retrive it.
 ```
 public class Application {
@@ -40,3 +38,4 @@ To fix this, you need to add the following to your pom.xml file:
             </plugin>
 ```
 This will tell maven to jar up your classes along with the pom.properties in a separate file, then place it in WEB-INF/lib folder instead of using the unpacked WEB-INF/classes version. This forces the pom.properties to be properly added and read by our getVersion() method. 
+

@@ -1,9 +1,8 @@
----
-title: TimeMachine Scheduler 1.2.0 release is out!
-date: 2012-07-15T00:00:00-05:00
-tags:
-  - timemachine
----
+Title: TimeMachine Scheduler 1.2.0 release is out!
+Date: 2012-07-15 00:00:00-05:00
+Tags: timemachine
+
+
 
 I just released the [timemachine-scheudler-1.2.0](https://bitbucket.org/timemachine/scheduler/downloads), and it now comes with both stand-alone server (zip) and web application (war) distribution packages.
 
@@ -31,3 +30,4 @@ This feature is disabled by default, but to enable it is easy. You simply add th
 timemachine.scheduler.eventHistory.class = timemachine.scheduler.service.EventHistoryService
 
 There are few more options you may configure with this service, and you can read more it on the scheduler [reference doc](https://bitbucket.org/timemachine/scheduler/wiki/ReferenceManual).
+

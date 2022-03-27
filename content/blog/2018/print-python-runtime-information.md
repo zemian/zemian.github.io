@@ -1,9 +1,8 @@
----
-title: Print Python Runtime Information
-date: 2018-03-22T00:00:00-05:00
-tags:
-  - python
----
+Title: Print Python Runtime Information
+Date: 2018-03-22 00:00:00-05:00
+Tags: python
+
+
 
 ```python
 # Print python runtime information

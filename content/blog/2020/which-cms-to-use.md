@@ -1,12 +1,8 @@
----
-title: Which CMS to Use?
-date: 2020-09-23
-tags:
-- cms
-- blog
-- knowledge-management
-- site-development
----
+Title: Which CMS to Use?
+Date: 2020-09-23
+Tags: cms,blog,knowledge-management,site-development
+
+
 
 What is a CMS? Accoridng to [Wikipedia](https://en.wikipedia.org/wiki/Content_management_system)
 
@@ -94,3 +90,4 @@ PROS:
 CONS:
 * Learning curve is higher compare to using an existing CMS application
 * Costly to maintain
+

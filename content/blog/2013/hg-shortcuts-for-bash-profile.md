@@ -1,9 +1,8 @@
----
-title: Hg shortcuts for bash .profile
-date: 2013-02-28T00:00:00-05:00
-tags:
-  - bash
----
+Title: Hg shortcuts for bash .profile
+Date: 2013-02-28 00:00:00-05:00
+Tags: bash
+
+
 Some shortcuts I used most often when working with Mecurial (hg) source control.
 
 ```    
@@ -28,3 +27,4 @@ Some shortcuts I used most often when working with Mecurial (hg) source control.
 ```
 
 One worth special mentioning is that default "hg log -v" shows files with space separator. I find it easier to view with one file per line instead, hence I added the "splithgfiles" helper function.
+

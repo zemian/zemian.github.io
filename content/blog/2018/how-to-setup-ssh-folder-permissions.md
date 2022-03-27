@@ -1,10 +1,8 @@
----
-title: How to setup .ssh folder permissions
-date: 2018-05-24T00:00:00-05:00
-tags:
-  - ssh
-  - linux
----
+Title: How to setup .ssh folder permissions
+Date: 2018-05-24 00:00:00-05:00
+Tags: ssh,linux
+
+
 
 How to setup .ssh folder permissions
 
@@ -17,3 +15,4 @@ chmod 755 ~                      # (drwxr-xr-x)
 ```
 
 ref: <https://superuser.com/questions/215504/permissions-on-private-key-in-ssh-folder>
+

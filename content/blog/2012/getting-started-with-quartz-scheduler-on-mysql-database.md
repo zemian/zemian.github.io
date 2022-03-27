@@ -1,9 +1,8 @@
----
-title: Getting started with Quartz Scheduler on MySQL database
-date: 2012-12-14T00:00:00-05:00
-tags:
-  - quartz
----
+Title: Getting started with Quartz Scheduler on MySQL database
+Date: 2012-12-14 00:00:00-05:00
+Tags: quartz
+
+
 Here are some simple steps to get you fully started with Quartz Scheduler on MySQL database using Groovy. The script below will allow you to quickly experiment different Quartz configuration settings using an external file.
 
 First step is to setup the database with tables. Assuming you already have installed MySQL and have access to create database and tables.
@@ -160,3 +159,4 @@ Here is another config set for a simple in-memory scheduler.
 Now, if you need more fancy UI management of Quartz, give [MySchedule](http://code.google.com/p/myschedule) a try.
 
 Happy scheduling!
+

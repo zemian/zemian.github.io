@@ -1,9 +1,8 @@
----
-title: How to zip up a release from a hg repository
-date: 2013-06-17T00:00:00-05:00
-tags:
-  - hg
----
+Title: How to zip up a release from a hg repository
+Date: 2013-06-17 00:00:00-05:00
+Tags: hg
+
+
 
 ## How to zip up a release from a hg repository
 
@@ -74,3 +73,4 @@ rm -r $REL_DIR
 printf "$REL_ZIPFILE created.\n"
 ```
 Last updated 2013-06-18 19:18:48 EDT
+

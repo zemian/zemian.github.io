@@ -1,12 +1,8 @@
----
-title: The World of PHP Development
-date: 2020-09-20T00:00:00-05:00
-tags:
-- php
-- mysql
-- webserver
-- joomla
----
+Title: The World of PHP Development
+Date: 2020-09-20 00:00:00-05:00
+Tags: php,mysql,webserver,joomla
+
+
 
 I have gotten into PHP lately in order to help a friend who runs a Joomla site with a custom component. Thinking to myself now that I have some [Front End Experience](/2020/03/22/front-end), I shouldn't have trouble doing this. But I have never seriuosly got into PHP in the past though, and now I need to learn enough to debug and fix few bugs in the Joomla env. I have gathered and learned quite a few things and like to write it down.
 
@@ -37,3 +33,4 @@ Prowling through large, new code base is a daunting task. I've found the JetBrai
 Without a debugger, the next resort in debugging an app is print message as you trace through code. The PHP is notoriously easy to allow developers litter code with `echo` lines and then comment it out after debug. The Joomla actually has a nice `JLog` logging function that let you dynamically turns on/off and to file output. But this application that I am supporting didn't use that, and there is zero log message. I also learned that logging to file is essential when tracing a AJAX supported PHP code. Here you can't simply `echo` your debug message out, or it will break the JSON payload. So I have to write some of these debugging code to help myself to troubleshoot the application.
 
 At the end, I was able to fix few of the pressing issues due to their multiple version of jQuery loading conflicts and some bad SQL in their dynamic query builder. I have to say that nothing teaches you more than jumping into a badly coded site that's somehow working, and yet you need to fix few naughty issues! It's a hair pulling experience, but I learned a lot.
+

@@ -1,9 +1,8 @@
----
-title: EE Servlet 3 - How to Setup Backend Services in a Web Application
-date: 2015-01-09T00:00:00-05:00
-tags:
-  - servlet
----
+Title: EE Servlet 3 - How to Setup Backend Services in a Web Application
+Date: 2015-01-09 00:00:00-05:00
+Tags: servlet
+
+
 In a web application, providing user interfacing (UI) is often only half of the job. Many applications have requirements that's supported by backend services. Some example of backend services are scheduler process (batch processing), listen to a queue and respond when messages come in, or simple thing such as storing information for the entire application to use. These global data often needs to be shared between all Servlet (for each request processor) classes. Here I will show you how and where you should add such backend services in a Servlet based application.
 
 Before we begin though, I would like to explain how a Servlet application store data variables (after all backend services are just simply Java objects). There are 3 major areas where you can add and share data (we sometimes call these areas in different "space", "scope" or "context"). You may also think of each of these area as a hash Map with unique keys and data values.
@@ -54,3 +53,4 @@ public class WebAppStartup implements ServletContextListener {
 With this in place, I can easily add any custom business backend services inside the Application class, and and then have any of the Servlet code access it. Notice that I am using Servlet 3's @WebListener annotation so there is no config is needed. You simply package along your WAR application and it will be detected by your EE application server!
 
 NOTE: Try to use Application as holder class only and not place any logic in it. With EE 6, you can easily replace this with CDI bean injection as alternate solution.
+

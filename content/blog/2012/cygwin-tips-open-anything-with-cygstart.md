@@ -1,9 +1,8 @@
----
-title: Cygwin tips - open anything with cygstart
-date: 2012-12-13T00:00:00-05:00
-tags:
-  - cygwin
----
+Title: Cygwin tips - open anything with cygstart
+Date: 2012-12-13 00:00:00-05:00
+Tags: cygwin
+
+
 Cygwin has this cool command called `cygstart`, and I usually alias it as `open`.
  
 
@@ -28,3 +27,4 @@ Here are few things I use often:
     
 
 Because I use a Cygwin terminal shell a lot, I have many alias shortcuts to many different directories. The `open .` allows me to jump to any directory and starts the Windows Explore with that directory expanded quickly. You can see more options with `open --help`.
+

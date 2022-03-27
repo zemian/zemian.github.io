@@ -1,9 +1,8 @@
----
-title: Improving java.util.Properties
-date: 2012-09-07T00:00:00-05:00
-tags:
-  - java
----
+Title: Improving java.util.Properties
+Date: 2012-09-07 00:00:00-05:00
+Tags: java
+
+
 
 The Java built-in `java.util.Properties` class could really use some love. I have written a slightly improved version called
 [timemachine.scheduler.support.Props](https://bitbucket.org/timemachine/scheduler/src/15f066cc6dad/timemachine-scheduler/src/main/java/timemachine/scheduler/support/Props.java), and below are some features that I use often.
@@ -73,3 +72,4 @@ NOTE: The `ClasspathURLStreamHandler` is a utility class from the same package u
 There you have it. You see more code than words in this post, but I believe simple code speak louder than words and docs. I find these features very convenient and practical 
 for many Java applications to use. I wish the JDK would provide these out of the box, and make the `java.util.Properties` more
 developer friendly.
+

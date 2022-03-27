@@ -1,9 +1,8 @@
----
-title: Java 8 is out!
-date: 2014-03-19T00:00:00-05:00
-tags:
-  - java
----
+Title: Java 8 is out!
+Date: 2014-03-19 00:00:00-05:00
+Tags: java
+
+
 You can watch webcast on March 25 here: http://eventreg.oracle.com/profile/web/index.cfm?PKWebId=0x637279c68
 
 but you may download it now!
@@ -42,3 +41,4 @@ public class LamdaTest {
 ```
 
 You can learn more from here: http://docs.oracle.com/javase/tutorial/java/javaOO/lambdaexpressions.html 
+

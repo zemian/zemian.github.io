@@ -1,10 +1,8 @@
----
-title: A simple Java command line options parser
-date: 2018-08-13T00:00:00-05:00
-tags:
-  - optparse
-  - java
----
+Title: A simple Java command line options parser
+Date: 2018-08-13 00:00:00-05:00
+Tags: optparse,java
+
+
 
 ```java
 package com.zemian.hellojava;

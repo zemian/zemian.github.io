@@ -1,9 +1,8 @@
----
-title: Some of my old projects
-date: 2016-06-30T00:00:00-05:00
-tags:
-  - blog
----
+Title: Some of my old projects
+Date: 2016-06-30 00:00:00-05:00
+Tags: blog
+
+
 
 Here are some of interesting side projects I have worked on in the past
 
@@ -60,3 +59,4 @@ SweetScala Web Framework
 Sweet is a MVC based web application framework for building dynamic web
 applications. The framework is made with Scala, an Object Oriented and
 Functional programming language that runs on JVM.
+

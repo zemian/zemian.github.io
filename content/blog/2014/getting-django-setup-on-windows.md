@@ -1,10 +1,8 @@
----
-title: Getting Django setup on Windows
-date: 2014-06-18T00:00:00-05:00
-tags:
-  - python
-  - django
----
+Title: Getting Django setup on Windows
+Date: 2014-06-18 00:00:00-05:00
+Tags: python,django
+
+
 A friend asked me how to setup an Django enviroment on Windows without the Cygwin fuzz. Here is the shortest steps I can think of:
 
 1. Install Python3.4 as default path. (It should be "C:\Python34").
@@ -30,4 +28,5 @@ What's next?
 Explore django with a guided tutorial here: 
 
 [https://docs.djangoproject.com/en/1.6/intro/tutorial01](https://docs.djangoproject.com/en/1.6/intro/tutorial01)
+
 

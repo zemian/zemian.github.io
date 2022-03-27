@@ -1,10 +1,8 @@
----
-title: Getting started with Apache HTTPD Web Server on Windows
-date: 2018-02-27T00:00:00-05:00
-tags:
-  - httpd
-  - cygwin
----
+Title: Getting started with Apache HTTPD Web Server on Windows
+Date: 2018-02-27 00:00:00-05:00
+Tags: httpd,cygwin
+
+
 
 Using native Windows Binary (without admin rights)
 ==================================================
@@ -107,3 +105,4 @@ Create `/srv/www/cgi-bin/printenv.py` script:
     import cgi
     cgi.test()
 ```
+

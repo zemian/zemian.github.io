@@ -1,10 +1,8 @@
----
-title: Checking MySQL database connection with mysql-connector-python
-date: 2015-10-09T00:00:00-05:00
-tags:
-  - python
-  - mysql
----
+Title: Checking MySQL database connection with mysql-connector-python
+Date: 2015-10-09 00:00:00-05:00
+Tags: python,mysql
+
+
 First install the MySQL package
 
 	bash>pip install --allow-all-external mysql-connector-python
@@ -20,3 +18,4 @@ cur.execute('select 1+1')
 for row in cur:
 print(row)
 ```
+

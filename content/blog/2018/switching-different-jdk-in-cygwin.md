@@ -1,11 +1,8 @@
----
-title: Switching Different JDK in Cygwin
-date: 2018-03-24T00:00:00-05:00
-tags:
-  - cygwin
-  - jdk
-  - java
----
+Title: Switching Different JDK in Cygwin
+Date: 2018-03-24 00:00:00-05:00
+Tags: cygwin,jdk,java
+
+
 
 I love to use bash shell terminal. It’s a much more powerful terminal to
 do everyday tasks. Even in Windows, I can get most of what I need using
@@ -82,3 +79,4 @@ To put it in use, it looks like this:
     Java(TM) SE Runtime Environment (build 1.8.0_161-b12)
     Java HotSpot(TM) 64-Bit Server VM (build 25.161-b12, mixed mode)
 ```
+

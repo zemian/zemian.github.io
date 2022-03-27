@@ -1,10 +1,8 @@
----
-title: How to setup custom SSLSocketFactory's TrustManager per each URL connection
-date: 2014-10-28T00:00:00-05:00
-tags:
-  - ssh
-  - java
----
+Title: How to setup custom SSLSocketFactory's TrustManager per each URL connection
+Date: 2014-10-28 00:00:00-05:00
+Tags: ssh,java
+
+
 We can see from javadoc that javax.net.ssl.HttpsURLConnection provided a static method to override with setDefaultSSLSocketFory() method. This allow you to supply a custom javax.net.ssl.TrustManager that may verify your own  CA certs handshake and validation etc. But this will override the default for all "https" URLs per your JVM!
 
 So how can we override just a single https URL? Looking at javax.net.ssl.HttpsURLConnection again we see instance method for setSSLSocketFactory(), but we can't instantiate HttpsURLConnection object directly! It took me some digging to realized that the java.net.URL is actually an factory class for its implementation! One can get an instance like this using new URL("https://localhost").openConnection()
@@ -99,3 +97,4 @@ public class WGetText {
 
 }
 ```
+

@@ -1,9 +1,8 @@
----
-title: Be aware of the count - 0 when using Python's re.sub() to find and replace text
-date: 2015-08-23T00:00:00-05:00
-tags:
-  - python
----
+Title: Be aware of the count - 0 when using Python's re.sub() to find and replace text
+Date: 2015-08-23 00:00:00-05:00
+Tags: python
+
+
 I have an xml file and I want to remove a whole section of element without actually parsing the XML file. I wrote an Python script to do just that. I first tested it out like this:
 
 ```
@@ -30,3 +29,4 @@ Or, if you like, you can use the "flags" parameter name explicitly without the o
 	result = re.sub(r'<library-ref>.*</library-ref>', '', input_text, flags=re.S)
 
 So here is an example of flexible dynamic typing of optional parameters can bite if you are not careful.
+

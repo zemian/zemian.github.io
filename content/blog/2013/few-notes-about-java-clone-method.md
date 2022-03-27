@@ -1,9 +1,8 @@
----
-title: Few notes about Java clone() method
-date: 2013-02-20T00:00:00-05:00
-tags:
-  - java
----
+Title: Few notes about Java clone() method
+Date: 2013-02-20 00:00:00-05:00
+Tags: java
+
+
 Did you know you can create new Java instance without constructor? That's right, and this feature is brought to you by the Java clone() method. I personally don't like to use it much because it has many pitfalls, and it feels very broken in many ways. You probably can write better "clone" by using copy constructor or a static copy factory methods.
 
 Anyrate, here is a unit test that highlights few notes I have gathered about Java clone. Look for the "Note" comments below.
@@ -85,3 +84,4 @@ Anyrate, here is a unit test that highlights few notes I have gathered about Jav
         }
     }
 ``` 
+

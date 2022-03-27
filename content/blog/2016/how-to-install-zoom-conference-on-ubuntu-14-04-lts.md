@@ -1,9 +1,8 @@
----
-title: How to install Zoom conference on Ubuntu 14.04 LTS
-date: 2016-06-17T00:00:00-05:00
-tags:
-  - linux
----
+Title: How to install Zoom conference on Ubuntu 14.04 LTS
+Date: 2016-06-17 00:00:00-05:00
+Tags: linux
+
+
 1. Download latest z`oom_2.0.52458.0531_amd64.deb` package from https://zoom.us/download
 
 2. Run  
@@ -25,3 +24,4 @@ UPDATE:
 The exact same steps can be used to install the Skype skype-ubuntu-precise_4.3.0.37-1_i386.deb on Ubuntu.
 
 NOTE: If you have errors running steps above, it's very likely you have upgraded your kernel or added extra repositories into apt-get that's causing all the package dependencies conflict. Try to revert back to original Ubuntu 14.04 install state and these steps should get you running!
+

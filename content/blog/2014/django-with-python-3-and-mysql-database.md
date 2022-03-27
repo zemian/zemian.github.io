@@ -1,11 +1,8 @@
----
-title: Django with Python 3 and MySQL database
-date: 2014-09-04T00:00:00-05:00
-tags:
-  - python
-  - mysql
-  - django
----
+Title: Django with Python 3 and MySQL database
+Date: 2014-09-04 00:00:00-05:00
+Tags: python,mysql,django
+
+
 
 I read many folks are having problems using MySQL db driver with Python 3, especially when setting up a Django app. The default Django 1.6.5 is only supporting the MySQLdb driver and that only works with Python 2.
 
@@ -35,3 +32,4 @@ PS: My initial testing with Django 1.7 also works pretty well with mysql-connect
 UPDATE 07/15/2015:
 
 The django 1.8 documentation now recommends using 'mysqlclient' package if you want to use Python3 with MySQL backend. It should be a drop in replacement for 'MySQLdb'.
+

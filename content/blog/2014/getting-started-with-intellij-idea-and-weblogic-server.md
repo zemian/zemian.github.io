@@ -1,10 +1,8 @@
----
-title: Getting started with Intellij IDEA and WebLogic Server
-date: 2014-01-31T00:00:00-05:00
-tags:
-  - intellij
-  - weblogic
----
+Title: Getting started with Intellij IDEA and WebLogic Server
+Date: 2014-01-31 00:00:00-05:00
+Tags: intellij,weblogic
+
+
 Before starting, you would need the Ultimate version of IDEA to run WebLogic Server (yes, the paid version or the 30 days trial). The Community edition of IDEA will not support Application Server deployment.
 
 I also assume you have already setup WebLogic Server and a user domain as per my [previous blog instructions](https://zemian.github.io/2014/01/getting-started-with-weblogic-server.html). So now let's setup the IDE to boost your development.
@@ -36,3 +34,4 @@ Some goodies with Intellij IDEA and WLS are:
 - Full control on server settings 
 
 NOTE: As noted in previous blog, if you do not set MW_HOME as system variable, then you must add this in IDEA's Run Configuration. Or you edit your "mydomain/bin/startWebLogic.cmd" and "stopWebLogic.cmd" scripts directly. 
+

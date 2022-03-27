@@ -1,9 +1,8 @@
----
-title: How to create web-app with Quartz Scheduler and logging
-date: 2013-08-25T00:00:00-05:00
-tags:
-  - quartz
----
+Title: How to create web-app with Quartz Scheduler and logging
+Date: 2013-08-25 00:00:00-05:00
+Tags: quartz
+
+
 
 I sometimes help out users in Quartz Scheduler forums. Once in a while some one would
 ask how can he/she setup the Quartz inside a web application. This is actualy a fairly
@@ -130,3 +129,4 @@ own Servlet like this:
 Now you are on your way to build your next scheduling application!
 
 Have fun!
+

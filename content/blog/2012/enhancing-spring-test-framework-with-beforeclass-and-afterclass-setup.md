@@ -1,10 +1,8 @@
----
-title: Enhancing Spring Test Framework with beforeClass and afterClass setup
-date: 2012-09-28T00:00:00-05:00
-tags:
-  - java
-  - spring
----
+Title: Enhancing Spring Test Framework with beforeClass and afterClass setup
+Date: 2012-09-28 00:00:00-05:00
+Tags: java,spring
+
+
 
 # How to allow instance methods to run as JUnit BeforeClass behavior
 
@@ -348,3 +346,4 @@ Obviously the output shows nothing interesting here, but the test should run wit
 # Download the demo code
 
 You may get above demo code in a working Maven project from [my sandbox](https://bitbucket.org/saltnlight5/sandbox/src/8d545b15fbbd/junit-examples).
+

@@ -1,9 +1,8 @@
----
-title: Minimal HTTPD config file
-date: 2018-03-04T00:00:00-05:00
-tags:
-  - httpd
----
+Title: Minimal HTTPD config file
+Date: 2018-03-04 00:00:00-05:00
+Tags: httpd
+
+
 
 If you are looking for small set of httpd config file, here is one I
 come up with based on original [httpd
@@ -56,3 +55,4 @@ ScriptAlias /cgi-bin/ "cgi-bin/"
     Require all granted
 </Directory>
 ```
+

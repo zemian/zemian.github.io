@@ -1,11 +1,8 @@
----
-title: Which Programmer Text Editor To Use?
-date: 2020-09-27
-tags:
-- texteditor
-- editor
-- programming
----
+Title: Which Programmer Text Editor To Use?
+Date: 2020-09-27
+Tags: texteditor,editor,programming
+
+
 
 A text editor is a programmer must have tool. Like many developers, I have used quite a few text editors over the years. Here are some that got me through many projects.
 
@@ -34,3 +31,4 @@ A text editor is a programmer must have tool. Like many developers, I have used 
 So as you see, I tried many text editors. I have come to learned that you should always keep a simple, clean and fast text editor. This allows you to edit any text files for any programming languages, read logs, edit system config files etc. Then on top of this, you want to invest in a full feature IDE that supports the main programming language that your project is using. The IDE will provide quick tools setup, environment integration, language refactoring, source control integration to inspect code change and diff, intelli-sense code editing and browsing, and much more. These give you a powerful and productive boost toward a large and demanding project.
 
 Many popular tools out there are created for a purpose and if you're willing to learn it, you can use it in a productive way. If you are a beginner programmer, try some open source text editors. Spend few months on the one that you like. Better yet, work on a real project with your text editor. Spend some time to know it better, read the docs, and learn from other users etc. Now if you are a professional programmer, you shouldn't be afraid to pay a text editor or IDE. A commercial IDE such as Sublime Text or IntelliJ IDEA can really boost your performance. The amount of money you pay is very nominal compare to the money you will earn through the code. Writing good code is a craft of art, so invest on good tools to do the job well. With a good text editor on hand, you will enjoy coding more, and the quality of your code should get better as well.
+

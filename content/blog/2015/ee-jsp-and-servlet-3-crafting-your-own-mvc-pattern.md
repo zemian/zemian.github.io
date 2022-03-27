@@ -1,10 +1,8 @@
----
-title: EE JSP and Servlet 3 - Crafting Your Own MVC Pattern
-date: 2015-03-13T00:00:00-05:00
-tags:
-  - jsp
-  - servlet
----
+Title: EE JSP and Servlet 3 - Crafting Your Own MVC Pattern
+Date: 2015-03-13 00:00:00-05:00
+Tags: jsp,servlet
+
+
 
 The combination of JSP and Servlet allows you to develope MVC pattern
 web application easily. The main focus of MVC pattern is that we want to
@@ -23,3 +21,4 @@ easier. Here I will show you how a simple MVC style of code can look
 like.
 
 [mvc-example](https://github.com/saltnlight5/java-ee6-examples/tree/master/mvc-example)
+

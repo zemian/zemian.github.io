@@ -1,10 +1,8 @@
----
-title: MySQL Data Types and Test Table 
-date: 2018-08-17T00:00:00-05:00
-tags:
-- sql
-- mysql
----
+Title: MySQL Data Types and Test Table
+Date: 2018-08-17 00:00:00-05:00
+Tags: sql,mysql
+
+
 
 A quick sql table setup to test most common data types.
 
@@ -72,3 +70,4 @@ insert into test(cat, distx, disty) values ('test4', rand(), rand());
 select sum(price) from test where cat = 'test';
 select * from test order by cat, ts desc;
 ```
+

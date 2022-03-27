@@ -1,9 +1,8 @@
----
-title: Getting Project File Stats with Python
-date: 2018-03-14T00:00:00-05:00
-tags:
-  - python
----
+Title: Getting Project File Stats with Python
+Date: 2018-03-14 00:00:00-05:00
+Tags: python
+
+
 
 ```    
 import os, sys
@@ -38,3 +37,4 @@ for file_type in top_type_counts:
         percentage = (type_count / file_count)
         print(f"  {file_type:25} {type_count:<10} {percentage:.1%}")
 ```
+

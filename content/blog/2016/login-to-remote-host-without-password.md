@@ -1,10 +1,8 @@
----
-title: Login to remote host without password
-date: 2016-07-06T00:00:00-05:00
-tags:
-  - linux
-  - ssh
----
+Title: Login to remote host without password
+Date: 2016-07-06 00:00:00-05:00
+Tags: linux,ssh
+
+
 
 Most of remote systems are secured by SSH, and to gain remote control with terminal, you would need to `ssh` into the server. You will be prompted to login with your password on every session. To avoid typing password everytime, you need to setup as authorized client. Here is how you can do that with ssh key.
 
@@ -33,3 +31,4 @@ If you don&#8217;t already have the `~/.ssh/authorized_keys` file on remote host
 The cool thing about this is that it affects all `ssh` related commands, such as `scp` will now work without prompting you for password!
 
 Have a productive day!
+

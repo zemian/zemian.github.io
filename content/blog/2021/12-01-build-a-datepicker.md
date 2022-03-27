@@ -1,11 +1,8 @@
----
-title: Build a DatePicker using VueJS and BulmaCSS
-date: 2021-12-01
-tags:
-- vue
-- bulma
-- datepicker
----
+Title: Build a DatePicker using VueJS and BulmaCSS
+Date: 2021-12-01
+Tags: vue,bulma,datepicker
+
+
 
 I took the challenge to build a simple DatePicker web component using VueJS and BulmaCSS, and here is the result!
 
@@ -15,3 +12,4 @@ I took the challenge to build a simple DatePicker web component using VueJS and 
   on <a href="https://codepen.io">CodePen</a>.</span>
 </p>
 <script async src="https://cpwebassets.codepen.io/assets/embed/ei.js"></script>
+

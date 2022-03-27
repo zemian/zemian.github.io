@@ -1,9 +1,8 @@
----
-title: Deploying applications or libraries to WebLogic Server using command line
-date: 2014-08-20T00:00:00-05:00
-tags:
-  - weblogic
----
+Title: Deploying applications or libraries to WebLogic Server using command line
+Date: 2014-08-20 00:00:00-05:00
+Tags: weblogic
+
+
 Here is how you can automate deployment for WebLogic server using command line.
 
 First source the env settings from the server:
@@ -40,3 +39,4 @@ $ java weblogic.Deployer -undeploy \
 -targets myserver \
 -name myapp_or_lib.war
 ```
+

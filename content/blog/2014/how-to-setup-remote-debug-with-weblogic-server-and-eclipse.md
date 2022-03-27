@@ -1,9 +1,8 @@
----
-title: How to setup remote debug with WebLogic Server and Eclipse
-date: 2014-04-07T00:00:00-05:00
-tags:
-  - weblogic
----
+Title: How to setup remote debug with WebLogic Server and Eclipse
+Date: 2014-04-07 00:00:00-05:00
+Tags: weblogic
+
+
 Here is how I enable remote debugging with WebLogic Server (11g) and Eclipse IDE. (Actually the java option is for any JVM, just the instruction here is WLS specific.) 
 
 1. Edit `<my_domain>/bin/setDomainEnv.sh` file and add this on top:
@@ -39,3 +38,4 @@ Now you can start managed server like this to change the port in a Bash shell by
 ```
 bash>DEBUG_PORT=8001 bin/startManagedWeblogic.sh my_server_name
 ```
+

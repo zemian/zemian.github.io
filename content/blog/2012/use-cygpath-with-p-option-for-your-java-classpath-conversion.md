@@ -1,9 +1,8 @@
----
-title: Use cygpath with -p option for your Java CLASSPATH conversion
-date: 2012-11-15T00:00:00-05:00
-tags:
-  - cygwin
----
+Title: Use cygpath with -p option for your Java CLASSPATH conversion
+Date: 2012-11-15 00:00:00-05:00
+Tags: cygwin
+
+
 I just noticed that Cygwin's `cygpath` command supports `-p` option. This is a real gem when writing Java wrapper script that needs to covert CLASSPATH values. A simple script can demonstrate the purpose.
 
 ```
@@ -26,3 +25,4 @@ I just noticed that Cygwin's `cygpath` command supports `-p` option. This is a r
     fi
     java -cp "$CP" "$@"
 ```
+

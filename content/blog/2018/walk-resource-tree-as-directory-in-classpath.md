@@ -1,10 +1,8 @@
----
-title: Walk resource tree as directory in classpath
-date: 2018-01-27T00:00:00-05:00
-tags:
-  - java
-  - classpath
----
+Title: Walk resource tree as directory in classpath
+Date: 2018-01-27 00:00:00-05:00
+Tags: java,classpath
+
+
 
 The two most frequent type of classpath URL we get when get it through
 `ClassLoader#getResource(resourceName)` is either `file` or `jar`
@@ -106,3 +104,4 @@ Now, here is how we can use it:
                 System.out.println(fileStream.getPath() + " " + fileStream.getStream());
             });
             System.out.println();
+

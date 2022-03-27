@@ -1,11 +1,8 @@
----
-title: A simple MySQL daily backup script
-date: 2014-06-03T00:00:00-05:00
-tags:
-  - mysql
-  - backup
-  - cron
----
+Title: A simple MySQL daily backup script
+Date: 2014-06-03 00:00:00-05:00
+Tags: mysql,backup,cron
+
+
 Using the MySQL export script I've showed from [last post](https://zemian.github.io/2014/05/how-to-export-and-import-mysql-database.html) (assume you saved it in a file named "$HOME/database-export.sh"), you may now perform a daily backup with your crontab service like this.
 ```
 #file: mysql-backups.sh
@@ -29,3 +26,4 @@ This script should create a daily folder under your home directory, for example 
 @daily $HOME/mysql-backups.sh > /dev/null 2>&1
 ```
 This is not the most robust way of backing up your DB, but it's a simple solution if you just want something quick up and running without worry too much.
+

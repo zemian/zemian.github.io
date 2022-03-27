@@ -1,9 +1,8 @@
----
-title: How to secure a web application by the app server container
-date: 2014-12-01T00:00:00-05:00
-tags:
-  - security
----
+Title: How to secure a web application by the app server container
+Date: 2014-12-01 00:00:00-05:00
+Tags: security
+
+
 There are many benefits to allow a container in managing users, groups and authentication policies. You may configure your WAR application to take advantage of this by adding the following in the WEB-INF/web.xml file
 ```
    <security-constraint>
@@ -43,3 +42,4 @@ Here we tell WLS that we map the "webuser" role defined in web.xml to use the "w
 To create  user or user group in WLS, you may use the WLS Admin console web application. Go to the Security Realm and select the default "myrealm", and then select User or Group tab. Go ahead and add a user with password under a new group named "webusergroup". After this you can deploy your app, and it would prompt you for user and password whenever you try to access its URL.
 
 You can find out more security info at [https://docs.oracle.com/cd/E23943_01/web.1111/e13711/thin_client.htm#SCPRG171](https://docs.oracle.com/cd/E23943_01/web.1111/e13711/thin_client.htm#SCPRG171). 
+

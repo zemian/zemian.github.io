@@ -1,9 +1,8 @@
----
-title: Taming those Java editors on MacOSX
-date: 2012-08-26T00:00:00-05:00
-tags:
-  - editor
----
+Title: Taming those Java editors on MacOSX
+Date: 2012-08-26 00:00:00-05:00
+Tags: editor
+
+
 
 Today, I learned that you can open multiple Eclipse instances in MacOSX like this
 
@@ -84,3 +83,4 @@ You can find more options by running it without any options, and it will print y
           -g, --background  Does not bring the application to the foreground.
           -h, --header      Searches header file locations for headers matching the given filenames, and opens them.
 ```
+

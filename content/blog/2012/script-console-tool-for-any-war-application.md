@@ -1,10 +1,8 @@
----
-title: Script Console Tool for any WAR application
-date: 2012-07-21T00:00:00-05:00
-tags:
-  - java
-  - script
----
+Title: Script Console Tool for any WAR application
+Date: 2012-07-21 00:00:00-05:00
+Tags: java,script
+
+
 
 In the latest release of [TimeMachine scheduler project](https://bitbucket.org/timemachine/scheduler), I've added a Groovy scripting console to the web app and allow user to script the scheduler. This feature is actually very useful for any servlet application as well. Imagine that if you have a script/shell console for your web application that allow you to dynamically inspect any variables or data?
 
@@ -13,3 +11,4 @@ With the same idea, I've written a very basic JSP file `script-console.jsp` that
 The JSP will automatically detect all the scripting engine available in your JVM (1.6+) and let you choose any one to use. In the text area you can enter any script codes. All the JSP implicit variables are available for you to use as well. JVM 1.6 or higher will have at least JavaScript engine available, so you can use it immediately.
 
 Be aware that this is a huge security risk since the script console not only expose your application, it also expose your entire JVM! It must be use with care, and if possible, it needs to be added as protected resources in your web application.
+

@@ -1,10 +1,8 @@
----
-title: How to run nginx and setup reverse proxy to Tomcat
-date: 2017-08-04T00:00:00-05:00
-tags:
-  - nginx
-  - tomcat
----
+Title: How to run nginx and setup reverse proxy to Tomcat
+Date: 2017-08-04 00:00:00-05:00
+Tags: nginx,tomcat
+
+
 
 Basic `nginx` usage
 ===================
@@ -60,3 +58,4 @@ server {
             }
 }
 ```
+

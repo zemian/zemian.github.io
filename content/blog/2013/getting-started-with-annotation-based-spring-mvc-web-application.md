@@ -1,9 +1,8 @@
----
-title: Getting started with annotation based Spring MVC web application
-date: 2013-10-04T00:00:00-05:00
-tags:
-  - spring
----
+Title: Getting started with annotation based Spring MVC web application
+Date: 2013-10-04 00:00:00-05:00
+Tags: spring
+
+
 
 Here is a minimal way to get a Spring 3 MVC project started with Maven.
 
@@ -97,3 +96,4 @@ And now you would need the JSP view `spring-web-annotation/src/main/webapp/index
 Now cd into `spring-web-annotation` and execute `mvn org.apache.tomcat.maven:tomcat7-maven-plugin:run`. You should see your Spring application starting and be able to browse `http://localhost:8080/spring-web-annotation` URL.
 
 There are lot of cool stuff you can do with Spring MVC. Checkout their awesome docs for more details.
+

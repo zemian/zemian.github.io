@@ -1,9 +1,8 @@
----
-title: My Quick Git Reference
-date: 2016-10-04T00:00:00-05:00
-tags:
-  - git
----
+Title: My Quick Git Reference
+Date: 2016-10-04 00:00:00-05:00
+Tags: git
+
+
 
 I have started using git and here are some of my frequently used
 commands.
@@ -67,3 +66,4 @@ git stash          # Put away all pending changes
 git stash pop      # Bring back all pending changes
 git stash list     # List all stashes
 ```
+

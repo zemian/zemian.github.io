@@ -1,10 +1,8 @@
----
-title: Starting postgres server on Cygwin
-date: 2018-02-20T00:00:00-05:00
-tags:
-  - postgres
-  - cygwin
----
+Title: Starting postgres server on Cygwin
+Date: 2018-02-20 00:00:00-05:00
+Tags: postgres,cygwin
+
+
 
 To run postgres database server on Cygwin, you need first run the
 `cygserver`. If not, you will get error similar to this:
@@ -69,3 +67,4 @@ a database that match your username, and use that as default.
 
 You should be careful with "--auth=trust", which can get you started
 quickly but not very secure.
+

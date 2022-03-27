@@ -1,9 +1,8 @@
----
-title: How to switch Linux account user without the target user's password
-date: 2016-07-07T00:00:00-05:00
-tags:
-  - linux
----
+Title: How to switch Linux account user without the target user's password
+Date: 2016-07-07 00:00:00-05:00
+Tags: linux
+
+
 
 Did you know if you have been granted `sudo` access to a remote
 host with `su` command, then you may switch to any user without the
@@ -28,3 +27,4 @@ was only setup just to run applications (eg: `postgres`, `mysql`,
 `oracle`, or `weblogic` etc.) and not intented for real user. In this
 case, you might not even know what the real password is. Above
 trick should get you switch into that target user account.
+

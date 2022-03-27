@@ -1,9 +1,8 @@
----
-title: Tryout TimeMachine Scheduler
-date: 2012-04-25T00:00:00-05:00
-tags:
-  - timemachine
----
+Title: Tryout TimeMachine Scheduler
+Date: 2012-04-25 00:00:00-05:00
+Tags: timemachine
+
+
 There are few updates with TimeMachine Scheduler project:
 
 1. The project has a new home: 
@@ -12,3 +11,4 @@ There are few updates with TimeMachine Scheduler project:
 3. I've been working hard to update the ReferenceManual under wiki so users can get started and use it effectively.
 
 Give the project a try and let me know what you think!
+

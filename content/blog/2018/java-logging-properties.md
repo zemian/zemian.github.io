@@ -1,10 +1,8 @@
----
-title: Java Logging Properties
-date: 2018-03-16T00:00:00-05:00
-tags:
-  - java
-  - logging
----
+Title: Java Logging Properties
+Date: 2018-03-16 00:00:00-05:00
+Tags: java,logging
+
+
 
 Example:
 
@@ -16,3 +14,4 @@ Example:
     java.util.logging.ConsoleHandler.level = FINEST
     sun.net.www.protocol.http.HttpURLConnection.level = ALL
     myapp.Hello.level = ALL
+

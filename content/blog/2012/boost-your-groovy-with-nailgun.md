@@ -1,9 +1,8 @@
----
-title: Boost your Groovy with NailGun
-date: 2012-09-13T00:00:00-05:00
-tags:
-  - groovy
----
+Title: Boost your Groovy with NailGun
+Date: 2012-09-13 00:00:00-05:00
+Tags: groovy
+
+
 
 Are you working on a large Hibernate project that takes long time to load up all the `hbm.xml` files when creating the 
 `Session` object? This is fine during deployment and runtime because it only loads it once. However, often time we also 
@@ -50,3 +49,4 @@ There, I scratched my itch.
   
 4. Select menu "Tool > Build System > GroovyNailGunClient"
 5. Press `CTRL+B` to run any groovy file in your editor.
+

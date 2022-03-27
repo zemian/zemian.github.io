@@ -1,11 +1,8 @@
----
-title: Parsing Arguments and Options With Python Script
-date: 2018-03-22T00:00:00-05:00
-tags:
-  - python
-  - argparse
-  - optparse
----
+Title: Parsing Arguments and Options With Python Script
+Date: 2018-03-22 00:00:00-05:00
+Tags: python,argparse,optparse
+
+
 
     import argparse
     parser = argparse.ArgumentParser()
@@ -20,3 +17,4 @@ tags:
             with open(args.file) as fh:
                     for line in fh:
                             print(line, end='')
+

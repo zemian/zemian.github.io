@@ -1,11 +1,8 @@
----
-title: From Back End to Front End Development
-date: 2020-03-22T00:00:00-05:00
-tags:
-  - js
-  - nodejs
-  - frontend
----
+Title: From Back End to Front End Development
+Date: 2020-03-22 00:00:00-05:00
+Tags: js,nodejs,frontend
+
+
 
 A year ago I was given an opportunity to work on the Oracle CX Knowledge Management product. In this development team, we use Oracle JET (OJET), a JavaScript toolkit for building our UI application. The product also has a mature RESTFul API service that manage the content data from the back end.
 
@@ -16,3 +13,4 @@ Today the JS ecosystem is vast and changed a lot since when I first learned it. 
 Now, Oracle also has their own JS framework and UI library called OJET that they have been using for a while now. The OJET is a UI components libraries built on top of KnockoutJS (KO). The KnockoutJS was very popular few years ago, but now it has slow down and replaced by other newer libraries such as VueJS. But despite that, KO is a very nice and easy to use library. It provides JS model objects binding to HTML dom tree elements. The model can have observables that will “react” to changes and automatically update the DOM elements (UI). This is the whole basis of what they call MVVM pattern. And the OJET application is built based on that.
 
 I will try to write up some more updates, tips and tutorials on how to use OJET and other JS related topics here. So keep in touch!
+

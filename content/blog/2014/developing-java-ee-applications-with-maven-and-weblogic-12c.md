@@ -1,10 +1,8 @@
----
-title: Developing Java EE applications with Maven and WebLogic 12c
-date: 2014-02-21T00:00:00-05:00
-tags:
-  - weblogic
-  - maven
----
+Title: Developing Java EE applications with Maven and WebLogic 12c
+Date: 2014-02-21 00:00:00-05:00
+Tags: weblogic,maven
+
+
 The WebLogic Server 12c has very nice support for Maven now. The doc for this is kinda hidden though, so here is a direct link [http://docs.oracle.com/middleware/1212/core/MAVEN](http://docs.oracle.com/middleware/1212/core/MAVEN)
 
 To summarize the doc, Oracle did not provide a public Maven repository manager hosting for their server artifacts. However they do now provide a tool for you to create and populate your own. You can setup either your local repository (if you are working mostly on your own in a single computer), or you may deploy them into your own internal Maven repository manager such as Archiva or Nexus.
@@ -82,3 +80,4 @@ $ mvn weblogic:deploy -DoracleMiddlewareHome=$HOME/apps/wls12120 -DoracleServerN
 After the "BUILD SUCCESS" message, you may visit the http://localhost:7001/basicWebapp URL.
 
 Revisit the WLS doc again and you will find that they also provide other project templates (Maven calls these archetypes) for building EJB, MDB, or WebService projects. These should help you get your EE projects started quickly. 
+

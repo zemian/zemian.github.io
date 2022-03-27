@@ -1,10 +1,8 @@
----
-title: Kickstart TimeMachine Scheduler with a quick Groovy script
-date: 2012-07-09T00:00:00-05:00
-tags:
-  - groovy
-  - timemachine
----
+Title: Kickstart TimeMachine Scheduler with a quick Groovy script
+Date: 2012-07-09 00:00:00-05:00
+Tags: groovy,timemachine
+
+
 If you have [Groovy](http://groovy.codehaus.org/)installed, you can kick start a [TimeMachine Scheduler](https://bitbucket.org/timemachine/scheduler) job without any setup! Try this out:
 
 ```
@@ -22,3 +20,4 @@ scheduler.schedule(jobDef)
 scheduler.start()
 addShutdownHook{ scheduler.destroy() }
 ```
+

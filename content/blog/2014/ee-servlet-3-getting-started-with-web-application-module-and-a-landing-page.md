@@ -1,9 +1,8 @@
----
-title: EE Servlet 3 - Getting started with web application module and a landing page
-date: 2014-12-27T00:00:00-05:00
-tags:
-  - servlet
----
+Title: EE Servlet 3 - Getting started with web application module and a landing page
+Date: 2014-12-27 00:00:00-05:00
+Tags: servlet
+
+
 
 ## Getting started with Servlet 3
 
@@ -71,3 +70,4 @@ Another alternate solution instead of overrite welcome-file is simply add a "ind
 ```
 <% response.sendRedirect(request.getContextPath() + "/index"); %>
 ```
+

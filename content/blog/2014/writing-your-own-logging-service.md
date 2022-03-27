@@ -1,9 +1,8 @@
----
-title: Writing your own logging service?
-date: 2014-12-13T00:00:00-05:00
-tags:
-  - logging
----
+Title: Writing your own logging service?
+Date: 2014-12-13 00:00:00-05:00
+Tags: logging
+
+
 Application logging is one those things like favorite Editors war: everyone has their own opinions and there are endless of implemenations and flavors out there. Now a days, you likely would want to use something already available such as Log4j or Logback. Even JDK has a built in "java.util.logging" implementation. To avoid couple to a direct logger, many projects would opt to use a facade interface, and there is already couple good ones out there already, such as SLF4J or Apache Common Logging etc.
 
 Despite all these, many project owners still want to try write their own logger service! I wondered if I were to ask and write one myself, what would it be like? So I played around and come up with this simple facade that wraps one of the logger provider (JDK logger in this case), and you can check it out [here](https://github.com/saltnlight5/java-ee6-examples/tree/master/common-service/src/main/java/zemian/service/logging). With my logger, you can use it like this in your application:
@@ -43,3 +42,4 @@ Here are some general rules about using logger in your application that I recomm
 - Use `DEBUG` log messages for developers to see and troubleshoot the application. Use this for critical application junction and operation to show objects and services states etc. Try not to add repeated loop info messages here and litter your log content.
 - Use `TRACE` log message for developers to troubleshoot tight for loop and high traffic messages information.
 - You should select a logger provider that let you configure and turn these logging levels ON or OFF (preferrable at runtime if possible as well). Each level should able to automatically suppress all levels below it. And ofcourse you want a logger provider that can handle log message output to STDOUT and/or to FILE as destination as well.
+

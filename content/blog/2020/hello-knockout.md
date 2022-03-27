@@ -1,9 +1,8 @@
----
-title: Hello KnockoutJS
-date: 2020-04-07T00:00:00-05:00
-tags:
-  - knockout
----
+Title: Hello KnockoutJS
+Date: 2020-04-07 00:00:00-05:00
+Tags: knockout
+
+
 
 One cool thing about [KnockoutJS](https://knockoutjs.com/) library is that you can get started with just a single JS file. It allows you to bind a JS object model property to any HTML DOM elements, and automatically update it when property value has changed.
 
@@ -30,3 +29,4 @@ app.message("Hello KnockoutJS");
 ```
 
 And the browser updates immediately!
+

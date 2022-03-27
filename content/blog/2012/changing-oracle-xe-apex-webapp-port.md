@@ -1,9 +1,8 @@
----
-title: Changing Oracle XE apex webapp port
-date: 2012-05-11T00:00:00-05:00
-tags:
-  - oracle_xe
----
+Title: Changing Oracle XE apex webapp port
+Date: 2012-05-11 00:00:00-05:00
+Tags: oracle_xe
+
+
 If you use Oracle XE for development, then you know it has a simple web interface through http://localhost:8080/apex. Now port 8080 is a common port used by Tomcat server, so letting Oracle XE permanently have taken it is not convenient. But you can change it like this:
 
     
@@ -19,3 +18,4 @@ Also, if you ever deleted the HR sample database on the XE installation, you can
     
      bash> cd /c/oraclexe/app/oracle/product/10.2.0/server/demo/schema/human_resources
      bash> sqlplus system < hr_main.sql
+

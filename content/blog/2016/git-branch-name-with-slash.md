@@ -1,9 +1,8 @@
----
-title: Git Branch name with 'slash'
-date: 2016-10-09T00:00:00-05:00
-tags:
-  - git
----
+Title: Git Branch name with 'slash'
+Date: 2016-10-09 00:00:00-05:00
+Tags: git
+
+
 
 Git allows you to use `/` slash in your branch name. It’s useful for
 grouping branches. However, you need to be careful that once a slashy
@@ -30,3 +29,4 @@ branch, and now you are done but want to rename under a subcategory
 the rename will fail! You have to first ensure `closed` branch does not
 exist. In fact reate a `closed/zkeepme` first, then you can always move
 your completed branch into that sub category!
+

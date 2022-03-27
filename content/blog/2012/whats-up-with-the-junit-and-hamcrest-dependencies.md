@@ -1,10 +1,8 @@
----
-title: What's up with the JUnit and Hamcrest dependencies?
-date: 2012-10-06T00:00:00-05:00
-tags:
-  - java
-  - junit
----
+Title: What's up with the JUnit and Hamcrest dependencies?
+Date: 2012-10-06 00:00:00-05:00
+Tags: java,junit
+
+
 
 It's awesome that [JUnit](http://www.junit.org/) is recognizing the usefulness of [Hamcrest](http://code.google.com/p/hamcrest/), because I use these two a lot. However, I find JUnit packaging of their dependencies odd, and can cause class loading problem if you are not careful. 
 
@@ -74,3 +72,4 @@ This should make Maven use the following dependencies:
 However I think using the exclusion tag would probably give you more stable build and not rely on Maven implicit ordering rule. And it avoid easy mistake for Maven beginer users. However I wish JUnit would do a better job at packaging and remove duplicated classes in jar. I personally think it's more productive for JUnit to also include `hamcrest-libray` instead of just the `hamcrest-core` jar.
 
 What do you think?
+

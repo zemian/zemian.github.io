@@ -1,10 +1,8 @@
----
-title: How to Setup WordPress For Local Development
-date: 2021-11-14
-tags:
-- php
-- wordpress
----
+Title: How to Setup WordPress For Local Development
+Date: 2021-11-14
+Tags: php,wordpress
+
+
 
 The [WordPress installation](https://wordpress.org/support/article/how-to-install-wordpress/) is relative simple, and they even boast about a "famous 5-minute installation". However, what they mean by "5-minutes" part though, is that it only count when you first launched the WordPress site for the first time setup. If you are a newbie, it's likely you haven't install their pre-requisites yet. Here I will summarize the install and setup process for completeness sake.
 
@@ -112,3 +110,4 @@ GRANT ALL PRIVILEGES ON wordpress.* TO 'myuser'@'localhost';
         * `http://localhost:8080/wordpress/wp-admin` - The back-end site for admin users.
         
 And that's all! Enjoy creating content with WordPress!
+

@@ -1,9 +1,8 @@
----
-title: How to turn off IntelliJ autoformat on a block of code
-date: 2018-02-23T00:00:00-05:00
-tags:
-  - intellij
----
+Title: How to turn off IntelliJ autoformat on a block of code
+Date: 2018-02-23 00:00:00-05:00
+Tags: intellij
+
+
 
 When doing bug fix on old codes, you want least possible change set as
 possible. The IntelliJ IDE by default will auto reformat your code upon
@@ -17,3 +16,4 @@ it off, you can do this:
 For, IntelliJ 2017.3, go to Menu
 `File > Settings > Editor > General > Smark Keys`, then uncheck
 `Reformat block  on typing '}'` item.
+

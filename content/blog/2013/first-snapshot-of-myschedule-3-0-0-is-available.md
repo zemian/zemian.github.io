@@ -1,9 +1,8 @@
----
-title: First snapshot of myschedule-3.0.0 is available
-date: 2013-03-27T00:00:00-05:00
-tags:
-  - myschedule
----
+Title: First snapshot of myschedule-3.0.0 is available
+Date: 2013-03-27 00:00:00-05:00
+Tags: myschedule
+
+
 
 First snapshot of [myschedule-3.0.0](https://code.google.com/p/myschedule/downloads/list) with brand new UI is ready to be try out! 
 
@@ -34,3 +33,4 @@ I also improved on the project packaging. Now getting started with is even more 
 ```    
 
 Note that not all MySchedule-2.x features are in the 3.0 snapshot yet. For now, you would need to use the ScripConsole window to enter jobs into the scheduler. There are now new templates UI available for you to choose and start working quickly. I am still working on allowing users to save their own templates and edit them. This should give users more rich experience in using the UI manager.
+

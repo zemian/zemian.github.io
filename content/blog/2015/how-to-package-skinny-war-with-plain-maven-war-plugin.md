@@ -1,9 +1,8 @@
----
-title: How to package skinny war with plain maven-war-plugin
-date: 2015-05-22T00:00:00-05:00
-tags:
-  - maven
----
+Title: How to package skinny war with plain maven-war-plugin
+Date: 2015-05-22 00:00:00-05:00
+Tags: maven
+
+
 
 If you are not using maven EAR plugin, then you can also use plain maven-war-plugin to package a Skinny war package like this:
 ```
@@ -41,3 +40,4 @@ However, if you ran into the problem I described in [last post](https://zemian.g
             </plugin>
 ```
 The plugin would accept a REGEX expression for exclusion as well, but getting it to work might take you a few tries! If you need more than this, try this online Java REGEX testing tool: [http://www.regexplanet.com/advanced/java/index.html](http://www.regexplanet.com/advanced/java/index.html)
+

@@ -1,11 +1,8 @@
----
-title: How to generate Redmine WAR application to run with Java
-date: 2012-08-06T00:00:00-05:00
-tags:
-  - jruby
-  - redmine
-  - issue-tracker
----
+Title: How to generate Redmine WAR application to run with Java
+Date: 2012-08-06 00:00:00-05:00
+Tags: jruby,redmine,issue-tracker
+
+
 
 If you survey around Java open source land, it's really disappointing in not able to  find a decent project management web app that we can use. The Java war file deployment in an app server is easy to use, and it would give us good performance. Especially if we already in a Java shop, having a project management tool that deploys in an existing app server would be easier to maintain.
 
@@ -45,3 +42,4 @@ Now create the war file.
     
 
 After this, you will see `redmine-2.0.3.war` in the directory. Now you can drop it into any app server and you may kick start any projects!
+

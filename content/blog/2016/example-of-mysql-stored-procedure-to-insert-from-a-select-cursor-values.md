@@ -1,9 +1,8 @@
----
-title: Example of MySQL stored procedure to INSERT from a SELECT cursor values
-date: 2016-06-26T00:00:00-05:00
-tags:
-  - mysql
----
+Title: Example of MySQL stored procedure to INSERT from a SELECT cursor values
+Date: 2016-06-26 00:00:00-05:00
+Tags: mysql
+
+
 
 ```
 DELIMITER //
@@ -37,3 +36,4 @@ CALL proc_hotfix1();
 SELECT COUNT(*) FROM hotfix1;
 SELECT * FROM hotfix1;
 ```
+

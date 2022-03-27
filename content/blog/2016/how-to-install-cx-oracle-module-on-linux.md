@@ -1,10 +1,8 @@
----
-title: How to install cx_Oracle module on Linux
-date: 2016-07-23T00:00:00-05:00
-tags:
-  - python
-  - oracle
----
+Title: How to install cx_Oracle module on Linux
+Date: 2016-07-23 00:00:00-05:00
+Tags: python,oracle
+
+
 
 Here are my notes on installing [`cx_Oracle` python
 module](http://cx-oracle.sourceforge.net/) to access Oracle Database
@@ -61,3 +59,4 @@ Unzip and then add the following to your `PATH`
 
 For more information, see [`sqlplus`
 doc](https://docs.oracle.com/database/121/SQPUG/toc.htm)
+

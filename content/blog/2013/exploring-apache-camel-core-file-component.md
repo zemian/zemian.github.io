@@ -1,9 +1,8 @@
----
-title: Exploring Apache Camel Core - File Component
-date: 2013-09-04T00:00:00-05:00
-tags:
-  - camel
----
+Title: Exploring Apache Camel Core - File Component
+Date: 2013-09-04 00:00:00-05:00
+Tags: camel
+
+
 
 A file poller is a very useful mechanism to solve common IT problems. Camel&#8217;s built-in `file` component is extremely flexible, and there are many options available for configuration. Let&#8217;s cover few common usages here.
 
@@ -143,3 +142,4 @@ There are more options availabe from [File](http://camel.apache.org/file2.html) 
 that you may explore.
 [Try it out with a Route](https://zemian.github.io/2013/08/getting-started-with-apache-camel-using.html)
 and see it for yourself.
+

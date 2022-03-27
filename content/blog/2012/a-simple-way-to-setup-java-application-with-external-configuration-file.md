@@ -1,9 +1,8 @@
----
-title: A simple way to setup Java application with external configuration file
-date: 2012-10-27T00:00:00-05:00
-tags:
-  - java
----
+Title: A simple way to setup Java application with external configuration file
+Date: 2012-10-27 00:00:00-05:00
+Tags: java
+
+
 Many Java applications would deploy and run it with some kind of external configuration files. It's very typical that you would want a set of config files per environments such as DEV, QA and PROD. There many options in tackling this problem, especially in a Java app, but keeping it simple and easy to maintain would take some disciplines.
 
 Here I would layout a simple way you may use to depploy a typical Java application. The concept is simple and you can easily apply to a standalone, web, or even a JEE application.
@@ -104,3 +103,4 @@ jar, you would still able to overwrite by simply create same directory structure
 ## Feedback
 
 So what are some clever ways you have seen or done with your application configuration? I hope to hear from you and share.
+

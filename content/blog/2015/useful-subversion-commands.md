@@ -1,9 +1,8 @@
----
-title: Useful subversion commands
-date: 2015-07-02T00:00:00-05:00
-tags:
-  - svn
----
+Title: Useful subversion commands
+Date: 2015-07-02 00:00:00-05:00
+Tags: svn
+
+
 # shell alias and utilities for Subversion
 
 function svnremovenew {
@@ -22,3 +21,4 @@ alias svnrevertall='svn revert -R .'
 alias svnup='svn update --accept mine-full'
 
 alias svnupreset='svnup && svnrevertall && svnremovenew'
+

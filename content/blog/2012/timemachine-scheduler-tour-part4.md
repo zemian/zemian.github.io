@@ -1,9 +1,8 @@
----
-title: TimeMachine Scheduler Tour - Part4
-date: 2012-06-17T00:00:00-05:00
-tags:
-  - timemachine
----
+Title: TimeMachine Scheduler Tour - Part4
+Date: 2012-06-17 00:00:00-05:00
+Tags: timemachine
+
+
 
 This is part 4 of 7 in a series of articles that will give you a tour of the [TimeMachine Scheduler](https://bitbucket.org/timemachine/scheduler/wiki/Home) project. These articles will introduce you to the scheduler, how to load jobs and schedules, and explore some of its advanced features. For the most current and accurate instructions, please visit the ReferenceManual from the project site.
 
@@ -146,3 +145,4 @@ Besides the SchedulerListener, there is also JobListener, `ConfigPropsListener`,
 In  this tour, I have introduced and setup a Java Maven based project for you to explore the TimeMachine Scheduler. Go ahead and give these API a try and let us know what you think. If there is any features you are looking for that's not in current scheduler, then please help file an Issue in the project site. We will be glad to evaluate and look forward to improve the project with you.
 
 End of part 4. You may continue [next tour](https://zemian.github.io/2012/06/timemachine-scheduler-tour-part5.html), or see [previous tour](https://zemian.github.io/2012/06/timemachine-scheduler-tour-part3.html).
+

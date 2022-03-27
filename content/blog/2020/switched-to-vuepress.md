@@ -1,10 +1,8 @@
----
-title: Switched Blogging to VuePress
-date: 2020-08-15T00:00:00-05:00
-tags:
-- blog
-- vuepress
----
+Title: Switched Blogging to VuePress
+Date: 2020-08-15 00:00:00-05:00
+Tags: blog,vuepress,ssg
+
+
 
 I have switched my blog publishing source from [jbake](https://github.com/zemian/zemian.github.io/tree/jbake) to [vuepress](https://github.com/zemian/zemian.github.io/tree/master).
 
@@ -21,3 +19,4 @@ Before - Blog with JBake:
 
 After - Blog with VuePress:
 ![](/images/posts/2020/blog-vuepress.png "After - Blog with VuePress")
+

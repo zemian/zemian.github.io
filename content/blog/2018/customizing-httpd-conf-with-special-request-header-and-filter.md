@@ -1,11 +1,8 @@
----
-title: Customizing httpd conf with special request header and filter
-date: 2018-02-26T00:00:00-05:00
-tags:
-  - httpd
-  - proxy
-  - filter
----
+Title: Customizing httpd conf with special request header and filter
+Date: 2018-02-26 00:00:00-05:00
+Tags: httpd,proxy,filter
+
+
 
 ## How to setup httpd reverse proxy for Tomcat
 
@@ -99,3 +96,4 @@ File my-filter2.py
 		for k,v in os.environ.items():
 				file.write(f'os.env: {k} = {v}\n')
 ```
+

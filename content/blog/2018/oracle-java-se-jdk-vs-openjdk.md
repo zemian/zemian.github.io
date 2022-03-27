@@ -1,11 +1,8 @@
----
-title: Oracle Java SE JDK vs OpenJDK
-date: 2018-03-24T00:00:00-05:00
-tags:
-  - openjdk
-  - jdk
-  - java
----
+Title: Oracle Java SE JDK vs OpenJDK
+Date: 2018-03-24 00:00:00-05:00
+Tags: openjdk,jdk,java
+
+
 
 In general:
 
@@ -32,3 +29,4 @@ JDK](http://www.oracle.com/technetwork/java/javase/downloads/index.html).
 These JDK packages has different licenses for usage, and are built with
 different installer format. Users usually require local Admin Rights to
 install it.
+

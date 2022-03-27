@@ -1,10 +1,8 @@
----
-title: JS Object To JSON Converter
-date: 2020-04-19T00:00:00-05:00
-tags:
-  - js
-  - json
----
+Title: JS Object To JSON Converter
+Date: 2020-04-19 00:00:00-05:00
+Tags: js,json
+
+
 
 A well formed JSON string can be an JS Object, but not the other way around due to JS allow you to use keys without quotes, or use single quotes.
 
@@ -20,3 +18,4 @@ Here is a simple HTML that can convert a JS object literal into JSON string:
 
 <!-- Due to VuePress is a single page app, this link needs to be external to work! -->
 You can run it <a href="/apps/js-to-json.html" target="_blank">here</a>
+

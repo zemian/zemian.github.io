@@ -1,9 +1,8 @@
----
-title: Java implementation of String#next() successor
-date: 2012-12-31T00:00:00-05:00
-tags:
-  - java
----
+Title: Java implementation of String#next() successor
+Date: 2012-12-31 00:00:00-05:00
+Tags: java
+
+
 
 I've found the [Ruby's `String#next()` or `#succ`](http://www.ruby-doc.org/core-1.9.3/String.html#method-i-succ) very useful and productive, specially when generating data for testing. Here is what the Ruby doc says:
 
@@ -35,3 +34,4 @@ So when I saw Groovy actually has provided a [String extension `#next()`](http:/
 I wish Groovy version would improve in future as it's not very useful at the moment. Just for fun, I wrote a Java implementation version that mimics the Ruby's behavior:
 
 And here is my unit test for sanity check:
+

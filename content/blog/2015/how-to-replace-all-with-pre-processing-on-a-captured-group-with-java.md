@@ -1,10 +1,8 @@
----
-title: How to replace all with pre-processing on a captured group with Java
-date: 2015-06-12T00:00:00-05:00
-tags:
-  - java
-  - regex
----
+Title: How to replace all with pre-processing on a captured group with Java
+Date: 2015-06-12 00:00:00-05:00
+Tags: java,regex
+
+
 Need to replace all occurances of a pattern text and replace it with a captured group? Something like this in Java works nicely:
 
         
@@ -34,3 +32,4 @@ import java.util.regex.*;
         return newHtml.toString();
     }
 ```  
+

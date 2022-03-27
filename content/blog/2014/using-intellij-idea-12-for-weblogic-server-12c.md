@@ -1,10 +1,8 @@
----
-title: Using Intellij IDEA 12 for WebLogic Server 12c
-date: 2014-02-01T00:00:00-05:00
-tags:
-  - intellij
-  - weblogic
----
+Title: Using Intellij IDEA 12 for WebLogic Server 12c
+Date: 2014-02-01 00:00:00-05:00
+Tags: intellij,weblogic
+
+
 If you want to explore the latest EE features, you would need WebLogic Server 12c. However if you still have the IDEA 12 Ultimate edition, you will quickly find that it only supports up to WebLogic 
 Server 11g (10.x)! However you can still make your IDEA 12 U to work with WLS 12c, and all you need is an extra "registry.xml" file under WLS home directory (eg: C:/apps/wls12120/registry.xml). This file will allow the IDEA to pickup and recognize your latest WLS 12c installation.
 ```
@@ -28,4 +26,5 @@ Server 11g (10.x)! However you can still make your IDEA 12 U to work with WLS 12
 </bea-product-information>
 ```
 I have learned this from reading the IntelliJ forum. Also note that the latest IDEA 13 will support WebLogic Server 12c out of the box now.
+
 

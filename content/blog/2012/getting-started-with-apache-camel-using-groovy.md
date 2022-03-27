@@ -1,10 +1,8 @@
----
-title: Getting started with Apache Camel using Groovy
-date: 2012-08-18T00:00:00-05:00
-tags:
-  - groovy
-  - camel
----
+Title: Getting started with Apache Camel using Groovy
+Date: 2012-08-18 00:00:00-05:00
+Tags: groovy,camel
+
+
 
 From their site, it says the [Apache Camel](http://camel.apache.org) is a versatile open-source integration framework based on known Enterprise Integration Patterns. It might seem like a vague definition, but I want to tell you that this is a very productive Java library that can solve many of typical IT problems! You can think of it as a very light weight ESB framework with "batteries" included.
 
@@ -180,3 +178,4 @@ If you've used Python programming before, you might have heard the pharase that 
 I am making similar analogies here with Apache Camel. The Camel project comes with so many ready to use [components](http://camel.apache.org/components.html) that you can find just about any transport protocals that can carry data. These Camel "components" are ones that support different 'Endpoint URI' that we have seen in our demos above. We have simply shown you `timer`, `log`, `bean`, and `file` components, but there are over 120 more. You will find `jms`, `http`, `ftp`, `cfx`, or `tcp`  just to name a few.
 
 The Camel project also has an option for you to define route in [declarative xml format](http://camel.apache.org/spring.html). The xml is just an extension of a Spring xml config with Camel's namespace handler added on top. Spring is optional in Camel, but you can use it together in a very powerful way.
+

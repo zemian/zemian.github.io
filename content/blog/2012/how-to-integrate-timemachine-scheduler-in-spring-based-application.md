@@ -1,10 +1,8 @@
----
-title: How to integrate TimeMachine Scheduler in Spring based application
-date: 2012-08-17T00:00:00-05:00
-tags:
-  - timemachine
-  - spring
----
+Title: How to integrate TimeMachine Scheduler in Spring based application
+Date: 2012-08-17 00:00:00-05:00
+Tags: timemachine,spring
+
+
 
 One of the goals for [TimeMachine Scheduler](https://bitbucket.org/timemachine/scheduler) is to make use of POJO as friendly as possible so that we can integrate into any IoC container easily. I've prepared a demo that will show you how to integrate TimeMachine with [Spring](http://www.springsource.org/) based application. 
 
@@ -140,3 +138,4 @@ The TimeMachine doesn't support any JMX instrumentation, however when running wi
 ```    
 
 Above will start an empty scheduler, and expose the `timemachine.scheduler.Scheduler` interface to the JMX local server. You may use `$JAVA_HOME/bin/jconsole` to connect and will see all the methods automatically exposed. There few methods that contains custom java objects that exporter will not able to convert properly, but at least you will get all the lifecycles and some simple getters that available to you.
+

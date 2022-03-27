@@ -1,9 +1,8 @@
----
-title: How to convert asciidoc text to html using Groovy
-date: 2013-08-17T00:00:00-05:00
-tags:
-  - groovy
----
+Title: How to convert asciidoc text to html using Groovy
+Date: 2013-08-17 00:00:00-05:00
+Tags: groovy
+
+
 
 Here is how you can convert `asciidoc` text using Groovy script:
 
@@ -19,3 +18,4 @@ Now you may run it
     groovy RunAsciidoc.groovy myarticle.txt
 
 Many thanks to the `asciidoctor.org` project!
+

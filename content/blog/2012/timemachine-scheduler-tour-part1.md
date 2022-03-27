@@ -1,9 +1,8 @@
----
-title: TimeMachine Scheduler Tour - Part1
-date: 2012-06-06T00:00:00-05:00
-tags:
-  - timemachine
----
+Title: TimeMachine Scheduler Tour - Part1
+Date: 2012-06-06 00:00:00-05:00
+Tags: timemachine
+
+
 This is part 1 of 7 in a series of articles that will give you a tour of the [TimeMachine Scheduler](https://bitbucket.org/timemachine/scheduler/wiki/Home) project. These articles will introduce you to the scheduler, how to load jobs and schedules, and explore some of its advanced features. For the most current and accurate instructions, please visit the ReferenceManual from the project site.
 
 ## What is TimeMachine Scheduler
@@ -78,3 +77,4 @@ One benefit of using our scheduler over a typical Unix cron is that you may cont
 Notice one feature of our scheduler configuration, it allow you to substitude an existing value with `${key}` format! We use this to set our thread name that reuse the value you already set as schedulerName.
 
 End of part 1. You may continue [next tour](https://zemian.github.io/2012/06/timemachine-scheduler-tour-part2.html).
+

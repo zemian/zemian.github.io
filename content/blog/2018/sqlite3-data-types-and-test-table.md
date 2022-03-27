@@ -1,10 +1,8 @@
----
-title: SQLite3 Data Types and Test Table 
-date: 2018-08-21T00:00:00-05:00
-tags:
-  - sql
-  - sqlite3
----
+Title: SQLite3 Data Types and Test Table
+Date: 2018-08-21 00:00:00-05:00
+Tags: sql,sqlite3
+
+
 
 
 A quick sql table setup to test most common data types.
@@ -91,3 +89,4 @@ insert into test(cat, distx, disty) values ('test4', random(), random());
 select sum(price) from test where cat = 'test';
 select * from test order by cat, ts desc;
 ```
+

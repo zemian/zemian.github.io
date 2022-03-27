@@ -1,9 +1,8 @@
----
-title: Python one-liner
-date: 2015-07-19T00:00:00-05:00
-tags:
-  - python
----
+Title: Python one-liner
+Date: 2015-07-19 00:00:00-05:00
+Tags: python
+
+
 
 perl or ruby is still the King of one-liner. But if you still want to
 use Python, you may want to try
@@ -13,3 +12,4 @@ use Python, you may want to try
 -   <http://python-oneliner.readthedocs.org/en/latest/>
 
 -   <https://github.com/gvalkov/python-oneliner/>
+

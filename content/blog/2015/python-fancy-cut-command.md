@@ -1,9 +1,8 @@
----
-title: python fancy cut command
-date: 2015-07-09T00:00:00-05:00
-tags:
-  - python
----
+Title: python fancy cut command
+Date: 2015-07-09 00:00:00-05:00
+Tags: python
+
+
 ```
 # file: cut.py
 
@@ -24,3 +23,4 @@ words = re.split("\s+", line.strip())
 print(eval("words[" + indexes + "]"))
 
 ```
+

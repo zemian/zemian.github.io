@@ -1,9 +1,8 @@
----
-title: Hello VueJS
-date: 2020-04-18T00:00:00-05:00
-tags:
-  - vuejs
----
+Title: Hello VueJS
+Date: 2020-04-18 00:00:00-05:00
+Tags: vuejs
+
+
 
 I like [VueJS](http://vuejs.org/) because it’s similar to [KnockoutJS](hello-knockout.md) that I am familiar with. The VueJS has much more modern feel and the code is a lot more smoother compare to the KnockoutJS. One big difference is KO uses the Observable object to bind reactive properties, while in VueJS it can be treated as normal JS properties.
 
@@ -32,3 +31,4 @@ app.message = "Hello VueJS";
 ```
 
 And the browser updates immediately!
+

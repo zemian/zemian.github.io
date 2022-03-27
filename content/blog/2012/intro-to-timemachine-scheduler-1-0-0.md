@@ -1,9 +1,8 @@
----
-title: Intro to TimeMachine Scheduler 1.0.0
-date: 2012-05-28T00:00:00-05:00
-tags:
-  - timemachine
----
+Title: Intro to TimeMachine Scheduler 1.0.0
+Date: 2012-05-28 00:00:00-05:00
+Tags: timemachine
+
+
 Hello developers,
 
 I am happy to annouce the first release of TimeMachine Scheduler is available for you to download here:
@@ -35,3 +34,4 @@ control on time scheduling, threads executions and data storage. You can learn m
 Enjoy,
 
 Zemian Deng
+

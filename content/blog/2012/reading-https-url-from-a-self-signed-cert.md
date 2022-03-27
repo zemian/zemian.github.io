@@ -1,9 +1,8 @@
----
-title: Reading https url from a self-signed cert
-date: 2012-12-26T00:00:00-05:00
-tags:
-  - groovy
----
+Title: Reading https url from a self-signed cert
+Date: 2012-12-26 00:00:00-05:00
+Tags: groovy
+
+
 Groovy has made fetching data from URL a snap:
 
     println(new URL("http://www.google.com").text)
@@ -51,3 +50,4 @@ Today, I found a library that allow you to perform exactly this: [https://github
 ```    
 
 And Voila! We read the URL context without the pesky exception. This `http-request` is awesome! Now I wish JDK let you do simple thing like this. This is extremely useful for testing.
+

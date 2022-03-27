@@ -1,9 +1,8 @@
----
-title: The Apache Camel 2.12.0 has been released!
-date: 2013-09-10T00:00:00-05:00
-tags:
-  - camel
----
+Title: The Apache Camel 2.12.0 has been released!
+Date: 2013-09-10 00:00:00-05:00
+Tags: camel
+
+
 
 The Apache Camel 2.12.0 has been released! Yeh!
 
@@ -16,3 +15,4 @@ Obviously my contribution seems tiny compare to what the [full release](http://c
 Try out the latest Camel and see what you think.
 
 Happing programming!
+

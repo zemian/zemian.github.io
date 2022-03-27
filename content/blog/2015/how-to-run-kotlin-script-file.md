@@ -1,9 +1,8 @@
----
-title: How to run Kotlin script file
-date: 2015-08-03T00:00:00-05:00
-tags:
-  - kotlin
----
+Title: How to run Kotlin script file
+Date: 2015-08-03 00:00:00-05:00
+Tags: kotlin
+
+
 The script name MUST have ".kts" extension! If not, you will get a unfriendly error message.
 
 ```
@@ -60,3 +59,4 @@ Caused by: java.lang.NullPointerException
 ```
 
 See http://kotlinlang.org/docs/tutorials/command-line.html
+

@@ -1,9 +1,8 @@
----
-title: How to create multiple workspaces with NetBeans
-date: 2015-04-23T00:00:00-05:00
-tags:
-  - netbeans
----
+Title: How to create multiple workspaces with NetBeans
+Date: 2015-04-23 00:00:00-05:00
+Tags: netbeans
+
+
 
 ## Examples
 
@@ -20,3 +19,4 @@ tags:
     /Applications/NetBeans.app/Contents/MacOS/executable --userdir ~/my-other-userdir
 ```
 Ref: [http://wiki.netbeans.org/FaqAlternateUserdir](http://wiki.netbeans.org/FaqAlternateUserdir)
+

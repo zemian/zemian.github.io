@@ -1,9 +1,8 @@
----
-title: High Level Design Diagrams for TimeMachine Scheduler
-date: 2012-09-29T00:00:00-05:00
-tags:
-  - timemachine
----
+Title: High Level Design Diagrams for TimeMachine Scheduler
+Date: 2012-09-29 00:00:00-05:00
+Tags: timemachine
+
+
 
 Despite the advance of all the computers, I am one of those guys who still carry a pen and composition notebook around. I am far from those who has photographic memories, nor one who can digest every thing in their heads. Especially when it comes to doing software design. I still find my self scribbling on my notebook quite a bit, or even on piece of napkin if no paper is available. I am also one of those who only need high level ideas drawn out, then I can usually go directly to code, map it to some API and then write some simple implementations to get started. 
 
@@ -58,3 +57,4 @@ Over all, I think Architexa provided a pretty good plugin for Eclipse. I have so
 The plugin itself seems pretty solid. You can install and uninstall without harm. They currently offer free download for small number of users, which I think it's a great way for you to explorer.
 
 I am not too sure how effective of Architexa on builing a collabration of sharing these diagrams as platform. I treat these diagrams as supplement to the project. It certainly helps in explaining high level architeture, but it's far from the complete documentation. No documentation can get any closer to the code. I think the strength of Java being static already provided some level of documentation when just reading the code alone. I would rather Architexa to focus and perfecting the plugin that draw the diagram, because these are more important to me.
+

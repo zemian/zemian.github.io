@@ -1,10 +1,8 @@
----
-title: Getting Started with jbake
-date: 2019-01-15T00:00:00-05:00
-tags:
-  - blog
-  - jbake
----
+Title: Getting Started with jbake
+Date: 2019-01-15 00:00:00-05:00
+Tags: blog,jbake,ssg
+
+
 
 I started using <https://jbake.org/> for [my blog
 site](https://zemian.github.io/) here at GitHub page. It’s a Java based
@@ -25,3 +23,4 @@ Getting Started
 The `-b` option is for baking (generating) the content, and the `-s` is
 to run a server for testing it. The default output of the site will be
 in `output` folder. You can change it as `jbake -b -s . my-site-output`
+
