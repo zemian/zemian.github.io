@@ -1,0 +1,38 @@
+{% extends "default" %}
+
+{% block head_meta %}
+    <meta name="robots" content="index, follow">
+{% endblock %}
+
+{% block content_wrapper %}
+    <div class="level">
+        <div class="level-item">
+            {{page.date|date('M d, Y')}}
+        </div>
+    </div>
+    <div class="level">
+        <div class="level-item">
+            {% for tag in page.tags %}
+            <a class="tag mr-1" href="{{ site.url }}/blog/tags/{{ tag|url_encode(true) }}">{{ tag }}</a>
+            {% endfor %}
+        </div>
+    </div>
+
+    <h1 class="title">{{ page.title }}</h1>
+    <div class="content">
+        {{ page.blocks.content|raw }}
+    </div>
+
+    {% if page.previous_post or page.next_post %}
+    <br/>
+    <ul>
+        {% if page.next_post %}
+        <li class="block">Next: <a href="{{ site.url }}{{ page.next_post.url }}" title="{{ page.next_post.title }}"><span>{{ page.next_post.title }}</span></a></li>
+        {% endif %}
+        {% if page.previous_post %}
+        <li class="block">Previous: <a href="{{ site.url }}{{ page.previous_post.url }}" title="{{ page.previous_post.title }}"><span>{{ page.previous_post.title }}</span></a></li>
+        {% endif %}
+    </ul>
+    {% endif %}
+
+{% endblock %}

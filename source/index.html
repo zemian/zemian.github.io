@@ -1,0 +1,31 @@
+---
+layout: default
+title: Home
+generator: pagination
+pagination:
+    max_per_page: 10
+use:
+    - posts
+---
+
+<ul>
+    {% for post in page.pagination.items %}
+    <li class="block">
+        <p class="title"><a href="{{ site.url }}{{ post.url }}">{{post.title}}</a></p>
+        <p class="subtitle">
+            {{post.date|date('M d, Y')}}
+
+            {% for tag in post.meta.tags %}
+            <a class="tag mr-1" href="{{ site.url }}/blog/tags/{{ tag|url_encode(true) }}">{{ tag }}</a>
+            {% endfor %}
+        </p>
+    </li>
+    {% endfor %}
+</ul>
+
+{% if page.pagination.previous_page or page.pagination.next_page %}
+<div class="pagination mt-6">
+    {% if page.pagination.previous_page %}<a class="pagination-previous" href="{{ site.url }}{{ page.pagination.previous_page.url }}">Newer Posts</a>{% endif %}
+    {% if page.pagination.next_page %}<a class="pagination-next" href="{{ site.url }}{{ page.pagination.next_page.url }}">Older Posts</a>{% endif %}
+</div>
+{% endif %}
