@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>EE JSP and Servlet 3 - Crafting Your Own MVC Pattern &mdash; Zemian&#039;s Blog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+            <meta name="robots" content="index, follow">
+        <link rel="stylesheet" href="/build/app.css">
+
+        <link rel="alternate" type="application/atom+xml" href="/atom.xml" title="Zemian&#039;s Blog activity feed" />
+                                        
+                <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1148923977922702" crossorigin="anonymous"></script>
+            </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/build/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/tags" class="navbar-item">Tags</a>
+                        <a href="/about" class="navbar-item">About</a>
+                        <a href="/atom.xml" class="navbar-item">Feed</a>
+                        <a href="/search" class="navbar-item">Search</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                            <div class="level">
+        <div class="level-item">
+            Mar 13, 2015
+        </div>
+    </div>
+    <div class="level">
+        <div class="level-item">
+                        <a class="tag mr-1" href="/blog/tags/jsp">jsp</a>
+                        <a class="tag mr-1" href="/blog/tags/servlet">servlet</a>
+                    </div>
+    </div>
+
+    <h1 class="title">EE JSP and Servlet 3 - Crafting Your Own MVC Pattern</h1>
+    <div class="content">
+        <p>The combination of JSP and Servlet allows you to develope MVC pattern
+web application easily. The main focus of MVC pattern is that we want to
+write a Controller logic that can produce data Model, and then let the
+View to display these data and generate the desired HTML output. These
+are done so we may separate the concern on each layer, and makes
+developing larger application easier. In EE, we can map a Servlet to a
+URL and let the Servlet becomes the Contoller, and when all data model
+are gathered and stored in request, session or application scope, we can
+then forward to a JSP for rendering output.</p>
+
+<p>Now the last part is CONTROLLER, which can be verbose and a bit raw feel
+if you were to write a Servlet class per each. So we can improve this
+part and define a simplier interface to let developer write controller
+easier. Here I will show you how a simple MVC style of code can look
+like.</p>
+
+<p><a href="https://github.com/saltnlight5/java-ee6-examples/tree/master/mvc-example">mvc-example</a></p>
+
+    </div>
+
+        <br/>
+    <ul>
+                <li class="block">Next: <a href="/blog/2015/how-to-create-multiple-workspaces-with-netbeans" title="How to create multiple workspaces with NetBeans"><span>How to create multiple workspaces with NetBeans</span></a></li>
+                        <li class="block">Previous: <a href="/blog/2015/ee-cdi-better-backend-service-management-through-automatic-service-injection" title="EE CDI - Better Backend Service Management through Automatic Service Injection"><span>EE CDI - Better Backend Service Management through Automatic Service Injection</span></a></li>
+            </ul>
+    
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/build/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <a href="https://sculpin.io" class="mx-3">
+                                <div class="width: 128px; height: 24px;">
+                                <img
+                                    src="/build/images/sculpin-mascot-jackson-micro.png"
+                                    alt="Made with Sculpin"
+                                    width="100%"
+                                    height="100%">
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="/sitemap.xml">
+                                SiteMap
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+        <script src="/build/app.js"></script>
+    
+        
+    </body>
+</html>

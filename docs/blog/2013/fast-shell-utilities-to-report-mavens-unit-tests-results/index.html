@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>Fast shell utilities to report Maven&#039;s unit tests results &mdash; Zemian&#039;s Blog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+            <meta name="robots" content="index, follow">
+        <link rel="stylesheet" href="/build/app.css">
+
+        <link rel="alternate" type="application/atom+xml" href="/atom.xml" title="Zemian&#039;s Blog activity feed" />
+                                        
+                <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1148923977922702" crossorigin="anonymous"></script>
+            </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/build/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/tags" class="navbar-item">Tags</a>
+                        <a href="/about" class="navbar-item">About</a>
+                        <a href="/atom.xml" class="navbar-item">Feed</a>
+                        <a href="/search" class="navbar-item">Search</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                            <div class="level">
+        <div class="level-item">
+            Jan 28, 2013
+        </div>
+    </div>
+    <div class="level">
+        <div class="level-item">
+                        <a class="tag mr-1" href="/blog/tags/maven">maven</a>
+                    </div>
+    </div>
+
+    <h1 class="title">Fast shell utilities to report Maven&#039;s unit tests results</h1>
+    <div class="content">
+        <p>I would like to share couple shell utilities that I have collected. These are for fast Maven multi modules reporting from your unit tests results, without having you to run entire Maven site reports, which can take a LONG time to generate if you have a large project! They should work on Linux or Window's Cygwin shell.</p>
+
+<pre><code># Show failed tests among all the surefire results.
+function failedtests() {
+    for DIR in $(find . -maxdepth 3 -type d -name "surefire-reports") ; do
+        ruby -ne 'puts "#$FILENAME : #$&amp;" if $_ =~ /(Failures: [1-9][0-9]*.*|Errors: [1-9][0-9]*.*)/' $DIR/*.txt
+    done
+}
+
+# Show the top tests that took the longest time to run from maven surefire reports
+function slowtests() {
+    FILES=''
+    for DIR in $(find . -maxdepth 3 -type d -name "surefire-reports") ; do
+        FILES="$FILES $DIR/*.txt"
+    done
+    head -q -n 4 $FILES \
+        | ruby -ne 'gets; print $_.chomp + " "; gets; print gets' \
+        | ruby -ane 'printf "%8.03f sec: ", $F[-2].to_f; puts $_' \
+        | sort -r \
+        | head -10
+}
+</code></pre>
+
+<p>When developing with Maven, you often want to see a summary of failed tests, and you want those surefire TXT file content to see what's going on. The <code>failedtests</code> function will give you a list of all the failed tests filenames in all modules; and then you can cat each one to investigate.</p>
+
+<p>With <code>slowtests</code> function you may quickly see the top 10 most time consuming tests from your project!</p>
+
+<p>Enjoy!</p>
+
+<hr />
+
+<h2 id="updated-2013%2F01%2F30">Updated (2013/01/30)</h2>
+
+<p>I found out that the <code>head</code> command on MacOSX doesn't have the "-q" option and it always prints the "==> filename `# Replace this
+head -q -n 4 $FILES \</p>
+
+<h1 id="with-this">With this</h1>
+
+<p>ruby -e 'ARGV.each{ |n| File.open(n) {|f| 4.times{ puts f.readline}} }' $FILES \
+`
+It's a tad longer, but it's PORTABLE!</p>
+
+    </div>
+
+        <br/>
+    <ul>
+                <li class="block">Next: <a href="/blog/2013/learn-how-to-grep-by-context-will-give-you-better-result" title="Learn how to grep by context will give you better result"><span>Learn how to grep by context will give you better result</span></a></li>
+                        <li class="block">Previous: <a href="/blog/2013/apache-tapestry-5-makes-java-web-development-easy" title="Apache Tapestry 5 makes Java web development easy"><span>Apache Tapestry 5 makes Java web development easy</span></a></li>
+            </ul>
+    
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/build/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <a href="https://sculpin.io" class="mx-3">
+                                <div class="width: 128px; height: 24px;">
+                                <img
+                                    src="/build/images/sculpin-mascot-jackson-micro.png"
+                                    alt="Made with Sculpin"
+                                    width="100%"
+                                    height="100%">
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="/sitemap.xml">
+                                SiteMap
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+        <script src="/build/app.js"></script>
+    
+        
+    </body>
+</html>

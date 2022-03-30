@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>How to run Kotlin script file &mdash; Zemian&#039;s Blog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+            <meta name="robots" content="index, follow">
+        <link rel="stylesheet" href="/build/app.css">
+
+        <link rel="alternate" type="application/atom+xml" href="/atom.xml" title="Zemian&#039;s Blog activity feed" />
+                                        
+                <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1148923977922702" crossorigin="anonymous"></script>
+            </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/build/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/tags" class="navbar-item">Tags</a>
+                        <a href="/about" class="navbar-item">About</a>
+                        <a href="/atom.xml" class="navbar-item">Feed</a>
+                        <a href="/search" class="navbar-item">Search</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                            <div class="level">
+        <div class="level-item">
+            Aug 03, 2015
+        </div>
+    </div>
+    <div class="level">
+        <div class="level-item">
+                        <a class="tag mr-1" href="/blog/tags/kotlin">kotlin</a>
+                    </div>
+    </div>
+
+    <h1 class="title">How to run Kotlin script file</h1>
+    <div class="content">
+        <p>The script name MUST have ".kts" extension! If not, you will get a unfriendly error message.</p>
+
+<pre><code>kotlinc -script hello.kts
+
+Hello World
+</code></pre>
+
+<p>vs</p>
+
+<pre><code>kotlinc -script hello.kt
+
+EXCEPTION: java.lang.RuntimeException: Failed to evaluate script: java.lang.NullPointerException
+
+        at org.jetbrains.kotlin.cli.jvm.compiler.KotlinToJVMBytecodeCompiler.compileScript(KotlinToJVMBytecodeCompiler.java:290)
+
+        at org.jetbrains.kotlin.cli.jvm.compiler.KotlinToJVMBytecodeCompiler.compileAndExecuteScript(KotlinToJVMBytecodeCompiler.java:243)
+
+        at org.jetbrains.kotlin.cli.jvm.K2JVMCompiler.doExecute(K2JVMCompiler.java:186)
+
+        at org.jetbrains.kotlin.cli.jvm.K2JVMCompiler.doExecute(K2JVMCompiler.java:53)
+
+        at org.jetbrains.kotlin.cli.common.CLICompiler.exec(CLICompiler.java:148)
+
+        at org.jetbrains.kotlin.cli.common.CLICompiler.exec(CLICompiler.java:128)
+
+        at org.jetbrains.kotlin.cli.common.CLICompiler.exec(CLICompiler.java:52)
+
+        at org.jetbrains.kotlin.cli.common.CLICompiler.doMainNoExit(CLICompiler.java:197)
+
+        at org.jetbrains.kotlin.cli.common.CLICompiler.doMain(CLICompiler.java:188)
+
+        at org.jetbrains.kotlin.cli.jvm.K2JVMCompiler.main(K2JVMCompiler.java:57)
+
+        at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+
+        at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+
+        at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+
+        at java.lang.reflect.Method.invoke(Method.java:606)
+
+        at org.jetbrains.kotlin.preloading.Preloader.main(Preloader.java:83)
+
+Caused by: java.lang.NullPointerException
+
+        at org.jetbrains.kotlin.resolve.ScriptNameUtil.classNameForScript(ScriptNameUtil.java:33)
+
+        at org.jetbrains.kotlin.cli.jvm.compiler.KotlinToJVMBytecodeCompiler.compileScript(KotlinToJVMBytecodeCompiler.java:286)
+
+        ... 14 more
+</code></pre>
+
+<p>See http://kotlinlang.org/docs/tutorials/command-line.html</p>
+
+    </div>
+
+        <br/>
+    <ul>
+                <li class="block">Next: <a href="/blog/2015/how-to-check-oracle-database-tablespace" title="How to check Oracle Database tablespace"><span>How to check Oracle Database tablespace</span></a></li>
+                        <li class="block">Previous: <a href="/blog/2015/python-cat-program" title="Python cat program"><span>Python cat program</span></a></li>
+            </ul>
+    
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/build/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <a href="https://sculpin.io" class="mx-3">
+                                <div class="width: 128px; height: 24px;">
+                                <img
+                                    src="/build/images/sculpin-mascot-jackson-micro.png"
+                                    alt="Made with Sculpin"
+                                    width="100%"
+                                    height="100%">
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="/sitemap.xml">
+                                SiteMap
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+        <script src="/build/app.js"></script>
+    
+        
+    </body>
+</html>

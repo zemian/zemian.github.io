@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>Getting started with Apache Camel using Java &mdash; Zemian&#039;s Blog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+            <meta name="robots" content="index, follow">
+        <link rel="stylesheet" href="/build/app.css">
+
+        <link rel="alternate" type="application/atom+xml" href="/atom.xml" title="Zemian&#039;s Blog activity feed" />
+                                        
+                <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1148923977922702" crossorigin="anonymous"></script>
+            </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/build/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/tags" class="navbar-item">Tags</a>
+                        <a href="/about" class="navbar-item">About</a>
+                        <a href="/atom.xml" class="navbar-item">Feed</a>
+                        <a href="/search" class="navbar-item">Search</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                            <div class="level">
+        <div class="level-item">
+            Aug 20, 2013
+        </div>
+    </div>
+    <div class="level">
+        <div class="level-item">
+                        <a class="tag mr-1" href="/blog/tags/camel">camel</a>
+                    </div>
+    </div>
+
+    <h1 class="title">Getting started with Apache Camel using Java</h1>
+    <div class="content">
+        <p>Apache Camel is a very useful library that helps you process events or messages
+from many different sources. You may move these messages through many different
+protocols such as between VM, HTTP, FTP, JMS, or even DIRECTORY/FILE, and yet
+still keep your processing code free of transport logic. This allows you to
+concentrate on digesting the content of the messages instead.</p>
+
+<p>Here I will provide a tutorial on how you can get started with Apache Camel using
+Java.</p>
+
+<p>Let&#8217;s start by creating a Maven project <code>pom.xml</code> file first.</p>
+
+<pre><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://maven.apache.org/POM/4.0.0
+        http://maven.apache.org/maven-v4_0_0.xsd"&gt;
+
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;groupId&gt;camel-spring-demo&lt;/groupId&gt;
+    &lt;artifactId&gt;camel-spring-demo&lt;/artifactId&gt;
+    &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+    &lt;packaging&gt;jar&lt;/packaging&gt;
+
+    &lt;properties&gt;
+        &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+        &lt;camel.version&gt;2.11.1&lt;/camel.version&gt;
+    &lt;/properties&gt;
+
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.apache.camel&lt;/groupId&gt;
+            &lt;artifactId&gt;camel-core&lt;/artifactId&gt;
+            &lt;version&gt;${camel.version}&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.slf4j&lt;/groupId&gt;
+            &lt;artifactId&gt;slf4j-simple&lt;/artifactId&gt;
+            &lt;version&gt;1.7.5&lt;/version&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+
+&lt;/project&gt;
+</code></pre>
+
+<p>We are only going to explore the <code>camel-core</code>, which actually contains quite of few useful
+components that you may use. Also for logging purpose, I have added a <code>slf4j-simple</code> as
+<a href="http://saltnlight5.blogspot.com/2013/08/how-to-configure-slf4j-with-different.html">a logger implementation</a>
+so we may see output on console.</p>
+
+<p>Next you just need a class to construct an <code>Route</code>. A <code>Route</code> is like a instruction
+definition to Camel on how to move your messages from one point to another. We are
+going to create <code>src/main/java/camelcoredemo/TimerRouteBuilder.java</code> file that
+will generate a timer message on every second, and then pass to a processor
+that simply logs it.</p>
+
+<pre><code>package camelcoredemo;
+
+import org.slf4j.*;
+import org.apache.camel.*;
+import org.apache.camel.builder.*;
+
+public class TimerRouteBuilder extends RouteBuilder {
+    static Logger LOG = LoggerFactory.getLogger(TimerRouteBuilder.class);
+    public void configure() {
+        from("timer://timer1?period=1000")
+        .process(new Processor() {
+            public void process(Exchange msg) {
+                LOG.info("Processing {}", msg);
+            }
+        });
+    }
+}
+</code></pre>
+
+<p>That&#8217;s all you needed to get started. Now you may build and run this simple
+demo.</p>
+
+<pre><code>bash&gt; mvn compile
+bash&gt; mvn exec:java -Dexec.mainClass=org.apache.camel.main.Main -Dexec.args='-r camelcoredemo.TimerRouteBuilder'
+</code></pre>
+
+<p>Notice that we didn&#8217;t even write a Java <strong>main</strong> class, but simply use the
+<code>org.apache.camel.main.Main</code> option to accepts a <code>RouteBuilder</code> class
+name as parameter. Then it will load and create the route automatically.</p>
+
+<h2 id="controlling-the-%60camelcontext%60">Controlling the <code>CamelContext</code></h2>
+
+<p>When you start Camel, it creates a <code>CamelContext</code> object that holds
+many information on how to run it, including the definition of the
+<code>Route</code> we created. Now if you want to have more control over this
+<code>CamelContext</code>, then you would need to write your own <code>Main</code> class.
+I will show you a simple one here.</p>
+
+<pre><code>package camelcoredemo;
+
+import org.slf4j.*;
+import org.apache.camel.*;
+import org.apache.camel.impl.*;
+import org.apache.camel.builder.*;
+
+public class TimerMain {
+    static Logger LOG = LoggerFactory.getLogger(TimerMain.class);
+    public static void main(String[] args) throws Exception {
+        new TimerMain().run();
+    }
+    void run() throws Exception {
+        final CamelContext camelContext = new DefaultCamelContext();
+        camelContext.addRoutes(createRouteBuilder());
+        camelContext.setTracing(true);
+        camelContext.start();
+
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            public void run() {
+                try {
+                    camelContext.stop();
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+
+        waitForStop();
+    }
+    RouteBuilder createRouteBuilder() {
+        return new TimerRouteBuilder();
+    }
+    void waitForStop() {
+        while (true) {
+            try {
+                Thread.sleep(Long.MAX_VALUE);
+            } catch (InterruptedException e) {
+                break;
+            }
+        }
+    }
+}
+</code></pre>
+
+<p>As you can see, we re-used the existing <code>TimerRouteBuilder</code> class inside
+<code>createRouteBuilder()</code> method. Our <code>Main</code> class now have full control
+when to create, start and stop the
+<a href="http://camel.apache.org/maven/current/camel-core/apidocs/org/apache/camel/CamelContext.html"><code>CamelContext</code></a>.
+This context allow you to have control on how to configure Camel
+globally rather than on <code>Route</code> level. The javadoc link gives all the setter
+methods that you can explore on what it can do.</p>
+
+<p>Noticed that we also need to provide few setup codes in our <code>Main</code> class.
+First we need to handle graceful shutdown, so we added a Java shutdown hook
+to invoke the context <code>stop()</code>. Secondly we need to add a thread block after
+context has started. The reason for this is that the <code>CamelContext#start()</code>
+method is non-blocking! If you don&#8217;t block your <code>Main</code> thread after
+start, then it will simply exit right after it, which will have not
+much use. You want to run Camel as a service (like a server) until
+you explicitly press <code>CTRL+C</code> to terminate the process.</p>
+
+<h2 id="improving-the-%60main%60-class-to-start-%60camelcontext%60">Improving the <code>Main</code> class to start <code>CamelContext</code></h2>
+
+<p>If you don&#8217;t want to deal with much of the <code>Main</code> class setup
+code such as above, then you may simply extends the <code>org.apache.camel.main.Main</code>
+class provided by <code>camel-core</code> intead. By piggy-back on this class, you will
+only not have your Context auto setup, but you will get all the additional
+command line features such as controlling how long to run the
+process for, enabling tracing, loading custom route class etc.</p>
+
+<p>Refactoring previous example, here is how it look like.</p>
+
+<pre><code>package camelcoredemo;
+
+import org.slf4j.*;
+import org.apache.camel.builder.*;
+import org.apache.camel.main.Main;
+
+public class TimerMain2 extends Main {
+    static Logger LOG = LoggerFactory.getLogger(TimerMain2.class);
+    public static void main(String[] args) throws Exception {
+        TimerMain2 main = new TimerMain2();
+        main.enableHangupSupport();
+        main.addRouteBuilder(createRouteBuilder());
+        main.run(args);
+    }
+    static RouteBuilder createRouteBuilder() {
+        return new TimerRouteBuilder();
+    }
+}
+</code></pre>
+
+<p>Now our <code>TimerMain2</code> is much shorter, and you may try it out and it should
+function the same as before.</p>
+
+<pre><code>bash&gt; mvn compile
+bash&gt; mvn exec:java -Dexec.mainClass=camelcoredemo.TimerMain2 -Dexec.args='-t'
+</code></pre>
+
+<p>Notice that we have given <code>-t</code> option and it will dump <code>Route</code> tracing. Use <code>-h</code>
+and you will see all the available options.</p>
+
+<h2 id="adding-bean-to-the-camel-%60registry%60">Adding bean to the Camel <code>Registry</code></h2>
+
+<p>In the <code>TimerRouteBuilder</code> example above, we have created a <code>Processor</code> on
+the fly. Now if you were to combine few different <code>Processor</code> together, it
+would be nicer to minimize the noise. Camel allow you to do this by registering
+processing beans in their registry space, and then you simply reference them in
+your route as <code>bean</code> component. Here is how I can convert above example into
+beans processing.</p>
+
+<pre><code>package camelcoredemo;
+
+import org.slf4j.*;
+import org.apache.camel.*;
+import org.apache.camel.builder.*;
+import org.apache.camel.main.Main;
+
+public class TimerBeansMain extends Main {
+    static Logger LOG = LoggerFactory.getLogger(TimerBeansMain.class);
+    public static void main(String[] args) throws Exception {
+        TimerBeansMain main = new TimerBeansMain();
+        main.enableHangupSupport();
+        main.bind("processByBean1", new Bean1());
+        main.bind("processAgainByBean2", new Bean2());
+        main.addRouteBuilder(createRouteBuilder());
+        main.run(args);
+    }
+    static RouteBuilder createRouteBuilder() {
+        return new RouteBuilder() {
+                public void configure() {
+                    from("timer://timer1?period=1000")
+                    .to("bean:processByBean1")
+                    .to("bean:processAgainByBean2");
+                }
+            };
+    }
+
+    // Processor beans
+    static class Bean1 implements Processor {
+        public void process(Exchange msg) {
+            LOG.info("First process {}", msg);
+        }
+    }
+    static class Bean2 implements Processor {
+        public void process(Exchange msg) {
+            LOG.info("Second process {}", msg);
+        }
+    }
+}
+</code></pre>
+
+<p>Now you see my <code>Route</code> is very slim and without noise clutter; and I have
+refactored my processing code into individual classes. This promotes better
+code management and testing as you write more complex <code>Route</code> to address
+business logic. It let you build LEGO like block of re-usable POJO beans.
+Besides just processing beans, Camel use this registry space for many other
+services as well. For example you may customize many other component endpoints
+with additional features and or configurations. Or thing such as thread
+pool strategy implementation replacement etc.</p>
+
+<p>The <code>Route</code> in example above is constructed using what&#8217;s called Java DSL.
+The route is very readable, and yet you&#8217;ll get full IDE support to browse all the methods available to use for your route.</p>
+
+<p>I hope this article has helped you jump start your Camel ride. Besides the
+<code>timer</code> component mentioned, the <code>camel-core</code> also comes with the following
+components out of it&#8217;s core jar.</p>
+
+<ul>
+<li><p><a href="http://camel.apache.org/bean.html">bean component</a></p></li>
+<li><p><a href="http://camel.apache.org/browse.html">browse component</a></p></li>
+<li><p><a href="http://camel.apache.org/dataset.html">dataset component</a></p></li>
+<li><p><a href="http://camel.apache.org/direct.html">direct component</a></p></li>
+<li><p><a href="http://camel.apache.org/file.html">file component</a></p></li>
+<li><p><a href="http://camel.apache.org/log.html">log component</a></p></li>
+<li><p><a href="http://camel.apache.org/mock.html">mock component</a></p></li>
+<li><p><a href="http://camel.apache.org/properties.html">properties component</a></p></li>
+<li><p><a href="http://camel.apache.org/seda.html">seda component</a></p></li>
+<li><p><a href="http://camel.apache.org/test.html">test component</a></p></li>
+<li><p><a href="http://camel.apache.org/timer.html">timer component</a></p></li>
+<li><p><a href="http://camel.apache.org/stub.html">stub component</a></p></li>
+<li><p><a href="http://camel.apache.org/validation.html">validator component</a></p></li>
+<li><p><a href="http://camel.apache.org/vm.html">vm component</a></p></li>
+<li><p><a href="http://camel.apache.org/xslt.html">xslt component</a></p></li>
+</ul>
+
+<p>Have fun!</p>
+
+    </div>
+
+        <br/>
+    <ul>
+                <li class="block">Next: <a href="/blog/2013/myschedule-3210-is-out" title="MySchedule-3.2.1.0 is out!"><span>MySchedule-3.2.1.0 is out!</span></a></li>
+                        <li class="block">Previous: <a href="/blog/2013/how-to-configure-slf4j-with-different-logger-implementations" title="How to configure SLF4J with different logger implementations"><span>How to configure SLF4J with different logger implementations</span></a></li>
+            </ul>
+    
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/build/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <a href="https://sculpin.io" class="mx-3">
+                                <div class="width: 128px; height: 24px;">
+                                <img
+                                    src="/build/images/sculpin-mascot-jackson-micro.png"
+                                    alt="Made with Sculpin"
+                                    width="100%"
+                                    height="100%">
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="/sitemap.xml">
+                                SiteMap
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+        <script src="/build/app.js"></script>
+    
+        
+    </body>
+</html>

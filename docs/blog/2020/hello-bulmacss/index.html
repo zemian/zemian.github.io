@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>Hello BulmaCSS &mdash; Zemian&#039;s Blog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+            <meta name="robots" content="index, follow">
+        <link rel="stylesheet" href="/build/app.css">
+
+        <link rel="alternate" type="application/atom+xml" href="/atom.xml" title="Zemian&#039;s Blog activity feed" />
+                                        
+                <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1148923977922702" crossorigin="anonymous"></script>
+            </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/build/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/tags" class="navbar-item">Tags</a>
+                        <a href="/about" class="navbar-item">About</a>
+                        <a href="/atom.xml" class="navbar-item">Feed</a>
+                        <a href="/search" class="navbar-item">Search</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                            <div class="level">
+        <div class="level-item">
+            Apr 18, 2020
+        </div>
+    </div>
+    <div class="level">
+        <div class="level-item">
+                        <a class="tag mr-1" href="/blog/tags/bulma">bulma</a>
+                        <a class="tag mr-1" href="/blog/tags/css">css</a>
+                    </div>
+    </div>
+
+    <h1 class="title">Hello BulmaCSS</h1>
+    <div class="content">
+        <p>The <a href="https://bulma.io/">Bulma CSS</a> library is a very nice project with work with. It’s small and has enough features to style just about any thing you want on the web. The Bulma is a pure CSS library and has no JS dependency! I like this minimalist approach to things.</p>
+
+<p>Here is a small hello world example that gets you stared. It gives you a nice clean reset of HTML document and you may start style your world away.</p>
+
+<pre><code class="html">&lt;link rel="stylesheet" href="https://unpkg.com/bulma@0.8.1/css/bulma.css"&gt;
+
+&lt;div class="container"&gt;
+    Hello World!
+&lt;/div&gt;
+
+</code></pre>
+
+<p>Here is how a table looks like in Bulma:</p>
+
+<pre><code class="html">&lt;table class="table is-fullwidth"&gt;
+    &lt;thead&gt;
+    &lt;tr&gt;
+        &lt;th&gt;One&lt;/th&gt;
+        &lt;th&gt;Two&lt;/th&gt;
+        &lt;th&gt;Three&lt;/th&gt;
+        &lt;th&gt;Four&lt;/th&gt;
+        &lt;th&gt;Five&lt;/th&gt;
+    &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+    &lt;tr&gt;
+        &lt;td&gt;1&lt;/td&gt;
+        &lt;td&gt;2&lt;/td&gt;
+        &lt;td&gt;3&lt;/td&gt;
+        &lt;td&gt;4&lt;/td&gt;
+        &lt;td&gt;5&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;td&gt;1b&lt;/td&gt;
+        &lt;td&gt;2b&lt;/td&gt;
+        &lt;td&gt;3b&lt;/td&gt;
+        &lt;td&gt;4b&lt;/td&gt;
+        &lt;td&gt;5b&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;td&gt;1c&lt;/td&gt;
+        &lt;td&gt;2c&lt;/td&gt;
+        &lt;td&gt;3c&lt;/td&gt;
+        &lt;td&gt;4c&lt;/td&gt;
+        &lt;td&gt;5c&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;/tbody&gt;
+&lt;/table&gt;
+</code></pre>
+
+<p><img src="/build/images/posts/2020/bulma1.png" alt="" /></p>
+
+<p>And here is a quick form:</p>
+
+<pre><code class="html">&lt;div class="field"&gt;
+    &lt;label class="label"&gt;Name&lt;/label&gt;
+    &lt;div class="control"&gt;
+        &lt;input class="input" type="text" placeholder="e.g Alex Smith"&gt;
+    &lt;/div&gt;
+&lt;/div&gt;&lt;div class="field"&gt;
+    &lt;label class="label"&gt;Email&lt;/label&gt;
+    &lt;div class="control"&gt;
+        &lt;input class="input" type="email" placeholder="e.g. alexsmith@gmail.com"&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+
+<p><img src="/build/images/posts/2020/bulma2.png" alt="" /></p>
+
+<p>Add buttons!</p>
+
+<pre><code class="html">&lt;div class="buttons"&gt;
+  &lt;button class="button is-primary"&gt;Primary&lt;/button&gt;
+  &lt;button class="button is-link"&gt;Link&lt;/button&gt;
+&lt;/div&gt;
+
+&lt;div class="buttons"&gt;
+  &lt;button class="button is-info"&gt;Info&lt;/button&gt;
+  &lt;button class="button is-success"&gt;Success&lt;/button&gt;
+  &lt;button class="button is-warning"&gt;Warning&lt;/button&gt;
+  &lt;button class="button is-danger"&gt;Danger&lt;/button&gt;
+&lt;/div&gt;
+</code></pre>
+
+<p><img src="/build/images/posts/2020/bulma3.png" alt="" /></p>
+
+    </div>
+
+        <br/>
+    <ul>
+                <li class="block">Next: <a href="/blog/2020/hello-requiredjs" title="Hello RequiredJS"><span>Hello RequiredJS</span></a></li>
+                        <li class="block">Previous: <a href="/blog/2020/setup-oracle-jet-with-public-cdn" title="Setup Oracle JET With Public CDN"><span>Setup Oracle JET With Public CDN</span></a></li>
+            </ul>
+    
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/build/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <a href="https://sculpin.io" class="mx-3">
+                                <div class="width: 128px; height: 24px;">
+                                <img
+                                    src="/build/images/sculpin-mascot-jackson-micro.png"
+                                    alt="Made with Sculpin"
+                                    width="100%"
+                                    height="100%">
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="/sitemap.xml">
+                                SiteMap
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+        <script src="/build/app.js"></script>
+    
+        
+    </body>
+</html>

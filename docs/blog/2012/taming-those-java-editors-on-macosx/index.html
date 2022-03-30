@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>Taming those Java editors on MacOSX &mdash; Zemian&#039;s Blog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+            <meta name="robots" content="index, follow">
+        <link rel="stylesheet" href="/build/app.css">
+
+        <link rel="alternate" type="application/atom+xml" href="/atom.xml" title="Zemian&#039;s Blog activity feed" />
+                                        
+                <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1148923977922702" crossorigin="anonymous"></script>
+            </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/build/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/tags" class="navbar-item">Tags</a>
+                        <a href="/about" class="navbar-item">About</a>
+                        <a href="/atom.xml" class="navbar-item">Feed</a>
+                        <a href="/search" class="navbar-item">Search</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                            <div class="level">
+        <div class="level-item">
+            Aug 26, 2012
+        </div>
+    </div>
+    <div class="level">
+        <div class="level-item">
+                        <a class="tag mr-1" href="/blog/tags/editor">editor</a>
+                    </div>
+    </div>
+
+    <h1 class="title">Taming those Java editors on MacOSX</h1>
+    <div class="content">
+        <p>Today, I learned that you can open multiple Eclipse instances in MacOSX like this</p>
+
+<pre><code>$ open -n -a Eclipse
+</code></pre>
+
+<p>This comes pretty handy if you want a separate workspace per large project that has dozen or so modules (try importing the Camel or SpringFramework 
+project source and you will see what I mean!)</p>
+
+<p>The <code>-a</code> is for name of an application to open, and <code>-n</code> means to open with new instance.</p>
+
+<h1 id="finding-a-programmer-friendly-text-editor-on-macosx">Finding a programmer friendly text editor on MacOSX</h1>
+
+<p>Despite I use Eclipse for most of my large Java projects, I still often find myself the need of a plain text editor. I use plain text editor for most
+of my scripting programming. I also use it for notes taking, text file browsing, or even writing Blog post in markdown format!</p>
+
+<p>I guess for most programmers, choosing an Editor is a very personally thing. So I am not here to convert anybody. However, for those who never heard of 
+<a href="http://www.jedit.org">jEdit</a>, you ought to give it a try. It's open source, full features, programmers friendly text editor that works 
+across many of OS systems consistenly. It works because it's Java based! If you use one of decent computer now a day, the performance 
+is excellent as well.</p>
+
+<p>However, for some strange reason, the jedit installer on MacOSX doesn't comes with a normal java command line script wrapper. The only thing 
+I can see is the actual binary under <code>/Applications/jEdit.app/Contents/MacOS/jedit</code>. We can certainly run this as full jedit command, but then 
+it always liter the console with strange GUI warnings. So a better way to run it is actually to use the <code>open</code> command.</p>
+
+<pre><code>$ open -a jedit $HOME/.bash_profile
+</code></pre>
+
+<p>Or you can add this in your <code>.bash_profile</code> file:</p>
+
+<pre><code>function jedit(){ open -a jedit "$@" ; }
+</code></pre>
+
+<p>Now you can use <code>jedit</code> command on the terminal.</p>
+
+<h2 id="some-of-my-favorite-features-of-jedit">Some of my favorite features of jEdit</h2>
+
+<ul>
+<li>It's open source and has very active community of users.</li>
+<li>It works across MacOSX, Windows and Linux Desktop.</li>
+<li>Support many common programming language syntax highlights.</li>
+<li>Support multi columns editing.</li>
+<li>Support rich feature search (reg ex, hyper-search, all buffers search, search and replace etc.)</li>
+<li>Support multi buffers tabs editing.</li>
+<li>Supports Macro recording and scripting.</li>
+<li>Support plugin extension and there are many external plugins available (eg: XML formater, Diff viewer, SFTP client/editing, etc).</li>
+</ul>
+
+<h1 id="openning-other-stuff-on-macosx">Openning other stuff on MacOSX</h1>
+
+<p>The little <code>open</code> command can open not just application, but it can also open directories or files by extension associations. For
+example, to configure any <code>.properties</code> files to be open by jEdit, try the the following.</p>
+
+<ol>
+<li>Use Finder to browse and find one of properties</li>
+<li>Right click, "Open With" > "Other..."</li>
+<li>Choose "jEdit" under Applications folder.</li>
+<li>Enable "Always Open With", then click Open button.</li>
+</ol>
+
+<p>This change should affect your Terminal <code>open</code> command as well, and if you run <code>open my.properties</code>, your jEdit should pop up.</p>
+
+<p>You can find more options by running it without any options, and it will print you full help page.</p>
+
+<pre><code>    Usage: open [-e] [-t] [-f] [-W] [-R] [-n] [-g] [-h] [-b &lt;bundle identifier&gt;] [-a &lt;application&gt;] [filenames] [--args arguments]
+    Help: Open opens files from a shell.
+          By default, opens each file using the default application for that file.  
+          If the file is in the form of a URL, the file will be opened as a URL.
+    Options: 
+          -a                Opens with the specified application.
+          -b                Opens with the specified application bundle identifier.
+          -e                Opens with TextEdit.
+          -t                Opens with default text editor.
+          -f                Reads input from standard input and opens with TextEdit.
+          -F  --fresh       Launches the app fresh, that is, without restoring windows. Saved persistent state is lost, excluding Untitled documents.
+          -R, --reveal      Selects in the Finder instead of opening.
+          -W, --wait-apps   Blocks until the used applications are closed (even if they were already running).
+              --args        All remaining arguments are passed in argv to the application's main() function instead of opened.
+          -n, --new         Open a new instance of the application even if one is already running.
+          -j, --hide        Launches the app hidden.
+          -g, --background  Does not bring the application to the foreground.
+          -h, --header      Searches header file locations for headers matching the given filenames, and opens them.
+</code></pre>
+
+    </div>
+
+        <br/>
+    <ul>
+                <li class="block">Next: <a href="/blog/2012/how-to-manage-quartz-remotely" title="How to manage Quartz remotely"><span>How to manage Quartz remotely</span></a></li>
+                        <li class="block">Previous: <a href="/blog/2012/myschedule-244-is-out" title="myschedule-2.4.4 is out!"><span>myschedule-2.4.4 is out!</span></a></li>
+            </ul>
+    
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/build/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <a href="https://sculpin.io" class="mx-3">
+                                <div class="width: 128px; height: 24px;">
+                                <img
+                                    src="/build/images/sculpin-mascot-jackson-micro.png"
+                                    alt="Made with Sculpin"
+                                    width="100%"
+                                    height="100%">
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="/sitemap.xml">
+                                SiteMap
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+        <script src="/build/app.js"></script>
+    
+        
+    </body>
+</html>

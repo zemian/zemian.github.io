@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>How to specify SAME target table for update in FROM clause &mdash; Zemian&#039;s Blog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+            <meta name="robots" content="index, follow">
+        <link rel="stylesheet" href="/build/app.css">
+
+        <link rel="alternate" type="application/atom+xml" href="/atom.xml" title="Zemian&#039;s Blog activity feed" />
+                                        
+                <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1148923977922702" crossorigin="anonymous"></script>
+            </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/build/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/tags" class="navbar-item">Tags</a>
+                        <a href="/about" class="navbar-item">About</a>
+                        <a href="/atom.xml" class="navbar-item">Feed</a>
+                        <a href="/search" class="navbar-item">Search</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                            <div class="level">
+        <div class="level-item">
+            Oct 11, 2015
+        </div>
+    </div>
+    <div class="level">
+        <div class="level-item">
+                        <a class="tag mr-1" href="/blog/tags/mysql">mysql</a>
+                    </div>
+    </div>
+
+    <h1 class="title">How to specify SAME target table for update in FROM clause</h1>
+    <div class="content">
+        <p>Have you tried updating something simple as following?</p>
+
+<pre><code>update category_tmp set last_update=NOW() 
+where category_id in (
+  select category_id from category_tmp where name like 'A%'
+);
+</code></pre>
+
+<p>In MySQL you will get an error like this:</p>
+
+<pre><code>Error Code: 1093. You can't specify target table 'category_tmp' for update in FROM clause.
+</code></pre>
+
+<p>So it says that you can't use the same update TABLE name within the sub query in where condition. The trick to get around this is to use another sub query in the where clause so it won't see the TABLE name being used! Here is a workaround:</p>
+
+<pre><code>update category_tmp set last_update=NOW() 
+where category_id in (
+  select category_id from (
+    select category_id from category_tmp where name like 'A%'
+  ) ID_LIST
+);
+</code></pre>
+
+<p>Noticed that in MySQL, you must name your sub query result such as <code>ID_LIST</code>, in order for it to be re-select it again on the outer query! Otherwise it will error out with this:</p>
+
+<pre><code>Error Code: 1248. Every derived table must have its own alias
+</code></pre>
+
+    </div>
+
+        <br/>
+    <ul>
+                <li class="block">Next: <a href="/blog/2015/mysqlclient-gives-library-not-loaded-libmysqlclient18dylib-error" title="mysqlclient gives &quot;Library not loaded - libmysqlclient.18.dylib&quot; error"><span>mysqlclient gives &quot;Library not loaded - libmysqlclient.18.dylib&quot; error</span></a></li>
+                        <li class="block">Previous: <a href="/blog/2015/setup-python-on-mac" title="Setup Python on Mac"><span>Setup Python on Mac</span></a></li>
+            </ul>
+    
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/build/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <a href="https://sculpin.io" class="mx-3">
+                                <div class="width: 128px; height: 24px;">
+                                <img
+                                    src="/build/images/sculpin-mascot-jackson-micro.png"
+                                    alt="Made with Sculpin"
+                                    width="100%"
+                                    height="100%">
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="/sitemap.xml">
+                                SiteMap
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+        <script src="/build/app.js"></script>
+    
+        
+    </body>
+</html>

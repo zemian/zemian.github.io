@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>How to secure a web application by the app server container &mdash; Zemian&#039;s Blog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+            <meta name="robots" content="index, follow">
+        <link rel="stylesheet" href="/build/app.css">
+
+        <link rel="alternate" type="application/atom+xml" href="/atom.xml" title="Zemian&#039;s Blog activity feed" />
+                                        
+                <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1148923977922702" crossorigin="anonymous"></script>
+            </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/build/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/tags" class="navbar-item">Tags</a>
+                        <a href="/about" class="navbar-item">About</a>
+                        <a href="/atom.xml" class="navbar-item">Feed</a>
+                        <a href="/search" class="navbar-item">Search</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                            <div class="level">
+        <div class="level-item">
+            Dec 01, 2014
+        </div>
+    </div>
+    <div class="level">
+        <div class="level-item">
+                        <a class="tag mr-1" href="/blog/tags/security">security</a>
+                    </div>
+    </div>
+
+    <h1 class="title">How to secure a web application by the app server container</h1>
+    <div class="content">
+        <p>There are many benefits to allow a container in managing users, groups and authentication policies. You may configure your WAR application to take advantage of this by adding the following in the WEB-INF/web.xml file</p>
+
+<pre><code>   &lt;security-constraint&gt;
+        &lt;web-resource-collection&gt;
+            &lt;web-resource-name&gt;webuser&lt;/web-resource-name&gt;
+            &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+        &lt;/web-resource-collection&gt;
+        &lt;auth-constraint&gt;
+            &lt;role-name&gt;webuser&lt;/role-name&gt; 
+        &lt;/auth-constraint&gt;
+    &lt;/security-constraint&gt;
+    &lt;login-config&gt;
+        &lt;auth-method&gt;BASIC&lt;/auth-method&gt;
+        &lt;realm-name&gt;default&lt;/realm-name&gt;
+    &lt;/login-config&gt;
+    &lt;security-role&gt;
+        &lt;role-name&gt;webuser&lt;/role-name&gt;
+    &lt;/security-role&gt;
+</code></pre>
+
+<p>Above will secure the entire application and allow only users with "webuser" role to access it. The name "webuser" can be any name you want.</p>
+
+<p>Each app server will manage users differently. In the case of WLS, it lets you create "user" and "user group", and then you can map the defined role above to the group. To do this, add the following to the  WEB-INF/weblogic.xml file.</p>
+
+<pre><code>&lt;weblogic-web-app 
+    xmlns="http://xmlns.oracle.com/weblogic/weblogic-web-app" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://xmlns.oracle.com/weblogic/weblogic-web-app 
+        http://xmlns.oracle.com/weblogic/weblogic-web-app/1.2/weblogic-web-app.xsd"&gt;
+    &lt;security-role-assignment&gt;
+        &lt;role-name&gt;webuser&lt;/role-name&gt;
+        &lt;principal-name&gt;webusergroup&lt;/principal-name&gt;
+    &lt;/security-role-assignment&gt;
+&lt;/weblogic-web-app&gt;
+</code></pre>
+
+<p>Here we tell WLS that we map the "webuser" role defined in web.xml to use the "webusergroup", a WLS user group.</p>
+
+<p>To create  user or user group in WLS, you may use the WLS Admin console web application. Go to the Security Realm and select the default "myrealm", and then select User or Group tab. Go ahead and add a user with password under a new group named "webusergroup". After this you can deploy your app, and it would prompt you for user and password whenever you try to access its URL.</p>
+
+<p>You can find out more security info at <a href="https://docs.oracle.com/cd/E23943_01/web.1111/e13711/thin_client.htm#SCPRG171">https://docs.oracle.com/cd/E23943_01/web.1111/e13711/thin_client.htm#SCPRG171</a>.</p>
+
+    </div>
+
+        <br/>
+    <ul>
+                <li class="block">Next: <a href="/blog/2014/getting-started-with-glassfish-server-and-setting-up-slf4j-logging" title="Getting started with Glassfish Server and Setting up SLF4J logging"><span>Getting started with Glassfish Server and Setting up SLF4J logging</span></a></li>
+                        <li class="block">Previous: <a href="/blog/2014/how-to-use-ssh-tunneling-to-get-to-your-restricted-servers" title="How to use SSH tunneling to get to your restricted servers"><span>How to use SSH tunneling to get to your restricted servers</span></a></li>
+            </ul>
+    
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/build/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <a href="https://sculpin.io" class="mx-3">
+                                <div class="width: 128px; height: 24px;">
+                                <img
+                                    src="/build/images/sculpin-mascot-jackson-micro.png"
+                                    alt="Made with Sculpin"
+                                    width="100%"
+                                    height="100%">
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="/sitemap.xml">
+                                SiteMap
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+        <script src="/build/app.js"></script>
+    
+        
+    </body>
+</html>

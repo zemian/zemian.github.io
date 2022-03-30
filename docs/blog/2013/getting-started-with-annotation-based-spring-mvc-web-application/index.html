@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>Getting started with annotation based Spring MVC web application &mdash; Zemian&#039;s Blog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+            <meta name="robots" content="index, follow">
+        <link rel="stylesheet" href="/build/app.css">
+
+        <link rel="alternate" type="application/atom+xml" href="/atom.xml" title="Zemian&#039;s Blog activity feed" />
+                                        
+                <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1148923977922702" crossorigin="anonymous"></script>
+            </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/build/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/tags" class="navbar-item">Tags</a>
+                        <a href="/about" class="navbar-item">About</a>
+                        <a href="/atom.xml" class="navbar-item">Feed</a>
+                        <a href="/search" class="navbar-item">Search</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                            <div class="level">
+        <div class="level-item">
+            Oct 04, 2013
+        </div>
+    </div>
+    <div class="level">
+        <div class="level-item">
+                        <a class="tag mr-1" href="/blog/tags/spring">spring</a>
+                    </div>
+    </div>
+
+    <h1 class="title">Getting started with annotation based Spring MVC web application</h1>
+    <div class="content">
+        <p>Here is a minimal way to get a Spring 3 MVC project started with Maven.</p>
+
+<p>First create <code>spring-web-annotation/pom.xml</code> file and include the Spring dependency:</p>
+
+<pre><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://maven.apache.org/POM/4.0.0
+        http://maven.apache.org/maven-v4_0_0.xsd"&gt;
+
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;groupId&gt;spring-web-annotation&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-web-annotation&lt;/artifactId&gt;
+    &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+    &lt;packaging&gt;war&lt;/packaging&gt;
+
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
+            &lt;artifactId&gt;javax.servlet-api&lt;/artifactId&gt;
+            &lt;version&gt;3.1.0&lt;/version&gt;
+            &lt;scope&gt;provided&lt;/scope&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-webmvc&lt;/artifactId&gt;
+            &lt;version&gt;3.2.4.RELEASE&lt;/version&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+&lt;/project&gt;
+</code></pre>
+
+<p>Now create the Servlet 3 web initializer and the Spring annotation config for the MVC parts in <code>spring-web-annotation/src/main/java/springweb/WebApp.java</code></p>
+
+<pre><code>package springweb;
+
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
+
+public class WebApp extends AbstractAnnotationConfigDispatcherServletInitializer {
+    @Override
+    protected Class&lt;?&gt;[] getRootConfigClasses() {
+        return new Class&lt;?&gt;[0];
+    }
+
+    @Override
+    protected Class&lt;?&gt;[] getServletConfigClasses() {
+        return new Class&lt;?&gt;[]{ WebAppConfig.class };
+    }
+
+    @Override
+    protected String[] getServletMappings() {
+        return new String[]{ "/" };
+    }
+
+    @Configuration
+    @EnableWebMvc
+    @ComponentScan("springweb.controller")
+    public static class WebAppConfig {
+    }
+}
+</code></pre>
+
+<p>The <code>WebApp</code> class extends Spring's built in Servlet3 web initializer code. It allows Servlet3 container such as Tomcat7 to auto detect this web application without the need of <code>web.xml</code> configuration setup. Because of we do not use <code>web.xml</code>, we need this class to allow Spring to hook into the Servlet container to bootstrap their dispatcher servlet. Also instead of typical Spring beans xml file configuration, we now can use all annotation based using <code>WebAppConfig</code>.</p>
+
+<p>Noticed that I have combined the <code>WebAppConfig</code> as inner class, but you can easily move it out as top level class in a full scale application. This is the Spring annotation version of container configuration. You can easily customize the application by adding new <code>@Bean</code> here.</p>
+
+<p>Note: Do not forget to overwrite <code>getServletMappings</code> method with <code>"/"</code>, or else your URL request will not direct to the Spring dispatcher for processing! A step that can easily forgotten and you might find your self chasing why Spring controllers are not working.</p>
+
+<p>Above are really the minmal setup you need to start a war project. Next you want to add at least one controller to have some output to verify. Create this controller file <code>spring-web-annotation/src/main/java/springweb/controller/IndexController.java</code></p>
+
+<pre><code>package springweb.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+@Controller
+public class IndexController {
+    @RequestMapping(value="/")
+    public String index() {
+        return "index";
+    }
+}
+</code></pre>
+
+<p>And now you would need the JSP view <code>spring-web-annotation/src/main/webapp/index.jsp</code></p>
+
+<pre><code>Hello World.
+</code></pre>
+
+<p>Now cd into <code>spring-web-annotation</code> and execute <code>mvn org.apache.tomcat.maven:tomcat7-maven-plugin:run</code>. You should see your Spring application starting and be able to browse <code>http://localhost:8080/spring-web-annotation</code> URL.</p>
+
+<p>There are lot of cool stuff you can do with Spring MVC. Checkout their awesome docs for more details.</p>
+
+    </div>
+
+        <br/>
+    <ul>
+                <li class="block">Next: <a href="/blog/2013/getting-started-with-spring-jdbc-in-a-web-application" title="Getting started with Spring JDBC in a web application"><span>Getting started with Spring JDBC in a web application</span></a></li>
+                        <li class="block">Previous: <a href="/blog/2013/the-apache-camel-2120-has-been-released" title="The Apache Camel 2.12.0 has been released!"><span>The Apache Camel 2.12.0 has been released!</span></a></li>
+            </ul>
+    
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/build/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <a href="https://sculpin.io" class="mx-3">
+                                <div class="width: 128px; height: 24px;">
+                                <img
+                                    src="/build/images/sculpin-mascot-jackson-micro.png"
+                                    alt="Made with Sculpin"
+                                    width="100%"
+                                    height="100%">
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="/sitemap.xml">
+                                SiteMap
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+        <script src="/build/app.js"></script>
+    
+        
+    </body>
+</html>

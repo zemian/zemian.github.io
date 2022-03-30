@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>EE Serlvet 3 - Generating HTML output in Servlet &mdash; Zemian&#039;s Blog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+            <meta name="robots" content="index, follow">
+        <link rel="stylesheet" href="/build/app.css">
+
+        <link rel="alternate" type="application/atom+xml" href="/atom.xml" title="Zemian&#039;s Blog activity feed" />
+                                        
+                <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1148923977922702" crossorigin="anonymous"></script>
+            </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/build/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/tags" class="navbar-item">Tags</a>
+                        <a href="/about" class="navbar-item">About</a>
+                        <a href="/atom.xml" class="navbar-item">Feed</a>
+                        <a href="/search" class="navbar-item">Search</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                            <div class="level">
+        <div class="level-item">
+            Jan 01, 2015
+        </div>
+    </div>
+    <div class="level">
+        <div class="level-item">
+                        <a class="tag mr-1" href="/blog/tags/servlet">servlet</a>
+                    </div>
+    </div>
+
+    <h1 class="title">EE Serlvet 3 - Generating HTML output in Servlet</h1>
+    <div class="content">
+        <p>If you just need to handle a handful of requests URI in your EE web module, then it might be easier to generate your own HTML response in your Servlet code instead of using a full blown template library. As part of my examples, I tried out a very simple Java DSL that generate html output when writing your own Serlvet. The code looks like this:</p>
+
+<pre><code>package zemian.servlet3example.web;
+
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet("/index")
+public class IndexServlet extends HtmlWriterServlet {
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        HtmlWriter html = createHtmlWriter(req, resp);
+        String message = getMessage(req, html);
+
+        html.header()
+            .h(1, "Welcome to Servlet 3 Example")
+            .p("Let's explore Java Servlet 3.x Features.")
+            .p(message)
+            .ul(
+                html.link("Index", "/index"),
+                html.link("Hello", "/hello"),
+                html.link("Sys Props", "/sys-props")
+            )
+            .footer();
+    } 
+}
+</code></pre>
+
+<p>I wrote a base HtmlWriterServlet class that provide a method where you can get an instance of a HtmlWriter builder. The benefit of wrapping the HTML like builder is that it's more easier to read and helps generate correct well form tags. For example the "ul" and "table" accepts Java List or Map object, and it generates the correct html tags.</p>
+
+<p>Here is another example how I generate a table view of Java System Properties page with few lines of code:</p>
+
+<pre><code>package zemian.servlet3example.web;
+
+import java.io.IOException;
+import java.util.TreeMap;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet("/sys-props")
+public class SysPropsServlet extends HtmlWriterServlet {
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        HtmlWriter html = createHtmlWriter(req, resp);
+        TreeMap sysProps = new TreeMap(System.getProperties());
+        html.header()
+            .h(1, "Java System Properties")
+            .table(sysProps)
+            .footer();
+    }
+}
+</code></pre>
+
+<p>The simple <a href="https://github.com/saltnlight5/java-ee6-examples/blob/master/servlet3-example/src/main/java/zemian/servlet3example/web/HtmlWriter.java">HtmlWriter</a>class provide few html builder methods and it can help generate HTML links with relative context paths. You can easily further improve it to help generate more HTML code such as form tags etc.</p>
+
+<p>Also, note that ServletResponse object let you have full control on writing custom responses, so you are not restricted to only returing HTML. You can write binary output such as PDF or even MP3 files. You simply need to control the Response Writer and the correct corresponding content mime type and size that will return.</p>
+
+<p>You can get these code at <a href="https://github.com/saltnlight5/java-ee6-examples/tree/master/servlet3-example">servlet3-example</a></p>
+
+    </div>
+
+        <br/>
+    <ul>
+                <li class="block">Next: <a href="/blog/2015/ee-servlet-3-simple-form-processing" title="EE Servlet 3 - Simple Form Processing"><span>EE Servlet 3 - Simple Form Processing</span></a></li>
+                        <li class="block">Previous: <a href="/blog/2014/ee-servlet-3-getting-started-with-web-application-module-and-a-landing-page" title="EE Servlet 3 - Getting started with web application module and a landing page"><span>EE Servlet 3 - Getting started with web application module and a landing page</span></a></li>
+            </ul>
+    
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/build/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <a href="https://sculpin.io" class="mx-3">
+                                <div class="width: 128px; height: 24px;">
+                                <img
+                                    src="/build/images/sculpin-mascot-jackson-micro.png"
+                                    alt="Made with Sculpin"
+                                    width="100%"
+                                    height="100%">
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="/sitemap.xml">
+                                SiteMap
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+        <script src="/build/app.js"></script>
+    
+        
+    </body>
+</html>

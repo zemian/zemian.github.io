@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>EE CDI - Better Backend Service Management through Automatic Service Injection &mdash; Zemian&#039;s Blog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+            <meta name="robots" content="index, follow">
+        <link rel="stylesheet" href="/build/app.css">
+
+        <link rel="alternate" type="application/atom+xml" href="/atom.xml" title="Zemian&#039;s Blog activity feed" />
+                                        
+                <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1148923977922702" crossorigin="anonymous"></script>
+            </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/build/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/tags" class="navbar-item">Tags</a>
+                        <a href="/about" class="navbar-item">About</a>
+                        <a href="/atom.xml" class="navbar-item">Feed</a>
+                        <a href="/search" class="navbar-item">Search</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                            <div class="level">
+        <div class="level-item">
+            Feb 09, 2015
+        </div>
+    </div>
+    <div class="level">
+        <div class="level-item">
+                        <a class="tag mr-1" href="/blog/tags/cdi">cdi</a>
+                    </div>
+    </div>
+
+    <h1 class="title">EE CDI - Better Backend Service Management through Automatic Service Injection</h1>
+    <div class="content">
+        <p>In one of my <a href="http://saltnlight5.blogspot.com/2015/01/ee-servlet-3-how-to-setup-backend.html">previous post</a>, I have introduced the Application class that holds backend services, and we are exposing the services to Servlet by a singleton instance lookup pattern. This usage is very common and the Application class is been used as a global space holder in your application. Starting with EE 6, there is a new spec API introduced called CDI (context dependency injection) that can replace this kind of direct service lookup in your application. The CDI is a Java objects container (services in our case), or sometimes
+ called "beans container" that automatically manged the objects life 
+cycles for you; and then it can "inject" into places where you need 
+them. Using CDI to manage your services can make your Servlet easier to test, and less code to maintain since you don't have to write and maintain the Application class.</p>
+
+<p>Let's see how we can turn our previous example to use CDI.</p>
+
+<p>First step is to remove the Application class have have, and to use injection of UserService instead. In our example, we initialize Application in WebAppStartup, so that can be remove; and we will initialize CDI instead. By the spec, all we need is to add a beans XML file in src/main/webapp/WEB-INF folder.</p>
+
+<pre><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;beans xmlns="http://java.sun.com/xml/ns/javaee"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/beans_1_0.xsd"&gt;
+&lt;/beans&gt;
+</code></pre>
+
+<p>That's all you need to enable CDI in your EE application!</p>
+
+<p>Now how can we do service injection, Inside LoginServlet is where we are using UserService, and that's where we want CDI to provide us the managed instance of UserService. So refactor UserService and remove Application usage there, but replace with a member field for UserService by injection using the @Inject annotation.</p>
+
+<pre><code>import javax.inject.Inject;
+...
+
+@WebServlet("/login")
+public class LoginServlet  extends HtmlWriterServlet {
+
+    @Inject
+    private UserService userService;
+
+...
+    private boolean login(HttpServletRequest req) throws IOException {
+        String username = req.getParameter("username");
+        String password = req.getParameter("password");
+
+        if (userService.validate(username, password)) {
+... 
+</code></pre>
+
+<p>There is one more area we need to take care of to complete the refactoring. Our  UserService has a init() method that's originally called by Application class. But now that we removed it, we need this to be called by CDI container since it now manage the UserSerivce instance lifecycle. And the CDI spec provides us a simple way to use the @PostConstruct annotation to do so.</p>
+
+<pre><code>import javax.annotation.PostConstruct;
+...
+
+public class UserService {
+    ...
+
+    @PostConstruct
+    public void init() {
+...
+</code></pre>
+
+<p>That's all the modifications you need to switch from your custom Application singleton pattern to use CDI to manage your backend services.</p>
+
+<p>One question you might ask is how does CDI know when to create new instance of UserService? The answer is by the @Inject annotation. Upon startup of the CDI container, it scans your application packages to see what's needed to be injected. It also depends when you needed this service instance to be injected. In our case, it's inside a Servlet, so it's not needed until the HTTP request is called for, so CDI will create the new instance under what's called "Request" scope. The CDI will inject a instance of UserService into LoginServlet right before it's processing the request.</p>
+
+<p>With CDI available, you will quickly appreciate the power and simplicity of the EE application server. There are many more CDI features you may use in your application; and I hope I have sparked your interests to explore further on your own.</p>
+
+    </div>
+
+        <br/>
+    <ul>
+                <li class="block">Next: <a href="/blog/2015/ee-jsp-and-servlet-3-crafting-your-own-mvc-pattern" title="EE JSP and Servlet 3 - Crafting Your Own MVC Pattern"><span>EE JSP and Servlet 3 - Crafting Your Own MVC Pattern</span></a></li>
+                        <li class="block">Previous: <a href="/blog/2015/ee-jsp-generating-dynamic-content-with-jstl-tag-libraries" title="EE JSP - Generating Dynamic Content with JSTL Tag Libraries"><span>EE JSP - Generating Dynamic Content with JSTL Tag Libraries</span></a></li>
+            </ul>
+    
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/build/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <a href="https://sculpin.io" class="mx-3">
+                                <div class="width: 128px; height: 24px;">
+                                <img
+                                    src="/build/images/sculpin-mascot-jackson-micro.png"
+                                    alt="Made with Sculpin"
+                                    width="100%"
+                                    height="100%">
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="/sitemap.xml">
+                                SiteMap
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+        <script src="/build/app.js"></script>
+    
+        
+    </body>
+</html>

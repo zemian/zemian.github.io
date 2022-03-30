@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>Which CMS to Use? &mdash; Zemian&#039;s Blog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+            <meta name="robots" content="index, follow">
+        <link rel="stylesheet" href="/build/app.css">
+
+        <link rel="alternate" type="application/atom+xml" href="/atom.xml" title="Zemian&#039;s Blog activity feed" />
+                                        
+                <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1148923977922702" crossorigin="anonymous"></script>
+            </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/build/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/tags" class="navbar-item">Tags</a>
+                        <a href="/about" class="navbar-item">About</a>
+                        <a href="/atom.xml" class="navbar-item">Feed</a>
+                        <a href="/search" class="navbar-item">Search</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                            <div class="level">
+        <div class="level-item">
+            Sep 23, 2020
+        </div>
+    </div>
+    <div class="level">
+        <div class="level-item">
+                        <a class="tag mr-1" href="/blog/tags/cms">cms</a>
+                        <a class="tag mr-1" href="/blog/tags/blog">blog</a>
+                        <a class="tag mr-1" href="/blog/tags/knowledge-management">knowledge-management</a>
+                        <a class="tag mr-1" href="/blog/tags/site-development">site-development</a>
+                    </div>
+    </div>
+
+    <h1 class="title">Which CMS to Use?</h1>
+    <div class="content">
+        <p>What is a CMS? Accoridng to <a href="https://en.wikipedia.org/wiki/Content_management_system">Wikipedia</a></p>
+
+<blockquote>
+  <p>A content management system (CMS) is a computer software used to manage the creation and modification of digital content. CMSs are typically used for enterprise content management (ECM) and web content management (WCM). ECM typically supports multiple users in a collaborative environment by integrating document management, digital asset management and record retention.</p>
+</blockquote>
+
+<p>A CMS (or sometimes it can be called Knowledge Mangaement System, KMS) such as ECM can be very complex and requires a team of developers and a company to support it! In fact I am currently working for <a href="https://www.oracle.com/cx/service/knowledge-management/">Oracle CX Knowledge Management</a> that provides such service.</p>
+
+<p>Outside of ECM, many smaller business would use CMS (or the WCM) to create and host their own website. Now a days, a CMS can do more than just hosting static pages. It can be extended to include dynamic features such as ecommerce store that sells product or manage community of users etc. Another usage of CMS is just for personal blogging. It helps keep track and displaying someone's weblog in a form of digital Post.</p>
+
+<p>I have <a href="https://github.com/zemian/cms-eval">evaluated</a> and used quite of few CMS applications for my own personal blogging. Here I would highlight few that I like with their pros and cons. I hope these help you in selecting your own CMS to use.</p>
+
+<h2 id="static-site-generator">Static Site Generator</h2>
+
+<p>If you are a developer, you should definately try a "Static Site Generator" to generate a site. It helps you understand more on the tools and way to create site differently compare to a traditional web development with a server. Currently GitHub provide "Pages" services that host static html files for free.</p>
+
+<p>There are many generator to choose from. See my <code>cms-eval</code> repo for details. Currently I found <a href="http://vuepress.vuejs.org/">VuePress</a> to be very promising.</p>
+
+<p>PROS:
+* Generators are usually easy to setup and run using a dynamic scripting language.
+* Content data are usually store as files. And it can use markup syntax such as Markdown or Asciidoc for input.
+* Simple layout and template processing to generate output that usually use a certain folders structure. Minial configuration is needed.
+* Site output is just plain static HTML/CSS/JavaScript files.
+* No server side processing needed to host the site.
+* No need database</p>
+
+<p>CONS
+* It's more work to create new post and publish it.
+* New content data is created using your text editor locally, save, and then Git commit.
+* New site needs to be generated, then push and update host server.
+* You can automate publishing using CI server (like Travis) but require more setup.
+* You usually want to use source control tool to version changes, so more tool to learn.
+* A change in source could generate many changes in the output static files. (Specially if you use pagination).
+* Dynamic feature such as search feature is more difficult to do. You usually need to integrate third party serice (eg: Disqus for user comments)</p>
+
+<h2 id="web-based-cms-applications">Web based CMS applications</h2>
+
+<p>This usually mean you would use a CMS web application that made created using one of server side programming language. Some example of these applications are:</p>
+
+<ul>
+<li>WordPress (PHP)</li>
+<li>WagtailCMS (Python)</li>
+<li>RandiantCMS (Ruby)</li>
+<li>MagnoliaCMS (Java)</li>
+<li>Gridsome(JS)</li>
+</ul>
+
+<p>These CMS application setup usually require a database and server env that specific to that programming language.</p>
+
+<p>PROS:
+* Rich CMS features
+* Take advantage of database storage and performance
+* Scalable
+* Customizable
+* Full control on your own data and content</p>
+
+<p>CONS:
+* Learning curve is high
+* Costly to host
+* Need to maintain database and applications</p>
+
+<h2 id="saas%2Fcloud-based-cms">SAAS/Cloud based CMS</h2>
+
+<p>You can use one of cloud provider that provide CMS application that you do not need to host your own. Usually this type CMS can be full application, or headless API based that only provide backedn services, and then you build your own UI.</p>
+
+<p>Example are: ButterCMS  and ContentfulCMS.</p>
+
+<p>PROS:
+* Fast setup and usually all you need is a browser to get started (and a credit card. ^_^)
+* No need to setup custom server, maintain database or applications</p>
+
+<p>CONS:
+* Costly
+* Remote debugging and support
+* Data and content are hosted remotely in vendor facility</p>
+
+<h2 id="custom-site-development">Custom site development</h2>
+
+<p>In this case you just build a web site from scratch using one of your favorite programming language.</p>
+
+<ul>
+<li>Java - scalable, high perforamance, higher learning curve, slower in development</li>
+<li>Python/PHP/Ruby/JavaScript - easy to learn and quick to develope</li>
+</ul>
+
+<p>PROS:
+* Fully customizable and take advantage of a programming language eco system.
+* We can do just about anythig we can dream of!</p>
+
+<p>CONS:
+* Learning curve is higher compare to using an existing CMS application
+* Costly to maintain</p>
+
+    </div>
+
+        <br/>
+    <ul>
+                <li class="block">Next: <a href="/blog/2020/which-programmer-text-editor-to-use" title="Which Programmer Text Editor To Use?"><span>Which Programmer Text Editor To Use?</span></a></li>
+                        <li class="block">Previous: <a href="/blog/2020/the-world-of-php-development" title="The World of PHP Development"><span>The World of PHP Development</span></a></li>
+            </ul>
+    
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/build/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <a href="https://sculpin.io" class="mx-3">
+                                <div class="width: 128px; height: 24px;">
+                                <img
+                                    src="/build/images/sculpin-mascot-jackson-micro.png"
+                                    alt="Made with Sculpin"
+                                    width="100%"
+                                    height="100%">
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="/sitemap.xml">
+                                SiteMap
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+        <script src="/build/app.js"></script>
+    
+        
+    </body>
+</html>

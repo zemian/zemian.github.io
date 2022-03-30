@@ -1,0 +1,440 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title><![CDATA[Zemian&#039;s Blog]]></title>
+    <link href="/atom.xml" rel="self"/>
+    <link href="/"/>
+    <updated>2022-03-30T16:01:35+00:00</updated>
+    <id>/</id>
+        <generator uri="http://sculpin.io/">Sculpin</generator>
+            <entry>
+            <title type="html"><![CDATA[Build a DatePicker using VueJS and BulmaCSS]]></title>
+            <link href="/blog/2021/build-a-datepicker-using-vuejs-and-bulmacss"/>
+            <updated>2021-12-01T00:00:00+00:00</updated>
+            <id>/blog/2021/build-a-datepicker-using-vuejs-and-bulmacss</id>
+            <content type="html"><![CDATA[<p>I took the challenge to build a simple DatePicker web component using VueJS and BulmaCSS, and here is the result!</p>
+
+<p class="codepen" data-height="653" data-default-tab="result" data-slug-hash="vYJbwzY" data-user="zemian" style="height: 653px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;">
+  <span>See the Pen <a href="https://codepen.io/zemian/pen/vYJbwzY">
+  Vue+Bulma Date Picker</a> by Zemian Deng (<a href="https://codepen.io/zemian">@zemian</a>)
+  on <a href="https://codepen.io">CodePen</a>.</span>
+</p>
+
+<script async src="https://cpwebassets.codepen.io/assets/embed/ei.js"></script>
+]]></content>
+        </entry>
+            <entry>
+            <title type="html"><![CDATA[How to Setup WordPress For Local Development]]></title>
+            <link href="/blog/2021/how-to-setup-wordpress-for-local-development"/>
+            <updated>2021-11-14T00:00:00+00:00</updated>
+            <id>/blog/2021/how-to-setup-wordpress-for-local-development</id>
+            <content type="html"><![CDATA[<p>The <a href="https://wordpress.org/support/article/how-to-install-wordpress/">WordPress installation</a> is relative simple, and they even boast about a "famous 5-minute installation". However, what they mean by "5-minutes" part though, is that it only count when you first launched the WordPress site for the first time setup. If you are a newbie, it's likely you haven't install their pre-requisites yet. Here I will summarize the install and setup process for completeness sake.</p>
+
+<h2 id="the-pre-requisite-setup">The Pre-Requisite Setup</h2>
+
+<p>The WordPress requires MySQL database server, and you need PHP and a web server to run it. I will use the Apache HTTPD web server (or Apache for short) here.</p>
+
+<p>If you are using macOS, then you may install these items using <code>brew</code> command <a href="https://brew.sh/">package manager</a> like this:</p>
+
+<pre><code>brew install httpd mysql php
+brew services start httpd
+brew services start mysql
+</code></pre>
+
+<p>If you want to learn each software in detail, checkout their website for their full documentation:</p>
+
+<ul>
+<li><a href="https://httpd.apache.org/">Apache HTTPD server</a></li>
+<li><a href="https://dev.mysql.com/downloads/mysql/">MySQL database server</a></li>
+<li><a href="https://www.php.net/downloads.php">PHP</a></li>
+</ul>
+
+<h2 id="the-apache-httpd-setup">The Apache HTTPD Setup</h2>
+
+<p>For Apache, you need some manual setup to get PHP working. Edit the Apache config 
+<code>/usr/local/etc/httpd/httpd.conf</code> file and append the following:</p>
+
+<pre><code># To enable PHP in Apache add the following to httpd.conf and restart Apache:
+LoadModule php_module /usr/local/opt/php/lib/httpd/modules/libphp.so
+&lt;FilesMatch \.php$&gt;
+    SetHandler application/x-httpd-php
+&lt;/FilesMatch&gt;
+
+# Finally, check DirectoryIndex includes index.php
+DirectoryIndex index.php index.html
+</code></pre>
+
+<p>NOTE: The path I have is from my installation. You may want to run <code>brew info httpd</code> and 
+<code>brew info php</code> to verify your actual installation paths.</p>
+
+<p>TIPS: For Windows users, you may want to try friendly <a href="https://www.apachefriends.org/index.html">XAMPP package</a> that comes with all three software!</p>
+
+<p>To verify you have Apache &amp; PHP installed correctly, you need to locate the DocumentRoot directory is.
+That's where it host all your HTML files for Apache server. For mine, it's under <code>/usr/local/var/www/</code>
+You can find your DocumentRoot path inside the Apache config <code>/usr/local/etc/httpd/httpd.conf</code> file.
+You will also noticed that default port Apache use is <code>8080</code>. So create a simple PHP script to test it like this:</p>
+
+<pre><code># file: /usr/local/var/www/phpinfo.php
+&lt;?php phpinfo(); ?&gt;
+</code></pre>
+
+<p>Now open <code>http://localhost:8080/phpinfo.php</code> to verify. It should print many PHP information for you.</p>
+
+<h2 id="the-database-setup">The Database Setup</h2>
+
+<p>Once your MySQL server is running, open a MySQL prompt with <code>mysql -u root</code> command. In there we can create a user and an empty database like this:</p>
+
+<pre><code class="sql">-- Create DB user
+CREATE USER IF NOT EXISTS 'myuser'@'localhost' IDENTIFIED BY 'mypassword';
+
+-- Create DB for wordpress
+CREATE DATABASE wordpress CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+
+-- Grant DB privileges to our user
+GRANT ALL PRIVILEGES ON wordpress.* TO 'myuser'@'localhost';
+</code></pre>
+
+<blockquote>
+  <p>NOTE: Note we are only creating an empty database here. The WordPress database schema is not yet created. It will be created as part of WordPress installation below.</p>
+  
+  <p>WARNING: You should change the user and password to something that is more secure; including the WordPress admin user we will setup below.</p>
+</blockquote>
+
+<h2 id="the-wordpress-install-and-setup">The WordPress Install and Setup</h2>
+
+<ol>
+<li><p>Download <a href="https://wordpress.org/download/#download-install">WordPress</a> and unzip it under the DocumentRoot folder (eg: <code>/usr/local/var/www/</code>). You should have the <code>/usr/local/var/www/wordpress</code> directory after complete.</p></li>
+<li><p>Open a browser and visit <code>http://localhost:8080/wordpress</code>. This is where your "famous 5-minute installation" starts. Follow the prompt through several pages to get your WordPress up and running. I will give you some basic examples to get started:</p>
+
+<ol>
+<li>A language selection page will greet you. Select <code>English (United States)</code> and then press "Continue" button.</li>
+<li>Next is an info page telling you that you need the database information to complete the setup. Press "Let's go" button.</li>
+<li><p>Enter the database information, then press "Submit" button:</p>
+
+<ul>
+<li>Database Name: <code>wordpress</code></li>
+<li>Username: <code>myuser</code></li>
+<li>Password: <code>mypassword</code></li>
+<li>Database Host: <code>loclhost</code></li>
+<li>Table Prefix: <code>wp_</code></li>
+</ul></li>
+<li><p>A confirmation page will display that you are ready to proceed. Press "Run the installation" button.</p></li>
+<li><p>A welcome page that prompt to setup the Site information. Press "Install WordPress" button to continue after you entered the following:</p>
+
+<ul>
+<li>Site Title: <code>My WordPress</code></li>
+<li>Username: <code>myadmin</code></li>
+<li>Password: <code>mypassword</code></li>
+<li>Confirm Password: Check to confirm</li>
+<li>Your Email: <code>myadmin@localhost.local</code></li>
+<li>Search engine visibility: Check to discourage search engine</li>
+</ul></li>
+<li><p>Success page will display next, and you may now press "Login in" button to continue.</p></li>
+<li><p>Now your WordPress is ready. You may access two areas of the site:</p>
+
+<ul>
+<li><code>http://localhost:8080/wordpress</code> - The front-end site for public users.</li>
+<li><code>http://localhost:8080/wordpress/wp-admin</code> - The back-end site for admin users.</li>
+</ul></li>
+</ol></li>
+</ol>
+
+<p>And that's all! Enjoy creating content with WordPress!</p>
+]]></content>
+        </entry>
+            <entry>
+            <title type="html"><![CDATA[New ZBlog Design With Bulma and Sculpin]]></title>
+            <link href="/blog/2021/new-zblog-design-with-bulma-and-sculpin"/>
+            <updated>2021-11-11T00:00:00+00:00</updated>
+            <id>/blog/2021/new-zblog-design-with-bulma-and-sculpin</id>
+            <content type="html"><![CDATA[<p>I redesigned <a href="https://github.com/zemian/zemian.github.io/tree/sculpin">my blog</a> with the <a href="https://sculpin.io/">Sculpin</a> Static Site Generator. I made a simple custom theme with BulmaCSS. Here is a screenshot:</p>
+
+<p><img src="/build/images/posts/2021/new-zblog-design-with-bulma-and-sculpin.png" alt="" /></p>
+
+<p>Few things I like about Bulma and Sculpin:</p>
+
+<ul>
+<li>Bulma is an easy to work with CSS library and has great out-of-the-box styles.</li>
+<li>I learned enough PHP to feel comfortable now, so I want a site generator made using PHP.</li>
+<li>I am also learning about Symfony framework, which what Sculpin is based on.</li>
+<li>It supports Twig templates which pretty easy to work with. It's very much like the Django template syntax, which I have a worked on in the past. So the learning curve here is very minimal.</li>
+<li>Sculpin actually let you use Symfony Encore frontend library. It's nice to able to do <code>import</code> with both JS and CSS dependency, along with SASS post-css processing as well.</li>
+</ul>
+]]></content>
+        </entry>
+            <entry>
+            <title type="html"><![CDATA[How to Trust a Self-Signed SSL certificate on MacOS]]></title>
+            <link href="/blog/2021/how-to-trust-a-self-signed-ssl-certificate-on-macos"/>
+            <updated>2021-04-17T00:00:00+00:00</updated>
+            <id>/blog/2021/how-to-trust-a-self-signed-ssl-certificate-on-macos</id>
+            <content type="html"><![CDATA[<p>Sometimes we use a self-sign certificate on web server for development. If you are
+using a MacOS system, you would need the following to get pass the Trust certificate.</p>
+
+<ol>
+<li><p>Visit the site and the click the URL icon to show the Certificate.</p></li>
+<li><p>Drag the certificate onto the Desktop and save it as <code>.cer</code> file.</p></li>
+<li><p>Open "Keychain Access" app and import the <code>.cer</code> file.</p></li>
+<li><p>Double click the import cerficate and expand "Trust" selection and set to "Always Trust"</p></li>
+<li><p>Save and exit "Keychain Access"</p></li>
+<li><p>Restart browser (eg: Chrome) and revisit site again.</p></li>
+</ol>
+
+<p>NOTE: If you don't restart browser, the certificate will continue to fail!</p>
+]]></content>
+        </entry>
+            <entry>
+            <title type="html"><![CDATA[Take Notes with MarkNotes]]></title>
+            <link href="/blog/2020/take-notes-with-marknotes"/>
+            <updated>2020-11-07T00:00:00+00:00</updated>
+            <id>/blog/2020/take-notes-with-marknotes</id>
+            <content type="html"><![CDATA[<p>I wrote a simple notes taking web application called <a href="https://github.com/zemian/marknotes">MarkNotes</a>. It's a single <code>index.php</code> page application for managing Markdown notes. Try it out and let me know what you think!</p>
+
+<p>Here are few screenshots on how it looks like:</p>
+
+<h2 id="home-page">Home Page</h2>
+
+<p><img src="/build/images/posts/2020/marknotes1.png" alt="" /></p>
+
+<h2 id="admin-page">Admin Page</h2>
+
+<p><img src="/build/images/posts/2020/marknotes2.png" alt="" /></p>
+
+<h2 id="editing-a-note">Editing a Note</h2>
+
+<p><img src="/build/images/posts/2020/marknotes3.png" alt="" /></p>
+]]></content>
+        </entry>
+            <entry>
+            <title type="html"><![CDATA[Directory Listing Project]]></title>
+            <link href="/blog/2020/directory-listing-project"/>
+            <updated>2020-10-04T00:00:00+00:00</updated>
+            <id>/blog/2020/directory-listing-project</id>
+            <content type="html"><![CDATA[<p>A directory listing index page is a very useful for development. It gives you 
+a quick overview of your project content and able to verify your site is up and
+running.</p>
+
+<p>While learning PHP, I have created the smallest project called <a href="https://github.com/zemian/purple-index">purple-index</a>.</p>
+
+<p>Here are some screenshots. Enjoy!</p>
+
+<p><img src="https://raw.githubusercontent.com/zemian/index-listing/main/docs/screenshot.png" alt="Screenshot" /></p>
+
+<p><img src="https://raw.githubusercontent.com/zemian/index-listing/main/docs/screenshot2.png" alt="Screenshot" /></p>
+
+<p><img src="https://raw.githubusercontent.com/zemian/index-listing/main/docs/screenshot3.png" alt="Screenshot" /></p>
+]]></content>
+        </entry>
+            <entry>
+            <title type="html"><![CDATA[Which Programmer Text Editor To Use?]]></title>
+            <link href="/blog/2020/which-programmer-text-editor-to-use"/>
+            <updated>2020-09-27T00:00:00+00:00</updated>
+            <id>/blog/2020/which-programmer-text-editor-to-use</id>
+            <content type="html"><![CDATA[<p>A text editor is a programmer must have tool. Like many developers, I have used quite a few text editors over the years. Here are some that got me through many projects.</p>
+
+<ul>
+<li><p>I started learning QBasic back in the 90's that comes with editor. It was in the old Microsoft DOS command line though. Then I ventured into the C programming. Remember that there is no internet back then. I have used various pre-package editors that comes with the C compiler. Back then the Turbo C comes with an editor that I am not sure what's called. Then later I used one from Borland C++ Builder for Windows 3.1.</p></li>
+<li><p>Then I had been introduced to Linux and Unix environments, and I learned about <a href="https://www.vim.org/">Vim</a> editor. It's a stand alone editor you can use to write any code. (It's actually called Vi, but at that time, there is already a popular Vi IMproved version, so I jumped on it.) I remembered I've spent a long time trying to master it. I even got many customized shortcuts and scripts for it, but after a while I realized that it was just too taxing to try maintain it. I focus on the editor more than on my code! However I didn't regret learning this tool because even today, I am able to move about in Linux terminal and edit what I need with ease. The Vim works in terminal and it's everywhere.</p></li>
+<li><p>Then around year 2000, I've used <a href="https://www.ultraedit.com/">UltaEdit</a> (It's a Windows only text editor back then). It's the first true programmer Editor I actually pay for it! I was writing lots of Perl code back then, for an online auction site. I have used this for several years. Mainly it's clean and fast. The search and replace that supports Regular Expression, and it lets you search through a folder recursively was awesome!</p></li>
+<li><p>I worked with Microsoft C++ projects for some time, and their <a href="https://visualstudio.microsoft.com/">Visual Studio</a> was great. Heard of IntelliSense? Oh it was bleeding edge stuff back then. Now a days, just about any IDE has this feature.</p></li>
+<li><p>Then I got into Java programming. A large Java project needed more help than a simple text editor (but I learned all the basics through a plain editor though). I started using <a href="https://www.eclipse.org/">Eclipse IDE</a>. Due to the need of cross platform (Unix and Windows), and I need something lighter than IDE, I also started using <a href="http://www.jedit.org/">jEdit</a>. This lasted for many years.</p></li>
+<li><p>When I started using MacOSX and learned a new language called Ruby, it's then I heard about <a href="https://macromates.com/">TextMate</a>. I didn't know a Text Editor can be so slick and smooth and beautiful!</p></li>
+<li><p>I also had to work with Windows platform at lot at point, and I've found the open source <a href="https://notepad-plus-plus.org/downloads/">Notepad++</a> a good editor to do just about any programming now. It replaced my UltraEdit at this point. If you only have to work on Windows, then this is the editor you should keep around you.</p></li>
+<li><p>Java has been the bread and butter of my career. Many years of Eclipse usage has lead me  yearning for more speed and stability. I started trying out <a href="https://netbeans.org/">NetBeans</a> and <a href="https://www.jetbrains.com/idea/">IntelliJ IDEA</a>. The IDEA has won me over at the end. It's like one of those thing that once you tried, you can't go back. It is truly a great and productive IDE. Today I bought their entire tool suite that covers Java (IntelliJ IDEA), Python (PyCharm), JavaScript (WebStorm), PHP (PhpStorm) and SQL Explore (DataGrip).</p></li>
+<li><p>Python is one my favorite programming language. It's through python programmers, that I heard about <a href="https://www.sublimetext.com/">Sublime Text</a>. It's a cross platform that's truly beautify, fast and light to use for any text and programming coding. I still use this today for any quick text editing.</p></li>
+<li><p>Microsoft has released an open source version of light IDE editor named <a href="https://code.visualstudio.com/">VSCode</a>. This is very comparable to the WebStorm, except the Git client UI is terrible.</p></li>
+<li><p><a href="https://atom.io/">Atom</a> is yet another cross platform text editor that recently I have been trying out lately. It looks great, runs on multiple OS (MacOSX, Windows, Linux etc) and it's open source! It can be the SublimeText replacement, except one biggest issue is that it's slow in comparison.</p></li>
+</ul>
+
+<p>So as you see, I tried many text editors. I have come to learned that you should always keep a simple, clean and fast text editor. This allows you to edit any text files for any programming languages, read logs, edit system config files etc. Then on top of this, you want to invest in a full feature IDE that supports the main programming language that your project is using. The IDE will provide quick tools setup, environment integration, language refactoring, source control integration to inspect code change and diff, intelli-sense code editing and browsing, and much more. These give you a powerful and productive boost toward a large and demanding project.</p>
+
+<p>Many popular tools out there are created for a purpose and if you're willing to learn it, you can use it in a productive way. If you are a beginner programmer, try some open source text editors. Spend few months on the one that you like. Better yet, work on a real project with your text editor. Spend some time to know it better, read the docs, and learn from other users etc. Now if you are a professional programmer, you shouldn't be afraid to pay a text editor or IDE. A commercial IDE such as Sublime Text or IntelliJ IDEA can really boost your performance. The amount of money you pay is very nominal compare to the money you will earn through the code. Writing good code is a craft of art, so invest on good tools to do the job well. With a good text editor on hand, you will enjoy coding more, and the quality of your code should get better as well.</p>
+]]></content>
+        </entry>
+            <entry>
+            <title type="html"><![CDATA[Which CMS to Use?]]></title>
+            <link href="/blog/2020/which-cms-to-use"/>
+            <updated>2020-09-23T00:00:00+00:00</updated>
+            <id>/blog/2020/which-cms-to-use</id>
+            <content type="html"><![CDATA[<p>What is a CMS? Accoridng to <a href="https://en.wikipedia.org/wiki/Content_management_system">Wikipedia</a></p>
+
+<blockquote>
+  <p>A content management system (CMS) is a computer software used to manage the creation and modification of digital content. CMSs are typically used for enterprise content management (ECM) and web content management (WCM). ECM typically supports multiple users in a collaborative environment by integrating document management, digital asset management and record retention.</p>
+</blockquote>
+
+<p>A CMS (or sometimes it can be called Knowledge Mangaement System, KMS) such as ECM can be very complex and requires a team of developers and a company to support it! In fact I am currently working for <a href="https://www.oracle.com/cx/service/knowledge-management/">Oracle CX Knowledge Management</a> that provides such service.</p>
+
+<p>Outside of ECM, many smaller business would use CMS (or the WCM) to create and host their own website. Now a days, a CMS can do more than just hosting static pages. It can be extended to include dynamic features such as ecommerce store that sells product or manage community of users etc. Another usage of CMS is just for personal blogging. It helps keep track and displaying someone's weblog in a form of digital Post.</p>
+
+<p>I have <a href="https://github.com/zemian/cms-eval">evaluated</a> and used quite of few CMS applications for my own personal blogging. Here I would highlight few that I like with their pros and cons. I hope these help you in selecting your own CMS to use.</p>
+
+<h2 id="static-site-generator">Static Site Generator</h2>
+
+<p>If you are a developer, you should definately try a "Static Site Generator" to generate a site. It helps you understand more on the tools and way to create site differently compare to a traditional web development with a server. Currently GitHub provide "Pages" services that host static html files for free.</p>
+
+<p>There are many generator to choose from. See my <code>cms-eval</code> repo for details. Currently I found <a href="http://vuepress.vuejs.org/">VuePress</a> to be very promising.</p>
+
+<p>PROS:
+* Generators are usually easy to setup and run using a dynamic scripting language.
+* Content data are usually store as files. And it can use markup syntax such as Markdown or Asciidoc for input.
+* Simple layout and template processing to generate output that usually use a certain folders structure. Minial configuration is needed.
+* Site output is just plain static HTML/CSS/JavaScript files.
+* No server side processing needed to host the site.
+* No need database</p>
+
+<p>CONS
+* It's more work to create new post and publish it.
+* New content data is created using your text editor locally, save, and then Git commit.
+* New site needs to be generated, then push and update host server.
+* You can automate publishing using CI server (like Travis) but require more setup.
+* You usually want to use source control tool to version changes, so more tool to learn.
+* A change in source could generate many changes in the output static files. (Specially if you use pagination).
+* Dynamic feature such as search feature is more difficult to do. You usually need to integrate third party serice (eg: Disqus for user comments)</p>
+
+<h2 id="web-based-cms-applications">Web based CMS applications</h2>
+
+<p>This usually mean you would use a CMS web application that made created using one of server side programming language. Some example of these applications are:</p>
+
+<ul>
+<li>WordPress (PHP)</li>
+<li>WagtailCMS (Python)</li>
+<li>RandiantCMS (Ruby)</li>
+<li>MagnoliaCMS (Java)</li>
+<li>Gridsome(JS)</li>
+</ul>
+
+<p>These CMS application setup usually require a database and server env that specific to that programming language.</p>
+
+<p>PROS:
+* Rich CMS features
+* Take advantage of database storage and performance
+* Scalable
+* Customizable
+* Full control on your own data and content</p>
+
+<p>CONS:
+* Learning curve is high
+* Costly to host
+* Need to maintain database and applications</p>
+
+<h2 id="saas%2Fcloud-based-cms">SAAS/Cloud based CMS</h2>
+
+<p>You can use one of cloud provider that provide CMS application that you do not need to host your own. Usually this type CMS can be full application, or headless API based that only provide backedn services, and then you build your own UI.</p>
+
+<p>Example are: ButterCMS  and ContentfulCMS.</p>
+
+<p>PROS:
+* Fast setup and usually all you need is a browser to get started (and a credit card. ^_^)
+* No need to setup custom server, maintain database or applications</p>
+
+<p>CONS:
+* Costly
+* Remote debugging and support
+* Data and content are hosted remotely in vendor facility</p>
+
+<h2 id="custom-site-development">Custom site development</h2>
+
+<p>In this case you just build a web site from scratch using one of your favorite programming language.</p>
+
+<ul>
+<li>Java - scalable, high perforamance, higher learning curve, slower in development</li>
+<li>Python/PHP/Ruby/JavaScript - easy to learn and quick to develope</li>
+</ul>
+
+<p>PROS:
+* Fully customizable and take advantage of a programming language eco system.
+* We can do just about anythig we can dream of!</p>
+
+<p>CONS:
+* Learning curve is higher compare to using an existing CMS application
+* Costly to maintain</p>
+]]></content>
+        </entry>
+            <entry>
+            <title type="html"><![CDATA[The World of PHP Development]]></title>
+            <link href="/blog/2020/the-world-of-php-development"/>
+            <updated>2020-09-20T05:00:00+00:00</updated>
+            <id>/blog/2020/the-world-of-php-development</id>
+            <content type="html"><![CDATA[<p>I have gotten into PHP lately in order to help a friend who runs a Joomla site with a custom component. Thinking to myself now that I have some <a href="/2020/03/22/front-end">Front End Experience</a>, I shouldn't have trouble doing this. But I have never seriuosly got into PHP in the past though, and now I need to learn enough to debug and fix few bugs in the Joomla env. I have gathered and learned quite a few things and like to write it down.</p>
+
+<h2 id="learning-php">Learning PHP</h2>
+
+<p>I started <a href="https://github.com/zemian/learn-php">Learn PHP</a> repository to familiar with PHP first. I want to setup PHP locally in my machine so I can learn some syntax and programming construct. I was suprised their documentation is pretty good. I even watched a old video on <a href="https://www.youtube.com/watch?v=rKXFgWP-2xQ">PHP in 2018 by the Creator of PHP</a> by Rasmus Lerdorf. It was very informative and encouraging to see PHP is still thriving and doing good.</p>
+
+<p>PHP is not much use without a database and a web server, so I learned how to setup and connect PHP to those two. It seems PHP loves MySQL, and getting that running is pretty easy. As far as web server, there are few major ones to choose: Apache Httpd, Nginx or Lighttpd. The Lighttpd is the easiest to setup. I like it how I can just use one config file and bring up the server in foreground process, and the DocumentRoot can be set to your CWD. No need to setup any background PHP daemon process (like Nginx requires one). Apache Httpd can also start without a PHP daemon but the setup is complicated. Then later I learned that PHP itself comes with a web server for development! Just run <code>php -S localhost:3000</code> and it serves your current working directory. No setup needed! Sweet!</p>
+
+<p>NOTE: For production, it's recommended to use either Apache Httpd or Nginx.</p>
+
+<p>Later, I also found there are different versions of PHP that I would need to fix the site, and settting up multiple versions of PHP in a single web server is pretty complicated. I gathered a lot of notes on each of these subject in my repository, so check it out.</p>
+
+<h2 id="learning-joomla">Learning Joomla</h2>
+
+<p>My goal is to help my friend's site, so next I started <a href="https://github.com/zemian/learn-joomla">Learn Joomla</a> project. My friend site is actually quite old (Joomla 3.5.1 with PHP 5.6 and MySQL 5.7). Because of this and the PHP was compiled with some special extension in server, I actually had hard time setting it up in my Mac for local development. I ended up had to compile my own PHP from source to get a setup working! It was a painful exercise since compiling PHP 5.6 on latest MacOS has many hiccups.</p>
+
+<p>Once the environment is up, installing Joomla itself is not too bad. I got it up running in short time. Joomla documentation site is only so so though. I think this CMS design is overly complex. Their concept of Menus, Articles and Extensions are confusing, feel bulky and a lot to learn. A simple MVC based component extension will take over 10+ files to write! I just want to learn enough to use it to support a site, not experts, so this repository have gotten me through what I need to know about Joomla.</p>
+
+<p>One interesting I learned about Joomla is that its "System Debug" feature is pretty good. When enabled, it shows a "Debug Console" footer in your site that shows session, request, SQL queries and application debug messages. Great tool to debug the application. (If your site or component uses their full MVC model that is.)</p>
+
+<h2 id="fixing-a-php-application">Fixing a PHP application</h2>
+
+<p>When I got into my friend's site, I had a pretty good idea about the PHP env. So I thought I was pretty prepared. Boy, I was wrong! The site has a custom component that started out as nice self-contained extension. But through many years of abuse, it is now old with many unmaintained dependencies. It has many developers touched it over the years without any consistency. The code was badly formatted (PHP mixed with HTML in the worse way you can think of), files scattered everywhere, and worse of it all there are lots of repeated codes. Through all these, there were no version control used. So dead code eveywhere, and backup unused files literred all over the place. This is a one big mess of an app.</p>
+
+<p>Prowling through large, new code base is a daunting task. I've found the JetBrains' PHPStorm IDE helps a little bit there. I was able to jump functions and searching in directory is a breeze. The IDE also supports PHP debugger, but unfortunately it only works with latest PHP7 well. The PHP 5.6 is harder to get it setup that in the end I gave up.</p>
+
+<p>Without a debugger, the next resort in debugging an app is print message as you trace through code. The PHP is notoriously easy to allow developers litter code with <code>echo</code> lines and then comment it out after debug. The Joomla actually has a nice <code>JLog</code> logging function that let you dynamically turns on/off and to file output. But this application that I am supporting didn't use that, and there is zero log message. I also learned that logging to file is essential when tracing a AJAX supported PHP code. Here you can't simply <code>echo</code> your debug message out, or it will break the JSON payload. So I have to write some of these debugging code to help myself to troubleshoot the application.</p>
+
+<p>At the end, I was able to fix few of the pressing issues due to their multiple version of jQuery loading conflicts and some bad SQL in their dynamic query builder. I have to say that nothing teaches you more than jumping into a badly coded site that's somehow working, and yet you need to fix few naughty issues! It's a hair pulling experience, but I learned a lot.</p>
+]]></content>
+        </entry>
+            <entry>
+            <title type="html"><![CDATA[How to Load Multiple jQuery]]></title>
+            <link href="/blog/2020/how-to-load-multiple-jquery"/>
+            <updated>2020-09-19T05:00:00+00:00</updated>
+            <id>/blog/2020/how-to-load-multiple-jquery</id>
+            <content type="html"><![CDATA[<p>Sometimes, your site might need to load mulitple versions of jQuery to support some legacy libraries. Here I will provide two ways to do that.</p>
+
+<h2 id="using-plain-html%2Fjs">Using plain HTML/JS</h2>
+
+<pre><code class="js">&lt;script src="https://unpkg.com/jquery@3.5.1/dist/jquery.js"&gt;&lt;/script&gt;
+&lt;script&gt;let jq3 = jQuery.noConflict(true);&lt;/script&gt;
+&lt;script src="https://unpkg.com/jquery@1.12.4/dist/jquery.js"&gt;&lt;/script&gt;
+&lt;script&gt;let jq1 = jQuery.noConflict(true);&lt;/script&gt;
+
+
+&lt;script&gt;
+// Now we can use each jQuery with the name assigned.
+console.log("jQuery 3 version " + jq3.fn.jquery);
+console.log("jQuery 1 version " + jq1.fn.jquery);
+
+console.log("jQuery 3 document ", jq3(document));
+console.log("jQuery 1 document ", jq1(document));
+&lt;/script&gt;
+</code></pre>
+
+<p>NOTE: You need to call <code>noConflict()</code> immediately after the script tag load of the jQuery. If you are dealing with multiple jQuery, it's best not to use the <code>$</code> global variable to avoid confusion.</p>
+
+<h2 id="using-requirejs">Using RequireJS</h2>
+
+<pre><code class="js">&lt;script src="https://unpkg.com/requirejs@2.3.6/require.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+    define('jq3', ['https://unpkg.com/jquery@3.5.1/dist/jquery'], function() {
+        return jQuery.noConflict(true);
+    });
+    define('jq1', ['https://unpkg.com/jquery@1.12.4/dist/jquery'], function() {
+        return jQuery.noConflict(true);
+    });
+
+    require(['jq3', 'jq1'], function(jq3, jq1) {
+        jq3(function () {
+        console.log("jQuery 3 version " + jq3.fn.jquery);
+        console.log("jQuery 1 version " + jq1.fn.jquery);
+
+        console.log("jQuery 3 document ", jq3(document));
+        console.log("jQuery 1 document ", jq1(document));
+        });
+    });
+&lt;/script&gt;
+</code></pre>
+
+<p>NOTE: Do not load multiple versions of jQuery through the <code>paths</code> inside <code>requirejs.config()</code> method. As that will automatically bind the <code>jquery</code> module name and you can't change that.</p>
+]]></content>
+        </entry>
+    </feed>

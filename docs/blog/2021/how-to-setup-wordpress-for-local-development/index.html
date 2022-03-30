@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>How to Setup WordPress For Local Development &mdash; Zemian&#039;s Blog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+            <meta name="robots" content="index, follow">
+        <link rel="stylesheet" href="/build/app.css">
+
+        <link rel="alternate" type="application/atom+xml" href="/atom.xml" title="Zemian&#039;s Blog activity feed" />
+                                        
+                <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1148923977922702" crossorigin="anonymous"></script>
+            </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/build/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/tags" class="navbar-item">Tags</a>
+                        <a href="/about" class="navbar-item">About</a>
+                        <a href="/atom.xml" class="navbar-item">Feed</a>
+                        <a href="/search" class="navbar-item">Search</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                            <div class="level">
+        <div class="level-item">
+            Nov 14, 2021
+        </div>
+    </div>
+    <div class="level">
+        <div class="level-item">
+                        <a class="tag mr-1" href="/blog/tags/php">php</a>
+                        <a class="tag mr-1" href="/blog/tags/wordpress">wordpress</a>
+                    </div>
+    </div>
+
+    <h1 class="title">How to Setup WordPress For Local Development</h1>
+    <div class="content">
+        <p>The <a href="https://wordpress.org/support/article/how-to-install-wordpress/">WordPress installation</a> is relative simple, and they even boast about a "famous 5-minute installation". However, what they mean by "5-minutes" part though, is that it only count when you first launched the WordPress site for the first time setup. If you are a newbie, it's likely you haven't install their pre-requisites yet. Here I will summarize the install and setup process for completeness sake.</p>
+
+<h2 id="the-pre-requisite-setup">The Pre-Requisite Setup</h2>
+
+<p>The WordPress requires MySQL database server, and you need PHP and a web server to run it. I will use the Apache HTTPD web server (or Apache for short) here.</p>
+
+<p>If you are using macOS, then you may install these items using <code>brew</code> command <a href="https://brew.sh/">package manager</a> like this:</p>
+
+<pre><code>brew install httpd mysql php
+brew services start httpd
+brew services start mysql
+</code></pre>
+
+<p>If you want to learn each software in detail, checkout their website for their full documentation:</p>
+
+<ul>
+<li><a href="https://httpd.apache.org/">Apache HTTPD server</a></li>
+<li><a href="https://dev.mysql.com/downloads/mysql/">MySQL database server</a></li>
+<li><a href="https://www.php.net/downloads.php">PHP</a></li>
+</ul>
+
+<h2 id="the-apache-httpd-setup">The Apache HTTPD Setup</h2>
+
+<p>For Apache, you need some manual setup to get PHP working. Edit the Apache config 
+<code>/usr/local/etc/httpd/httpd.conf</code> file and append the following:</p>
+
+<pre><code># To enable PHP in Apache add the following to httpd.conf and restart Apache:
+LoadModule php_module /usr/local/opt/php/lib/httpd/modules/libphp.so
+&lt;FilesMatch \.php$&gt;
+    SetHandler application/x-httpd-php
+&lt;/FilesMatch&gt;
+
+# Finally, check DirectoryIndex includes index.php
+DirectoryIndex index.php index.html
+</code></pre>
+
+<p>NOTE: The path I have is from my installation. You may want to run <code>brew info httpd</code> and 
+<code>brew info php</code> to verify your actual installation paths.</p>
+
+<p>TIPS: For Windows users, you may want to try friendly <a href="https://www.apachefriends.org/index.html">XAMPP package</a> that comes with all three software!</p>
+
+<p>To verify you have Apache &amp; PHP installed correctly, you need to locate the DocumentRoot directory is.
+That's where it host all your HTML files for Apache server. For mine, it's under <code>/usr/local/var/www/</code>
+You can find your DocumentRoot path inside the Apache config <code>/usr/local/etc/httpd/httpd.conf</code> file.
+You will also noticed that default port Apache use is <code>8080</code>. So create a simple PHP script to test it like this:</p>
+
+<pre><code># file: /usr/local/var/www/phpinfo.php
+&lt;?php phpinfo(); ?&gt;
+</code></pre>
+
+<p>Now open <code>http://localhost:8080/phpinfo.php</code> to verify. It should print many PHP information for you.</p>
+
+<h2 id="the-database-setup">The Database Setup</h2>
+
+<p>Once your MySQL server is running, open a MySQL prompt with <code>mysql -u root</code> command. In there we can create a user and an empty database like this:</p>
+
+<pre><code class="sql">-- Create DB user
+CREATE USER IF NOT EXISTS 'myuser'@'localhost' IDENTIFIED BY 'mypassword';
+
+-- Create DB for wordpress
+CREATE DATABASE wordpress CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+
+-- Grant DB privileges to our user
+GRANT ALL PRIVILEGES ON wordpress.* TO 'myuser'@'localhost';
+</code></pre>
+
+<blockquote>
+  <p>NOTE: Note we are only creating an empty database here. The WordPress database schema is not yet created. It will be created as part of WordPress installation below.</p>
+  
+  <p>WARNING: You should change the user and password to something that is more secure; including the WordPress admin user we will setup below.</p>
+</blockquote>
+
+<h2 id="the-wordpress-install-and-setup">The WordPress Install and Setup</h2>
+
+<ol>
+<li><p>Download <a href="https://wordpress.org/download/#download-install">WordPress</a> and unzip it under the DocumentRoot folder (eg: <code>/usr/local/var/www/</code>). You should have the <code>/usr/local/var/www/wordpress</code> directory after complete.</p></li>
+<li><p>Open a browser and visit <code>http://localhost:8080/wordpress</code>. This is where your "famous 5-minute installation" starts. Follow the prompt through several pages to get your WordPress up and running. I will give you some basic examples to get started:</p>
+
+<ol>
+<li>A language selection page will greet you. Select <code>English (United States)</code> and then press "Continue" button.</li>
+<li>Next is an info page telling you that you need the database information to complete the setup. Press "Let's go" button.</li>
+<li><p>Enter the database information, then press "Submit" button:</p>
+
+<ul>
+<li>Database Name: <code>wordpress</code></li>
+<li>Username: <code>myuser</code></li>
+<li>Password: <code>mypassword</code></li>
+<li>Database Host: <code>loclhost</code></li>
+<li>Table Prefix: <code>wp_</code></li>
+</ul></li>
+<li><p>A confirmation page will display that you are ready to proceed. Press "Run the installation" button.</p></li>
+<li><p>A welcome page that prompt to setup the Site information. Press "Install WordPress" button to continue after you entered the following:</p>
+
+<ul>
+<li>Site Title: <code>My WordPress</code></li>
+<li>Username: <code>myadmin</code></li>
+<li>Password: <code>mypassword</code></li>
+<li>Confirm Password: Check to confirm</li>
+<li>Your Email: <code>myadmin@localhost.local</code></li>
+<li>Search engine visibility: Check to discourage search engine</li>
+</ul></li>
+<li><p>Success page will display next, and you may now press "Login in" button to continue.</p></li>
+<li><p>Now your WordPress is ready. You may access two areas of the site:</p>
+
+<ul>
+<li><code>http://localhost:8080/wordpress</code> - The front-end site for public users.</li>
+<li><code>http://localhost:8080/wordpress/wp-admin</code> - The back-end site for admin users.</li>
+</ul></li>
+</ol></li>
+</ol>
+
+<p>And that's all! Enjoy creating content with WordPress!</p>
+
+    </div>
+
+        <br/>
+    <ul>
+                <li class="block">Next: <a href="/blog/2021/build-a-datepicker-using-vuejs-and-bulmacss" title="Build a DatePicker using VueJS and BulmaCSS"><span>Build a DatePicker using VueJS and BulmaCSS</span></a></li>
+                        <li class="block">Previous: <a href="/blog/2021/new-zblog-design-with-bulma-and-sculpin" title="New ZBlog Design With Bulma and Sculpin"><span>New ZBlog Design With Bulma and Sculpin</span></a></li>
+            </ul>
+    
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/build/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <a href="https://sculpin.io" class="mx-3">
+                                <div class="width: 128px; height: 24px;">
+                                <img
+                                    src="/build/images/sculpin-mascot-jackson-micro.png"
+                                    alt="Made with Sculpin"
+                                    width="100%"
+                                    height="100%">
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="/sitemap.xml">
+                                SiteMap
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+        <script src="/build/app.js"></script>
+    
+        
+    </body>
+</html>

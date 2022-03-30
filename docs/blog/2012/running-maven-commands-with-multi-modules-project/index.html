@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>Running maven commands with multi modules project &mdash; Zemian&#039;s Blog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+            <meta name="robots" content="index, follow">
+        <link rel="stylesheet" href="/build/app.css">
+
+        <link rel="alternate" type="application/atom+xml" href="/atom.xml" title="Zemian&#039;s Blog activity feed" />
+                                        
+                <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1148923977922702" crossorigin="anonymous"></script>
+            </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/build/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/tags" class="navbar-item">Tags</a>
+                        <a href="/about" class="navbar-item">About</a>
+                        <a href="/atom.xml" class="navbar-item">Feed</a>
+                        <a href="/search" class="navbar-item">Search</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                            <div class="level">
+        <div class="level-item">
+            Oct 14, 2012
+        </div>
+    </div>
+    <div class="level">
+        <div class="level-item">
+                        <a class="tag mr-1" href="/blog/tags/maven">maven</a>
+                    </div>
+    </div>
+
+    <h1 class="title">Running maven commands with multi modules project</h1>
+    <div class="content">
+        <p>Have you ever tried running Maven commands inside a sub-module of a multi modules Maven project, and get <code>Could not resolve dependencies for project</code> error msg? And you checked the dependencies that it's missing are those sister modules within the same project! So what gives? It turns out you have to give few more options to get this running correctly, and you have to remember always stays in the parent pom directory to run it!</p>
+
+<p>For exmaple if you checkout the TimeMachine scheduler project, you can invoke the <code>timemachine-hibernate</code> module with maven commands like this:</p>
+
+<pre><code>bash&gt; hg clone https://bitbucket.org/timemachine/scheduler
+bash&gt; cd scheduler
+bash&gt; mvn -pl timemachine-hibernate -am clean test-compile
+</code></pre>
+
+<p>You can start the scheduler using Maven like this (remember to stay in the parent pom directory!):</p>
+
+<pre><code>bash &gt; mvn -pl timemachine-scheduler exec:java -Dexec.mainClass=timemachine.scheduler.tool.SchedulerServer -Dexec.classpathScope=test
+</code></pre>
+
+<p>I have added the <code>-Dexec.classpathScope=test</code> so you will see logging output, because there is an <code>log4j.properties</code> in the classpath for testing.</p>
+
+<p>Without these, you can always run <code>mvn install</code> in the project root directory, then you can cd into any sub-module and run Maven commands. However you will have to keep a tab on what changed in the dependencies, even if they are in sister modules.</p>
+
+<p>You can read more from this <a href="http://www.sonatype.com/people/2009/10/maven-tips-and-tricks-advanced-reactor-options">article</a> from Sonatype.</p>
+
+    </div>
+
+        <br/>
+    <ul>
+                <li class="block">Next: <a href="/blog/2012/a-very-lean-war-file-for-myschedule" title="A very lean war file for MySchedule"><span>A very lean war file for MySchedule</span></a></li>
+                        <li class="block">Previous: <a href="/blog/2012/whats-up-with-the-junit-and-hamcrest-dependencies" title="What&#039;s up with the JUnit and Hamcrest dependencies?"><span>What&#039;s up with the JUnit and Hamcrest dependencies?</span></a></li>
+            </ul>
+    
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/build/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <a href="https://sculpin.io" class="mx-3">
+                                <div class="width: 128px; height: 24px;">
+                                <img
+                                    src="/build/images/sculpin-mascot-jackson-micro.png"
+                                    alt="Made with Sculpin"
+                                    width="100%"
+                                    height="100%">
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="/sitemap.xml">
+                                SiteMap
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+        <script src="/build/app.js"></script>
+    
+        
+    </body>
+</html>

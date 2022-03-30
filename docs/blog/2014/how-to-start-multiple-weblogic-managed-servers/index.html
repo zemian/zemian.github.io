@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>How to start multiple WebLogic managed servers &mdash; Zemian&#039;s Blog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+            <meta name="robots" content="index, follow">
+        <link rel="stylesheet" href="/build/app.css">
+
+        <link rel="alternate" type="application/atom+xml" href="/atom.xml" title="Zemian&#039;s Blog activity feed" />
+                                        
+                <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1148923977922702" crossorigin="anonymous"></script>
+            </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/build/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/tags" class="navbar-item">Tags</a>
+                        <a href="/about" class="navbar-item">About</a>
+                        <a href="/atom.xml" class="navbar-item">Feed</a>
+                        <a href="/search" class="navbar-item">Search</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                            <div class="level">
+        <div class="level-item">
+            Mar 11, 2014
+        </div>
+    </div>
+    <div class="level">
+        <div class="level-item">
+                        <a class="tag mr-1" href="/blog/tags/weblogic">weblogic</a>
+                    </div>
+    </div>
+
+    <h1 class="title">How to start multiple WebLogic managed servers</h1>
+    <div class="content">
+        <p>The WebLogic Server docs recommand you to create a dedicated admin server and then sepearate managed servers for application deployment. Here I will show you how to create one or more managed server in the same host as the admin server.</p>
+
+<p>I assume you already have WLS installed with your own domain created and running. If you haven't done this before, you may refer to my <a href="http://saltnlight5.blogspot.com/2014/01/getting-started-with-weblogic-server.html">previous blog on how to create and start WLS.</a> After you started your domain (that's the default admin server), then follow these steps.</p>
+
+<ol>
+<li><p>Login into your http://localhost:7001/console webapp.</p></li>
+<li><p>On the right menu tree, click Environment > Servers. You should see "<code>myserver(admin)</code>" already listed.</p></li>
+<li><p>Click "New" button, enter Server Name: appserver and set Server Listen Port: 7002</p></li>
+<li><p>Click "Next" and then "Finish"</p></li>
+<li><p>Now open a new terminal and run these commands:</p></li>
+</ol>
+
+<pre><code>    cd mydomain
+    bin/startManagedWeblogic.sh appserver1 localhost:7001
+</code></pre>
+
+<p>You would need to enter the username and password, same as for your /console webapp. After this managed server is up and running you may send the process in the background by pressing CTRL+Z and then run bg command. Or you may use the servers/appserver/security/boot.properties file to bypass the user/password prompt on every restart of this managed server.</p>
+
+<p>Now you have one managed server started along with your admin server. After this you may start deploying application onto this managed server. All the webapp deployed would now accessable by its assigned port such as http://localhost:7002/yourwebapp url. You may repeat the same for however number of managed server you like to run on the same host. Try to name your server name and port number unique.</p>
+
+    </div>
+
+        <br/>
+    <ul>
+                <li class="block">Next: <a href="/blog/2014/how-to-monitor-multiple-jvms-on-a-server-with-visualvm" title="How to monitor multiple JVM&#039;s on a server with VisualVM"><span>How to monitor multiple JVM&#039;s on a server with VisualVM</span></a></li>
+                        <li class="block">Previous: <a href="/blog/2014/how-to-create-mysql-datasource-in-weblogic-server" title="How to create MySQL DataSource in WebLogic Server"><span>How to create MySQL DataSource in WebLogic Server</span></a></li>
+            </ul>
+    
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/build/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <a href="https://sculpin.io" class="mx-3">
+                                <div class="width: 128px; height: 24px;">
+                                <img
+                                    src="/build/images/sculpin-mascot-jackson-micro.png"
+                                    alt="Made with Sculpin"
+                                    width="100%"
+                                    height="100%">
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="/sitemap.xml">
+                                SiteMap
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+        <script src="/build/app.js"></script>
+    
+        
+    </body>
+</html>

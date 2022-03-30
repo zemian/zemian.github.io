@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>How to install cx_Oracle module on Linux &mdash; Zemian&#039;s Blog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+            <meta name="robots" content="index, follow">
+        <link rel="stylesheet" href="/build/app.css">
+
+        <link rel="alternate" type="application/atom+xml" href="/atom.xml" title="Zemian&#039;s Blog activity feed" />
+                                        
+                <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1148923977922702" crossorigin="anonymous"></script>
+            </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/build/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/tags" class="navbar-item">Tags</a>
+                        <a href="/about" class="navbar-item">About</a>
+                        <a href="/atom.xml" class="navbar-item">Feed</a>
+                        <a href="/search" class="navbar-item">Search</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                            <div class="level">
+        <div class="level-item">
+            Jul 23, 2016
+        </div>
+    </div>
+    <div class="level">
+        <div class="level-item">
+                        <a class="tag mr-1" href="/blog/tags/python">python</a>
+                        <a class="tag mr-1" href="/blog/tags/oracle">oracle</a>
+                    </div>
+    </div>
+
+    <h1 class="title">How to install cx_Oracle module on Linux</h1>
+    <div class="content">
+        <p>Here are my notes on installing <a href="http://cx-oracle.sourceforge.net/"><code>cx_Oracle</code> python
+module</a> to access Oracle Database
+12c. First, you need to download these two packages from <a href="http://www.oracle.com/technetwork/database/features/instant-client">Oracle Instant
+Client</a>
+site.</p>
+
+<ul>
+<li><p>Instant Client Package - Basic</p></li>
+<li><p>Instant Client Package - SDK</p></li>
+</ul>
+
+<p>I’ve tried their <code>.rpm</code> packages and it did not work for me on Linux, so
+I would suggest you use the <code>.zip</code> packages instead.</p>
+
+<p>Once you downloaded these two, unzip them into a single directory (eg:
+<code>$HOME/apps/instantclient</code>). You then need to follow these instructions
+to install the module itself.</p>
+
+<pre><code>cd $HOME/apps/instantclient
+ln -s libclntsh.so.12.1 libclntsh.so
+export ORACLE_HOME=$HOME/apps/instantclient
+export LD_LIBRARY_PATH=$ORACLE_HOME:$LD_LIBRARY_PATH
+
+pip install cx_Oracle
+</code></pre>
+
+<p>Here are some quick python test code to verify <code>cx_Oracle</code> is working.</p>
+
+<pre><code>import cx_Oracle as db
+dsn='(DESCRIPTION=(ADDRESS=(HOST=myhost)(PORT=1521)(PROTOCOL=TCP))(CONNECT_DATA=(SERVER=DEDICATED)(SID=orcl)))'
+conn = db.connect('zemian', 'Welcome1', dsn)
+cur = conn.cursor()
+cur.execute('SELECT 1+1')
+print(cur.fetchone()[0])
+cur.close()
+conn.close()
+</code></pre>
+
+<p>Using the <code>dsn</code> form above can connect directly to database without the
+need to setup further entry in Oracle’s <code>tnsnames.ora</code> file.</p>
+
+<h1 id="optionally-installing-sqlplus-client">Optionally installing sqlplus client</h1>
+
+<p>The <code>sqlplus</code> is a classic client you may use to connect to the Oracle
+database. You may install this to perform adhoc query and verify your
+data. Download the following from the same download site above.</p>
+
+<ul>
+<li>Instant Client Package - <code>SQL\*Plus</code></li>
+</ul>
+
+<p>Unzip and then add the following to your <code>PATH</code></p>
+
+<pre><code>export $ORACLE_HOME/bin:$PATH
+
+sqlplus mydbuser@(DESCRIPTION=(ADDRESS=(HOST=myhost)(PORT=1521)(PROTOCOL=TCP))(CONNECT_DATA=(SERVER=DEDICATED)(SID=orcl)))
+</code></pre>
+
+<p>For more information, see <a href="https://docs.oracle.com/database/121/SQPUG/toc.htm"><code>sqlplus</code>
+doc</a></p>
+
+    </div>
+
+        <br/>
+    <ul>
+                <li class="block">Next: <a href="/blog/2016/my-quick-git-reference" title="My Quick Git Reference"><span>My Quick Git Reference</span></a></li>
+                        <li class="block">Previous: <a href="/blog/2016/simple-http-server-with-cgi-scripts-enabled" title="Simple http server with CGI scripts enabled"><span>Simple http server with CGI scripts enabled</span></a></li>
+            </ul>
+    
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/build/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <a href="https://sculpin.io" class="mx-3">
+                                <div class="width: 128px; height: 24px;">
+                                <img
+                                    src="/build/images/sculpin-mascot-jackson-micro.png"
+                                    alt="Made with Sculpin"
+                                    width="100%"
+                                    height="100%">
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="/sitemap.xml">
+                                SiteMap
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+        <script src="/build/app.js"></script>
+    
+        
+    </body>
+</html>

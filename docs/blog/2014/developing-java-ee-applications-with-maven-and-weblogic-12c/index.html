@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>Developing Java EE applications with Maven and WebLogic 12c &mdash; Zemian&#039;s Blog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+            <meta name="robots" content="index, follow">
+        <link rel="stylesheet" href="/build/app.css">
+
+        <link rel="alternate" type="application/atom+xml" href="/atom.xml" title="Zemian&#039;s Blog activity feed" />
+                                        
+                <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1148923977922702" crossorigin="anonymous"></script>
+            </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/build/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/tags" class="navbar-item">Tags</a>
+                        <a href="/about" class="navbar-item">About</a>
+                        <a href="/atom.xml" class="navbar-item">Feed</a>
+                        <a href="/search" class="navbar-item">Search</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                            <div class="level">
+        <div class="level-item">
+            Feb 21, 2014
+        </div>
+    </div>
+    <div class="level">
+        <div class="level-item">
+                        <a class="tag mr-1" href="/blog/tags/weblogic">weblogic</a>
+                        <a class="tag mr-1" href="/blog/tags/maven">maven</a>
+                    </div>
+    </div>
+
+    <h1 class="title">Developing Java EE applications with Maven and WebLogic 12c</h1>
+    <div class="content">
+        <p>The WebLogic Server 12c has very nice support for Maven now. The doc for this is kinda hidden though, so here is a direct link <a href="http://docs.oracle.com/middleware/1212/core/MAVEN">http://docs.oracle.com/middleware/1212/core/MAVEN</a></p>
+
+<p>To summarize the doc, Oracle did not provide a public Maven repository manager hosting for their server artifacts. However they do now provide a tool for you to create and populate your own. You can setup either your local repository (if you are working mostly on your own in a single computer), or you may deploy them into your own internal Maven repository manager such as Archiva or Nexus.</p>
+
+<p>Here I would show how the local repository is done. First step is use a maven plugin provided by WLS to populate the repository. I am using a MacOSX for this demo and my WLS is installed in $HOME/apps/wls12120. If you are on Windows, you may install it under C:/apps/wls12120.</p>
+
+<pre><code>$ cd $HOME/apps/wls12120/oracle_common/plugins/maven/com/oracle/maven/oracle-maven-sync/12.1.2/
+
+$ mvn install:install-file -DpomFile=oracle-maven-sync.12.1.2.pom -Dfile=oracle-maven-sync.12.1.2.jar
+
+$ mvn com.oracle.maven:oracle-maven-sync:push -Doracle-maven-sync.oracleHome=$HOME/apps/wls12120 -Doracle-maven-sync.testingOnly=false
+</code></pre>
+
+<p>The artifacts are placed under your local $HOME/.m2/repository/com/oracle. Now you may use Maven to build Java EE application with these WebLogic artifact as dependencies. Not only these are available, the push also populated some additional maven plugins that helps development more easy. For example, you can generate a template project using their archetype plugin.</p>
+
+<pre><code>$ cd $HOME
+
+$ mvn archetype:generate \
+
+    -DarchetypeGroupId=com.oracle.weblogic.archetype \
+
+    -DarchetypeArtifactId=basic-webapp \
+
+    -DarchetypeVersion=12.1.2-0-0 \
+
+    -DgroupId=org.mycompany \
+
+    -DartifactId=my-basic-webapp-project \
+
+    -Dversion=1.0-SNAPSHOT
+</code></pre>
+
+<p>Type 'Y' to confirm to finish. Notice that pom.xml it generated; it is using the "javax:javaee-web-api:6.0:provided" dependency. This is working because we setup the repository earlier. Now you may build it.</p>
+
+<pre><code>$ cd my-basic-webapp-project
+
+$ mvn package
+</code></pre>
+
+<p>After this build you should have the war file under the target directory. You may manually copy and deploy this into your WebLogic server domain. Or you may continue to configure the maven pom to do this all with maven. Here is how I do it. Edit the my-basic-webapp-project/pom.xml file and replace the weblogic-maven-plugin plugin like this:</p>
+
+<pre><code>  &lt;plugin&gt;
+
+    &lt;groupId&gt;com.oracle.weblogic&lt;/groupId&gt; 
+
+    &lt;artifactId&gt;weblogic-maven-plugin&lt;/artifactId&gt; 
+
+    &lt;version&gt;12.1.2-0-0&lt;/version&gt; 
+
+    &lt;configuration&gt; 
+
+      &lt;middlewareHome&gt;${oracleMiddlewareHome}&lt;/middlewareHome&gt;
+
+      &lt;adminurl&gt;${oracleServerUrl}&lt;/adminurl&gt;
+
+      &lt;user&gt;${oracleUsername}&lt;/user&gt; 
+
+      &lt;password&gt;${oraclePassword}&lt;/password&gt;
+
+      &lt;source&gt;${project.build.directory}/${project.build.finalName}.${project.packaging}&lt;/source&gt;
+
+      &lt;targets&gt;${oracleServerName}&lt;/targets&gt;
+
+      &lt;verbose&gt;true&lt;/verbose&gt; 
+
+      &lt;name&gt;${project.build.finalName}&lt;/name&gt;
+
+    &lt;/configuration&gt;
+
+  &lt;/plugin&gt;  
+</code></pre>
+
+<p>With this change, you may deploy the webapp into WebLogic server (well, assuming you already started your "mydomain" with "myserver" server running locally. See my previous blog for instructions)</p>
+
+<pre><code>$ cd my-basic-webapp-project
+
+$ mvn weblogic:deploy -DoracleMiddlewareHome=$HOME/apps/wls12120 -DoracleServerName=myserver -DoracleUsername=admin -DoraclePassword=admin123
+</code></pre>
+
+<p>After the "BUILD SUCCESS" message, you may visit the http://localhost:7001/basicWebapp URL.</p>
+
+<p>Revisit the WLS doc again and you will find that they also provide other project templates (Maven calls these archetypes) for building EJB, MDB, or WebService projects. These should help you get your EE projects started quickly.</p>
+
+    </div>
+
+        <br/>
+    <ul>
+                <li class="block">Next: <a href="/blog/2014/generating-a-war-file-from-a-plain-intellij-web-project" title="Generating a war file from a plain IntelliJ web project"><span>Generating a war file from a plain IntelliJ web project</span></a></li>
+                        <li class="block">Previous: <a href="/blog/2014/using-intellij-idea-12-for-weblogic-server-12c" title="Using Intellij IDEA 12 for WebLogic Server 12c"><span>Using Intellij IDEA 12 for WebLogic Server 12c</span></a></li>
+            </ul>
+    
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/build/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <a href="https://sculpin.io" class="mx-3">
+                                <div class="width: 128px; height: 24px;">
+                                <img
+                                    src="/build/images/sculpin-mascot-jackson-micro.png"
+                                    alt="Made with Sculpin"
+                                    width="100%"
+                                    height="100%">
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="/sitemap.xml">
+                                SiteMap
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+        <script src="/build/app.js"></script>
+    
+        
+    </body>
+</html>

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>Install Windows JDK Without Admin Rights &mdash; Zemian&#039;s Blog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+            <meta name="robots" content="index, follow">
+        <link rel="stylesheet" href="/build/app.css">
+
+        <link rel="alternate" type="application/atom+xml" href="/atom.xml" title="Zemian&#039;s Blog activity feed" />
+                                        
+                <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1148923977922702" crossorigin="anonymous"></script>
+            </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/build/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/tags" class="navbar-item">Tags</a>
+                        <a href="/about" class="navbar-item">About</a>
+                        <a href="/atom.xml" class="navbar-item">Feed</a>
+                        <a href="/search" class="navbar-item">Search</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                            <div class="level">
+        <div class="level-item">
+            Mar 23, 2018
+        </div>
+    </div>
+    <div class="level">
+        <div class="level-item">
+                        <a class="tag mr-1" href="/blog/tags/jdk">jdk</a>
+                        <a class="tag mr-1" href="/blog/tags/java">java</a>
+                    </div>
+    </div>
+
+    <h1 class="title">Install Windows JDK Without Admin Rights</h1>
+    <div class="content">
+        <h1 id="installing-jdk-7">Installing JDK 7</h1>
+
+<ol>
+<li><p>Download <a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">Oracle Java SE JDK 7</a>
+In this example, we will use <code>jdk-7u80-windows-x64.exe</code></p></li>
+<li><p>Extract <code>jdk-7u80-windows-x64.exe</code> using 7-zip tool. Right click the
+file then select context menu 7-zip &gt; Extract to
+<code>jdk-7u80-windows-x64</code></p></li>
+<li><p>Go to the directory <code>jdk-7u80-windows-x64/.rsrc/1033/JAVA_CAB10</code></p>
+
+<ul>
+<li><p>Step 1: Extract the file <code>111</code> using 7-zip again, which will
+result a <code>tools.zip</code> file</p>
+
+<ul>
+<li>Right click the file then select context menu 7-zip > Extract here</li>
+</ul></li>
+<li><p>Step 2: Extract tools.zip using 7-zip tool again</p>
+
+<ul>
+<li>Right click the file then select context menu 7-zip > Extract to <code>tools</code></li>
+</ul></li>
+<li><p>Step 3: Open <code>cmd.exe</code> and cd into <code>tools</code> directory above, then
+run the following:</p>
+
+<pre><code>for /r %i in (*.pack) do bin\unpack200 -r -v %i %~pi%~ni.jar
+</code></pre>
+
+<p>Or if you use Cygwin Bash, you can run this:</p></li>
+</ul>
+
+<p>find . -name '*.pack' -type f -exec sh -c 'bin/unpack200 -r -v $0 ${0/.pack/.jar}' {} \;</p></li>
+</ol>
+
+<ul>
+<li><p>Step 4: Copy <code>tools</code> folder and rename it to <code>%USERPROFILE%/apps/jdk-7u80</code></p>
+
+<ol>
+<li>Optionally, if you want the JDK source code, following these
+instruction:</li>
+</ol></li>
+<li><p>Step 1: Go to the directory Go to the directory    <code>jdk-7u80-windows-x64/.rsrc/1033/JAVA_CAB9</code></p></li>
+<li><p>Step 2: Extract the file <code>110</code>, which contains <code>src.zip</code></p></li>
+<li><p>Step 3: Copy <code>src.zip</code> into <code>%USERPROFILE%/apps/jdk-7u80</code></p></li>
+</ul>
+
+<p>Refs:
+<a href="http://stackoverflow.com/questions/10891405/installing-jdk-without-administrator-privileges">http://stackoverflow.com/questions/10891405/installing-jdk-without-administrator-privileges</a></p>
+
+<h1 id="installing-jdk-8">Installing JDK 8</h1>
+
+<p>The JDK8 update 102 or higher has different file structure!</p>
+
+<ol>
+<li><p>Use 7-zip to unpack <code>jdk-8u131-windows-x64.exe</code></p></li>
+<li><p><code>cd .rsrc/1033/JAVA_CAB10</code></p></li>
+<li><p>Use 7-zip to unpack <code>111</code> file and extract <code>tools.zip</code></p></li>
+<li><p>Use same instructions as above to unpack <code>tools.zip</code></p></li>
+</ol>
+
+<p>Java source <code>src.zip</code> is within the file <code>110</code> located inside <code>.rsrc/1033/JAVA_CAB9</code>.</p>
+
+<h1 id="installing-jdk-9">Installing JDK 9</h1>
+
+<p>Staring JDK9, the <a href="http://jdk.java.net/9">OpenJDK</a> provides binary tar
+ball (zipped) executable JDK package that can unpack in Windows in any
+directory. But if you still want Oracle Java SE JDK, then you still use
+above instruction to get around installing without admin rights.</p>
+
+<h1 id="refs">Refs</h1>
+
+<p><a href="https://stackoverflow.com/questions/10891405/installing-jdk-without-administrator-privileges">https://stackoverflow.com/questions/10891405/installing-jdk-without-administrator-privileges</a></p>
+
+    </div>
+
+        <br/>
+    <ul>
+                <li class="block">Next: <a href="/blog/2018/compare-multiple-jdk-versions-startup-time" title="Compare Multiple JDK Versions Startup Time"><span>Compare Multiple JDK Versions Startup Time</span></a></li>
+                        <li class="block">Previous: <a href="/blog/2018/print-python-runtime-information" title="Print Python Runtime Information"><span>Print Python Runtime Information</span></a></li>
+            </ul>
+    
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/build/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <a href="https://sculpin.io" class="mx-3">
+                                <div class="width: 128px; height: 24px;">
+                                <img
+                                    src="/build/images/sculpin-mascot-jackson-micro.png"
+                                    alt="Made with Sculpin"
+                                    width="100%"
+                                    height="100%">
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="/sitemap.xml">
+                                SiteMap
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+        <script src="/build/app.js"></script>
+    
+        
+    </body>
+</html>

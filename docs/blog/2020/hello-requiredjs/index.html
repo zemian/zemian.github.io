@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>Hello RequiredJS &mdash; Zemian&#039;s Blog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+            <meta name="robots" content="index, follow">
+        <link rel="stylesheet" href="/build/app.css">
+
+        <link rel="alternate" type="application/atom+xml" href="/atom.xml" title="Zemian&#039;s Blog activity feed" />
+                                        
+                <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1148923977922702" crossorigin="anonymous"></script>
+            </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/build/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/tags" class="navbar-item">Tags</a>
+                        <a href="/about" class="navbar-item">About</a>
+                        <a href="/atom.xml" class="navbar-item">Feed</a>
+                        <a href="/search" class="navbar-item">Search</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                            <div class="level">
+        <div class="level-item">
+            Apr 18, 2020
+        </div>
+    </div>
+    <div class="level">
+        <div class="level-item">
+                        <a class="tag mr-1" href="/blog/tags/requirejs">requirejs</a>
+                    </div>
+    </div>
+
+    <h1 class="title">Hello RequiredJS</h1>
+    <div class="content">
+        <p>The <a href="https://requirejs.org/">RequiredJS</a> is a JavaScript library that helps you separate your code into modules as namespaces, and it helps to load them as dependencies when need it. Here is a simple html demo:</p>
+
+<pre><code class="html">&lt;div id="app"&gt;
+    Hi
+&lt;/div&gt;
+
+&lt;script src="https://unpkg.com/requirejs@2.3.6/require.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+    define('mymodule', [], function() {
+        return {
+            uniqueId() {
+                return Math.random().toString(16).substring(2);
+            }
+        }
+    });
+    require(['mymodule'], function(my) {
+        console.log("Generating a uniqueId=" + my.uniqueId());
+        let output = document.querySelector("#app");
+        output.innerHTML = `Hello RequireJS - ${requirejs.version}`;
+    });
+&lt;/script&gt;
+</code></pre>
+
+<p>The RequireJS only introduces three variables you need to learn to use it effectively: <code>define</code>, <code>require</code>, and <code>requirejs</code>.</p>
+
+<p>You use <code>define()</code> function to write your own modules. Many JS libraries out there already supporting RequireJS as module, so you can just simply include them in your application! When writing your own module, you usually would store one module per single JS file. If you do that, then the name of the module would simply be the filename, without you having to explicitly named as above example. When writing the module, you may load other modules that you depend on. In our example case above, we do not need any, hence it has an empty array as 2nd parameter. Your module code should wrap inside a function as last parameter. Any object you return from module function, it is exported as module data for caller to consume or load it.</p>
+
+<p>You use <code>require()</code> function to load modules that you want to use in your application. Each module imported may be assigned to a parameter variable in the callback function parameters as in example above. Note that sometimes you might load a module without assigning variable for direct use. In this case, the loading of the module is all you care/need. Note also that the order of your module array should match to the call back function parameter list.</p>
+
+<p>There are many configuration options you may setup the RequireJS, and that’s when you use the <code>requirejs.config()</code> function. For example you may configure paths to where to look for other external libraries such KnockoutJS like this:</p>
+
+<pre><code class="js">requirejs.config({
+    paths: {
+        'knockout': 'https://unpkg.com/knockout@3.5.1/build/output/knockout-latest'
+    }
+});
+
+require(['knockout'], function(ko) {
+    ko.applyBindings({msg: "Hello"});
+});
+</code></pre>
+
+<p>Notice that the path to knockout module is without the <code>.js</code> extension!</p>
+
+<p>The RequireJS is great for writing larger JS application. Modules help you avoid names clash, and it helps break down code into a manageable files.</p>
+
+    </div>
+
+        <br/>
+    <ul>
+                <li class="block">Next: <a href="/blog/2020/hello-vuejs" title="Hello VueJS"><span>Hello VueJS</span></a></li>
+                        <li class="block">Previous: <a href="/blog/2020/hello-bulmacss" title="Hello BulmaCSS"><span>Hello BulmaCSS</span></a></li>
+            </ul>
+    
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/build/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <a href="https://sculpin.io" class="mx-3">
+                                <div class="width: 128px; height: 24px;">
+                                <img
+                                    src="/build/images/sculpin-mascot-jackson-micro.png"
+                                    alt="Made with Sculpin"
+                                    width="100%"
+                                    height="100%">
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="/sitemap.xml">
+                                SiteMap
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+        <script src="/build/app.js"></script>
+    
+        
+    </body>
+</html>

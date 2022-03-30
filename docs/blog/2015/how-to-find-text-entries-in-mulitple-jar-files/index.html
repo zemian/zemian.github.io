@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>How to find text entries in mulitple jar files &mdash; Zemian&#039;s Blog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+            <meta name="robots" content="index, follow">
+        <link rel="stylesheet" href="/build/app.css">
+
+        <link rel="alternate" type="application/atom+xml" href="/atom.xml" title="Zemian&#039;s Blog activity feed" />
+                                        
+                <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1148923977922702" crossorigin="anonymous"></script>
+            </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/build/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/tags" class="navbar-item">Tags</a>
+                        <a href="/about" class="navbar-item">About</a>
+                        <a href="/atom.xml" class="navbar-item">Feed</a>
+                        <a href="/search" class="navbar-item">Search</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                            <div class="level">
+        <div class="level-item">
+            Jul 22, 2015
+        </div>
+    </div>
+    <div class="level">
+        <div class="level-item">
+                        <a class="tag mr-1" href="/blog/tags/java">java</a>
+                    </div>
+    </div>
+
+    <h1 class="title">How to find text entries in mulitple jar files</h1>
+    <div class="content">
+        <p>Similar to <a href="http://saltnlight5.blogspot.com/2012/07/how-to-print-text-file-content-inside.html">printjar</a>utility, here is a findjar util that can comes in handy to verify whether a class exists or not among a pile of jar files.</p>
+
+<p>JavaScript (run with jrunscript command)</p>
+
+<pre><code>pattern = arguments[arguments.length -1];
+for (i=0; i &lt; arguments.length - 1; i++) {
+    path = arguments[i];
+    jar = new java.util.jar.JarFile(path)
+    entries = jar.entries();
+    while(entries.hasMoreElements()) {
+        jarEntry = entries.nextElement();
+        if (jarEntry.toString().search(pattern) != -1) {
+            println(jarEntry + " : " + path);
+        }
+    }
+    jar.close();
+}
+</code></pre>
+
+<p>Jython</p>
+
+<pre><code>import sys, glob, re
+from java.util.jar import JarFile
+pattern = sys.argv[-1]
+for name in sys.argv[1: -2]:
+    for path in glob.glob(name):
+        jar = JarFile(path)
+        for e in jar.entries():
+            if re.search(pattern, str(e)):
+                print "%s %s" % (str(e), path)
+        jar.close()
+</code></pre>
+
+<p>Java version (The search argument input is at position one in this example)</p>
+
+<pre><code>import java.io.File;
+import java.util.Enumeration;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
+
+public class findjar {
+    public static void main(String[] args) throws Exception {
+        String searchText = args[0];
+        if (searchText.contains("."))
+            searchText = searchText.replaceAll("\\.", "/");
+        String dir = args[1];
+        System.out.println("Searching " + searchText + " in " + dir);
+        search(searchText, new File(dir));
+        System.out.println("Done.");
+    }
+
+    private static void search(String searchText, File dir) throws Exception {
+        File[] files = dir.listFiles();
+        for (File file : files) {
+            if (file.isFile() &amp;&amp; file.getName().endsWith(".jar")) {
+                JarFile jarFile = new JarFile(file);
+                Enumeration&lt;JarEntry&gt; entries = jarFile.entries();
+                while(entries.hasMoreElements()) {
+                    JarEntry e = entries.nextElement();
+                    String name = e.getName();
+                    if (name.indexOf(searchText) &gt;= 0) {
+                        System.out.println("Found: " + name + " in " + jarFile.getName());
+                    }
+                }
+                jarFile.close();
+            } else if (file.isDirectory()){
+                search(searchText, file);
+            }
+        }
+    }
+}
+</code></pre>
+
+    </div>
+
+        <br/>
+    <ul>
+                <li class="block">Next: <a href="/blog/2015/how-to-manage-sql-statements-more-effectively-with-java" title="How to manage SQL statements more effectively with Java"><span>How to manage SQL statements more effectively with Java</span></a></li>
+                        <li class="block">Previous: <a href="/blog/2015/python-one-liner" title="Python one-liner"><span>Python one-liner</span></a></li>
+            </ul>
+    
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/build/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <a href="https://sculpin.io" class="mx-3">
+                                <div class="width: 128px; height: 24px;">
+                                <img
+                                    src="/build/images/sculpin-mascot-jackson-micro.png"
+                                    alt="Made with Sculpin"
+                                    width="100%"
+                                    height="100%">
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="/sitemap.xml">
+                                SiteMap
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+        <script src="/build/app.js"></script>
+    
+        
+    </body>
+</html>

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>How to export and import MySQL database &mdash; Zemian&#039;s Blog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+            <meta name="robots" content="index, follow">
+        <link rel="stylesheet" href="/build/app.css">
+
+        <link rel="alternate" type="application/atom+xml" href="/atom.xml" title="Zemian&#039;s Blog activity feed" />
+                                        
+                <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1148923977922702" crossorigin="anonymous"></script>
+            </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/build/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/tags" class="navbar-item">Tags</a>
+                        <a href="/about" class="navbar-item">About</a>
+                        <a href="/atom.xml" class="navbar-item">Feed</a>
+                        <a href="/search" class="navbar-item">Search</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                            <div class="level">
+        <div class="level-item">
+            May 30, 2014
+        </div>
+    </div>
+    <div class="level">
+        <div class="level-item">
+                        <a class="tag mr-1" href="/blog/tags/mysql">mysql</a>
+                    </div>
+    </div>
+
+    <h1 class="title">How to export and import MySQL database</h1>
+    <div class="content">
+        <p>You can export the MySQL database with schema table definitions and data separated. Here is a simple bash shell script that will export an database.</p>
+
+<pre><code># file: database-export.sh
+DB_NAME=mydb
+DB_SCHEMA_FILE=mydb.sql
+DB_DATA_FILE=mydb-data.sql
+DB_USERNAME=root
+DB_PASSWORD=secret
+
+# export schema only from mysql 
+echo "`date` Exporting database $DB_NAME schema to $DB_SCHEMA_FILE"
+mysqldump --no-data --routines -u $DB_USERNAME -p$DB_PASSWORD $DB_NAME &gt; $DB_SCHEMA_FILE
+\
+# export data only from mysql
+
+echo "`date` Exporting database $DB_NAME data to $DB_DATA_FILE"
+mysqldump --single-transaction --quick --no-autocommit --no-create-info --extended-insert=false -u $DB_USERNAME -p$DB_PASSWORD $DB_NAME &gt; $DB_DATA_FILE
+
+echo "`date` Done."
+</code></pre>
+
+<p>The schema export with "--routines" will export stored proc as well. When exporitng data you have to be little more careful. The "--single-transaction" will ensure your data is good. The "--no-autocommit" can really speed up your import later on certain OS.</p>
+
+<p>Now to import these files back, you can create an empty database and then run the following.</p>
+
+<pre><code># file: database-import.sh 
+# import schema and data into mysql
+echo "`date` Importing Schema $DB_SCHEMA_FILE into $DB_NAME"
+mysql -f -u $DB_USERNAME -p$DB_PASSWORD $DB_NAME &lt; $DB_SCHEMA_FILE
+echo "`date` Importing DATA $DB_DATA_FILE into $DB_NAME"
+mysql -f -u $DB_USERNAME -p$DB_PASSWORD $DB_NAME &lt; $DB_DATA_FILE
+
+echo "`date` Done."
+</code></pre>
+
+<p>The import with "-f" option will allow you to continue even if you already have duplicated data in the tables; it will simply ignore and continue.</p>
+
+<p>These two combo commands will allow you to quicly backup and restore a MySQL database.</p>
+
+<p>Enjoy.</p>
+
+<p>PS: I have come to learn that "mysqldump" with procedures will insert an extra line like "DEFINER 'user'@'hostname'", and it may create problem if you use different users to export/import or even run the application! Unfortunately there is no exclude from the "mysqldump" tool. So you have to manually strip that off if that's creating a problem for you.</p>
+
+<pre><code>mysqldump --no-data --routines -u $DB_USERNAME -p$DB_PASSWORD $DB_NAME | perl -pi -e 's/DEFINER="\w+"@"\w+" //g' &gt; $DB_SCHEMA_FILE
+</code></pre>
+
+<p>You can vote the issue here: <a href="http://bugs.mysql.com/bug.php?id=24680">http://bugs.mysql.com/bug.php?id=24680</a></p>
+
+    </div>
+
+        <br/>
+    <ul>
+                <li class="block">Next: <a href="/blog/2014/a-simple-mysql-daily-backup-script" title="A simple MySQL daily backup script"><span>A simple MySQL daily backup script</span></a></li>
+                        <li class="block">Previous: <a href="/blog/2014/how-to-enable-mysql-query-monitoring" title="How to enable MySQL query monitoring"><span>How to enable MySQL query monitoring</span></a></li>
+            </ul>
+    
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/build/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <a href="https://sculpin.io" class="mx-3">
+                                <div class="width: 128px; height: 24px;">
+                                <img
+                                    src="/build/images/sculpin-mascot-jackson-micro.png"
+                                    alt="Made with Sculpin"
+                                    width="100%"
+                                    height="100%">
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="/sitemap.xml">
+                                SiteMap
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+        <script src="/build/app.js"></script>
+    
+        
+    </body>
+</html>
