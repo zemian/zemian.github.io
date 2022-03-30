@@ -51,3 +51,16 @@ To publish, run
 
 https://programmablesearchengine.google.com/cse/setup/basic?cx=5bfbcfd67681f7be8
 
+## PHP 8.0.13 Error
+
+When using this specific PHP, we see this error:
+
+```
+PHP Fatal error:  Uncaught TypeError: Sculpin\Core\Permalink\SourcePermalinkFactory::normalize(): Argument #1 ($param) must be of type string, null given, called in /my-project/vendor/sculpin/sculpin/src/Sculpin/Core/Permalink/SourcePermalinkFactory.php on line 110 and defined in /my-project/vendor/sculpin/sculpin/src/Sculpin/Core/Permalink/SourcePermalinkFactory.php:214
+```
+
+Temp fix: Add "string|null" to the function definition on `/my-project/vendor/sculpin/sculpin/src/Sculpin/Core/Permalink/SourcePermalinkFactory.php:214`
+
+```
+private function normalize(string|null $param, string $space = '-'): string
+```

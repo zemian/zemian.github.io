@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+if [[ ! -d node_modules ]]; then
+	npm install
+	node_modules/.bin/encore dev
+fi
+
+
 PUBLISH_VERSION=`git rev-parse HEAD`
 echo "Building prod site: $PUBLISH_VERSION"
 
