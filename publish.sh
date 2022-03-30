@@ -10,6 +10,11 @@ if [ $? -ne 0 ]; then echo "Could not generate the site"; exit 1; fi
 # Create release/version file
 echo $PUBLISH_VERSION > docs/version.txt
 
+# Remove extra folders
+# https://github.com/sculpin/sculpin/issues/467
+echo "Removing extra assets folder"
+rm -rf docs/assets
+
 echo "Adding and committing new files to Git"
 git add .
 git commit -m 'Publish'
