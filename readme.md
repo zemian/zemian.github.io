@@ -62,5 +62,9 @@ PHP Fatal error:  Uncaught TypeError: Sculpin\Core\Permalink\SourcePermalinkFact
 Temp fix: Add "string|null" to the function definition on `/my-project/vendor/sculpin/sculpin/src/Sculpin/Core/Permalink/SourcePermalinkFactory.php:214`
 
 ```
-private function normalize(string|null $param, string $space = '-'): string
+private function normalize(string|null $param, string $space = '-'): string {
+  if ($param === null)
+            return "";
+  ...
+}
 ```
