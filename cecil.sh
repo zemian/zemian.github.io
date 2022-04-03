@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-php cecil.phar "$@"
+/opt/homebrew/opt/php@8.0/bin/php cecil.phar "$@"
