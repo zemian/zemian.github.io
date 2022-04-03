@@ -1,8 +1,12 @@
-title: "Cecil"
-baseline: "Your content driven static site generator."
-baseurl: https://cecil.local/
-description: "Cecil is a CLI application, powered by PHP, that merge plain text files (written in Markdown), images and Twig templates to generate a static website."
+title: "ZBlog"
+baseline: "A Personal Programming Journal"
+baseurl: https://zemian.github.io/
+description: "This is Zemian Deng's personal programming blog."
 author:
-  name: Arnaud Ligny
-  url: https://arnaudligny.fr
-image: cecil-card.png
+  name: Zemian Deng
+  url: https://zemian.github.io/
+
+# Do not generate multiple image sizes for favicon
+metatags:
+  favicon:
+    enabled: false
