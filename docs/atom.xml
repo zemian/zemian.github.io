@@ -3,9 +3,108 @@
     <title><![CDATA[Zemian&#039;s Blog]]></title>
     <link href="/atom.xml" rel="self"/>
     <link href="/"/>
-    <updated>2022-03-30T16:01:35+00:00</updated>
+    <updated>2022-04-07T14:09:23+00:00</updated>
     <id>/</id>
         <generator uri="http://sculpin.io/">Sculpin</generator>
+            <entry>
+            <title type="html"><![CDATA[Exploring FrontEnd UI Component Libraries]]></title>
+            <link href="/blog/2022/exploring-frontend-ui-component-libraries"/>
+            <updated>2022-06-07T00:00:00+00:00</updated>
+            <id>/blog/2022/exploring-frontend-ui-component-libraries</id>
+            <content type="html"><![CDATA[<p>I used VueJS (verison 2) very successfuly on one of my WordPress project. I love the simplicity of it, and easy of use. It integrate well into existing project and allow you to use only what you need (I was able to add VueJS into PHP pages without having to build an entire FrontEnd NodeJS based project.) I even used couple of the Buefy UI components in my project very effectively. Buefy is a UI component library that combine the BulmaCSS and VueJS.</p>
+
+<p>Today, VueJS is at version 3, however Buefy is still stuck on Vue2 without much of Vue3 support in progress. Searching around, it turns out there is an another project that now provide similar to Buefy, but with VueJS 3 support, and that is Oruga. Not only did Oruga provided this gap, it even went further to be CSS agnostic UI components library! You can use other CSS framework such as TailwindCSS or even Bootstrap!</p>
+
+<p>There are also many other VueJS based UI libraries. Here I will list few I like and seems to have good potential:</p>
+
+<ul>
+<li><a href="https://oruga.io/">Oruga</a> (VueJS 2/3 with any CSS lib)</li>
+<li><a href="https://www.naiveui.com/">NaiveUI</a> (VueJS 2/3 with custom CSS)</li>
+<li><a href="https://buefy.org/">Buefy</a> (VueJS 2 only with BulmaCSS)</li>
+<li><a href="https://vuetifyjs.com/">Vuetify</a> (VueJS 2 with Material Design CSS. NOTE: VueJS 3 support is work in progress!)</li>
+<li><a href="https://bootstrap-vue.org/">BootstrapVue</a> (VueJS 2 with Bootstrap 4 CSS)</li>
+</ul>
+
+<p>Also, checkout some these fantastic CSS Frameworks that I like:</p>
+
+<ul>
+<li><a href="https://bulma.io/">BulmaCSS</a> (no JavaScript locked in!)</li>
+<li><a href="https://tailwindcss.com/">TailwindCSS</a> (a utility first CSS lib)</li>
+<li><a href="https://daisyui.com/">DaisyUI</a> (TailwindCSS with built-in UI elements ready)</li>
+<li><a href="https://getbootstrap.com/docs/4.0">Bootstrap 4</a> (requires jQuery, Popper.js + it's own JS lib)</li>
+<li><a href="https://getbootstrap.com/docs/5.1/">Bootstrap 5</a> (no more jQuery locked in, but it still requires Popper.js + it's own JS lib)</li>
+<li><a href="https://newcss.net/">New.css</a> (A small CSS framework without classes! It just style HTML elements directly!)</li>
+</ul>
+]]></content>
+        </entry>
+            <entry>
+            <title type="html"><![CDATA[Adding classname prefix to BulmaCSS]]></title>
+            <link href="/blog/2022/adding-classname-prefix-to-bulmacss"/>
+            <updated>2022-02-01T00:00:00+00:00</updated>
+            <id>/blog/2022/adding-classname-prefix-to-bulmacss</id>
+            <content type="html"><![CDATA[<p>I love using <a href="https://bulma.io/">BulmaCSS</a> for styling web pages. It's easy to use and has great selection of built-in components ready create most common web pages. Simple customization can be done by overriding Sass variables only. But if you ever needed fine control on customization and add your own UI components, drop down to their open source Sass scripts to add what you need. It provides only CSS layer, and does not lock you in to any JS code, and this makes integration to any project easy! It's just a awesome little CSS library that's joy to use.</p>
+
+<p>I have used BulmaCSS to create a WordPress theme easily and it looks great! Now when creating WordPress theme, we are allow to use any CSS framework and so using BulmaCSS is simple to do. But if you wanted to use Bulma to extends and add custom WordPress Admin Pages however, then you will encounter issues. Since WordPress Admin pages already has their own set of custom CSS loaded, many CSS class names are in conflict with BulmaCSS names. Unfortunately BulmaCSS build script does not provide you a way to automatically prefix a string in front of all their classes, which is what we need to solve this problem.</p>
+
+<p>Someone already reported such <a href="https://github.com/jgthms/bulma/issues/302">issue in BulmaCSS project</a>, but unfortunately the project owner decided to close the issue with the following comment:</p>
+
+<blockquote>
+  <p>jgthms commented on Sep 12, 2016</p>
+  
+  <p>I understand the idea, but most people only use a single css framework. I guess you could import the sass files you want, and wrap that inside a new class, and use &amp;- to namespace.</p>
+  
+  <p>Or you could use CSS modules.</p>
+  
+  <p>But renaming everything would bring a lot of noise, and I believe most users don't want that noise.</p>
+</blockquote>
+
+<p>Based on other people comments, I have come up with the following solution to above: Use the <a href="https://postcss.org/"><code>postcss</code> tool</a> to add prefix name to all CSS classes! Here is a GitHub project I made: <a href="https://github.com/zemian/bulma-prefix">zemian/bulma-prefix</a>. Here is a <a href="https://github.com/zemian/bulma-prefix/tree/main/build">build result</a> based on BulmaCSS version <code>0.9.3</code>. The prefix name I choose is <code>bu-</code>. And here is an example code to use it:</p>
+
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+    &lt;meta charset="utf-8"&gt;
+    &lt;meta http-equiv="X-UA-Compatible" content="IE=edge"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;
+    &lt;title&gt;My custom Bulma website&lt;/title&gt;
+    &lt;link rel="stylesheet" href="../build/bu-bulma.css"&gt;
+&lt;/head&gt;
+&lt;body class="bu-section bu-container"&gt;
+&lt;h1 class="bu-title"&gt;
+    Bulma
+&lt;/h1&gt;
+
+&lt;p class="bu-subtitle"&gt;
+    Modern CSS framework based on &lt;a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout/Basic_Concepts_of_Flexbox"&gt;Flexbox&lt;/a&gt;
+&lt;/p&gt;
+
+&lt;div class="bu-field"&gt;
+    &lt;div class="bu-control"&gt;
+        &lt;input class="bu-input" type="text" placeholder="Input"&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="bu-field"&gt;
+    &lt;p class="bu-control"&gt;
+          &lt;span class="bu-select"&gt;
+            &lt;select&gt;
+              &lt;option&gt;Select dropdown&lt;/option&gt;
+            &lt;/select&gt;
+          &lt;/span&gt;
+    &lt;/p&gt;
+&lt;/div&gt;
+
+&lt;div class="bu-buttons"&gt;
+    &lt;a class="bu-button bu-is-primary"&gt;Primary&lt;/a&gt;
+    &lt;a class="bu-button bu-is-link"&gt;Link&lt;/a&gt;
+&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<p>Ase you can see, we can now use <code>bu-</code> prefix to all Bulma classes. This allowed me to add WordPress custom Admin pages with BulmaCSS styling with ease!</p>
+]]></content>
+        </entry>
             <entry>
             <title type="html"><![CDATA[Build a DatePicker using VueJS and BulmaCSS]]></title>
             <link href="/blog/2021/build-a-datepicker-using-vuejs-and-bulmacss"/>
@@ -346,95 +445,6 @@ running.</p>
 <p>CONS:
 * Learning curve is higher compare to using an existing CMS application
 * Costly to maintain</p>
-]]></content>
-        </entry>
-            <entry>
-            <title type="html"><![CDATA[The World of PHP Development]]></title>
-            <link href="/blog/2020/the-world-of-php-development"/>
-            <updated>2020-09-20T05:00:00+00:00</updated>
-            <id>/blog/2020/the-world-of-php-development</id>
-            <content type="html"><![CDATA[<p>I have gotten into PHP lately in order to help a friend who runs a Joomla site with a custom component. Thinking to myself now that I have some <a href="/2020/03/22/front-end">Front End Experience</a>, I shouldn't have trouble doing this. But I have never seriuosly got into PHP in the past though, and now I need to learn enough to debug and fix few bugs in the Joomla env. I have gathered and learned quite a few things and like to write it down.</p>
-
-<h2 id="learning-php">Learning PHP</h2>
-
-<p>I started <a href="https://github.com/zemian/learn-php">Learn PHP</a> repository to familiar with PHP first. I want to setup PHP locally in my machine so I can learn some syntax and programming construct. I was suprised their documentation is pretty good. I even watched a old video on <a href="https://www.youtube.com/watch?v=rKXFgWP-2xQ">PHP in 2018 by the Creator of PHP</a> by Rasmus Lerdorf. It was very informative and encouraging to see PHP is still thriving and doing good.</p>
-
-<p>PHP is not much use without a database and a web server, so I learned how to setup and connect PHP to those two. It seems PHP loves MySQL, and getting that running is pretty easy. As far as web server, there are few major ones to choose: Apache Httpd, Nginx or Lighttpd. The Lighttpd is the easiest to setup. I like it how I can just use one config file and bring up the server in foreground process, and the DocumentRoot can be set to your CWD. No need to setup any background PHP daemon process (like Nginx requires one). Apache Httpd can also start without a PHP daemon but the setup is complicated. Then later I learned that PHP itself comes with a web server for development! Just run <code>php -S localhost:3000</code> and it serves your current working directory. No setup needed! Sweet!</p>
-
-<p>NOTE: For production, it's recommended to use either Apache Httpd or Nginx.</p>
-
-<p>Later, I also found there are different versions of PHP that I would need to fix the site, and settting up multiple versions of PHP in a single web server is pretty complicated. I gathered a lot of notes on each of these subject in my repository, so check it out.</p>
-
-<h2 id="learning-joomla">Learning Joomla</h2>
-
-<p>My goal is to help my friend's site, so next I started <a href="https://github.com/zemian/learn-joomla">Learn Joomla</a> project. My friend site is actually quite old (Joomla 3.5.1 with PHP 5.6 and MySQL 5.7). Because of this and the PHP was compiled with some special extension in server, I actually had hard time setting it up in my Mac for local development. I ended up had to compile my own PHP from source to get a setup working! It was a painful exercise since compiling PHP 5.6 on latest MacOS has many hiccups.</p>
-
-<p>Once the environment is up, installing Joomla itself is not too bad. I got it up running in short time. Joomla documentation site is only so so though. I think this CMS design is overly complex. Their concept of Menus, Articles and Extensions are confusing, feel bulky and a lot to learn. A simple MVC based component extension will take over 10+ files to write! I just want to learn enough to use it to support a site, not experts, so this repository have gotten me through what I need to know about Joomla.</p>
-
-<p>One interesting I learned about Joomla is that its "System Debug" feature is pretty good. When enabled, it shows a "Debug Console" footer in your site that shows session, request, SQL queries and application debug messages. Great tool to debug the application. (If your site or component uses their full MVC model that is.)</p>
-
-<h2 id="fixing-a-php-application">Fixing a PHP application</h2>
-
-<p>When I got into my friend's site, I had a pretty good idea about the PHP env. So I thought I was pretty prepared. Boy, I was wrong! The site has a custom component that started out as nice self-contained extension. But through many years of abuse, it is now old with many unmaintained dependencies. It has many developers touched it over the years without any consistency. The code was badly formatted (PHP mixed with HTML in the worse way you can think of), files scattered everywhere, and worse of it all there are lots of repeated codes. Through all these, there were no version control used. So dead code eveywhere, and backup unused files literred all over the place. This is a one big mess of an app.</p>
-
-<p>Prowling through large, new code base is a daunting task. I've found the JetBrains' PHPStorm IDE helps a little bit there. I was able to jump functions and searching in directory is a breeze. The IDE also supports PHP debugger, but unfortunately it only works with latest PHP7 well. The PHP 5.6 is harder to get it setup that in the end I gave up.</p>
-
-<p>Without a debugger, the next resort in debugging an app is print message as you trace through code. The PHP is notoriously easy to allow developers litter code with <code>echo</code> lines and then comment it out after debug. The Joomla actually has a nice <code>JLog</code> logging function that let you dynamically turns on/off and to file output. But this application that I am supporting didn't use that, and there is zero log message. I also learned that logging to file is essential when tracing a AJAX supported PHP code. Here you can't simply <code>echo</code> your debug message out, or it will break the JSON payload. So I have to write some of these debugging code to help myself to troubleshoot the application.</p>
-
-<p>At the end, I was able to fix few of the pressing issues due to their multiple version of jQuery loading conflicts and some bad SQL in their dynamic query builder. I have to say that nothing teaches you more than jumping into a badly coded site that's somehow working, and yet you need to fix few naughty issues! It's a hair pulling experience, but I learned a lot.</p>
-]]></content>
-        </entry>
-            <entry>
-            <title type="html"><![CDATA[How to Load Multiple jQuery]]></title>
-            <link href="/blog/2020/how-to-load-multiple-jquery"/>
-            <updated>2020-09-19T05:00:00+00:00</updated>
-            <id>/blog/2020/how-to-load-multiple-jquery</id>
-            <content type="html"><![CDATA[<p>Sometimes, your site might need to load mulitple versions of jQuery to support some legacy libraries. Here I will provide two ways to do that.</p>
-
-<h2 id="using-plain-html%2Fjs">Using plain HTML/JS</h2>
-
-<pre><code class="js">&lt;script src="https://unpkg.com/jquery@3.5.1/dist/jquery.js"&gt;&lt;/script&gt;
-&lt;script&gt;let jq3 = jQuery.noConflict(true);&lt;/script&gt;
-&lt;script src="https://unpkg.com/jquery@1.12.4/dist/jquery.js"&gt;&lt;/script&gt;
-&lt;script&gt;let jq1 = jQuery.noConflict(true);&lt;/script&gt;
-
-
-&lt;script&gt;
-// Now we can use each jQuery with the name assigned.
-console.log("jQuery 3 version " + jq3.fn.jquery);
-console.log("jQuery 1 version " + jq1.fn.jquery);
-
-console.log("jQuery 3 document ", jq3(document));
-console.log("jQuery 1 document ", jq1(document));
-&lt;/script&gt;
-</code></pre>
-
-<p>NOTE: You need to call <code>noConflict()</code> immediately after the script tag load of the jQuery. If you are dealing with multiple jQuery, it's best not to use the <code>$</code> global variable to avoid confusion.</p>
-
-<h2 id="using-requirejs">Using RequireJS</h2>
-
-<pre><code class="js">&lt;script src="https://unpkg.com/requirejs@2.3.6/require.js"&gt;&lt;/script&gt;
-&lt;script&gt;
-    define('jq3', ['https://unpkg.com/jquery@3.5.1/dist/jquery'], function() {
-        return jQuery.noConflict(true);
-    });
-    define('jq1', ['https://unpkg.com/jquery@1.12.4/dist/jquery'], function() {
-        return jQuery.noConflict(true);
-    });
-
-    require(['jq3', 'jq1'], function(jq3, jq1) {
-        jq3(function () {
-        console.log("jQuery 3 version " + jq3.fn.jquery);
-        console.log("jQuery 1 version " + jq1.fn.jquery);
-
-        console.log("jQuery 3 document ", jq3(document));
-        console.log("jQuery 1 document ", jq1(document));
-        });
-    });
-&lt;/script&gt;
-</code></pre>
-
-<p>NOTE: Do not load multiple versions of jQuery through the <code>paths</code> inside <code>requirejs.config()</code> method. As that will automatically bind the <code>jquery</code> module name and you can't change that.</p>
 ]]></content>
         </entry>
     </feed>

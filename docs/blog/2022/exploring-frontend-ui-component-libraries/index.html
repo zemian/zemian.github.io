@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html>
     <head lang="en">
-        <title>Home &mdash; Zemian&#039;s Blog</title>
+        <title>Exploring FrontEnd UI Component Libraries &mdash; Zemian&#039;s Blog</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-                        <link rel="stylesheet" href="/build/app.css">
+            <meta name="robots" content="index, follow">
+        <link rel="stylesheet" href="/build/app.css">
 
         <link rel="alternate" type="application/atom+xml" href="/atom.xml" title="Zemian&#039;s Blog activity feed" />
                                         
@@ -51,95 +52,54 @@
             <div class="container">
                 <div class="columns is-centered">
                     <div class="column is-two-thirds">
-                                                    <ul>
-        <li class="block">
-        <p class="title"><a href="/blog/2012/timemachine-scheduler-120-release-is-out">TimeMachine Scheduler 1.2.0 release is out!</a></p>
-        <p class="subtitle">
-            Jul 15, 2012
+                            <div class="level">
+        <div class="level-item">
+            Jun 07, 2022
+        </div>
+    </div>
+    <div class="level">
+        <div class="level-item">
+                        <a class="tag mr-1" href="/blog/tags/uicomponents">uicomponents</a>
+                        <a class="tag mr-1" href="/blog/tags/vuejs">vuejs</a>
+                        <a class="tag mr-1" href="/blog/tags/css">css</a>
+                    </div>
+    </div>
 
-                        <a class="tag mr-1" href="/blog/tags/timemachine">timemachine</a>
-                    </p>
-    </li>
-        <li class="block">
-        <p class="title"><a href="/blog/2012/ctrlc-not-working-on-cygwin-1715-1">CTRL+C not working on Cygwin 1.7.15-1</a></p>
-        <p class="subtitle">
-            Jul 12, 2012
+    <h1 class="title">Exploring FrontEnd UI Component Libraries</h1>
+    <div class="content">
+        <p>I used VueJS (verison 2) very successfuly on one of my WordPress project. I love the simplicity of it, and easy of use. It integrate well into existing project and allow you to use only what you need (I was able to add VueJS into PHP pages without having to build an entire FrontEnd NodeJS based project.) I even used couple of the Buefy UI components in my project very effectively. Buefy is a UI component library that combine the BulmaCSS and VueJS.</p>
 
-                        <a class="tag mr-1" href="/blog/tags/cygwin">cygwin</a>
-                    </p>
-    </li>
-        <li class="block">
-        <p class="title"><a href="/blog/2012/quick-way-to-benchmark-java-code">Quick way to benchmark Java code</a></p>
-        <p class="subtitle">
-            Jul 11, 2012
+<p>Today, VueJS is at version 3, however Buefy is still stuck on Vue2 without much of Vue3 support in progress. Searching around, it turns out there is an another project that now provide similar to Buefy, but with VueJS 3 support, and that is Oruga. Not only did Oruga provided this gap, it even went further to be CSS agnostic UI components library! You can use other CSS framework such as TailwindCSS or even Bootstrap!</p>
 
-                        <a class="tag mr-1" href="/blog/tags/java">java</a>
-                    </p>
-    </li>
-        <li class="block">
-        <p class="title"><a href="/blog/2012/creating-oracle-stored-procedure-using-java">Creating Oracle Stored Procedure using Java</a></p>
-        <p class="subtitle">
-            Jul 11, 2012
+<p>There are also many other VueJS based UI libraries. Here I will list few I like and seems to have good potential:</p>
 
-                        <a class="tag mr-1" href="/blog/tags/oracle">oracle</a>
-                        <a class="tag mr-1" href="/blog/tags/java">java</a>
-                    </p>
-    </li>
-        <li class="block">
-        <p class="title"><a href="/blog/2012/minimal-java-webapp-with-maven">Minimal Java webapp with Maven</a></p>
-        <p class="subtitle">
-            Jul 10, 2012
+<ul>
+<li><a href="https://oruga.io/">Oruga</a> (VueJS 2/3 with any CSS lib)</li>
+<li><a href="https://www.naiveui.com/">NaiveUI</a> (VueJS 2/3 with custom CSS)</li>
+<li><a href="https://buefy.org/">Buefy</a> (VueJS 2 only with BulmaCSS)</li>
+<li><a href="https://vuetifyjs.com/">Vuetify</a> (VueJS 2 with Material Design CSS. NOTE: VueJS 3 support is work in progress!)</li>
+<li><a href="https://bootstrap-vue.org/">BootstrapVue</a> (VueJS 2 with Bootstrap 4 CSS)</li>
+</ul>
 
-                        <a class="tag mr-1" href="/blog/tags/maven">maven</a>
-                        <a class="tag mr-1" href="/blog/tags/java">java</a>
-                    </p>
-    </li>
-        <li class="block">
-        <p class="title"><a href="/blog/2012/kickstart-timemachine-scheduler-with-a-quick-groovy-script">Kickstart TimeMachine Scheduler with a quick Groovy script</a></p>
-        <p class="subtitle">
-            Jul 09, 2012
+<p>Also, checkout some these fantastic CSS Frameworks that I like:</p>
 
-                        <a class="tag mr-1" href="/blog/tags/groovy">groovy</a>
-                        <a class="tag mr-1" href="/blog/tags/timemachine">timemachine</a>
-                    </p>
-    </li>
-        <li class="block">
-        <p class="title"><a href="/blog/2012/getting-jdk6-srczip-for-new-imac">Getting JDK6 src.zip for new iMac</a></p>
-        <p class="subtitle">
-            Jul 03, 2012
+<ul>
+<li><a href="https://bulma.io/">BulmaCSS</a> (no JavaScript locked in!)</li>
+<li><a href="https://tailwindcss.com/">TailwindCSS</a> (a utility first CSS lib)</li>
+<li><a href="https://daisyui.com/">DaisyUI</a> (TailwindCSS with built-in UI elements ready)</li>
+<li><a href="https://getbootstrap.com/docs/4.0">Bootstrap 4</a> (requires jQuery, Popper.js + it's own JS lib)</li>
+<li><a href="https://getbootstrap.com/docs/5.1/">Bootstrap 5</a> (no more jQuery locked in, but it still requires Popper.js + it's own JS lib)</li>
+<li><a href="https://newcss.net/">New.css</a> (A small CSS framework without classes! It just style HTML elements directly!)</li>
+</ul>
 
-                        <a class="tag mr-1" href="/blog/tags/java">java</a>
-                    </p>
-    </li>
-        <li class="block">
-        <p class="title"><a href="/blog/2012/timemachine-scheduler-tour-part7">TimeMachine Scheduler Tour - Part7</a></p>
-        <p class="subtitle">
-            Jun 24, 2012
+    </div>
 
-                        <a class="tag mr-1" href="/blog/tags/timemachine">timemachine</a>
-                    </p>
-    </li>
-        <li class="block">
-        <p class="title"><a href="/blog/2012/timemachine-scheduler-tour-part6">TimeMachine Scheduler Tour - Part6</a></p>
-        <p class="subtitle">
-            Jun 22, 2012
-
-                        <a class="tag mr-1" href="/blog/tags/timemachine">timemachine</a>
-                    </p>
-    </li>
-        <li class="block">
-        <p class="title"><a href="/blog/2012/timemachine-scheduler-tour-part5">TimeMachine Scheduler Tour - Part5</a></p>
-        <p class="subtitle">
-            Jun 20, 2012
-
-                        <a class="tag mr-1" href="/blog/tags/timemachine">timemachine</a>
-                    </p>
-    </li>
-    </ul>
-
-<div class="pagination mt-6">
-    <a class="pagination-previous" href="/page/26">Newer Posts</a>    <a class="pagination-next" href="/page/28">Older Posts</a></div>
-                                            </div>
+        <br/>
+    <ul>
+                        <li class="block">Previous: <a href="/blog/2022/adding-classname-prefix-to-bulmacss" title="Adding classname prefix to BulmaCSS"><span>Adding classname prefix to BulmaCSS</span></a></li>
+            </ul>
+    
+                    </div>
                 </div>
             </div>
         </div>

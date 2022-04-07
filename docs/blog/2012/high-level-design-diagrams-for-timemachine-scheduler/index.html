@@ -75,7 +75,10 @@
 
 <p>First, the Architexa provides their software as an Eclipse plugin, and after installing it, it can analysis an existing project. I did that and here is the package level view it presents me for the TimeMachine.</p>
 
-<p><img src="https://bitbucket.org/saltnlight5/images/raw/84cde5b1e9ba/timemachine-diagrams/package-dependencies.png" alt="TimeMachine packages dependencies diagram" /></p>
+<p>NOTE: Image no longer exists!</p>
+
+<pre><code>![TimeMachine packages dependencies diagram](https://bitbucket.org/saltnlight5/images/raw/84cde5b1e9ba/timemachine-diagrams/package-dependencies.png)
+</code></pre>
 
 <p>The graph is not very clear on why everything depends on <code>schedule</code> package, but perhaps Schedule is used through the code. Any way the TimeMachine has been carefully separating out the pakcages so it's easy for user to use. All the interfaces you need to scheduler jobs are in <code>timemachine.scheduler</code>. In it, there are couple static factories class: <code>Schedules</code> and <code>JobTasks</code> provide majority of the functionity you need. So the goal is you can do quiet a bit with just <code>import timemachine.scheduler.*;</code>; then as you need each layer functionality, you can import them explicitly the sub-packages.</p>
 
@@ -85,19 +88,31 @@
 
 <p>A job in TimeMachine is implemented by a class with <code>JobTask</code> interface. The project provide few for you to get started.</p>
 
-<p><img src="https://bitbucket.org/saltnlight5/images/raw/84cde5b1e9ba/timemachine-diagrams/jobtask-class-hierarchy.png" alt="TimeMachine JobTask class diagram" /></p>
+<p>NOTE: Image no longer exists!</p>
+
+<pre><code>![TimeMachine JobTask class diagram](https://bitbucket.org/saltnlight5/images/raw/84cde5b1e9ba/timemachine-diagrams/jobtask-class-hierarchy.png)
+</code></pre>
 
 <p>How often and frequent to run your job in the scheduler is provided by a <code>Schedule</code>. Here we provided some most used implementations, including the customizable <code>DateListSchedule</code> that uses a <code>provider</code> generator.</p>
 
-<p><img src="https://bitbucket.org/saltnlight5/images/raw/84cde5b1e9ba/timemachine-diagrams/schedule-class-hierarchy.png" alt="TimeMachine Schedule class diagram" /></p>
+<p>NOTE: Image no longer exists!</p>
+
+<pre><code>![TimeMachine Schedule class diagram](https://bitbucket.org/saltnlight5/images/raw/84cde5b1e9ba/timemachine-diagrams/schedule-class-hierarchy.png)
+</code></pre>
 
 <p>The TimeMachine is a scheduler composed by a stackable service container. Here are some of the services that power the scheduler as a whole. The user/developer can write their own user <code>Service</code> and add into the container as well.</p>
 
-<p><img src="https://bitbucket.org/saltnlight5/images/raw/84cde5b1e9ba/timemachine-diagrams/service-class-hierarchy.png" alt="TimeMachine SchedulerEngine class diagram" /></p>
+<p>NOTE: Image no longer exists!</p>
+
+<pre><code>![TimeMachine SchedulerEngine class diagram](https://bitbucket.org/saltnlight5/images/raw/84cde5b1e9ba/timemachine-diagrams/service-class-hierarchy.png)
+</code></pre>
 
 <p>The services above are then combined together to form the scheduler engine.</p>
 
-<p><img src="https://bitbucket.org/saltnlight5/images/raw/84cde5b1e9ba/timemachine-diagrams/scheduler-engine-class-hierarchy.png" alt="TimeMachine SchedulerEngine class diagram" /></p>
+<p>NOTE: Image no longer exists!</p>
+
+<pre><code>![TimeMachine SchedulerEngine class diagram](https://bitbucket.org/saltnlight5/images/raw/84cde5b1e9ba/timemachine-diagrams/scheduler-engine-class-hierarchy.png)
+</code></pre>
 
 <h1 id="timemachine-in-action-diagrams">TimeMachine in action diagrams</h1>
 
@@ -105,11 +120,17 @@
 
 <p>The most basic startup of the TimeMachine sequence would look something like this.</p>
 
-<p><img src="https://bitbucket.org/saltnlight5/images/raw/84cde5b1e9ba/timemachine-diagrams/scheduler-start-up-sequence.png" alt="TimeMachine Scheduler startup up sequence diagram" /></p>
+<p>NOTE: Image no longer exists!</p>
+
+<pre><code>![TimeMachine Scheduler startup up sequence diagram](https://bitbucket.org/saltnlight5/images/raw/84cde5b1e9ba/timemachine-diagrams/scheduler-start-up-sequence.png)
+</code></pre>
 
 <p>In the heart of the scheduler logic is in the <code>PollingScheduleRunner</code> service, and here are some of the actions depicted.</p>
 
-<p><img src="https://bitbucket.org/saltnlight5/images/raw/84cde5b1e9ba/timemachine-diagrams/polling-schedule-runner-sequence.png" alt="TimeMachine PollingScheduleRunner sequence diagram" /></p>
+<p>NOTE: Image no longer exists!</p>
+
+<pre><code>![TimeMachine PollingScheduleRunner sequence diagram](https://bitbucket.org/saltnlight5/images/raw/84cde5b1e9ba/timemachine-diagrams/polling-schedule-runner-sequence.png)
+</code></pre>
 
 <h1 id="using-architexa">Using Architexa</h1>
 
