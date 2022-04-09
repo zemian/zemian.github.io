@@ -3,7 +3,6 @@
 This is a [Sculpin](https://sculpin.io) static site generator project that
 generate http://zemian.github.io site.
 
-NOTE: Current sculpin 3.1 requires PHP 7.4!
 
 ## Install
 
@@ -53,9 +52,10 @@ To publish, run
 
 https://programmablesearchengine.google.com/cse/setup/basic?cx=5bfbcfd67681f7be8
 
-## PHP 8.0.13 Error
+## Latest sculpin 3.1 error.
 
-When using this specific PHP, we see this error:
+I thought it was related to PHP version, but I have tried both 8.0 and 7.4 and both versions
+still has error!
 
 ```
 PHP Fatal error:  Uncaught TypeError: Sculpin\Core\Permalink\SourcePermalinkFactory::normalize(): Argument #1 ($param) must be of type string, null given, called in /my-project/vendor/sculpin/sculpin/src/Sculpin/Core/Permalink/SourcePermalinkFactory.php on line 110 and defined in /my-project/vendor/sculpin/sculpin/src/Sculpin/Core/Permalink/SourcePermalinkFactory.php:214
@@ -66,7 +66,7 @@ Temp fix: Add "string|null" to the function definition on `/my-project/vendor/sc
 ```
 private function normalize(string|null $param, string $space = '-'): string {
   if ($param === null)
-            return "";
+    return "";
   ...
 }
 ```
