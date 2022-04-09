@@ -3,6 +3,8 @@
 This is a [Sculpin](https://sculpin.io) static site generator project that
 generate http://zemian.github.io site.
 
+NOTE: Current sculpin 3.1 requires PHP 7.4!
+
 ## Install
 
 ```
