@@ -9,21 +9,22 @@ See https://www.11ty.dev/docs/getting-started/
 
   npm install
 
+Folder structure:
+
+  src/content - Markdown files that generate content
+  src/templates - Nunchucks template files
+  src/static - Static files to be copy into public web server
+
 ## Writing Blog
 
 First start dev server
 
-```
-./dev.sh
-```
+  npx @11ty/eleventy --serve
+  open http://localhost:8000/
 
-Your newly generated site should now be accessible at `http://localhost:8000/`
+Add new post in `src/posts` folder.
 
-To publish, run
-
-```
-./publish.sh
-```
+## Publishing site
 
 ## ZBlog Logo
 
