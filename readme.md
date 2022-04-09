@@ -1,30 +1,13 @@
 # Zemian's Blog
 
-This is a [Sculpin](https://sculpin.io) static site generator project that
+This is a [11ty](https://www.11ty.dev/) static site generator project that
 generate http://zemian.github.io site.
 
+## Setup
 
-## Install
+See https://www.11ty.dev/docs/getting-started/
 
-```
-composer install
-```
-
-This application uses [Symfony's Webpack Encore](https://symfony.com/doc/current/frontend.html)
-to manage CSS, JavaScript and image assets. Install the JS dependencies:
-
-```
-npm install
-node_modules/.bin/encore dev
-```
-
-If CSS and JS are modify, you need to run:
-
-```
-node_modules/.bin/encore dev --watch
-```
-
-NOTE: We are not using any custom css/js right now. The Bulma and VueJS files are directly copy into assets folder.
+  npm install
 
 ## Writing Blog
 
@@ -52,21 +35,27 @@ To publish, run
 
 https://programmablesearchengine.google.com/cse/setup/basic?cx=5bfbcfd67681f7be8
 
-## Latest sculpin 3.1 error.
+## Cleanup posts
 
-I thought it was related to PHP version, but I have tried both 8.0 and 7.4 and both versions
-still has error!
-
+We should move these into posts folder
 ```
-PHP Fatal error:  Uncaught TypeError: Sculpin\Core\Permalink\SourcePermalinkFactory::normalize(): Argument #1 ($param) must be of type string, null given, called in /my-project/vendor/sculpin/sculpin/src/Sculpin/Core/Permalink/SourcePermalinkFactory.php on line 110 and defined in /my-project/vendor/sculpin/sculpin/src/Sculpin/Core/Permalink/SourcePermalinkFactory.php:214
-```
-
-Temp fix: Add "string|null" to the function definition on `/my-project/vendor/sculpin/sculpin/src/Sculpin/Core/Permalink/SourcePermalinkFactory.php:214`
-
-```
-private function normalize(string|null $param, string $space = '-'): string {
-  if ($param === null)
-    return "";
-  ...
-}
+src/static/posts-images
+src/static/posts-images/2014
+src/static/posts-images/2014/wls-datasource.png
+src/static/posts-images/2014/visualvm.png
+src/static/posts-images/2014/wls-datasource-jdbcstore.png
+src/static/posts-images/2014/wls-analysis-tool.png
+src/static/posts-images/2014/wls-shared-lib.png
+src/static/posts-images/2021
+src/static/posts-images/2021/new-zblog-design-with-bulma-and-sculpin.png
+src/static/posts-images/2020
+src/static/posts-images/2020/blog-vuepress.png
+src/static/posts-images/2020/blog-jbake.png
+src/static/posts-images/2020/ojet-starter.png
+src/static/posts-images/2020/marknotes1.png
+src/static/posts-images/2020/marknotes3.png
+src/static/posts-images/2020/marknotes2.png
+src/static/posts-images/2020/bulma2.png
+src/static/posts-images/2020/bulma3.png
+src/static/posts-images/2020/bulma1.png
 ```

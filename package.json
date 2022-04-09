@@ -1,9 +1,23 @@
 {
-  "dependencies": {
-    "@symfony/webpack-encore": "^0.30",
-    "bulma": "^0.9.3",
-    "dayjs": "^1.10.7",
-    "sass": "^1.43.4",
-    "sass-loader": "^8.0"
+  "name": "zemian.github.io.git",
+  "version": "1.0.0",
+  "description": "This is a [11ty](https://www.11ty.dev/) static site generator project that generate http://zemian.github.io site.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zemian/zemian.github.io.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zemian/zemian.github.io/issues"
+  },
+  "homepage": "https://github.com/zemian/zemian.github.io#readme",
+  "devDependencies": {
+    "@11ty/eleventy": "^1.0.0"
   }
 }
