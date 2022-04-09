@@ -11,20 +11,27 @@ See https://www.11ty.dev/docs/getting-started/
 
 Folder structure:
 
-  src/content - Markdown files that generate content
-  src/templates - Nunchucks template files
-  src/static - Static files to be copy into public web server
+  src - Markdown files that generate content (root level)
+  src/blog - Markdown files that generate blog specific content
+  src/_layouts - Nunchucks template files for layout or theme
+  src/_includes - Nunchucks template files to be included by layout
+  static - Static files to be copy into output dir
 
 ## Writing Blog
 
 First start dev server
 
-  npx @11ty/eleventy --serve
-  open http://localhost:8000/
+  npm run dev
+  open http://localhost:8080/
 
 Add new post in `src/posts` folder.
 
 ## Publishing site
+
+  npm run build
+
+The output of the site is in `docs` folder. We will commit this folder into Git so it can be published 
+as GitHub Pages.
 
 ## ZBlog Logo
 
