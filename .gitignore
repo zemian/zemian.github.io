@@ -1,19 +1,5 @@
-/.sculpin/
-/app/cache/*
-/app/config/sculpin_kernel_*.yml
-/app/config/sculpin_site_*.yml
-/app/logs/*
-/output_*/
-/node_modules/
-/src/build/
-s3.conf
-
-/vendor/
-
-.idea/
-temp/
 .DS_Store
 
-/output_dev/
-/output_prod/
+node_modules/
+.idea/
 
