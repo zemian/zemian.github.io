@@ -1,5 +1,5 @@
 ---
-title: Just a test
+Title: Just a test
 ---
 
-Hello World
+**Hello World**
