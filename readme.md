@@ -11,10 +11,10 @@ See https://www.11ty.dev/docs/getting-started/
 
 Folder structure:
 
-  src - Markdown files that generate content (root level)
-  src/blog - Markdown files that generate blog specific content
-  src/_includes - Nunchucks template files
-  static - Static files to be copy into output dir
+  src - Source of various contents
+  src/blog - Blog posts content in Markdown format.
+  src/_includes - Templates and layouts in Nunjucks format.
+  static - Static files to be copied into output as pass-through.
 
 ## Writing Blog
 
@@ -23,11 +23,15 @@ First start dev server
   npm run dev
   open http://localhost:8080/
 
-Add new Markdown post in `src/posts` folder. See https://www.markdownguide.org/
+Add new Markdown file under `src/blog/<year>` folder. Use `<MM-DD>_<slugify-title>` as filename
+format. When generating output, the filename is not used though. It uses the FrontMatter with `title` and
+`date` as minimal variables.
+
+See https://www.markdownguide.org/ more on how to create Markdown files.
 
 ## Publishing site
 
-  ELEVENTY_ENV=prod npm run build
+  npm run build
 
 The output of the site is in `docs` folder. We will commit this folder into Git so it can be published 
 as GitHub Pages.
