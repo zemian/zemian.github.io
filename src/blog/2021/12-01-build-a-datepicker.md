@@ -18,7 +18,7 @@ I took the challenge to build a simple DatePicker web component using VueJS and 
 
 Just in case if you can't view the Live CodePend demo above, here is the source code for it:
 
-{% raw %}
+{% verbatim %}
 ```
 <!-- Let's build a Date Picker using Vue3 and BulmaCSS -->
 <template>
@@ -251,4 +251,4 @@ export default {
   @import url('https://unpkg.com/@fortawesome/fontawesome-free@latest/css/all.min.css');
 </style>
 ```
-{% endraw %}
+{% endverbatim %}

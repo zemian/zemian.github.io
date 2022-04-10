@@ -1,3 +1,5 @@
+let dateFilter = require('nunjucks-date-filter');
+
 module.exports = function(eleventyConfig) {
 
     // Copy all static files into output dir
@@ -8,6 +10,9 @@ module.exports = function(eleventyConfig) {
     eleventyConfig.ignores.add("readme.md");
     eleventyConfig.ignores.add("misc/");
 
+    // The Nunjucks does not have "date" filter!
+    eleventyConfig.addNunjucksFilter("date", dateFilter);
+
     return {
         dir: {
             input: "src",
@@ -15,7 +20,7 @@ module.exports = function(eleventyConfig) {
         },
         templateFormats: ["html", "md", "njk", "11ty.js"],
         dataTemplateEngine: false,
-        markdownTemplateEngine: "liquid",
+        markdownTemplateEngine: "njk",
         htmlTemplateEngine: "njk",
     }
 };
