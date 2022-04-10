@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>ZBlog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="/css/bulma.min.css">
+        
+        
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+    </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/about" class="navbar-item">About Me</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                        
+<div class="content">
+    <p>I learned that <code>grep</code> command supports few options called &quot;context&quot; searching. Basically it can print lines around the matching string! For example, you can use this feature to perform a quick Java threads stack analysis like this (assuming you have a java process PID=12345).</p>
+<pre><code>bash&gt; jstack 12345 | grep --color 'State: BLOCKED' -B 1
+&quot;A-Bad-Boy-Thread&quot; prio=5 tid=0x00007fcfbc895800 nid=0xcd03 waiting on condition [0x00000001657cb000]
+   java.lang.Thread.State: BLOCKED (on object monitor)
+</code></pre>
+<p>See, without the &quot;-B 1&quot; option, which show one line before match, you won't know which name of the tread that's acting up! Now isn't that a gem!</p>
+<p>You may also use &quot;-A 5&quot; to see 5 more lines after the match. Or you may use the &quot;-C 5&quot; to see 5 lines before and after the match.</p>
+<p>PS: There is nothing wrong with a &quot;BLOCKED&quot; thread in Java, however if you got one that won't go away, then it's a good indicator that something is fishy about that thread in your application; because in a well designed app, threads should be in BLOCKED state as briefly as possible. Read the javadoc on <code>java.lang.Thread.State</code> for more details.</p>
+
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <span class="m-1">
+                            <a href="https://www.11ty.dev/">
+                                <img
+                                    src="/images/11ty-logo-bg.svg"
+                                    alt="Made with 11ty"
+                                    width="24"
+                                    height="24">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+    </body>
+</html>

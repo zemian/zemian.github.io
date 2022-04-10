@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>ZBlog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="/css/bulma.min.css">
+        
+        
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+    </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/about" class="navbar-item">About Me</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                        
+<div class="content">
+    <p>If you want to explore the latest EE features, you would need WebLogic Server 12c. However if you still have the IDEA 12 Ultimate edition, you will quickly find that it only supports up to WebLogic
+Server 11g (10.x)! However you can still make your IDEA 12 U to work with WLS 12c, and all you need is an extra &quot;registry.xml&quot; file under WLS home directory (eg: C:/apps/wls12120/registry.xml). This file will allow the IDEA to pickup and recognize your latest WLS 12c installation.</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;bea-product-information&gt;
+  &lt;host home=&quot;C:\apps\wls12120&quot; name=&quot;${env.HOST}&quot;&gt;
+    &lt;product format=&quot;1.0&quot; name=&quot;WebLogic Platform&quot;&gt;
+      &lt;release level=&quot;12.0&quot;
+        ServicePackLevel=&quot;6&quot; PatchLevel=&quot;0&quot;
+        Status=&quot;installed&quot; BeaProgramGroup=&quot;BEA WebLogic Platform 12.0&quot; StartMenu=&quot;&quot;
+        InstallTime=&quot;@INSTALL_TIME@&quot;
+        InstallDir=&quot;C:\apps\wls12120\wlserver&quot;
+        JavaHome=&quot;C:\apps\jdk7&quot; JavaVersion=&quot;1.7.0&quot; JavaVendor=&quot;@JAVA_VENDOR@&quot;&gt;
+        &lt;component name=&quot;WebLogic Server&quot; version=&quot;12.1.2.0&quot;&gt;
+          &lt;component name=&quot;Server&quot;/&gt;
+          &lt;component name=&quot;Server Examples&quot;/&gt;
+        &lt;/component&gt;
+     &lt;/release&gt;
+    &lt;/product&gt;
+ &lt;/host&gt;
+&lt;/bea-product-information&gt;
+</code></pre>
+<p>I have learned this from reading the IntelliJ forum. Also note that the latest IDEA 13 will support WebLogic Server 12c out of the box now.</p>
+
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <span class="m-1">
+                            <a href="https://www.11ty.dev/">
+                                <img
+                                    src="/images/11ty-logo-bg.svg"
+                                    alt="Made with 11ty"
+                                    width="24"
+                                    height="24">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+    </body>
+</html>

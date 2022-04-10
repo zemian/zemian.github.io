@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>ZBlog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="/css/bulma.min.css">
+        
+        
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+    </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/about" class="navbar-item">About Me</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                        
+<div class="content">
+    <p>This is part 2 of 7 in a series of articles that will give you a tour of the <a href="https://bitbucket.org/timemachine/scheduler/wiki/Home">TimeMachine Scheduler</a> project. These articles will introduce you to the scheduler, how to load jobs and schedules, and explore some of its advanced features. For the most current and accurate instructions, please visit the ReferenceManual from the project site.</p>
+<h2>Scripting the Scheduler with Groovy</h2>
+<p>Scripting language is a great way to extend an application, and with Java 6 or higher it has ScriptingEngine API baked right in. There are many solid JVM based scripting engines available out there today. For example Groovy, Ruby or Jython are just few popular open source ones. The TimeMachine Scheduler embraced the easy and flexibility of scripting. I will be covering some of these features in this tour.</p>
+<p>Starting JVM 6 or higher, it already comes with JavaScript engine implementation, and there is no external dependency with this. So TimeMachine has default to use &quot;JavaScript&quot; as scripting engine. You may add any other script engine jars in to the &quot;lib&quot; directory and specify the scriptEngineName parameter to change it.</p>
+<p>We have found the <a href="http://groovy.codehaus.org/">Groovy</a> scripting engine to be very productive, and its syntax are very similar to Java language itself, but yet very concise and expressive. So we decided to make TimeMachine distribution zip file pre-packaged the Groovy jars for user convenient. (Note that Groovy is only an optional dependency for TimeMachine scheduler itself, and we have properly set our maven pom.xml as such.)</p>
+<p>All the demo code in this tour will use Groovy. You are free to choose other engine if you want to explore it further.</p>
+<h2>The ScriptingService</h2>
+<p>You may initialize the scheduler along with a script file and let it execute and prepare jobs or anything you would need before the scheduler is started. You will start by create a config/scheduler.properties file like this:</p>
+<pre><code>timemachine.scheduler.userservice.scriptingService.class = timemachine.scheduler.userservice.ScriptingService
+
+ScriptingService.scriptEngineName = Groovy
+
+ScriptingService.initScript = config/myscript.groovy
+</code></pre>
+<p>In your config/myscript.groovy file, you may try this:</p>
+<pre><code>logger.info(&quot;Hello World!&quot;)
+
+logger.info(&quot;I have access to &quot; + scheduler)
+</code></pre>
+<p>Now you can fire off the scheduler:</p>
+<pre><code>$ bin/scheduler.sh config/scheduler.properties
+</code></pre>
+<p>You should see the scheduler started with the hello world message printed on log output.</p>
+<h2>The Scheduler API</h2>
+<p>From above  you can see that we give you two variables to play with in the script. The logger is simple one, and you probably don't do anything more than logging info message. The more interesting one is the scheduler variable. This variable would have full access to the scheduler; it  is an instance of  <a href="http://tmschedulersite-zdeng.rhcloud.com/scheduler-site/timemachine-scheduler/target/site-deploy/timemachine-scheduler/apidocs/timemachine/scheduler/Scheduler.html">timemachine.scheduler.Scheduler</a> class. Let's use this variable to create a cron job in the following Groovy initScript:</p>
+<pre><code>import timemachine.scheduler.*
+import timemachine.scheduler.schedule.*
+import timemachine.scheduler.jobtask.*
+
+jobDef = new JobDef()
+
+jobDef.setJobTaskClass(LoggerJobTask.class)
+
+schedule = new CronSchedule()
+schedule.setExpression(&quot;* * * * * ?&quot;)
+
+jobDef.addSchedule(schedule)
+
+scheduler.schedule(jobDef)
+</code></pre>
+<p>The scheduler API is pretty self explanatory, but let me be more explicit to help along. We imported all the packages and classes that we need first, then we created a job definition object. We told it what task to do and how often to do it. We created 3 schedules/jobs that will run the task. We finally scheduled and stored this job definition to the scheduler. These jobs will run according to the schedule (every second) as soon as your scheduler starts. You may verify through the output log.</p>
+<p>For convenience sake, we also provide factory classes that can make above program even shorter.</p>
+<pre><code>import timemachine.scheduler.*
+jobDef = JobDefs.loggerJobDef()
+jobDef.add(Schedules.cron(&quot;* * * * * ?&quot;))
+scheduler.schedule(jobDef)
+
+## Schedule Types
+
+Besides the CronSchedule, we also have RepeatSchedule and DateListSchedule schedule types. We have created a nice factory methods in Schedules that return one of these schedule. For example, we may create a minutely repeat schedule and an explicit date list schedules in the initScript like this: 
+
+import timemachine.scheduler.*
+jobDef = JobDefs.osCommandJobDef(&quot;cmd.exe /c echo 'Hello World.'&quot;)
+jobDef.addSchedule(Schedules.minutely(5))
+jobDef.addSchedule(Schedules.datelist(*[Schedules.datetime(&quot;01/01/2013 08:00:00&quot;), Schedules.datetime(&quot;01/01/2014 08:00:00&quot;)]))
+
+scheduler.schedule(jobDef)
+</code></pre>
+<p>In above, we have scheduled one job definition with two schedules to run. First one runs every 5 mins, and the second one runs twice on an explicit given dates.</p>
+<p>Note: The asterisk in front of left bracket is needed due to Groovy syntax on passing an list object into Java's wildcard variable argument.</p>
+<h2>JobTask Types</h2>
+<p>Besides the LoggerJobTask and OsCommandJobTask built-in JobTask you have seen above, we also have a powerful ScriptingJobTask that let you build a job task in Groovy code! This means you may add a new job without even compiling Java code! Here is an example of Groovy initScript script that will create a new &quot;scripting&quot; job.</p>
+<pre><code>import timemachine.scheduler.*
+jobDef = JobDefs.groovyJobDef('''
+file= new File(&quot;/tmp/counter.data&quot;)
+if (!file.exists())
+  num = 1
+else
+  num  = file.text.toInteger() + 1
+logger.info(&quot;Incrementing counter $num in $file&quot;)
+file.write(num)
+''')
+jobDef.addSchedule(Schedules.secondly(1)) // run every second.
+
+scheduler.schedule(jobDef)
+</code></pre>
+<p>In above example, we created a job that runs every second. The job task will increment a counter in a file and re-save it every time the job runs.</p>
+<h2>Pretty Groovy ...</h2>
+<p>There you go. Above is your first custom job in TimeMachine Scheduler! The Groovy language is very similar to Java in syntax, yet minus all the noises, so it's very productive. Groovy also access and integrate with existing <a href="http://docs.oracle.com/javase/6/docs/api/">Java API</a> seamlessly, so you may access and control the scheduler with easy.</p>
+<p>Interested? Go and <a href="https://bitbucket.org/timemachine/scheduler/downloads">download</a>the scheduler today and give it a try!</p>
+<p>End of part 2. You may continue <a href="http://saltnlight5.blogspot.com/2012/06/timemachine-scheduler-tour-part3.html">next tour</a>, or see <a href="http://saltnlight5.blogspot.com/2012/06/timemachine-scheduler-tour-part1.html">previous tour</a>.</p>
+
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <span class="m-1">
+                            <a href="https://www.11ty.dev/">
+                                <img
+                                    src="/images/11ty-logo-bg.svg"
+                                    alt="Made with 11ty"
+                                    width="24"
+                                    height="24">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+    </body>
+</html>

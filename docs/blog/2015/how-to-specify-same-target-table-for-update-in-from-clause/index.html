@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>ZBlog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="/css/bulma.min.css">
+        
+        
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+    </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/about" class="navbar-item">About Me</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                        
+<div class="content">
+    <p>Have you tried updating something simple as following?</p>
+<pre><code>update category_tmp set last_update=NOW() 
+where category_id in (
+  select category_id from category_tmp where name like 'A%'
+);
+</code></pre>
+<p>In MySQL you will get an error like this:</p>
+<pre><code>Error Code: 1093. You can't specify target table 'category_tmp' for update in FROM clause.
+</code></pre>
+<p>So it says that you can't use the same update TABLE name within the sub query in where condition. The trick to get around this is to use another sub query in the where clause so it won't see the TABLE name being used! Here is a workaround:</p>
+<pre><code>update category_tmp set last_update=NOW() 
+where category_id in (
+  select category_id from (
+    select category_id from category_tmp where name like 'A%'
+  ) ID_LIST
+);
+</code></pre>
+<p>Noticed that in MySQL, you must name your sub query result such as <code>ID_LIST</code>, in order for it to be re-select it again on the outer query! Otherwise it will error out with this:</p>
+<pre><code>Error Code: 1248. Every derived table must have its own alias
+</code></pre>
+
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <span class="m-1">
+                            <a href="https://www.11ty.dev/">
+                                <img
+                                    src="/images/11ty-logo-bg.svg"
+                                    alt="Made with 11ty"
+                                    width="24"
+                                    height="24">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+    </body>
+</html>

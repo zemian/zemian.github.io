@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>ZBlog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="/css/bulma.min.css">
+        
+        
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+    </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/about" class="navbar-item">About Me</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                        
+<div class="content">
+    <p>Application logging is one those things like favorite Editors war: everyone has their own opinions and there are endless of implemenations and flavors out there. Now a days, you likely would want to use something already available such as Log4j or Logback. Even JDK has a built in &quot;java.util.logging&quot; implementation. To avoid couple to a direct logger, many projects would opt to use a facade interface, and there is already couple good ones out there already, such as SLF4J or Apache Common Logging etc.</p>
+<p>Despite all these, many project owners still want to try write their own logger service! I wondered if I were to ask and write one myself, what would it be like? So I played around and come up with this simple facade that wraps one of the logger provider (JDK logger in this case), and you can check it out <a href="https://github.com/saltnlight5/java-ee6-examples/tree/master/common-service/src/main/java/zemian/service/logging">here</a>. With my logger, you can use it like this in your application:</p>
+<pre><code> import zemian.service.logging.*;
+ class MyService {
+   static Log LOG = LogFactory.createLog(MyService.class);
+   public void run() {
+     LOG.info(Message.msg(&quot;%s service is running now.&quot;, this));
+   }
+ }
+</code></pre>
+<p>Or you can use the Logger wrapper to avoid many imports:</p>
+<pre><code> import zemian.service.logging.Logger;
+ class MyService2 {
+   static Logger LOGGER = new Logger(MyService2.class);
+   public void run() {
+     LOGGER.info(&quot;%s service is running now.&quot;, this);
+   }
+ }
+</code></pre>
+<p>Some principles I followed when trying this out:</p>
+<ul>
+<li>Use simple names for different level of messages: error, warn, info, debug and trace (no crazy fine, finer and finest level names.)</li>
+<li>Seperate Log service from implementation so you can swap provider.</li>
+<li>Uses Message logging POJO as data encapsulation. It simplifies the log service interface.</li>
+<li>Use log parameters and lazy format binding to construct log message to speed performance.</li>
+</ul>
+<p>Do not go crazy with logging service implemenation make it complex. For example I recommend NOT to mix business logic or data in your logging if possible! If you need custom error codes to be logged for example, you can write your own Exception class and encapsulate there, and then let the logging service do its job: just logging.</p>
+<p>Here are some general rules about using logger in your application that I recommend:</p>
+<ul>
+<li>Use <code>ERROR</code> log messages when there is reallyl a error! Try not to log an &quot;acceptable&quot; error message in your application. Treat an ERROR as critical problem in your application, like if it's in production, some one should be paged to take care of the problem immediately. Each message should have a full Java stacktrace! Some application might want to assign a unique Error Code to these level of messages for easier identification and troubleshoot purpose.</li>
+<li>Use <code>WARN</code> log messages if it's a problem that's ignorable during production operation, but not good idea to supress it. Likely these might point to potentially problem in your application or env. Each message should have a full Java stacktrace, if available that is!</li>
+<li>Use <code>INFO</code> log messages for admin operators or application monitors peoples to see how your application is doing. High level application status or some important and meaningful business information indicators etc. Do not litter your log with developer's messages and unessary verbose and unclear message. Each message should be written in clear sentence so operators knows it's meaningful.</li>
+<li>Use <code>DEBUG</code> log messages for developers to see and troubleshoot the application. Use this for critical application junction and operation to show objects and services states etc. Try not to add repeated loop info messages here and litter your log content.</li>
+<li>Use <code>TRACE</code> log message for developers to troubleshoot tight for loop and high traffic messages information.</li>
+<li>You should select a logger provider that let you configure and turn these logging levels ON or OFF (preferrable at runtime if possible as well). Each level should able to automatically suppress all levels below it. And ofcourse you want a logger provider that can handle log message output to STDOUT and/or to FILE as destination as well.</li>
+</ul>
+
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <span class="m-1">
+                            <a href="https://www.11ty.dev/">
+                                <img
+                                    src="/images/11ty-logo-bg.svg"
+                                    alt="Made with 11ty"
+                                    width="24"
+                                    height="24">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+    </body>
+</html>

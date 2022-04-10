@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>ZBlog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="/css/bulma.min.css">
+        
+        
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+    </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/about" class="navbar-item">About Me</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                        
+<div class="content">
+    <p>If you use MacOSX and JBossAS, then you might have encountered this problem when using the jboss-client.sh tool:</p>
+<pre><code>$ bin/jboss-cli.sh 
+</code></pre>
+<p>You are disconnected at the moment. Type 'connect' to connect to the server or 'help' for the list of supported commands.</p>
+<pre><code>[disconnected /] connect
+The controller is not available at localhost:9999
+</code></pre>
+<p>Or you will get this:</p>
+<pre><code>$ bin/jboss-cli.sh --connect
+org.jboss.as.cli.CliInitializationException: Failed to connect to the controller
+at org.jboss.as.cli.impl.CliLauncher.initCommandContext(CliLauncher.java:229)
+at org.jboss.as.cli.impl.CliLauncher.main(CliLauncher.java:207)
+at org.jboss.as.cli.CommandLineMain.main(CommandLineMain.java:34)
+at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+at java.lang.reflect.Method.invoke(Method.java:601)
+at org.jboss.modules.Module.run(Module.java:260)
+at org.jboss.modules.Main.main(Main.java:291)
+Caused by: org.jboss.as.cli.CommandLineException: The controller is not available at localhost:9999
+at org.jboss.as.cli.impl.CommandContextImpl.connectController(CommandContextImpl.java:639)
+at org.jboss.as.cli.impl.CommandContextImpl.connectController(CommandContextImpl.java:613)
+at org.jboss.as.cli.impl.CliLauncher.initCommandContext(CliLauncher.java:227)
+... 8 more
+</code></pre>
+<p>It turns out this is bug on the JDK 1.7 that only appears on MacOSX JDK7! To be exact, I have the following: MacOSX 10.7.4 with JDK 1.7.0_05 and JBossAS 7.1.1.Final.</p>
+<p>This problem has already been discovered by these posts:</p>
+<p><a href="http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=7159361">http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=7159361</a></p>
+<p><a href="https://community.jboss.org/message/750861#750861">https://community.jboss.org/message/750861#750861</a></p>
+<p>Except after ready through all, and I can't still get it to work because no one listed a clear steps by steps solution. So I re-summarize it again. You need to use that bug's report workaround solution on both the server and client!</p>
+<p>Start the server:</p>
+<pre><code>    $ bin/standalone.sh -Djava.nio.channels.spi.SelectorProvider=sun.nio.ch.KQueueSelectorProvider 
+    ... 
+    18:37:22,555 INFO  [org.jboss.as] (Controller Boot Thread) JBAS015874: JBoss AS 7.1.1.Final &quot;Brontes&quot; started in 1686ms - Started 133 of 208 services (74 services are passive or on-demand)
+</code></pre>
+<p>And on separate terminal, run the CLI:</p>
+<pre><code>    $JAVA_OPTS=&quot;-Djava.nio.channels.spi.SelectorProvider=sun.nio.ch.KQueueSelectorProvider&quot; bin/jboss-cli.sh --connect 
+    [standalone@localhost:9999 /] 
+</code></pre>
+<p>There, now we may continue to explore the cool JBossAS on the fancy OS.</p>
+
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <span class="m-1">
+                            <a href="https://www.11ty.dev/">
+                                <img
+                                    src="/images/11ty-logo-bg.svg"
+                                    alt="Made with 11ty"
+                                    width="24"
+                                    height="24">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+    </body>
+</html>

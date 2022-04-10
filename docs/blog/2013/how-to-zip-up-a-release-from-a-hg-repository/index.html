@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>ZBlog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="/css/bulma.min.css">
+        
+        
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+    </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/about" class="navbar-item">About Me</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                        
+<div class="content">
+    <h2>How to zip up a release from a hg repository</h2>
+<p>Did you know <code>hg archive</code> command can quickly zip up your project by given a revision or release
+name? This is very handy to package up a distribution and share with other who is refusing to use
+the same client.</p>
+<p>I wrote a simple bash script to do this with couple extras. It will create a zip file with a nice
+basename so it’s easy for unzipping. It also auto generate and append the given revision or tag
+name into the RELEASE.txt file, so you know what’s been released.</p>
+<p>Just add the following file into any root of your <code>hg</code> based project’s <code>bin</code> directory and it’s
+ready to use.</p>
+<p>Note</p>
+<p>This script will not tag your repository. It assumed you already have tagged. It simply
+will package up a release into a nice little zip file.</p>
+<p>file: <code>bin/zip-release.sh</code></p>
+<pre><code>#!/usr/bin/env bash
+#
+# Package a release or snapshot from Hg repository for distribution.
+# :Author: Zemian Deng
+# :date: 2013T00:00:00-05:00
+#
+# Usage example:
+#   # release a specific tag
+#   cd /path/to/project
+#   bin/zip-release.sh 1.0.1
+#
+#   # release a snapshot
+#   bin/zip-release.sh
+#
+
+# Command line arguments and options
+# Assume this script is in bin, which one directory up.
+APP_HOME=`cd $(dirname $0)/.. &amp;&amp; pwd`
+if [[ `command -v realpath` != &quot;&quot; ]]; then
+    # resolve symbolic link if possible.
+    APP_HOME=`realpath $APP_HOME`
+fi
+HG_REVISION=`hg id -i`
+REL_VERSION=$1
+if [[ &quot;$REL_VERSION&quot; == &quot;&quot; ]]; then
+    REL_VERSION=$HG_REVISION
+fi
+REL_NAME=&quot;`basename $APP_HOME`-$REL_VERSION&quot;
+REL_DIR=$APP_HOME/target/$REL_NAME
+REL_ZIPFILE=$REL_DIR/../$REL_NAME.zip
+
+# Generate the zip package
+printf &quot;Generating $REL_NAME in directory=`pwd`\n&quot;
+mkdir -p $REL_DIR
+hg archive -r $REL_VERSION $REL_ZIPFILE
+
+# Auto append revision id to release file.
+if [[ -e $APP_HOME/RELEASE.txt ]]; then
+    cp $APP_HOME/RELEASE.txt $REL_DIR/RELEASE.txt
+fi
+printf &quot;$REL_NAME revsion=$HG_REVISION date=`date`\n&quot; &gt;&gt; $REL_DIR/RELEASE.txt
+zip -u $REL_ZIPFILE $REL_DIR/RELEASE.txt
+
+# Clean up the tmp rel dir.
+rm -r $REL_DIR
+
+printf &quot;$REL_ZIPFILE created.\n&quot;
+</code></pre>
+<p>Last updated 2013-06-18 19:18:48 EDT</p>
+
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <span class="m-1">
+                            <a href="https://www.11ty.dev/">
+                                <img
+                                    src="/images/11ty-logo-bg.svg"
+                                    alt="Made with 11ty"
+                                    width="24"
+                                    height="24">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+    </body>
+</html>

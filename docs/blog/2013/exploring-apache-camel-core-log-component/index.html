@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>ZBlog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="/css/bulma.min.css">
+        
+        
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+    </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/about" class="navbar-item">About Me</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                        
+<div class="content">
+    <p>There are many ways to log and inspect the messages as it pass through your
+Camel <code>Route</code>. The <code>camel-core</code> comes with a <code>log</code> component that let
+you inspect the message. So instead of write a separate
+<code>Processor</code> just to log a line as got processed, try using this:</p>
+<pre><code>from(&quot;timer://timer1?period=1s&quot;)
+.to(&quot;log:demo&quot;)
+</code></pre>
+<p>By default, the <code>log</code> component will record your message body content
+through your logger name, <code>demo</code> in above case, at INFO level. Since you can give any
+name, you can control the logging LEVEL anyway you like through a Camel
+<a href="http://saltnlight5.blogspot.com/2013/08/how-to-configure-slf4j-with-different.html">SLF4J logger implementation</a>.</p>
+<p>To log the message in DEBUG level, try this</p>
+<pre><code>from(&quot;timer://timer1?period=1s&quot;)
+.to(&quot;log:demo?level=DEBUG&quot;)
+</code></pre>
+<p>Now if you use <code>log4j</code> as logger implementation, then ensure to add a
+logger config like this.</p>
+<pre><code>log4j.logger.demo = DEBUG
+log4j.logger.org.apache.camel = INFO
+</code></pre>
+<p>The Camel message may have Properties and Headers as well, so to display
+these, you may add <code>showAll=true</code>.</p>
+<p>When you process messages that have large body text, it might be more
+practical to just dislay certain number of characters. To do this, add
+<code>maxChars=256</code> to URL.</p>
+<h2>How to measure Camel messages throughput rate</h2>
+<p>One of the hidden gem of the <code>log</code> componet is its ability to log messages
+throughput! You may specific group of messages to be logged, and once it
+reached that count, it will print the msgs/sec rate output. To enable
+this, just add <code>groupSize</code> option to URL.</p>
+<p>To demo this, I will create a <code>SampleGenerator</code> bean processor
+that would flood the <code>Route</code> with sample messages. I will use the Camel
+context registry to bind the bean, and then reference it in the <code>Route</code>. Here
+is the demo code.</p>
+<pre><code>package camelcoredemo;
+
+import org.slf4j.*;
+import org.apache.camel.*;
+import org.apache.camel.builder.*;
+import org.apache.camel.main.Main;
+
+public class LogDemoCamel extends Main {
+    static Logger LOG = LoggerFactory.getLogger(LogDemoCamel.class);
+    public static void main(String[] args) throws Exception {
+        LogDemoCamel main = new LogDemoCamel();
+        main.enableHangupSupport();
+        main.addRouteBuilder(createRouteBuilder());
+        main.bind(&quot;sampleGenerator&quot;, new SampleGenerator());
+        main.run(args);
+    }
+    static RouteBuilder createRouteBuilder() {
+        return new RouteBuilder() {
+            public void configure() {
+                from(&quot;bean:sampleGenerator&quot;)
+                .to(&quot;log://demo?groupSize=100&quot;);
+            }
+        };
+    }
+    static class SampleGenerator implements Processor{
+        int count = 0;
+        public void process(Exchange msg) throws Exception {
+            if (count &gt;= 500){
+                LOG.info(&quot;Max count has reached. Do nothing.&quot;);
+                Thread.sleep(Long.MAX_VALUE);
+                return;
+            }
+
+            // Let's generate sample message.
+            count++;
+            LOG.trace(&quot;Generating sample msg #{}&quot;, count);
+            msg.getOut().setBody(&quot;Sample msg&quot;);
+        }
+    }
+}
+</code></pre>
+<p>Now you should able to compile and run this demo.</p>
+<pre><code>mvn compile exec:java -Dexec.mainClass=camelcoredemo.LogDemoCamel
+</code></pre>
+<p>When running this demo, you will notice the rate will be displayed on console
+and how fast you can pump message to <code>Route</code> and to process it. This is a
+very useful feature to help you measure and have a quick view on your <code>Route</code>'s
+capability.</p>
+<p>There are more options availabe from <a href="http://camel.apache.org/log.html">Log</a> component
+that you may explore.
+<a href="http://saltnlight5.blogspot.com/2013/08/getting-started-with-apache-camel-using.html">Try it out with a Route</a>
+and see it for yourself.</p>
+
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <span class="m-1">
+                            <a href="https://www.11ty.dev/">
+                                <img
+                                    src="/images/11ty-logo-bg.svg"
+                                    alt="Made with 11ty"
+                                    width="24"
+                                    height="24">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+    </body>
+</html>

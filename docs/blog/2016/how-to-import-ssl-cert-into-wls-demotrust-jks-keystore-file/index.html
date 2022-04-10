@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>ZBlog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="/css/bulma.min.css">
+        
+        
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+    </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/about" class="navbar-item">About Me</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                        
+<div class="content">
+    <p>In WLS, you can import your own SSL cert into its trust keystore file to invoke &quot;https&quot; contents. Here is how you do that with the default WLS <code>DemoTrust.jks</code> file.</p>
+<pre><code>bash&gt; cd $WL_HOME/server/lib
+bash&gt; keytool -keystore DemoTrust.jks -storepass DemoTrustKeyStorePassPhrase -list
+bash&gt; keytool -keystore DemoTrust.jks -storepass DemoTrustKeyStorePassPhrase -importcert -alias mycert -file mycert.pem
+
+# Or to delete the entry
+bash&gt; keytool -keystore DemoTrust.jks -storepass DemoTrustKeyStorePassPhrase -delete -alias mycert
+</code></pre>
+<p>The file <code>mycert.pem</code> can be obtained by any modern browser when you visit the &quot;https&quot; site. For example using Firefox, you can follow these steps to export the cert file:</p>
+<ol>
+<li>
+<p>Click on the Lock icon next to the URL in the broswer</p>
+</li>
+<li>
+<p>Click More Information button, then go to the &quot;Security Tab&quot;</p>
+</li>
+<li>
+<p>Click View Certificate button, then go to the Details tab</p>
+</li>
+<li>
+<p>Click Export ​ button</p>
+</li>
+<li>
+<p>On the bottom right corner dropdown, select X.509 Cerificate with chain (PEM)</p>
+</li>
+<li>
+<p>Type name of file to save (eg: <code>mycert.pem</code>) and then click Save button</p>
+</li>
+</ol>
+
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <span class="m-1">
+                            <a href="https://www.11ty.dev/">
+                                <img
+                                    src="/images/11ty-logo-bg.svg"
+                                    alt="Made with 11ty"
+                                    width="24"
+                                    height="24">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+    </body>
+</html>

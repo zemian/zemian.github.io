@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>ZBlog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="/css/bulma.min.css">
+        
+        
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+    </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/about" class="navbar-item">About Me</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                        
+<div class="content">
+    <p>If you are not using maven EAR plugin, then you can also use plain maven-war-plugin to package a Skinny war package like this:</p>
+<pre><code>            &lt;plugin&gt;
+                &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+                &lt;artifactId&gt;maven-war-plugin&lt;/artifactId&gt;
+                &lt;version&gt;2.6&lt;/version&gt;
+                &lt;configuration&gt;
+                    &lt;!--
+                    We want to package skinny war to avoid third party jars --&gt;
+                    &lt;packagingExcludes&gt;
+                        WEB-INF/lib/*.jar
+                    &lt;/packagingExcludes&gt;
+                    &lt;archiveClasses&gt;true&lt;/archiveClasses&gt;
+                &lt;/configuration&gt;
+            &lt;/plugin&gt;
+
+</code></pre>
+<p>However, if you ran into the problem I described in <a href="http://saltnlight5.blogspot.com/2015/05/getting-version-string-from-maven-based.html">last post</a>, then you want a Skinny war, but still want to include the jar it produced from your own web project. In this case, you can try this:</p>
+<pre><code>            &lt;plugin&gt;
+                &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+                &lt;artifactId&gt;maven-war-plugin&lt;/artifactId&gt;
+                &lt;version&gt;2.6&lt;/version&gt;
+                &lt;configuration&gt;
+                    &lt;!--
+                    We want to package skinny war to avoid third party jars, but we do want the classes from
+                    this project to be included --&gt;
+                    &lt;packagingExcludes&gt;
+                        %regex[WEB-INF/lib/(?!my-project-artifact-name-.*\.jar).*\.jar]
+                    &lt;/packagingExcludes&gt;
+                    &lt;archiveClasses&gt;true&lt;/archiveClasses&gt;
+                &lt;/configuration&gt;
+            &lt;/plugin&gt;
+</code></pre>
+<p>The plugin would accept a REGEX expression for exclusion as well, but getting it to work might take you a few tries! If you need more than this, try this online Java REGEX testing tool: <a href="http://www.regexplanet.com/advanced/java/index.html">http://www.regexplanet.com/advanced/java/index.html</a></p>
+
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <span class="m-1">
+                            <a href="https://www.11ty.dev/">
+                                <img
+                                    src="/images/11ty-logo-bg.svg"
+                                    alt="Made with 11ty"
+                                    width="24"
+                                    height="24">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+    </body>
+</html>

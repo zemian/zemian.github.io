@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>ZBlog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="/css/bulma.min.css">
+        
+        
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+    </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/about" class="navbar-item">About Me</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                        
+<div class="content">
+    <p>Form handling in web application is like bread and butter for most Web developers. It will not be much use if we can not capture users input and process it. So I have included a simple <a href="https://github.com/saltnlight5/java-ee6-examples/blob/master/servlet3-example/src/main/java/zemian/servlet3example/web/FormServlet.java">FormServlet</a>in my servlet3-example  that demonstrated few frequently used form inputs you might encounter. Here is how it looks like:</p>
+<pre><code>package zemian.servlet3example.web;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import zemian.service.logging.Logger;
+
+@WebServlet(&quot;/form&quot;)
+public class FormServlet extends HtmlWriterServlet {
+    private static final Logger LOGGER = new Logger(FormServlet.class);
+    
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        HtmlWriter html = createHtmlWriter(req, resp);    
+        String message = getMessage(req);
+        
+        html.header()
+            .h(1, &quot;User Data Form&quot;)
+            .p(message)
+            .println(&quot;&lt;form method='post' action='form'&gt;&quot;)
+            .println(&quot;&lt;p/&gt;Username: &lt;input type='text' name='username'/&gt;&quot;)
+            .println(&quot;&lt;p/&gt;Password: &lt;input type='password' name='password'/&gt;&quot;)
+            .println(&quot;&lt;p/&gt;Choose a country: &lt;select name='country' size='1'&gt;&quot;)
+            .println(&quot;&lt;option default='true'&gt;US&lt;/option&gt;&quot;)
+            .println(&quot;&lt;option&gt;China&lt;/option&gt;&quot;)
+            .println(&quot;&lt;option&gt;Korea&lt;/option&gt;&quot;)
+            .println(&quot;&lt;/select&gt;&quot;)
+            .println(&quot;&lt;p/&gt;Skills set: &lt;input type='checkbox' name='skills' value='Java'/&gt; Java&quot;)
+            .println(&quot;&lt;input type='checkbox' name='skills' value='Java EE'/&gt;Java EE&quot;)
+            .println(&quot;&lt;input type='checkbox' name='skills' value='MySQL Database'/&gt; MySQL Database&quot;)
+            .println(&quot;&lt;p/&gt;Notes: &lt;textarea name='notes' cols='50' rows='3'&gt;&lt;/textarea&gt;&quot;)
+            .println(&quot;&lt;p/&gt;&lt;input type='submit' value='Submit'/&gt;&quot;)
+            .println(&quot;&lt;/form&gt;&quot;)
+            .println(html.link(&quot;Back to Home&quot;, &quot;/index&quot;))
+            .footer();
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        LOGGER.info(&quot;Processing form.&quot;);
+        Form form = new Form();
+        form.setUsername(req.getParameter(&quot;username&quot;));
+        form.setPassword(req.getParameter(&quot;password&quot;));
+        form.setNotes(req.getParameter(&quot;notes&quot;));
+        form.setCountry(req.getParameter(&quot;country&quot;));
+        String[] skills = req.getParameterValues(&quot;skills&quot;);
+        skills = (skills == null) ? new String[0] : skills;
+        form.setSkills(Arrays.asList(skills));
+        req.setAttribute(&quot;message&quot;, &quot;Processed: &quot; + form);
+        doGet(req, resp);
+    }
+   
+    private String getMessage(HttpServletRequest req) {
+        String message = (String)req.getAttribute(&quot;message&quot;);
+        if (message ==  null) {
+            message = &quot;&quot;;
+        }
+        return message;
+    }
+}
+</code></pre>
+<p>As usual, most forms are display with a http GET request and then process it with a POST action. Take a closer look, and pay close attention to how Servlet handle single vs multi values inputs. These exist because HTML form might allow users to choose multiple values from a single input tag/widget.</p>
+<p>One common pattern developers do in form handling is to capture the input data into a &quot;command object&quot;, &quot;transfer object&quot;, or (in my example) &quot;form&quot; object; so that data can be pass into another layer of your application for further processing. This is a good design becuase it decouples the Web layer dependencies from your backend tier service layers.</p>
+<p>Another frequent dealt with area in form processing is data validation. If you capture your data as form object, then you will likely have two layers of validations. One layer is when you extract it right off the http request (usually from a String input), then you would validate such as is it a required field or optional, is the String value convertable to the expected and desiable type (integer or date etc). Second layer of validation might be further down in your service layer where you already have the form object constructed with correct types, but their values might not be valid per your application requirement. Most common invalid data is due to not conforming to the database constraints and thus not able to persist it. I didn't provide example above on validation, but you can eaisly improve the Servlet and further explore this on your own.</p>
+<p>I like to mention one more note. There are many Java web frameworks out there that focus a LOT of attention on form handling, and they ought to help you develop application easier with less duplicated code. It is done usually with a very concrete programming model and style that, in many cases, shield you away from seing the HttpServletRequest object completly. All these are good (assuming the framework is a good quality one), but keep in mind that majority of cases when there is a problem occur, it's mostly at the framework specific layer, or even more likely your own code that use the framwork. And then you will be spending most of your debugging time learning the framework specific domain, rather than the Servlet spec layer.</p>
+<p>For my example purpose I am trying to focus on EE API alone, so I will stay away from any extra frameworks other than the standard API. If you are a beginner, I strongly encourage you to study the Servlet API and see how form is handled, this gives you a more solid understanding of how the data come about in a web application. If you look further into the Java EE stack, it actually already has a framework that's called JSF as part of EE 6 standards. It's design is to help construct web pages as components model; and it lets you capture form data and automatically bind to a bean object in a much more smoother and integrated fashion. JSF is worthy of its own topic for future posts.</p>
+
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <span class="m-1">
+                            <a href="https://www.11ty.dev/">
+                                <img
+                                    src="/images/11ty-logo-bg.svg"
+                                    alt="Made with 11ty"
+                                    width="24"
+                                    height="24">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+    </body>
+</html>

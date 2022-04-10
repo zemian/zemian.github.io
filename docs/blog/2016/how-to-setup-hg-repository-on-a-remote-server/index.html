@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>ZBlog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="/css/bulma.min.css">
+        
+        
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+    </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/about" class="navbar-item">About Me</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                        
+<div class="content">
+    <p>I love using mercurial source control! It's easy to use and it works as I expected everytime I need to do something with my source repository. Here is how you can quickly create a remote repository to push your existing project into it. (use this as backup of your project or share among your team etc)</p>
+<ol>
+<li>SSH into your remote server and create an empty repository.</li>
+</ol>
+<pre><code>ssh remote_hostname
+bash&gt; cd $HOME 
+bash&gt; mkdir -p hg-repos/myproject
+bash&gt; cd hg-repos/myproject
+bash&gt; hg init
+</code></pre>
+<ol start="2">
+<li>Back on your local machine and in your existing hg project, edit the .hg/hgrc file with the following:</li>
+</ol>
+<pre><code>[paths]
+default=ssh://remote_hostname/hg-repos/myproject
+[ui]
+remotecmd=/usr/local/bin/hg
+</code></pre>
+<p>That's it! You don't even need hg server running in remote host to make this work! Now you may perofrm &quot;hg push&quot; command inside your local project to sync up to remote host</p>
+<p>NOTE 1: This setup rely on your SSH into remote host. If you want to avoid user password promt everytime you perform &quot;hg push&quot;, then setup Key-Based SSH login.</p>
+<p>NOTE 2: You only need &quot;remotecmd&quot; part if your remote_hostname does not have a standard hg installed. Then you can specified your custom location here.</p>
+<p>NOTE 3: If you want to use abolute path for &quot;default&quot; path instead, then you can use double slash after the &quot;remote_hostname&quot;. Else the single slash is relative to your $HOME directory.</p>
+
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <span class="m-1">
+                            <a href="https://www.11ty.dev/">
+                                <img
+                                    src="/images/11ty-logo-bg.svg"
+                                    alt="Made with 11ty"
+                                    width="24"
+                                    height="24">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+    </body>
+</html>

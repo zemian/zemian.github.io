@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>ZBlog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="/css/bulma.min.css">
+        
+        
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+    </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/about" class="navbar-item">About Me</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                        
+<div class="content">
+    <p>Taming the JMX on WebLogic Server</p>
+<h1>Taming the JMX on WebLogic Server</h1>
+<p>Let assume couple things first:</p>
+<ol>
+<li>
+<p>I assume you have heard of Java’s JMX features and familiar what it does (expose and manage your service remotely). You ought to know that default JVM will have a Platform MBeanServer instance that you can register MBean. And you may view them using the <code>jconsole</code> command from the JDK.</p>
+</li>
+<li>
+<p>As of today, I think by far the easiest way you can expose any services in your application to a JMX MBeanServer is using Spring’s exporter. You will do something like this:</p>
+</li>
+</ol>
+<pre><code>        &lt;bean class=&quot;org.springframework.jmx.export.MBeanExporter&quot;&gt;
+            &lt;property name=&quot;assembler&quot;&gt;
+                  &lt;bean class=&quot;org.springframework.jmx.export.assembler.InterfaceBasedMBeanInfoAssembler&quot;&gt;
+                    &lt;property name=&quot;managedInterfaces&quot;&gt;
+                        &lt;list&gt;
+                            &lt;!-- Expose any java interface you like to see under JMX as MBean --&gt;
+                            &lt;value&gt;myproject.services.Service&lt;/value&gt;
+                        &lt;/list&gt;
+                    &lt;/property&gt;
+                  &lt;/bean&gt;
+            &lt;/property&gt;
+            &lt;property name=&quot;beans&quot;&gt;
+              &lt;map&gt;
+                &lt;entry key=&quot;myproject.services:name=MyCoolService&quot; value-ref=&quot;myCoolService&quot;/&gt;
+              &lt;/map&gt;
+            &lt;/property&gt;
+        &lt;/bean&gt;
+        &lt;!-- This service must implements the interface used above --&gt;
+        &lt;bean id=&quot;myCoolService&quot; class=&quot;myproject.services.MyCoolService&quot;&gt;
+        &lt;/bean&gt;
+</code></pre>
+<p>Above should get you standalone application with JMX enabled.</p>
+<p>Now if you want to do similar on WebLogic Server, then I have few goodies and notes that might help you. Read on…</p>
+<h2>WebLogic Server’s (WLS) MBeanServer</h2>
+<h3>The JConsole trick</h3>
+<p>The WLS, like many other EE server will have it’s own MBeanServer. However, to see the MBean’s you would need to do little extra with <code>jconsole</code>. Assume you have a default config WLS started on localhost, then you can connect to it like this.</p>
+<pre><code>jconsole -J-Djava.class.path=&quot;$JAVA_HOME/lib/jconsole.jar:$MW_HOME/wlserver/server/lib/wljmxclient.jar&quot; -J-Djmx.remote.protocol.provider.pkgs=weblogic.management.remote
+</code></pre>
+<p>Then when prompted to login, enter the following:</p>
+<pre><code>Remote Process: service:jmx:iiop://localhost:7001/jndi/weblogic.management.mbeanservers.runtime
+User: &lt;same userid you used setup WLS to their console app.&gt;
+Password: &lt;same password you used setup WLS to their console app.&gt;
+</code></pre>
+<p>Now you should see all the MBeans that WLS already exposed to you as a EE server. You may add your own service there.</p>
+<h3>Programming with JMX connection</h3>
+<p>You may connect to the WLS MBeanServer remotely inside your standalone application. Here is a typical connection code you would need</p>
+<pre><code>            String serviceName = &quot;com.bea:Name=DomainRuntimeService,Type=weblogic.management.mbeanservers.domainruntime.DomainRuntimeServiceMBean&quot;;
+            try {
+                ObjectName service = new ObjectName(serviceName);
+            } catch (MalformedObjectNameException e) {
+                throw new RuntimeException(&quot;Not able to create JMX ObjectName: &quot; + serviceName);
+            }
+    
+            String protocol = &quot;t3&quot;;
+            String jndiroot = &quot;/jndi/&quot;;
+            String mserver = &quot;weblogic.management.mbeanservers.runtime&quot;;
+            try {
+                JMXServiceURL serviceURL = new JMXServiceURL(protocol, &quot;localhost&quot;, 7001, jndiroot + mserver);
+    
+                Hashtable h = new Hashtable();
+                h.put(Context.SECURITY_PRINCIPAL, username);
+                h.put(Context.SECURITY_CREDENTIALS, password);
+                h.put(JMXConnectorFactory.PROTOCOL_PROVIDER_PACKAGES,
+                        &quot;weblogic.management.remote&quot;);
+                h.put(&quot;jmx.remote.x.request.waiting.timeout&quot;, new Long(10000));
+                JMXConnector connector = JMXConnectorFactory.connect(serviceURL, h);
+                MBeanServerConnection remoteMBeanServer = connector.getMBeanServerConnection();
+    
+                // TODO: Do what you need with remoteMBeanServer here.
+            } catch (Exception e) {
+                throw new RuntimeException(&quot;Not able to initiate MBeanServer protocol= &quot; + protocol +
+                        &quot;, jndiroot= &quot; + jndiroot + &quot;, mserver= &quot; + mserver);
+            }
+</code></pre>
+<p>That's a mouthful of boiler code just to get a remote MBeanServer connection! Fortunately there is another easier way though. Read on…</p>
+<h3>The JNDI trick</h3>
+<p>The WLS MBeanServer service is also available through JNDI lookup. Again Spring can help you with their JNDI lookup and you simply need to inject it to other services that need it. For example:</p>
+<pre><code>        &lt;bean id=&quot;jmxServerRuntime&quot; class=&quot;org.springframework.jndi.JndiObjectFactoryBean&quot;&gt;
+            &lt;property name=&quot;jndiName&quot; value=&quot;java:comp/env/jmx/runtime&quot;/&gt;
+        &lt;/bean&gt;
+        &lt;bean id=&quot;exporter&quot; class=&quot;org.springframework.jmx.export.MBeanExporter&quot;&gt;
+            &lt;property name=&quot;beans&quot;&gt;
+                &lt;map&gt;
+                    &lt;entry key=&quot;myproject.services:name=MyCoolService&quot; value-ref=&quot;myCoolService&quot;/&gt;
+                &lt;/map&gt;
+            &lt;/property&gt;
+            &lt;property name=&quot;server&quot; ref=&quot;jmxServerRuntime&quot;/&gt;
+        &lt;/bean&gt;
+</code></pre>
+<p>Notice that we have injetcted the &quot;server&quot; property with one we looked up from WLS JNDI service. If you use that in your WAR application and deploy it onto a WLS instance, and whola, you got yourself exposed service onto WLS JMX!</p>
+<p>Note</p>
+<p>above will only works if your Spring xml config is part of the WAR/JAR/EAR that’s deployed in same server where JNDI lives! If you are not, you need to use this JNDI name without the &quot;env&quot; part instead, like &quot;java:comp/env/jmx/runtime&quot;.</p>
+<p>For more details on how to work with JMX and WLS, see their docs here:
+<a href="http://docs.oracle.com/cd/E12839_01/web.1111/e13728/accesswls.htm#i1119556">http://docs.oracle.com/cd/E12839_01/web.1111/e13728/accesswls.htm#i1119556</a></p>
+<p>Last updated 2013-06-12 23:52:42 EDT</p>
+
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <span class="m-1">
+                            <a href="https://www.11ty.dev/">
+                                <img
+                                    src="/images/11ty-logo-bg.svg"
+                                    alt="Made with 11ty"
+                                    width="24"
+                                    height="24">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+    </body>
+</html>

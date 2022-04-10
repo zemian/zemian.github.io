@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>ZBlog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="/css/bulma.min.css">
+        
+        
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+    </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/about" class="navbar-item">About Me</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                        
+<div class="content">
+    <p>Besides writing your own <a href="http://saltnlight5.blogspot.com/2015/02/ee-jsp-generating-dynamic-content-with.html">Custom Tags in JSP</a>, you will find that Java EE actually provides a set of Java Standard Tag Library (JSTL) ready for you to use. These built-in tags include repeating (for-loop) tags, if condition tags, variable declaration and output tags etc. The Libraries also come with many utility functions and international message formatting tags. Here is an example how it looks like.</p>
+<pre><code>&lt;%@ taglib prefix=&quot;c&quot; uri=&quot;http://java.sun.com/jsp/jstl/core&quot; %&gt;
+&lt;%@ taglib prefix=&quot;x&quot; uri=&quot;http://java.sun.com/jsp/jstl/xml&quot; %&gt;
+&lt;%@ taglib prefix=&quot;fmt&quot; uri=&quot;http://java.sun.com/jsp/jstl/fmt&quot; %&gt;
+&lt;%@ taglib prefix=&quot;sql&quot; uri=&quot;http://java.sun.com/jsp/jstl/sql&quot; %&gt;
+&lt;%@ taglib prefix=&quot;fn&quot; uri=&quot;http://java.sun.com/jsp/jstl/functions&quot; %&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+    &lt;body&gt;
+        &lt;h1&gt;JSTL Examples&lt;/h1&gt;
+        &lt;h2&gt;List of Application Context: ${applicationScope}&lt;/h2&gt;
+        &lt;table&gt;
+            &lt;c:forEach var=&quot;entry&quot; items=&quot;${applicationScope}&quot;&gt;
+            &lt;tr&gt;
+                &lt;td&gt;${entry.key}&lt;/td&gt;
+                &lt;td&gt;
+                    &lt;c:out value=&quot;${entry.value}&quot;/&gt;
+                &lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;/c:forEach&gt;
+        &lt;/table&gt;
+        
+        &lt;h2&gt;List of Session Context: ${sessionScope}&lt;/h2&gt;
+        &lt;table&gt;
+            &lt;c:forEach var=&quot;entry&quot; items=&quot;${sessionScope}&quot;&gt;
+            &lt;tr&gt;
+                &lt;td&gt;${entry.key}&lt;/td&gt;
+                &lt;td&gt;
+                    &lt;c:out value=&quot;${entry.value}&quot;/&gt;
+                &lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;/c:forEach&gt;
+        &lt;/table&gt;
+        
+        &lt;h2&gt;List of Page Context: ${pageScope}&lt;/h2&gt;
+        &lt;table&gt;
+            &lt;c:forEach var=&quot;entry&quot; items=&quot;${pageScope}&quot;&gt;
+            &lt;tr&gt;
+                &lt;td&gt;${entry.key}&lt;/td&gt;
+                &lt;td&gt;
+                    &lt;c:out value=&quot;${entry.value}&quot;/&gt;
+                &lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;/c:forEach&gt;
+        &lt;/table&gt;
+        
+        &lt;h2&gt;List of Request Context: ${requestSope}&lt;/h2&gt;
+        &lt;table&gt;
+            &lt;c:forEach var=&quot;entry&quot; items=&quot;${requestSope}&quot;&gt;
+            &lt;tr&gt;
+                &lt;td&gt;${entry.key}&lt;/td&gt;
+                &lt;td&gt;
+                    &lt;c:out value=&quot;${entry.value}&quot;/&gt;
+                &lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;/c:forEach&gt;
+        &lt;/table&gt;
+        
+        &lt;h2&gt;List of Query Parameters: ${param}&lt;/h2&gt;
+        &lt;table&gt;
+            &lt;c:forEach var=&quot;entry&quot; items=&quot;${param}&quot;&gt;
+            &lt;tr&gt;
+                &lt;td&gt;${entry.key}&lt;/td&gt;
+                &lt;td&gt;
+                    &lt;c:out value=&quot;${entry.value}&quot;/&gt;
+                &lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;/c:forEach&gt;
+        &lt;/table&gt;
+        
+        &lt;h2&gt;List of Header Parameters: ${header}&lt;/h2&gt;
+        &lt;table&gt;
+            &lt;c:forEach var=&quot;entry&quot; items=&quot;${header}&quot;&gt;
+            &lt;tr&gt;
+                &lt;td&gt;${entry.key}&lt;/td&gt;
+                &lt;td&gt;
+                    &lt;c:out value=&quot;${entry.value}&quot;/&gt;
+                &lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;/c:forEach&gt;
+        &lt;/table&gt;        
+        
+        &lt;h2&gt;List of Cookies: ${cookie}&lt;/h2&gt;
+        &lt;table&gt;
+            &lt;c:forEach var=&quot;entry&quot; items=&quot;${cookie}&quot;&gt;
+            &lt;tr&gt;
+                &lt;td&gt;${entry.key}&lt;/td&gt;
+                &lt;td&gt;
+                    &lt;c:out value=&quot;${entry.value}&quot;/&gt;
+                &lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;/c:forEach&gt;
+        &lt;/table&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<p>I used the core tag here to display map entries of few implicit variables. You may explore more on those tags declarations I have define on top of the example page from the Spec. These code are from the <a href="https://github.com/saltnlight5/java-ee6-examples/tree/master/jsp-example">jsp-example</a> from GitHub.</p>
+<p>GLASSFISH NOTE: When deploying above example in GlassFish 3/4, you will run into a NullPointerException and causing the page resulted in error. It turns out that GF server added a internal variable named com.sun.jsp.taglibraryCache  in ServletContext (Application Scope) that throws NPE when its toString() is called! To workaround this, I created <a href="https://github.com/saltnlight5/java-ee6-examples/blob/master/jsp-example/src/main/webapp/jstl-example2.jsp">jstl-example2.jsp</a> that wraps the ${entry.value} into a custom JSTL function so that it guarantees to return an output without throwing exception. So the lesson learned is that you should always return a String and not throw Exception when overriding toString() of a Java class. It's just bad practice.</p>
+
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <span class="m-1">
+                            <a href="https://www.11ty.dev/">
+                                <img
+                                    src="/images/11ty-logo-bg.svg"
+                                    alt="Made with 11ty"
+                                    width="24"
+                                    height="24">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+    </body>
+</html>

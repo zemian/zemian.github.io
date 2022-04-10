@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>ZBlog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="/css/bulma.min.css">
+        
+        
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+    </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/about" class="navbar-item">About Me</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                        
+<div class="content">
+    <p>When deploying a large WAR file application, it would be more easier to manage if we can separate the dependency jars away from the rest of the Web content; or at least those third party jars that do not update often. In this case, we usually call the jars content a &quot;Shared Library&quot; and the Web content the &quot;Skinny WAR&quot;.</p>
+<p>With WebLogic Server, you can easily deploy such two artifacts. Just seperate and package your WAR application into two. The share library would be simply another WAR with only the WEB-INF/lib content in it, while the Skinny war will be the rest of your application without the jar depependencies. On the shared lib WAR file, ensure you have an META-INF/MANIFEST.MF that specify the name and version like the following:</p>
+<p>Implementation-Title: my_shared_lib
+Implementation-Version: 1.0
+Specification-Title: my_shared_lib
+Specification-Version: 1.0
+Extension-Name: my_shared_lib-1.0</p>
+<p>Now your Skinny WAR would need to add an WEB-INF/weblogic.xml extension file to reference the library like this:</p>
+<weblogic-web-app> 
+    <library-ref>
+        <library-name>my_shared_lib</library-name>
+        <specification-version>1.0</specification-version>
+        <implementation-version>1.0</implementation-version>
+        <exact-match>true</exact-match>
+    </library-ref>
+</weblogic-web-app>
+<p>With these two packaged, now turn to your WLS admin console, you will find &quot;Deployments&quot; menu link on left, and on right, you click &quot;Install&quot; button. The next screen will prompt you to choose which type of deployment to install: &quot;Library&quot; (Shared Lib War) or &quot;Application&quot; (Skinny War). Re-run this twice, each with your two seperated WAR files you just built.</p>
+<p><img src="/build/images/posts/2014/wls-shared-lib.png" alt=""></p>
+<p>The WLS will combine the two when running your WAR application. This comes handy if you are to deploy multiple instances of your Skinny war application, but now you only need one shared lib.</p>
+<p>NOTE: Ensure you select at least one, and the same Target servers where you deploy the Library and Application. Else your application will not be deployed and run.</p>
+
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <span class="m-1">
+                            <a href="https://www.11ty.dev/">
+                                <img
+                                    src="/images/11ty-logo-bg.svg"
+                                    alt="Made with 11ty"
+                                    width="24"
+                                    height="24">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+    </body>
+</html>

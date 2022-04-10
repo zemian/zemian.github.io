@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>ZBlog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="/css/bulma.min.css">
+        
+        
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+    </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/about" class="navbar-item">About Me</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                        
+<div class="content">
+    <p>From their site, it says the <a href="http://camel.apache.org">Apache Camel</a> is a versatile open-source integration framework based on known Enterprise Integration Patterns. It might seem like a vague definition, but I want to tell you that this is a very productive Java library that can solve many of typical IT problems! You can think of it as a very light weight ESB framework with &quot;batteries&quot; included.</p>
+<p>In every jobs I've been to so far, folks are writing their own solutions in one way or another to solve many common problems (or they would buy some very expensive enterprisy ESB servers that takes months and months to learn, config, and maintain). Things that we commonly solve are integration (glue) code of existing business services together, process data in a certain workflow manner, or move and transform data from one place to another etc. These are very typical need in many IT environments. The Apache Camel can be used in cases like these; not only that, but also in a very productive and effective way!</p>
+<p>In this article, I will show you how to get started with Apache Camel along with just few lines of <a href="http://groovy.codehaus.org/">Groovy</a> script. You can certainly also start off with a full Java project to try out Camel, but I find Groovy will give you the shortest working example and learning curve.</p>
+<h2>Getting started with Apache Camel using Groovy</h2>
+<p>So let's begin. First let's see a hello world demo with Camel + Groovy.</p>
+<pre><code>    @Grab('org.apache.camel:camel-core:2.10.0')
+    @Grab('org.slf4j:slf4j-simple:1.6.6')
+    import org.apache.camel.*
+    import org.apache.camel.impl.*
+    import org.apache.camel.builder.*
+    
+    def camelContext = new DefaultCamelContext()
+    camelContext.addRoutes(new RouteBuilder() {
+        def void configure() {
+            from(&quot;timer://jdkTimer?period=3000&quot;)
+                .to(&quot;log://camelLogger?level=INFO&quot;)
+        }
+    })
+    camelContext.start()
+    
+    addShutdownHook{ camelContext.stop() }
+    synchronized(this){ this.wait() }
+</code></pre>
+<p>Save above into a file named <code>helloCamel.groovy</code> and then run it like this:</p>
+<pre><code>    $ groovy helloCamel.groovy
+    388 [main] INFO org.apache.camel.impl.DefaultCamelContext - Apache Camel 2.10.0 (CamelContext: camel-1) is starting
+    445 [main] INFO org.apache.camel.management.ManagementStrategyFactory - JMX enabled.
+    447 [main] INFO org.apache.camel.management.DefaultManagementLifecycleStrategy - StatisticsLevel at All so enabling load performance statistics
+    678 [main] INFO org.apache.camel.impl.converter.DefaultTypeConverter - Loaded 170 type converters
+    882 [main] INFO org.apache.camel.impl.DefaultCamelContext - Route: route1 started and consuming from: Endpoint[timer://jdkTimer?period=3000]
+    883 [main] INFO org.apache.camel.impl.DefaultCamelContext - Total 1 routes, of which 1 is started.
+    887 [main] INFO org.apache.camel.impl.DefaultCamelContext - Apache Camel 2.10.0 (CamelContext: camel-1) started in 0.496 seconds
+    898 [Camel (camel-1) thread #1 - timer://jdkTimer] INFO camelLogger - Exchange[ExchangePattern:InOnly, BodyType:null, Body:[Body is null]]
+    3884 [Camel (camel-1) thread #1 - timer://jdkTimer] INFO camelLogger - Exchange[ExchangePattern:InOnly, BodyType:null, Body:[Body is null]]
+    6884 [Camel (camel-1) thread #1 - timer://jdkTimer] INFO camelLogger - Exchange[ExchangePattern:InOnly, BodyType:null, Body:[Body is null]]
+    ...
+</code></pre>
+<p>The little script above is simple but it presented few key features of Camel Groovyness. The first and last section of the <code>helloCamel.groovy</code> script are just Groovy featuers. The <code>@Grab</code> annotation will automatically download the dependency jars you specify. We import Java packages to use its classes later. At the end we ensure to shutdown Camel before exiting JVM through the Java Shutdown Hook mechanism. The program will sit and wait until user press <code>CTRL+C</code>, just as a typical server process behavior.</p>
+<p>The middle section is where the Camel action is. You would always create a Camel context to begin (think of it as the server or manager for the process.) And then you would add a Camel route (think of it as a workflow or pipeflow) that you like to process data (Camel likes to call these data &quot;messages&quot;). The route consists of a &quot;from&quot; starting point (where data generated), and one or more &quot;to&quot; points (where data going to be processed). Camel calls these destination 'points' as 'Endpoints'. These endpoints can be expressed in simple URI string format such as <code>&quot;timer://jdkTimer?period=3000&quot;</code>. Here we are generating timer message in every 3 secs into the pipeflow, and then process by a logger URI, which will simply print to console output.</p>
+<p>After Camel context started, it will start processing data through the workflow, as you can observe from the output example above. Now try pressing <code>CTRL+C</code> to end its process. Notice how the Camel will shutdown everything very gracefully.</p>
+<pre><code>    7312 [Thread-2] INFO org.apache.camel.impl.DefaultCamelContext - Apache Camel 2.10.0 (CamelContext: camel-1) is shutting down
+    7312 [Thread-2] INFO org.apache.camel.impl.DefaultShutdownStrategy - Starting to graceful shutdown 1 routes (timeout 300 seconds)
+    7317 [Camel (camel-1) thread #2 - ShutdownTask] INFO org.apache.camel.impl.DefaultShutdownStrategy - Route: route1 shutdown complete, was consuming from: Endpoint[timer://jdkTimer?period=3000]
+    7317 [Thread-2] INFO org.apache.camel.impl.DefaultShutdownStrategy - Graceful shutdown of 1 routes completed in 0 seconds
+    7321 [Thread-2] INFO org.apache.camel.impl.converter.DefaultTypeConverter - TypeConverterRegistry utilization[attempts=2, hits=2, misses=0, failures=0] mappings[total=170, misses=0]
+    7322 [Thread-2] INFO org.apache.camel.impl.DefaultCamelContext - Apache Camel 2.10.0 (CamelContext: camel-1) is shutdown in 0.010 seconds. Uptime 7.053 seconds.
+</code></pre>
+<p>So that's our first taste of Camel ride! However, we titled this section as &quot;Hello World!&quot; demo, and yet we haven't seen any. But you might have also noticed that above script are mostly boiler plate code that we setup. No user logic has been added yet. Not even the logging the message part! We simply configuring the route.</p>
+<p>Now let's modify the script little bit so we will actually add our user logic to process the timer message.</p>
+<pre><code>    @Grab('org.apache.camel:camel-core:2.10.0')
+    @Grab('org.slf4j:slf4j-simple:1.6.6')
+    import org.apache.camel.*
+    import org.apache.camel.impl.*
+    import org.apache.camel.builder.*
+    
+    def camelContext = new DefaultCamelContext()
+    camelContext.addRoutes(new RouteBuilder() {
+        def void configure() {
+            from(&quot;timer://jdkTimer?period=3000&quot;)
+                .to(&quot;log://camelLogger?level=INFO&quot;)
+                .process(new Processor() {
+                    def void process(Exchange exchange) {
+                        println(&quot;Hello World!&quot;)
+                    }
+                })
+        }
+    })
+    camelContext.start()
+    
+    addShutdownHook{ camelContext.stop() }
+    synchronized(this){ this.wait() }
+</code></pre>
+<p>Notice how I can simply append the process code part right after the <code>to(&quot;log...&quot;)</code> line. I have added a &quot;processor&quot; code block to process the timer message. The logic is simple: we greet the world on each tick.</p>
+<h2>Making Camel route more concise and practical</h2>
+<p>Now, do I have you at Hello yet? If not, then I hope you will be patient and continue to follow along for few more practical features of Camel. First, if you were to put Camel in real use, I would recommend you setup your business logic separately from the workflow route definition. This is so that you can clearly express and see your entire pipeflow of route at a glance. To do this, you want to move the &quot;processor&quot;, into a service bean.</p>
+<pre><code>    @Grab('org.apache.camel:camel-core:2.10.0')
+    @Grab('org.slf4j:slf4j-simple:1.6.6')
+    import org.apache.camel.*
+    import org.apache.camel.impl.*
+    import org.apache.camel.builder.*
+    import org.apache.camel.util.jndi.*
+    
+    class SystemInfoService {
+        def void run() {
+            println(&quot;Hello World!&quot;)
+        }
+    }
+    def jndiContext = new JndiContext();
+    jndiContext.bind(&quot;systemInfoPoller&quot;, new SystemInfoService())
+    
+    def camelContext = new DefaultCamelContext(jndiContext)
+    camelContext.addRoutes(new RouteBuilder() {
+        def void configure() {
+            from(&quot;timer://jdkTimer?period=3000&quot;)
+                .to(&quot;log://camelLogger?level=INFO&quot;)
+                .to(&quot;bean://systemInfoPoller?method=run&quot;)
+        }
+    })
+    camelContext.start()
+    
+    addShutdownHook{ camelContext.stop() }
+    synchronized(this){ this.wait() }
+</code></pre>
+<p>Now, see how compact this workflow route has become? The Camel's Java DSL such as <code>&quot;from().to().to()&quot;</code> for defining route are so clean and simple to use. You can even show this code snip to your Business Analysts, and they would likely be able to verify your business flow easily! Wouldn't that alone worth a million dollars?</p>
+<h1>How about another demo: FilePoller Processing</h1>
+<p>File polling processing is a very common and effective way to solve many business problems. If you work for commercial companies long enough, you might have written one before. A typical file poller would process incoming files from a directory and then process the content, and then move the file into a output directory. Let's make a Camel route to do just that.</p>
+<pre><code>    @Grab('org.apache.camel:camel-core:2.10.0')
+    @Grab('org.slf4j:slf4j-simple:1.6.6')
+    import org.apache.camel.*
+    import org.apache.camel.impl.*
+    import org.apache.camel.builder.*
+    import org.apache.camel.util.jndi.*
+    
+    class UpperCaseTextService {
+        def String transform(String text) {
+            return text.toUpperCase()
+        }
+    }
+    def jndiContext = new JndiContext();
+    jndiContext.bind(&quot;upperCaseTextService&quot;, new UpperCaseTextService())
+    
+    def dataDir = &quot;/${System.properties['user.home']}/test/file-poller-demo&quot;
+    def camelContext = new DefaultCamelContext(jndiContext)
+    camelContext.addRoutes(new RouteBuilder() {
+        def void configure() {
+            from(&quot;file://${dataDir}/in&quot;)
+                .to(&quot;log://camelLogger&quot;)
+                .to(&quot;bean://upperCaseTextService?method=transform&quot;)
+                .to(&quot;file://${dataDir}/out&quot;)
+        }
+    })
+    camelContext.start()
+    
+    addShutdownHook{ camelContext.stop() }
+    synchronized(this){ this.wait() }    
+</code></pre>
+<p>Here you see I defined a route to poll a <code>$HOME/test/file-poller-demo/in</code> directory for text files. Once it's found it will log it to console, and then process by a service that transform the content text into upper case. After this, it will send the file into <code>$HOME/test/file-poller-demo/out</code> directory. My goodness, reading the Camel route above probably express what I wrote down just as effective. Do you see the benefits here?</p>
+<h2>What's the &quot;batteries&quot; included part.</h2>
+<p>If you've used Python programming before, you might have heard the pharase that they claim often: Python has &quot;batteries&quot; included. This means their interpreter comes with a rich of libaries for most of the common programming need. You can often write python program without have to download separated external libraries.</p>
+<p>I am making similar analogies here with Apache Camel. The Camel project comes with so many ready to use <a href="http://camel.apache.org/components.html">components</a> that you can find just about any transport protocals that can carry data. These Camel &quot;components&quot; are ones that support different 'Endpoint URI' that we have seen in our demos above. We have simply shown you <code>timer</code>, <code>log</code>, <code>bean</code>, and <code>file</code> components, but there are over 120 more. You will find <code>jms</code>, <code>http</code>, <code>ftp</code>, <code>cfx</code>, or <code>tcp</code>  just to name a few.</p>
+<p>The Camel project also has an option for you to define route in <a href="http://camel.apache.org/spring.html">declarative xml format</a>. The xml is just an extension of a Spring xml config with Camel's namespace handler added on top. Spring is optional in Camel, but you can use it together in a very powerful way.</p>
+
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <span class="m-1">
+                            <a href="https://www.11ty.dev/">
+                                <img
+                                    src="/images/11ty-logo-bg.svg"
+                                    alt="Made with 11ty"
+                                    width="24"
+                                    height="24">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+    </body>
+</html>

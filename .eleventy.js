@@ -13,5 +13,9 @@ module.exports = function(eleventyConfig) {
             input: "src",
             output: "docs",
         },
+        templateFormats: ["html", "md", "njk", "11ty.js"],
+        dataTemplateEngine: false,
+        markdownTemplateEngine: "liquid",
+        htmlTemplateEngine: "njk",
     }
 };

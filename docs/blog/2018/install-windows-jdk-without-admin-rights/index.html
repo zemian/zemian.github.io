@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>ZBlog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="/css/bulma.min.css">
+        
+        
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+    </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/about" class="navbar-item">About Me</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                        
+<div class="content">
+    <h1>Installing JDK 7</h1>
+<ol>
+<li>
+<p>Download <a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">Oracle Java SE JDK 7</a>
+In this example, we will use <code>jdk-7u80-windows-x64.exe</code></p>
+</li>
+<li>
+<p>Extract <code>jdk-7u80-windows-x64.exe</code> using 7-zip tool. Right click the
+file then select context menu 7-zip &gt; Extract to
+<code>jdk-7u80-windows-x64</code></p>
+</li>
+<li>
+<p>Go to the directory <code>jdk-7u80-windows-x64/.rsrc/1033/JAVA_CAB10</code></p>
+<ul>
+<li>
+<p>Step 1: Extract the file <code>111</code> using 7-zip again, which will
+result a <code>tools.zip</code> file</p>
+<ul>
+<li>Right click the file then select context menu 7-zip &gt; Extract here</li>
+</ul>
+</li>
+<li>
+<p>Step 2: Extract tools.zip using 7-zip tool again</p>
+<ul>
+<li>Right click the file then select context menu 7-zip &gt; Extract to <code>tools</code></li>
+</ul>
+</li>
+<li>
+<p>Step 3: Open <code>cmd.exe</code> and cd into <code>tools</code> directory above, then
+run the following:</p>
+<pre><code>for /r %i in (*.pack) do bin\unpack200 -r -v %i %~pi%~ni.jar
+</code></pre>
+</li>
+</ul>
+</li>
+</ol>
+<p>Or if you use Cygwin Bash, you can run this:</p>
+<pre><code>find . -name '*.pack' -type f -exec sh -c 'bin/unpack200 -r -v $0 ${0/.pack/.jar}' {} \;
+</code></pre>
+<ul>
+<li>
+<p>Step 4: Copy <code>tools</code> folder and rename it to <code>%USERPROFILE%/apps/jdk-7u80</code></p>
+<ol>
+<li>Optionally, if you want the JDK source code, following these
+instruction:</li>
+</ol>
+</li>
+<li>
+<p>Step 1: Go to the directory Go to the directory    <code>jdk-7u80-windows-x64/.rsrc/1033/JAVA_CAB9</code></p>
+</li>
+<li>
+<p>Step 2: Extract the file <code>110</code>, which contains <code>src.zip</code></p>
+</li>
+<li>
+<p>Step 3: Copy <code>src.zip</code> into <code>%USERPROFILE%/apps/jdk-7u80</code></p>
+</li>
+</ul>
+<p>Refs:
+<a href="http://stackoverflow.com/questions/10891405/installing-jdk-without-administrator-privileges">http://stackoverflow.com/questions/10891405/installing-jdk-without-administrator-privileges</a></p>
+<h1>Installing JDK 8</h1>
+<p>The JDK8 update 102 or higher has different file structure!</p>
+<ol>
+<li>
+<p>Use 7-zip to unpack <code>jdk-8u131-windows-x64.exe</code></p>
+</li>
+<li>
+<p><code>cd .rsrc/1033/JAVA_CAB10</code></p>
+</li>
+<li>
+<p>Use 7-zip to unpack <code>111</code> file and extract <code>tools.zip</code></p>
+</li>
+<li>
+<p>Use same instructions as above to unpack <code>tools.zip</code></p>
+</li>
+</ol>
+<p>Java source <code>src.zip</code> is within the file <code>110</code> located inside <code>.rsrc/1033/JAVA_CAB9</code>.</p>
+<h1>Installing JDK 9</h1>
+<p>Staring JDK9, the <a href="http://jdk.java.net/9">OpenJDK</a> provides binary tar
+ball (zipped) executable JDK package that can unpack in Windows in any
+directory. But if you still want Oracle Java SE JDK, then you still use
+above instruction to get around installing without admin rights.</p>
+<h1>Refs</h1>
+<p><a href="https://stackoverflow.com/questions/10891405/installing-jdk-without-administrator-privileges">https://stackoverflow.com/questions/10891405/installing-jdk-without-administrator-privileges</a></p>
+
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <span class="m-1">
+                            <a href="https://www.11ty.dev/">
+                                <img
+                                    src="/images/11ty-logo-bg.svg"
+                                    alt="Made with 11ty"
+                                    width="24"
+                                    height="24">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+    </body>
+</html>

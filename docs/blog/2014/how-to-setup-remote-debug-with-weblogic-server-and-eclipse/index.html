@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>ZBlog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="/css/bulma.min.css">
+        
+        
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+    </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/about" class="navbar-item">About Me</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                        
+<div class="content">
+    <p>Here is how I enable remote debugging with WebLogic Server (11g) and Eclipse IDE. (Actually the java option is for any JVM, just the instruction here is WLS specific.)</p>
+<ol>
+<li>Edit <code>&lt;my_domain&gt;/bin/setDomainEnv.sh</code> file and add this on top:</li>
+</ol>
+<p><code>JAVA_OPTIONS=&quot;$JAVA_OPTIONS -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n&quot;  </code>
+The <code>suspend=n</code> will start your server without wait for you to connect with IDE. Server usually started with bunch of waiting threads and you can connect with an IDE any any time. You then try to place a break point and fetch a new HTTP request etc to initiate a thread to go into the code breakponit. If you don't want the WLS to wait before fully started, then set it to suspend=y instead.</p>
+<ol start="2">
+<li>
+<p>Start/restart your WLS with <code>&lt;my_domain&gt;/bin/startWebLogic.sh</code></p>
+</li>
+<li>
+<p>Once WLS is running, you may connect to it using Eclipse IDE. Go to Menu: Run &gt; Debug Configuration ... &gt; Remote Java Application and create a new entry. Ensure your port number is matching to what you used above.</p>
+</li>
+</ol>
+<p>Read more java debugging option here: <a href="http://www.oracle.com/technetwork/java/javase/tech/vmoptions-jsp-140102.html#DebuggingOptions">http://www.oracle.com/technetwork/java/javase/tech/vmoptions-jsp-140102.html#DebuggingOptions</a></p>
+<p>Now on the IDE Eclipse side, you can connect to your WLS server with the following instruction:</p>
+<ol>
+<li>
+<p>In Eclipse menu, select Run &gt; Debug Configuration ...</p>
+</li>
+<li>
+<p>On left side, select Remote Java Application, and then press the + button to create a new configuration.</p>
+</li>
+<li>
+<p>On the right side you can fill in the server info such as hostname and port number.</p>
+</li>
+<li>
+<p>Click Debug button</p>
+</li>
+</ol>
+<p>UPDATE (10/30/14):</p>
+<p>Remember each remote debug setup is per JVM and requires a unique port. So how to set each WebLogic Managed Server with unique debug port? You can easily do this by updating your line above to this:</p>
+<pre><code>DEBUG_PORT=${DEBUG_PORT:=8000}
+JAVA_OPTIONS=&quot;$JAVA_OPTIONS -Xrunjdwp:transport=dt_socket,address=$DEBUG_PORT,server=y,suspend=n&quot; 
+</code></pre>
+<p>Now you can start managed server like this to change the port in a Bash shell by change to your domain directory first, then run:</p>
+<pre><code>bash&gt;DEBUG_PORT=8001 bin/startManagedWeblogic.sh my_server_name
+</code></pre>
+
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <span class="m-1">
+                            <a href="https://www.11ty.dev/">
+                                <img
+                                    src="/images/11ty-logo-bg.svg"
+                                    alt="Made with 11ty"
+                                    width="24"
+                                    height="24">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+    </body>
+</html>

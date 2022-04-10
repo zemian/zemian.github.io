@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>ZBlog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="/css/bulma.min.css">
+        
+        
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+    </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/about" class="navbar-item">About Me</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                        
+<div class="content">
+    <h2>Configuring RequireJS</h2>
+<p>You can use either <code>requirejs.config()</code> or <code>require.config()</code> to setup RequireJS. I preferred the <code>requirejs.config()</code> and <code>require()</code> to load modules just so to give them some distinction on usage. A typical config usage is like this:</p>
+<pre><code class="language-js">requirejs.config({
+    baseUrl: &quot;js/&quot;,
+    paths: {
+        'foo': 'path/foo',
+        'bar': 'path/bar',
+    }
+});
+</code></pre>
+<p>You can actually run <code>requirejs.config()</code> multiple times! Most of the options will be appended together. But the last <code>baseUrl</code> will override all.</p>
+<h2>Use Shim for Library that has no AMD support</h2>
+<p>If you are loading a library (eg: CKEDITOR4), then you need to work with <code>shim</code> because it expose a global variable named CKEDITOR. Examples:</p>
+<pre><code class="language-js">requirejs.config({
+    paths: {
+        ckeditor: 'https://cdn.jsdelivr.net/npm/ckeditor4@4.14.0/ckeditor'
+    },
+    shims: {
+        ckeditor: {
+            exports: 'CKEDITOR'
+        }
+    }
+});
+require(['ckeditor'], () =&gt; {
+    // Notice that CKEDITOR variable is automatically available due to our shims' export.
+    CKEDITOR.replace('editor', {width: '100%', height: '85%'});
+});
+</code></pre>
+<h2>Writing Modules</h2>
+<p>It’s recommended you don’t explicitly name your module, but simply let your filename be the module name. Example:</p>
+<pre><code class="language-js">//file: mymodule.js
+define('mymodule', [], function() {
+    return {
+        uniqueId() {
+            return Math.random().toString(16).substring(2);
+        }
+    }
+});
+</code></pre>
+<p>You can create many internal functions and variable you want and they do need to be all returned (or exported). Another popular export data is simply the JS function constructor. Example:</p>
+<pre><code class="language-js">//file: MyService.js
+define(['mylib', function(mylib) {
+  function MyService () {
+    // ... define your service here.
+    // note that 'mylib' is loaded and availabe to use here.
+  }
+  return MyService;
+});require(['MyService'], (MyService) =&gt; {
+  let service = new MyService();
+  // Use service here...
+});
+</code></pre>
+<h2>Loading Modules</h2>
+<p>You should know that when you use <code>require()</code> to load modules, they are all loaded asynchronously, and all the dependency are loaded accordingly in the proper order!</p>
+<p>You can configure RequireJS with <code>paths</code> that setup hundreds of ready to use libraries, but if you don’t invoke <code>require()</code>, it will not be loaded into your browser at runtime!</p>
+<p>The <code>require()</code> can be use anywhere in your HTML script code. One popular way to organize the code is that you place your application entry file (usually named <code>main.js</code>) with entry point of <code>require()</code> to start your application. Then you can load it in browser like this:</p>
+<pre><code class="language-html">&lt;script data-main=&quot;main&quot; src=&quot;https://unpkg.com/requirejs@2.3.6/require.js&quot;&gt;&lt;/script&gt;
+</code></pre>
+<p>Note that <code>.js</code> is optional when you use <code>data-main</code> attribute. Above can also be loaded in your old fashion way like this:</p>
+<pre><code class="language-html">&lt;script src=&quot;https://unpkg.com/requirejs@2.3.6/require.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;main.js&quot;&gt;&lt;/script&gt;
+</code></pre>
+<h2>Troubleshooting Tips</h2>
+<ol>
+<li>The usage and syntax of <code>require()</code> and <code>define()</code> is the same, so ensure you use the correct one! Using <code>define()</code> instead of <code>require()</code> will obviously fail your application, but the error might not be so straight forward.</li>
+<li>RequireJS loads modules in relative to the <code>baseUrl</code> path value setup in your config options. Ensure the value it’s loaded properly. Especially if you are using relative path. It default value is relative to the <code>.html</code> file where you include the <code>require.js</code> file in script tag. Triple check this if you see error not able to find your modules.</li>
+<li>The <code>paths</code> configuration option accept value of module with out <code>.js</code> extension! If you include it, it will fail to find your module.</li>
+<li>If you have large modules that you use all of the time. Try reduce the number of dependency modules your user need to import by writing a wrapper module.</li>
+<li>When loading large dependency module list, use a consistent formatting to help. Also, ensure you match up your array of dependency module names with the function callback parameters correctly. Else you get all sort of weird errors. For example:</li>
+</ol>
+<pre><code class="language-js">require(['mymodulelib',
+  'mymodulelib2',
+  'mymodulelib3',
+  'mymodulelib4',
+  'mymodulelib5'
+], function(lib, lib2, lib3) {// write your module here...});
+</code></pre>
+
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <span class="m-1">
+                            <a href="https://www.11ty.dev/">
+                                <img
+                                    src="/images/11ty-logo-bg.svg"
+                                    alt="Made with 11ty"
+                                    width="24"
+                                    height="24">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+    </body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>ZBlog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="/css/bulma.min.css">
+        
+        
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+    </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/about" class="navbar-item">About Me</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                        
+<div class="content">
+    <p>A friend asked me how to setup an Django enviroment on Windows without the Cygwin fuzz. Here is the shortest steps I can think of:</p>
+<ol>
+<li>
+<p>Install Python3.4 as default path. (It should be &quot;C:\Python34&quot;).</p>
+</li>
+<li>
+<p>Open cmd.exe program on Windows and run the following commands:</p>
+</li>
+</ol>
+<pre><code>    set PATH=%PATH%;C:\Python34;C:\Python34\Scripts
+    pip install django
+    python C:\Python34\Lib\site-packages\django\bin\django-admin.py startproject mysite
+    cd mysite
+    python manage.py syncdb
+    (Follow prompts to setup an initial db. remember the user you used here.)
+    python manage.py runserver
+</code></pre>
+<ol start="3">
+<li>
+<p>You are ready to django! Open your browser http://127.0.0.1:8000 to verify.</p>
+<p>Or login into http://127.0.0.1:8000/admin with the user you setup above.</p>
+</li>
+</ol>
+<p>What's next?</p>
+<p>Explore django with a guided tutorial here:</p>
+<p><a href="https://docs.djangoproject.com/en/1.6/intro/tutorial01">https://docs.djangoproject.com/en/1.6/intro/tutorial01</a></p>
+
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <span class="m-1">
+                            <a href="https://www.11ty.dev/">
+                                <img
+                                    src="/images/11ty-logo-bg.svg"
+                                    alt="Made with 11ty"
+                                    width="24"
+                                    height="24">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+    </body>
+</html>

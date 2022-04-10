@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>ZBlog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="/css/bulma.min.css">
+        
+        
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+    </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/about" class="navbar-item">About Me</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                        
+<div class="content">
+    <p>When you package a maven project, it will automatically generate a pom.properties file inside that will contains the version, artifactId and groupId information. These are handy to have and to display for your web application at runtime. One can use a method like following to retrive it.</p>
+<pre><code>public class Application {
+     private String version;
+
+     public String getVersion() {
+        if (version == null) {
+            String res = &quot;META-INF/maven/myapp/pom.properties&quot;;
+            URL url = Thread.currentThread().getContextClassLoader().getResource(res);
+            if (url == null) {
+                version = &quot;SNAPSHOT.&quot; + Utils.timestamp();
+            } else {
+                Properties props = Utils.loadProperties(res);
+                version = props.getProperty(&quot;version&quot;);
+            }
+        }
+        return version;
+    }
+
+}
+</code></pre>
+<p>Sounds good? Not too fast! Turns out you have to do little more trick to have this working properly for deployment. By default the maven war plugin will package your classes files into the WEB-INF/classes, but the pom.properties are in META-INF at the same level, and not in WEB-INF/classes/META-INF! This resulted the above code not finding your resource pom.properties from classpath!</p>
+<p>To fix this, you need to add the following to your pom.xml file:</p>
+<pre><code>            &lt;plugin&gt;
+                &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+                &lt;artifactId&gt;maven-war-plugin&lt;/artifactId&gt;
+                &lt;version&gt;2.6&lt;/version&gt;
+                &lt;configuration&gt;
+                    &lt;archiveClasses&gt;true&lt;/archiveClasses&gt;
+                &lt;/configuration&gt;
+            &lt;/plugin&gt;
+</code></pre>
+<p>This will tell maven to jar up your classes along with the pom.properties in a separate file, then place it in WEB-INF/lib folder instead of using the unpacked WEB-INF/classes version. This forces the pom.properties to be properly added and read by our getVersion() method.</p>
+
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <span class="m-1">
+                            <a href="https://www.11ty.dev/">
+                                <img
+                                    src="/images/11ty-logo-bg.svg"
+                                    alt="Made with 11ty"
+                                    width="24"
+                                    height="24">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+    </body>
+</html>

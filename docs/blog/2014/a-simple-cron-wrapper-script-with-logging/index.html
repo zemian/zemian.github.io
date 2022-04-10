@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>ZBlog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="/css/bulma.min.css">
+        
+        
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+    </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/about" class="navbar-item">About Me</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                        
+<div class="content">
+    <p>When working with crontab service, one thing I often need is to capture the ouput of the job. Having the job script aware of this output and logging is tedious, and often make the script harder to read. So I wrote a shell wrapper that will redirect all job script's STDOUT into a log file. This way I can inspect it when a job has run and the job script can just focus on the task itself.</p>
+<pre><code># file: runcmd.sh
+# Helper/wrapper script to run any command in the crontab env. This script will ensure
+# user profile script is loaded and to log any command output into log files. It also
+# ensure not to print anything to STDOUT to avoid crontab system mail alert.
+#
+# NOTE: be sure to pass in absolute path of the command to be run so it can be found.
+#
+# Usage:
+#   ./runcmd.sh find $HOME/crontab/test.sh            # Simple use case
+#   LOG_NAME=mytest ./runcmd.sh $HOME/crontab/test.sh # Change the log name to something specific
+#
+
+# Options
+DIR=`dirname $0`
+CMD=&quot;$@&quot;
+CMD_NAME=`basename $1`
+LOG_NAME=${LOG_NAME:=$CMD_NAME}
+LOG=&quot;$DIR/logs/$LOG_NAME.log`date +%s`&quot;
+
+# Ensure logs dir exists
+if [[ ! -e $DIR/logs ]]; then
+        mkdir -p $DIR/logs
+fi
+
+# Run cron command
+source $HOME/.bash_profile
+echo &quot;`date` Started cron cmd=$CMD, logname=$LOG_NAME&quot; &gt;&gt; $LOG 2&gt;&amp;1
+$CMD &gt;&gt; $LOG 2&gt;&amp;1
+echo &quot;`date` Cron cmd is done.&quot; &gt;&gt; $LOG 2&gt;&amp;1
+</code></pre>
+<p>With this wrapper, you can run any shell script and their output will be recorded. For example this job script below will clean up the logs accumulated in our logs folder.</p>
+<p>Note that the wrapper will also auto source the &quot;.bash_profile&quot;. Often this this is needed if your job script expect all the env variables you already have setup in your login shell scripts.</p>
+<pre><code># file: remove-crontab-logs.sh
+DIR=`dirname $0`/logs
+echo &quot;Checking and removing logs in $DIR&quot;
+find $DIR -type f -mtime +31 -print -delete
+echo &quot;Done&quot;
+</code></pre>
+<p>Now in the crontab file, you may run the job script like this:</p>
+<pre><code># Clean up crontab logs
+@montly $HOME/crontab/runcmd.sh $HOME/crontab/remove-crontab-logs.sh
+
+</code></pre>
+
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <span class="m-1">
+                            <a href="https://www.11ty.dev/">
+                                <img
+                                    src="/images/11ty-logo-bg.svg"
+                                    alt="Made with 11ty"
+                                    width="24"
+                                    height="24">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+    </body>
+</html>

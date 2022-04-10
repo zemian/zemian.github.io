@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>ZBlog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="/css/bulma.min.css">
+        
+        
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+    </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/about" class="navbar-item">About Me</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                        
+<div class="content">
+    <ol>
+<li>
+<p>Download latest z<code>oom_2.0.52458.0531_amd64.deb</code> package from https://zoom.us/download</p>
+</li>
+<li>
+<p>Run</p>
+<p>bash&gt; sudo dpkg -i zoom_2.0.52458.0531_amd64.deb</p>
+</li>
+<li>
+<p>Even though the package installed complete, you will see error messages if you have a 64-bit OS because Zoom has other dependencies that's not met. And the above command will setup the apt-get to auto fetch the failed dependencies if you simply run the following next:</p>
+<p><code>bash&gt; sudo apt-get -f install</code></p>
+</li>
+</ol>
+<p>That's it! Your zoom should be ready to go! Try to start Zoom by press Super + A, then type in &quot;Zoom&quot;.</p>
+<p>Extra: To Verify Installation, you may run:</p>
+<pre><code>`bash&gt; dpkg -l |grep zoom`
+</code></pre>
+<p>UPDATE:</p>
+<p>The exact same steps can be used to install the Skype skype-ubuntu-precise_4.3.0.37-1_i386.deb on Ubuntu.</p>
+<p>NOTE: If you have errors running steps above, it's very likely you have upgraded your kernel or added extra repositories into apt-get that's causing all the package dependencies conflict. Try to revert back to original Ubuntu 14.04 install state and these steps should get you running!</p>
+
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <span class="m-1">
+                            <a href="https://www.11ty.dev/">
+                                <img
+                                    src="/images/11ty-logo-bg.svg"
+                                    alt="Made with 11ty"
+                                    width="24"
+                                    height="24">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+    </body>
+</html>

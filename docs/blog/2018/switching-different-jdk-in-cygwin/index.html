@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>ZBlog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="/css/bulma.min.css">
+        
+        
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+    </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/about" class="navbar-item">About Me</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                        
+<div class="content">
+    <p>I love to use bash shell terminal. It’s a much more powerful terminal to
+do everyday tasks. Even in Windows, I can get most of what I need using
+Cygwin. Unfortunately Java executable are native to OS only, and for
+Windows, it would still work under Cygwin, but all the file system paths
+are still native. Java can understand the mixed-path though, and it has
+made somewhat easier than the Windows native backward slash path like
+typing. This means we can define <code>JAVA_HOME</code> variable using mixed path
+mode. In Cygwin, I define my <code>.bashrc</code> like this:</p>
+<pre><code>export JAVA_HOME=C:/Users/zemian/apps/jdk-8u161
+PATH=$HOME/apps/jdk-8u161/bin:$PATH
+</code></pre>
+<p>I sometimes work with different version of JDK for various application
+testing. In this case, I need a way to quicly switch JDK version in my
+shell env. To make it easier, I have installed all of my JDK in a
+<code>$HOME/apps</code> directory, and created symbolic links to each JDKs like
+this:</p>
+<pre><code>    cd $HOME/apps
+    ls -ld jdk*
+
+    drwx------+ 1 zemian staff 0 Mar 24 16:58 jdk-8u161
+    drwx------+ 1 zemian staff 0 Mar 24 10:57 jdk-9.0.4
+    drwx------+ 1 zemian staff 0 Mar 24 10:48 jdk-10
+
+    lrwxrwxrwx  1 zemian staff 9 Mar 24 16:55 jdk8 -&gt; jdk-8u161
+    lrwxrwxrwx  1 zemian staff 9 Mar 24 11:02 jdk9 -&gt; jdk-9.0.4
+    lrwxrwxrwx  1 zemian staff 6 Mar 24 11:00 jdk10 -&gt; jdk-10
+</code></pre>
+<p>Now that each JDK has a nice consistent version number in path, then I
+create a shell function like this to switch between them:</p>
+<pre><code class="language-bash">    # Switching Multiple JDK
+    switchjava() {
+            JDK=&quot;jdk$1&quot;
+            if [[ ! -d $APPS_DIR/$JDK ]]; then
+                    echo &quot;ERROR: JDK path not found: $APPS_DIR/$JDK&quot;
+                    return
+            fi
+            export JAVA_HOME=`cygpath -wm $APPS_DIR/$JDK`
+            export PATH=$APPS_DIR/$JDK/bin:$PATH
+
+            # Verifying java
+            echo &quot;Switched JAVA_HOME to $JAVA_HOME&quot;
+            echo &quot;Java Path:&quot;
+            which java
+            echo &quot;Java Version:&quot;
+            java -version
+    }
+</code></pre>
+<p>To put it in use, it looks like this:</p>
+<pre><code>    $ switchjava 9
+    Switched JAVA_HOME to C:/Users/zemian/apps/jdk-9.0.4
+    Java Path:
+    /home/zemian/apps/jdk9/bin/java
+    Java Version:
+    openjdk version &quot;9.0.4&quot;
+    OpenJDK Runtime Environment (build 9.0.4+11)
+    OpenJDK 64-Bit Server VM (build 9.0.4+11, mixed mode)
+
+    $ switchjava 8
+    Switched JAVA_HOME to C:/Users/zemian/apps/jdk-8u161
+    Java Path:
+    /home/zemian/apps/jdk8/bin/java
+    Java Version:
+    java version &quot;1.8.0_161&quot;
+    Java(TM) SE Runtime Environment (build 1.8.0_161-b12)
+    Java HotSpot(TM) 64-Bit Server VM (build 25.161-b12, mixed mode)
+</code></pre>
+
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <span class="m-1">
+                            <a href="https://www.11ty.dev/">
+                                <img
+                                    src="/images/11ty-logo-bg.svg"
+                                    alt="Made with 11ty"
+                                    width="24"
+                                    height="24">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+    </body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>ZBlog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="/css/bulma.min.css">
+        
+        
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+    </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/about" class="navbar-item">About Me</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                        
+<div class="content">
+    <p><a href="http://quartz-scheduler.org/downloads/catalog">Quartz 2.1.0</a> has been released!</p>
+<p>In this release, I have helped fixed some bugs, and added a new built-in trigger type: DailyTimeIntervalTrigger. This new trigger will allow you to specify a interval time in either seconds, minutes, or hours interval on each day (Like fire every 72 mins starting at 7am everyday). And the daily start time will be reset each day regardless what time it ended in that day! You may even limit daily ending time too. And you may limit the days to run on certain weekdays only as well. You may see many examples on how this trigger is used here: <a href="http://svn.terracotta.org/fisheye/browse/Quartz/trunk/quartz/src/test/java/org/quartz/DailyTimeIntervalScheduleBuilderTest.java?r=HEAD">http://svn.terracotta.org/fisheye/browse/Quartz/trunk/quartz/src/test/java/org/quartz/DailyTimeIntervalScheduleBuilderTest.java?r=HEAD</a></p>
+<p>Another feature worthy of note in this release is the &quot;batch&quot; mode is finally working! You may turn this on by using &quot;org.quartz.scheduler.batchTriggerAcquisitionMaxCount&quot; and &quot;org.quartz.scheduler.batchTriggerAcquisitionFireAheadTimeWindow&quot; in your quartz.properties file. See config doc here: <a href="http://quartz-scheduler.org/documentation/quartz-2.1.x/configuration/ConfigMain">http://quartz-scheduler.org/documentation/quartz-2.1.x/configuration/ConfigMain</a></p>
+
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <span class="m-1">
+                            <a href="https://www.11ty.dev/">
+                                <img
+                                    src="/images/11ty-logo-bg.svg"
+                                    alt="Made with 11ty"
+                                    width="24"
+                                    height="24">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+    </body>
+</html>

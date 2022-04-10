@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>ZBlog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="/css/bulma.min.css">
+        
+        
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+    </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/about" class="navbar-item">About Me</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                        
+<div class="content">
+    <p>Are you working on a large Hibernate project that takes long time to load up all the <code>hbm.xml</code> files when creating the
+<code>Session</code> object? This is fine during deployment and runtime because it only loads it once. However, often time we also
+need to the same <code>Session</code> object to do some ad-hoc <code>HQL</code> queries to debug or validate data. Loading and re-loading
+large mapping files in a <code>Session</code> to just execute single query is very painful.</p>
+<p>Now, I like to poke around Java things with <code>Groovy</code>, and it's a great tool to peek at your data as ad-hoc queries as well.
+You can easily do this with their <code>groovyConsole</code> GUI tool and add <code>--classpath</code> option to include your project classes. This
+will bring up a tiny Editor, and you can script to load your hibernate <code>Session</code> there. Once the first run is loaded (the
+hibenrate <code>Session</code> created), then second run is almost in an instant.</p>
+<p>Running the little <code>groovyConsole</code> had wet my appetite, and I was hungry for a better text editor, but yet I don't really
+want a full blow IDE for scripting. I like do my scripting in a plain editor. Now if you have an editor such as <a href="http://sublimetext.com">Sublime Text 2</a> (ST2) that has a &quot;build&quot; feature to execute a external command, then you will enjoy scripting much more. With
+ST2, I can have it call <code>groovy.bat</code> from inside the editor on the script that I am editing. However, there is another problem: the external command will restart a new JVM process on each run! Now I am back to square one.</p>
+<p>To solve this problem, and still have my cake (editor), I recalled an awesome tool called <a href="http://www.martiansoftware.com/nailgun/index.html">NailGun</a>. This works perfectly with Groovy and my problem. I can start a server like this</p>
+<pre><code>java -cp &quot;groovy-all-2.0.1.jar:nailgun-0.7.1.jar&quot; -server com.martiansoftware.nailgun.NGServer
+</code></pre>
+<p>And then in my ST2 editor, I can run an external command like this as the NailGun client:</p>
+<pre><code>/path/to/nailgun-0.7.1/ng groovy.ui.GroovyMain test.groovy
+</code></pre>
+<p>Nail gun client sends the script file content to the server and prints the result. Again, after first run, the second run should
+be instantaneously.</p>
+<p>There, I scratched my itch.</p>
+<h1>Details on how to setup Sublime Text 2 to run NailGun client</h1>
+<ol>
+<li>Go to menu: &quot;Preference &gt; Browse Packages&quot;</li>
+<li>Open the Groovy folder</li>
+<li>Save a file named &quot;GroovyNailGunClient.sublime-build&quot; with the following:</li>
+</ol>
+<pre><code>{
+&quot;cmd&quot;: [&quot;/path/to/nailgun-0.7.1/ng&quot;, &quot;groovy.ui.GroovyMain&quot;, &quot;$file&quot;],
+&quot;file_regex&quot;: &quot;^(...*?):([0-9]*):?([0-9]*)&quot;,
+&quot;selector&quot;: &quot;source.groovy&quot;
+}
+</code></pre>
+<ol start="4">
+<li>Select menu &quot;Tool &gt; Build System &gt; GroovyNailGunClient&quot;</li>
+<li>Press <code>CTRL+B</code> to run any groovy file in your editor.</li>
+</ol>
+
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <span class="m-1">
+                            <a href="https://www.11ty.dev/">
+                                <img
+                                    src="/images/11ty-logo-bg.svg"
+                                    alt="Made with 11ty"
+                                    width="24"
+                                    height="24">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+    </body>
+</html>

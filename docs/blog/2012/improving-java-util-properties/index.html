@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>ZBlog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="/css/bulma.min.css">
+        
+        
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+    </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/about" class="navbar-item">About Me</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                        
+<div class="content">
+    <p>The Java built-in <code>java.util.Properties</code> class could really use some love. I have written a slightly improved version called
+<a href="https://bitbucket.org/timemachine/scheduler/src/15f066cc6dad/timemachine-scheduler/src/main/java/timemachine/scheduler/support/Props.java">timemachine.scheduler.support.Props</a>, and below are some features that I use often.</p>
+<h1>You can use it as a &quot;String Map&quot; of properties</h1>
+<pre><code>    Props props1 = new Props();
+    props1.put(&quot;foo&quot;, &quot;bar&quot;);
+    
+    // It can load from/to the Java Properties
+    Props props2 = new Props(System.getProperties());
+    java.util.Properties javaProps = props3.toProperties();
+    
+    // It can load from/to a basic java.util.Map
+    Props props3 = new Props(System.getenv());
+    
+    // Props is a HashMap&lt;String, String&gt;, so no need to convert. Just use it
+    for(Map.Entry&lt;String, String&gt; entry : props3.entrySet())
+        System.our.println(entry.getKey() + &quot;: &quot; + entry.getValue());
+</code></pre>
+<h1>You can load from a file in a single line</h1>
+<pre><code>    Props props1 = new Props(&quot;config.properties&quot;);
+    Props props2 = new Props(&quot;/path/to/config.properties&quot;);
+    Props props3 = new Props(new java.net.URL(&quot;http://myhost/config/config.properties&quot;));
+    Props props4 = new Props(ClasspathURLStreamHandler.createURL(&quot;classpath://config/config.properties&quot;));
+    
+    // You can re-load on top of existing instance to override values
+    props4.load(&quot;config2.properties&quot;);
+</code></pre>
+<p>NOTE: The <code>ClasspathURLStreamHandler</code> is a utility class from the same package under <code>timemachine.scheduler.support</code> that can load any resources that's in the classpath.</p>
+<h1>You can get many basic types conversion</h1>
+<pre><code>    Props props = new Props();
+    props.put(&quot;str&quot;, &quot;foo&quot;);
+    props.put(&quot;num&quot;, &quot;123&quot;);
+    props.put(&quot;dec&quot;, &quot;99.99&quot;);
+    props.put(&quot;flag&quot;, &quot;true&quot;);
+    
+    String str = props.getString(&quot;str&quot;);
+    int num = props.getInt(&quot;num&quot;);
+    double dec = props.getDouble(&quot;dec&quot;);
+    boolean flag = props.getBoolean(&quot;flag&quot;);
+    
+    // You can even get default value when key is not found too
+    int num2 = props.getInt(&quot;num2&quot;, -1);
+</code></pre>
+<h1>You can auto expand ${variable} from any existing properties</h1>
+<pre><code>    Props props = new Props(System.getProperties());
+    props.put(&quot;configDir&quot;, &quot;${user.home}/myapp/config&quot;);
+    props.expandVariables();
+    
+    // The ${user.home} should be expanded to actual user home dir value.
+    File dir = new File(props.get(&quot;configDir&quot;));
+</code></pre>
+<p>There you have it. You see more code than words in this post, but I believe simple code speak louder than words and docs. I find these features very convenient and practical
+for many Java applications to use. I wish the JDK would provide these out of the box, and make the <code>java.util.Properties</code> more
+developer friendly.</p>
+
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <span class="m-1">
+                            <a href="https://www.11ty.dev/">
+                                <img
+                                    src="/images/11ty-logo-bg.svg"
+                                    alt="Made with 11ty"
+                                    width="24"
+                                    height="24">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+    </body>
+</html>

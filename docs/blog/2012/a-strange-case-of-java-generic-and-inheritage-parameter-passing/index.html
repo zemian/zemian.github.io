@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>ZBlog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="/css/bulma.min.css">
+        
+        
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+    </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/about" class="navbar-item">About Me</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                        
+<div class="content">
+    <p>I came a cross some strange Java code and I would like to share it here. Take a look few of classes I have here:</p>
+<pre><code>    // file: AFoo.java
+    package atest.deng;
+    public abstract class AFoo&lt;T&gt; {
+    }
+    
+    // file: Foo.java
+    package atest.deng;
+    public class Foo extends AFoo&lt;String&gt; {
+    }
+    
+    // file: FooProcessor.java
+    package atest.deng;
+    public class FooProcessor&lt;T&gt; {
+        public void process(Class&lt;AFoo&lt;?&gt;&gt; cls) {
+            System.out.println(cls);
+        }
+    }
+    
+    // file: FooMain.java
+    package atest.deng;
+    public class FooMain {
+        public static void main(String[] args) {
+            new FooProcessor().process(Foo.class);
+        }
+    }
+    
+    bash&gt; mvn compile
+    bash&gt; [INFO] BUILD SUCCESS
+</code></pre>
+<p>I tried this with JDK6 + Maven and it compiles without problem. But try to remove the <code>&lt;T&gt;</code> part from <code>FooProcessor</code> and it will fail to compile!</p>
+<pre><code>    // file: FooProcessor.java
+    package atest.deng;
+    public class FooProcessor {
+        public void process(Class&lt;AFoo&lt;?&gt;&gt; cls) {
+            System.out.println(cls);
+        }
+    }
+    
+    bash&gt; mvn clean compile
+    bash&gt; [ERROR] java-demo\src\main\java test\deng\FooMain.java:[4,26] process(java.lang.Class&lt;atest.deng.AFoo&lt;?&gt;&gt;) in atest.deng.FooProcessor cannot be applied to (java.lang.Class&lt;atest.deng.Foo&gt;)
+</code></pre>
+<p>Without the <code>&lt;T&gt;</code> the code won't compile, and yet we are not even using it in this case. How and why <code>&lt;T&gt;</code> affects the method parameters invocation?</p>
+<p>Now, we can improve the <code>FooProcessor</code> in this way so that the presence of <code>&lt;T&gt;</code> doesn't have any affect.</p>
+<pre><code>    package atest.deng;
+    public class FooProcessor {
+        public void process(Class&lt;? extends AFoo&lt;?&gt;&gt; cls) {
+            System.out.println(cls);
+        }
+    }
+</code></pre>
+<p>That's a more proper way to write the generic parameter anyway. But despite a better solution, the puzzle is that the original code compiled under the compiler, but only with the <code>&lt;T&gt;</code> presented, and yet it's not used. Wouldn't you consider this as a Java compiler bug?</p>
+
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <span class="m-1">
+                            <a href="https://www.11ty.dev/">
+                                <img
+                                    src="/images/11ty-logo-bg.svg"
+                                    alt="Made with 11ty"
+                                    width="24"
+                                    height="24">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+    </body>
+</html>

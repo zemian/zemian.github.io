@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>ZBlog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="/css/bulma.min.css">
+        
+        
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+    </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/about" class="navbar-item">About Me</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                        
+<div class="content">
+    <p>Before starting, you would need the Ultimate version of IDEA to run WebLogic Server (yes, the paid version or the 30 days trial). The Community edition of IDEA will not support Application Server deployment.</p>
+<p>I also assume you have already setup WebLogic Server and a user domain as per my <a href="http://saltnlight5.blogspot.com/2014/01/getting-started-with-weblogic-server.html">previous blog instructions</a>. So now let's setup the IDE to boost your development.</p>
+<ol>
+<li>
+<p>Create a simple HelloWorld web application in IDEA.</p>
+</li>
+<li>
+<p>For your HelloWorld, you can go into the Project Settings &gt; Artifacts, and add &quot;web:war exploded&quot; entry for your application. You will add this into your app server later.</p>
+</li>
+<li>
+<p>Ensure you have added the Application Server Views plugin with WebLogic Server. (It's under Settings &gt; IDE Settings &gt; Application Server)</p>
+</li>
+<li>
+<p>Click + and enter Name: WebLogic 12.1.2</p>
+</li>
+<li>
+<p>WebLogic Home: <code>C:\apps\wls12120</code></p>
+</li>
+<li>
+<p>Back to your editor, select Menu: Run &gt; Edit Configuration</p>
+</li>
+<li>
+<p>Click + and add &quot;WebLogic Server&quot; &gt; Local</p>
+</li>
+<li>
+<p>Name: WLS</p>
+</li>
+<li>
+<p>On Server tab, ensure DomainPath is set: <code>C:\apps\wls12120\mydomain </code></p>
+</li>
+<li>
+<p>On Deployment tab, select &quot;web:war exploded&quot; for your HelloWorld project.</p>
+</li>
+<li>
+<p>Click OK</p>
+</li>
+<li>
+<p>Now Menu: Run &gt; &quot;Run WLS&quot;</p>
+</li>
+</ol>
+<p>Your WebLogic Server should now start and running your web application inside. You may visit the browser on http://localhost:7001/web_war_exploded</p>
+<p>Some goodies with Intellij IDEA and WLS are:</p>
+<ul>
+<li>Redeploy WAR only without restarting server</li>
+<li>Deploy application in exploded mode and have IDE auto make and sync</li>
+<li>Debug application with server running within IDE</li>
+<li>Full control on server settings</li>
+</ul>
+<p>NOTE: As noted in previous blog, if you do not set MW_HOME as system variable, then you must add this in IDEA's Run Configuration. Or you edit your &quot;mydomain/bin/startWebLogic.cmd&quot; and &quot;stopWebLogic.cmd&quot; scripts directly.</p>
+
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <span class="m-1">
+                            <a href="https://www.11ty.dev/">
+                                <img
+                                    src="/images/11ty-logo-bg.svg"
+                                    alt="Made with 11ty"
+                                    width="24"
+                                    height="24">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+    </body>
+</html>

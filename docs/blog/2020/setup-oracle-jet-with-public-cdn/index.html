@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>ZBlog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="/css/bulma.min.css">
+        
+        
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+    </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/about" class="navbar-item">About Me</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                        
+<div class="content">
+    <p>A new Oracle <a href="https://www.npmjs.com/package/@oracle/oraclejet/v/8.2.0">JET 8.2.0</a> just released! Good time to give you another tips on how to use the toolkit.</p>
+<p>You might have noticed that Oracle JET is published under NPM package, and hence you may get it through any CDN network that serve NPM packages directly. A popular one for developer is UNPKG.com. So here I will create a simple ClickCount application that uses external public CDN.</p>
+<pre><code class="language-html">&lt;div id=&quot;app&quot; class=&quot;oj-web-padding&quot;&gt;
+    Count: &lt;oj-bind-text value=&quot;[[count]]&quot;&gt;&lt;/oj-bind-text&gt;
+    &lt;oj-button on-oj-action=&quot;[[onClick]]&quot;&gt;Click&lt;/oj-button&gt;
+&lt;/div&gt;
+
+&lt;link href=&quot;https://unpkg.com/@oracle/oraclejet@8.2.0/dist/css/alta/oj-alta-min.css&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;script src=&quot;https://unpkg.com/requirejs@2.3.6/require.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+    requirejs.config({
+        paths: {
+            'text': 'https://unpkg.com/requirejs-text@2.0.15/text',
+            'css': 'https://unpkg.com/require-css@0.1.10/css',
+            'jquery': 'https://unpkg.com/jquery@3.4.1/dist/jquery',
+            'knockout': 'https://unpkg.com/knockout@3.5.1/build/output/knockout-latest',
+            'promise': 'https://unpkg.com/es6-promise@4.2.8/dist/es6-promise.auto.min',
+            'signals': 'https://www.unpkg.com/signals@1.0.0/dist/signals.min',
+            'customElements': 'https://unpkg.com/@webcomponents/custom-elements@1.2.0/custom-elements.min',
+            'jqueryui-amd': 'https://www.unpkg.com/jquery-ui@1.12.1/ui',
+            'hammerjs': 'https://www.unpkg.com/hammerjs@2.0.8/hammer.min',
+            'ojs': 'https://unpkg.com/@oracle/oraclejet@8.2.0/dist/js/libs/oj/min',
+            'ojL10n': 'https://unpkg.com/@oracle/oraclejet@8.2.0/dist/js/libs/oj/ojL10n',
+            'ojtranslations': 'https://unpkg.com/@oracle/oraclejet@8.2.0/dist/js/libs/oj/resources',
+            'ojdnd': 'https://unpkg.com/@oracle/oraclejet@8.2.0/dist/js/libs/dnd-polyfill/dnd-polyfill-1.0.1.min',
+            'touchr': 'https://unpkg.com/@oracle/oraclejet@8.2.0/dist/js/libs/touchr/touchr',
+        }
+    });
+
+    require(['knockout', 'ojs/ojknockout', 'ojs/ojbutton'], (ko) =&gt; {
+        let app = new function () {
+            this.count = ko.observable(0);
+            this.onClick = () =&gt; {
+                this.count(this.count() + 1);
+            };
+        };
+        ko.applyBindings(app);
+    });
+&lt;/script&gt;
+</code></pre>
+<p>Compare this to the <a href="https://medium.com/@zemiandeng/hello-ojet-b750c7acf6bc">Hello OJET</a> I have shown in previous post, this is just a single html file. This is great for quick exploration and demo!</p>
+
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <span class="m-1">
+                            <a href="https://www.11ty.dev/">
+                                <img
+                                    src="/images/11ty-logo-bg.svg"
+                                    alt="Made with 11ty"
+                                    width="24"
+                                    height="24">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+    </body>
+</html>

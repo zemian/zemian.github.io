@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>ZBlog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="/css/bulma.min.css">
+        
+        
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+    </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/about" class="navbar-item">About Me</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                        
+<div class="content">
+    <p>By default the <code>posgresql-server</code> install will create a <code>postgres</code> Linux
+user account and the server will run under that user. And also
+PostgreSQL server will default have a DB user named <code>postgres</code> as well,
+and this DB user does not have a password! There is a distinction
+between Linux user vs PostgreSQL database user, and mostly you need to
+work with DB user only. After the install, you may change the password
+for DB <code>postgres</code> like this:</p>
+<pre><code>bash&gt; sudo -u postgres psql
+
+postgres=# \password postgres
+
+# It should prompt you to enter password for `postgres` DB user.
+</code></pre>
+<p>When developing application, I like to create a dedicated DB user to
+match my login account and create database there instead of using the
+default <code>postgres</code> user. You may create a new DB user that match to your
+current Linux account user (eg: <code>zemian</code>) like this:</p>
+<pre><code>bash&gt; sudo -u postgres createdb -s -P zemian
+# It should prompt you to enter password for `zemian` DB user. The `-s` option is to for superuser privileges.
+</code></pre>
+<p>Now that you have a DB user <code>zemian</code>, you may create a default database
+for it.</p>
+<pre><code>bash&gt; createdb --username=zemian zemian
+</code></pre>
+<p>Now you may invoke <code>psql</code> under <code>zemian</code> Linux user session without any
+parameters and it should log you in!</p>
+<pre><code>bash&gt; psql
+
+zemian=# CREATE TABLE test(id serial, name VARCHAR(20), message VARCHAR(500));
+NOTICE:  CREATE TABLE will create implicit sequence &quot;test_id_seq&quot; for serial column &quot;test.id&quot;
+CREATE TABLE
+
+zemian=# \d test
+                                 Table &quot;public.test&quot;
+ Column  |          Type          |                     Modifiers
+---------+------------------------+---------------------------------------------------
+ id      | integer                | not null default nextval('test_id_seq'::regclass)
+ name    | character varying(20)  |
+ message | character varying(500) |
+
+zemian=# INSERT INTO test(name, message) VALUES('Hello', 'World');
+INSERT 0 1
+zemian=# INSERT INTO test(name, message) VALUES('Hello2', 'World2');
+INSERT 0 1
+zemian=# SELECT * FROM test;
+ id |  name  | message
+----+--------+---------
+  1 | Hello  | World
+  2 | Hello2 | World2
+(2 rows)
+</code></pre>
+
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <span class="m-1">
+                            <a href="https://www.11ty.dev/">
+                                <img
+                                    src="/images/11ty-logo-bg.svg"
+                                    alt="Made with 11ty"
+                                    width="24"
+                                    height="24">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+    </body>
+</html>

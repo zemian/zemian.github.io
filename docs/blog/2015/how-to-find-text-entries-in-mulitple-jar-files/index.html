@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>ZBlog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="/css/bulma.min.css">
+        
+        
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+    </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/about" class="navbar-item">About Me</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                        
+<div class="content">
+    <p>Similar to <a href="http://saltnlight5.blogspot.com/2012/07/how-to-print-text-file-content-inside.html">printjar</a>utility, here is a findjar util that can comes in handy to verify whether a class exists or not among a pile of jar files.</p>
+<p>JavaScript (run with jrunscript command)</p>
+<pre><code>pattern = arguments[arguments.length -1];
+for (i=0; i &lt; arguments.length - 1; i++) {
+    path = arguments[i];
+    jar = new java.util.jar.JarFile(path)
+    entries = jar.entries();
+    while(entries.hasMoreElements()) {
+        jarEntry = entries.nextElement();
+        if (jarEntry.toString().search(pattern) != -1) {
+            println(jarEntry + &quot; : &quot; + path);
+        }
+    }
+    jar.close();
+}
+</code></pre>
+<p>Jython</p>
+<pre><code>import sys, glob, re
+from java.util.jar import JarFile
+pattern = sys.argv[-1]
+for name in sys.argv[1: -2]:
+    for path in glob.glob(name):
+        jar = JarFile(path)
+        for e in jar.entries():
+            if re.search(pattern, str(e)):
+                print &quot;%s %s&quot; % (str(e), path)
+        jar.close()
+</code></pre>
+<p>Java version (The search argument input is at position one in this example)</p>
+<pre><code>import java.io.File;
+import java.util.Enumeration;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
+
+public class findjar {
+    public static void main(String[] args) throws Exception {
+        String searchText = args[0];
+        if (searchText.contains(&quot;.&quot;))
+            searchText = searchText.replaceAll(&quot;\\.&quot;, &quot;/&quot;);
+        String dir = args[1];
+        System.out.println(&quot;Searching &quot; + searchText + &quot; in &quot; + dir);
+        search(searchText, new File(dir));
+        System.out.println(&quot;Done.&quot;);
+    }
+
+    private static void search(String searchText, File dir) throws Exception {
+        File[] files = dir.listFiles();
+        for (File file : files) {
+            if (file.isFile() &amp;&amp; file.getName().endsWith(&quot;.jar&quot;)) {
+                JarFile jarFile = new JarFile(file);
+                Enumeration&lt;JarEntry&gt; entries = jarFile.entries();
+                while(entries.hasMoreElements()) {
+                    JarEntry e = entries.nextElement();
+                    String name = e.getName();
+                    if (name.indexOf(searchText) &gt;= 0) {
+                        System.out.println(&quot;Found: &quot; + name + &quot; in &quot; + jarFile.getName());
+                    }
+                }
+                jarFile.close();
+            } else if (file.isDirectory()){
+                search(searchText, file);
+            }
+        }
+    }
+}
+</code></pre>
+
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <span class="m-1">
+                            <a href="https://www.11ty.dev/">
+                                <img
+                                    src="/images/11ty-logo-bg.svg"
+                                    alt="Made with 11ty"
+                                    width="24"
+                                    height="24">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+    </body>
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>ZBlog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="/css/bulma.min.css">
+        
+        
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+    </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/about" class="navbar-item">About Me</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                        
+<div class="content">
+    <p>Sometimes, your site might need to load mulitple versions of jQuery to support some legacy libraries. Here I will provide two ways to do that.</p>
+<h2>Using plain HTML/JS</h2>
+<pre><code class="language-js">&lt;script src=&quot;https://unpkg.com/jquery@3.5.1/dist/jquery.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;let jq3 = jQuery.noConflict(true);&lt;/script&gt;
+&lt;script src=&quot;https://unpkg.com/jquery@1.12.4/dist/jquery.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;let jq1 = jQuery.noConflict(true);&lt;/script&gt;
+
+
+&lt;script&gt;
+// Now we can use each jQuery with the name assigned.
+console.log(&quot;jQuery 3 version &quot; + jq3.fn.jquery);
+console.log(&quot;jQuery 1 version &quot; + jq1.fn.jquery);
+
+console.log(&quot;jQuery 3 document &quot;, jq3(document));
+console.log(&quot;jQuery 1 document &quot;, jq1(document));
+&lt;/script&gt;
+</code></pre>
+<p>NOTE: You need to call <code>noConflict()</code> immediately after the script tag load of the jQuery. If you are dealing with multiple jQuery, it's best not to use the <code>$</code> global variable to avoid confusion.</p>
+<h2>Using RequireJS</h2>
+<pre><code class="language-js">&lt;script src=&quot;https://unpkg.com/requirejs@2.3.6/require.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+	define('jq3', ['https://unpkg.com/jquery@3.5.1/dist/jquery'], function() {
+		return jQuery.noConflict(true);
+	});
+	define('jq1', ['https://unpkg.com/jquery@1.12.4/dist/jquery'], function() {
+		return jQuery.noConflict(true);
+	});
+
+	require(['jq3', 'jq1'], function(jq3, jq1) {
+		jq3(function () {
+		console.log(&quot;jQuery 3 version &quot; + jq3.fn.jquery);
+		console.log(&quot;jQuery 1 version &quot; + jq1.fn.jquery);
+
+		console.log(&quot;jQuery 3 document &quot;, jq3(document));
+		console.log(&quot;jQuery 1 document &quot;, jq1(document));
+		});
+	});
+&lt;/script&gt;
+</code></pre>
+<p>NOTE: Do not load multiple versions of jQuery through the <code>paths</code> inside <code>requirejs.config()</code> method. As that will automatically bind the <code>jquery</code> module name and you can't change that.</p>
+
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <span class="m-1">
+                            <a href="https://www.11ty.dev/">
+                                <img
+                                    src="/images/11ty-logo-bg.svg"
+                                    alt="Made with 11ty"
+                                    width="24"
+                                    height="24">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+    </body>
+</html>
