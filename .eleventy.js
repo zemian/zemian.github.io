@@ -12,6 +12,7 @@ module.exports = function(eleventyConfig) {
 
     // The Nunjucks does not have "date" filter!
     eleventyConfig.addNunjucksFilter("date", dateFilter);
+    eleventyConfig.addNunjucksFilter("keys", obj => Object.keys(obj));
 
     return {
         dir: {

@@ -36,6 +36,7 @@
                 </div>
                 <div class="navbar-menu" id="navbarMenu">
                     <div class="navbar-end is-size-4">
+                        <a href="/blog/tags" class="navbar-item">Tags</a>
                         <a href="/about" class="navbar-item">About Me</a>
                     </div>
                 </div>
@@ -47,6 +48,19 @@
                 <div class="columns is-centered">
                     <div class="column is-two-thirds">
                         
+<div class="level">
+    <div class="level-item">
+        <span class="is-size-4 has-text-weight-bold">September 8, 2013</span>
+    </div>
+</div>
+<div class="level">
+    <div class="level-item">
+        
+        <a class="tag is-size-5 mr-1" href="/blog/tags/camel">camel</a>
+        
+    </div>
+</div>
+<h1 class="title is-size-1">Exploring Apache Camel Core - Seda Component</h1>
 <div class="content">
     <p>The <code>seda</code> component in Apache Camel is very similar to the <code>direct</code> component that I’ve presented in previous blog, but in a asynchronous manner. To do this, it uses a <code>java.util.concurrent.BlockingQueue</code> as default implementation to queue up messages and disconnect from your main <code>Route</code> thread and then processing the messages in a separated thread. Because of this <code>BlockingQueue</code>, you need to be aware of the usage and config option.</p>
 <p>One option needs to be aware of asynchronous processing is the it default to queue size is unbound, meaning it will grow as much as your memory allowed. To cap this, set <code>size=1000</code>. Let’s see an example.</p>

@@ -36,6 +36,7 @@
                 </div>
                 <div class="navbar-menu" id="navbarMenu">
                     <div class="navbar-end is-size-4">
+                        <a href="/blog/tags" class="navbar-item">Tags</a>
                         <a href="/about" class="navbar-item">About Me</a>
                     </div>
                 </div>
@@ -47,6 +48,19 @@
                 <div class="columns is-centered">
                     <div class="column is-two-thirds">
                         
+<div class="level">
+    <div class="level-item">
+        <span class="is-size-4 has-text-weight-bold">October 14, 2012</span>
+    </div>
+</div>
+<div class="level">
+    <div class="level-item">
+        
+        <a class="tag is-size-5 mr-1" href="/blog/tags/maven">maven</a>
+        
+    </div>
+</div>
+<h1 class="title is-size-1">Running maven commands with multi modules project</h1>
 <div class="content">
     <p>Have you ever tried running Maven commands inside a sub-module of a multi modules Maven project, and get <code>Could not resolve dependencies for project</code> error msg? And you checked the dependencies that it's missing are those sister modules within the same project! So what gives? It turns out you have to give few more options to get this running correctly, and you have to remember always stays in the parent pom directory to run it!</p>
 <p>For exmaple if you checkout the TimeMachine scheduler project, you can invoke the <code>timemachine-hibernate</code> module with maven commands like this:</p>

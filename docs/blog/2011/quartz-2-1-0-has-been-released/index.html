@@ -36,6 +36,7 @@
                 </div>
                 <div class="navbar-menu" id="navbarMenu">
                     <div class="navbar-end is-size-4">
+                        <a href="/blog/tags" class="navbar-item">Tags</a>
                         <a href="/about" class="navbar-item">About Me</a>
                     </div>
                 </div>
@@ -47,6 +48,19 @@
                 <div class="columns is-centered">
                     <div class="column is-two-thirds">
                         
+<div class="level">
+    <div class="level-item">
+        <span class="is-size-4 has-text-weight-bold">September 24, 2011</span>
+    </div>
+</div>
+<div class="level">
+    <div class="level-item">
+        
+        <a class="tag is-size-5 mr-1" href="/blog/tags/quartz">quartz</a>
+        
+    </div>
+</div>
+<h1 class="title is-size-1">Quartz 2.1.0 has been released!</h1>
 <div class="content">
     <p><a href="http://quartz-scheduler.org/downloads/catalog">Quartz 2.1.0</a> has been released!</p>
 <p>In this release, I have helped fixed some bugs, and added a new built-in trigger type: DailyTimeIntervalTrigger. This new trigger will allow you to specify a interval time in either seconds, minutes, or hours interval on each day (Like fire every 72 mins starting at 7am everyday). And the daily start time will be reset each day regardless what time it ended in that day! You may even limit daily ending time too. And you may limit the days to run on certain weekdays only as well. You may see many examples on how this trigger is used here: <a href="http://svn.terracotta.org/fisheye/browse/Quartz/trunk/quartz/src/test/java/org/quartz/DailyTimeIntervalScheduleBuilderTest.java?r=HEAD">http://svn.terracotta.org/fisheye/browse/Quartz/trunk/quartz/src/test/java/org/quartz/DailyTimeIntervalScheduleBuilderTest.java?r=HEAD</a></p>

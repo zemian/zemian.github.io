@@ -36,6 +36,7 @@
                 </div>
                 <div class="navbar-menu" id="navbarMenu">
                     <div class="navbar-end is-size-4">
+                        <a href="/blog/tags" class="navbar-item">Tags</a>
                         <a href="/about" class="navbar-item">About Me</a>
                     </div>
                 </div>
@@ -47,6 +48,19 @@
                 <div class="columns is-centered">
                     <div class="column is-two-thirds">
                         
+<div class="level">
+    <div class="level-item">
+        <span class="is-size-4 has-text-weight-bold">March 31, 2014</span>
+    </div>
+</div>
+<div class="level">
+    <div class="level-item">
+        
+        <a class="tag is-size-5 mr-1" href="/blog/tags/java">java</a>
+        
+    </div>
+</div>
+<h1 class="title is-size-1">How to process stream and read text file in Java 8</h1>
 <div class="content">
     <p>I have converted one of my old utility class using latest Java8. I use this often to print content of manifest file to check any mysterious jar file for version etc. Just run &quot;java ztools.PrintJar /path/to/my.jar&quot; to see output. In the new code, you will see how I use the Java 8 stream processing to filter what I need from an Enumeration list, and then get the optional result if there is any. And then the BufferedReader now comes with &quot;lines()&quot; method that also do streaming. It's pretty cool to see Java 8 in actions!</p>
 <pre><code>package ztools;

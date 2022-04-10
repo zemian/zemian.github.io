@@ -36,6 +36,7 @@
                 </div>
                 <div class="navbar-menu" id="navbarMenu">
                     <div class="navbar-end is-size-4">
+                        <a href="/blog/tags" class="navbar-item">Tags</a>
                         <a href="/about" class="navbar-item">About Me</a>
                     </div>
                 </div>
@@ -47,6 +48,19 @@
                 <div class="columns is-centered">
                     <div class="column is-two-thirds">
                         
+<div class="level">
+    <div class="level-item">
+        <span class="is-size-4 has-text-weight-bold">March 3, 2014</span>
+    </div>
+</div>
+<div class="level">
+    <div class="level-item">
+        
+        <a class="tag is-size-5 mr-1" href="/blog/tags/weblogic">weblogic</a>
+        
+    </div>
+</div>
+<h1 class="title is-size-1">WebLogic Classloader Analysis Tool</h1>
 <div class="content">
     <p>The WebLogic Server has a built-in webapp called Classloader Analysis Tool, and you may access it through http://localhost:7001/wls-cat</p>
 <p>You need to login with same user as you configured for the /console webapp. With the CAT, you may check what classes are loaded by your application in the server. This is extremely handy if your app is loading jar that's already loaded by the server. For example, if you include your own Apache commons-lang.jar in a webapp and deploy it, you will see that org.apache.commons.lang.time.DateUtils is not from your webapp!</p>

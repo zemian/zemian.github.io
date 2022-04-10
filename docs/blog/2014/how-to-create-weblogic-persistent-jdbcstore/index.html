@@ -36,6 +36,7 @@
                 </div>
                 <div class="navbar-menu" id="navbarMenu">
                     <div class="navbar-end is-size-4">
+                        <a href="/blog/tags" class="navbar-item">Tags</a>
                         <a href="/about" class="navbar-item">About Me</a>
                     </div>
                 </div>
@@ -47,6 +48,19 @@
                 <div class="columns is-centered">
                     <div class="column is-two-thirds">
                         
+<div class="level">
+    <div class="level-item">
+        <span class="is-size-4 has-text-weight-bold">March 26, 2014</span>
+    </div>
+</div>
+<div class="level">
+    <div class="level-item">
+        
+        <a class="tag is-size-5 mr-1" href="/blog/tags/weblogic">weblogic</a>
+        
+    </div>
+</div>
+<h1 class="title is-size-1">How to create WebLogic Persistent JDBCStore</h1>
 <div class="content">
     <p>The WebLogic uses &quot;Persistent Store &quot; to store subsystems data, such as persistent JMS messages. It defaults to use File Store, but you can customize to use database instead. To do this, you would need to create a DataSource first, and ensure to UNCHECK the &quot;Supports Global Transactions&quot; feature. Basically you need to create an NON-XA DataSource in order to use it in Persistent JDBCStore. Otherwise you will not able to see your datasource as option to use.</p>
 <p>Exmaple of a Non-XA DataSource:

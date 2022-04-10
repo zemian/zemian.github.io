@@ -36,6 +36,7 @@
                 </div>
                 <div class="navbar-menu" id="navbarMenu">
                     <div class="navbar-end is-size-4">
+                        <a href="/blog/tags" class="navbar-item">Tags</a>
                         <a href="/about" class="navbar-item">About Me</a>
                     </div>
                 </div>
@@ -47,6 +48,23 @@
                 <div class="columns is-centered">
                     <div class="column is-two-thirds">
                         
+<div class="level">
+    <div class="level-item">
+        <span class="is-size-4 has-text-weight-bold">August 1, 2012</span>
+    </div>
+</div>
+<div class="level">
+    <div class="level-item">
+        
+        <a class="tag is-size-5 mr-1" href="/blog/tags/java">java</a>
+        
+        <a class="tag is-size-5 mr-1" href="/blog/tags/bash">bash</a>
+        
+        <a class="tag is-size-5 mr-1" href="/blog/tags/shell">shell</a>
+        
+    </div>
+</div>
+<h1 class="title is-size-1">A better java shell script wrapper</h1>
 <div class="content">
     <p>In many Java projects, you often see wrapper shell script to invoke the <code>java</code> command with its custom application parameters. For example, <code>$ANT_HOME/bin/ant</code>, <code>$GROOVY_HOME/bin/groovy</code>, or even in our <a href="http://bitbucket.org/timemachine/scheduler">TimeMachine Scheduler</a> you will see <code>$TIMEMACHINE_HOME/bin/scheduler.sh</code>.</p>
 <p>Writing these wrapper script is boring and error prone. Most of the problems come from setting the correct classpath for the application. If you're working on an in-house project for a company, then you can get away with hardcoding paths and your environment vars. But for open source projects, folks have to make the wrapper more flexible and generic. Most of them even provide a <code>.bat</code> version of it. Windows DOS is really a brutal and limited terminal to script away your project need. For this reason, I often encourage others to use Cygwin as much as they can. It at least has a real bash shell to work with. Another common problem with these wrappers is it can quickly get out of hand and have too many duplication of similar scripts liter every where in your project.</p>

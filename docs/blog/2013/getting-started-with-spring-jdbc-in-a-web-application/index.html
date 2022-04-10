@@ -36,6 +36,7 @@
                 </div>
                 <div class="navbar-menu" id="navbarMenu">
                     <div class="navbar-end is-size-4">
+                        <a href="/blog/tags" class="navbar-item">Tags</a>
                         <a href="/about" class="navbar-item">About Me</a>
                     </div>
                 </div>
@@ -47,6 +48,21 @@
                 <div class="columns is-centered">
                     <div class="column is-two-thirds">
                         
+<div class="level">
+    <div class="level-item">
+        <span class="is-size-4 has-text-weight-bold">October 9, 2013</span>
+    </div>
+</div>
+<div class="level">
+    <div class="level-item">
+        
+        <a class="tag is-size-5 mr-1" href="/blog/tags/spring">spring</a>
+        
+        <a class="tag is-size-5 mr-1" href="/blog/tags/jdbc">jdbc</a>
+        
+    </div>
+</div>
+<h1 class="title is-size-1">Getting started with Spring JDBC in a web application</h1>
 <div class="content">
     <p>I have shown you how to setup a <a href="http://saltnlight5.blogspot.com/2013/10/getting-started-with-annotation-based.html">basic Spring 3 MVC web application</a> in my previous article. Reusing that project setup as template, I will show you how to enhance it to work with JDBC. With this you can store and retrieve data from database. We will add a new controller and a data service through Spring so you can see how Spring injection and annotation configuration works together.</p>
 <p>A direct JDBC based application is easy to setup in comparison to a full ORM such as Hibernate. You don’t need to worry AOP, TranactionManager, Entity mapping and full array of other configurations. On top of the JDK’s <code>java.jdbc</code> API, the Spring comes with <code>spring-jdbc</code> module that can boots your productively with their well known <code>JdbcTemplate</code> class. Let’s explore how this can be setup and run as web application.</p>

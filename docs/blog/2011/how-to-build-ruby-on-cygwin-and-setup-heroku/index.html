@@ -36,6 +36,7 @@
                 </div>
                 <div class="navbar-menu" id="navbarMenu">
                     <div class="navbar-end is-size-4">
+                        <a href="/blog/tags" class="navbar-item">Tags</a>
                         <a href="/about" class="navbar-item">About Me</a>
                     </div>
                 </div>
@@ -47,6 +48,21 @@
                 <div class="columns is-centered">
                     <div class="column is-two-thirds">
                         
+<div class="level">
+    <div class="level-item">
+        <span class="is-size-4 has-text-weight-bold">November 19, 2011</span>
+    </div>
+</div>
+<div class="level">
+    <div class="level-item">
+        
+        <a class="tag is-size-5 mr-1" href="/blog/tags/ruby">ruby</a>
+        
+        <a class="tag is-size-5 mr-1" href="/blog/tags/cygwin">cygwin</a>
+        
+    </div>
+</div>
+<h1 class="title is-size-1">How to build Ruby on Cygwin and setup Heroku</h1>
 <div class="content">
     <p>I like to use ruby that comes with Cygwin instead of the RubyInstaller for Windows, because the path it handles are more consistenly in Linux form. But the current Cygwin only comes with <code>ruby-1.8.7</code>, so to use <code>ruby-1.9.3</code>, I have to built it on Cygwin on my own. And when building ruby from source on Cygwin, you would also have to install gem on your own as well. Turns out there are few issues that you have to fix too. Here are the steps I got it working:</p>
 <ol start="0">

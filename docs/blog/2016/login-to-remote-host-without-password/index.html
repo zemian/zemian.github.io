@@ -36,6 +36,7 @@
                 </div>
                 <div class="navbar-menu" id="navbarMenu">
                     <div class="navbar-end is-size-4">
+                        <a href="/blog/tags" class="navbar-item">Tags</a>
                         <a href="/about" class="navbar-item">About Me</a>
                     </div>
                 </div>
@@ -47,6 +48,21 @@
                 <div class="columns is-centered">
                     <div class="column is-two-thirds">
                         
+<div class="level">
+    <div class="level-item">
+        <span class="is-size-4 has-text-weight-bold">July 6, 2016</span>
+    </div>
+</div>
+<div class="level">
+    <div class="level-item">
+        
+        <a class="tag is-size-5 mr-1" href="/blog/tags/linux">linux</a>
+        
+        <a class="tag is-size-5 mr-1" href="/blog/tags/ssh">ssh</a>
+        
+    </div>
+</div>
+<h1 class="title is-size-1">Login to remote host without password</h1>
 <div class="content">
     <p>Most of remote systems are secured by SSH, and to gain remote control with terminal, you would need to <code>ssh</code> into the server. You will be prompted to login with your password on every session. To avoid typing password everytime, you need to setup as authorized client. Here is how you can do that with ssh key.</p>
 <p>First on your own client machine, generate the <code>$HOME/.ssh/id_rsa.pub</code> file:</p>

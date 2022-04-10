@@ -36,6 +36,7 @@
                 </div>
                 <div class="navbar-menu" id="navbarMenu">
                     <div class="navbar-end is-size-4">
+                        <a href="/blog/tags" class="navbar-item">Tags</a>
                         <a href="/about" class="navbar-item">About Me</a>
                     </div>
                 </div>
@@ -47,6 +48,19 @@
                 <div class="columns is-centered">
                     <div class="column is-two-thirds">
                         
+<div class="level">
+    <div class="level-item">
+        <span class="is-size-4 has-text-weight-bold">October 22, 2012</span>
+    </div>
+</div>
+<div class="level">
+    <div class="level-item">
+        
+        <a class="tag is-size-5 mr-1" href="/blog/tags/quartz">quartz</a>
+        
+    </div>
+</div>
+<h1 class="title is-size-1">Exploring different scheduling types with Quartz 2</h1>
 <div class="content">
     <p>We often think of Cron when we want to schedule a job. Cron is very flexible in expressing an repeating occurance of an event/job in a very compact expression. However it's not answer for everything, as I often see people are asking for help in the Quartz user forum. Did you know that the popular <a href="http://quartz-scheduler.org">Quartz 2</a> library provide many other schedule types (called Trigger) besides cron? I will show you each of the Quartz 2 built-in schedule types here within a complete, standalone Groovy script that you can run and test it out. Let's start with a simple one.</p>
 <pre><code>    @Grab('org.quartz-scheduler:quartz:2.1.6')

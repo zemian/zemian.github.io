@@ -1,6 +1,19 @@
 {% extends 'layouts/default.njk' %}
 
 {% block content %}
+<div class="level">
+    <div class="level-item">
+        <span class="is-size-4 has-text-weight-bold">{{date|date('MMMM D, Y')}}</span>
+    </div>
+</div>
+<div class="level">
+    <div class="level-item">
+        {% for tag in tags %}
+        <a class="tag is-size-5 mr-1" href="{{ site.base_url }}/blog/tags/{{ tag }}">{{ tag }}</a>
+        {% endfor %}
+    </div>
+</div>
+<h1 class="title is-size-1">{{ title }}</h1>
 <div class="content">
     {{ content | safe }}
 </div>

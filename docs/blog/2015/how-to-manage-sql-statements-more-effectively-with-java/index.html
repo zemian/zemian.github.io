@@ -36,6 +36,7 @@
                 </div>
                 <div class="navbar-menu" id="navbarMenu">
                     <div class="navbar-end is-size-4">
+                        <a href="/blog/tags" class="navbar-item">Tags</a>
                         <a href="/about" class="navbar-item">About Me</a>
                     </div>
                 </div>
@@ -47,6 +48,21 @@
                 <div class="columns is-centered">
                     <div class="column is-two-thirds">
                         
+<div class="level">
+    <div class="level-item">
+        <span class="is-size-4 has-text-weight-bold">July 22, 2015</span>
+    </div>
+</div>
+<div class="level">
+    <div class="level-item">
+        
+        <a class="tag is-size-5 mr-1" href="/blog/tags/java">java</a>
+        
+        <a class="tag is-size-5 mr-1" href="/blog/tags/sql">sql</a>
+        
+    </div>
+</div>
+<h1 class="title is-size-1">How to manage SQL statements more effectively with Java</h1>
 <div class="content">
     <p>If you work with plain Java JDBC without any external libraries, you will need to manage your own SQL statements. Unfortunately Java String does not support muti-lines construct, and you have to use many &quot;quotes&quot; + &quot;concatenation&quot; and makes the SQL very hard to read and manage. This makes it hard to maintain and test (try to copy a SQL from Java code into your SQL client). It would be so nice to keep the entire SQL block of text intact without these Java noise.</p>
 <p>Here is a solution. Store your SQL queries in XML inside CDATA:</p>

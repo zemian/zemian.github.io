@@ -36,6 +36,7 @@
                 </div>
                 <div class="navbar-menu" id="navbarMenu">
                     <div class="navbar-end is-size-4">
+                        <a href="/blog/tags" class="navbar-item">Tags</a>
                         <a href="/about" class="navbar-item">About Me</a>
                     </div>
                 </div>
@@ -47,6 +48,19 @@
                 <div class="columns is-centered">
                     <div class="column is-two-thirds">
                         
+<div class="level">
+    <div class="level-item">
+        <span class="is-size-4 has-text-weight-bold">July 30, 2012</span>
+    </div>
+</div>
+<div class="level">
+    <div class="level-item">
+        
+        <a class="tag is-size-5 mr-1" href="/blog/tags/java">java</a>
+        
+    </div>
+</div>
+<h1 class="title is-size-1">How to print text file content inside a jar file</h1>
 <div class="content">
     <p>Have you ever wonder what's the exact version of your <code>ojdbc6.jar</code> that you have? All the jar files will contain a <code>META-INF/MANIFEST.MF</code> file, and chances are the version will be in it! You may try using <code>$JAVA_HOME/bin/jar -xvf</code> to extract the jar and then view the text file. But afterward you would have to clean up the extracted file so not to liter.</p>
 <p>However, if you got Groovy, you can print any text file inside a jar without above mess.</p>

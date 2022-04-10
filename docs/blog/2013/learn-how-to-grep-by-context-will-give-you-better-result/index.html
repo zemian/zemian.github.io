@@ -36,6 +36,7 @@
                 </div>
                 <div class="navbar-menu" id="navbarMenu">
                     <div class="navbar-end is-size-4">
+                        <a href="/blog/tags" class="navbar-item">Tags</a>
                         <a href="/about" class="navbar-item">About Me</a>
                     </div>
                 </div>
@@ -47,6 +48,19 @@
                 <div class="columns is-centered">
                     <div class="column is-two-thirds">
                         
+<div class="level">
+    <div class="level-item">
+        <span class="is-size-4 has-text-weight-bold">February 3, 2013</span>
+    </div>
+</div>
+<div class="level">
+    <div class="level-item">
+        
+        <a class="tag is-size-5 mr-1" href="/blog/tags/linux">linux</a>
+        
+    </div>
+</div>
+<h1 class="title is-size-1">Learn how to grep by context will give you better result</h1>
 <div class="content">
     <p>I learned that <code>grep</code> command supports few options called &quot;context&quot; searching. Basically it can print lines around the matching string! For example, you can use this feature to perform a quick Java threads stack analysis like this (assuming you have a java process PID=12345).</p>
 <pre><code>bash&gt; jstack 12345 | grep --color 'State: BLOCKED' -B 1

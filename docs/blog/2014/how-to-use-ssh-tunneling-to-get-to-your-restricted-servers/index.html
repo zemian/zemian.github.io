@@ -36,6 +36,7 @@
                 </div>
                 <div class="navbar-menu" id="navbarMenu">
                     <div class="navbar-end is-size-4">
+                        <a href="/blog/tags" class="navbar-item">Tags</a>
                         <a href="/about" class="navbar-item">About Me</a>
                     </div>
                 </div>
@@ -47,6 +48,19 @@
                 <div class="columns is-centered">
                     <div class="column is-two-thirds">
                         
+<div class="level">
+    <div class="level-item">
+        <span class="is-size-4 has-text-weight-bold">November 1, 2014</span>
+    </div>
+</div>
+<div class="level">
+    <div class="level-item">
+        
+        <a class="tag is-size-5 mr-1" href="/blog/tags/ssh">ssh</a>
+        
+    </div>
+</div>
+<h1 class="title is-size-1">How to use SSH tunneling to get to your restricted servers</h1>
 <div class="content">
     <p>Have you ever been told that in your network serverX can only be reached by a serverY via SSH? Now you have access to serverY from your own PC with normal SSH access as well, but just not directly to serverX.</p>
 <p>What can you do in situation like this if you need to access the restricted serverY? Well you can always ssh into serverY, then ssh again into serverX to check your work or log or whatever. But what happen if you have a database server or WebLogic Server instance running in serverX; and you want your local PC's fancy tools to access the serverX? (Eg: Accessing the WLS admin console, or using SqlDeveloper to connect to your DB etc). In this case, that's where ssh tunneling can help you, and here is how.</p>

@@ -36,6 +36,7 @@
                 </div>
                 <div class="navbar-menu" id="navbarMenu">
                     <div class="navbar-end is-size-4">
+                        <a href="/blog/tags" class="navbar-item">Tags</a>
                         <a href="/about" class="navbar-item">About Me</a>
                     </div>
                 </div>
@@ -47,6 +48,19 @@
                 <div class="columns is-centered">
                     <div class="column is-two-thirds">
                         
+<div class="level">
+    <div class="level-item">
+        <span class="is-size-4 has-text-weight-bold">October 24, 2012</span>
+    </div>
+</div>
+<div class="level">
+    <div class="level-item">
+        
+        <a class="tag is-size-5 mr-1" href="/blog/tags/java">java</a>
+        
+    </div>
+</div>
+<h1 class="title is-size-1">Simple Variable Substitution in Java String</h1>
 <div class="content">
     <p>When I wrote about how to improve the Java Properties class using <a href="http://saltnlight5.blogspot.com/2012/09/improving-javautilproperties.html">Props</a>, I've shown
 a feature where you can use variable substition such as <code>mypath=${user.home}</code> in your config file. The implementation underneath it uses the Apache Common Lang library with <code>org.apache.commons.lang.text.StrSubstitutor</code>. There is nothing wrong with this, but I was curious how bad would it be to remove such dependency, so the <code>Props</code> can be more standalone.</p>

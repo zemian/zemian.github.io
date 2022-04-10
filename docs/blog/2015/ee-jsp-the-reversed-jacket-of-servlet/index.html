@@ -36,6 +36,7 @@
                 </div>
                 <div class="navbar-menu" id="navbarMenu">
                     <div class="navbar-end is-size-4">
+                        <a href="/blog/tags" class="navbar-item">Tags</a>
                         <a href="/about" class="navbar-item">About Me</a>
                     </div>
                 </div>
@@ -47,6 +48,19 @@
                 <div class="columns is-centered">
                     <div class="column is-two-thirds">
                         
+<div class="level">
+    <div class="level-item">
+        <span class="is-size-4 has-text-weight-bold">January 25, 2015</span>
+    </div>
+</div>
+<div class="level">
+    <div class="level-item">
+        
+        <a class="tag is-size-5 mr-1" href="/blog/tags/jsp">jsp</a>
+        
+    </div>
+</div>
+<h1 class="title is-size-1">EE JSP - The Reversed Jacket of Servlet</h1>
 <div class="content">
     <p>Generating HTML from Servlet is only practical if you have small amount of pages, or needed fine control of the content you are generating, (binary PDF etc). For most application, the output is going to be HTML, and we need a better way to do this; and that's where the JSP (Java Server Pages) comes in.</p>
 <p>With JSP, you write and focus on the HTML content in a file; then only when you needed dynamic or condition logic in between the content, you would insert the Java code, which called the Scriptlet. When the application server process the JSP page, it will automatically generate a Servlet class that write these JSP file's content out (as you would programatically writing it using PrintWriter as shown in my previous posts). Wherever you have the Scriptlet in JSP, it will be inlined in the generated Servlet class. The generated jsp servlet classes are all managed, compiled and deployed by the application server within your application automatically. In short, the JSP is nothing more than the reverse jacket of the Servlet.</p>

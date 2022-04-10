@@ -36,6 +36,7 @@
                 </div>
                 <div class="navbar-menu" id="navbarMenu">
                     <div class="navbar-end is-size-4">
+                        <a href="/blog/tags" class="navbar-item">Tags</a>
                         <a href="/about" class="navbar-item">About Me</a>
                     </div>
                 </div>
@@ -47,6 +48,21 @@
                 <div class="columns is-centered">
                     <div class="column is-two-thirds">
                         
+<div class="level">
+    <div class="level-item">
+        <span class="is-size-4 has-text-weight-bold">March 15, 2014</span>
+    </div>
+</div>
+<div class="level">
+    <div class="level-item">
+        
+        <a class="tag is-size-5 mr-1" href="/blog/tags/java">java</a>
+        
+        <a class="tag is-size-5 mr-1" href="/blog/tags/visualvm">visualvm</a>
+        
+    </div>
+</div>
+<h1 class="title is-size-1">How to monitor multiple JVM&#39;s on a server with VisualVM</h1>
 <div class="content">
     <p>In the <a href="http://saltnlight5.blogspot.com/2014/03/how-to-start-multiple-weblogic-managed.html">last article</a> I have shown you how to start WebLogic Server with single admin and mulitiple managed servers. After those are started, how do you go check their health status? You can use the admin's /console webapp. But there  is also another tool that comes with all the default Oracle/Open JDK 6+: the VisualVM. I will show you how to get that up and running to monitor multiple JVM's.</p>
 <p>On the server where you run your JVM servers, do this:</p>

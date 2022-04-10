@@ -36,6 +36,7 @@
                 </div>
                 <div class="navbar-menu" id="navbarMenu">
                     <div class="navbar-end is-size-4">
+                        <a href="/blog/tags" class="navbar-item">Tags</a>
                         <a href="/about" class="navbar-item">About Me</a>
                     </div>
                 </div>
@@ -47,6 +48,19 @@
                 <div class="columns is-centered">
                     <div class="column is-two-thirds">
                         
+<div class="level">
+    <div class="level-item">
+        <span class="is-size-4 has-text-weight-bold">May 11, 2012</span>
+    </div>
+</div>
+<div class="level">
+    <div class="level-item">
+        
+        <a class="tag is-size-5 mr-1" href="/blog/tags/oracle_xe">oracle_xe</a>
+        
+    </div>
+</div>
+<h1 class="title is-size-1">Changing Oracle XE apex webapp port</h1>
 <div class="content">
     <p>If you use Oracle XE for development, then you know it has a simple web interface through http://localhost:8080/apex. Now port 8080 is a common port used by Tomcat server, so letting Oracle XE permanently have taken it is not convenient. But you can change it like this:</p>
 <pre><code> sql&gt; select dbms_xdb.gethttpport from dual;

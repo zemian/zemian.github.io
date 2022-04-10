@@ -36,6 +36,7 @@
                 </div>
                 <div class="navbar-menu" id="navbarMenu">
                     <div class="navbar-end is-size-4">
+                        <a href="/blog/tags" class="navbar-item">Tags</a>
                         <a href="/about" class="navbar-item">About Me</a>
                     </div>
                 </div>
@@ -47,6 +48,21 @@
                 <div class="columns is-centered">
                     <div class="column is-two-thirds">
                         
+<div class="level">
+    <div class="level-item">
+        <span class="is-size-4 has-text-weight-bold">July 21, 2012</span>
+    </div>
+</div>
+<div class="level">
+    <div class="level-item">
+        
+        <a class="tag is-size-5 mr-1" href="/blog/tags/java">java</a>
+        
+        <a class="tag is-size-5 mr-1" href="/blog/tags/script">script</a>
+        
+    </div>
+</div>
+<h1 class="title is-size-1">Script Console Tool for any WAR application</h1>
 <div class="content">
     <p>In the latest release of <a href="https://bitbucket.org/timemachine/scheduler">TimeMachine scheduler project</a>, I've added a Groovy scripting console to the web app and allow user to script the scheduler. This feature is actually very useful for any servlet application as well. Imagine that if you have a script/shell console for your web application that allow you to dynamically inspect any variables or data?</p>
 <p>With the same idea, I've written a very basic JSP file <code>script-console.jsp</code> that provides a great ad hoc tool. For simplicity sake, I put everything into single file. All you need is just add this one file into your java webapp root directory, and you'll have an instant scripting console shell! (Yes, I am aware having code in JSP is bad, but having everything in one page is convenient, specially if you plan to just use this as one time inspection.)</p>

@@ -36,6 +36,7 @@
                 </div>
                 <div class="navbar-menu" id="navbarMenu">
                     <div class="navbar-end is-size-4">
+                        <a href="/blog/tags" class="navbar-item">Tags</a>
                         <a href="/about" class="navbar-item">About Me</a>
                     </div>
                 </div>
@@ -47,6 +48,19 @@
                 <div class="columns is-centered">
                     <div class="column is-two-thirds">
                         
+<div class="level">
+    <div class="level-item">
+        <span class="is-size-4 has-text-weight-bold">February 9, 2015</span>
+    </div>
+</div>
+<div class="level">
+    <div class="level-item">
+        
+        <a class="tag is-size-5 mr-1" href="/blog/tags/cdi">cdi</a>
+        
+    </div>
+</div>
+<h1 class="title is-size-1">EE CDI - Better Backend Service Management through Automatic Service Injection</h1>
 <div class="content">
     <p>In one of my <a href="http://saltnlight5.blogspot.com/2015/01/ee-servlet-3-how-to-setup-backend.html">previous post</a>, I have introduced the Application class that holds backend services, and we are exposing the services to Servlet by a singleton instance lookup pattern. This usage is very common and the Application class is been used as a global space holder in your application. Starting with EE 6, there is a new spec API introduced called CDI (context dependency injection) that can replace this kind of direct service lookup in your application. The CDI is a Java objects container (services in our case), or sometimes
 called &quot;beans container&quot; that automatically manged the objects life

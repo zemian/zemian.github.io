@@ -36,6 +36,7 @@
                 </div>
                 <div class="navbar-menu" id="navbarMenu">
                     <div class="navbar-end is-size-4">
+                        <a href="/blog/tags" class="navbar-item">Tags</a>
                         <a href="/about" class="navbar-item">About Me</a>
                     </div>
                 </div>
@@ -47,6 +48,19 @@
                 <div class="columns is-centered">
                     <div class="column is-two-thirds">
                         
+<div class="level">
+    <div class="level-item">
+        <span class="is-size-4 has-text-weight-bold">October 26, 2014</span>
+    </div>
+</div>
+<div class="level">
+    <div class="level-item">
+        
+        <a class="tag is-size-5 mr-1" href="/blog/tags/servlet">servlet</a>
+        
+    </div>
+</div>
+<h1 class="title is-size-1">How Servlet and JSP create sessions</h1>
 <div class="content">
     <p>In Servlet, you may get the Session object by &quot;httpServletRequest.getSession(true)&quot;. The &quot;true&quot; flag will create the session if it doesn't already exist, else it gets the existing session.</p>
 <p>Now if you want to check whether you have the session exists or not (without have to create one if doesn't exist), you need to pass in &quot;false&quot; and then check for &quot;null&quot;.</p>
