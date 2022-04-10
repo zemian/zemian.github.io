@@ -13,8 +13,7 @@ Folder structure:
 
   src - Markdown files that generate content (root level)
   src/blog - Markdown files that generate blog specific content
-  src/_layouts - Nunchucks template files for layout or theme
-  src/_includes - Nunchucks template files to be included by layout
+  src/_includes - Nunchucks template files
   static - Static files to be copy into output dir
 
 ## Writing Blog
@@ -28,7 +27,7 @@ Add new post in `src/posts` folder.
 
 ## Publishing site
 
-  npm run build
+  ELEVENTY_ENV=prod npm run build
 
 The output of the site is in `docs` folder. We will commit this folder into Git so it can be published 
 as GitHub Pages.

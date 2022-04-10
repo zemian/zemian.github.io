@@ -20,5 +20,8 @@
   "homepage": "https://github.com/zemian/zemian.github.io#readme",
   "devDependencies": {
     "@11ty/eleventy": "^1.0.0"
+  },
+  "dependencies": {
+    "bulma": "^0.9.3"
   }
 }
