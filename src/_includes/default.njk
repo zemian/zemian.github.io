@@ -36,9 +36,7 @@
                 </div>
                 <div class="navbar-menu" id="navbarMenu">
                     <div class="navbar-end is-size-4">
-                        <a href="{{ site.base_url }}/tags" class="navbar-item">Tags</a>
-                        <a href="{{ site.base_url }}/about" class="navbar-item">About</a>
-                        <a href="{{ site.base_url }}/atom.xml" class="navbar-item">Feed</a>
+                        <a href="{{ site.base_url }}/about" class="navbar-item">About Me</a>
                     </div>
                 </div>
             </div>
@@ -48,8 +46,10 @@
             <div class="container">
                 <div class="columns is-centered">
                     <div class="column is-two-thirds">
-                        {% block content_wrapper %}
-                            {% block content %}{% endblock %}
+                        {% block content %}
+                        <div class="content">
+                            {{ content | safe }}
+                        </div>
                         {% endblock %}
                     </div>
                 </div>

@@ -23,7 +23,7 @@ First start dev server
   npm run dev
   open http://localhost:8080/
 
-Add new post in `src/posts` folder.
+Add new Markdown post in `src/posts` folder. See https://www.markdownguide.org/
 
 ## Publishing site
 
@@ -37,6 +37,10 @@ as GitHub Pages.
 * https://danmarshall.github.io/google-font-to-svg-path/
   * Size: 50
 * https://fonts.google.com/?preview.text=ZBlog&preview.text_type=custom&category=Handwriting
+
+## Favicon
+
+https://favicon.io/emoji-favicons/smiling-face-with-sunglasses
 
 ## Google Search Engine for "Zemian's Blog"
 
