@@ -1,7 +1,7 @@
 ---
 title: Exploring FrontEnd UI Component Libraries
-date: 2022-06-07
-tags: [uicomponents, vuejs, css]
+date: 2022-04-07
+tags: [ui-components, vuejs, css]
 ---
 
 I used VueJS (verison 2) very successfuly on one of my WordPress project. I love the simplicity of it, and easy of use. It integrate well into existing project and allow you to use only what you need (I was able to add VueJS into PHP pages without having to build an entire FrontEnd NodeJS based project.) I even used couple of the Buefy UI components in my project very effectively. Buefy is a UI component library that combine the BulmaCSS and VueJS.

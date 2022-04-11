@@ -3,8 +3,7 @@ title: How to Trust a Self-Signed SSL certificate on MacOS
 date: 2021-04-17
 tags:
 - macos
-- SSL-certificate
-- self-signed
+- ssl-certificate
 ---
 
 Sometimes we use a self-sign certificate on web server for development. If you are
