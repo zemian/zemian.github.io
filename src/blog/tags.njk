@@ -1,0 +1,19 @@
+---
+pagination:
+  data: collections
+  size: 1
+  alias: tag
+  filter:
+    - all
+permalink: /blog/tags/{{ tag }}/
+layout: "layouts/default"
+---
+<h1 class="title">Articles with <span class="tag is-size-5">{{ tag }}</span> Tag</h1>
+<div class="content">
+    <ol>
+    {% set taglist = collections[ tag ] %}
+    {% for post in taglist | reverse %}
+      <li><a href="{{ post.url | url }}">{{ post.data.title }}</a></li>
+    {% endfor %}
+    </ol>
+</div>
