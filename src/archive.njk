@@ -1,0 +1,24 @@
+---
+layout: "layouts/default"
+---
+
+<h1 class="title">Blog Archive</h1>
+<p class="subtitle">List of all blog posts</p>
+<div class="content">
+    {% set posts = collections.blog %}
+
+    <ol>
+    {% for post in posts | reverse %}
+      <li>
+        <div>
+            <div>
+                <a href="{{ post.url | url }}">{{ post.data.title }}</a> - {{ post.data.date | date('YYYY-MM-DD')}}
+                {% for tag in post.data.tags %}
+                <a class="tag is-size-8 mr-1" href="{{ site.base_url }}/blog/tags/{{ tag }}">{{ tag }}</a>
+                {% endfor %}
+            </div>
+        </div>
+      </li>
+    {% endfor %}
+    </ol>
+</div>

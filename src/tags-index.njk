@@ -1,0 +1,23 @@
+---
+permalink: "tags/index.html"
+layout: "layouts/default"
+---
+
+<h1 class="title">Tags</h1>
+<p class="subtitle">List of tags with article counts</p>
+<div class="content">
+    <div class="field is-grouped is-grouped-multiline">
+    {% for tag in collections | keys | sort %}
+        {% if tag != 'all' and tag != 'blog' %}
+        {% set posts = collections[tag] %}
+
+        <div class="control">
+        <span class="tags has-addons">
+            <a class="tag is-size-6" href="{{ site.base_url }}/blog/tags/{{ tag }}">{{ tag }}</a>
+            <span class="tag is-info is-size-6">{{posts.length}}</a>
+        </span>
+        </div>
+        {% endif %}
+    {% endfor %}
+    </div>
+</div>
