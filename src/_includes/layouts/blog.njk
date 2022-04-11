@@ -9,7 +9,9 @@
 <div class="level">
     <div class="level-item">
         {% for tag in tags %}
-        <a class="tag is-size-6 mr-1" href="{{ site.base_url }}/blog/tags/{{ tag }}">{{ tag }}</a>
+        {% if tag != 'blog' %}
+        <a class="tag is-size-6 mr-1" href="{{ site.base_url }}/tags/{{ tag }}">{{ tag }}</a>
+        {% endif %}
         {% endfor %}
     </div>
 </div>

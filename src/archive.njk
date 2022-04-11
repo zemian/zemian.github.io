@@ -13,7 +13,9 @@ layout: "layouts/default"
         <div>
             <a href="{{ post.url | url }}">{{ post.data.title }}</a> - {{ post.data.date | date('YYYY-MM-DD')}}
             {% for tag in post.data.tags %}
-            <a class="tag is-size-8 mr-1" href="{{ site.base_url }}/blog/tags/{{ tag }}">{{ tag }}</a>
+            {% if tag != 'blog' %}
+              <a class="tag is-size-8 mr-1" href="{{ site.base_url }}/tags/{{ tag }}">{{ tag }}</a>
+            {% endif %}
             {% endfor %}
         </div>
       </li>

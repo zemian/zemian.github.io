@@ -9,10 +9,10 @@ layout: "layouts/default"
     <li class="block">
         <p class="title"><a href="{{ post.url | url }}">{{ post.data.title }}</a></p>
         <p class="subtitle">
-            {{ post.data.date|date('MMMM D, Y') }}
+            {{ post.data.date|date('MMM D, Y') }}
 
             {% for tag in post.data.tags %}
-                <a class="tag is-size-6 mr-1" href="{{ site.base_url }}/blog/tags/{{ tag }}">{{ tag }}</a>
+                <a class="tag is-size-6 mr-1" href="{{ site.base_url }}/tags/{{ tag }}">{{ tag }}</a>
             {% endfor %}
         </p>
     </li>
