@@ -7,6 +7,7 @@ tags:
 - resume
 - work
 - skills
+layout: "layouts/content"
 ---
 
 ![Zemian Deng]({{site.base_url}}/images/zemian-300.jpg)

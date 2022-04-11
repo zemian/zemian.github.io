@@ -1,0 +1,23 @@
+---
+layout: "layouts/default"
+---
+
+{% set posts = collections.blog | reverse %}
+<ul>
+    {% for i in range(0, 10) %}
+    {% set post = posts[i] %}
+    <li class="block">
+        <p class="title"><a href="{{ post.url | url }}">{{ post.data.title }}</a></p>
+        <p class="subtitle">
+            {{ post.data.date|date('MMMM D, Y') }}
+
+            {% for tag in post.data.tags %}
+                <a class="tag is-size-6 mr-1" href="{{ site.base_url }}/blog/tags/{{ tag }}">{{ tag }}</a>
+            {% endfor %}
+        </p>
+    </li>
+    {% endfor %}
+
+
+    <p class="title"><a href="{{ site.base_url }}/archive">More ...</a></p>
+</ul>
