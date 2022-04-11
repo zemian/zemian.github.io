@@ -82,7 +82,7 @@ Extension-Name: my_shared_lib-1.0</p>
     </library-ref>
 </weblogic-web-app>
 <p>With these two packaged, now turn to your WLS admin console, you will find &quot;Deployments&quot; menu link on left, and on right, you click &quot;Install&quot; button. The next screen will prompt you to choose which type of deployment to install: &quot;Library&quot; (Shared Lib War) or &quot;Application&quot; (Skinny War). Re-run this twice, each with your two seperated WAR files you just built.</p>
-<p><img src="/build/images/posts/2014/wls-shared-lib.png" alt=""></p>
+<p><img src="/posts-images/2014/wls-shared-lib.png" alt=""></p>
 <p>The WLS will combine the two when running your WAR application. This comes handy if you are to deploy multiple instances of your Skinny war application, but now you only need one shared lib.</p>
 <p>NOTE: Ensure you select at least one, and the same Target servers where you deploy the Library and Application. Else your application will not be deployed and run.</p>
 

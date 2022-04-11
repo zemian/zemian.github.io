@@ -31,6 +31,6 @@ open http://localhost:8000
 
 Now you should see a blank application ready for you to start your next project!
 
-![](/build/images/posts/2020/ojet-starter.png)
+![](/posts-images/2020/ojet-starter.png)
 
 The project source that was generated in this article is available at [GitHub](https://github.com/zemian/hello-ojet/tree/demo-basic-template).

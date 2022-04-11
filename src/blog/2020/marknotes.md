@@ -14,10 +14,10 @@ I wrote a simple notes taking web application called [MarkNotes](https://github.
 Here are few screenshots on how it looks like:
 
 ## Home Page
-![](/build/images/posts/2020/marknotes1.png)
+![](/posts-images/2020/marknotes1.png)
 
 ## Admin Page
-![](/build/images/posts/2020/marknotes2.png)
+![](/posts-images/2020/marknotes2.png)
 
 ## Editing a Note
-![](/build/images/posts/2020/marknotes3.png)
+![](/posts-images/2020/marknotes3.png)

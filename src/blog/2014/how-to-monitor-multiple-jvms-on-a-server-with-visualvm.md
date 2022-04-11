@@ -28,4 +28,4 @@ On the server where you run your JVM servers, do this:
 
 Here is an example of how it looks like:
 
-![](/build/images/posts/2014/visualvm.png)
+![](/posts-images/2014/visualvm.png)
