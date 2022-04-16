@@ -6,8 +6,9 @@ tags:
 - ssl-certificate
 ---
 
-Sometimes we use a self-sign certificate on web server for development. If you are
-using a MacOS system, you would need the following to get pass the Trust certificate.
+Sometimes we use a [self-sign certificate]({% link_to '/blog/2021/how-to-create-self-signed-ssl-certificate-for-apache' %}) on web server for development. On most of the OS and browser, it will prompt and alert you that you are at risk to accept this certificate because it does not have known `CA` authority signed. And that's okay since you often use this for testing anyway, so you would normally just "Accept" the risk and "Proceed" anyway. The browser will let you continue as normal.
+
+However if you are using a MacOS system, it will not let you proceed! You would need the following to get pass the Trust certificate in order to proceed.
 
 1. Visit the site and the click the URL icon to show the Certificate.
 
