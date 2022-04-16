@@ -1,5 +1,5 @@
 ---
-title: Adding classname prefix to BulmaCSS
+title: Adding a Prefix to BulmaCSS Classes
 date: 2022-02-01
 tags: [css, bulmacss, postcss, wordpress]
 ---

@@ -1,5 +1,5 @@
 ---
-title: How to Trust a Self-Signed SSL certificate on MacOS
+title: How to Trust a Self-Signed SSL Certificate on MacOS
 date: 2021-04-17
 tags:
 - macos

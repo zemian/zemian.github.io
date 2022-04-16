@@ -1,5 +1,5 @@
 ---
-title: Build a DatePicker using VueJS and BulmaCSS
+title: Build a DatePicker Using VueJS and BulmaCSS
 date: 2021-12-01
 tags:
 - vuejs

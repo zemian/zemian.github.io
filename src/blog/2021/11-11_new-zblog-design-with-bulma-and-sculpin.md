@@ -1,5 +1,5 @@
 ---
-title: New ZBlog Design With Bulma and Sculpin
+title: New ZBlog Design with Bulma and Sculpin
 date: 2021-11-11
 tags:
 - php

@@ -1,5 +1,5 @@
 ---
-title: How to Setup WordPress For Local Development
+title: How to Setup WordPress for Local Development
 date: 2021-11-14
 tags:
 - php
