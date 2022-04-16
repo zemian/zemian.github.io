@@ -14,6 +14,9 @@ module.exports = function(eleventyConfig) {
     eleventyConfig.addNunjucksFilter("date", dateFilter);
     eleventyConfig.addNunjucksFilter("keys", obj => Object.keys(obj));
 
+    // Add "link_to" function to template
+    eleventyConfig.addPlugin(require('eleventy-plugin-link_to'));
+
     return {
         dir: {
             input: "src",
