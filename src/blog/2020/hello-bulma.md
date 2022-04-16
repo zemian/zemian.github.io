@@ -2,7 +2,7 @@
 title: Hello BulmaCSS
 date: 2020-04-18T00:00:00-05:00
 tags:
-  - bulma
+  - bulmacss
   - css
 ---
 

@@ -3,9 +3,8 @@ title: New ZBlog Design With Bulma and Sculpin
 date: 2021-11-11
 tags:
 - php
-- blog
 - sculpin
-- bulma
+- bulmacss
 ---
 
 I redesigned [my blog](https://github.com/zemian/zemian.github.io/tree/sculpin) with the [Sculpin](https://sculpin.io/) Static Site Generator. I made a simple custom theme with BulmaCSS. Here is a screenshot:
