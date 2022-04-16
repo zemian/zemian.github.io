@@ -24,6 +24,7 @@ Things I struggled a bit to get started:
 * Their documentation is not very beginer friendly. I am not sure how to begin even after I read through few sections. I later found this [Learn Eleventy From Scratch](https://learneleventyfromscratch.com/) provides a excellent tutorial to get started!
 * Switching to `Nunjucks` has thrown me off when seeking for documentation help. In the documentation, it often use `Liquid` syntax, and they might look the same to `Nunjucks`, but does not work the same. Especially when dealing with `permalinks` frontmatter since it allows template code there.
 * The `Nunjucks` [is really spelled that way!](https://mozilla.github.io/nunjucks/) Don't try to correct it.
+* The `Nunjucks` does not support `date` filter by default! You have to use an extra plugin!
 * 11ty supports many templates, and I was suprised that I dont have to explicitly add it to the `package.json` dependencies explicitly!
 
 Compare to VuePress:
