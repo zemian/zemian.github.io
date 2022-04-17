@@ -1,9 +1,7 @@
 ---
 title: How to Setup WordPress for Local Development
 date: 2021-11-14
-tags:
-- php
-- wordpress
+tags: [php, wordpress, mysql, apache]
 ---
 
 The [WordPress installation](https://wordpress.org/support/article/how-to-install-wordpress/) is relative simple, and they even boast about a "famous 5-minute installation". However, what they mean by "5-minutes" part though, is that it only count when you first launched the WordPress site for the first time setup. If you are a newbie, it's likely you haven't install their pre-requisites yet. Here I will summarize the install and setup process for completeness sake.
@@ -22,7 +20,7 @@ brew services start mysql
 
 If you want to learn each software in detail, checkout their website for their full documentation:
 
-* [Apache HTTPD server](https://httpd.apache.org/)
+* [Apache HTTPD web server](https://httpd.apache.org/)
 * [MySQL database server](https://dev.mysql.com/downloads/mysql/)
 * [PHP](https://www.php.net/downloads.php)
 
