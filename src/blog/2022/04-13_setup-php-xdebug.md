@@ -1,5 +1,6 @@
 ---
 title: How to Setup PHP with Xdebug
+date: 2022-04-13
 tags: [php, xdebug]
 ---
 
