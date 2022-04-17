@@ -35,6 +35,8 @@ format. When generating output, the filename is not used though. It uses the Fro
 
 See https://www.markdownguide.org/ more on how to create Markdown files.
 
+NOTE: Do not use `blog` values for `tags`, because it is used as special filter for generating blog posts.
+
 ## Publishing site
 
 ```
