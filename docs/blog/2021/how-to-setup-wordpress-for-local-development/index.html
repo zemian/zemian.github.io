@@ -120,13 +120,13 @@ You will also noticed that default port Apache use is <code>8080</code>. So crea
 <h2>The Database Setup</h2>
 <p>Once your MySQL server is running, open a MySQL prompt with <code>mysql -u root</code> command. In there we can create a user and an empty database like this:</p>
 <pre><code class="language-sql">-- Create DB user
-CREATE USER IF NOT EXISTS 'myuser'@'localhost' IDENTIFIED BY 'mypassword';
+CREATE USER IF NOT EXISTS 'mydbuser'@'localhost' IDENTIFIED BY 'test123';
 
 -- Create DB for wordpress
-CREATE DATABASE wordpress CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+CREATE DATABASE mywordpress CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 
 -- Grant DB privileges to our user
-GRANT ALL PRIVILEGES ON wordpress.* TO 'myuser'@'localhost';
+GRANT ALL PRIVILEGES ON mywordpress.* TO 'mydbuser'@'localhost';
 </code></pre>
 <blockquote>
 <p>NOTE: Note we are only creating an empty database here. The WordPress database schema is not yet created. It will be created as part of WordPress installation below.</p>
@@ -151,10 +151,10 @@ GRANT ALL PRIVILEGES ON wordpress.* TO 'myuser'@'localhost';
 <li>
 <p>Enter the database information, then press &quot;Submit&quot; button:</p>
 <ul>
-<li>Database Name: <code>wordpress</code></li>
-<li>Username: <code>myuser</code></li>
-<li>Password: <code>mypassword</code></li>
-<li>Database Host: <code>loclhost</code></li>
+<li>Database Name: <code>mywordpress</code></li>
+<li>Username: <code>mydbuser</code></li>
+<li>Password: <code>test123</code></li>
+<li>Database Host: <code>localhost</code></li>
 <li>Table Prefix: <code>wp_</code></li>
 </ul>
 </li>
@@ -166,7 +166,7 @@ GRANT ALL PRIVILEGES ON wordpress.* TO 'myuser'@'localhost';
 <ul>
 <li>Site Title: <code>My WordPress</code></li>
 <li>Username: <code>myadmin</code></li>
-<li>Password: <code>mypassword</code></li>
+<li>Password: <code>test123</code></li>
 <li>Confirm Password: Check to confirm</li>
 <li>Your Email: <code>myadmin@localhost.local</code></li>
 <li>Search engine visibility: Check to discourage search engine</li>

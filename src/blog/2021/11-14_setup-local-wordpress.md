@@ -63,13 +63,13 @@ Once your MySQL server is running, open a MySQL prompt with `mysql -u root` comm
         
 ```sql
 -- Create DB user
-CREATE USER IF NOT EXISTS 'myuser'@'localhost' IDENTIFIED BY 'mypassword';
+CREATE USER IF NOT EXISTS 'mydbuser'@'localhost' IDENTIFIED BY 'test123';
 
 -- Create DB for wordpress
-CREATE DATABASE wordpress CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+CREATE DATABASE mywordpress CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 
 -- Grant DB privileges to our user
-GRANT ALL PRIVILEGES ON wordpress.* TO 'myuser'@'localhost';
+GRANT ALL PRIVILEGES ON mywordpress.* TO 'mydbuser'@'localhost';
 ```
 
 > NOTE: Note we are only creating an empty database here. The WordPress database schema is not yet created. It will be created as part of WordPress installation below.
@@ -86,10 +86,10 @@ GRANT ALL PRIVILEGES ON wordpress.* TO 'myuser'@'localhost';
     2. Next is an info page telling you that you need the database information to complete the setup. Press "Let's go" button.
     3. Enter the database information, then press "Submit" button:
     
-        * Database Name: `wordpress`
-        * Username: `myuser`
-        * Password: `mypassword`
-        * Database Host: `loclhost`
+        * Database Name: `mywordpress`
+        * Username: `mydbuser`
+        * Password: `test123`
+        * Database Host: `localhost`
         * Table Prefix: `wp_`
       
     4. A confirmation page will display that you are ready to proceed. Press "Run the installation" button.
@@ -97,7 +97,7 @@ GRANT ALL PRIVILEGES ON wordpress.* TO 'myuser'@'localhost';
     
         * Site Title: `My WordPress`
         * Username: `myadmin`
-        * Password: `mypassword`
+        * Password: `test123`
         * Confirm Password: Check to confirm
         * Your Email: `myadmin@localhost.local`
         * Search engine visibility: Check to discourage search engine
