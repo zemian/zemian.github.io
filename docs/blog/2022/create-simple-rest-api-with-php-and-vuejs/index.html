@@ -50,24 +50,47 @@
                 <div class="columns is-centered">
                     <div class="column is-two-thirds">
                         
-                            <h1 class="title">Articles with <span class="tag is-size-6">vuejs</span> Tag</h1>
-<div class="content">
-    
-    <ol>
-    
-      <li><a href="/blog/2022/create-simple-rest-api-with-php-and-vuejs/">Create Simple REST API with PHP and VueJS</a></li>
-    
-      <li><a href="/blog/2022/exploring-frontend-ui-component-libraries/">Exploring FrontEnd UI Component Libraries</a></li>
-    
-      <li><a href="/blog/2021/build-a-datepicker-using-vuejs-and-bulmacss/">Build a DatePicker Using VueJS and BulmaCSS</a></li>
-    
-      <li><a href="/blog/2020/vuejs-examples-with-oracle-jet/">VueJS Examples With Oracle JET</a></li>
-    
-      <li><a href="/blog/2020/hello-vuejs/">Hello VueJS</a></li>
-    
-    </ol>
+<div class="level">
+    <div class="level-item">
+        <span class="is-size-4 has-text-weight-bold">April 21, 2022</span>
+    </div>
 </div>
-                        
+<div class="level">
+    <div class="level-item">
+        
+        
+        
+        
+        <a class="tag is-size-6 mr-1" href="/tags/php">php</a>
+        
+        
+        
+        <a class="tag is-size-6 mr-1" href="/tags/vuejs">vuejs</a>
+        
+        
+        
+        <a class="tag is-size-6 mr-1" href="/tags/rest-api">rest-api</a>
+        
+        
+    </div>
+</div>
+<h1 class="title is-size-1">Create Simple REST API with PHP and VueJS</h1>
+<div class="content">
+    <p>One of the nice thing about PHP is that it is very easy to create web application, including REST API services. Here I will provide a very simple structure that can give you a REST API backend service and use VueJS to create a Client to test it.</p>
+<p>We will use plain <code>PHP</code> and simple VueJS Option API, so there is literally nothing to setup for project wise, other than just a folder and couple of source files:</p>
+<pre><code class="language-bash">mkdir -p my-rest-api/api
+touch my-rest-api/api/index.php
+touch my-rest-api/index.html
+php -S localhost:3000
+open http://localhost:3000/
+</code></pre>
+<p>Here is the <a href="https://github.com/zemian/my-rest-api/blob/main/api/index.php"><code>my-rest-api/api/index.php</code> file</a>, and the <a href="https://github.com/zemian/my-rest-api/blob/main/index.html"><code>my-rest-api/index.html</code> file</a>. Both combined to about 100 lines of code!</p>
+<p>The reason I use <code>api/index.php</code> is so that we get a nice URL that can ends with <code>http://localhost:3000/api/</code> and it will work. The API service itself is just returning a result from PHP's <code>preg_match()</code> function.</p>
+<p>As you can see that it is so simple and easy to setup. You can use this to quickly host a mocked API and or use it to test
+some of you fancy JS client. Happy coding!</p>
+
+</div>
+
                     </div>
                 </div>
             </div>
