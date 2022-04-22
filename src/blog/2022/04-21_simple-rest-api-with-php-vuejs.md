@@ -24,6 +24,7 @@ This simple, bare to the bone `PHP` setup let you create a quick API that is goo
 
 File: `api/index.php`
 
+{% verbatim %}
 ```
 <?php
 /*
@@ -64,9 +65,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     header('Allow: ' . $allow_methods);
 }
 ```
+{% endverbatim %}
 
 File: `index.html`
 
+{% verbatim %}
 ```
 <!doctype html>
 <!--
@@ -141,4 +144,4 @@ File: `index.html`
 </body>
 </html>
 ```
-
+{% endverbatim %}
