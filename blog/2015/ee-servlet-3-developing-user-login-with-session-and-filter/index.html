@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>ZBlog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="/css/bulma.min.css">
+        
+        
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+    </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/" class="navbar-item">Home</a>
+                        <a href="/archive" class="navbar-item">Blog</a>
+                        <a href="/tags" class="navbar-item">Tags</a>
+                        <a href="/about" class="navbar-item">About Me</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                        
+<div class="level">
+    <div class="level-item">
+        <span class="is-size-4 has-text-weight-bold">January 16, 2015</span>
+    </div>
+</div>
+<div class="level">
+    <div class="level-item">
+        
+        
+        
+        
+        <a class="tag is-size-6 mr-1" href="/tags/servlet">servlet</a>
+        
+        
+    </div>
+</div>
+<h1 class="title is-size-1">EE Servlet 3 - Developing User Login with Session and Filter</h1>
+<div class="content">
+    <p>I have introduced the Application class in my previous post where you can setup backend services. One example service I added is the UserService. This service will load a Java users properties file that contains username and password sets; and it's used later to authenticate users to login into the web application. Now I will show how the login part is done using standard Servlet API along with this backend service.</p>
+<p>At a high level, what we want is to restrict some web resources (this means certain URLs provided by Servlets such as &quot;/sysprops&quot;, or &quot;/user&quot;) to only client users who are known in our users properties file. Users may identify themself with the matching password. This is typically done with a user login form, authenticate it, then insert a login token into Http Session scope space. This login token then can be used to verify whether to allow users to access the restricted resources or not. We only interested in a single authorization (no roles are defined, and any logged in user may access any protected URLs.)</p>
+<p>You have already seen an example that mapped to &quot;/sysprops&quot; URL in one of my previous post provided by the SysPropsServlet, which it simply generate a HTML table of System information. These are sensitive information, so we want to protect this URL. We would need to create a class that implements javax.servlet.Filter interface, and then add the &quot;/sysprops&quot; URL with this filter so it can pre-process the request before the actual Servlet does. This filter gives us a place to inspect the HTTP request object and abort the request if needed to, thus restricting the access.</p>
+<pre><code>package zemian.servlet3example.web;
+
+import java.io.IOException;
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.annotation.WebFilter;
+import javax.servlet.http.HttpServletRequest;
+import zemian.service.logging.Logger;
+
+@WebFilter(urlPatterns={&quot;/sys-props&quot;, &quot;/user&quot;})
+public class LoginRequiredFilter implements Filter {
+    private static final Logger LOGGER = new Logger(LoginRequiredFilter.class);
+    public static final String LOGIN_REDIRECT = &quot;LOGIN_REDIRECT&quot;;
+   
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
+    }
+
+    @Override
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+        if (request instanceof HttpServletRequest) {
+            HttpServletRequest req = (HttpServletRequest) request;
+            LOGGER.trace(&quot;Checking LoginSession token for uri=%s&quot;, req.getRequestURI());
+            LoginSession loginSession = LoginServlet.getOptionalLoginSession(req);
+            if (loginSession == null) {
+                LOGGER.debug(&quot;No LoginSession token found; forwarding request to login page.&quot;);
+                // We need to save the old URI so we can auto redirect after login.
+                req.setAttribute(LOGIN_REDIRECT, req.getRequestURI());
+                req.getRequestDispatcher(&quot;/login&quot;).forward(request, response);
+                return;
+            } else {
+                LOGGER.debug(&quot;Request allowed using LoginSession token=%s&quot;, loginSession.getId());
+            }
+        }
+        chain.doFilter(request, response);
+    }
+
+    @Override
+    public void destroy() {
+    }
+
+}
+</code></pre>
+<p>Notice that you can configure this filter to match more than one URL that you want to protect. You can even use wildcard pattern such as &quot;/*&quot; and it will protect every URLs in your application! The filter simply looks into the Http Session space for a LoginSession object that we will create later. If it's found then it let the request through, otherwise it will redirect to a Login form page, which is served by LoginServlet class (notice the RETURN statement for early exit of the filter method without calling the filter chain!).</p>
+<p>The LoginServlet class is a form processing Servlet that will prompt user for username and password. If it succeed, then we will insert the LoginSession token object into the HttpSession space space, which is what the filter above is looking for. Here is the processing Servlet code.</p>
+<pre><code>package zemian.servlet3example.web;
+
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import zemian.service.logging.Logger;
+import zemian.servlet3example.service.Application;
+import zemian.servlet3example.service.UserService;
+
+@WebServlet(&quot;/login&quot;)
+public class LoginServlet  extends HtmlWriterServlet {
+    private static final Logger LOGGER = new Logger(LoginServlet.class);
+    
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        HtmlWriter html = createHtmlWriter(req, resp); 
+        String message;
+        
+        // Check to see if we are doing logout or not.
+        LoginSession loginSession = getOptionalLoginSession(req);
+        if (loginSession != null &amp;&amp; req.getParameter(&quot;logout&quot;) != null) {
+            logout(req);
+            message = &quot;Your have successfully logged out.&quot;;
+        } else {    
+            message = (String)req.getAttribute(&quot;message&quot;);
+            if (message == null)
+                message = &quot;&quot;;
+        }   
+        
+        // Show a login form
+        String redirectUri = (String)req.getAttribute(LoginRequiredFilter.LOGIN_REDIRECT);
+        String redirectHtmlTag = &quot;&quot;;
+        if (redirectUri != null) {
+            redirectHtmlTag = &quot;&lt;input type='hidden' name='redirectUri' value='&quot; + redirectUri + &quot;'/&gt;&quot;;
+        }
+        html.header()
+            .h(1, &quot;Please Login&quot;)
+            .p(message)
+            .println(&quot;&lt;form method='post' action='login'&gt;&quot;)
+            .println(redirectHtmlTag)
+            .println(&quot;&lt;p/&gt;Username: &lt;input type='text' name='username'/&gt;&quot;)
+            .println(&quot;&lt;p/&gt;Password: &lt;input type='password' name='password'/&gt;&quot;)
+            .println(&quot;&lt;p/&gt;&lt;input type='submit' value='Submit'/&gt;&quot;)
+            .println(&quot;&lt;/form&gt;&quot;)
+            .footer();
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        LOGGER.debug(&quot;Processing login form.&quot;);
+        if (login(req)) {
+            // Login succeed, we should auto redirect user if exists.
+            String redirectUri = req.getParameter(&quot;redirectUri&quot;);
+            if (redirectUri != null) {
+                LOGGER.debug(&quot;Redirect after login to: %s&quot;, redirectUri);
+                resp.sendRedirect(redirectUri);
+                return;
+            }
+        }
+        
+        // Show the form again in case login failed or user didn't provide a redirect
+        doGet(req, resp);
+    }    
+       
+    protected LoginSession createLoginSession(HttpServletRequest req, String username) {
+        LoginSession result = new LoginSession(username);
+        req.getSession(true).setAttribute(LoginSession.LOGIN_SESSION_KEY, result);
+        return result;
+    }
+    
+    protected void removeLoginSession(HttpServletRequest req) {
+        HttpSession session = req.getSession(false);
+        if (session != null) {
+            session.removeAttribute(LoginSession.LOGIN_SESSION_KEY);
+        }
+    }
+
+    private boolean login(HttpServletRequest req) throws IOException {
+        String username = req.getParameter(&quot;username&quot;);
+        String password = req.getParameter(&quot;password&quot;);
+        
+        UserService userService = Application.getInstance().getUserService();
+        if (userService.validate(username, password)) {
+            LOGGER.info(&quot;User %s logged in successfully.&quot;, username);
+            // Create Session Data here after successful authenticated.
+            LoginSession loginsession = getOptionalLoginSession(req);
+            if (loginsession == null) {
+                createLoginSession(req, username);
+                req.setAttribute(&quot;message&quot;, &quot;You have successfully logged in.&quot;);
+            } else {
+                req.setAttribute(&quot;message&quot;, &quot;You already have logged in.&quot;);             
+            }
+        } else {
+            LOGGER.info(&quot;User %s failed to login.&quot;, username);
+            req.setAttribute(&quot;message&quot;, &quot;Invalid login.&quot;);
+        }
+        return true;
+    }
+    
+    /** Return LoginSession if found in HttpSession scope, else return NULL value. */
+    public static LoginSession getOptionalLoginSession(HttpServletRequest req) {
+        LoginSession result = null;
+        HttpSession session = req.getSession(false);
+        if (session != null)
+            result = (LoginSession)session.getAttribute(LoginSession.LOGIN_SESSION_KEY);
+        return result;
+    }
+}
+</code></pre>
+<p>Inside LoginServlet class is where we use the UserService service to validate username and password. We display the login form with a GET request, and then process the login with a POST action. Once username and password are checked, we create the LoginSession object. This is just a simple POJO to represent a session token; and you can hold any user information you want. I won't list here, but you can browse it on GitHub. Note that you should make it serializable though, because any data stored in HttpSession may be subject to be serialize/deserialize by your application server.</p>
+<p>Notice also that I have implemented the Logout functionality into the LoginServlet class
+as well. You simply pass &quot;logout&quot; query parameter, and it will be
+detected and remove the login token from the session. Ensure you invalid
+the HttpSession itself when you do this, just to be in clean side. I
+also exposed a static helper <code>getOptionalLoginSession</code></p>
+<p>that is used between few of the classes to check whether user has logged in or not.</p>
+<p>These few classes are simple but yet demonstrated the use of Servlet Filter and Servlet on how to manage Session data. This programming pattern allows users to have their own browsing session and privacy through the application.</p>
+<p>If you are to run my <a href="https://github.com/saltnlight5/java-ee6-examples/tree/master/servlet3-example">servlet3-example</a>  in a GlassFish server, you may login using any users listed in <a href="https://github.com/saltnlight5/java-ee6-examples/blob/master/servlet3-example/src/main/resources/zemian/servlet3example/service/users.properties">here</a>.</p>
+
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <span class="m-1">
+                            <a href="https://www.11ty.dev/">
+                                <img
+                                    src="/images/11ty-logo-bg.svg"
+                                    alt="Made with 11ty"
+                                    width="24"
+                                    height="24">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+    </body>
+</html>

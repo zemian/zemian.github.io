@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>ZBlog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="/css/bulma.min.css">
+        
+        
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+    </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/" class="navbar-item">Home</a>
+                        <a href="/archive" class="navbar-item">Blog</a>
+                        <a href="/tags" class="navbar-item">Tags</a>
+                        <a href="/about" class="navbar-item">About Me</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                        
+<div class="level">
+    <div class="level-item">
+        <span class="is-size-4 has-text-weight-bold">October 24, 2012</span>
+    </div>
+</div>
+<div class="level">
+    <div class="level-item">
+        
+        
+        
+        
+        <a class="tag is-size-6 mr-1" href="/tags/java">java</a>
+        
+        
+    </div>
+</div>
+<h1 class="title is-size-1">Simple Variable Substitution in Java String</h1>
+<div class="content">
+    <p>When I wrote about how to improve the Java Properties class using <a href="http://saltnlight5.blogspot.com/2012/09/improving-javautilproperties.html">Props</a>, I've shown
+a feature where you can use variable substition such as <code>mypath=${user.home}</code> in your config file. The implementation underneath it uses the Apache Common Lang library with <code>org.apache.commons.lang.text.StrSubstitutor</code>. There is nothing wrong with this, but I was curious how bad would it be to remove such dependency, so the <code>Props</code> can be more standalone.</p>
+<p>Here is a quick implementation in Groovy, but you should able to translate to Java easily.</p>
+<pre><code>    // String variable substitutions
+    def parseVariableNames(String text) {
+        def names = []
+        def pos = 0, max = text.length()
+        while (pos &lt; max) {
+            pos = text.indexOf('${', pos)
+            if (pos == -1)
+                break
+            def end = text.indexOf('}', pos + 2)
+            if (end == -1)
+                break
+            def name = text.substring(pos + 2, end)
+            names.add(name)
+            pos = end + 1
+        }
+        return names
+    }
+    def replaceVariable(String key, String value, String text) {
+        //println &quot;DEBUG: Replacing '${key}'' with '${value}'&quot;
+        result = text.replaceAll('\\$\\{' + key + '}', value)
+        return result
+    }
+</code></pre>
+<p>Probably not the most efficient thing, but it should work. Let's have some tests.</p>
+<pre><code>    // Test
+    def map = [&quot;name&quot;: &quot;Zemian&quot;, &quot;id&quot;: &quot;1001&quot;]
+    def inputs  = [
+        'Hello ${name}',
+        'My id is ${id}',
+        '${name} is a good programmer.',
+        '${name}\'s id is ${id}.'
+    ]
+    
+    result = inputs.collect{ line -&gt;
+        def names = parseVariableNames(line)
+        names.each{ key -&gt;
+            line = replaceVariable(key, map.get(key), line) 
+        }
+        line
+    }
+    assert result == [
+        'Hello Zemian',
+        'My id is 1001',
+        'Zemian is a good programmer.',
+        'Zemian\'s id is 1001.'
+    ]
+</code></pre>
+<p>The output should print nothing, as it passed the test. What do you think?</p>
+
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <span class="m-1">
+                            <a href="https://www.11ty.dev/">
+                                <img
+                                    src="/images/11ty-logo-bg.svg"
+                                    alt="Made with 11ty"
+                                    width="24"
+                                    height="24">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+    </body>
+</html>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>ZBlog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="/css/bulma.min.css">
+        
+        
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+    </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/" class="navbar-item">Home</a>
+                        <a href="/archive" class="navbar-item">Blog</a>
+                        <a href="/tags" class="navbar-item">Tags</a>
+                        <a href="/about" class="navbar-item">About Me</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                        
+<div class="level">
+    <div class="level-item">
+        <span class="is-size-4 has-text-weight-bold">June 26, 2016</span>
+    </div>
+</div>
+<div class="level">
+    <div class="level-item">
+        
+        
+        
+        
+        <a class="tag is-size-6 mr-1" href="/tags/postgres">postgres</a>
+        
+        
+    </div>
+</div>
+<h1 class="title is-size-1">Getting started with PostgreSQL database</h1>
+<div class="content">
+    <p>I have been learning and using PostgreSQL recently for a Django app, and I have to say it's really GOOD! I have used quite a bit of MySQL and Oracle DB in my workplace, so I didn't find good reason to learn PostgreSQL in the past. Now I finally get a chance to start another new project with Django, so I decided to give it a try, and I wasn't disappointed. I will write up a brief getting started guide here for those impatient to get things moving.</p>
+<p>Installing. If you are running on a Mac, the easiest way to try it out is just get the http://postgresapp.com, you just start the App, and your DB is running! No config needed!</p>
+<p>After you have the database installed and running, you can either connect to the default &quot;postgres&quot; public database by (psql command), or create your own database. To create your own database, you run this command:</p>
+<pre><code>bash&gt; PATH=/Applications/Postgres.app/Contents/Versions/latest/bin:$PATH
+bash&gt; createdb mydb
+</code></pre>
+<p>Now you can connect to the new database</p>
+<pre><code>bash&gt; psql -d mydb
+</code></pre>
+<p>Once you connected to database, you may run SQL to create/insert/select a table:</p>
+<pre><code>mydb-# create table test(id serial, name varchar(200));
+mydb-# insert into test(name) values('Hello');
+mydb-# select * from test; 
+
+To inspect your  table columns:
+mydb-# \d test;
+
+To see all tables available:
+mydb-# \dt;
+
+To see all database available:
+mydb-# \l;
+
+To switch to another database:
+mydb-# \c mydb2;
+
+To see more help (check out \d options! it's super flexible and useful.):
+mydb-# \?;
+
+To quit the psql shell:
+mydb-# \q;
+</code></pre>
+<p>To create a database user and set up password, you can do it on bash shell as well:</p>
+<pre><code>bash&gt; echo &quot;CREATE ROLE mydbuser1 WITH CREATEDB LOGIN PASSWORD 'Welcome1'&quot; | psql
+
+bash&gt; echo &quot;GRANT ALL PRIVILEGES ON DATABASE mydb TO mydbuser1&quot; | psql
+</code></pre>
+<p>Now you may relogin again with the user. It should prompt you for password.</p>
+<pre><code>bash&gt; psql -U mydbuser1 -W
+</code></pre>
+<p>Once you connected to your database again, you may check your user privileges:</p>
+<pre><code>mydb-# \dp;
+</code></pre>
+<p>These examples should be enough to get you setup a database for app development. The rest are just normal SQL access to database. The <a href="https://www.postgresql.org/docs/9.5/static/index.html">PostgresSQL documentation</a> is an excellent reference for all that you need.</p>
+
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <span class="m-1">
+                            <a href="https://www.11ty.dev/">
+                                <img
+                                    src="/images/11ty-logo-bg.svg"
+                                    alt="Made with 11ty"
+                                    width="24"
+                                    height="24">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+    </body>
+</html>

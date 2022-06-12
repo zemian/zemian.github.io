@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>ZBlog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="/css/bulma.min.css">
+        
+        
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+    </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/" class="navbar-item">Home</a>
+                        <a href="/archive" class="navbar-item">Blog</a>
+                        <a href="/tags" class="navbar-item">Tags</a>
+                        <a href="/about" class="navbar-item">About Me</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                        
+<div class="level">
+    <div class="level-item">
+        <span class="is-size-4 has-text-weight-bold">June 18, 2014</span>
+    </div>
+</div>
+<div class="level">
+    <div class="level-item">
+        
+        
+        
+        
+        <a class="tag is-size-6 mr-1" href="/tags/django">django</a>
+        
+        
+        
+        <a class="tag is-size-6 mr-1" href="/tags/python">python</a>
+        
+        
+        
+        <a class="tag is-size-6 mr-1" href="/tags/mysql">mysql</a>
+        
+        
+    </div>
+</div>
+<h1 class="title is-size-1">Getting django started on Windows 7 with python 3 and MySQL 5.6</h1>
+<div class="content">
+    <p>Django is a python web framework library and it works on both python 2 or 3. I will show you how to get python 3 setup in Cygwin environment.</p>
+<p>If you're on a Windows OS, the best experience I have when working with Django on Windows is to use Cygwin, a Unix emulator shell that runs on Windows. The pip and django commands would automatically setup in Cygwin's PATH after installed. The default python package on Cygwin is only 2.7 though, so you have to search for &quot;python3&quot; package to get the latest python version. And you can have both versions installed without problem, but the executable are named &quot;python&quot; and &quot;python3&quot; respectively.</p>
+<ol>
+<li>
+<p>Install Cygwin python3 package. Verify &quot;python3 -V&quot; is working.</p>
+</li>
+<li>
+<p>Install &quot;pip&quot; by downloading this &quot;get-pip.py&quot; file from <a href="http://pip.readthedocs.org/en/latest/installing.html">http://pip.readthedocs.org/en/latest/installing.html</a> and then run &quot;python3 get-pip.py&quot;. Verify &quot;pip3 --version&quot; is working.</p>
+</li>
+</ol>
+<p>(NOTE: If you are running Windows 7, you might run into this issue: <a href="https://github.com/pypa/pip/issues/1448">https://github.com/pypa/pip/issues/1448</a> where pip exit without a warning. In this case the workaround is install Cygwin &quot;<code>binutils</code>&quot; and &quot;<code>libuuid-devel&quot; </code>packages, and that fixed the problem for me.)</p>
+<ol start="3">
+<li>
+<p>Install &quot;django&quot; by running &quot;pip3 install django&quot;</p>
+</li>
+<li>
+<p>Finally install the MySQL driver with &quot;pip3 install mysql-connector-python --allow-external mysql-connector-python&quot; command.</p>
+</li>
+</ol>
+<p>Now to get a django project started, try these:</p>
+<pre><code>django-admin.py startproject myapp
+</code></pre>
+<p>The &quot;django-admin.py&quot; script should automatically in your PATH. and this create a new project with initial settings. To switch default database from SQLite3 to MySQL, change the &quot;myapp/settings.py&quot; with the following:</p>
+<pre><code>DATABASES = {
+    'default': {
+        'NAME': 'mydb',
+        'ENGINE': 'mysql.connector.django',
+        'USER': 'root',
+        'PASSWORD': 'secret',
+    }
+}
+</code></pre>
+<p>Now I assume you have MySQL 5.6+ installed on your Windows already. Change the root password to match yours or using different DB user. You can now have django app setup the initial database schema tables for this specif myapp with this commad:</p>
+<pre><code>cd myapp
+
+python3 manage.py syncdb
+</code></pre>
+<p>Follow the prompt and setup your admin user. Now you can start django web app:</p>
+<pre><code>python3 manage.py runserver 
+</code></pre>
+<p>Open browser to http://localhost:8000/admin. Now try to login and enjoy!</p>
+<p>References:
+<a href="https://www.python.org/">https://www.python.org</a>
+<a href="http://cygwin.com/">http://cygwin.com</a>
+<a href="http://dev.mysql.com/">http://dev.mysql.com</a>
+<a href="https://docs.djangoproject.com/">https://docs.djangoproject.com</a></p>
+
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <span class="m-1">
+                            <a href="https://www.11ty.dev/">
+                                <img
+                                    src="/images/11ty-logo-bg.svg"
+                                    alt="Made with 11ty"
+                                    width="24"
+                                    height="24">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+    </body>
+</html>

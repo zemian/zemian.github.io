@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>ZBlog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="/css/bulma.min.css">
+        
+        
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+    </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/" class="navbar-item">Home</a>
+                        <a href="/archive" class="navbar-item">Blog</a>
+                        <a href="/tags" class="navbar-item">Tags</a>
+                        <a href="/about" class="navbar-item">About Me</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                        
+<div class="level">
+    <div class="level-item">
+        <span class="is-size-4 has-text-weight-bold">December 1, 2021</span>
+    </div>
+</div>
+<div class="level">
+    <div class="level-item">
+        
+        
+        
+        
+        <a class="tag is-size-6 mr-1" href="/tags/vuejs">vuejs</a>
+        
+        
+        
+        <a class="tag is-size-6 mr-1" href="/tags/bulmacss">bulmacss</a>
+        
+        
+        
+        <a class="tag is-size-6 mr-1" href="/tags/datepicker">datepicker</a>
+        
+        
+    </div>
+</div>
+<h1 class="title is-size-1">Build a DatePicker Using VueJS and BulmaCSS</h1>
+<div class="content">
+    <p>I took the challenge to build a simple DatePicker web component using VueJS and BulmaCSS, and here is the result!</p>
+<p class="codepen" data-height="653" data-default-tab="result" data-slug-hash="vYJbwzY" data-user="zemian" style="height: 653px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;">
+  <span>See the Pen <a href="https://codepen.io/zemian/pen/vYJbwzY">
+  Vue+Bulma Date Picker</a> by Zemian Deng (<a href="https://codepen.io/zemian">@zemian</a>)
+  on <a href="https://codepen.io">CodePen</a>.</span>
+</p>
+<script async src="https://cpwebassets.codepen.io/assets/embed/ei.js"></script>
+<p>Just in case if you can't view the Live CodePend demo above, here is the source code for it:</p>
+<pre><code>&lt;!-- Let's build a Date Picker using Vue3 and BulmaCSS --&gt;
+&lt;template&gt;
+  &lt;!-- The CodePen's VuePen only allow one SCF, so we are adding some page styling code in this template as well, so it will look nice in CodePen.--&gt;
+  &lt;div class=&quot;section&quot;&gt;
+    &lt;div class=&quot;container&quot;&gt;
+      &lt;h1 class=&quot;title has-text-centered&quot;&gt;My Custom VueJS DatePicker&lt;/h1&gt;
+      &lt;div class=&quot;columns&quot;&gt;
+        &lt;div class=&quot;column is-3&quot;&gt;&lt;/div&gt;
+        &lt;div class=&quot;column is-6&quot;&gt;
+
+          &lt;!-- DatePicker template starts here. --&gt;
+          &lt;div&gt;
+            &lt;div class=&quot;field&quot;&gt;
+              &lt;div class=&quot;control has-icons-left&quot;&gt;
+                &lt;input class=&quot;input&quot; type=&quot;input&quot; placeholder=&quot;YYYY-MM-DD&quot;
+                       @click=&quot;openCalendar&quot; v-model=&quot;dateInput&quot;&gt;
+                &lt;span class=&quot;icon is-small is-left&quot;&gt;
+                  &lt;i class=&quot;fas fa-calendar&quot;&gt;&lt;/i&gt;
+                &lt;/span&gt;
+              &lt;/div&gt;
+              &lt;div class=&quot;panel p-4&quot; v-if=&quot;isCalendarOpen&quot;&gt;
+                &lt;div class=&quot;columns is-mobile&quot;&gt;
+                  &lt;div class=&quot;column is-1 has-text-left&quot;&gt;
+                    &lt;a @click=&quot;previousMonth&quot;&gt;
+                    &lt;span class=&quot;icon&quot;&gt;&lt;i class=&quot;fas fa-arrow-left&quot;&gt;&lt;/i&gt;&lt;/span&gt;
+                    &lt;/a&gt;
+                  &lt;/div&gt;
+                  &lt;div class=&quot;column&quot;&gt;
+                    &lt;div class=&quot;is-size-4 has-text-weight-bold is-flex is-justify-content-center is-align-items-center&quot;&gt;
+                      {{getDisplayMonthYear(currentMonthDate)}}
+                    &lt;/div&gt;
+                  &lt;/div&gt;
+                  &lt;div class=&quot;column is-1 has-text-right&quot;&gt;
+                    &lt;a @click=&quot;nextMonth&quot;&gt;
+                      &lt;span class=&quot;icon&quot;&gt;&lt;i class=&quot;fas fa-arrow-right&quot;&gt;&lt;/i&gt;&lt;/span&gt;
+                    &lt;/a&gt;
+                  &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;is-flex is-justify-content-center is-align-items-center&quot;
+                     style=&quot;margin-top: -1.5rem; margin-bottom: .5rem; font-size: .75rem;&quot;&gt;
+                  &lt;a @click=&quot;resetCurrentMonthDate&quot; v-if=&quot;!isCurrentMonth()&quot;&gt;Go to Today&lt;/a&gt;
+                &lt;/div&gt;
+                &lt;div style=&quot;display: grid;
+                            grid-template-rows: repeat(5, 1fr);
+                            grid-template-columns: repeat(7, 1fr);
+                            &quot;&gt;
+                  &lt;div class=&quot;has-text-weight-bold is-flex is-justify-content-center is-align-items-center&quot;
+                       v-for=&quot;weekDay in $options.weekdayLabels&quot;&gt;
+                    &lt;span class=&quot;is-size-5&quot;&gt;{{weekDay}}&lt;/span&gt;
+                  &lt;/div&gt;
+                  &lt;div class=&quot;is-flex is-justify-content-center is-align-items-center&quot;
+                       v-for=&quot;date in dates&quot;&gt;
+                    &lt;div class=&quot;is-size-6&quot; style=&quot;cursor: pointer;&quot; @click=&quot;selectDate(date)&quot;&gt;
+                      &lt;div :style=&quot;{padding: '.5rem', border: isToday(date) ? '1px solid green' : ''}&quot;&gt;
+                        {{getDisplayDate(date)}}
+                      &lt;/div&gt;
+                    &lt;/div&gt;
+                  &lt;/div&gt;
+                &lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+          &lt;!-- DatePicker template ends here. --&gt;
+
+        &lt;/div&gt;
+        &lt;div class=&quot;column is-3&quot;&gt;&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+const mycalendar = {
+    /**
+     * Generate an array of dates for a given date as the current month (today's month calculated with local
+     * datetime). We assume the the week starts on SUN. If the first date of the month does not start on
+     * SUN, then previous month dates will be filled first. Same as on the last week of the month. It will
+     * filled with next month's dates to complete the week.
+     *
+     * The purpose of this array of dates is useful for displaying a month view in a monthly calendar.
+     *
+     * Note that the returned array length may vary between 42 or 35 elements. That is because some month requires
+     * 42 days (6 weeks) to hold all the month's dates, while others may contain only 35 days is enough.
+     *
+     * @param date a JS Date object.
+     * @returns array of either 42 or 35 Date objects of a given month.
+     */
+    createCalendarMonthDates(date) {
+        // Set the given input to the first of current month
+        const currentMonth = date.getMonth();
+        const currentMonthDate = new Date(date.getFullYear(), currentMonth, 1, 0, 0, 0, 0);
+        const weekDay = currentMonthDate.getDay(); // 0-6 =&gt; SUN-SAT
+        const dates = []; // Result for return
+
+        // Populate dates before the current month on the first week
+        for (let i = weekDay - 1; i &gt;= 0; i--) {
+            const dt = new Date(currentMonthDate.getTime());
+            dt.setDate(-1 * i);
+            dates.push(dt);
+        }
+        // Populate rest of the first week
+        let day = 1;
+        for (let i = 0; i &lt; 7 - weekDay; i++) {
+            const dt = new Date(currentMonthDate.getTime());
+            dt.setDate(day++);
+            dates.push(dt);
+        }
+
+        // Populate rest of current month dates
+        while (day &lt;= 31) {
+            const dt = new Date(currentMonthDate.getTime());
+            dt.setDate(day++);
+            dates.push(dt);
+
+            // Stop if we have reached the end of current month dates
+            const nextDate = new Date(dt.getTime());
+            nextDate.setDate(nextDate.getDate() + 1);
+            if (nextDate.getMonth() !== currentMonth) {
+                break;
+            }
+        }
+
+        // Populate the dates after the current month on the last week.
+        const lastWeekDay = dates[dates.length - 1].getDay();
+        const max = 6 - lastWeekDay;
+        for (let i = 0; i &lt; max; i++) {
+            const dt = new Date(currentMonthDate.getTime());
+            dt.setDate(day++);
+            dates.push(dt);
+        }
+
+        return dates;
+    }
+}
+
+/* This is the Vue ViewModel object. */
+export default {
+  weekdayLabels: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+  monthLabels: ['January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'],
+  data() {
+    return {
+      dateInput: '',
+      isCalendarOpen: false,
+      dates: [],
+      currentMonthDate: null,
+    };
+  },
+  watch: {
+    dateInput: function (newVal) {
+      /* The JS Date object parsing from string is not reliable. Also it always assume date input is in UTC,
+      * which will resulted in wrong date in calendar display. We will assume user input is in YYYY-DD-MM, and
+      * parse it our own and create a Local date instance instead. If user input is invalid, it will default
+      * to current timestamp. */
+      const parts = newVal.split('-');
+      if (parts.length === 3) {
+        this.currentMonthDate = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
+      } else {
+        this.currentMonthDate = new Date();
+      }
+    },
+    currentMonthDate: function (newVal) {
+      this.dates = mycalendar.createCalendarMonthDates(newVal);
+    }
+  },
+  methods: {
+    openCalendar() {
+      this.isCalendarOpen = true;
+    },
+    closeCalendar() {
+      this.isCalendarOpen = false;
+    },
+    selectDate(date) {
+      this.dateInput = date.toISOString().split('T')[0]; // We only want the date part of the string
+      this.closeCalendar();
+    },
+    getDisplayDate(date) {
+      if (date.getMonth() !== this.currentMonthDate.getMonth()) {
+        return ' ';
+      } else {
+        return date.getDate();
+      }
+    },
+    previousMonth() {
+      const newMonthDate = new Date(this.currentMonthDate.getTime());
+      newMonthDate.setMonth(newMonthDate.getMonth() - 1);
+      this.currentMonthDate = newMonthDate;
+    },
+    nextMonth() {
+      const newMonthDate = new Date(this.currentMonthDate.getTime());
+      newMonthDate.setMonth(newMonthDate.getMonth() + 1);
+      this.currentMonthDate = newMonthDate;
+    },
+    resetCurrentMonthDate() {
+      this.currentMonthDate = new Date();
+    },
+    getDisplayMonthYear(date) {
+      /* Display today's month and year. The today's date is calculated using  date. */
+      const month = this.$options.monthLabels[date.getMonth()];
+      const year = date.getFullYear();
+      return month + ', ' + year;
+    },
+    isCurrentMonth() {
+      /* Check to see if currentMonthDate is today's month. The today's date is calculated using  date. */
+      const today = new Date();
+      return today.getMonth() === this.currentMonthDate.getMonth();
+    },
+    isToday(date) {
+      /* Check to see if given date is today's date. The today's date is calculated using  date */
+      const today = new Date();
+      if (date &amp;&amp;
+          this.isCurrentMonth() &amp;&amp;
+          today.getFullYear() === date.getFullYear() &amp;&amp;
+          today.getMonth() === date.getMonth() &amp;&amp;
+          today.getDate() === date.getDate()) {
+        return true;
+      }
+      return false;
+    }
+  },
+  created() {
+    this.resetCurrentMonthDate();
+  }
+}
+&lt;/script&gt;
+
+&lt;style&gt;
+  @import url('https://unpkg.com/bulma@0.9.3/css/bulma.css');
+  @import url('https://unpkg.com/@fortawesome/fontawesome-free@latest/css/all.min.css');
+&lt;/style&gt;
+</code></pre>
+
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <span class="m-1">
+                            <a href="https://www.11ty.dev/">
+                                <img
+                                    src="/images/11ty-logo-bg.svg"
+                                    alt="Made with 11ty"
+                                    width="24"
+                                    height="24">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+    </body>
+</html>

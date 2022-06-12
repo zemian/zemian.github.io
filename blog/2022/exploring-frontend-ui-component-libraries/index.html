@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>ZBlog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="/css/bulma.min.css">
+        
+        
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+    </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/" class="navbar-item">Home</a>
+                        <a href="/archive" class="navbar-item">Blog</a>
+                        <a href="/tags" class="navbar-item">Tags</a>
+                        <a href="/about" class="navbar-item">About Me</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                        
+<div class="level">
+    <div class="level-item">
+        <span class="is-size-4 has-text-weight-bold">April 7, 2022</span>
+    </div>
+</div>
+<div class="level">
+    <div class="level-item">
+        
+        
+        
+        
+        <a class="tag is-size-6 mr-1" href="/tags/ui-components">ui-components</a>
+        
+        
+        
+        <a class="tag is-size-6 mr-1" href="/tags/vuejs">vuejs</a>
+        
+        
+        
+        <a class="tag is-size-6 mr-1" href="/tags/css">css</a>
+        
+        
+    </div>
+</div>
+<h1 class="title is-size-1">Exploring FrontEnd UI Component Libraries</h1>
+<div class="content">
+    <p>I used VueJS (verison 2) very successfuly on one of my WordPress project. I love the simplicity of it, and easy of use. It integrate well into existing project and allow you to use only what you need (I was able to add VueJS into PHP pages without having to build an entire FrontEnd NodeJS based project.) I even used couple of the Buefy UI components in my project very effectively. Buefy is a UI component library that combine the BulmaCSS and VueJS.</p>
+<p>Today, VueJS is at version 3, however Buefy is still stuck on Vue2 without much of Vue3 support in progress. Searching around, it turns out there is an another project that now provide similar to Buefy, but with VueJS 3 support, and that is Oruga. Not only did Oruga provided this gap, it even went further to be CSS agnostic UI components library! You can use other CSS framework such as TailwindCSS or even Bootstrap!</p>
+<p>There are also many other VueJS based UI libraries. Here I will list few I like and seems to have good potential:</p>
+<ul>
+<li><a href="https://oruga.io/">Oruga</a> (VueJS 2/3 with any CSS lib)</li>
+<li><a href="https://www.naiveui.com/">NaiveUI</a> (VueJS 2/3 with custom CSS)</li>
+<li><a href="https://buefy.org/">Buefy</a> (VueJS 2 only with BulmaCSS)</li>
+<li><a href="https://vuetifyjs.com/">Vuetify</a> (VueJS 2 with Material Design CSS. NOTE: VueJS 3 support is work in progress!)</li>
+<li><a href="https://bootstrap-vue.org/">BootstrapVue</a> (VueJS 2 with Bootstrap 4 CSS)</li>
+</ul>
+<p>Also, checkout some these fantastic CSS Frameworks that I like:</p>
+<ul>
+<li><a href="https://bulma.io/">BulmaCSS</a> (no JavaScript locked in!)</li>
+<li><a href="https://tailwindcss.com/">TailwindCSS</a> (a utility first CSS lib)</li>
+<li><a href="https://daisyui.com/">DaisyUI</a> (TailwindCSS with built-in UI elements ready)</li>
+<li><a href="https://getbootstrap.com/docs/4.0">Bootstrap 4</a> (requires jQuery, Popper.js + it's own JS lib)</li>
+<li><a href="https://getbootstrap.com/docs/5.1/">Bootstrap 5</a> (no more jQuery locked in, but it still requires Popper.js + it's own JS lib)</li>
+<li><a href="https://newcss.net/">New.css</a> (A small CSS framework without classes! It just style HTML elements directly!)</li>
+</ul>
+
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <span class="m-1">
+                            <a href="https://www.11ty.dev/">
+                                <img
+                                    src="/images/11ty-logo-bg.svg"
+                                    alt="Made with 11ty"
+                                    width="24"
+                                    height="24">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+    </body>
+</html>

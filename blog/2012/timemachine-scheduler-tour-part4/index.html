@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>ZBlog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="/css/bulma.min.css">
+        
+        
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+    </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/" class="navbar-item">Home</a>
+                        <a href="/archive" class="navbar-item">Blog</a>
+                        <a href="/tags" class="navbar-item">Tags</a>
+                        <a href="/about" class="navbar-item">About Me</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                        
+<div class="level">
+    <div class="level-item">
+        <span class="is-size-4 has-text-weight-bold">June 17, 2012</span>
+    </div>
+</div>
+<div class="level">
+    <div class="level-item">
+        
+        
+        
+        
+        <a class="tag is-size-6 mr-1" href="/tags/timemachine">timemachine</a>
+        
+        
+    </div>
+</div>
+<h1 class="title is-size-1">TimeMachine Scheduler Tour - Part4</h1>
+<div class="content">
+    <p>This is part 4 of 7 in a series of articles that will give you a tour of the <a href="https://bitbucket.org/timemachine/scheduler/wiki/Home">TimeMachine Scheduler</a> project. These articles will introduce you to the scheduler, how to load jobs and schedules, and explore some of its advanced features. For the most current and accurate instructions, please visit the ReferenceManual from the project site.</p>
+<h2>Developing with TimeMachine scheduler in Java</h2>
+<p>The TimeMachine scheduler is written in Java, so the primary language to extend and write custom job task is with Java as well. The obvious benefit of using Java over a Scripting language is it's speed and IDE tooling when developing.</p>
+<p>Recall from previous tour that the scheduler allows you to create a job definition and add any schedules to be run. The actual job execution is provided by a JobTask implementation class name given to the job definition. You may write your own JobTask implementation in Java. After this, then you may write a user service that will register the job task with the scheduler. Through this user service layer, you can also implement event listeners that get invoked when scheduler runs a job, add a schedule, or delete a job def etc.</p>
+<p>Before we start, let me show you a Java project setup using Maven3 so that you can use the rest of the tour as demo.</p>
+<p>Let start by setup a maven project <code>scheduler-demo/pom.xml</code> file like this:</p>
+<pre><code>&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;&gt;
+&lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+&lt;groupId&gt;scheduler-demo&lt;/groupId&gt;
+&lt;artifactId&gt;scheduler-demo&lt;/artifactId&gt;
+&lt;version&gt;1.0.0-SNAPSHOT&lt;/version&gt;
+
+&lt;build&gt;
+&lt;plugins&gt;
+&lt;plugin&gt;
+&lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+&lt;version&gt;2.3.2&lt;/version&gt;
+&lt;configuration&gt;
+&lt;source&gt;1.6&lt;/source&gt;
+&lt;target&gt;1.6&lt;/target&gt;
+&lt;/configuration&gt;
+&lt;/plugin&gt;
+&lt;/plugins&gt;
+&lt;/build&gt;
+
+&lt;dependencies&gt;
+&lt;dependency&gt;
+&lt;groupId&gt;org.bitbucket.timemachine&lt;/groupId&gt;
+&lt;artifactId&gt;timemachine-scheduler&lt;/artifactId&gt;
+&lt;version&gt;1.1.1&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+&lt;groupId&gt;org.slf4j&lt;/groupId&gt;
+&lt;artifactId&gt;slf4j-simple&lt;/artifactId&gt;
+&lt;version&gt;1.6.1&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;/dependencies&gt;
+&lt;/project&gt;
+</code></pre>
+<p>The timemachine scheduler artifact should already in Maven central, so cd into the scheduler-demo directory and run mvn installshould get your project compiled and installed into your local repository. If you are curious, you may also run mvn dependency:tree to see what are the scheduler dependencies are. You will discover that although the scheduler uses many optional runtime dependencies, the actual compile time dependencies only have few.</p>
+<h2>Writing JobTask in Java</h2>
+<p>Now create a new <code>src/main/java/schedulerdemo/MyTask.java</code> Java file with following:</p>
+<pre><code>package schedulerdemo;
+
+import timemachine.scheduler.*;
+
+import org.slf4j.*;
+
+public class MyJobTask implements JobTask {
+
+  public static Logger logger = LoggerFactory.getLogger(MyJobTask.class);
+
+  public void run(JobContext jobContext) {
+
+    logger.info(&quot;Hello, I am jobTask with &quot; + jobContext.getSchedule());
+
+  }
+
+}
+</code></pre>
+<p>The JobTask interface is a very simple one, and the JobContext parameter would give you all the runtime information you need to query and interact with the scheduler. With above, you can immediately run the scheduler server within your maven project setup. But let's also create a scheduler
+<code>config/scheduler.properties</code> file that looks like this first:</p>
+<pre><code># config/scheduler.properties
+timemachine.scheduler.userservice.jobLoader.class = timemachine.scheduler.userservice.JobLoaderService
+
+JobLoaderService.01myJob.schedulerdemo.MyJobTask = CronSchedule{expression=* * * * * ?}
+</code></pre>
+<p>Now you can run the scheduler with your config by using this maven command:</p>
+<p>$ mvn exec:java -Dexec.mainClass=timemachine.scheduler.tool.SchedulerServer -Dexec.args=config/scheduler.properties</p>
+<h2>Writing User Service in Java</h2>
+<p>Continue with the setup above, you may explore more advanced features of the scheduler. The scheduler API exposes a simple way to let you customize the scheduler. Recall that the scheduler application itself is a container of many system services. The scheduler also has a separate container that holds user services only. To register, you just need to implements the timemachine.scheduler.Service interface.</p>
+<p>Try create a new  <code>src/main/java/schedulerdemo/MyService.java</code> Java file with following:</p>
+<pre><code>package schedulerdemo;
+
+import timemachine.scheduler.*;
+
+import org.slf4j.*;
+
+public class MyService implements Service {
+
+  public static Logger logger = LoggerFactory.getLogger( MyService.class);
+
+  public void init() { logger.info(&quot;I am initializing.&quot;); }
+
+  public void start() {}
+  public void stop() {}
+  public void destroy() {}
+  public void isInited() { return true; }
+  public void isStarted() { return true; }
+
+  public String getName() { return &quot;MyService&quot;; }
+
+}
+</code></pre>
+<p>We also provide a convenient <code>timemachine.scheduler.support.AbstractService</code> class so you may extend it instead. With the abstract class you only need to override the method you interested, and it auto manage the <code>isInited()</code> and <code>isStarted()</code> states correctly for you.</p>
+<p>With your service ready, you may register it to scheduler with following scheduler config properties appended from earlier:</p>
+<pre><code># config/scheduler.properties
+
+timemachine.scheduler.userservice.jobLoader.class = timemachine.scheduler.userservice.JobLoaderService
+
+JobLoaderService.01myJob.schedulerdemo.MyJobTask = CronSchedule{expression=* * * * * ?}
+
+timemachine.scheduler.userservice.myService.class = schedulerdemo.MyService
+</code></pre>
+<p>Now re-start your scheduler again, and you should see your service initialized with log output to verify.</p>
+<p>The above service implementation would not do much because you don't have a reference to the scheduler to setup or do anything. To obtains this, you simply implements timemachine.scheduler.SchedulerListener interface to your existing service class. With that you will have a reference to the scheduler that's fully initialized already. You may pre-setup jobs or manipulate the scheduler any way you want in your <code>init()</code> or <code>start()</code>method once you save the scheduler reference.</p>
+<p>Besides the SchedulerListener, there is also JobListener, <code>ConfigPropsListener</code>, or <code>CoreServiceListener</code> you may use in the same manner. The JobListener would provide all the events callback methods you would typically want to monitor the scheduler. Since there are many methods to implements, there is a <code>SchedulerListener</code> adaptor class that's ready for you to extends as well.</p>
+<p>In  this tour, I have introduced and setup a Java Maven based project for you to explore the TimeMachine Scheduler. Go ahead and give these API a try and let us know what you think. If there is any features you are looking for that's not in current scheduler, then please help file an Issue in the project site. We will be glad to evaluate and look forward to improve the project with you.</p>
+<p>End of part 4. You may continue <a href="http://saltnlight5.blogspot.com/2012/06/timemachine-scheduler-tour-part5.html">next tour</a>, or see <a href="http://saltnlight5.blogspot.com/2012/06/timemachine-scheduler-tour-part3.html">previous tour</a>.</p>
+
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <span class="m-1">
+                            <a href="https://www.11ty.dev/">
+                                <img
+                                    src="/images/11ty-logo-bg.svg"
+                                    alt="Made with 11ty"
+                                    width="24"
+                                    height="24">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+    </body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>ZBlog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="/css/bulma.min.css">
+        
+        
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+    </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/" class="navbar-item">Home</a>
+                        <a href="/archive" class="navbar-item">Blog</a>
+                        <a href="/tags" class="navbar-item">Tags</a>
+                        <a href="/about" class="navbar-item">About Me</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                        
+<div class="level">
+    <div class="level-item">
+        <span class="is-size-4 has-text-weight-bold">December 11, 2012</span>
+    </div>
+</div>
+<div class="level">
+    <div class="level-item">
+        
+        
+        
+        
+        <a class="tag is-size-6 mr-1" href="/tags/intellij">intellij</a>
+        
+        
+    </div>
+</div>
+<h1 class="title is-size-1">Intellij IDEA is pretty awesome!</h1>
+<div class="content">
+    <p>Did you know IntelliJ IDEA has a free Community Edition you may <a href="http://www.jetbrains.com/idea/download/index.html">download</a>? I've been test driving it, and I will post few things I learned so far.</p>
+<p>Here are few things that I usually change from out of the default installed settings.</p>
+<ol>
+<li>File &gt; Settings &gt; Editor =&gt; Uncheck &quot;Allow placement of caret after end of line&quot; -- This is the most annoying thing for me in IDE. It's just not for me.</li>
+<li>File &gt; Settings &gt; Editor &gt; Appearance =&gt; Check &quot;Show line numbers&quot; -- I tend to relate errors and navigate content better with line number displayed.</li>
+<li>File &gt; Settings &gt; Appearance &gt; Theme =&gt; Select &quot;Darcula&quot; -- This is latest version 12.0 feature. Dark screen is pretty eye pleasing compare to WHITE.</li>
+<li>File &gt; Settings &gt; Compiler =&gt; Check &quot;Make project automatically&quot; -- Another new 12.0 feature that would perform incremental compile.</li>
+</ol>
+<p>Now the IDE is ready for me to work on any Java projects. If you work with Maven, then you will be happy to know that IDEA supports it out of box. You can get an existing project started with following steps:</p>
+<ol>
+<li>
+<p>File &gt; Import Project =&gt; Browse to your project pom.xml. Even if you have multi Maven modules, you only need to pick the top level pom.xml and it will generate the multi IDEA modules for you automatically. Then click &quot;Ok&quot; button.</p>
+</li>
+<li>
+<p>In &quot;Import project from external model&quot; select &quot;Maven&quot;, and then &quot;Next&quot;.</p>
+</li>
+<li>
+<p>You can accept all default settings on this prompt, and simply go &quot;Next&quot;</p>
+</li>
+<li>
+<p>Check all maven project to import</p>
+</li>
+<li>
+<p>Next screen is selecting a SDK for this project (meaning pick a JDK) to use. If this is your first time setup, then create a new one by click on the Grean plus icon, then browse to your JAVA_HOME directory and click OK. Click &quot;Next&quot; to go next step.</p>
+</li>
+<li>
+<p>Simply click &quot;Next&quot; to accept default project name. Then you are at last prompt. Simply click &quot;Finish&quot; button and you should have your project ready to go.</p>
+</li>
+</ol>
+<p>It might seems like a lot of steps to import a project, but IDEA is really nice. After your project has completely imported and compiled, you should able open any of your Java class (use CTRL+N) that has <code>main</code> method or any JUnit classes. Right click the content editor and select &quot;Run ...&quot; to execute it (or CTRL+SHIFT+F10 to run any single unit test method).</p>
+<p>I have tried a decent size Java projects (few thousand source files) and it handles it very gracefully. The UI such as Menu items, Control buttons and tool bars are very user friendly and intuitive to use. Also, right click on most places should give you a &quot;Context&quot; menu with related options. Like any IDE, it supports the CTRL+Space that auto complete code as you type. There is the ALT+ENTER would suggest hints on how to fix things when you got an error with red squiggle line. Pressing CTRL+B will jump into methods or variable declarations.</p>
+<p>Another tips I have for you is the IDEA uses many icon symbols to represent many things. These give you quick visual status on files, progress and states of your Classes etc. It's helpful to see what they mean using this <a href="http://www.jetbrains.com/idea/webhelp/symbols.html">http://www.jetbrains.com/idea/webhelp/symbols.html</a></p>
+<p>So overall, I think IntelliJ IDEA is pretty good and awesome in many way.</p>
+
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <span class="m-1">
+                            <a href="https://www.11ty.dev/">
+                                <img
+                                    src="/images/11ty-logo-bg.svg"
+                                    alt="Made with 11ty"
+                                    width="24"
+                                    height="24">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+    </body>
+</html>

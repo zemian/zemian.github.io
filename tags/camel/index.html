@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>ZBlog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="/css/bulma.min.css">
+        
+        
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+    </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/" class="navbar-item">Home</a>
+                        <a href="/archive" class="navbar-item">Blog</a>
+                        <a href="/tags" class="navbar-item">Tags</a>
+                        <a href="/about" class="navbar-item">About Me</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                        
+                            <h1 class="title">Articles with <span class="tag is-size-6">camel</span> Tag</h1>
+<div class="content">
+    
+    <ol>
+    
+      <li><a href="/blog/2014/book-review-apache-camel-developer-s-cookbook/">Book Review - Apache Camel Developer&#39;s Cookbook</a></li>
+    
+      <li><a href="/blog/2013/the-apache-camel-2-12-0-has-been-released/">The Apache Camel 2.12.0 has been released!</a></li>
+    
+      <li><a href="/blog/2013/exploring-apache-camel-core-seda-component/">Exploring Apache Camel Core - Seda Component</a></li>
+    
+      <li><a href="/blog/2013/exploring-apache-camel-core-direct-component/">Exploring Apache Camel Core - Direct Component</a></li>
+    
+      <li><a href="/blog/2013/exploring-apache-camel-core-file-component/">Exploring Apache Camel Core - File Component</a></li>
+    
+      <li><a href="/blog/2013/exploring-apache-camel-core-dataset-component/">Exploring Apache Camel Core - DataSet Component</a></li>
+    
+      <li><a href="/blog/2013/exploring-apache-camel-core-log-component/">Exploring Apache Camel Core - Log Component</a></li>
+    
+      <li><a href="/blog/2013/exploring-apache-camel-core-timer-component/">Exploring Apache Camel Core - Timer Component</a></li>
+    
+      <li><a href="/blog/2013/getting-started-with-apache-camel-using-java/">Getting started with Apache Camel using Java</a></li>
+    
+      <li><a href="/blog/2012/building-message-based-application-using-camel/">Building message based application using Camel</a></li>
+    
+      <li><a href="/blog/2012/getting-started-with-apache-camel-using-groovy/">Getting started with Apache Camel using Groovy</a></li>
+    
+    </ol>
+</div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <span class="m-1">
+                            <a href="https://www.11ty.dev/">
+                                <img
+                                    src="/images/11ty-logo-bg.svg"
+                                    alt="Made with 11ty"
+                                    width="24"
+                                    height="24">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+    </body>
+</html>

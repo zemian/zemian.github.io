@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>ZBlog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="/css/bulma.min.css">
+        
+        
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+    </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/" class="navbar-item">Home</a>
+                        <a href="/archive" class="navbar-item">Blog</a>
+                        <a href="/tags" class="navbar-item">Tags</a>
+                        <a href="/about" class="navbar-item">About Me</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                        
+<div class="level">
+    <div class="level-item">
+        <span class="is-size-4 has-text-weight-bold">March 8, 2014</span>
+    </div>
+</div>
+<div class="level">
+    <div class="level-item">
+        
+        
+        
+        
+        <a class="tag is-size-6 mr-1" href="/tags/weblogic">weblogic</a>
+        
+        
+    </div>
+</div>
+<h1 class="title is-size-1">How to create MySQL DataSource in WebLogic Server</h1>
+<div class="content">
+    <p>One cool thing about using an application server is that it allows you to create DataSource outside of your application and it can manage it along with connections pool and transaction manager etc. With WebLogic Server, it comes with quite a few built in JDBC drivers such as Oracle Database and MySQL etc ready for your use. Here I will show you how to create a MySQL DataSource.</p>
+<ol>
+<li>
+<p>Login into http://localhost:7001/console</p>
+</li>
+<li>
+<p>On the left menu click Services &gt; Data Sources</p>
+</li>
+<li>
+<p>On the right, click &quot;New&quot; button</p>
+</li>
+<li>
+<p>Enter Name: <code>mysql_ds</code> ; You may optionally give it an JNDI Name: <code>jdbc/mysql_ds</code>; And then select Database Type: MySQL</p>
+</li>
+<li>
+<p>Click &quot;Next&quot; button and then accept default with another two &quot;Next&quot; buttons.</p>
+</li>
+<li>
+<p>Now enter Database Name: test; Host Name: localhost; Database User Name: root; and then the password.</p>
+</li>
+<li>
+<p>Click &quot;Next&quot; and you may optionally test your connection here.</p>
+</li>
+<li>
+<p>Click &quot;Next&quot; and you MUST select an sever as target!</p>
+</li>
+<li>
+<p>Click &quot;Finish&quot;</p>
+</li>
+</ol>
+<p>Now you have a DataSource ready to be used by your application on this server. You may access this by either JNDI lookup, or JPA configuration with entity manager injection.</p>
+<p>TIPS: If you do not pick a server Target in step 8, then your applicatoin will NOT able to access this Data Source! So ensure you have done this step as it's the easy step to miss.</p>
+
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <span class="m-1">
+                            <a href="https://www.11ty.dev/">
+                                <img
+                                    src="/images/11ty-logo-bg.svg"
+                                    alt="Made with 11ty"
+                                    width="24"
+                                    height="24">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+    </body>
+</html>

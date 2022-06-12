@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>ZBlog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="/css/bulma.min.css">
+        
+        
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+    </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/" class="navbar-item">Home</a>
+                        <a href="/archive" class="navbar-item">Blog</a>
+                        <a href="/tags" class="navbar-item">Tags</a>
+                        <a href="/about" class="navbar-item">About Me</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                        
+<div class="level">
+    <div class="level-item">
+        <span class="is-size-4 has-text-weight-bold">July 23, 2016</span>
+    </div>
+</div>
+<div class="level">
+    <div class="level-item">
+        
+        
+        
+        
+        <a class="tag is-size-6 mr-1" href="/tags/python">python</a>
+        
+        
+        
+        <a class="tag is-size-6 mr-1" href="/tags/oracle">oracle</a>
+        
+        
+    </div>
+</div>
+<h1 class="title is-size-1">How to install cx_Oracle module on Linux</h1>
+<div class="content">
+    <p>Here are my notes on installing <a href="http://cx-oracle.sourceforge.net/"><code>cx_Oracle</code> python
+module</a> to access Oracle Database
+12c. First, you need to download these two packages from <a href="http://www.oracle.com/technetwork/database/features/instant-client">Oracle Instant
+Client</a>
+site.</p>
+<ul>
+<li>
+<p>Instant Client Package - Basic</p>
+</li>
+<li>
+<p>Instant Client Package - SDK</p>
+</li>
+</ul>
+<p>I’ve tried their <code>.rpm</code> packages and it did not work for me on Linux, so
+I would suggest you use the <code>.zip</code> packages instead.</p>
+<p>Once you downloaded these two, unzip them into a single directory (eg:
+<code>$HOME/apps/instantclient</code>). You then need to follow these instructions
+to install the module itself.</p>
+<pre><code>cd $HOME/apps/instantclient
+ln -s libclntsh.so.12.1 libclntsh.so
+export ORACLE_HOME=$HOME/apps/instantclient
+export LD_LIBRARY_PATH=$ORACLE_HOME:$LD_LIBRARY_PATH
+
+pip install cx_Oracle
+</code></pre>
+<p>Here are some quick python test code to verify <code>cx_Oracle</code> is working.</p>
+<pre><code>import cx_Oracle as db
+dsn='(DESCRIPTION=(ADDRESS=(HOST=myhost)(PORT=1521)(PROTOCOL=TCP))(CONNECT_DATA=(SERVER=DEDICATED)(SID=orcl)))'
+conn = db.connect('zemian', 'Welcome1', dsn)
+cur = conn.cursor()
+cur.execute('SELECT 1+1')
+print(cur.fetchone()[0])
+cur.close()
+conn.close()
+</code></pre>
+<p>Using the <code>dsn</code> form above can connect directly to database without the
+need to setup further entry in Oracle’s <code>tnsnames.ora</code> file.</p>
+<h1>Optionally installing sqlplus client</h1>
+<p>The <code>sqlplus</code> is a classic client you may use to connect to the Oracle
+database. You may install this to perform adhoc query and verify your
+data. Download the following from the same download site above.</p>
+<ul>
+<li>Instant Client Package - <code>SQL\*Plus</code></li>
+</ul>
+<p>Unzip and then add the following to your <code>PATH</code></p>
+<pre><code>export $ORACLE_HOME/bin:$PATH
+
+sqlplus mydbuser@(DESCRIPTION=(ADDRESS=(HOST=myhost)(PORT=1521)(PROTOCOL=TCP))(CONNECT_DATA=(SERVER=DEDICATED)(SID=orcl)))
+</code></pre>
+<p>For more information, see <a href="https://docs.oracle.com/database/121/SQPUG/toc.htm"><code>sqlplus</code>
+doc</a></p>
+
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <span class="m-1">
+                            <a href="https://www.11ty.dev/">
+                                <img
+                                    src="/images/11ty-logo-bg.svg"
+                                    alt="Made with 11ty"
+                                    width="24"
+                                    height="24">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+    </body>
+</html>

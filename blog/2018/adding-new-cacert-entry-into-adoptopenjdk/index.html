@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>ZBlog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="/css/bulma.min.css">
+        
+        
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+    </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/" class="navbar-item">Home</a>
+                        <a href="/archive" class="navbar-item">Blog</a>
+                        <a href="/tags" class="navbar-item">Tags</a>
+                        <a href="/about" class="navbar-item">About Me</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                        
+<div class="level">
+    <div class="level-item">
+        <span class="is-size-4 has-text-weight-bold">July 23, 2018</span>
+    </div>
+</div>
+<div class="level">
+    <div class="level-item">
+        
+        
+        
+        
+        <a class="tag is-size-6 mr-1" href="/tags/cacert">cacert</a>
+        
+        
+        
+        <a class="tag is-size-6 mr-1" href="/tags/keytool">keytool</a>
+        
+        
+        
+        <a class="tag is-size-6 mr-1" href="/tags/openjdk">openjdk</a>
+        
+        
+        
+        <a class="tag is-size-6 mr-1" href="/tags/jdk">jdk</a>
+        
+        
+        
+        <a class="tag is-size-6 mr-1" href="/tags/java">java</a>
+        
+        
+    </div>
+</div>
+<h1 class="title is-size-1">Adding new cacert entry into AdoptOpenJDK</h1>
+<div class="content">
+    <p>I downloaded latest Tomcat source and it failed to get the dependencies.</p>
+<pre><code>      cd src/github/tomcat
+      ant download-test-compile
+            [get] Error getting https://repo.maven.apache.org/maven2/junit/junit/4.12/junit-4.12.jar to C:\Users\zemian\tomcat-build-libs\download-2000731528.tmp
+
+    BUILD FAILED
+    C:\Users\zemian\src\github\tomcat\build.xml:2705: The following error occurred while executing this line:
+    C:\Users\zemian\src\github\tomcat\build.xml:3051: javax.net.ssl.SSLException: java.lang.RuntimeException: Unexpected error: java.security.InvalidAlgorithmParameterException: the trustAnchors parameter must be non-empty
+            at sun.security.ssl.Alerts.getSSLException(Alerts.java:208)
+</code></pre>
+<p>It turns out this error is caused by the OpenJDK 8 that I am using. The
+one I got is from <a href="https://adoptopenjdk.net/">https://adoptopenjdk.net/</a>, and the
+<code>$JAVA_HOME/jre/lib/security/cacert</code> file has no entries for trusted CA
+certs!</p>
+<p>So I found few solutions:</p>
+<ol>
+<li>
+<p>Find a copy of OracleJDK and copy their <code>cacerts</code> over.</p>
+</li>
+<li>
+<p>If you are on Linux, you can try installing cacerts using tools the
+OS provided. (eg: Ubuntu can be done like here:
+<a href="https://stackoverflow.com/questions/6784463/error-trustanchors-parameter-must-be-non-empty">https://stackoverflow.com/questions/6784463/error-trustanchors-parameter-must-be-non-empty</a>)</p>
+</li>
+<li>
+<p>Upgrade OpenJDK to 10</p>
+</li>
+<li>
+<p>Or the quick way, go to the site that gives you problem, export
+their cert using the browser, and then import into to the <code>cacerts</code>
+file.</p>
+</li>
+</ol>
+<p>So for me, I went to <a href="https://repo.maven.apache.org/">https://repo.maven.apache.org/</a> and exported
+<code>repomavenapacheorg.crt</code>, and then I ran the following:</p>
+<pre><code>cd $JAVA_HOME/jre/lib/security
+keytool -keystore cacerts -storepasswd changeit -importcert -file 'Downloads/repomavenapacheorg.crt' -trustcacerts
+keytool -keystore cacerts -storepasswd changeit -list
+</code></pre>
+<p>This fixed my problem.</p>
+
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <span class="m-1">
+                            <a href="https://www.11ty.dev/">
+                                <img
+                                    src="/images/11ty-logo-bg.svg"
+                                    alt="Made with 11ty"
+                                    width="24"
+                                    height="24">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+    </body>
+</html>

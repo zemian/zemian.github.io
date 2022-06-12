@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>ZBlog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="/css/bulma.min.css">
+        
+        
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+    </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/" class="navbar-item">Home</a>
+                        <a href="/archive" class="navbar-item">Blog</a>
+                        <a href="/tags" class="navbar-item">Tags</a>
+                        <a href="/about" class="navbar-item">About Me</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                        
+<div class="level">
+    <div class="level-item">
+        <span class="is-size-4 has-text-weight-bold">May 29, 2015</span>
+    </div>
+</div>
+<div class="level">
+    <div class="level-item">
+        
+        
+        
+        
+        <a class="tag is-size-6 mr-1" href="/tags/intellij">intellij</a>
+        
+        
+    </div>
+</div>
+<h1 class="title is-size-1">How to setup Intellij IDE war exploded artifact with multiple CDI dependent projects</h1>
+<div class="content">
+    <p>I have a large Java project with many sub modules, and they have simple top down dependencies like this:</p>
+<pre><code>ProjectX
++-ModuleLibA
++-ModuleLibB
++-ModuleCdiLibC
++-ModuleCdiLibC2
++-ModuleLibD
++-ModuleCdiLibE
++-ModuleCdiLibE2
++-ModuleCdiLibE3
++-ModuleLibF
++-ModuleLibG
++-ModuleWebAppX
+</code></pre>
+<p>Each of these modules has their own third party dependency jars. When I say top down, it simply means Module from bottom have all the one above sub module and its third party dependencies as well. The project is large, and with many files, but the structure is straight forward. It does have large amount of third party jars though. At the end, the webapp would have over 100 jars packaged in WEB-INF/lib folder!</p>
+<p>When you create this project structure in IntelliJ IDE (no I do not have the luxury of using Maven in this case), all the third party dependencies are nicely exported and managed from one Module to another as I create my Project with existing source and third parties jars. I do not need to re-define any redudant jars libraries definitions between Modules. When it come to define ModuleWebAppX at the end, all I have to do is to add ModuleLibG as a project dependency, and it brings all the other &quot;transitives&quot; dependent jars in! This is all done by IntelliJ IDE, which is very nice!</p>
+<p>IntelliJ IDE also let you setup Artifacts from your project to prepare for package and deployment that can run inside your IDE servers. By default, any web application will have an option to create a war:exploded artifact definition, and the IDE will automatically copy and update your project build artifacts into this output folder, and it can be deploy/redeploy into any EE server as exploded mode nicely.</p>
+<p>All these work really smoothly, until there is one problem that hit hard! The way IntelliJ IDE package default war:exploded artifact is that it will copy all the .class files generated from each Modules into a single &quot;out/artifact/ProjectX_war_exploded&quot; output folder. This works most of the time when our Java package and classes are unique, but not so with resource files that's not unique! My project uses several dependent CDI based modules. As you might know, each CDI module suppose to define their own, one and single location at META-INF/beans.xml to enable it and to customize CDI behavior. But becuase IntelliJ IDE flatten everything into a single output directory, I've lost the unique beans.xml file per each Module!</p>
+<p>This problem is hard to troubleshoot since it doesn't produce any error at first, nor it stops the web app from running. It just not able to load certain CDI beans that you have customized in the beans.xml!!!</p>
+<p>To resolve this, I have to make the IntelliJIDE artifact dependent modules to generate it's JAR instead of all copy into a single output. But we still want it to auto copy generated build files into the JAR archive automatically when we make a change. Lukcly IntelliJ has this feature. This is how I do it:</p>
+<ol>
+<li>
+<p>Open your project settings then select Artifacts on left.</p>
+</li>
+<li>
+<p>Choose your war:exploded artifacts and look to your right.</p>
+</li>
+<li>
+<p>Under OutputLayout tab, expand WEB-INF/lib, then right clik and &quot;Create Archive&quot; &gt; Enter your moduleX name.jar.</p>
+</li>
+<li>
+<p>Right click this newly created archive moduleX.jar name, then &quot;Add Copy of&quot; &gt; &quot;Module Output&quot; and select one of your dependent module.</p>
+</li>
+<li>
+<p>Repeat for each of the CDI based Modules!</p>
+</li>
+</ol>
+<p>I wish there is a easier way to do across all Modules for this, but at least this manual solution works!</p>
+
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <span class="m-1">
+                            <a href="https://www.11ty.dev/">
+                                <img
+                                    src="/images/11ty-logo-bg.svg"
+                                    alt="Made with 11ty"
+                                    width="24"
+                                    height="24">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+    </body>
+</html>

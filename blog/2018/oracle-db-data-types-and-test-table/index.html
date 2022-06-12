@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>ZBlog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="/css/bulma.min.css">
+        
+        
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+    </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/" class="navbar-item">Home</a>
+                        <a href="/archive" class="navbar-item">Blog</a>
+                        <a href="/tags" class="navbar-item">Tags</a>
+                        <a href="/about" class="navbar-item">About Me</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                        
+<div class="level">
+    <div class="level-item">
+        <span class="is-size-4 has-text-weight-bold">August 18, 2018</span>
+    </div>
+</div>
+<div class="level">
+    <div class="level-item">
+        
+        
+        
+        
+        <a class="tag is-size-6 mr-1" href="/tags/sql">sql</a>
+        
+        
+        
+        <a class="tag is-size-6 mr-1" href="/tags/oracle">oracle</a>
+        
+        
+    </div>
+</div>
+<h1 class="title is-size-1">Oracle DB Data Types and Test Table</h1>
+<div class="content">
+    <p>A quick sql table setup to test most common data types.</p>
+<pre><code class="language-sql">--
+-- Notes on Oracle Database 12.2
+-- https://docs.oracle.com/en/database/oracle/oracle-database/12.2/administration.html
+
+-- DataTypes
+-- https://docs.oracle.com/en/database/oracle/oracle-database/12.2/sqlrf/Data-Types.html
+
+/*
+CHAR          Fixed length and space padded character string (sql: CHAR)
+VARCHAR2      Variable length character string (sql: VARCHAR)
+              (Oracle discourage use of VARCHAR, even though it's same as VARCHAR2 as of now.)
+NVARCHAR2     Same as VARCHAR2 but with Unicode support
+CLOB          Variable length character large string (sql: TEXT)
+
+NUMBER(p)     Declare integer number (sql: INT)
+
+BINARY_FLOAT  Declare floating-point number (sql: REAL 32 bits)
+BINARY_DOUBLE Declare floating-point number (sql: DOUBLE PRECISION 64 bits)
+
+NUMBER        Declare floating-point number (like NUMERIC with max precision and scale. Values will be stored as exact, not binary.)
+NUMBER(p,s)   Declare fixed-point number (sql: NUMERIC)
+
+DATE          Declare datetime with no sub second precision (note: it includes time!)
+TIMESTAMP     Declare datetime with sub second precision
+TIMESTAMP WITH TIMEZONE
+              Declare datetime with sub second precision and timezone
+INTERVAL YEAR TO MONTH   Declare period of time difference
+INTERVAL DAY TO DECOND   Declare period of time difference
+
+BLOB          Binary data
+ */
+
+-- Test table
+create table test (
+  id    number(32) generated always as identity primary key,
+  ts    timestamp(6) default systimestamp not null,
+  cat   varchar2(10) not null,
+
+  price    number(19,4) null,
+  qty      int null,
+
+  txtdata  varchar2(1000) null,
+  bindata  blob null,
+
+  distx  binary_float null,
+  disty  binary_double null
+);
+insert into test(cat, price, qty) values ('test', 100000.10, 50000),
+                                         ('test', 100000.20, 0),
+                                         ('test', 100000.00, 1),
+                                         ('test', 9977000.3333, 179),
+                                         ('test', 104729.1129, 104729);
+insert into test(cat, bindata, txtdata) values ('test2', hextoraw('CAFEBABE'), 'CAFEBABE');
+insert into test(cat, bindata) values ('test3', hextoraw(to_char(floor(dbms_random.value(0,256)), 'XX')));
+insert into test(cat, bindata) values ('test3', hextoraw(to_char(floor(dbms_random.value(0,256)), 'XX')));
+insert into test(cat, bindata) values ('test3', hextoraw(to_char(floor(dbms_random.value(0,256)), 'XX')));
+update test set txtdata = rawtohex(bindata) where cat = 'test3';
+insert into test(cat, distx, disty) values ('test4', dbms_random.value(0.0, 1.0), dbms_random.value(0.0, 1.0));
+insert into test(cat, distx, disty) values ('test4', dbms_random.value(0.0, 1.0), dbms_random.value(0.0, 1.0));
+insert into test(cat, distx, disty) values ('test4', dbms_random.value(0.0, 1.0), dbms_random.value(0.0, 1.0));
+select sum(price) from test where cat = 'test';
+select * from test order by cat, ts desc;
+</code></pre>
+
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <span class="m-1">
+                            <a href="https://www.11ty.dev/">
+                                <img
+                                    src="/images/11ty-logo-bg.svg"
+                                    alt="Made with 11ty"
+                                    width="24"
+                                    height="24">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+    </body>
+</html>

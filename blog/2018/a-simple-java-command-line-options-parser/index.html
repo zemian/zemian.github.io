@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>ZBlog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="/css/bulma.min.css">
+        
+        
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+    </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/" class="navbar-item">Home</a>
+                        <a href="/archive" class="navbar-item">Blog</a>
+                        <a href="/tags" class="navbar-item">Tags</a>
+                        <a href="/about" class="navbar-item">About Me</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                        
+<div class="level">
+    <div class="level-item">
+        <span class="is-size-4 has-text-weight-bold">August 13, 2018</span>
+    </div>
+</div>
+<div class="level">
+    <div class="level-item">
+        
+        
+        
+        
+        <a class="tag is-size-6 mr-1" href="/tags/optparse">optparse</a>
+        
+        
+        
+        <a class="tag is-size-6 mr-1" href="/tags/java">java</a>
+        
+        
+    </div>
+</div>
+<h1 class="title is-size-1">A simple Java command line options parser</h1>
+<div class="content">
+    <pre><code class="language-java">package com.zemian.hellojava;
+
+import java.util.*;
+
+/**
+ * A simple command line arguments and options parser in the format of &quot;--optionName=optionValue&quot; or
+ * &quot;-optionName=optionValue&quot;.
+ *
+ * The optionName can be one ore more characters. The equals sign must be used when providing optionValue;
+ * else it will be treated as program arguments instead! If you ommit the &quot;=optionValue&quot; part, then it
+ * will default to &quot;=true&quot; for that optionName. The optionValue must be a single string. Any other argument
+ * that are not part of options are store in a new args list.
+ *
+ * The constructor will immediately parse the input arguments, and it should not throw any exceptions. In case
+ * user did not use correct format, by above rule, it will go into the argument list instead. We purposely made
+ * this class simple, and let end user to perform any validation they need for their program.
+ *
+ * Usage example:
+ *   Hello --help
+ *   Hello --num=101 --verbose one two three
+ * ----
+ * public class Hello {}
+ *     public static void main(String[] args) {
+ *         CmdOpts opts = new CmdOpts(args);
+ *         if (opts.hasOpt(&quot;help&quot;))
+ *           System.out.println(&quot;You need help&quot;);
+ *         int num = opts.getIntOpt(&quot;num&quot;, 0);
+ *         System.out.println(&quot;Using num=&quot; + num);
+ *         System.out.println(&quot;Using new args=&quot; + opts.getArgs());
+ *     }
+ * }
+ * ----
+ *
+ * Created by Zemian Deng 2017.
+ */
+public class CmdOpts {
+    private Map&lt;String, Object&gt; opts = new HashMap&lt;&gt;();
+    private List&lt;String&gt; args = new ArrayList&lt;&gt;();
+
+    public CmdOpts(String[] arguments) {
+        parse(arguments);
+    }
+
+    private void parse(String[] arguments) {
+        for (String arg : arguments) {
+            if (arg.startsWith(&quot;--&quot;)) {
+                addOpt(arg.substring(2));
+            } else if (arg.startsWith(&quot;-&quot;)) {
+                addOpt(arg.substring(1));
+            } else {
+                args.add(arg);
+            }
+
+        }
+    }
+
+    private void addOpt(String option) {
+        if (option != null &amp;&amp; !&quot;&quot;.equals(option)) {
+            String[] options = option.split(&quot;=&quot;, 2);
+            String optionName = options[0];
+            String optionValue = &quot;true&quot;;
+            if (options.length == 2) {
+                optionValue = options[1];
+            }
+
+            Object existingOpt = opts.get(optionName);
+            if (existingOpt == null) {
+                opts.put(optionName, optionValue);
+            } else {
+                // Support multi options with same key
+                if (existingOpt instanceof List) {
+                    // Third + items
+                    ((List&lt;String&gt;) existingOpt).add(optionValue);
+                } else {
+                    // Second items
+                    List&lt;String&gt; list = new ArrayList&lt;&gt;();
+                    list.add((String) existingOpt);
+                    list.add(optionValue);
+                    opts.put(optionName, list);
+                }
+            }
+        }
+    }
+
+    public int getOptsSize() {
+        return opts.size();
+    }
+
+    public Set&lt;String&gt; getOptsNames() {
+        return opts.keySet();
+    }
+
+    public boolean hasOpt(String name) {
+        return opts.containsKey(name);
+    }
+
+    public Map&lt;String, Object&gt; getOpts() {
+        return opts;
+    }
+
+    public void setOpts(Map&lt;String, Object&gt; opts) {
+        this.opts = opts;
+    }
+
+    public String getOpt(String name) {
+        return (String) opts.get(name);
+    }
+
+    public String getOpt(String name, String def) {
+        String result = getOpt(name);
+        if (result == null)
+            result = def;
+        return result;
+    }
+
+    public boolean getBooleanOpt(String name) {
+        if (hasOpt(name)) {
+            return true;
+        }
+        return Boolean.parseBoolean(getOpt(name));
+    }
+
+    public boolean getBooleanOpt(String name, boolean def) {
+        if (hasOpt(name)) {
+            return true;
+        }
+        String result = getOpt(name);
+        if (result == null)
+            return def;
+        return Boolean.parseBoolean(result);
+    }
+
+    public int getIntOpt(String name) {
+        return Integer.parseInt(getOpt(name));
+    }
+
+    public int getIntOpt(String name, int def) {
+        String result = getOpt(name);
+        if (result == null)
+            return def;
+        return Integer.parseInt(result);
+    }
+
+    public long getLongOpt(String name) {
+        return Long.parseLong(getOpt(name));
+    }
+
+    public long getLongOpt(String name, long def) {
+        String result = getOpt(name);
+        if (result == null)
+            return def;
+        return Long.parseLong(result);
+    }
+
+    public List&lt;String&gt; getMultiOpts(String name) {
+        List&lt;String&gt; list = new ArrayList&lt;&gt;();
+        Object optVal = opts.get(name);
+        if (optVal == null) {
+            return list;
+        } else if (optVal instanceof String) {
+            list.add((String) optVal);
+            return list;
+        }
+
+        list.addAll((List&lt;String&gt;) optVal);
+        return list;
+    }
+
+    public int getArgsSize() {
+        return args.size();
+    }
+    public List&lt;String&gt; getArgs() {
+        return args;
+    }
+    public String[] getArgsArray() {
+        return args.toArray(new String[args.size()]);
+    }
+
+    public String getArgOrError(int index, String errorIfMissing) {
+        if (index &gt;= args.size() || index &lt; 0) {
+            throw new IllegalArgumentException(errorIfMissing);
+        }
+        return args.get(index);
+    }
+
+    public String getArg(int index) {
+        return args.get(index);
+    }
+
+    /** A test class to try out CmdOpts. */
+    public static void main(String[] args) {
+        CmdOpts opts = new CmdOpts(args);
+        if (opts.hasOpt(&quot;help&quot;))
+            System.out.println(&quot;You need help&quot;);
+        int num = opts.getIntOpt(&quot;num&quot;, 0);
+        System.out.println(&quot;Using num=&quot; + num);
+        System.out.println(&quot;Using new args=&quot; + opts.getArgs());
+    }
+}
+</code></pre>
+
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <span class="m-1">
+                            <a href="https://www.11ty.dev/">
+                                <img
+                                    src="/images/11ty-logo-bg.svg"
+                                    alt="Made with 11ty"
+                                    width="24"
+                                    height="24">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+    </body>
+</html>

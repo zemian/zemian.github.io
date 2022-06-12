@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>ZBlog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="/css/bulma.min.css">
+        
+        
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+    </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/" class="navbar-item">Home</a>
+                        <a href="/archive" class="navbar-item">Blog</a>
+                        <a href="/tags" class="navbar-item">Tags</a>
+                        <a href="/about" class="navbar-item">About Me</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                        
+<div class="level">
+    <div class="level-item">
+        <span class="is-size-4 has-text-weight-bold">February 27, 2018</span>
+    </div>
+</div>
+<div class="level">
+    <div class="level-item">
+        
+        
+        
+        
+        <a class="tag is-size-6 mr-1" href="/tags/httpd">httpd</a>
+        
+        
+        
+        <a class="tag is-size-6 mr-1" href="/tags/authentication">authentication</a>
+        
+        
+        
+        <a class="tag is-size-6 mr-1" href="/tags/session">session</a>
+        
+        
+    </div>
+</div>
+<h1 class="title is-size-1">How to setup httpd form authentication and user session login/logout</h1>
+<div class="content">
+    <h2>Configuration setup for <code>httpd.conf</code></h2>
+<p>Enable modules</p>
+<pre><code>LoadModule auth_form_module modules/mod_auth_form.so
+LoadModule auth_digest_module modules/mod_auth_digest.so
+LoadModule session_module modules/mod_session.so
+LoadModule session_cookie_module modules/mod_session_cookie.so
+</code></pre>
+<p>NOTE: This configuration is only for tutorial purpose and not secured by default! Using Cookies session store is NOT secured! It's recommend you use <code>mod_session_crypto</code> to further secure data, or use server side session data store.</p>
+<p>Setup users</p>
+<pre><code># First user and new file
+htpasswd -c /etc/httpd/passwd/passwords test
+# Update/add more user
+htpasswd /etc/httpd/passwd/passwords zemian
+</code></pre>
+<p>NOTE: You need <code>httpd-tool</code> package from Cygwin to find <code>htpasswd</code> command.</p>
+<p>Example of Digest login</p>
+<pre><code># Digest Login
+&lt;Location &quot;/secured&quot;&gt;
+	AuthType Basic
+	AuthName &quot;Restricted Files&quot;
+	AuthBasicProvider file
+	AuthUserFile &quot;/etc/httpd/passwd/passwords&quot;
+	Require valid-user
+&lt;/Location&gt;
+</code></pre>
+<p>Example of form login</p>
+<pre><code># Form Login/logout process
+&lt;LocationMatch &quot;(/secured|/cgi-bin/secured)&quot;&gt;
+	Require valid-user
+	AuthName &quot;SecuredArea&quot;
+	AuthFormProvider file
+	AuthUserFile &quot;/etc/httpd/passwd/passwords&quot;
+    AuthType form
+	AuthFormLoginRequiredLocation &quot;/login.html&quot;
+	
+	Session On
+	SessionCookieName session path=/
+	SessionMaxAge 30
+	SessionEnv On
+	SessionHeader X-Replace-Session
+&lt;/LocationMatch&gt;
+&lt;Location &quot;/login&quot;&gt;
+	SetHandler form-login-handler
+	AuthName &quot;SecuredArea&quot;
+	AuthFormProvider file
+	AuthUserFile &quot;/etc/httpd/passwd/passwords&quot;
+    AuthType form
+	AuthFormLoginRequiredLocation &quot;/login.html&quot;
+    AuthFormLoginSuccessLocation &quot;/secured/index.html&quot;
+		
+	Session On
+	SessionCookieName session path=/
+&lt;/Location&gt;
+&lt;Location &quot;/logout&quot;&gt;
+	SetHandler form-logout-handler
+	AuthName &quot;SecuredArea&quot;
+	AuthFormLogoutLocation &quot;http://localhost/logout.html&quot;
+	
+	Session On
+	SessionCookieName session path=/
+	SessionMaxAge 1
+&lt;/Location&gt;
+</code></pre>
+<p>Login page <code>htdocs/login.html</code></p>
+<pre><code>&lt;form method=&quot;POST&quot; action=&quot;/login&quot;&gt;
+  Username: &lt;input type=&quot;text&quot; name=&quot;httpd_username&quot; value=&quot;&quot; /&gt;
+  Password: &lt;input type=&quot;password&quot; name=&quot;httpd_password&quot; value=&quot;&quot; /&gt;
+  &lt;input type=&quot;submit&quot; name=&quot;login&quot; value=&quot;Login&quot; /&gt;
+&lt;/form&gt;
+</code></pre>
+<p>Logout page <code>htdocs/logout.html</code></p>
+<pre><code>&lt;p&gt;You have been logged out.&lt;/p&gt;
+</code></pre>
+<p>Secured page <code>htdocs/secured/index.html</code></p>
+<pre><code>&lt;p&gt;This is secured area&lt;/p&gt;
+</code></pre>
+
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <span class="m-1">
+                            <a href="https://www.11ty.dev/">
+                                <img
+                                    src="/images/11ty-logo-bg.svg"
+                                    alt="Made with 11ty"
+                                    width="24"
+                                    height="24">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+    </body>
+</html>

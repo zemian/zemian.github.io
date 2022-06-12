@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>ZBlog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="/css/bulma.min.css">
+        
+        
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+    </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/" class="navbar-item">Home</a>
+                        <a href="/archive" class="navbar-item">Blog</a>
+                        <a href="/tags" class="navbar-item">Tags</a>
+                        <a href="/about" class="navbar-item">About Me</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                        
+<div class="level">
+    <div class="level-item">
+        <span class="is-size-4 has-text-weight-bold">June 14, 2016</span>
+    </div>
+</div>
+<div class="level">
+    <div class="level-item">
+        
+        
+        
+        
+        <a class="tag is-size-6 mr-1" href="/tags/gradle">gradle</a>
+        
+        
+    </div>
+</div>
+<h1 class="title is-size-1">How to setup a Java web application using Gradle</h1>
+<div class="content">
+    <p>For basic java and Gradle, it's really simple. All you need is one line in build.gradle file and you can start compiling Java source under src/main/java folder.</p>
+<p>apply plugin: 'java'</p>
+<p>But to setup a useful web application,  you would need little more. Here I have another example of Gradle 2.7 script file for building a Java web application. I also have noted few things I have discovered in the comments.</p>
+<pre><code># A Java web app project
+
+# There should be a src/main/webapp as web content directory
+apply plugin: 'war'
+apply plugin: 'jetty'
+
+# Change jetty default port from 8080
+httpPort = 9000
+
+# A repository must be given to fetch dependencies below.
+repositories {
+    mavenCentral()
+}
+
+# Library dependencies
+dependencies {
+    // JDK lang support
+    // Ouch! Gradle does not support 'provided' scope! Let's use compile for now.
+    //provided 'org.projectlombok:lombok:1.16.6'
+    compile 'org.projectlombok:lombok:1.16.6'
+
+    // Testing
+    testCompile 'junit:junit:4.12',
+        'org.hamcrest:hamcrest-library:1.3'
+
+    // Database
+    runtime 'mysql:mysql-connector-java:5.1.37'   
+
+    // Scripting
+    //runtime 'org.codehaus.groovy:groovy-all:2.4.5'
+    /*
+    NOTE: Error if you include groovy with gradle+jetty!!!
+            java.lang.ExceptionInInitializerError:
+        groovy.lang.GroovyRuntimeException: Conflicting module versions. Module [groovy-all is loaded in version 2.3.10 and you are trying to load version 2.4.5
+             // Verify your groovy version using the following:
+        import javax.script.*
+        out.println(new ScriptEngineManager().getEngineFactories())
+        out.println(org.codehaus.groovy.jsr223.GroovyScriptEngineFactory.class.getProtectionDomain().getCodeSource().getLocation())
+    */ 
+}
+</code></pre>
+<p>I also have this JSP in <code>src/main/webapp/script.jsp</code> folder</p>
+<pre><code>&lt;%@ page import=&quot;javax.script.*, java.io.*&quot; %&gt;
+
+&lt;%
+// Initialize parameters
+String engineName = request.getParameter(&quot;engine&quot;);
+if (engineName == null) engineName = &quot;Groovy&quot;;
+String code = request.getParameter(&quot;code&quot;);
+if (code == null) code = &quot;&quot;;
+%&gt;
+
+&lt;!-- form: Script input code --&gt;
+&lt;h1&gt;Scripting&lt;/h1&gt;
+&lt;form method=&quot;POST&quot;&gt;
+&lt;textarea name=&quot;code&quot; cols=&quot;120&quot; rows=&quot;25&quot;&gt;&lt;%= code %&gt;&lt;/textarea&gt;
+&lt;p/&gt;&lt;input type=&quot;submit&quot; value=&quot;Submit&quot;/&gt;
+&lt;/form&gt;
+
+&lt;pre&gt;
+&lt;%
+if (request.getMethod().equals(&quot;POST&quot;)) {
+    // Process form and evaluate script code
+    ScriptEngine se = new ScriptEngineManager().getEngineByName(engineName);
+    if (se == null) {
+        out.println(&quot;ERROR: &quot; + engineName + &quot; engine not found! Use 'engine' parameter to change it.&quot;);
+    } else {
+        try {
+            Bindings b = se.createBindings();
+            b.put(&quot;request&quot;, request);
+            b.put(&quot;out&quot;, out);
+            Object result = se.eval(code, b);
+            
+            out.println(engineName + &quot; script result:&quot;);
+            out.println(&quot;&quot; + result);
+        } catch (Exception e) {
+            out.println(&quot;ERROR: &quot; + engineName + &quot; script failed to evaluate!&quot;);
+            e.printStackTrace(new PrintWriter(out));
+        }
+    }
+}
+%&gt;
+
+&lt;/pre&gt;
+</code></pre>
+<p>With this script.jsp, you can write something like this to test out your db connection.</p>
+<pre><code>// Groovy script:
+import java.sql*
+conn = DriverManager.getConnection('jdbc:mysql://localhost/test', 'dev', 'dev123')
+out.println(&quot;conn=&quot; + conn)
+conn.close()
+
+And just for fun, I have created a data class using ProjectLombok generator in src/main/java/myjava/MyData.java
+
+package myjava;
+import java.util.*;
+
+@lombok.Data
+public class MyData {
+private Integer id;
+private String name;
+private Date createdDate;
+private List&lt;MyData&gt; dataList;
+private Map&lt;String, MyData&gt; dataMap;
+
+}
+
+I also have a unit test in src/test/java/myjava/MyDataTest.java
+
+package myjava;
+
+import org.junit.Test;
+import static org.junit.Assert.assertThat;
+import static org.hamcrest.Matchers.*;
+
+public class MyDataTest {
+@Test
+public void tesGeneratedGetterSettersAndToString() {
+MyData d = new MyData();
+d.setId(12345);
+d.setName(&quot;foo&quot;);
+assertThat(d.getId(), is(12345));
+assertThat(d.getName(), is(&quot;foo&quot;));
+assertThat(d.toString(), is(&quot;MyData(id=12345, name=foo, createdDate=null, dataList=null, dataMap=null)&quot;));
+}
+
+}
+</code></pre>
+<p>To compile code, type command: <code>gradle compileJava</code></p>
+<p>To run test, type command: gradle test(A nice feature of Gradle is that it auto generate test reports! Look for them in your build/reports folder.)</p>
+<p>To run web app, type command: gradle jettyRun</p>
+
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <span class="m-1">
+                            <a href="https://www.11ty.dev/">
+                                <img
+                                    src="/images/11ty-logo-bg.svg"
+                                    alt="Made with 11ty"
+                                    width="24"
+                                    height="24">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+    </body>
+</html>

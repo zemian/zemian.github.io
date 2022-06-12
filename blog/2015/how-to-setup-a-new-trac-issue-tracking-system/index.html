@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>ZBlog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="/css/bulma.min.css">
+        
+        
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+    </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/" class="navbar-item">Home</a>
+                        <a href="/archive" class="navbar-item">Blog</a>
+                        <a href="/tags" class="navbar-item">Tags</a>
+                        <a href="/about" class="navbar-item">About Me</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                        
+<div class="level">
+    <div class="level-item">
+        <span class="is-size-4 has-text-weight-bold">October 21, 2015</span>
+    </div>
+</div>
+<div class="level">
+    <div class="level-item">
+        
+        
+        
+        
+        <a class="tag is-size-6 mr-1" href="/tags/python">python</a>
+        
+        
+        
+        <a class="tag is-size-6 mr-1" href="/tags/issue-tracker">issue-tracker</a>
+        
+        
+    </div>
+</div>
+<h1 class="title is-size-1">How to setup a new Trac issue tracking system</h1>
+<div class="content">
+    <p>Here is how I setup a local instance of Trac (a python based issue tracking web application) on my Mac.</p>
+<p>Prerequisite: MySQL 5.6 and Python 2.7 (Python3 will not work with Trac yet!)</p>
+<p>Step1: Setup a Trac database and a user</p>
+<pre><code>sql&gt; CREATE DATABASE trac DEFAULT CHARACTER SET utf8 COLLATE utf8_bin;
+sql&gt; CREATE USER 'dev'@'localhost' IDENTIFIED BY 'dev123';
+sql&gt; GRANT ALL ON trac.* TO 'dev'@'localhost';
+
+
+Step2: Install MySQL adaptor for Python and Trac
+
+bash&gt; pip install Genshi trac mysqlclient
+
+
+Step3: Setup a Track instance
+
+bash&gt; trac-admin /Users/zemian/dev/mytrac intent
+
+bash&gt; # Above will prompt you to enter a backend string. Use
+bash&gt; # this connection string: 
+
+bash&gt; #   mysql://dev:dev123@localhost:3306/trac
+
+Step3: Create a Trac admin user
+
+bash&gt; htpasswd -c /Users/zemian/dev/mytrac/.htpasswd admin
+
+Step4: Run Track
+
+bash&gt; tracd -p 8000 --basic-auth=&quot;mytrac,/Users/zemian/dev/mytrac/.htpasswd,mytrac&quot; /Users/zemian/dev/metric
+</code></pre>
+
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <span class="m-1">
+                            <a href="https://www.11ty.dev/">
+                                <img
+                                    src="/images/11ty-logo-bg.svg"
+                                    alt="Made with 11ty"
+                                    width="24"
+                                    height="24">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+    </body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>ZBlog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="/css/bulma.min.css">
+        
+        
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+    </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/" class="navbar-item">Home</a>
+                        <a href="/archive" class="navbar-item">Blog</a>
+                        <a href="/tags" class="navbar-item">Tags</a>
+                        <a href="/about" class="navbar-item">About Me</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                        
+<div class="level">
+    <div class="level-item">
+        <span class="is-size-4 has-text-weight-bold">October 10, 2015</span>
+    </div>
+</div>
+<div class="level">
+    <div class="level-item">
+        
+        
+        
+        
+        <a class="tag is-size-6 mr-1" href="/tags/python">python</a>
+        
+        
+        
+        <a class="tag is-size-6 mr-1" href="/tags/mac">mac</a>
+        
+        
+    </div>
+</div>
+<h1 class="title is-size-1">Setup Python on Mac</h1>
+<div class="content">
+    <h2>Setup Python 2</h2>
+<p>The default MacOS should already come with latest Python 2.7. It will be pre-installed along with some pyobjc packages as well.</p>
+<p>If you like to play around with python and external packages, it's best not to touch the original Python install from the System. Unfortunately, this Python 2.7 does not come with pip nor virtualenv packages to help setup separate environment! So it's okay to install these two into the system first. The easiest to setup is simply download get-pip.py from https://bootstrap.pypa.io/get-pip.py, then run</p>
+<pre><code>bash&gt; sudo python get-pip.py
+
+With this, you may now able install virtualenv
+
+bash&gt; sudo /usr/local/bin/pip install virtualenv
+
+Now you can setup Python2 virtual env on a separate directory.
+
+bash&gt; python -m virtualenv mypy
+
+bash&gt; source mypy/bin/activate
+
+(mypy) bash&gt; python -c 'import sys; print sys.path'
+</code></pre>
+<p>You should able to verify the output above that you are indeed using your own setup of an isolated  Python2 env, and it even has your own pip installed list, so you won't mess up the built-in System version of python!</p>
+<h2>Setup Python 3</h2>
+<p>The MacOS comes with latest Python 2.7, but no Python3. You can download the latest Python3 from python.org site and install it. It will give you a new 'python3' command so not to conflict with your existing Python. (NOTE: It's best not to remove or override the default Python2.7 that comes with the system!) But if you want to use 'python' command for Python3 for dev, then I suggest you create a new virtual environment of your own. The Python3 install should come with a 'pyvenv' command. For Example</p>
+<pre><code>bash&gt; pyvenv mypy3
+bash&gt; source mypy3/bin/activate
+(mypy3) bash&gt; python -c 'import sys; print(sys.path)'
+</code></pre>
+
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <span class="m-1">
+                            <a href="https://www.11ty.dev/">
+                                <img
+                                    src="/images/11ty-logo-bg.svg"
+                                    alt="Made with 11ty"
+                                    width="24"
+                                    height="24">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+    </body>
+</html>

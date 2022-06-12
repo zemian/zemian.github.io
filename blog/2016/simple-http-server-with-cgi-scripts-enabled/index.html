@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>ZBlog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="/css/bulma.min.css">
+        
+        
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+    </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/" class="navbar-item">Home</a>
+                        <a href="/archive" class="navbar-item">Blog</a>
+                        <a href="/tags" class="navbar-item">Tags</a>
+                        <a href="/about" class="navbar-item">About Me</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                        
+<div class="level">
+    <div class="level-item">
+        <span class="is-size-4 has-text-weight-bold">July 14, 2016</span>
+    </div>
+</div>
+<div class="level">
+    <div class="level-item">
+        
+        
+        
+        
+        <a class="tag is-size-6 mr-1" href="/tags/python">python</a>
+        
+        
+    </div>
+</div>
+<h1 class="title is-size-1">Simple http server with CGI scripts enabled</h1>
+<div class="content">
+    <p>If you want to experiment some python code as CGI script to serve by a HTTP server,
+you can get started by these steps:</p>
+<ol>
+<li>Create a <code>cgi-bin</code> directory.</li>
+<li>Ready!</li>
+</ol>
+<p>No, really, it's that simple! Try these CGI scripts out.</p>
+<h2>Example 1: <code>cgi-bin/hello.py</code></h2>
+<pre><code>#!/usr/bin/env python3
+
+localvars_table = ''
+for x in dir():
+  localvars_table += '%s' % x
+localvars_table += ''
+
+print(&quot;Content-type: text/html&quot;)
+print(&quot;&quot;)
+print(&quot;&quot;&quot;
+Hello World! Your custom CGI script is working. Here are your current Python local variables.
+
+%s
+
+NOTE: If you want to write useful CGI script, try the Python 'cgi' module. See cgitest.py script.
+&quot;&quot;&quot; % (localvars_table))
+</code></pre>
+<p>To test and run this, you simply invoke these couple commands:</p>
+<pre><code>bash&gt; chmod a+x cgi-bin/hello.py
+bash&gt; python3 -m http.server --cgi
+</code></pre>
+<p>You may now test it on your browser with <a href="http://localhost:8000/cgi-bin/hello.py">http://localhost:8000/cgi-bin/hello.py</a>. Hit <code>CTRL+C</code> to stop the server.</p>
+<p>If you want to do more with fancy CGI scripts, try the Python's <code>cgi</code> module. Here is another example.</p>
+<h2>Example 2: <code>cgi-bin/cgitest.py</code></h2>
+<pre><code>#!/usr/bin/env python3
+
+import cgi
+cgi.test()
+</code></pre>
+<p>Again <code>chmod</code> your <code>cgitest.py</code> script and visit <a href="http://localhost:8000/cgi-bin/cgitest.py">http://localhost:8000/cgi-bin/cgitest.py</a>. You will see all the
+HTTP related data as expected when working with a CGI script. See <a href="https://docs.python.org/3/library/cgi.html">https://docs.python.org/3/library/cgi.html</a>
+for more details.</p>
+
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <span class="m-1">
+                            <a href="https://www.11ty.dev/">
+                                <img
+                                    src="/images/11ty-logo-bg.svg"
+                                    alt="Made with 11ty"
+                                    width="24"
+                                    height="24">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+    </body>
+</html>

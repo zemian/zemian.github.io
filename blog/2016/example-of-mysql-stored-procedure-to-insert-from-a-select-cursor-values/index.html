@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>ZBlog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="/css/bulma.min.css">
+        
+        
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+    </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/" class="navbar-item">Home</a>
+                        <a href="/archive" class="navbar-item">Blog</a>
+                        <a href="/tags" class="navbar-item">Tags</a>
+                        <a href="/about" class="navbar-item">About Me</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                        
+<div class="level">
+    <div class="level-item">
+        <span class="is-size-4 has-text-weight-bold">June 26, 2016</span>
+    </div>
+</div>
+<div class="level">
+    <div class="level-item">
+        
+        
+        
+        
+        <a class="tag is-size-6 mr-1" href="/tags/mysql">mysql</a>
+        
+        
+    </div>
+</div>
+<h1 class="title is-size-1">Example of MySQL stored procedure to INSERT from a SELECT cursor values</h1>
+<div class="content">
+    <pre><code>DELIMITER //
+DROP PROCEDURE IF EXISTS proc_hotfix1 //
+CREATE PROCEDURE proc_hotfix1()
+BEGIN
+  DECLARE flag INT DEFAULT 0;
+  DECLARE CID VARCHAR(64);
+  DECLARE LOGIN VARCHAR(1000);
+  DECLARE cur1 CURSOR FOR 
+    SELECT CID, LOGIN FROM MYUSER WHERE LOGIN LIKE 'bad.guy%';
+
+  OPEN cur1;
+  REPEAT
+    FETCH cur1 INTO CID, LOGIN;
+    INSERT INTO hotfix1(id,f1) VALUES (CID, LOGIN);
+  UNTIL flag
+  END REPEAT;
+  CLOSE cur1;
+END //
+
+DELIMITER ;
+DROP TABLE IF EXISTS hotfix1;
+CREATE TABLE hotfix1(
+  id VARCHAR(64) KEY
+  ,f1 VARCHAR(1000)
+  ,f2 VARCHAR(1000)
+  ,f3 VARCHAR(1000)
+);
+CALL proc_hotfix1();
+SELECT COUNT(*) FROM hotfix1;
+SELECT * FROM hotfix1;
+</code></pre>
+
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <span class="m-1">
+                            <a href="https://www.11ty.dev/">
+                                <img
+                                    src="/images/11ty-logo-bg.svg"
+                                    alt="Made with 11ty"
+                                    width="24"
+                                    height="24">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+    </body>
+</html>

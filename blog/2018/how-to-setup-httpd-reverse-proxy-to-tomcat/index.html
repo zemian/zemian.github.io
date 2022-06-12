@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>ZBlog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="/css/bulma.min.css">
+        
+        
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+    </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/" class="navbar-item">Home</a>
+                        <a href="/archive" class="navbar-item">Blog</a>
+                        <a href="/tags" class="navbar-item">Tags</a>
+                        <a href="/about" class="navbar-item">About Me</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                        
+<div class="level">
+    <div class="level-item">
+        <span class="is-size-4 has-text-weight-bold">March 5, 2018</span>
+    </div>
+</div>
+<div class="level">
+    <div class="level-item">
+        
+        
+        
+        
+        <a class="tag is-size-6 mr-1" href="/tags/httpd">httpd</a>
+        
+        
+        
+        <a class="tag is-size-6 mr-1" href="/tags/reverse">reverse</a>
+        
+        
+        
+        <a class="tag is-size-6 mr-1" href="/tags/proxy">proxy</a>
+        
+        
+        
+        <a class="tag is-size-6 mr-1" href="/tags/tomcat">tomcat</a>
+        
+        
+    </div>
+</div>
+<h1 class="title is-size-1">How to setup Httpd Reverse Proxy To Tomcat</h1>
+<div class="content">
+    <p>Here is an example on how to configure HTTPD server with reverse proxy
+into Tomcat, and adding the authenticated user as header and passing to
+Tocmat server.</p>
+<ol>
+<li>Example of <code>httpd.conf</code> file</li>
+</ol>
+<pre><code># Apache httpd v2.4 minimal configuration
+ServerRoot &quot;/etc/httpd&quot;
+Listen 80
+
+LoadModule mpm_prefork_module modules/mod_mpm_prefork.so
+LoadModule unixd_module modules/mod_unixd.so
+LoadModule authz_core_module modules/mod_authz_core.so
+LoadModule authz_user_module modules/mod_authz_user.so
+LoadModule log_config_module modules/mod_log_config.so
+LoadModule dir_module modules/mod_dir.so
+
+# Other useful features
+LoadModule mime_module modules/mod_mime.so
+LoadModule autoindex_module modules/mod_autoindex.so
+LoadModule status_module modules/mod_status.so
+LoadModule alias_module modules/mod_alias.so
+LoadModule env_module modules/mod_env.so
+LoadModule setenvif_module modules/mod_setenvif.so
+LoadModule filter_module modules/mod_filter.so
+LoadModule ext_filter_module modules/mod_ext_filter.so
+
+DirectoryIndex index.html
+ErrorLog /var/log/httpd/error.log
+LogFormat &quot;%h %l %u %t \&quot;%r\&quot; %&gt;s %b&quot; common
+CustomLog /var/log/httpd/access.log common
+&lt;Directory /&gt;
+  AllowOverride None
+  Require all denied
+&lt;/Directory&gt;
+
+DocumentRoot &quot;/srv/www/htdocs&quot;
+&lt;Directory &quot;/srv/www/htdocs&quot;&gt;
+  Require all granted
+&lt;/Directory&gt;
+
+# Tomcat Reverse Proxy setup
+LoadModule proxy_module modules/mod_proxy.so
+LoadModule proxy_http_module modules/mod_proxy_http.so
+LoadModule rewrite_module modules/mod_rewrite.so
+LoadModule headers_module modules/mod_headers.so
+LoadModule request_module modules/mod_request.so
+
+LoadModule auth_form_module modules/mod_auth_form.so
+LoadModule auth_digest_module modules/mod_auth_digest.so
+LoadModule authn_core_module modules/mod_authn_core.so
+LoadModule authn_file_module modules/mod_authn_file.so
+LoadModule session_module modules/mod_session.so
+LoadModule session_cookie_module modules/mod_session_cookie.so
+
+ProxyPass &quot;/jspwebapp&quot; &quot;http://localhost:8080/jspwebapp&quot;
+ProxyPassReverse &quot;/jspwebapp&quot; &quot;http://localhost/jspwebapp&quot;
+ProxyPass &quot;/jspwebapp2&quot; &quot;http://localhost:8080/jspwebapp2&quot;
+ProxyPassReverse &quot;/jspwebapp2&quot; &quot;http://localhost/jspwebapp2&quot;
+
+# HTTPD Form Login/logout process
+&lt;LocationMatch &quot;/(jspwebapp|jspwebapp2)&quot;&gt;
+        Require valid-user
+        AuthName &quot;SecuredArea&quot;
+        AuthFormProvider file
+        AuthUserFile &quot;/etc/httpd/passwd/passwords&quot;
+        AuthType form
+        AuthFormLoginRequiredLocation &quot;/login.html&quot;
+
+        Session On
+        SessionCookieName session path=/
+        SessionMaxAge 1800
+        SessionEnv On
+        SessionHeader X-Replace-Session
+
+        RewriteEngine On
+        RewriteRule .* - [env=X_REMOTE_USER:%{LA-U:REMOTE_USER}]
+        RequestHeader set appuser &quot;%{X_REMOTE_USER}e&quot;
+&lt;/LocationMatch&gt;
+&lt;Location &quot;/login&quot;&gt;
+        SetHandler form-login-handler
+        AuthName &quot;SecuredArea&quot;
+        AuthFormProvider file
+        AuthUserFile &quot;/etc/httpd/passwd/passwords&quot;
+        AuthType form
+        AuthFormLoginRequiredLocation &quot;/login.html&quot;
+        AuthFormLoginSuccessLocation &quot;/secured/index.html&quot;
+
+        Session On
+        SessionCookieName session path=/
+        SessionMaxAge 1800
+&lt;/Location&gt;
+&lt;Location &quot;/logout&quot;&gt;
+        SetHandler form-logout-handler
+        AuthName &quot;SecuredArea&quot;
+        AuthFormLogoutLocation &quot;http://localhost/logout.html&quot;
+
+        Session On
+        SessionCookieName session path=/
+        SessionMaxAge 1
+&lt;/Location&gt;
+</code></pre>
+
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <span class="m-1">
+                            <a href="https://www.11ty.dev/">
+                                <img
+                                    src="/images/11ty-logo-bg.svg"
+                                    alt="Made with 11ty"
+                                    width="24"
+                                    height="24">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+    </body>
+</html>

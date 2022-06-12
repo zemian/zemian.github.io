@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>ZBlog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="/css/bulma.min.css">
+        
+        
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+    </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/" class="navbar-item">Home</a>
+                        <a href="/archive" class="navbar-item">Blog</a>
+                        <a href="/tags" class="navbar-item">Tags</a>
+                        <a href="/about" class="navbar-item">About Me</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                        
+<div class="level">
+    <div class="level-item">
+        <span class="is-size-4 has-text-weight-bold">January 27, 2018</span>
+    </div>
+</div>
+<div class="level">
+    <div class="level-item">
+        
+        
+        
+        
+        <a class="tag is-size-6 mr-1" href="/tags/java">java</a>
+        
+        
+        
+        <a class="tag is-size-6 mr-1" href="/tags/classpath">classpath</a>
+        
+        
+    </div>
+</div>
+<h1 class="title is-size-1">Walk resource tree as directory in classpath</h1>
+<div class="content">
+    <p>The two most frequent type of classpath URL we get when get it through
+<code>ClassLoader#getResource(resourceName)</code> is either <code>file</code> or <code>jar</code>
+entries. If we want to walk a resources that are stored in a directory,
+then we need to parse these differently. For <code>file</code>, it’s easy to do
+since we have <code>java.io.File</code>. As for <code>jar</code>, we would use <code>JarFile</code>. Here
+is a implementation.</p>
+<pre><code>public static void walkClasspathResDir(ClassLoader cl, String resDir, ConsumerEx&lt;FileStream&gt; fileConsumer) {
+        // NOTE: JarEntry.isDirectory() used below requires input to ends with slash.
+        if (!resDir.endsWith(&quot;/&quot;)) {
+            resDir = resDir + &quot;/&quot;;
+        }
+
+        URL url = cl.getResource(resDir);
+        if (url == null) {
+            throw new AppException(&quot;Resource directory &quot; + resDir + &quot; not found in classpath.&quot;);
+        } else if (&quot;file&quot;.equals(url.getProtocol())) {
+            File dir = new File(url.getPath());
+            if (!dir.isDirectory()) {
+                throw new AppException(&quot;Resource is not a directory: &quot; + resDir);
+            }
+            walkFileDir(dir, fileConsumer);
+        } else if (&quot;jar&quot;.equals(url.getProtocol())) {
+            try {
+                JarURLConnection conn = (JarURLConnection) url.openConnection();
+                if (!(conn.getJarEntry().isDirectory())) {
+                    throw new AppException(&quot;Resource is not a directory: &quot; + resDir);
+                }
+                walkJarEntryDir(conn.getJarFile(), resDir, fileConsumer);
+            } catch (Exception e) {
+                throw new AppException(&quot;Unable to read resource: &quot; + url, e);
+            }
+        } else {
+            throw new AppException(&quot;Unsupported protocol &quot; + url.getProtocol() + &quot; for checking resource directory.&quot;);
+        }
+    }
+
+    public static void walkFileDir(File dir, ConsumerEx&lt;FileStream&gt; fileConsumer) {
+        try {
+            Files.walkFileTree(dir.toPath(), new SimpleFileVisitor&lt;Path&gt;() {
+                @Override
+                public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                    try (FileInputStream stream = new FileInputStream(file.toFile())) {
+                        try {
+                            String shortPath = file.toFile().getPath().substring(dir.getPath().length());
+                            // Always convert path separator to Unix
+                            shortPath = FilenameUtils.separatorsToUnix(shortPath);
+                            // Remove leading '/' if there is any
+                            if (shortPath.startsWith(&quot;/&quot;)) {
+                                shortPath = shortPath.substring(1);
+                            }
+                            fileConsumer.accept(new FileStream(shortPath, stream));
+                        } catch (Exception e) {
+                            throw new AppException(&quot;Failed to process file: &quot; + file, e);
+                        }
+                    }
+                    return FileVisitResult.CONTINUE;
+                }
+            });
+        } catch (IOException e) {
+            throw new AppException(&quot;Failed to walk directory: &quot; + dir, e);
+        }
+    }
+
+    public static void walkJarEntryDir(JarFile jarFile, String entryName, ConsumerEx&lt;FileStream&gt; fileConsumer) {
+        try {
+            Enumeration&lt;JarEntry&gt; entries = jarFile.entries();
+            while (entries.hasMoreElements()) {
+                JarEntry jarEntry = entries.nextElement();
+                if (jarEntry.getName().startsWith(entryName)) {
+                    if (!jarEntry.isDirectory()) {
+                        try (InputStream stream = jarFile.getInputStream(jarEntry)) {
+                            try {
+                                String shortPath = jarEntry.getName().substring(entryName.length());
+                                fileConsumer.accept(new FileStream(shortPath, stream));
+                            } catch (Exception e) {
+                                throw new AppException(&quot;Failed to process jar entry: &quot; + jarEntry.getName(), e);
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (IOException e) {
+            throw new AppException(&quot;Failed to walk jar directory entry: &quot; + entryName, e);
+        }
+    }
+</code></pre>
+<p>Here the <code>FileStream</code> is just a POJO that holds a resource path name and
+the stream that points to it. One tricky part to above code is noted in
+comment:</p>
+<pre><code>// NOTE: JarEntry.isDirectory() used below requires input to ends with slash.
+</code></pre>
+<p>Now, here is how we can use it:</p>
+<pre><code>        ClassLoader cl = Thread.currentThread().getContextClassLoader();
+        walkClasspathResDir(cl, &quot;toolbox/templates/javaapp&quot;, (fileStream) -&gt; {
+            System.out.println(fileStream.getPath() + &quot; &quot; + fileStream.getStream());
+        });
+        System.out.println();
+</code></pre>
+
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <span class="m-1">
+                            <a href="https://www.11ty.dev/">
+                                <img
+                                    src="/images/11ty-logo-bg.svg"
+                                    alt="Made with 11ty"
+                                    width="24"
+                                    height="24">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+    </body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>ZBlog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="/css/bulma.min.css">
+        
+        
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+    </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/" class="navbar-item">Home</a>
+                        <a href="/archive" class="navbar-item">Blog</a>
+                        <a href="/tags" class="navbar-item">Tags</a>
+                        <a href="/about" class="navbar-item">About Me</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                        
+<div class="level">
+    <div class="level-item">
+        <span class="is-size-4 has-text-weight-bold">January 11, 2013</span>
+    </div>
+</div>
+<div class="level">
+    <div class="level-item">
+        
+        
+        
+        
+        <a class="tag is-size-6 mr-1" href="/tags/tapestry">tapestry</a>
+        
+        
+    </div>
+</div>
+<h1 class="title is-size-1">Apache Tapestry 5 makes Java web development easy</h1>
+<div class="content">
+    <p>I went through the <a href="http://tapestry.apache.org">Apache Tapestry 5</a> tutorial today and found it surprisingly easy to use. The two most productive features I love are auto class reloading and rich built-in components! I can edit the model/controller/view in a java IDE that auto compiles upon file save, and then reload browser to see immediate changes. I think any Java web framework should have this feature in order to be count as productive. (Yes there is JRebel, but it's commercial, and nothing more simpler than a framework supports it directly. Well to be fair JRebel is much more advance and richer in support your Java classes reloading, however for purpose of web dev, Tapestry seems to provide a sweet spot and boot productivity  tremendously.)</p>
+<p>I was intrigued enough to continue reading the rest of their documentation for advance usage and architecture design. I love simple and yet productive libraries/framework design principles, and I think Tapestry fits into that category. Their documentation is rich and well organized. I browsed their forums and user communities and they seem to be active and plenty of usage in the field. I also found these <a href="http://jumpstart.doublenegative.com.au/jumpstart/">jumpstart examples</a> to be extremely helpful.</p>
+<p>I am happy that I spent the time in learning this framework. I think it makes web development easy, fast and fun to work with. If you haven't tried it before, or have not tried their latest version 5 lately, I would highly recommend you to give it a try.</p>
+
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <span class="m-1">
+                            <a href="https://www.11ty.dev/">
+                                <img
+                                    src="/images/11ty-logo-bg.svg"
+                                    alt="Made with 11ty"
+                                    width="24"
+                                    height="24">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+    </body>
+</html>

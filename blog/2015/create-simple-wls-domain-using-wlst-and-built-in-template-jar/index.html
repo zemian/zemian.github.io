@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>ZBlog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="/css/bulma.min.css">
+        
+        
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+    </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/" class="navbar-item">Home</a>
+                        <a href="/archive" class="navbar-item">Blog</a>
+                        <a href="/tags" class="navbar-item">Tags</a>
+                        <a href="/about" class="navbar-item">About Me</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                        
+<div class="level">
+    <div class="level-item">
+        <span class="is-size-4 has-text-weight-bold">September 25, 2015</span>
+    </div>
+</div>
+<div class="level">
+    <div class="level-item">
+        
+        
+        
+        
+        <a class="tag is-size-6 mr-1" href="/tags/weblogic">weblogic</a>
+        
+        
+    </div>
+</div>
+<h1 class="title is-size-1">Create simple WLS domain using WLST and built-in template jar</h1>
+<div class="content">
+    <p>You can easily <a href="http://saltnlight5.blogspot.com/2014/01/getting-started-with-weblogic-server.html">start up a WebLogic Server</a> on an empty directory and it will create a domain. Here is another way to create WLS domain structure folder without actually starting up a WLS server.</p>
+<pre><code># Usage: wlst.cmd createDomain.py &lt;domain_home&gt; &lt;port&gt; &lt;password&gt;
+
+# NOTE: the &lt;domain_home&gt; must be a absolute path.
+
+# Example: C:\wls12130\wlserver\common\bin\wlst.cmd scripts\createDomain.py C:\data\wls12c_domains\dev 7001 weblogic1
+
+import os, sys
+
+domain_home = sys.argv[1]
+domain_name = 'mydomain'
+
+port = int(sys.argv[2])
+
+password = sys.argv[3]
+
+readTemplate(os.environ['MW_HOME'] + &quot;/wlserver/common/templates/wls/wls.jar&quot;)
+
+cd('/Server/AdminServer')
+
+set('Name', domain_name + '-admin')
+
+set('ListenAddress','')
+
+set('ListenPort', port)
+
+cd('/Security/base_domain/User/weblogic')
+
+cmo.setPassword(password)
+
+cd('/')
+
+set('Name', domain_name)
+
+writeDomain(domain_home)
+
+closeTemplate()
+
+exit()
+</code></pre>
+
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <span class="m-1">
+                            <a href="https://www.11ty.dev/">
+                                <img
+                                    src="/images/11ty-logo-bg.svg"
+                                    alt="Made with 11ty"
+                                    width="24"
+                                    height="24">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+    </body>
+</html>
