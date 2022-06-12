@@ -50,26 +50,56 @@
                 <div class="columns is-centered">
                     <div class="column is-two-thirds">
                         
-                            <h1 class="title">Articles with <span class="tag is-size-6">ojet</span> Tag</h1>
-<div class="content">
-    
-    <ol>
-    
-      <li><a href="/blog/2022/7-gui-tasks-with-oracle-jet/">7 GUI Tasks With Oracle JET</a></li>
-    
-      <li><a href="/blog/2020/oracle-jet-9-released/">Oracle JET 9 Released</a></li>
-    
-      <li><a href="/blog/2020/vuejs-examples-with-oracle-jet/">VueJS Examples With Oracle JET</a></li>
-    
-      <li><a href="/blog/2020/setup-oracle-jet-with-public-cdn/">Setup Oracle JET With Public CDN</a></li>
-    
-      <li><a href="/blog/2020/oracle-jet-intro-articles-on-dzone/">Oracle JET Intro Articles on DZone</a></li>
-    
-      <li><a href="/blog/2020/hello-oracle-jet/">Hello Oracle JET</a></li>
-    
-    </ol>
+<div class="level">
+    <div class="level-item">
+        <span class="is-size-4 has-text-weight-bold">June 10, 2022</span>
+    </div>
 </div>
-                        
+<div class="level">
+    <div class="level-item">
+        
+        
+        
+        
+        <a class="tag is-size-6 mr-1" href="/tags/ojet">ojet</a>
+        
+        
+        
+        <a class="tag is-size-6 mr-1" href="/tags/7-gui">7-gui</a>
+        
+        
+        
+        <a class="tag is-size-6 mr-1" href="/tags/reactjs">reactjs</a>
+        
+        
+        
+        <a class="tag is-size-6 mr-1" href="/tags/preactjs">preactjs</a>
+        
+        
+        
+        <a class="tag is-size-6 mr-1" href="/tags/vdom">vdom</a>
+        
+        
+    </div>
+</div>
+<h1 class="title is-size-1">7 GUI Tasks With Oracle JET</h1>
+<div class="content">
+    <p><img src="/posts-images/2022/06-10_ojet-7-guis.png" alt=""></p>
+<p>I have implemented the <a href="https://eugenkiss.github.io/7guis/">7 GUI Tasks</a> using
+<a href="https://www.oracle.com/webfolder/technetwork/jet/index.html">Oracle JET</a> UI library. Checkout the <a href="https://rococo-tanuki-521a94.netlify.app/">live demo</a>, and the <a href="https://github.com/zemian/ojet-7-gui">source code</a> at GitHub.</p>
+<p>I learned quite of few things through this project:</p>
+<ul>
+<li>Older JET uses <a href="https://knockoutjs.com/">KnockoutJS</a> as a MMVM based binding provider. Starting version 12, it starts to support additional VDOM (Virtual DOM) and it uses <a href="https://preactjs.com/">PreactJS</a> as the binding provider. This lets you build <a href="https://reactjs.org/">ReactJS</a> type of UI application, and leverage the large set of UI components that JET has.</li>
+<li>I discovered the 7 GUI Tasks when browsing the <a href="https://vuejs.org/examples/">VueJS Examples</a>, and thought it would be a great opportunities to try out JET 12 with PreactJS implementation and JET UI components.</li>
+<li>Using Preact is pretty much like ReacJS. In fact for learning purpose, the ReactJS might provide better and more details tutorial. Once you are familiar this how to build general ReactJS app, then you can just apply the concept to reuse the JET components as web components.</li>
+<li>Preact is really lightweight compare to React, and it's very nice to that Preact supports native DOM events and class attributes, no need to wrap it.</li>
+<li>Using JET specific library comes with some surprises. For example, their DataProvider needs to be cached in Function component, so that we don't re-initialize on every re-render. Also sometimes you would even need to check whether an event is from &quot;internal&quot; or &quot;external&quot; to avoid duplicated update call due to re-render function.</li>
+<li>Using Preact style in JET application really makes things more simple and smaller. Each JET component now can be as small as a function, and no need to carry separate CSS, ViewModel, View and even the JSON metadata file. The JSON metata file is now optional and can be generated automatically.</li>
+<li>I deployed the demo at <a href="https://www.netlify.com/">Netlify</a> with their free app and deployment tool. It's super easy to use and it works great!</li>
+</ul>
+
+</div>
+
                     </div>
                 </div>
             </div>
