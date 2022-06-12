@@ -1,7 +1,7 @@
 # Zemian's Blog
 
 This is a [11ty](https://www.11ty.dev/) static site generator project that
-generate http://zemian.github.io site.
+generate [ZBlog](http://zemian.github.io) site.
 
 ## Setup
 
@@ -37,14 +37,19 @@ See https://www.markdownguide.org/ more on how to create Markdown files.
 
 NOTE: Do not use `blog` values for `tags`, because it is used as special filter for generating blog posts.
 
-## Publishing site
+## Publish site using GitHub Action
+
+Add `.github/workflows/gh-pages.yml` to automatically build and publish `.site` folder into `gh-pages` branch!
+
+Just commit and push using Git will auto update the site!
+
+## Publishing site Manually
 
 ```
 npm run build
 ```
 
-The output of the site is in `docs` folder. We will commit this folder into Git so it can be published 
-as GitHub Pages.
+The output of the site is in `_site` folder. Just copy it into any web server to deploy it.
 
 ## ZBlog Logo
 
