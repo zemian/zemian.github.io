@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>ZBlog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="/css/bulma.min.css">
+        
+        
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135626598-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-135626598-1');
+        </script>
+        
+    </head>
+    <body>
+
+    <div id="app">
+        <div class="navbar is-primary">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="/images/zblog.svg" height="28">
+                    </a>
+
+                    <a class="navbar-burger" id="navbarMenuButton">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu" id="navbarMenu">
+                    <div class="navbar-end is-size-4">
+                        <a href="/" class="navbar-item">Home</a>
+                        <a href="/archive" class="navbar-item">Blog</a>
+                        <a href="/tags" class="navbar-item">Tags</a>
+                        <a href="/about" class="navbar-item">About Me</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds">
+                        
+<div class="level">
+    <div class="level-item">
+        <span class="is-size-4 has-text-weight-bold">June 20, 2022</span>
+    </div>
+</div>
+<div class="level">
+    <div class="level-item">
+        
+        
+        
+        
+        <a class="tag is-size-6 mr-1" href="/tags/vuejs">vuejs</a>
+        
+        
+        
+        <a class="tag is-size-6 mr-1" href="/tags/googlemap">googlemap</a>
+        
+        
+    </div>
+</div>
+<h1 class="title is-size-1">Controlling Google Map API with VueJS</h1>
+<div class="content">
+    <p>The GoogleMap provides an excellent JS API that you may use to manipulate and add rich content to the Map. I have created a standalone example of how you can get started with VueJS (version 3 in OptionAPI).</p>
+<pre><code class="language-html">&lt;!doctype html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;ie=edge&quot;&gt;
+    &lt;title&gt;My GoogleMap&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://unpkg.com/bulma@0.9.4/css/bulma.min.css&quot;&gt;
+    &lt;script src=&quot;https://unpkg.com/vue@3.2.37/dist/vue.global.prod.js&quot;&gt;&lt;/script&gt;
+    &lt;script defer src=&quot;https://maps.googleapis.com/maps/api/js?callback=initMyGoogleMap&amp;key=REPLACE_GOOGLE_API_KEY&quot;&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;style&gt;
+    #app {
+        width: 100%;
+        height: 100%;
+    }
+    #my-google-map {
+        border: 1px maroon solid;
+        width: 100%;
+        height: 600px;
+    }
+&lt;/style&gt;
+
+&lt;div id=&quot;app&quot; class=&quot;section&quot;&gt;
+    &lt;h1 class=&quot;title&quot;&gt;Google Map&lt;/h1&gt;
+    &lt;div class=&quot;columns&quot;&gt;
+        &lt;div class=&quot;column is-7&quot;&gt;
+            &lt;div id=&quot;my-google-map&quot;&gt;&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;column is-5&quot;&gt;
+            &lt;div v-if=&quot;mapIsReady&quot;&gt;
+                &lt;h2 class=&quot;subtitle&quot;&gt;Map Info&lt;/h2&gt;
+                &lt;ul&gt;
+                    &lt;li&gt;Zoom: {{uiMap.zoom}}&lt;/li&gt;
+                    &lt;li&gt;Center: {{uiMap.center}}&lt;/li&gt;
+                    &lt;li&gt;Bounds NE: {{uiMap.getBounds()?.getNorthEast()}}&lt;/li&gt;
+                    &lt;li&gt;Bounds SW: {{uiMap.getBounds()?.getSouthWest()}}&lt;/li&gt;
+                &lt;/ul&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;script&gt;
+    const MyApp = {
+        map: null, // This must be here, it can not be a reactive object!
+        data() {
+            return {
+                mapIsReady: false,
+                mapUpdateTs: Date.now(),
+            }
+        },
+        computed: {
+            uiMap() {
+                // Note that we need this reactive uiMap to be updated based on mapUpdateTs so that
+                // the UI can update whenever we have one of the callback event from the map!
+                return this.mapUpdateTs &gt; 0 ? this.$options.map : null;
+            }
+        },
+        methods: {
+            mapDisplayed() {
+                //console.log(&quot;Map is displayed: &quot;, this.$options.map);
+                this.mapIsReady = true;
+                this.mapUpdateTs = Date.now();
+            },
+            mapZoomChanged() {
+                //console.log(&quot;Map is zoomed: &quot;, this.$options.map);
+                this.mapUpdateTs = Date.now();
+            },
+            mapDragged() {
+                //console.log(&quot;Map is dragged: &quot;, this.$options.map);
+                this.mapUpdateTs = Date.now();
+            },
+            mapResize() {
+                //console.log(&quot;Map is resized: &quot;, this.$options.map);
+                this.mapUpdateTs = Date.now();
+            }
+        }
+    };
+    const app = Vue.createApp(MyApp).mount(&quot;#app&quot;);
+
+    function initMyGoogleMap () {
+        console.log(&quot;Initializing GoogleMap&quot;);
+        app.$options.map = new google.maps.Map(document.getElementById('my-google-map'), {
+            center: {lat: 28.5383355, lng: -81.3792365}, // Orlando, FL
+            zoom: 11,
+        });
+        app.mapIsReady = true;
+
+        // Register updateMap where is needed to show incident list
+        let map = app.$options.map;
+        google.maps.event.addListenerOnce(map, 'tilesloaded', () =&gt; {
+            app.mapDisplayed();
+        });
+        google.maps.event.addListener(map, 'zoom_changed', () =&gt; {
+            app.mapZoomChanged();
+        });
+        google.maps.event.addListener(map, 'dragend', () =&gt; {
+            app.mapDragged();
+        });
+        google.maps.event.addListener(map, 'resize', () =&gt; {
+            app.mapResize();
+        });
+    }
+&lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<p>To make above example work, you would need to first register with <a href="https://console.cloud.google.com/apis/library/maps-backend.googleapis.com">Google Platform Account</a> and get an API key. (They will give you a free trial that you may use to test on localhost.)
+Once you have that, go and replace the <code>REPLACE_GOOGLE_API_KEY</code> string in above example with your Google API Key. Then the example should work, and you will see something similar to the below screenshot. You may drag and move the map, and the map info on the right will automatically update.</p>
+<p><img src="/posts-images/2022/06-20_vuejs-google-map.png" alt=""></p>
+<p>What I have done in the example is let GoogleMap API to call a global JS function and initialize the <code>map</code> object. Once I have that, I stored it inside a VueJS's <code>$options</code> variable in the Vue's <code>app</code> instance. Note that we can not make this <code>map</code> object reactive inside Vue, since it's controlled by GoogleMap API itself. We can however, use it as read only object. To ensure our UI will update after map has new information, we used a reactive <code>mapUpdateTs</code> property to track changes from GoogleMap callback, and whenever that is changed, we use a computed <code>uiMap</code> object to refresh the UI.</p>
+<p>There are a lot of advance features from <a href="https://developers.google.com/maps/documentation/javascript">Google Map API</a> that you can explore further. I hope above example can serve you as a starter template that help you jump start your curious mind. Enjoy!</p>
+
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="columns">
+                <div class="column">
+                    <div class="level">
+                        <div class="level-item">
+                            <a href="https://bulma.io">
+                                <img
+                                    src="/images/made-with-bulma.png"
+                                    alt="Made with Bulma"
+                                    width="128"
+                                    height="24">
+                            </a>
+                            <span class="m-1">
+                            <a href="https://www.11ty.dev/">
+                                <img
+                                    src="/images/11ty-logo-bg.svg"
+                                    alt="Made with 11ty"
+                                    width="24"
+                                    height="24">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to enable responsive navbar hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('#navbarMenuButton');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-active');
+                const menu = document.querySelector('#navbarMenu');
+                menu.classList.toggle('is-active');
+            });
+        });
+    </script>
+
+    </body>
+</html>
