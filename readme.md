@@ -60,3 +60,17 @@ The output of the site is in `_site` folder. Just copy it into any web server to
 ## Favicon
 
 https://favicon.io/emoji-favicons/smiling-face-with-sunglasses
+
+## How to create large textblock with Nunjucks template
+
+```
+{% verbatim %}
+...
+{% endverbatim %}
+```
+
+## How to add an embedded image (screenshot) in article
+
+```
+![](/posts-images/2022/06-20_vuejs-google-map.png)
+```
