@@ -1,4 +1,6 @@
-let dateFilter = require('nunjucks-date-filter');
+const dateFilter = require('nunjucks-date-filter');
+const pluginLinkTo = require('eleventy-plugin-link_to');
+const pluginRss = require("@11ty/eleventy-plugin-rss");
 
 module.exports = function(eleventyConfig) {
 
@@ -13,9 +15,11 @@ module.exports = function(eleventyConfig) {
     // The Nunjucks does not have "date" filter!
     eleventyConfig.addNunjucksFilter("date", dateFilter);
     eleventyConfig.addNunjucksFilter("keys", obj => Object.keys(obj));
+    eleventyConfig.addNunjucksFilter("dateToRfc3339", pluginRss.dateToRfc3339);
 
     // Add "link_to" function to template
-    eleventyConfig.addPlugin(require('eleventy-plugin-link_to'));
+    eleventyConfig.addPlugin(pluginLinkTo);
+    eleventyConfig.addPlugin(pluginRss);
 
     return {
         dir: {
