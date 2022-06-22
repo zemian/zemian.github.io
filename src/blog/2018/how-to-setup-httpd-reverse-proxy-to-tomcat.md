@@ -8,11 +8,11 @@ tags:
   - tomcat
 ---
 
-Here is an example on how to configure HTTPD server with reverse proxy
+Here is an example on how to configure `httpd` server with reverse proxy
 into Tomcat, and adding the authenticated user as header and passing to
-Tocmat server.
+Tomcat server.
 
-1.  Example of `httpd.conf` file
+Here is an example of `httpd.conf` config file:
 
 {% verbatim %}
 ```
