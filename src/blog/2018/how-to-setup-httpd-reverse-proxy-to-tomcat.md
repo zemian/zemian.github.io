@@ -13,6 +13,8 @@ into Tomcat, and adding the authenticated user as header and passing to
 Tocmat server.
 
 1.  Example of `httpd.conf` file
+
+{% verbatim %}
 ```
 # Apache httpd v2.4 minimal configuration
 ServerRoot "/etc/httpd"
@@ -110,3 +112,4 @@ ProxyPassReverse "/jspwebapp2" "http://localhost/jspwebapp2"
         SessionMaxAge 1
 </Location>
 ```
+{% endverbatim %}
