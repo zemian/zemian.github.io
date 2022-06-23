@@ -70,20 +70,16 @@ The GoogleMap provides an excellent JS API that you may use to manipulate and ad
         },
         methods: {
             mapDisplayed() {
-                //console.log("Map is displayed: ", this.$options.map);
+                console.log("Map is ready");
                 this.mapIsReady = true;
                 this.mapUpdateTs = Date.now();
             },
             mapZoomChanged() {
-                //console.log("Map is zoomed: ", this.$options.map);
+                console.log("Map zoom changed", this.$options.map.getZoom());
                 this.mapUpdateTs = Date.now();
             },
             mapDragged() {
-                //console.log("Map is dragged: ", this.$options.map);
-                this.mapUpdateTs = Date.now();
-            },
-            mapResize() {
-                //console.log("Map is resized: ", this.$options.map);
+                console.log("Map dragged", this.$options.map.getBounds());
                 this.mapUpdateTs = Date.now();
             }
         }
@@ -96,9 +92,7 @@ The GoogleMap provides an excellent JS API that you may use to manipulate and ad
             center: {lat: 28.5383355, lng: -81.3792365}, // Orlando, FL
             zoom: 11,
         });
-        app.mapIsReady = true;
 
-        // Register updateMap where is needed to show incident list
         let map = app.$options.map;
         google.maps.event.addListenerOnce(map, 'tilesloaded', () => {
             app.mapDisplayed();
