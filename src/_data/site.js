@@ -3,5 +3,5 @@ module.exports = {
     base_url: "",
     title: "ZBlog",
     description: "Zemian's Programming Journal",
-    google_analytics_tracking_id: "UA-135626598-1",
+    google_analytics_tracking_id: "G-QTBXRBYM8J",
 };
