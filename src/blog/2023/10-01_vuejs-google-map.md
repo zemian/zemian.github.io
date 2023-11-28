@@ -1,6 +1,6 @@
 ---
 title: Controlling Google Map API with VueJS  
-date: 2022-06-20
+date: 2023-10-01
 tags: [vuejs, googlemap]
 ---
 
